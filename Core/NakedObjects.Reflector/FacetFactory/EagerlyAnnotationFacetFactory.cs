@@ -18,22 +18,22 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
-        public EagerlyAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.EverythingButParameters) {}
+        public EagerlyAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.EverythingButParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(property);
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(method);
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) {

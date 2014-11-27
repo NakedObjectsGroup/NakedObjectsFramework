@@ -30,8 +30,6 @@ namespace NakedObjects {
 
         IMetamodelManager Metamodel { get; }
 
-        IAuthorizationManager AuthorizationManager { get; }
-
         IContainerInjector Injector { get; }
 
         ITransactionManager TransactionManager { get; }

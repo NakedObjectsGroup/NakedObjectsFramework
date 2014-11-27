@@ -45,6 +45,10 @@ namespace NakedObjects.Core.Container {
             framework.Persistor.DestroyObject(adapter);
         }
 
+        public T GetService<T>() {
+           return framework.Services.GetServices().Select(no => no.Object).OfType<T>().SingleOrDefault();
+        }
+
         public IPrincipal Principal {
             get { return framework.Session.Principal; }
         }

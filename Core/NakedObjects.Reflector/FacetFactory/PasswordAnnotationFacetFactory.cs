@@ -18,22 +18,22 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PasswordAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public PasswordAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DataTypeAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<DataTypeAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) {

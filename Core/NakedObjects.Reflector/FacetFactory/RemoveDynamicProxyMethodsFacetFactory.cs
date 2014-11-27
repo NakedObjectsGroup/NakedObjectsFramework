@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
@@ -18,36 +17,29 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
-        private static readonly IList<string> methodsToRemove;
+        private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
-        static RemoveDynamicProxyMethodsFacetFactory() {
-            methodsToRemove = new List<string> {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
-        }
-
-        public RemoveDynamicProxyMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsAndProperties) {}
+        public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (IsDynamicProxyType(type)) {
-                foreach (MethodInfo method in type.GetMethods().Join(methodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
+                foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
                         methodRemover.RemoveMethod(method);
                     }
                 }
             }
-
-            return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
-                return FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
+                FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
             }
-            return false;
         }
     }
 

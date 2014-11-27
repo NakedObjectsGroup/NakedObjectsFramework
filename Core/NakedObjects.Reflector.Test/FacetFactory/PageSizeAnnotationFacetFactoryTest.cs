@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(Reflector);
+            facetFactory = new PageSizeAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -62,7 +63,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             var actionPeer = new ActionSpecImmutable(null, null, null);
-            new FallbackFacetFactory(Reflector).Process(actionMethod, MethodRemover, actionPeer);
+            new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
@@ -84,7 +85,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPageSizeAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);

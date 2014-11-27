@@ -23,23 +23,21 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateObjectFacetFactory));
-        private static readonly string[] FixedPrefixes;
 
-        static ValidateObjectFacetFactory() {
-            FixedPrefixes = new[] {
-                PrefixesAndRecognisedMethods.ValidatePrefix
-            };
-        }
+        private static readonly string[] FixedPrefixes = {
+            PrefixesAndRecognisedMethods.ValidatePrefix
+        };
 
-        public ValidateObjectFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+
+        public ValidateObjectFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }
 
         private bool ContainsField(string name, Type type) {
-            var properties = type.GetProperties();
+            PropertyInfo[] properties = type.GetProperties();
 
             return properties.Any(p => p.Name == name &&
                                        p.GetGetMethod() != null &&
@@ -48,14 +46,14 @@ namespace NakedObjects.Reflect.FacetFactory {
                                        !CollectionUtils.IsQueryable(p.PropertyType));
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
-            var methods = FindMethods(type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
+            MethodInfo[] methods = FindMethods(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
 
             if (methods.Any()) {
-                foreach (var method in methods) {
+                foreach (MethodInfo method in methods) {
                     ParameterInfo[] parameters = method.GetParameters();
                     if (parameters.Length >= 2) {
                         bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString().ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
@@ -67,8 +65,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
 
-            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
-            return FacetUtils.AddFacet(validateFacet);
+            IValidateObjectFacet validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
+            FacetUtils.AddFacet(validateFacet);
         }
     }
 }

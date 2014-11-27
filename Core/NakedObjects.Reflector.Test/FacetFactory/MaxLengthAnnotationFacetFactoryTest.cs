@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MaxLengthAnnotationFacetFactory(Reflector);
+            facetFactory = new MaxLengthAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -83,7 +84,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestCMMaxLengthAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer8), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
@@ -94,7 +95,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestCMMaxLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
@@ -115,7 +116,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNOFMaxLengthAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
@@ -136,7 +137,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNOFMaxLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
@@ -147,7 +148,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestStringLengthAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer5), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
@@ -158,7 +159,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestStringLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer4), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);

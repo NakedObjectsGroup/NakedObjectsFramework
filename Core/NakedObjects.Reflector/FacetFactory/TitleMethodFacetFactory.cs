@@ -22,17 +22,15 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (TitleMethodFacetFactory));
-        private static readonly string[] FixedPrefixes;
 
-        static TitleMethodFacetFactory() {
-            FixedPrefixes = new[] {
-                PrefixesAndRecognisedMethods.ToStringMethod,
-                PrefixesAndRecognisedMethods.TitleMethod
-            };
-        }
+        private static readonly string[] FixedPrefixes = {
+            PrefixesAndRecognisedMethods.ToStringMethod,
+            PrefixesAndRecognisedMethods.TitleMethod
+        };
 
-        public TitleMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+
+        public TitleMethodFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
@@ -42,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (AttributeUtils.GetCustomAttribute<TitleAttribute>(propertyInfo) != null) {
@@ -54,11 +52,11 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             if (attributedMethods.Count > 0) {
-                return FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
+                FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
             }
 
             try {
-                MethodInfo titleMethod = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.TitleMethod, typeof (string), Type.EmptyTypes);
+                MethodInfo titleMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.TitleMethod, typeof (string), Type.EmptyTypes);
                 IFacet titleFacet = null;
 
                 if (titleMethod != null) {
@@ -66,7 +64,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification);
                 }
 
-                MethodInfo toStringMethod = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), Type.EmptyTypes);
+                MethodInfo toStringMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), Type.EmptyTypes);
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof (object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
@@ -75,25 +73,20 @@ namespace NakedObjects.Reflect.FacetFactory {
                     toStringMethod = null;
                 }
 
-                MethodInfo maskMethod = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), new[] {typeof (string)});
+                MethodInfo maskMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), new[] {typeof (string)});
 
                 if (maskMethod != null) {
                     methodRemover.RemoveMethod(maskMethod);
                 }
 
-                if (titleFacet == null && toStringMethod == null) {
-                    // nothing to use 
-                    return false;
-                }
-
-                if (titleFacet == null) {
+                if (titleFacet == null && toStringMethod != null) {
                     titleFacet = new TitleFacetViaToStringMethod(toStringMethod, maskMethod, specification);
                 }
 
-                return FacetUtils.AddFacet(titleFacet);
+                FacetUtils.AddFacet(titleFacet);
             }
-            catch {
-                return false;
+            catch (Exception e) {
+                Log.Warn("Unexpected Exception", e);
             }
         }
     }

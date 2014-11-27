@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MandatoryDefaultFacetFactory(Reflector);
+            facetFactory = new MandatoryDefaultFacetFactory(0);
         }
 
         [TearDown]
@@ -76,7 +77,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMandatoryDefaultOnPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
@@ -85,7 +86,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMandatoryDefaultOnPrimitiveOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
@@ -94,7 +95,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMandatoryDefaultPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
@@ -103,7 +104,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMandatoryDefaultPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);

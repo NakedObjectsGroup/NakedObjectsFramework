@@ -19,14 +19,13 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class KeyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public KeyAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Property) {}
+        public KeyAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Property) {}
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<KeyAttribute>(property);
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
-
 
         private static IKeyFacet Create(Attribute attribute, ISpecification holder) {
             return attribute == null ? null : new KeyFacet(holder);

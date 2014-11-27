@@ -9,19 +9,18 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public ColorValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
+        public ColorValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new ColorValueSemanticsProvider(spec, specification), specification);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new ColorValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

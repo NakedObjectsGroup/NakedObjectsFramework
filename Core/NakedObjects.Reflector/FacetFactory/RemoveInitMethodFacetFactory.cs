@@ -17,20 +17,19 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Removes any calls to <c>Init</c>
     /// </summary>
     public class RemoveInitMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveInitMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public RemoveInitMethodFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FindAndRemoveInitMethod(type, methodRemover);
-            return false;
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FindAndRemoveInitMethod(reflector, type, methodRemover);
         }
 
-        private void FindAndRemoveInitMethod(Type type, IMethodRemover methodRemover) {
-            MethodInfo method = FindMethod(type, MethodType.Object, "Init", typeof (void), Type.EmptyTypes);
+        private void FindAndRemoveInitMethod(IReflector reflector, Type type, IMethodRemover methodRemover) {
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, "Init", typeof (void), Type.EmptyTypes);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
             }

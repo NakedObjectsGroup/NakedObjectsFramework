@@ -21,22 +21,21 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PotencyAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public PotencyAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 
             if (AttributeUtils.GetCustomAttribute<IdempotentAttribute>(member) != null) {
-                return FacetUtils.AddFacet(new IdempotentFacet(holder));
+                FacetUtils.AddFacet(new IdempotentFacet(holder));
             }
-            if (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(member) != null) {
-                return FacetUtils.AddFacet(new QueryOnlyFacet(holder));
+            else if (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(member) != null) {
+                FacetUtils.AddFacet(new QueryOnlyFacet(holder));
             }
-            return false;
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
     }
 }

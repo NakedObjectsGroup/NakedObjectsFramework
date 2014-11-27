@@ -23,16 +23,16 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects Framework itself.
     /// </summary>
     public class FallbackFacetFactory : FacetFactoryAbstract {
-        public FallbackFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Everything) {}
+        public FallbackFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Everything) {}
 
 
         public bool Recognizes(MethodInfo method) {
             return false;
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return FacetUtils.AddFacets(
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FacetUtils.AddFacets(
                 new IFacet[] {
                     new DescribedAsFacetNone(specification),
                     new ImmutableFacetNever(specification),
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 });
         }
 
-        private static bool Process(ISpecification holder) {
+        private static void Process(ISpecification holder) {
             var facets = new List<IFacet>();
 
             if (holder is MemberSpecImmutable) {
@@ -68,25 +68,25 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new PageSizeFacetDefault(holder));
             }
 
-            return FacetUtils.AddFacets(facets);
+            FacetUtils.AddFacets(facets);
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             var facets = new List<IFacet>();
 
             if (holder is ActionParameterSpecImmutable) {
                 var param = (ActionParameterSpecImmutable) holder;
                 string name = method.GetParameters()[paramNum].Name;
-                var namedFacet = name == null ? (INamedFacet) new NamedFacetNone(holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
+                INamedFacet namedFacet = name == null ? (INamedFacet) new NamedFacetNone(holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
                 facets.Add(namedFacet);
                 facets.Add(new DescribedAsFacetNone(holder));
                 facets.Add(new MultiLineFacetNone(holder));
@@ -95,7 +95,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 DefaultTypicalLength(facets, param.Specification, holder);
             }
 
-            return FacetUtils.AddFacets(facets);
+            FacetUtils.AddFacets(facets);
         }
 
         private static void DefaultTypicalLength(ICollection<IFacet> facets, ISpecification specification, ISpecification holder) {

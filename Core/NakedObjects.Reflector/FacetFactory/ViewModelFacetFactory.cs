@@ -18,9 +18,9 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ViewModelFacetFactory(IReflector reflector) : base(reflector, FeatureType.Objects) {}
+        public ViewModelFacetFactory(int numericOrder) : base(numericOrder, FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IFacet facet = null;
 
             if (!type.IsInterface && typeof (IViewModel).IsAssignableFrom(type)) {
@@ -43,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 methodRemover.RemoveMethods(toRemove.ToArray());
             }
 
-            return FacetUtils.AddFacet(facet);
+            FacetUtils.AddFacet(facet);
         }
     }
 }

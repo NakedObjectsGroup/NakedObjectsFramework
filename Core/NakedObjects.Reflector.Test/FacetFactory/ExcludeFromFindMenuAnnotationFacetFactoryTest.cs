@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ExcludeFromFindMenuAnnotationFacetFactory(Reflector);
+            facetFactory = new ExcludeFromFindMenuAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -55,7 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestExcludeFromFindMenuAnnotationNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -64,7 +65,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestExcludeFromFindMenuAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExcludeFromFindMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExcludeFromFindMenuFacet);

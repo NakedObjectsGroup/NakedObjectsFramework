@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
@@ -21,7 +22,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(Reflector);
+            facetFactory = new IteratorFilteringFacetFactory(0);
         }
 
         [TearDown]
@@ -78,7 +79,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             AssertMethodRemoved(enumeratorMethod);
         }
     }

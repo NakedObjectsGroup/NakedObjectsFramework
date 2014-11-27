@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Html;
@@ -43,8 +42,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult ValidateProperty(string id, string value, string propertyName) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
 
-            if (nakedObject.ResolveState.IsTransient() && !MvcIdentityAdapterHashMap.StoringTransientsInSession) {
-                // if transient and not saving transients in session then we cannot validate now - need to wait until save 
+            if (nakedObject.ResolveState.IsTransient()) {
+                // if transient then we cannot validate now - need to wait until save 
                 return Jsonp(true);
             }
 

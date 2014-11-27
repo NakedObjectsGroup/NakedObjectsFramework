@@ -201,8 +201,7 @@ namespace NakedObjects {
         /// <summary>
         ///    Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayBefore(this DateTime referenceDate, DateTime? otherDate)
-        {
+        public static bool IsAtLeastOneDayBefore(this DateTime referenceDate, DateTime? otherDate) {
             return otherDate.HasValue && referenceDate.Date < otherDate.Value.Date;
         }
 
@@ -214,14 +213,12 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayBefore(this DateTime? referenceDate, DateTime? otherDate)
-        {
+        public static bool IsAtLeastOneDayBefore(this DateTime? referenceDate, DateTime? otherDate) {
             return referenceDate.HasValue && referenceDate.Value.IsAtLeastOneDayBefore(otherDate);
         }
 
         [Obsolete("FAULTY IMPLEMENTATION. Use IsAtLeastOneDayBefore, but note that behaviour is different.")]
-        public static bool IsAtLeastADayBefore(this DateTime? referenceDate, DateTime? otherDate)
-        {
+        public static bool IsAtLeastADayBefore(this DateTime? referenceDate, DateTime? otherDate) {
 #pragma warning disable 612, 618
             return referenceDate.HasValue && referenceDate.Value.IsAtLeastADayBefore(otherDate);
 #pragma warning restore 612, 618
@@ -234,8 +231,7 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if referanceDate is at least one day after the otherDate ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayAfter(this DateTime referenceDate, DateTime? otherDate)
-        {
+        public static bool IsAtLeastOneDayAfter(this DateTime referenceDate, DateTime? otherDate) {
             return otherDate.HasValue && referenceDate.Date > otherDate.Value.Date;
         }
 
@@ -247,18 +243,16 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if referenceDate is at least one day after the otherDate ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayAfter(this DateTime? referenceDate, DateTime? otherDate)
-        {
+        public static bool IsAtLeastOneDayAfter(this DateTime? referenceDate, DateTime? otherDate) {
             return referenceDate.HasValue && referenceDate.Value.IsAtLeastOneDayAfter(otherDate);
         }
 
         [Obsolete("FAULTY IMPLEMENTATION. Use IsAtLeastOneDayAfter, but note that behaviour is different.")]
-        public static bool IsAtLeastADayAfter(this DateTime? referenceDate, DateTime? otherDate)
-         {
+        public static bool IsAtLeastADayAfter(this DateTime? referenceDate, DateTime? otherDate) {
 #pragma warning disable 612, 618
-             return referenceDate.HasValue && referenceDate.Value.IsAtLeastADayAfter(otherDate);
+            return referenceDate.HasValue && referenceDate.Value.IsAtLeastADayAfter(otherDate);
 #pragma warning restore 612, 618
-         }
+        }
 
         #endregion
     }

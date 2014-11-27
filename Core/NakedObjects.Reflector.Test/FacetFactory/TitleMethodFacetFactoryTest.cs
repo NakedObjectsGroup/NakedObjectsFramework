@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TitleMethodFacetFactory(Reflector);
+            facetFactory = new TitleMethodFacetFactory(0);
         }
 
         [TearDown]
@@ -69,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestNoExplicitTitleOrToStringMethod() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (ITitleFacet)));
             AssertNoMethodsRemoved();
         }
@@ -77,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo titleMethod = FindMethod(typeof (Customer), "Title");
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
@@ -89,7 +90,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString");
-            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);

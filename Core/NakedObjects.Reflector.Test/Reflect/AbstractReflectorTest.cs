@@ -11,12 +11,101 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
+using NakedObjects.Reflect.FacetFactory;
+using NakedObjects.Reflect.TypeFacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
     public abstract class AbstractReflectorTest {
         protected IMetamodel Metamodel;
         protected IObjectSpecImmutable Specification;
+
+        private readonly IFacetFactory[] facetFactories = {
+            new FallbackFacetFactory(0),
+            new IteratorFilteringFacetFactory(1),
+            new UnsupportedParameterTypesMethodFilteringFactory(2),
+            new RemoveSuperclassMethodsFacetFactory(3),
+            new RemoveInitMethodFacetFactory(4),
+            new RemoveDynamicProxyMethodsFacetFactory(5),
+            new RemoveEventHandlerMethodsFacetFactory(6),
+            new TypeMarkerFacetFactory(7),
+            new MandatoryDefaultFacetFactory(8),
+            new PropertyValidateDefaultFacetFactory(9),
+            new ComplementaryMethodsFilteringFacetFactory(10),
+            new ActionMethodsFacetFactory(11),
+            new CollectionFieldMethodsFacetFactory(12),
+            new PropertyMethodsFacetFactory(13),
+            new IconMethodFacetFactory(14),
+            new CallbackMethodsFacetFactory(15),
+            new TitleMethodFacetFactory(16),
+            new ValidateObjectFacetFactory(17),
+            new ActionOrderAnnotationFacetFactory(18),
+            new ComplexTypeAnnotationFacetFactory(19),
+            new ViewModelFacetFactory(20),
+            new BoundedAnnotationFacetFactory(21),
+            new EnumFacetFactory(22),
+            new ActionDefaultAnnotationFacetFactory(23),
+            new PropertyDefaultAnnotationFacetFactory(24),
+            new DescribedAsAnnotationFacetFactory(25),
+            new DisabledAnnotationFacetFactory(26),
+            new PasswordAnnotationFacetFactory(27),
+            new ExecutedAnnotationFacetFactory(28),
+            new PotencyAnnotationFacetFactory(29),
+            new PageSizeAnnotationFacetFactory(30),
+            new FieldOrderAnnotationFacetFactory(31),
+            new HiddenAnnotationFacetFactory(32),
+            new HiddenDefaultMethodFacetFactory(33),
+            new DisableDefaultMethodFacetFactory(34),
+            new AuthorizeAnnotationFacetFactory(35),
+            new ValidateProgrammaticUpdatesAnnotationFacetFactory(36),
+            new ImmutableAnnotationFacetFactory(37),
+            new MaxLengthAnnotationFacetFactory(38),
+            new RangeAnnotationFacetFactory(39),
+            new MemberOrderAnnotationFacetFactory(40),
+            new MultiLineAnnotationFacetFactory(41),
+            new NamedAnnotationFacetFactory(42),
+            new NotPersistedAnnotationFacetFactory(43),
+            new ProgramPersistableOnlyAnnotationFacetFactory(44),
+            new OptionalAnnotationFacetFactory(45),
+            new RequiredAnnotationFacetFactory(46),
+            new PluralAnnotationFacetFactory(47),
+            new DefaultNamingFacetFactory(48),
+            new KeyAnnotationFacetFactory(49),
+            new ConcurrencyCheckAnnotationFacetFactory(50),
+            new ContributedActionAnnotationFacetFactory(51),
+            new ExcludeFromFindMenuAnnotationFacetFactory(52),
+            new MaskAnnotationFacetFactory(53),
+            new RegExAnnotationFacetFactory(54),
+            new TypeOfAnnotationFacetFactory(55),
+            new TableViewAnnotationFacetFactory(56),
+            new TypicalLengthDerivedFromTypeFacetFactory(57),
+            new TypicalLengthAnnotationFacetFactory(58),
+            new EagerlyAnnotationFacetFactory(59),
+            new PresentationHintAnnotationFacetFactory(60),
+            new BooleanValueTypeFacetFactory(61),
+            new ByteValueTypeFacetFactory(62),
+            new SbyteValueTypeFacetFactory(63),
+            new ShortValueTypeFacetFactory(64),
+            new IntValueTypeFacetFactory(65),
+            new LongValueTypeFacetFactory(66),
+            new UShortValueTypeFacetFactory(67),
+            new UIntValueTypeFacetFactory(68),
+            new ULongValueTypeFacetFactory(69),
+            new FloatValueTypeFacetFactory(70),
+            new DoubleValueTypeFacetFactory(71),
+            new DecimalValueTypeFacetFactory(72),
+            new CharValueTypeFacetFactory(73),
+            new DateTimeValueTypeFacetFactory(74),
+            new TimeValueTypeFacetFactory(75),
+            new StringValueTypeFacetFactory(76),
+            new GuidValueTypeFacetFactory(77),
+            new EnumValueTypeFacetFactory(78),
+            new FileAttachmentValueTypeFacetFactory(79),
+            new ImageValueTypeFacetFactory(80),
+            new ArrayValueTypeFacetFactory<byte>(81),
+            new CollectionFacetFactory(82)
+        };
+
 
         [SetUp]
         public virtual void SetUp() {
@@ -25,7 +114,9 @@ namespace NakedObjects.Reflect.Test {
             var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[] {});
+            var menuDefinition = new ReflectorTest.NullMenuDefinition();
+            var menuFactory = new NullMenuFactory();
+            var reflector = new Reflector(classStrategy, metamodel, config, servicesConfig, menuDefinition, menuFactory, new IFacetDecorator[] {}, facetFactories);
 
             Specification = LoadSpecification(reflector);
             //reflector.PopulateAssociatedActions(Specification, new Type[] {});

@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
-        public RangeAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public RangeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
 
         private static bool Process(MemberInfo member, bool isDate, ISpecification specification) {
@@ -31,17 +31,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover,
-                                     ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof (DateTime));
-            return Process(property, isDate, specification);
+            Process(property, isDate, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             bool isDate = parameter.ParameterType.IsAssignableFrom(typeof (DateTime));
             var range = parameter.GetCustomAttributeByReflection<RangeAttribute>();
-            return FacetUtils.AddFacet(Create(range, isDate, holder));
+            FacetUtils.AddFacet(Create(range, isDate, holder));
         }
 
         private static IRangeFacet Create(RangeAttribute attribute, bool isDate, ISpecification holder) {

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            annotationFacetFactory = new EagerlyAnnotationFacetFactory(Reflector);
+            annotationFacetFactory = new EagerlyAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -70,7 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestEagerlyAnnotationPickedUpOnClass() {
-            annotationFacetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -81,7 +82,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Coll");
-            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -92,7 +93,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer1), "Act");
-            annotationFacetFactory.Process(method, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -103,7 +104,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
@@ -113,7 +114,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestEagerlyNotPickedUpOnClass() {
-            annotationFacetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
@@ -121,7 +122,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyNotPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Coll");
-            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
@@ -129,7 +130,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyNotPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer2), "Act");
-            annotationFacetFactory.Process(method, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
@@ -137,7 +138,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEagerlyNotPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Prop");
-            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }

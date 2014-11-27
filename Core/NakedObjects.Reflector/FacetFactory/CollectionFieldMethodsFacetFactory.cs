@@ -21,26 +21,22 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
-        private static readonly ILog Log;
-        private static readonly string[] FixedPrefixes;
+        private static readonly ILog Log = LogManager.GetLogger(typeof (CollectionFieldMethodsFacetFactory));
 
-        static CollectionFieldMethodsFacetFactory() {
-            Log = LogManager.GetLogger(typeof (CollectionFieldMethodsFacetFactory));
+        private static readonly string[] FixedPrefixes = {
+            PrefixesAndRecognisedMethods.ClearPrefix,
+            PrefixesAndRecognisedMethods.ModifyPrefix
+        };
 
-            FixedPrefixes = new[] {
-                PrefixesAndRecognisedMethods.ClearPrefix,
-                PrefixesAndRecognisedMethods.ModifyPrefix
-            };
-        }
 
-        public CollectionFieldMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Collections) {}
+        public CollectionFieldMethodsFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Collections) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection) {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 
@@ -51,9 +47,9 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             AddHideForSessionFacetNone(facets, collection);
             AddDisableFacetAlways(facets, collection);
-            FindDefaultHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], collection);
-            FindAndRemoveHideMethod(facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
-            return FacetUtils.AddFacets(facets);
+            FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], collection);
+            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
+            FacetUtils.AddFacets(facets);
         }
 
 

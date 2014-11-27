@@ -29,21 +29,20 @@ namespace NakedObjects.Reflect.FacetFactory {
             FixedPrefixes = new[] {PrefixesAndRecognisedMethods.GetEnumeratorMethod};
         }
 
-        public IteratorFilteringFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public IteratorFilteringFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (IEnumerable).IsAssignableFrom(type) && !TypeUtils.IsSystem(type)) {
-                MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.GetEnumeratorMethod, null, Type.EmptyTypes);
+                MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {
                     methodRemover.RemoveMethod(method);
                 }
             }
-            return false;
         }
     }
 

@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PasswordAnnotationFacetFactory(Reflector);
+            facetFactory = new PasswordAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -80,7 +81,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
         }
@@ -88,7 +89,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
         }
@@ -96,7 +97,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
@@ -105,7 +106,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPasswordAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);

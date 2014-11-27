@@ -6,15 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
-using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(IReflector reflector, FeatureType featureTypes)
-            : base(reflector, featureTypes) {}
+        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
+            : base(numericOrder, featureTypes) {}
 
         /// <summary>
         ///     Always returns <c>false</c> as <see cref="IFacetFactory" />s that look for annotations

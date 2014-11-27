@@ -19,10 +19,10 @@ namespace NakedObjects.Reflect {
         ///     Any methods that do not meet the search criteria are left in the array of methods.
         /// </para>
         public static MethodInfo RemoveMethod(MethodInfo[] methods,
-                                              MethodType methodType,
-                                              string name,
-                                              Type returnType,
-                                              Type[] paramTypes) {
+            MethodType methodType,
+            string name,
+            Type returnType,
+            Type[] paramTypes) {
             for (int i = 0; i < methods.Length; i++) {
                 if (methods[i] == null) {
                     continue;

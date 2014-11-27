@@ -40,26 +40,28 @@ namespace NakedObjects.Reflect {
         }
 
         public Reflector(IClassStrategy classStrategy,
-                         IFacetFactorySet facetFactorySet,
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
                          IServicesConfiguration servicesConfig,
                          IMainMenuDefinition menuDefinition,
                          IMenuFactory menuFactory,
-                         IFacetDecorator[] facetDecorators) {
+                         IFacetDecorator[] facetDecorators,
+                         IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
-            Assert.AssertNotNull(facetFactorySet);
-
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(config);
+            Assert.AssertNotNull(servicesConfig);
+            Assert.AssertNotNull(menuDefinition);
+            Assert.AssertNotNull(menuFactory);
 
             this.classStrategy = classStrategy;
-            this.facetFactorySet = facetFactorySet;
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
             this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
-            facetFactorySet.Init(this);
+            facetFactorySet = new FacetFactorySet(facetFactories);
         }
 
         // exposed for testing
@@ -112,14 +114,14 @@ namespace NakedObjects.Reflect {
 
         public virtual IObjectSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
-            var actualType = classStrategy.GetType(type);
+            Type actualType = classStrategy.GetType(type);
             return (IObjectSpecBuilder) metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
         }
 
         public void Reflect() {
-            var s1 = config.MenuServices;
-            var s2 = config.ContributedActions;
-            var s3 = config.SystemServices;
+            Type[] s1 = config.MenuServices;
+            Type[] s2 = config.ContributedActions;
+            Type[] s3 = config.SystemServices;
             Type[] services = s1.Union(s2).Union(s3).ToArray();
             Type[] nonServices = config.TypesToIntrospect;
 
@@ -143,7 +145,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateAssociatedActions(Type[] services) {
-            var nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
+            IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
             nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
@@ -182,14 +184,14 @@ namespace NakedObjects.Reflect {
                 IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
-                        var serviceSpecification = metamodel.GetSpecification(serviceType);
+                        IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
 
                         IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
 
                         if (matchingServiceActions.Any()) {
                             IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingServiceActions);
-                            var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
-                            var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                            string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                            string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                             var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
 
                             contributedActions.Add(t);
@@ -203,13 +205,13 @@ namespace NakedObjects.Reflect {
         private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
             IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
             foreach (Type serviceType in services) {
-                var serviceSpecification = metamodel.GetSpecification(serviceType);
+                IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
-                foreach (var serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(a => a.IsFinderMethod)) {
-                    var returnType = serviceAction.ReturnType;
+                foreach (IActionSpecImmutable serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(a => a.IsFinderMethod)) {
+                    IObjectSpecImmutable returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
-                        var elementType = serviceAction.ElementType;
+                        IObjectSpecImmutable elementType = serviceAction.ElementType;
                         if (elementType.IsOfType(spec)) {
                             matchingActions.Add(serviceAction);
                         }
@@ -221,8 +223,8 @@ namespace NakedObjects.Reflect {
 
                 if (matchingActions.Any()) {
                     IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingActions.ToArray());
-                    var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
-                    var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                    string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                    string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                     var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
 
                     relatedActions.Add(t);
@@ -232,7 +234,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void InstallSpecification(Type type, bool isService) {
-            var spec = LoadSpecification(type);
+            IObjectSpecBuilder spec = LoadSpecification(type);
 
             // Do this here so that if the service spec was found and loaded earlier for any reason it is still marked 
             // as a service
@@ -242,7 +244,7 @@ namespace NakedObjects.Reflect {
         }
 
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
-            var specification = CreateSpecification(type);
+            IObjectSpecBuilder specification = CreateSpecification(type);
 
             if (specification == null) {
                 throw new ReflectionException("unrecognised type " + type.FullName);

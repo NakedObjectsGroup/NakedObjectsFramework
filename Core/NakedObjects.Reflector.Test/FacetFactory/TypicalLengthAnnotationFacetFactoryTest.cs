@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypicalLengthAnnotationFacetFactory(Reflector);
+            facetFactory = new TypicalLengthAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -70,7 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
@@ -80,7 +81,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestTypicalLengthAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
@@ -91,7 +92,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypicalLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypicalLengthFacetAnnotation);

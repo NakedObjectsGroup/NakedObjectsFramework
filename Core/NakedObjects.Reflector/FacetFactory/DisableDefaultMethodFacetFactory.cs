@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -16,8 +17,9 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties look up this attribute directly
     /// </summary>
-    internal class DisableDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public class DisableDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
+        private static readonly ILog Log = LogManager.GetLogger(typeof (DisableDefaultMethodFacetFactory));
 
         static DisableDefaultMethodFacetFactory() {
             FixedPrefixes = new[] {
@@ -26,26 +28,25 @@ namespace NakedObjects.Reflect.FacetFactory {
             };
         }
 
-        public DisableDefaultMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public DisableDefaultMethodFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             try {
                 foreach (string methodName in FixedPrefixes) {
-                    MethodInfo methodInfo = FindMethod(type, MethodType.Object, methodName, typeof (string), Type.EmptyTypes);
+                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof (string), Type.EmptyTypes);
                     if (methodInfo != null) {
                         methodRemover.RemoveMethod(methodInfo);
                     }
                 }
-                return false;
             }
-            catch {
-                return false;
+            catch (Exception e) {
+                Log.Warn("Unexpected exception", e);
             }
         }
     }

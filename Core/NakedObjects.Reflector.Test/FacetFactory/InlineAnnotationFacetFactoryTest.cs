@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ComplexTypeAnnotationFacetFactory(Reflector);
+            facetFactory = new ComplexTypeAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -60,7 +61,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IComplexTypeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);

@@ -12,26 +12,26 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
+        public CollectionFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
-        private bool ProcessArray(Type type, ISpecification holder) {
+        private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
 
-            var elementType = type.GetElementType();
-            var elementSpec = Reflector.LoadSpecification(elementType);
+            Type elementType = type.GetElementType();
+            IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-            return true;
         }
 
-        private bool ProcessGenericEnumerable(Type type, ISpecification holder) {
+        private void ProcessGenericEnumerable(Type type, ISpecification holder) {
             var elementTypeFacet = holder.GetFacet<IElementTypeFacet>();
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
@@ -42,46 +42,41 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             Type facetType = isQueryable ? typeof (GenericIQueryableFacet) : (isCollection ? typeof (GenericCollectionFacet) : typeof (GenericIEnumerableFacet));
-
-            var facet = (IFacet) Activator.CreateInstance(facetType, holder, isSet);
-            FacetUtils.AddFacet(facet);
-            return true;
+            FacetUtils.AddFacet((IFacet) Activator.CreateInstance(facetType, holder, isSet));
         }
 
 
-        private bool ProcessCollection(ISpecification holder) {
+        private void ProcessCollection(IReflector reflector, ISpecification holder) {
             var elementTypeFacet = holder.GetFacet<IElementTypeFacet>();
             if (elementTypeFacet == null) {
                 Type collectionElementType = typeof (object);
-                var spec = Reflector.LoadSpecification(collectionElementType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(collectionElementType);
                 FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, spec));
             }
             FacetUtils.AddFacet(new CollectionFacet(holder));
-            return true;
         }
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
-                return ProcessGenericEnumerable(type, specification);
+                ProcessGenericEnumerable(type, specification);
             }
-            if (type.IsArray) {
-                return ProcessArray(type, specification);
+            else if (type.IsArray) {
+                ProcessArray(reflector, type, specification);
             }
-            if (CollectionUtils.IsCollectionButNotArray(type)) {
-                return ProcessCollection(specification);
+            else if (CollectionUtils.IsCollectionButNotArray(type)) {
+                ProcessCollection(reflector, specification);
             }
-
-            return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
                 specification.AddFacet(new CollectionResetFacet(property, specification));
-                return true;
             }
-            return base.Process(property, methodRemover, specification);
+            else {
+                base.Process(reflector, property, methodRemover, specification);
+            }
         }
     }
 }

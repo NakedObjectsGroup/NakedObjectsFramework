@@ -6,15 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(IReflector reflector, FeatureType featureTypes)
-            : base(reflector, featureTypes) {}
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
+            : base(numericOrder, featureTypes) {}
 
         protected static bool IsCollectionOrArray(Type type) {
             return CollectionUtils.IsCollection(type);

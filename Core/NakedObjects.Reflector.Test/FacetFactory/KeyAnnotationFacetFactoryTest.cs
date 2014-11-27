@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new KeyAnnotationFacetFactory(Reflector);
+            facetFactory = new KeyAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestKeyAnnotationNotPickedUpOnPropertyIfAbsent() {
             PropertyInfo property = FindProperty(typeof (Customer1), "CustomerKey");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IKeyFacet));
             Assert.IsNull(facet);
         }
@@ -74,7 +75,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestKeyAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "CustomerKey");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IKeyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is KeyFacet);

@@ -9,19 +9,18 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public LongValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
+        public LongValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (LongValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(LongValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new LongValueSemanticsProvider(spec, specification), specification);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(LongValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new LongValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

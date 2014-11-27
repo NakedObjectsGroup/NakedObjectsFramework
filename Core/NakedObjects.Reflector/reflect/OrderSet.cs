@@ -121,8 +121,8 @@ namespace NakedObjects.Reflect {
 
             string[] st = order.Split(new[] {','}).Select(s => s.Trim()).ToArray();
             foreach (string element in st) {
-                var ends = element.EndsWith(")");
-                var tempStr = ends ? element.Substring(0, element.Length - 1).Trim() : element;
+                bool ends = element.EndsWith(")");
+                string tempStr = ends ? element.Substring(0, element.Length - 1).Trim() : element;
 
                 if (tempStr.StartsWith("(")) {
                     int colon = tempStr.IndexOf(':');
@@ -175,7 +175,7 @@ namespace NakedObjects.Reflect {
 
             // spin over all the members and put them into a Map of SortedSets
             // any non-annotated members go into additional nonAnnotatedGroup set.
-            foreach (var member in members) {
+            foreach (T member in members) {
                 var memberOrder = member.Spec.GetFacet<IMemberOrderFacet>();
                 if (memberOrder != null) {
                     List<T> sortedMembersForGroup = GetSortedSet(sortedMembersByGroup, memberOrder.Name);
@@ -188,13 +188,13 @@ namespace NakedObjects.Reflect {
 
             nonAnnotatedGroup.Sort(new MemberIdentifierComparator<T>());
 
-            foreach (var list in sortedMembersByGroup.Values) {
+            foreach (List<T> list in sortedMembersByGroup.Values) {
                 list.Sort(new MemberOrderComparator<T>(true));
             }
 
             // add the non-annotated group to the first "" group.
             IList<T> defaultSet = GetSortedSet(sortedMembersByGroup, "");
-            foreach (var member in nonAnnotatedGroup) {
+            foreach (T member in nonAnnotatedGroup) {
                 defaultSet.Add(member);
             }
 
@@ -215,7 +215,7 @@ namespace NakedObjects.Reflect {
             foreach (string groupName in groupNames) {
                 OrderSet<T> deweyOrderSet = orderSetsByGroup[groupName];
                 IList<T> sortedMembers = sortedMembersByGroup[groupName];
-                foreach (var ordeableElement in sortedMembers) {
+                foreach (T ordeableElement in sortedMembers) {
                     deweyOrderSet.elements.Add(ordeableElement);
                 }
                 ((IEnumerable<IOrderableElement<T>>) deweyOrderSet.childOrderSets).ForEach(m => deweyOrderSet.elements.Add(m));
@@ -231,7 +231,7 @@ namespace NakedObjects.Reflect {
         /// </summary>
         private static void EnsureParentFor(IDictionary<string, OrderSet<T>> orderSetsByGroup, OrderSet<T> deweyOrderSet) {
             string parentGroup = deweyOrderSet.GroupPath;
-            var parentOrderSet = orderSetsByGroup[parentGroup];
+            OrderSet<T> parentOrderSet = orderSetsByGroup[parentGroup];
             if (parentOrderSet == null) {
                 parentOrderSet = new OrderSet<T>(parentGroup);
                 orderSetsByGroup[parentGroup] = parentOrderSet;

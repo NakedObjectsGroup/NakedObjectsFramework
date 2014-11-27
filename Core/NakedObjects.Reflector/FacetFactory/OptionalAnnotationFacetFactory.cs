@@ -20,44 +20,42 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (OptionalAnnotationFacetFactory));
 
-        public OptionalAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public OptionalAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<OptionallyAttribute>(member);
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive parameter on " + method.ReflectedType + "." + method.Name);
-                return false;
+                return;
             }
-            return Process(method, specification);
+            Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(property) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
-                return false;
+                return;
             }
             if (property.GetGetMethod() != null && !property.PropertyType.IsPrimitive) {
-                return Process(property, specification);
+                Process(property, specification);
             }
-            return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if ((parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType))) {
                 if (AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
-                    Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." +
-                             method.Name);
+                    Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
                 }
-                return false;
+                return;
             }
             var attribute = parameter.GetCustomAttributeByReflection<OptionallyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) {

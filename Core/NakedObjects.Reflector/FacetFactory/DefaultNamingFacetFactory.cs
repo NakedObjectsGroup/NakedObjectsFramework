@@ -22,19 +22,19 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class DefaultNamingFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
-        public DefaultNamingFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public DefaultNamingFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
 
         private string ShortName(Type type) {
             return TypeNameUtils.GetShortName(type.Name);
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();
             var namedFacet = specification.GetFacet<INamedFacet>();
             if (namedFacet == null) {
-                var inferredName = NameUtils.NaturalName(ShortName(type));
+                string inferredName = NameUtils.NaturalName(ShortName(type));
                 namedFacet = new NamedFacetInferred(inferredName, specification);
                 facets.Add(namedFacet);
                 Log.InfoFormat("No name facet found inferring name {0}", inferredName);
@@ -42,13 +42,13 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
             if (pluralFacet == null) {
-                var pluralName = NameUtils.PluralName(namedFacet.Value);
+                string pluralName = NameUtils.PluralName(namedFacet.Value);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);
                 Log.InfoFormat("No plural facet found inferring name {0}", pluralName);
             }
 
-            return FacetUtils.AddFacets(facets);
+            FacetUtils.AddFacets(facets);
         }
     }
 }

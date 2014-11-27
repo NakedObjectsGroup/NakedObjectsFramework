@@ -17,14 +17,13 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ActionDefaultAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionParameter) {}
+        public ActionDefaultAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ActionParameter) {}
 
-
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<DefaultValueAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) {

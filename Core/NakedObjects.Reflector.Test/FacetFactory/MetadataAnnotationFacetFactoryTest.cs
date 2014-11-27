@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NamedAnnotationFacetFactory(Reflector);
+            facetFactory = new NamedAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -82,7 +83,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNamedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -94,7 +95,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNamedAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);

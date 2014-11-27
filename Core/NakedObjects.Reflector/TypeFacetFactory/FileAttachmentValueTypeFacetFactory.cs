@@ -9,19 +9,18 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public FileAttachmentValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
+        public FileAttachmentValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new FileAttachmentValueSemanticsProvider(spec, specification), specification);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new FileAttachmentValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

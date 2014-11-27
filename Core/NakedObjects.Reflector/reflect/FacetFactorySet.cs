@@ -14,26 +14,25 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.TypeFacetFactory;
 
 namespace NakedObjects.Reflect {
-    // to do make this configurable so the list of factories can be managed
-    // eg need to implement 
+    internal class FacetFactorySet : IFacetFactorySet {
+        public FacetFactorySet(IFacetFactory[] factories) {
+            List<IFacetFactory> allFactories = factories.ToList();
+            allFactories.Sort();
 
-    //    if (OptionalByDefault) {
-    //      //  ((FacetFactorySetImpl)reflector.FacetFactorySet).ReplaceAndRegisterFactory(typeof(MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
-    //    }
+            Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
+
+            foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
+            }
+
+            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
+            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
+        }
 
 
-    public class FacetFactorySet : IFacetFactorySet {
-        /// <summary>
-        ///     Factories (in the order they were <see cref="RegisterFactory" /> registered)
-        /// </summary>
-        private readonly IList<IFacetFactory> factories = new List<IFacetFactory>();
-
-        // Lazily initialized, then cached. The lists remain in the same order that the factories were registered.
-        private readonly IDictionary<Type, IFacetFactory> factoryByFactoryType = new Dictionary<Type, IFacetFactory>();
-        private IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType;
+        private readonly IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -42,9 +41,8 @@ namespace NakedObjects.Reflect {
         /// <para>
         ///     Used within <see cref="IFacetFactorySet.Filters" />
         /// </para>
-        private IList<IMethodFilteringFacetFactory> methodFilteringFactories;
+        private readonly IList<IMethodFilteringFacetFactory> methodFilteringFactories;
 
-        private string[] prefixes;
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -54,29 +52,18 @@ namespace NakedObjects.Reflect {
         /// <para>
         ///     Used within <see cref="IFacetFactorySet.Recognizes" />
         /// </para>
-        private IList<IFacetFactory> propertyOrCollectionIdentifyingFactories;
+        private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        private string[] Prefixes {
-            get {
-                if (prefixes == null) {
-                    prefixes = factories.Where(factory => factory is IMethodPrefixBasedFacetFactory).
-                        Cast<IMethodPrefixBasedFacetFactory>().
-                        SelectMany(prefixfactory => prefixfactory.Prefixes).
-                        ToArray();
-                }
-                return prefixes;
-            }
-        }
+        private string[] Prefixes { get; set; }
 
         #region IFacetFactorySet Members
 
         public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
-            CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired();
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
         }
 
-        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates)).ToList();
+        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
         }
 
         /// <summary>
@@ -100,113 +87,42 @@ namespace NakedObjects.Reflect {
         ///     for when there are multiple facet factories that search for the
         ///     same prefix.
         /// </para>
-        public bool Filters(MethodInfo method) {
-            CacheMethodFilteringFacetFactoriesIfRequired();
-            return methodFilteringFactories.Any(factory => factory.Filters(method));
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
+            return methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
         }
 
         public bool Recognizes(MethodInfo method) {
             return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
         }
 
-        public void Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
-                facetFactory.Process(type, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, type, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
+        public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(method, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, method, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
+        public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(property, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, property, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification) {
+        public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
-                facetFactory.ProcessParams(method, paramNum, specification);
-            }
+                facetFactory.ProcessParams(reflector, method, paramNum, specification);
         }
-
-        public void Init(IReflector reflector) {
-            RegisterFactories(reflector);
         }
 
         #endregion
 
-        public void RegisterFactory(IFacetFactory factory) {
-            ClearCaches();
-            factoryByFactoryType.Add(factory.GetType(), factory);
-            factories.Add(factory);
-        }
-
-        public void ReplaceAndRegisterFactory(Type oldFactoryType, IFacetFactory newFactory) {
-            ClearCaches();
-
-            IFacetFactory oldFactory = factoryByFactoryType[oldFactoryType];
-            factoryByFactoryType.Remove(oldFactoryType);
-            factoryByFactoryType.Add(newFactory.GetType(), newFactory);
-
-            factories[factories.IndexOf(oldFactory)] = newFactory;
-        }
-
         private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
-            CacheByFeatureTypeIfRequired();
             return factoriesByFeatureType[featureType];
-        }
-
-        private void ClearCaches() {
-            factoriesByFeatureType = null;
-            methodFilteringFactories = null;
-            propertyOrCollectionIdentifyingFactories = null;
-        }
-
-        private void CacheByFeatureTypeIfRequired() {
-            if (factoriesByFeatureType == null) {
-                factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
-                foreach (IFacetFactory factory in factories) {
-                    foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
-                        if (factory.FeatureTypes.HasFlag(featureType)) {
-                            IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
-                            factoryList.Add(factory);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void CacheMethodFilteringFacetFactoriesIfRequired() {
-            if (methodFilteringFactories == null) {
-                methodFilteringFactories = new List<IMethodFilteringFacetFactory>();
-                foreach (IFacetFactory facetFactory in factories) {
-                    if (facetFactory is IMethodFilteringFacetFactory) {
-                        methodFilteringFactories.Add(facetFactory as IMethodFilteringFacetFactory);
-                    }
-                }
-            }
-        }
-
-        private void CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired() {
-            if (propertyOrCollectionIdentifyingFactories == null) {
-                propertyOrCollectionIdentifyingFactories = new List<IFacetFactory>();
-                foreach (IFacetFactory facetFactory in factories) {
-                    if (facetFactory is IPropertyOrCollectionIdentifyingFacetFactory) {
-                        propertyOrCollectionIdentifyingFactories.Add(facetFactory);
-                    }
-                }
-            }
-        }
-
-        private static IList<IFacetFactory> GetList<TKey>(IDictionary<TKey, IList<IFacetFactory>> map, TKey key) {
-            if (!map.ContainsKey(key)) {
-                map.Add(key, new List<IFacetFactory>());
-            }
-            return map[key];
         }
 
         private static IMethodRemover RemoverElseNullRemover(IMethodRemover methodRemover) {
@@ -232,7 +148,6 @@ namespace NakedObjects.Reflect {
             RegisterFactory(new CollectionFieldMethodsFacetFactory(reflector));
             RegisterFactory(new PropertyMethodsFacetFactory(reflector));
             RegisterFactory(new IconMethodFacetFactory(reflector));
-            RegisterFactory(new MenuFacetFactory(reflector));
             RegisterFactory(new CallbackMethodsFacetFactory(reflector));
             RegisterFactory(new TitleMethodFacetFactory(reflector));
             RegisterFactory(new ValidateObjectFacetFactory(reflector));

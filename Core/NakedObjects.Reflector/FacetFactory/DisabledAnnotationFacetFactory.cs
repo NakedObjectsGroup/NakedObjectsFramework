@@ -17,24 +17,20 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DisabledAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
+        public DisabledAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DisabledAttribute>(member);
-            IDisabledFacet disabledFacet = Create(attribute, holder);
-            if (disabledFacet != null) {
-                return FacetUtils.AddFacet(disabledFacet);
-            }
-            return false;
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
         private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) {

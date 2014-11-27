@@ -9,19 +9,18 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public GuidValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
+        public GuidValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

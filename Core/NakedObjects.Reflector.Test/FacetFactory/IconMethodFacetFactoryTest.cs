@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IconMethodFacetFactory(Reflector);
+            facetFactory = new IconMethodFacetFactory(0);
         }
 
         [TearDown]
@@ -83,7 +83,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestIconNameFromAttribute() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
@@ -94,7 +94,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestIconNameFromMethod() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -106,7 +106,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo iconNameMethod = FindMethod(typeof (Customer), "IconName");
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -115,7 +115,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestIconNameWithFallbackAttribute() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -15,10 +14,10 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory : FacetFactoryAbstract {
-        protected ValueUsingValueSemanticsProviderFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
-        public static bool AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
+        public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
             FacetUtils.AddFacet(semanticsProvider as IFacet);
 
 
@@ -52,8 +51,6 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
                     FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
                 }
             }
-
-            return true;
         }
     }
 }

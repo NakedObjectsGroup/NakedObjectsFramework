@@ -121,7 +121,6 @@ namespace NakedObjects.Mvc.App.App_Start
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());

@@ -18,12 +18,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ComplexTypeAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public ComplexTypeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();
-            return FacetUtils.AddFacet(Create(ctAttribute, specification));
+            FacetUtils.AddFacet(Create(ctAttribute, specification));
         }
 
         private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) {

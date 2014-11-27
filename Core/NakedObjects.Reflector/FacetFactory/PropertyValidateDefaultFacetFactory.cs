@@ -16,19 +16,19 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
-        public PropertyValidateDefaultFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Property) {}
+        public PropertyValidateDefaultFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Property) {}
 
-        public override bool Process(PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return FacetUtils.AddFacet(Create(specification));
+        public override void Process(IReflector reflector, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FacetUtils.AddFacet(Create(specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return FacetUtils.AddFacet(Create(specification));
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FacetUtils.AddFacet(Create(specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            return FacetUtils.AddFacet(Create(holder));
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+            FacetUtils.AddFacet(Create(holder));
         }
 
         private static IPropertyValidateFacet Create(ISpecification holder) {

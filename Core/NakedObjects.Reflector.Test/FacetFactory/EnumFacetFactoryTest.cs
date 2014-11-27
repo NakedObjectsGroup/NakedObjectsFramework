@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -25,7 +26,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new EnumFacetFactory(Reflector);
+            facetFactory = new EnumFacetFactory(0);
         }
 
         [TearDown]
@@ -100,7 +101,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
@@ -110,7 +111,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "City");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
@@ -120,7 +121,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumTypePickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (Cities)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
@@ -130,7 +131,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumTypePickedUpOnNullableActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (Cities?)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
@@ -140,7 +141,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumTypePickedUpOnNullableProperty() {
             PropertyInfo property = FindProperty(typeof (Customer5), "City");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
@@ -150,7 +151,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestEnumTypePickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "City");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);

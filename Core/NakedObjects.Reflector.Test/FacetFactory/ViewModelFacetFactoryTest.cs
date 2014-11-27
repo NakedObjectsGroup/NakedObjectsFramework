@@ -9,6 +9,7 @@ using System;
 using System.Reflection;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -25,7 +26,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ViewModelFacetFactory(Reflector);
+            facetFactory = new ViewModelFacetFactory(0);
         }
 
         [TearDown]
@@ -86,7 +87,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestViewModelDerive() {
-            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
@@ -105,14 +106,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestViewModelNotPickedUp() {
-            facetFactory.Process(typeof (Class2), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Class2), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestViewModelPickedUp() {
-            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
@@ -125,7 +126,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestViewModelPopulate() {
-            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 

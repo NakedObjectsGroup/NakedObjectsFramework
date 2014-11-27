@@ -11,7 +11,6 @@ using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
-        private readonly IAuthorizationManager authorizationManager;
         private readonly IContainerInjector injector;
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager manager;
@@ -31,7 +30,6 @@ namespace NakedObjects.Service {
                                      INakedObjectManager manager,
                                      IObjectPersistor persistor,
                                      IReflector reflector,
-                                     IAuthorizationManager authorizationManager,
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
                                      NakedObjectFactory nakedObjectFactory,
@@ -45,7 +43,6 @@ namespace NakedObjects.Service {
             this.manager = manager;
             this.persistor = persistor;
             this.reflector = reflector;
-            this.authorizationManager = authorizationManager;
             this.metamodelManager = metamodelManager;
             this.injector = injector;
             this.transactionManager = transactionManager;
@@ -99,10 +96,6 @@ namespace NakedObjects.Service {
 
         public IMetamodelManager Metamodel {
             get { return metamodelManager; }
-        }
-
-        public IAuthorizationManager AuthorizationManager {
-            get { return authorizationManager; }
         }
 
         #endregion

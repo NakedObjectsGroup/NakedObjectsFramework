@@ -19,52 +19,39 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public RegExAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
+        public RegExAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttributeByReflection<RegularExpressionAttribute>();
-            if (attribute == null) {
-                attribute = type.GetCustomAttributeByReflection<RegExAttribute>();
-            }
-            return FacetUtils.AddFacet(Create(attribute, specification));
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Attribute attribute = type.GetCustomAttributeByReflection<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<RegExAttribute>();
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            Attribute attribute = AttributeUtils.GetCustomAttribute<RegularExpressionAttribute>(member);
-            if (attribute == null) {
-                attribute = AttributeUtils.GetCustomAttribute<RegExAttribute>(member);
-            }
+            Attribute attribute = AttributeUtils.GetCustomAttribute<RegularExpressionAttribute>(member) ?? (Attribute) AttributeUtils.GetCustomAttribute<RegExAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (TypeUtils.IsString(method.ReturnType)) {
-                return Process(method, specification);
+                Process(method, specification);
             }
-            return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
-                return Process(property, specification);
+                Process(property, specification);
             }
-            return false;
         }
 
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
-                Attribute attribute = parameter.GetCustomAttributeByReflection<RegularExpressionAttribute>();
-                if (attribute == null) {
-                    attribute = parameter.GetCustomAttributeByReflection<RegExAttribute>();
-                }
-
-                return FacetUtils.AddFacet(Create(attribute, holder));
+                Attribute attribute = parameter.GetCustomAttributeByReflection<RegularExpressionAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<RegExAttribute>();
+                FacetUtils.AddFacet(Create(attribute, holder));
             }
-            return false;
         }
 
         private static IRegExFacet Create(Attribute attribute, ISpecification holder) {

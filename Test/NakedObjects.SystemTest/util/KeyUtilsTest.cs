@@ -24,6 +24,10 @@ namespace NakedObjects.SystemTest.Util {
         public class TestContainer : IDomainObjectContainer, IInternalAccess {
             #region not impl
 
+            public T GetService<T>() {
+                throw new NotImplementedException();
+            }
+
             public IPrincipal Principal {
                 get { throw new NotImplementedException(); }
             }

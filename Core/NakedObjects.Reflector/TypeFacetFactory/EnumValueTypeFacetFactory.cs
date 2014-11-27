@@ -10,23 +10,22 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public EnumValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
+        public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
-                var spec = Reflector.LoadSpecification(type);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(type);
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
-                var method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
-                return (bool) method.Invoke(null, new object[] {semanticsProvider, specification});
+                MethodInfo method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+                method.Invoke(null, new object[] {semanticsProvider, specification});
             }
-            return false;
         }
     }
 }

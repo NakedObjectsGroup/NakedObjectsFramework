@@ -19,31 +19,28 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TableViewAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.CollectionsAndActions) {}
+        public TableViewAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.CollectionsAndActions) {}
 
-        private bool Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+        private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
                 var attribute = AttributeUtils.GetCustomAttribute<TableViewAttribute>(member);
-                return FacetUtils.AddFacet(Create(attribute, specification));
+                FacetUtils.AddFacet(Create(attribute, specification));
             }
-
-            return false;
         }
 
         private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new TableViewFacet(attribute.Title, attribute.Columns, holder);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, method.ReturnType, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {
-                return Process(property, property.PropertyType, specification);
+                Process(property, property.PropertyType, specification);
             }
-            return false;
         }
     }
 }

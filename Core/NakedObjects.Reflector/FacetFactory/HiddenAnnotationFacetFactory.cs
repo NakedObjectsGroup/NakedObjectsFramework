@@ -21,33 +21,29 @@ using MemberInfo = System.Reflection.MemberInfo;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public HiddenAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
+        public HiddenAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(type.GetCustomAttributeByReflection<HiddenAttribute>,
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(type.GetCustomAttributeByReflection<HiddenAttribute>,
                 type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, specification);
         }
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
-            return Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
+        private static void Process(MemberInfo member, ISpecification holder) {
+            Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
         }
 
-        private static bool Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
+        private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
             Attribute attribute = getHidden();
-            if (attribute != null) {
-                return FacetUtils.AddFacet(Create((HiddenAttribute) attribute, specification));
-            }
-            attribute = getScaffold();
-            return FacetUtils.AddFacet(Create((ScaffoldColumnAttribute) attribute, specification));
+            FacetUtils.AddFacet(attribute != null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
         private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) {
