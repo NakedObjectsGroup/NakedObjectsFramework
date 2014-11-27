@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
@@ -23,6 +24,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
 
         public NakedObjectAssociationWrapper(IAssociationSpec assoc, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
+            SurfaceUtils.AssertNotNull(framework, "framework is null");
+            SurfaceUtils.AssertNotNull(surface, "surface is null");
+
             this.assoc = assoc;
             this.framework = framework;
             Surface = surface;
@@ -147,7 +152,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return assoc.IsVisible( ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return assoc.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
         public bool IsEager(INakedObjectSurface nakedObject) {

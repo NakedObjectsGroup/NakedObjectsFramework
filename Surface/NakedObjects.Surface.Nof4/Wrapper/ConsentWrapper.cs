@@ -7,12 +7,14 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class ConsentWrapper : IConsentSurface {
         private readonly IConsent consent;
 
         public ConsentWrapper(IConsent consent) {
+            SurfaceUtils.AssertNotNull(consent, "Consent is null");
             this.consent = consent;
         }
 

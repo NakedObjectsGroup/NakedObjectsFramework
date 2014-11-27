@@ -16,18 +16,16 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-        protected readonly Type ReturnType;
         private readonly IObjectSpecImmutable returnSpec;
 
-        protected AssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
+        protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
             : base(identifier) {
-            ReturnType = returnType;
             this.returnSpec = returnSpec;
         }
 
         #region IAssociationSpecImmutable Members
 
-        public override IObjectSpecImmutable Specification {
+        public override IObjectSpecImmutable ReturnSpec {
             get { return returnSpec; }
         }
 
@@ -52,14 +50,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         // The special constructor is used to deserialize values. 
         protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            ReturnType = info.GetValue<Type>("ReturnType");
             returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<Type>("ReturnType", ReturnType);
             info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);
-
             base.GetObjectData(info, context);
         }
 

@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region IActionSpecImmutable Members
 
-        public override IObjectSpecImmutable Specification {
+        public override IObjectSpecImmutable ReturnSpec {
             get { return specification; }
         }
 
@@ -63,7 +63,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsContributedMethod {
             get {
-                if (Specification.Service && parameters.Any() &&
+                if (ReturnSpec.Service && parameters.Any() &&
                     (!ContainsFacet(typeof (INotContributedActionFacet)) ||
                      !GetFacet<INotContributedActionFacet>().NeverContributed())) {
                     return Parameters.Any(p => p.Specification.IsObject || p.Specification.IsCollection);

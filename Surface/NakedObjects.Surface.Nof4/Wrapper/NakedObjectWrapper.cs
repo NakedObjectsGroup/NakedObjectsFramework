@@ -12,12 +12,12 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Surface.Interface;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
@@ -26,6 +26,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly INakedObject nakedObject;
 
         protected NakedObjectWrapper(INakedObject nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
+            SurfaceUtils.AssertNotNull(surface, "Surface is null");
+            SurfaceUtils.AssertNotNull(framework, "framework is null");
+
+
             this.nakedObject = nakedObject;
             this.framework = framework;
             Surface = surface;

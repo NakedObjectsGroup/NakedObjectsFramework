@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
@@ -23,18 +24,18 @@ namespace NakedObjects.Architecture.Reflect {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
-        private readonly ISpecificationBuilder specification;
+        private readonly IMemberSpecImmutable memberSpecImmutable;
 
 
-        protected internal MemberSpecAbstract(string id, ISpecificationBuilder specification, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
-            AssertArgNotNull(specification);
+            AssertArgNotNull(memberSpec);
             AssertArgNotNull(session);
             AssertArgNotNull(lifecycleManager);
 
             this.id = id;
             defaultName = NameUtils.NaturalName(id);
-            this.specification = specification;
+            memberSpecImmutable = memberSpec;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
             this.metamodelManager = metamodelManager;
@@ -59,11 +60,11 @@ namespace NakedObjects.Architecture.Reflect {
         }
 
         public virtual IIdentifier Identifier {
-            get { return specification.Identifier; }
+            get { return memberSpecImmutable.Identifier; }
         }
 
         public virtual Type[] FacetTypes {
-            get { return specification.FacetTypes; }
+            get { return memberSpecImmutable.FacetTypes; }
         }
 
         /// <summary>
@@ -83,23 +84,23 @@ namespace NakedObjects.Architecture.Reflect {
 
 
         public virtual bool ContainsFacet(Type facetType) {
-            return specification.ContainsFacet(facetType);
+            return memberSpecImmutable.ContainsFacet(facetType);
         }
 
         public virtual bool ContainsFacet<T>() where T : IFacet {
-            return specification.ContainsFacet<T>();
+            return memberSpecImmutable.ContainsFacet<T>();
         }
 
         public virtual IFacet GetFacet(Type type) {
-            return specification.GetFacet(type);
+            return memberSpecImmutable.GetFacet(type);
         }
 
         public virtual T GetFacet<T>() where T : IFacet {
-            return specification.GetFacet<T>();
+            return memberSpecImmutable.GetFacet<T>();
         }
 
         public virtual IEnumerable<IFacet> GetFacets() {
-            return specification.GetFacets();
+            return memberSpecImmutable.GetFacets();
         }
 
 
@@ -122,7 +123,7 @@ namespace NakedObjects.Architecture.Reflect {
         }
 
         public bool IsNullable {
-            get { return specification.ContainsFacet(typeof (INullableFacet)); }
+            get { return memberSpecImmutable.ContainsFacet(typeof (INullableFacet)); }
         }
 
         #endregion

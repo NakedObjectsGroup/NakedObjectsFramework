@@ -8,11 +8,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
@@ -228,6 +229,35 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
+        [Test]
+        public void ReflectStringArray() {
+            var container = GetContainer();
+
+            var rc = new ReflectorConfiguration(new Type[] { typeof(TestObjectWithStringArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+        [Test]
+        public void ReflectWithScalars() {
+            var container = GetContainer();
+
+            var rc = new ReflectorConfiguration(new Type[] { typeof(WithScalars) }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+
         #region Nested type: NullMenuDefinition
 
         public class NullMenuDefinition : IMainMenuDefinition {
@@ -350,5 +380,85 @@ namespace NakedObjects.Reflect.Test {
         }
 
         #endregion
+
+        public class TestObjectWithStringArray {
+            public string[] StringArray { get; set; }
+        }
+
+        public enum TestEnum {
+            Value1,
+            Value2
+        }
+
+
+        public class WithScalars {
+            private char c;
+            private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
+            private ICollection<WithScalars> list = new List<WithScalars>();
+            private ICollection<WithScalars> set = new HashSet<WithScalars>();
+
+            public WithScalars() {
+                SByte = 10;
+                UInt = 14;
+                ULong = 15;
+                UShort = 16;
+            }
+
+            [Key, Title, ConcurrencyCheck]
+            public virtual int Id { get; set; }
+
+            [NotMapped]
+            public virtual sbyte SByte { get; set; }
+
+            public virtual byte Byte { get; set; }
+            public virtual short Short { get; set; }
+
+            [NotMapped]
+            public virtual ushort UShort { get; set; }
+
+            public virtual int Int { get; set; }
+
+            [NotMapped]
+            public virtual uint UInt { get; set; }
+
+            public virtual long Long { get; set; }
+
+            [NotMapped]
+            public virtual ulong ULong { get; set; }
+
+
+            public virtual char Char {
+                get { return '3'; }
+                set { c = value; }
+            }
+
+            public virtual bool Bool { get; set; }
+            public virtual string String { get; set; }
+            public virtual float Float { get; set; }
+            public virtual double Double { get; set; }
+            public virtual decimal Decimal { get; set; }
+            public virtual byte[] ByteArray { get; set; }
+            public virtual sbyte[] SByteArray { get; set; }
+            public virtual char[] CharArray { get; set; }
+
+            public virtual DateTime DateTime {
+                get { return dateTime; }
+                set { dateTime = value; }
+            }
+
+            public virtual ICollection<WithScalars> List {
+                get { return list; }
+                set { list = value; }
+            }
+
+            [NotMapped]
+            public virtual ICollection<WithScalars> Set {
+                get { return set; }
+                set { set = value; }
+            }
+
+            [EnumDataType(typeof(TestEnum))]
+            public virtual int EnumByAttributeChoices { get; set; }
+        }
     }
 }

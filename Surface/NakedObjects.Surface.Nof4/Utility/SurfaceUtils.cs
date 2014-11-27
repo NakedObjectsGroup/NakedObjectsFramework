@@ -104,5 +104,11 @@ namespace NakedObjects.Surface.Nof4.Utility {
             IActionSpec[] actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<IActionSpec, string>(action, GetOverloadedUId(action, spec))).ToArray();
         }
+
+        public static void AssertNotNull(object o, string msg) {
+            if (o == null) {
+                throw new NullReferenceException(msg);
+            }
+        }
     }
 }

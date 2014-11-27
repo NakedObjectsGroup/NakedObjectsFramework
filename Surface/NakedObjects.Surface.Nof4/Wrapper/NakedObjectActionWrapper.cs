@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
@@ -17,7 +18,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
+
         public NakedObjectActionWrapper(IActionSpec action, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+            SurfaceUtils.AssertNotNull(action, "Action is null");
+            SurfaceUtils.AssertNotNull(framework, "framework is null");
+            SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
+            SurfaceUtils.AssertNotNull(surface, "surface is null");
+
+
             this.action = action;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
@@ -109,7 +117,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
-            return new ConsentWrapper(action.IsUsable( ((NakedObjectWrapper) nakedObject).WrappedNakedObject));
+            return new ConsentWrapper(action.IsUsable(((NakedObjectWrapper) nakedObject).WrappedNakedObject));
         }
 
         public INakedObjectSpecificationSurface OnType {

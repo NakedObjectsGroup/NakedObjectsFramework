@@ -86,7 +86,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
-            IObjectSpecImmutable objectIm = actionSpecImm.Specification; //This is the spec for the service
+            IObjectSpecImmutable objectIm = actionSpecImm.ReturnSpec; //This is the spec for the service
 
             if (!objectIm.Service) {
                 throw new Exception("Action is not on a known object or service");

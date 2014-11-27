@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return identifier; }
         }
 
-        public abstract IObjectSpecImmutable Specification { get; }
+        public abstract IObjectSpecImmutable ReturnSpec { get; }
 
         #endregion
 

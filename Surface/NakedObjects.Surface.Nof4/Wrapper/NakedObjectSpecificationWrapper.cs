@@ -23,6 +23,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly IObjectSpec spec;
 
         public NakedObjectSpecificationWrapper(IObjectSpec spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            SurfaceUtils.AssertNotNull(spec, "Spec is null");
+            SurfaceUtils.AssertNotNull(surface, "Surface is null");
+            SurfaceUtils.AssertNotNull(framework, "framework is null");
+
             Surface = surface;
             this.spec = spec;
             this.framework = framework;
@@ -75,14 +79,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         protected bool IsImage {
             get {
-                var imageSpec = framework.Metamodel.GetSpecification(typeof(Image));
+                var imageSpec = framework.Metamodel.GetSpecification(typeof (Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
         protected bool IsFileAttachment {
             get {
-                var fileSpec = framework.Metamodel.GetSpecification(typeof(FileAttachment));
+                var fileSpec = framework.Metamodel.GetSpecification(typeof (FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }
@@ -131,12 +135,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectActionSurface[] GetActionLeafNodes() {
             var actionsAndUid = SurfaceUtils.GetActionsandUidFromSpec(spec);
-            return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2)).Cast<INakedObjectActionSurface>().ToArray();
+            return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<INakedObjectActionSurface>().ToArray();
         }
 
         public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
             if (IsCollection) {
-                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper)nakedObject).WrappedNakedObject, framework.Metamodel.Metamodel);
+                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.Metamodel.Metamodel);
                 var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
             }

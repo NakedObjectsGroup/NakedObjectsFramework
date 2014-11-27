@@ -229,7 +229,7 @@ namespace NakedObjects.Reflect {
                 IObjectSpecBuilder returnSpec = reflector.LoadSpecification(returnType);
                 Type defaultType = typeof (object);
                 IObjectSpecBuilder defaultSpec = reflector.LoadSpecification(defaultType);
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultType, defaultSpec);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);
@@ -251,7 +251,7 @@ namespace NakedObjects.Reflect {
                 var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 Type propertyType = property.PropertyType;
                 IObjectSpecBuilder propertySpec = reflector.LoadSpecification(propertyType);
-                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertyType, propertySpec);
+                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertySpec);
 
                 // Process facets for the property
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
