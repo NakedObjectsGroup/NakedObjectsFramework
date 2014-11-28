@@ -22,20 +22,21 @@ using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
-        private readonly INakedObjectsFramework nakedObjectsContext;
+        private readonly INakedObjectsFramework nakedObjectsFramework;
 
 
-        protected NakedObjectsController(INakedObjectsFramework nakedObjectsContext) {
-            this.nakedObjectsContext = nakedObjectsContext;
+        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework) {
+            this.nakedObjectsFramework = nakedObjectsFramework;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
         protected INakedObjectsFramework NakedObjectsContext {
-            get { return nakedObjectsContext; }
+            get { return nakedObjectsFramework; }
         }
 
         protected void SetSession() {
@@ -56,7 +57,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetMainMenus() {
-            ViewData[IdHelper.NofMainMenus] = NakedObjectsContext.Metamodel.MainMenus();
+           var menus = NakedObjectsContext.Metamodel.MainMenus();
+           if (menus.Count() == 0) {
+              menus =  nakedObjectsFramework.Services.GetServices(ServiceType.Menu).Select(s => s.Spec.ObjectMenu).ToArray();
+           }
+            ViewData[IdHelper.NofMainMenus] = menus;
         }
 
         protected void SetFramework() {
@@ -550,7 +555,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {
-                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsContext.LifecycleManager, nakedObjectsContext.Metamodel );
+                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.Metamodel );
                     }
                 }
             }
@@ -896,13 +901,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     INakedObject nakedObject = NakedObjectsContext.GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsContext.Metamodel.Metamodel).ShortName);
+                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.Metamodel.Metamodel).ShortName);
                 }
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
                     if (nakedObject.Spec.IsCollection) {
-                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsContext.Metamodel.Metamodel).ShortName);
+                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.Metamodel.Metamodel).ShortName);
                     }
                     else {
                         SetControllerName(nakedObject.Object);
