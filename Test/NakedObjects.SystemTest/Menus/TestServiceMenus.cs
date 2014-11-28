@@ -53,8 +53,8 @@ namespace NakedObjects.SystemTest.Menus {
            var menu = GetTestService("Foo Service").GetMenu();
           var items = menu.AssertItemCountIs(3).AllItems();
           items[0].AssertIsAction().AssertNameEquals("Foo Action0");
-          items[1].AssertIsAction().AssertNameEquals("Foo Action1");
-          items[2].AssertIsAction().AssertNameEquals("Foo Action2");
+          items[1].AssertIsAction().AssertNameEquals("Foo Action2");
+          items[2].AssertIsAction().AssertNameEquals("Foo Action1");
         }
 
         [TestMethod]
@@ -88,46 +88,15 @@ namespace NakedObjects.SystemTest.Menus {
 
     #region Classes used in test
 
-    //public class LocalMainMenus : IMainMenuDefinition {
-
-    //    public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-    //        var foos = factory.NewMenu<FooService>(true);
-    //        var bars = factory.NewMenu<BarService>(true);
-
-    //        var q = factory.NewMenu<QuxService>(false, "Qs");
-    //        q.AddAction("QuxAction0");
-    //        q.AddAction("QuxAction3", "Action X");
-    //        q.AddRemainingNativeActions();
-
-    //        var subs = factory.NewMenu<ServiceWithSubMenus>(false);
-    //        var sub1 = subs.CreateSubMenuOfSameType("Sub1");
-    //        sub1.AddAction("Action1");
-    //        sub1.AddAction("Action3");
-    //        var sub2 = subs.CreateSubMenuOfSameType("Sub2");
-    //        sub2.AddAction("Action2");
-    //        sub2.AddAction("Action0");
-
-    //        var hyb = factory.NewMenu("Hybrid");
-    //        hyb.AddActionFrom<FooService>("FooAction0");
-    //        hyb.AddActionFrom<BarService>("BarAction0");
-    //        hyb.AddAllRemainingActionsFrom<QuxService>();
-
-    //        var empty = factory.NewMenu("Empty");
-
-    //        var empty2 = factory.NewMenu("Empty2");
-    //        empty2.CreateSubMenu("Sub");
-
-    //        return new IMenuBuilder[] { foos, bars, q, subs, hyb, empty, empty2 };
-    //    }
-    //}
-
     public class FooService {
 
-
+        [MemberOrder(1)]
         public void FooAction0() { }
 
+        [MemberOrder(3)]
         public void FooAction1() { }
 
+        [MemberOrder(2)]
         public void FooAction2(string p1, int p2) { }
     }
 

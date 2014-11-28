@@ -34,7 +34,6 @@ namespace NakedObjects.Reflect {
         private readonly IReflector reflector;
         private Type introspectedType;
         private MethodInfo[] methods;
-        private IOrderSet<IActionSpecImmutable> orderedClassActions;
         private IOrderSet<IAssociationSpecImmutable> orderedFields;
         private IOrderSet<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
@@ -84,10 +83,6 @@ namespace NakedObjects.Reflect {
 
         public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
             get { return orderedFields.ElementList().ToImmutableList(); }
-        }
-
-        public IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
-            get { return orderedClassActions.ElementList().ToImmutableList(); }
         }
 
         public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
@@ -150,10 +145,7 @@ namespace NakedObjects.Reflect {
 
             // find the properties and collections (fields) ...
             IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
-
-
-            string fieldOrder = InvokeSortOrderMethod("Field");
-            orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
+            orderedFields = CreateOrderSet(findFieldMethods);
         }
 
         public void IntrospectActions(IObjectSpecImmutable spec) {
@@ -161,19 +153,7 @@ namespace NakedObjects.Reflect {
 
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object, spec);
-
-            string actionOrder = InvokeSortOrderMethod("Action");
-            orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
-
-
-            // find the class actions ...
-            IActionSpecImmutable[] findClassActionMethods = FindActionMethods(MethodType.Class, spec);
-
-            // ... and the ordering of class actions
-            // TODO: the calling of classActionOrder() should be a facet
-            actionOrder = InvokeSortOrderMethod("ClassAction");
-
-            orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
+            orderedObjectActions = CreateOrderSet(findObjectActionMethods);
         }
 
         private MethodInfo[] GetFilteredMethods() {
@@ -321,27 +301,8 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static IOrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
-            if (order == null) {
-                return OrderSet<T>.CreateDeweyOrderSet(members);
-            }
-            return OrderSet<T>.CreateSimpleOrderSet(order, members);
-        }
-
-        private string InvokeSortOrderMethod(string name) {
-            MethodInfo method = FindAndRemoveMethod(MethodType.Class, name + "Order", typeof (string), Type.EmptyTypes);
-            if (method == null) {
-                return null;
-            }
-            if (!method.IsStatic) {
-                Log.Warn("method " + ClassName + "." + name + "Order() must be declared as static");
-                return null;
-            }
-            var s = (string) InvokeMethod(method, NoParameters);
-            if (s.Trim().Length == 0) {
-                return null;
-            }
-            return s;
+        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T : IOrderableElement<T>, ISpecification {
+            return new OrderSet<T>(members);
         }
 
         private static object InvokeMethod(MethodInfo method, object[] parameters) {

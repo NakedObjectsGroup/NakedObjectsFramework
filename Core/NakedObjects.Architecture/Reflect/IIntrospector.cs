@@ -22,7 +22,6 @@ namespace NakedObjects.Architecture.Reflect {
         string FullName { get; }
         string ShortName { get; }
         IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }
-        IList<IOrderableElement<IActionSpecImmutable>> ClassActions { get; }
         IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
         IObjectSpecBuilder[] Interfaces { get; set; }
         IObjectSpecBuilder Superclass { get; set; }

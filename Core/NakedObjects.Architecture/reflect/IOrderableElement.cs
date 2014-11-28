@@ -11,7 +11,5 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Architecture.Reflect {
     public interface IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         T Spec { get; }
-        IList<IOrderableElement<T>> Set { get; }
-        string GroupFullName { get; }
     }
 }

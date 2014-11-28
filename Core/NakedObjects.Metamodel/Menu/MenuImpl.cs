@@ -120,9 +120,6 @@ namespace NakedObjects.Meta.Menu {
                     if (!toMenu.HasAction(action)) {
                         toMenu.AddMenuItem(new MenuAction(action, null));
                     }
-                } else if (!string.IsNullOrEmpty(element.GroupFullName)) { //i.e. sub-menu
-                    var sub = CreateMenuImmutableAsSubMenu(element.GroupFullName);
-                    AddOrderableElementsToMenu(element.Set, sub);
                 }
             }
         }

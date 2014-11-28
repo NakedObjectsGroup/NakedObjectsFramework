@@ -18,8 +18,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [SetUp]
         public virtual void SetUp() {
-            comparator = new MemberOrderComparator<MemberPeerStub>(true);
-            laxComparator = new MemberOrderComparator<MemberPeerStub>(false);
+            comparator = new MemberOrderComparator<MemberPeerStub>();
+            laxComparator = new MemberOrderComparator<MemberPeerStub>();
         }
 
         #endregion

@@ -56,9 +56,6 @@ namespace NakedObjects.Core.Spec {
                 if (element.Spec != null) {
                     actions.Add(CreateActionSpec(element.Spec));
                 }
-                else if (element.Set != null) {
-                    actions.Add(CreateActionSpecSet(element.Set, element.GroupFullName));
-                }
                 else {
                     throw new UnknownTypeException(element);
                 }

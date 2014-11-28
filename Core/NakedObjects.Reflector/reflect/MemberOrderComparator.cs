@@ -26,12 +26,7 @@ namespace NakedObjects.Reflect {
     ///     Can specify if requires that members are in the same (group) name.
     /// </para>
     public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, ISpecification {
-        private readonly bool ensureInSameGroup;
         private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
-
-        public MemberOrderComparator(bool ensureGroupIsSame) {
-            ensureInSameGroup = ensureGroupIsSame;
-        }
 
         #region IComparer<T> Members
 
@@ -50,11 +45,6 @@ namespace NakedObjects.Reflect {
             if (m2 == null) {
                 return -1; // annotated before non-annotated
             }
-
-            if (ensureInSameGroup && !m1.Name.Equals(m2.Name)) {
-                throw new ArgumentException("Not in same group");
-            }
-
             string[] components1 = m1.Sequence.Split(new[] {'.'});
             string[] components2 = m2.Sequence.Split(new[] {'.'});
 

@@ -347,9 +347,6 @@ namespace NakedObjects.Core.Spec {
                 if (element.Spec != null) {
                     orderedFields.Add(memberFactory.CreateAssociationSpec(element.Spec));
                 }
-                else if (element.Set != null) {
-                    throw new NotImplementedException();
-                }
                 else {
                     throw new UnknownTypeException(element);
                 }

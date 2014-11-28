@@ -187,7 +187,7 @@ namespace NakedObjects.Reflect {
                         IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
 
                         if (matchingServiceActions.Any()) {
-                            IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingServiceActions);
+                            IOrderSet<IActionSpecImmutable> os = new OrderSet<IActionSpecImmutable>(matchingServiceActions);
                             string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                             string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                             var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
@@ -220,7 +220,7 @@ namespace NakedObjects.Reflect {
                 }
 
                 if (matchingActions.Any()) {
-                    IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingActions.ToArray());
+                    IOrderSet<IActionSpecImmutable> os = new OrderSet<IActionSpecImmutable>(matchingActions.ToArray());
                     string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                     string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                     var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
