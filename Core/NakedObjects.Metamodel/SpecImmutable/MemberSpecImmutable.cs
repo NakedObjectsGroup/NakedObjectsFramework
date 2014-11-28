@@ -11,6 +11,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
@@ -29,6 +31,13 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public abstract IObjectSpecImmutable ReturnSpec { get; }
 
+        public string GetName() {
+            return GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(identifier.MemberName); ;
+        }
+
+        public string Description {
+            get { return GetFacet<IDescribedAsFacet>().Value; }
+        }
         #endregion
 
         #region ISerializable

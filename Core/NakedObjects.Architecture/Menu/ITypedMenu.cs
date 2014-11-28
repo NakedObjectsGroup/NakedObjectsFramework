@@ -15,9 +15,13 @@ namespace NakedObjects.Architecture.Menu {
         //Returns this menu (for fluent programming)
         ITypedMenu<TObject> AddAction(string actionName, string renamedTo = null);
 
-        //Adds all actions from the service not previously added individually
+        //Adds all native actions from the object/service not previously added individually
         //Returns this menu (for fluent programming)
-        ITypedMenu<TObject> AddAllRemainingActions();
+        ITypedMenu<TObject> AddRemainingNativeActions();
+
+        //Adds all actions contributed to the object type
+        //Where a sub-menu exists of the correct name, actions will be added to that
+        ITypedMenu<TObject> AddContributedActions();
 
         //Returns the new menu, which will already have been added to the hosting menu
         ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName);

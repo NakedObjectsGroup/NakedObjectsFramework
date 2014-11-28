@@ -72,11 +72,11 @@ namespace NakedObjects.Architecture.Reflect {
         /// </summary>
         /// <seealso cref="Id()" />
         public virtual string GetName() {
-            return GetFacet<INamedFacet>().Value ?? defaultName;
+            return memberSpecImmutable.GetName();
         }
 
         public virtual string Description {
-            get { return GetFacet<IDescribedAsFacet>().Value; }
+            get { return memberSpecImmutable.Description; }
         }
 
         public abstract IObjectSpec Spec { get; }

@@ -74,8 +74,8 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public IMenu AddAllRemainingActionsFrom<TObject>() {
-            var ordeableElements = GetObjectSpec<TObject>().ObjectActions;
-            AddOrderableElementsToMenu(ordeableElements, this);
+            var actions = GetObjectSpec<TObject>().ObjectActions;
+            AddOrderableElementsToMenu(actions, this);
             return this;
         }
 

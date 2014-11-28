@@ -171,7 +171,7 @@ namespace NakedObjects.SystemTest.Menus {
             var q = factory.NewMenu<QuxService>(false, "Qs");
             q.AddAction("QuxAction0");
             q.AddAction("QuxAction3", "Action X");
-            q.AddAllRemainingActions();
+            q.AddRemainingNativeActions();
 
             var subs = factory.NewMenu<ServiceWithSubMenus>(false);
             var sub1 = subs.CreateSubMenuOfSameType("Sub1");

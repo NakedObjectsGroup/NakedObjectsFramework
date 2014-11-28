@@ -17,17 +17,16 @@ namespace NakedObjects.Meta.Facet {
 
         //Creates a menu based on the object's actions and their specified ordering
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            Menu menu = new Menu(metamodel, ObjectMenuName);
-            //First add the native actions
             ObjectSpecImmutable spec = (ObjectSpecImmutable)Specification;
-            menu.AddOrderableElementsToMenu(spec.ObjectActions, menu);
-            //Then add the contributed actions
-            foreach (var ca in spec.ContributedActions) {
-                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
-                //Item2 is contributing service class name, not used.
-                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
-                menu.AddAsSubMenu(sub);
-            }
+            if (spec.Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
+            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(spec.Type);
+            m.Invoke(this, new object[] { metamodel });
+        }
+
+        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel) {
+            var menu = new TypedMenu<T>(metamodel, false, ObjectMenuName);
+            menu.AddRemainingNativeActions();
+            menu.AddContributedActions();
             this.menu = menu;
         }
     }

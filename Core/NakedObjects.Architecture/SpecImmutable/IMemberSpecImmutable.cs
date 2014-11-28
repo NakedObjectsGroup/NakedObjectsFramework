@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Details about action and field members gained via reflection.
     /// </summary>
-    public interface IMemberSpecImmutable : ISpecificationBuilder {
+    public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribed {
         IObjectSpecImmutable ReturnSpec { get; }
     }
 
