@@ -18,9 +18,9 @@ namespace NakedObjects.Architecture.Component {
 
         void Cache(string key, IObjectSpecImmutable spec);
 
-        void Cache(IMenu mainMenu);
+        void Cache(IMenuImmutable mainMenu);
 
-        IMenu[] MainMenus();
+        IMenuImmutable[] MainMenus();
         void Serialize(string file);
     }
 

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.Facet {
@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
         //Creates a menu based on the definition in the object's Menu method
         public override void CreateMenu(IMetamodelBuilder metamodel) {        
             MethodInfo m = GetType().GetMethod("CreateTypedMenu").MakeGenericMethod(method.DeclaringType);
-            IMenu menu = (IMenu) m.Invoke(this, new object[] { metamodel });
+            MenuImpl menu = (MenuImpl) m.Invoke(this, new object[] { metamodel });
             InvokeUtils.InvokeStatic(method, new object[] {menu});
             this.menu = menu;
         }

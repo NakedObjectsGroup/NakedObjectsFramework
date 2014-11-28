@@ -7,8 +7,9 @@
 
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
-namespace NakedObjects.Meta.Menus {
+namespace NakedObjects.Meta.Menu {
     public class MenuFactory : IMenuFactory {
         #region Injected Services
 
@@ -22,11 +23,11 @@ namespace NakedObjects.Meta.Menus {
 
         #region IMenuFactory Members
 
-        public IMenu NewMenu(string name) {
-            return new Menu(metamodel, name);
+        public IMenuBuilder NewMenu(string name) {
+            return new MenuImpl(metamodel, name);
         }
 
-        public ITypedMenu<TObject> NewMenu<TObject>(bool addAllActions, string name = null) {
+        public ITypedMenuBuilder<TObject> NewMenu<TObject>(bool addAllActions, string name = null) {
             return new TypedMenu<TObject>(metamodel, addAllActions, name);
         }
 

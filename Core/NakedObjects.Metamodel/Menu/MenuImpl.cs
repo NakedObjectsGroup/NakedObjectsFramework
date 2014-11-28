@@ -14,17 +14,18 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Menu;
 
-namespace NakedObjects.Meta.Menus {
+namespace NakedObjects.Meta.Menu {
 
-    public class Menu : IMenu {
+    public class MenuImpl : IMenuBuilder {
         #region Injected Services
 
         protected readonly IMetamodel metamodel;
 
         #endregion
 
-        public Menu(IMetamodel metamodel, string name) {
+        public MenuImpl(IMetamodel metamodel, string name) {
             this.metamodel = metamodel;
             this.Name = name;
             if (name == null) {
@@ -55,7 +56,7 @@ namespace NakedObjects.Meta.Menus {
         protected bool HasAction(IActionSpecImmutable action) {
             bool nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
             if (nativeAction) return true;
-            return MenuItems.OfType<Menu>().Any(m => m.HasAction(action));
+            return MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
         }
 
         #endregion
@@ -92,7 +93,7 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public IMenuImmutable GetSubMenu(string menuName) {
-            var menu = MenuItems.OfType<Menu>().FirstOrDefault(a => a.Name == menuName);
+            var menu = MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
             if (menu == null) {
                 throw new Exception("No sub-menu named " + menuName);
             }
@@ -109,7 +110,7 @@ namespace NakedObjects.Meta.Menus {
             return metamodel.GetSpecification(typeof (TObject));
         }
 
-        public void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, Menu toMenu) {
+        public void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, MenuImpl toMenu) {
             foreach (var element in ordeableElements) {
                 var action = element.Spec;
                 if (action != null) {
@@ -123,13 +124,13 @@ namespace NakedObjects.Meta.Menus {
             }
         }
 
-        private Menu CreateMenuImmutableAsSubMenu(string subMenuName) {
-            var subMenu = new Menu(metamodel, subMenuName);
+        private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName) {
+            var subMenu = new MenuImpl(metamodel, subMenuName);
             this.AddAsSubMenu(subMenu);
             return subMenu;
         }
 
-        public Menu AddAsSubMenu(Menu subMenu) {
+        public MenuImpl AddAsSubMenu(MenuImpl subMenu) {
             AddMenuItem(subMenu);
             subMenu.SuperMenu = this;
             return this;

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Meta.Menus {
+namespace NakedObjects.Meta.Menu {
     public class MenuAction : IMenuActionImmutable {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
             this.Action = actionSpec;

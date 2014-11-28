@@ -26,6 +26,7 @@ using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.I18N;
 using NakedObjects.Security;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Reflect.Test {
     [TestClass]
@@ -389,19 +390,15 @@ namespace NakedObjects.Reflect.Test {
         public class NullMenuFactory : IMenuFactory {
             #region IMenuFactory Members
 
-            public IMenu NewMenu(string name) {
+            public IMenuBuilder NewMenu(string name) {
                 throw new NotImplementedException();
             }
 
-            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null) {
                 throw new NotImplementedException();
             }
 
             #endregion
-
-            public IMenu[] DefineMainMenus() {
-                return new IMenu[] {};
-            }
         }
 
         #endregion
@@ -411,8 +408,8 @@ namespace NakedObjects.Reflect.Test {
         public class NullMenuDfinition : IMainMenuDefinition {
             #region IMainMenuDefinition Members
 
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[] {};
+            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+                return new IMenuBuilder[] { };
             }
 
             #endregion

@@ -21,7 +21,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
@@ -32,6 +32,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using RestfulObjects.Test.Data;
+using NakedObjects.Menu;
 
 namespace MvcTestApp {
     /// <summary>
@@ -264,14 +265,14 @@ namespace MvcTestApp {
 
     public class MyMainMenuDefinition : IMainMenuDefinition {
 
-        public IMenu[] MainMenus(IMenuFactory factory) {
+        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
             var menu1 = factory.NewMenu<RestDataRepository>(true);
             var menu2 = factory.NewMenu<WithActionService>(true);
             var menu3 = factory.NewMenu<ContributorService>(true);
             var menu4 = factory.NewMenu<TestTypeCodeMapper>(true);
-           
 
-            return new IMenu[] { menu1, menu2, menu3, menu4 };
+
+            return new IMenuBuilder[] { menu1, menu2, menu3, menu4 };
         }
     }
 }

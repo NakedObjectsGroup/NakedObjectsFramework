@@ -12,6 +12,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using System;
 using System.Web.Routing;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
@@ -46,8 +47,8 @@ namespace NakedObjects.Web.Mvc.Html {
             tag.AddCssClass(IdHelper.ServicesContainerName);
             var menus = (IEnumerable)html.ViewData[IdHelper.NofMainMenus];
 
-            if (menus != null && menus.Cast<IMenu>().Any()) {
-                foreach (IMenu menu in menus) {
+            if (menus != null && menus.Cast<IMenuImmutable>().Any()) {
+                foreach (IMenuImmutable menu in menus) {
                     tag.InnerHtml += html.MenuAsHtml(menu, null, false);
                 }
                 return MvcHtmlString.Create(tag.ToString());
@@ -76,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (item is IMenuActionImmutable) {
                 descriptor = MenuActionAsElementDescriptor(html, item as IMenuActionImmutable, nakedObject, isEdit);
             } else if (item is IMenu) {
-                descriptor = SubMenuAsElementDescriptor(html, item as IMenu, nakedObject, isEdit);
+                descriptor = SubMenuAsElementDescriptor(html, item as IMenuImmutable, nakedObject, isEdit);
             } else if (item is CustomMenuItem) {
                 descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
             }
@@ -123,7 +124,7 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenu subMenu, INakedObject nakedObject, bool isEdit) {
+        private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenuImmutable subMenu, INakedObject nakedObject, bool isEdit) {
             string tagType = "div";
             string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdHelper.MenuNameLabel).ToString();
             RouteValueDictionary attributes = new RouteValueDictionary(new {

@@ -34,7 +34,8 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Mvc.App.App_Start {
     /// <summary>
@@ -286,7 +287,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
     public class MyMainMenuDefinition : IMainMenuDefinition {
 
-        public IMenu[] MainMenus(IMenuFactory factory) {
+        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
             var menu1 = factory.NewMenu<CustomerRepository>(true);
             var menu2 = factory.NewMenu<OrderRepository>(true);
             var menu3 = factory.NewMenu<ProductRepository>(true);
@@ -298,7 +299,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             var menu9 = factory.NewMenu<PurchaseOrderRepository>(true);
             var menu10 = factory.NewMenu<WorkOrderRepository>(true);
 
-            return new IMenu[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
+            return new IMenuBuilder[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
         }
     }
 }

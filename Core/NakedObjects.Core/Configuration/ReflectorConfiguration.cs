@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {

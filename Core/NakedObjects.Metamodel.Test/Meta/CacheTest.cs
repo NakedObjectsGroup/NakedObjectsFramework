@@ -20,6 +20,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect;
 using NakedObjects.Value;
 using NUnit.Framework;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Test {
     public class AbstractTestWithByteArray {
@@ -318,8 +319,8 @@ namespace NakedObjects.Meta.Test {
         public class NullMenuDefinition : IMainMenuDefinition {
             #region IMainMenuDefinition Members
 
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[] {};
+            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+                return new IMenuBuilder[] { };
             }
 
             #endregion
@@ -332,11 +333,11 @@ namespace NakedObjects.Meta.Test {
         public class NullMenuFactory : IMenuFactory {
             #region IMenuFactory Members
 
-            public IMenu NewMenu(string name) {
+            public IMenuBuilder NewMenu(string name) {
                 return null;
             }
 
-            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null) {
                 return null;
             }
 

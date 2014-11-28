@@ -24,7 +24,7 @@ namespace NakedObjects.Meta {
     }
 
     public class ImmutableInMemorySpecCache : ISpecificationCache {
-        private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
+        private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
 
         private ImmutableDictionary<string, IObjectSpecImmutable> specs =
             ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
@@ -67,11 +67,11 @@ namespace NakedObjects.Meta {
             return specs.Values.ToArray();
         }
 
-        public void Cache(IMenu mainMenu) {
+        public void Cache(IMenuImmutable mainMenu) {
             mainMenus = mainMenus.Add(mainMenu);
         }
 
-        public IMenu[] MainMenus() {
+        public IMenuImmutable[] MainMenus() {
             return mainMenus.ToArray();
         }
 

@@ -14,6 +14,6 @@ namespace NakedObjects.Architecture.Menu {
         /// Constructs the IMenus using methods on the factory passed in
         /// </summary>
         /// <returns></returns>
-        IMenu[] MainMenus(IMenuFactory factory);
+        IMenuBuilder[] MainMenus(IMenuFactory factory);
     }
 }

@@ -2,7 +2,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using System;
 using System.Reflection;

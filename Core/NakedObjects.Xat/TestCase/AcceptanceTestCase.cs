@@ -28,7 +28,7 @@ using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
@@ -480,8 +480,8 @@ namespace NakedObjects.Xat {
         public class NullMainMenuDefinition : IMainMenuDefinition {
             #region IMainMenuDefinition Members
 
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[] {};
+            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+                return new IMenuBuilder[] { };
             }
 
             #endregion

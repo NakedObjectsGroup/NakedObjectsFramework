@@ -10,11 +10,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Menu;
 using System;
 using System.Collections.Generic;
 
-namespace NakedObjects.Meta.Menus {
-    public class TypedMenu<TObject> : Menu, ITypedMenu<TObject> {
+namespace NakedObjects.Meta.Menu {
+    public class TypedMenu<TObject> : MenuImpl, ITypedMenuBuilder<TObject> {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {
@@ -41,7 +42,7 @@ namespace NakedObjects.Meta.Menus {
         public ITypedMenu<TObject> AddContributedActions() {
             foreach (var ca in GetObjectSpec<TObject>().ContributedActions) {
                 //TODO: Check if sub menu already exists
-                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
+                MenuImpl sub = new MenuImpl(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
                 //Item1 is contributing service class name, not used.
                 sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
                 this.AddAsSubMenu(sub);

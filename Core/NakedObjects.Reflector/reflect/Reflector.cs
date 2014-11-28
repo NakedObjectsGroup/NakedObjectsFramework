@@ -167,7 +167,7 @@ namespace NakedObjects.Reflect {
 
         private void InstallMainMenus() {
             if (menuDefinition == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
-            foreach (IMenu menu in menuDefinition.MainMenus(menuFactory)) {
+            foreach (IMenuImmutable menu in menuDefinition.MainMenus(menuFactory)) {
                 metamodel.AddMainMenu(menu);
             }
         }

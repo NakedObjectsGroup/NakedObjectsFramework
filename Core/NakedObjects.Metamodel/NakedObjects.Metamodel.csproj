@@ -117,10 +117,10 @@
     <Compile Include="Meta\Metamodel.cs" />
     <Compile Include="I18N\DescribedAsFacetI18N.cs" />
     <Compile Include="I18N\NamedFacetI18N.cs" />
-    <Compile Include="Menus\Menu.cs" />
-    <Compile Include="Menus\MenuAction.cs" />
-    <Compile Include="Menus\MenuFactory.cs" />
-    <Compile Include="Menus\TypedMenu.cs" />
+    <Compile Include="Menu\MenuImpl.cs" />
+    <Compile Include="Menu\MenuAction.cs" />
+    <Compile Include="Menu\MenuFactory.cs" />
+    <Compile Include="Menu\TypedMenu.cs" />
     <Compile Include="SemanticsProvider\ArrayValueSematicsProvider.cs" />
     <Compile Include="SemanticsProvider\BoolValueSemanticsProvider.cs" />
     <Compile Include="SemanticsProvider\ByteValueSematicsProvider.cs" />

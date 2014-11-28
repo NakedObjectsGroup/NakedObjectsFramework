@@ -2,7 +2,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using System.Reflection;
 
 namespace NakedObjects.Meta.Facet {
@@ -10,7 +10,7 @@ namespace NakedObjects.Meta.Facet {
 
         protected const string ObjectMenuName = "Actions";
 
-        protected IMenu menu;
+        protected MenuImpl menu;
 
         public MenuFacetAbstract(ISpecification holder)
             : base(typeof(IMenuFacet), holder) {

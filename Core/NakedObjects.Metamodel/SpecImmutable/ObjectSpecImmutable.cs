@@ -21,7 +21,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 

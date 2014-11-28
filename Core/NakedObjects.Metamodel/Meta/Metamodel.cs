@@ -56,7 +56,7 @@ namespace NakedObjects.Meta {
             cache.Cache(classStrategy.GetKeyForType(type), spec);
         }
 
-        public void AddMainMenu(IMenu menu) {
+        public void AddMainMenu(IMenuImmutable menu) {
             cache.Cache(menu);
         }
 

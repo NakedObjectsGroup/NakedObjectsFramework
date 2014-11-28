@@ -2,7 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Menu;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Services;
 using System.ComponentModel;
 using System.Data.Entity;

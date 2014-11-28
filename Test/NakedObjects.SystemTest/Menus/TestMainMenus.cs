@@ -1,7 +1,8 @@
 ﻿using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Menu;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Xat;
 using System.Data.Entity;
 using System.Linq;
@@ -164,7 +165,7 @@ namespace NakedObjects.SystemTest.Menus {
 
     public class LocalMainMenus : IMainMenuDefinition {
 
-        public IMenu[] MainMenus(IMenuFactory factory) {
+        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
             var foos = factory.NewMenu<FooService>(true);
             var bars = factory.NewMenu<BarService>(true);
 
@@ -191,7 +192,7 @@ namespace NakedObjects.SystemTest.Menus {
             var empty2 = factory.NewMenu("Empty2");
             empty2.CreateSubMenu("Sub");
 
-            return new IMenu[] { foos, bars, q, subs, hyb, empty, empty2 };
+            return new IMenuBuilder[] { foos, bars, q, subs, hyb, empty, empty2 };
         }
     }
 

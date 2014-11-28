@@ -4,6 +4,7 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
+using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Menu {
     /// <summary>
@@ -11,10 +12,10 @@ namespace NakedObjects.Architecture.Menu {
     /// </summary>
     public interface IMenuFactory {
         //Creates an empty, un-typed menu, (for which a name must be specified).
-        IMenu NewMenu(string name);
+        IMenuBuilder NewMenu(string name);
 
         //Creates a new menu based on a service of type T. If the optional name
         //parameter is not specified, then the menu takes its name from the service.
-        ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null);
+        ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null);
     }
 }

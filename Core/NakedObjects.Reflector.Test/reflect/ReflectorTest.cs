@@ -20,16 +20,17 @@ using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 using NUnit.Framework;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {
         #region IMenuFactory Members
 
-        public IMenu NewMenu(string name) {
+        public IMenuBuilder NewMenu(string name) {
             return null;
         }
 
-        public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+        public ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null) {
             return null;
         }
 
@@ -263,8 +264,8 @@ namespace NakedObjects.Reflect.Test {
         public class NullMenuDefinition : IMainMenuDefinition {
             #region IMainMenuDefinition Members
 
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[] {};
+            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+                return new IMenuBuilder[] { };
             }
 
             #endregion
