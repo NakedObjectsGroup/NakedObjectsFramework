@@ -121,6 +121,10 @@ namespace NakedObjects.Xat {
             get { return new object[] {}; }
         }
 
+        protected virtual Type[] Types {
+            get { return new Type[] { }; }
+        }
+
         protected void StartTest() {
             nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
         }
@@ -436,7 +440,8 @@ namespace NakedObjects.Xat {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
             // TODO still done for backward compatibility - 
-            var reflectorConfig = new ReflectorConfiguration(new Type[] {},
+            var reflectorConfig = new ReflectorConfiguration(
+                Types ?? new Type[]{},
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
                 SystemServices.Select(s => s.GetType()).ToArray());

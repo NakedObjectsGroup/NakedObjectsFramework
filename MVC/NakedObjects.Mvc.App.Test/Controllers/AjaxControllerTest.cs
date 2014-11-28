@@ -19,6 +19,7 @@ using Microsoft.Practices.Unity;
 using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -91,6 +92,14 @@ namespace MvcTestApp.Tests.Controllers {
 
         protected override object[] SystemServices {
             get { return (new object[] {new ChoicesRepository(), new AutoCompleteRepository()}); }
+        }
+
+        protected override Type[] Types {
+            get {
+                return new Type[] {
+                    typeof (EnumerableQuery<string>)
+                };
+            }
         }
 
 

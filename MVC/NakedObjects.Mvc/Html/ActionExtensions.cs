@@ -1122,8 +1122,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-
-            return MvcHtmlString.Create(nakedObject.Spec.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject).TitleString());
+            var dflt = nakedObject.Spec.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject);
+            return MvcHtmlString.Create(dflt == null ? "" : dflt.TitleString());
         }
 
         #endregion

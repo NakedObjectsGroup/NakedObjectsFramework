@@ -5,11 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Expenses.ExpenseClaims;
+using Expenses.ExpenseClaims.Items;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
@@ -20,6 +22,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Service;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -65,6 +68,18 @@ namespace MvcTestApp.Tests.Helpers {
         private DummyController controller;
         private ContextMocks mocks;
 
+        protected override Type[] Types {
+            get {
+                var types1 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
+                    GetTypes().Where(t => t.FullName.StartsWith("Expenses") && !t.FullName.Contains("Repository") ).ToArray();
+
+                var types2 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
+                    GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
+
+                return types1.Union(types2).ToArray();
+            }
+        }
+    
 
         protected override object[] MenuServices {
             get { return (DemoServicesSet.ServicesSet()); }
