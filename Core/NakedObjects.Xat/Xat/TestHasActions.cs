@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
@@ -84,6 +85,11 @@ namespace NakedObjects.Xat {
         }
 
         public abstract string Title { get; }
+
+        public ITestMenu GetMenu() {
+            IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
+            return new TestMenu(menu, factory, this);
+        }
 
         #endregion
 

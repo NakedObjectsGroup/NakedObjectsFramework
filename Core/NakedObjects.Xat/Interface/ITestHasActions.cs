@@ -34,5 +34,7 @@ namespace NakedObjects.Xat {
         /// <param name="order"></param>
         /// <returns>The current object</returns>
         ITestHasActions AssertActionOrderIs(string order);
+
+        ITestMenu GetMenu();
     }
 }

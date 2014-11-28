@@ -156,12 +156,6 @@ namespace NakedObjects.Xat {
             Assert.AreEqual(order, GetPropertyOrder());
             return this;
         }
-
-        public ITestMenu GetMenu() {
-            IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
-            return new TestMenu(menu, factory, this);
-        }
-
         #endregion
 
         public override bool Equals(Object obj) {

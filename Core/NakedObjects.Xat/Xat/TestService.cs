@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
@@ -19,7 +20,6 @@ namespace NakedObjects.Xat {
         public override string Title {
             get { return NakedObject.TitleString(); }
         }
-
         #endregion
     }
 

@@ -44,11 +44,11 @@ namespace NakedObjects.Xat {
             return new TestMenu(menu, this, null);
         }
 
-        public ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestObject owningObject) {
+        public ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject) {
             return new TestMenu(menu, this, owningObject);
         }
 
-        public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestObject owningObject) {
+        public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject) {
             return new TestMenuItem(item, this, owningObject);
         }
 
@@ -81,7 +81,7 @@ namespace NakedObjects.Xat {
             return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager, transactionManager);
         }
 
-        public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestObject owningObject) {
+        public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject) {
             throw new NotImplementedException();
         }
 

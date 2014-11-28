@@ -13,9 +13,9 @@ namespace NakedObjects.Xat {
     public class TestMenuItem : ITestMenuItem {
         private readonly ITestObjectFactory factory;
         private readonly IMenuItemImmutable item;
-        private readonly ITestObject owningObject; //Non-null if this is on an objectMenu
+        private readonly ITestHasActions owningObject; //Non-null if this is on an objectMenu
 
-        public TestMenuItem(IMenuItemImmutable item, ITestObjectFactory factory, ITestObject owningObject) {
+        public TestMenuItem(IMenuItemImmutable item, ITestObjectFactory factory, ITestHasActions owningObject) {
             this.item = item;
             this.factory = factory;
             this.owningObject = owningObject;

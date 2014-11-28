@@ -20,8 +20,6 @@ namespace NakedObjects.Xat {
         ITestObject AssertTitleEquals(string expectedTitle);
 
         object GetDomainObject();
-
-        ITestMenu GetMenu();
     }
 
     // Copyright (c) INakedObject Objects Group Ltd.

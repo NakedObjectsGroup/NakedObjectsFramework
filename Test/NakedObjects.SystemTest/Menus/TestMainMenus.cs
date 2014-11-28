@@ -8,7 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using TestObjectMenu;
 
-namespace NakedObjects.SystemTest.Menus {
+namespace NakedObjects.SystemTest.Menus.Service {
 
     [TestClass]
     public class TestMainMenus : AbstractSystemTest<MenusDbContext> {

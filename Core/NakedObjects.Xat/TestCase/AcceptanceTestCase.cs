@@ -232,11 +232,20 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestMenu GetMainMenu(string menuName) {
-            IMenuImmutable menu = NakedObjectsFramework.Metamodel.MainMenus().FirstOrDefault(m => m.Name == menuName);
-            if (menu == null) {
-                Assert.Fail("No such main menu " + menuName);
+            var mainMenus = NakedObjectsFramework.Metamodel.MainMenus();
+            if (mainMenus.Count() > 0) {
+                IMenuImmutable menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
+                if (menu == null) {
+                    Assert.Fail("No such main menu " + menuName);
+                }
+                return TestObjectFactoryClass.CreateTestMenuMain(menu);
+            } else { //Use the MenuServices to derive the menus
+                var service = GetTestService(menuName);
+                if (service == null) {
+                    Assert.Fail("No such main menu, or Service, " + menuName);
+                }
+                return service.GetMenu();
             }
-            return TestObjectFactoryClass.CreateTestMenuMain(menu);
         }
 
         protected ITestMenu[] AllMainMenus() {

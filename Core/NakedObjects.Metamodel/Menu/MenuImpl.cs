@@ -93,13 +93,16 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenuImmutable GetSubMenu(string menuName) {
-            var menu = MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
+            var menu = GetSub(menuName);
             if (menu == null) {
                 throw new Exception("No sub-menu named " + menuName);
             }
             return menu;
         }
 
+        protected MenuImpl GetSub(string menuName) {
+            return MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
+        }
         #endregion
 
         protected IList<IActionSpecImmutable> GetActionsForObject<TObject>() {
@@ -124,7 +127,7 @@ namespace NakedObjects.Meta.Menu {
             }
         }
 
-        private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName) {
+        protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName) {
             var subMenu = new MenuImpl(metamodel, subMenuName);
             this.AddAsSubMenu(subMenu);
             return subMenu;

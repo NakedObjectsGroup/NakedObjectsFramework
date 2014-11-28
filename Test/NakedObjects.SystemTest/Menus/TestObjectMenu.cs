@@ -17,7 +17,7 @@ namespace NakedObjects.SystemTest.Menus {
 
         [ClassCleanup]
         public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestMainMenus());
+            CleanupNakedObjectsFramework(new TestObjectMenu());
             Database.Delete(MenusDbContext.DatabaseName);
         }
 
@@ -39,7 +39,8 @@ namespace NakedObjects.SystemTest.Menus {
                     new SimpleRepository<Foo>(),
                 new SimpleRepository<Bar>(),
                 new Contrib1(),
-                new Contrib2()};
+                new Contrib2(),
+                new Contrib3()};
             }
         }
 
@@ -74,8 +75,8 @@ namespace NakedObjects.SystemTest.Menus {
 
         [TestMethod]
         public void TestSpecifiedMenu() {
-            var foo = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject().Save();
-            var menu = foo.GetMenu();
+            var bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject().Save();
+            var menu = bar.GetMenu();
 
             menu.AssertItemCountIs(6);
 
@@ -84,7 +85,9 @@ namespace NakedObjects.SystemTest.Menus {
             items[1].AssertIsAction().AssertNameEquals("Renamed1");
             var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertNameEquals("Action3");
-            items[3].AssertIsAction().AssertNameEquals("Action4");
+            sub = items[3].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
+            sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
 
             sub = items[4].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
@@ -142,6 +145,12 @@ namespace TestObjectMenu {
         public void Action7(Foo foo, Bar bar) { }
     }
 
+    [Named("Docs")]
+    public class Contrib3 {
+
+        public void Action8(Bar bar) { }
+    }
+
     public class Bar {
 
         [NakedObjectsIgnore]
@@ -150,8 +159,11 @@ namespace TestObjectMenu {
         public static void Menu(ITypedMenu<Bar> menu) {
             menu.AddAction("Action2");
             menu.AddAction("Action1", "Renamed1");
-            var sub1 =menu.CreateSubMenuOfSameType("Sub1");
-            sub1.AddAction("Action3");
+            var sub =menu.CreateSubMenuOfSameType("Sub1");
+            sub.AddAction("Action3");
+
+            sub = menu.CreateSubMenuOfSameType("Docs");
+            sub.AddAction("Action4");
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
         }

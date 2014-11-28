@@ -56,6 +56,10 @@ namespace NakedObjects.Xat {
             return this;
         }
 
+        public ITestMenu GetMenu() {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         // Copyright (c) INakedObject Objects Group Ltd.

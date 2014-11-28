@@ -160,6 +160,7 @@
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
+    <Compile Include="Menus\TestServiceMenus.cs" />
     <Compile Include="Menus\TestMainMenus.cs" />
     <Compile Include="Menus\TestObjectMenu.cs" />
     <Compile Include="Reflect\ReflectorTest.cs" />

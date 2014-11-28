@@ -41,11 +41,9 @@ namespace NakedObjects.Meta.Menu {
 
         public ITypedMenu<TObject> AddContributedActions() {
             foreach (var ca in GetObjectSpec<TObject>().ContributedActions) {
-                //TODO: Check if sub menu already exists
-                MenuImpl sub = new MenuImpl(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
-                //Item1 is contributing service class name, not used.
-                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
-                this.AddAsSubMenu(sub);
+                string subMenuName = ca.Item2; //Item 2 should be friendly name of the contributing service
+                MenuImpl subMenu = GetSub(subMenuName) ??  CreateMenuImmutableAsSubMenu(subMenuName);
+                subMenu.AddOrderableElementsToMenu(ca.Item3, subMenu); //Item 3 should be the actions  
             }
             return this;
         }
