@@ -56,7 +56,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Architecture.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Core.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
@@ -189,7 +188,6 @@
 
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Architecture.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />
