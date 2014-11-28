@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Attributes\ActionOrderAttribute.cs" />
     <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="Attributes\AuthorizePropertyAttribute.cs" />
     <Compile Include="Attributes\PresentationHintAttribute.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="Attributes\DescribedAsAttribute.cs" />
     <Compile Include="Attributes\DisabledAttribute.cs" />
     <Compile Include="Attributes\ExecutedAttribute.cs" />
-    <Compile Include="Attributes\FieldOrderAttribute.cs" />
     <Compile Include="Attributes\HiddenAttribute.cs" />
     <Compile Include="Attributes\NakedObjectsIgnoreAttribute.cs" />
     <Compile Include="Attributes\ImmutableAttribute.cs" />

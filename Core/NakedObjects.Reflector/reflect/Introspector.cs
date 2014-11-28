@@ -151,11 +151,8 @@ namespace NakedObjects.Reflect {
             // find the properties and collections (fields) ...
             IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
 
-            // ... and the ordering of the properties and collections  
-            var fieldOrderFacet = spec.GetFacet<IFieldOrderFacet>();
 
-            // TODO: the calling of fieldOrder() should be a facet
-            string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
+            string fieldOrder = InvokeSortOrderMethod("Field");
             orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
         }
 
@@ -165,11 +162,7 @@ namespace NakedObjects.Reflect {
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object, spec);
 
-            // ... and the ordering of actions ...
-            var actionOrderFacet = spec.GetFacet<IActionOrderFacet>();
-
-            // TODO: the calling of actionOrder() should be a facet
-            string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
+            string actionOrder = InvokeSortOrderMethod("Action");
             orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
 
 

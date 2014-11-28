@@ -270,8 +270,6 @@
     <Compile Include="Facet\IValidateProgrammaticUpdatesFacet.cs" />
     <Compile Include="Facet\IAggregatedFacet.cs" />
     <Compile Include="Facet\IValueFacet.cs" />
-    <Compile Include="Facet\IActionOrderFacet.cs" />
-    <Compile Include="Facet\IFieldOrderFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Facet\INotPersistedFacet.cs" />
     <Compile Include="Facet\IPropertyAccessorFacet.cs" />

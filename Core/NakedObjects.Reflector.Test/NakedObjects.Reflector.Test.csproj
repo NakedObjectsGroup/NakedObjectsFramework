@@ -143,8 +143,6 @@
     <Compile Include="FacetFactory\ProgramPersistableOnlyAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ValidateProgrammaticUpdatesAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ViewModelFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\ActionOrderAnnotationFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\FieldOrderAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DeweyOrderSetTest.cs" />
     <Compile Include="FacetFactory\MemberOrderAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\MemberOrderComparatorTest.cs" />

@@ -172,8 +172,6 @@
     <Compile Include="FacetFactory\ProgramPersistableOnlyAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ValidateProgrammaticUpdatesAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ViewModelFacetFactory.cs" />
-    <Compile Include="FacetFactory\ActionOrderAnnotationFacetFactory.cs" />
-    <Compile Include="FacetFactory\FieldOrderAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\MemberOrderAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\PasswordAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\PrefixesAndRecognisedMethods.cs" />

@@ -99,7 +99,6 @@
     <Compile Include="Facet\ActionDefaultsFacetDerivedFromDefaultedFacets.cs" />
     <Compile Include="Facet\ActionDefaultsFacetViaMethod.cs" />
     <Compile Include="Facet\ActionInvocationFacetViaMethod.cs" />
-    <Compile Include="Facet\ActionOrderFacetAnnotation.cs" />
     <Compile Include="Facet\ActionParameterValidation.cs" />
     <Compile Include="Facet\ActionValidationFacet.cs" />
     <Compile Include="Facet\AutoCompleteFacet.cs" />
@@ -165,7 +164,6 @@
     <Compile Include="Facet\EnumFacet.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotation.cs" />
     <Compile Include="Facet\ExecutedControlMethodFacet.cs" />
-    <Compile Include="Facet\FieldOrderFacet.cs" />
     <Compile Include="Facet\FromStreamFacetUsingFromStream.cs" />
     <Compile Include="Facet\HiddenFacet.cs" />
     <Compile Include="Facet\HideForContextFacet.cs" />
