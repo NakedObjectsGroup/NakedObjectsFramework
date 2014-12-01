@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect {
     /// <para>
     ///     Can specify if requires that members are in the same (group) name.
     /// </para>
-    public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, ISpecification {
+    public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, IMemberSpecImmutable {
         private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
 
         #region IComparer<T> Members

@@ -7,9 +7,10 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Reflect {
-    public interface IOrderableElement<T> where T : ISpecification {
+    public interface IOrderableElement<T> where T : IMemberSpecImmutable {
         T Spec { get; }
     }
 }

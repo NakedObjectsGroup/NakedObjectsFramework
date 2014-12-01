@@ -8,9 +8,10 @@
 using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflect {
-    public interface IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
+    public interface IOrderSet<T> where T : IOrderableElement<T>, IMemberSpecImmutable {
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
         /// </summary>

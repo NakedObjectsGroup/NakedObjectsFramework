@@ -301,7 +301,7 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T : IOrderableElement<T>, ISpecification {
+        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T : IOrderableElement<T>, IMemberSpecImmutable {
             return new OrderSet<T>(members);
         }
 

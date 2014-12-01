@@ -14,9 +14,10 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflect {
-    public class OrderSet<T> : IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
+    public class OrderSet<T> : IOrderSet<T> where T : IOrderableElement<T>, IMemberSpecImmutable {
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
 
         //Constructor
