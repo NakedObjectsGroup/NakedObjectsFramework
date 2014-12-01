@@ -95,7 +95,7 @@ namespace Expenses {
             public IList<AbstractExpenseItem> FindExpenseItemsLike(AbstractExpenseItem item) {
                 // Simple implementation: could be extended to compare any fields that have already been set on the
                 // item provided.
-                return findExpenseItemsOfType(item.Claim.Claimant, item.ExpenseType);
+                return FindExpenseItemsOfType(item.Claim.Claimant, item.ExpenseType);
             }
 
             private IList<Claim> FindClaims(Employee employee, ClaimStatus status, string description) {
@@ -117,7 +117,7 @@ namespace Expenses {
             }
 
             [Hidden]
-            public IList<Claim> findClaimsAwaitingApprovalBy(Employee approver) {
+            public IList<Claim> FindClaimsAwaitingApprovalBy(Employee approver) {
                 IQueryable<Claim> query =
                     from claim in Instances<Claim>()
                     where approver.Equals(claim.Approver) && claim.Status.TitleString.Equals(ClaimStatus.SUBMITTED)
@@ -127,7 +127,7 @@ namespace Expenses {
             }
 
             [Hidden]
-            public IList<AbstractExpenseItem> findExpenseItemsOfType(Employee employee, ExpenseType type) {
+            public IList<AbstractExpenseItem> FindExpenseItemsOfType(Employee employee, ExpenseType type) {
                 IQueryable<AbstractExpenseItem> query =
                     from item in Instances<AbstractExpenseItem>()
                     where item.ExpenseType.Equals(type) && item.Claim.Claimant.Equals(employee)
@@ -171,7 +171,7 @@ namespace Expenses {
             }
 
             public virtual IList<Claim> ClaimsAwaitingMyApproval() {
-                return findClaimsAwaitingApprovalBy(MeAsEmployee());
+                return FindClaimsAwaitingApprovalBy(MeAsEmployee());
             }
 
             [Hidden]

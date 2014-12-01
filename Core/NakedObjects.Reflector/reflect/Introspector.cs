@@ -53,7 +53,7 @@ namespace NakedObjects.Reflect {
         }
 
         public string[] InterfacesNames {
-            get { return introspectedType.GetInterfaces().Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray(); }
+            get { return introspectedType.GetInterfaces().Where(i => i.IsPublic).Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray(); }
         }
 
         public Type SuperclassType {

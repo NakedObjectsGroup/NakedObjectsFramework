@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -52,9 +54,19 @@ namespace NakedObjects.Reflect {
 
 
         public string GetKeyForType(Type type) {
-            // becauase Sets don't implement IEnumerable<>
-            if (CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) ||
-                CollectionUtils.IsGenericType(type, typeof (ISet<>))) {
+            //if (!type.IsPublic) {
+            //    var interfaces = type.GetInterfaces();
+            //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
+            //    var publicEnumerables = publicInterfaces.Where(t => typeof(IEnumerable).IsAssignableFrom(t));
+            //    var publicGenericEnumerables = publicInterfaces.Where(IsGenericCollection);
+                
+            //    return GetKeyForType(publicGenericEnumerables.FirstOrDefault() ??
+            //                         publicEnumerables.FirstOrDefault() ??
+            //                         publicInterfaces.FirstOrDefault() ??
+            //                         type.BaseType);
+            //}
+   
+            if (IsGenericCollection(type)) {
                 return type.Namespace + "." + type.Name;
             }
 
@@ -63,6 +75,12 @@ namespace NakedObjects.Reflect {
             }
 
             return type.GetProxiedTypeFullName();
+        }
+
+        // because Sets don't implement IEnumerable<>
+        private static bool IsGenericCollection(Type type) {
+            return CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) ||
+                   CollectionUtils.IsGenericType(type, typeof (ISet<>));
         }
 
         #endregion

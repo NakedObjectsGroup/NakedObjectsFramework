@@ -215,6 +215,22 @@ namespace NakedObjects.Reflect.Test {
         }
 
         [Test]
+        public void ReflectWhereIterator() {
+            var container = GetContainer();
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+
+            var rc = new ReflectorConfiguration(new Type[] { it.GetType()  }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+
+        [Test]
         public void ReflectByteArray() {
             var container = GetContainer();
 
