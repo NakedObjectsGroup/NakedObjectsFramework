@@ -28,7 +28,7 @@ namespace AdventureWorksModel {
                 .AddAction("CreateNewStoreCustomer")
                 .AddAction("RandomStore");
             menu.CreateSubMenuOfSameType("Individuals")
-                .AddAction("FindIndividualByName")
+                .AddAction("FindIndividualCustomerByName")
                 .AddAction("CreateNewIndividualCustomer")
                 .AddAction("RandomIndividual");
             menu.AddRemainingNativeActions();

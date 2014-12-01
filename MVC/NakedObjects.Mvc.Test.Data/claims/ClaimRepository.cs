@@ -124,14 +124,14 @@ namespace Expenses {
                 return query.ToList();
             }
 
-            [MemberOrder(Name = "Find", Sequence = "2")]
+            [MemberOrder(Sequence = "2")]
             [Eagerly(EagerlyAttribute.Do.Rendering)]
             [TableView(false, "Status", "DateCreated", "Approver")]
             public virtual IList<Claim> FindMyClaims([Optionally] ClaimStatus status, [Optionally] string description) {
                 return FindClaims(MeAsEmployee(), status, description);
             }
 
-            [MemberOrder(Name = "Find", Sequence = "3")]
+            [MemberOrder(Sequence = "3")]
             public virtual IList<Claim> FindMyClaimsByEnumStatus(ClaimStatusEnum eStatus) {
                 ClaimStatus status = FindClaimStatus(eStatus.ToString());
 
@@ -139,7 +139,7 @@ namespace Expenses {
             }
 
 
-            [MemberOrder(Name = "Find", Sequence = "1")]
+            [MemberOrder( Sequence = "1")]
             public virtual IList<Claim> MyRecentClaims() {
                 return FindClaims(MeAsEmployee(), null, null);
             }
@@ -162,7 +162,7 @@ namespace Expenses {
                 return DefaultUniqueClaimDescription(MeAsEmployee());
             }
 
-            [MemberOrder(Name = "Find", Sequence = "6")]
+            [MemberOrder( Sequence = "6")]
             public virtual IList<Claim> ClaimsAwaitingMyApproval() {
                 return findClaimsAwaitingApprovalBy(MeAsEmployee());
             }
@@ -212,7 +212,7 @@ namespace Expenses {
                 return item;
             }
 
-            [MemberOrder(Name = "Approve", Sequence = "7")]
+            [MemberOrder( Sequence = "7")]
             public void ApproveClaims(IEnumerable<Claim> claims) {
                 claims.ForEach(c => c.ApproveItems(true));
             }
