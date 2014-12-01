@@ -11,10 +11,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflect {
-    public interface IOrderSet<T> where T : IOrderableElement<T>, IMemberSpecImmutable {
+    public interface IOrderSet<T> where T :  IMemberSpecImmutable {
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
         /// </summary>
-        IList<IOrderableElement<T>> ElementList();
+        IList<T> ElementList();
     }
 }

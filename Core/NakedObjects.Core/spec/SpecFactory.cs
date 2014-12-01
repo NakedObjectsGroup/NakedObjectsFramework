@@ -49,31 +49,26 @@ namespace NakedObjects.Core.Spec {
             throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
 
-        public IActionSpec[] OrderActions(IList<IOrderableElement<IActionSpecImmutable>> order) {
+        public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
             var actions = new List<IActionSpec>();
             foreach (var element in order) {
-                if (element.Spec != null) {
-                    actions.Add(CreateActionSpec(element.Spec));
-                }
-                else {
-                    throw new UnknownTypeException(element);
-                }
+                    actions.Add(CreateActionSpec(element));
             }
 
             return actions.ToArray();
         }
 
-        public IActionSpec[] OrderActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> order) {
+        public IActionSpec[] OrderActions(IList<Tuple<string, string, IList<IActionSpecImmutable>>> order) {
             Assert.AssertNotNull(framework);
             return order.Select(element => CreateActionSpecSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
         }
 
-        private ActionSpecSet CreateActionSpecSet(IList<IOrderableElement<IActionSpecImmutable>> orderSet, string groupFullName) {
+        private ActionSpecSet CreateActionSpecSet(IList<IActionSpecImmutable> orderSet, string groupFullName) {
             return new ActionSpecSet(groupFullName.Replace(" ", ""), groupFullName, OrderActions(orderSet), framework.Services);
         }
 
-        private ActionSpecSet CreateActionSpecSet(string id, string name, IList<IOrderableElement<IActionSpecImmutable>> orderSet) {
+        private ActionSpecSet CreateActionSpecSet(string id, string name, IList<IActionSpecImmutable> orderSet) {
             return new ActionSpecSet(id, name, OrderActions(orderSet), framework.Services);
         }
 

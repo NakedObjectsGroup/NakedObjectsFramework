@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return this; }
         }
 
-        public IList<IOrderableElement<IAssociationSpecImmutable>> Set {
+        public IList<IAssociationSpecImmutable> Set {
             get { return null; }
         }
 

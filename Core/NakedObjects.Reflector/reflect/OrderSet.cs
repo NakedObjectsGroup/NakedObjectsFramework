@@ -17,8 +17,8 @@ using NakedObjects.Util;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflect {
-    public class OrderSet<T> : IOrderSet<T> where T : IOrderableElement<T>, IMemberSpecImmutable {
-        private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
+    public class OrderSet<T> : IOrderSet<T> where T : IMemberSpecImmutable {
+        private readonly List<T> elements = new List<T>();
 
         //Constructor
         public OrderSet(T[] members) {
@@ -26,11 +26,11 @@ namespace NakedObjects.Reflect {
             var nonAnnotatedMembers = new List<T>();
 
             foreach (T member in members) {
-                var memberOrder = member.Spec.GetFacet<IMemberOrderFacet>();
+                var memberOrder = member.GetFacet<IMemberOrderFacet>();
                 if (memberOrder != null) {
                     annotatedMembers.Add(member);
                 } else {
-                    nonAnnotatedMembers.Add(member.Spec);
+                    nonAnnotatedMembers.Add(member);
                 }
             }
 
@@ -50,8 +50,8 @@ namespace NakedObjects.Reflect {
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
         /// </summary>
-        public IList<IOrderableElement<T>> ElementList() {
-            return new ReadOnlyCollection<IOrderableElement<T>>(elements);
+        public IList<T> ElementList() {
+            return new ReadOnlyCollection<T>(elements);
         }
        #endregion
 

@@ -39,8 +39,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
-            ContributedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
-            RelatedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
+            ContributedActions = ImmutableList<Tuple<string, string, IList<IActionSpecImmutable>>>.Empty;
+            RelatedActions = ImmutableList<Tuple<string, string, IList<IActionSpecImmutable>>>.Empty;
         }
 
         private string SingularName {
@@ -65,8 +65,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public void MarkAsService() {
-            if (Fields.Any(field => field.Spec.Identifier.MemberName != "Id")) {
-                string fieldNames = Fields.Where(field => field.Spec.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
+            if (Fields.Any(field => field.Identifier.MemberName != "Id")) {
+                string fieldNames = Fields.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
                 throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
             }
             Service = true;
@@ -76,11 +76,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             subclasses = subclasses.Add(subclass);
         }
 
-        public void AddContributedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions) {
+        public void AddContributedActions(IList<Tuple<string, string, IList<IActionSpecImmutable>>> contributedActions) {
             ContributedActions = contributedActions.ToImmutableList();
         }
 
-        public void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions) {
+        public void AddRelatedActions(IList<Tuple<string, string, IList<IActionSpecImmutable>>> relatedActions) {
             RelatedActions = relatedActions.ToImmutableList();
         }
 
@@ -106,13 +106,13 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
-        public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
+        public IList<IActionSpecImmutable> ObjectActions { get; private set; }
 
-        public IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; private set; }
+        public IList<Tuple<string, string, IList<IActionSpecImmutable>>> ContributedActions { get; private set; }
 
-        public IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; private set; }
+        public IList<Tuple<string, string, IList<IActionSpecImmutable>>> RelatedActions { get; private set; }
 
-        public IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; private set; }
+        public IList<IAssociationSpecImmutable> Fields { get; private set; }
 
         public IList<IObjectSpecImmutable> Interfaces { get; private set; }
 
@@ -217,8 +217,8 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            Fields.ForEach(field => decorator.DecorateAllHoldersFacets(field.Spec));
-            ObjectActions.Select(oa => oa.Spec).Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
+            Fields.ForEach(field => decorator.DecorateAllHoldersFacets(field));
+            ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 
         private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
@@ -236,11 +236,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        private readonly IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> tempContributedActions;
-        private readonly IList<IOrderableElement<IAssociationSpecImmutable>> tempFields;
+        private readonly IList<Tuple<string, string, IList<IActionSpecImmutable>>> tempContributedActions;
+        private readonly IList<IAssociationSpecImmutable> tempFields;
         private readonly IList<IObjectSpecImmutable> tempInterfaces;
-        private readonly IList<IOrderableElement<IActionSpecImmutable>> tempObjectActions;
-        private readonly IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> tempRelatedActions;
+        private readonly IList<IActionSpecImmutable> tempObjectActions;
+        private readonly IList<Tuple<string, string, IList<IActionSpecImmutable>>> tempRelatedActions;
         private readonly IList<IObjectSpecImmutable> tempSubclasses;
 
 
@@ -252,12 +252,12 @@ namespace NakedObjects.Meta.SpecImmutable {
             identifier = info.GetValue<IIdentifier>("identifier");
             Superclass = info.GetValue<IObjectSpecImmutable>("Superclass");
             Service = info.GetValue<bool>("Service");
-            tempFields = info.GetValue<IList<IOrderableElement<IAssociationSpecImmutable>>>("Fields");
+            tempFields = info.GetValue<IList<IAssociationSpecImmutable>>("Fields");
             tempInterfaces = info.GetValue<IList<IObjectSpecImmutable>>("Interfaces");
             tempSubclasses = info.GetValue<IList<IObjectSpecImmutable>>("subclasses");
-            tempObjectActions = info.GetValue<IList<IOrderableElement<IActionSpecImmutable>>>("ObjectActions");
-            tempContributedActions = info.GetValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("ContributedActions");
-            tempRelatedActions = info.GetValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("RelatedActions");
+            tempObjectActions = info.GetValue<IList<IActionSpecImmutable>>("ObjectActions");
+            tempContributedActions = info.GetValue<IList<Tuple<string, string, IList<IActionSpecImmutable>>>>("ContributedActions");
+            tempRelatedActions = info.GetValue<IList<Tuple<string, string, IList<IActionSpecImmutable>>>>("RelatedActions");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
@@ -266,13 +266,13 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<string>("ShortName", ShortName);
             info.AddValue<IIdentifier>("identifier", identifier);
             info.AddValue<bool>("Service", Service);
-            info.AddValue<IList<IOrderableElement<IAssociationSpecImmutable>>>("Fields", Fields.ToList());
+            info.AddValue<IList<IAssociationSpecImmutable>>("Fields", Fields.ToList());
             info.AddValue<IList<IObjectSpecImmutable>>("Interfaces", Interfaces.ToList());
             info.AddValue<IObjectSpecImmutable>("Superclass", Superclass);
             info.AddValue<IList<IObjectSpecImmutable>>("subclasses", subclasses.ToList());
-            info.AddValue<IList<IOrderableElement<IActionSpecImmutable>>>("ObjectActions", ObjectActions.ToList());
-            info.AddValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("ContributedActions", ContributedActions.ToList());
-            info.AddValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("RelatedActions", RelatedActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", ObjectActions.ToList());
+            info.AddValue<IList<Tuple<string, string, IList<IActionSpecImmutable>>>>("ContributedActions", ContributedActions.ToList());
+            info.AddValue<IList<Tuple<string, string, IList<IActionSpecImmutable>>>>("RelatedActions", RelatedActions.ToList());
             base.GetObjectData(info, context);
         }
 

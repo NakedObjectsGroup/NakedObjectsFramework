@@ -81,11 +81,11 @@ namespace NakedObjects.Reflect {
             get { return TypeNameUtils.GetShortName(introspectedType.Name); }
         }
 
-        public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
+        public IList<IAssociationSpecImmutable> Fields {
             get { return orderedFields.ElementList().ToImmutableList(); }
         }
 
-        public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
+        public IList<IActionSpecImmutable> ObjectActions {
             get { return orderedObjectActions.ElementList().ToImmutableList(); }
         }
 
@@ -301,7 +301,7 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T : IOrderableElement<T>, IMemberSpecImmutable {
+        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T :  IMemberSpecImmutable {
             return new OrderSet<T>(members);
         }
 

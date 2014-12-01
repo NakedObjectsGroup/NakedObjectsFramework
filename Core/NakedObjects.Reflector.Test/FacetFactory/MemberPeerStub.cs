@@ -15,7 +15,7 @@ using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable, IOrderableElement<MemberPeerStub> {
+    internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable {
         private readonly ILifecycleManager persistor;
 
         public MemberPeerStub(string name, ILifecycleManager persistor)
@@ -39,7 +39,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return this; }
         }
 
-        public IList<IOrderableElement<MemberPeerStub>> Set {
+        public IList<MemberPeerStub> Set {
             get { return null; }
         }
 

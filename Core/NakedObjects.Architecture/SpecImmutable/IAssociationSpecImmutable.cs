@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable, IOrderableElement<IAssociationSpecImmutable> {
+    public interface IAssociationSpecImmutable : IMemberSpecImmutable{
         /// <summary>
         ///     If this is a scalar association, representing (in old terminology)
         ///     a reference to another entity or a value.

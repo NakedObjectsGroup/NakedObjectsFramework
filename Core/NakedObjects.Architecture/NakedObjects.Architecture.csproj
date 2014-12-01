@@ -331,7 +331,6 @@
     <Compile Include="SpecImmutable\IObjectSpecImmutable.cs" />
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Spec\IActionSpec.cs" />
-    <Compile Include="Reflect\IOrderableElement.cs" />
     <Compile Include="Spec\IActionParameterSpec.cs" />
     <Compile Include="Reflect\ActionType.cs" />
     <Compile Include="Spec\IAssociationSpec.cs" />

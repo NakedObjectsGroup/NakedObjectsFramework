@@ -173,7 +173,6 @@ namespace NakedObjects.Meta.Test {
 
             var f1 =
                 cache.AllSpecifications().SelectMany(s => s.Fields)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .OfType<OneToOneAssociationSpecImmutable>()
                     .SelectMany(s => s.GetFacets())

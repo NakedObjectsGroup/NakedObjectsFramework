@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.SpecImmutable {
-    public interface IActionSpecImmutable : IMemberSpecImmutable, IOrderableElement<IActionSpecImmutable> {
+    public interface IActionSpecImmutable : IMemberSpecImmutable {
         IActionParameterSpecImmutable[] Parameters { get; }
         bool IsFinderMethod { get; }
         IObjectSpecImmutable ReturnType { get; }
