@@ -299,13 +299,12 @@ namespace NakedObjects.Reflect.Test {
 
             f1 =
                 cache1.SelectMany(s => s.ObjectActions)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
             f2 =
                 cache2.SelectMany(s => s.ObjectActions)
-                    .Select(s => s.Spec)
+  
                     .Where(s => s != null)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
@@ -321,14 +320,12 @@ namespace NakedObjects.Reflect.Test {
 
             f1 =
                 cache1.SelectMany(s => s.ObjectActions)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .SelectMany(s => s.Parameters)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
             f2 =
                 cache2.SelectMany(s => s.ObjectActions)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .SelectMany(s => s.Parameters)
                     .SelectMany(s => s.GetFacets())
@@ -345,13 +342,11 @@ namespace NakedObjects.Reflect.Test {
 
             f1 =
                 cache1.SelectMany(s => s.Fields)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
             f2 =
                 cache2.SelectMany(s => s.Fields)
-                    .Select(s => s.Spec)
                     .Where(s => s != null)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();

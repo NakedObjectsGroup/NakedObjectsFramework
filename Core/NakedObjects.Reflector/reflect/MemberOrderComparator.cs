@@ -22,9 +22,6 @@ namespace NakedObjects.Reflect {
     /// <para>
     ///     If there is no attribute on either member, then will compare the members by name instead.
     /// </para>
-    /// <para>
-    ///     Can specify if requires that members are in the same (group) name.
-    /// </para>
     public class MemberOrderComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
         private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
 

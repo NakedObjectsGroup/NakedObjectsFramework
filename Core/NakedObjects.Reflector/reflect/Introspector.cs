@@ -34,8 +34,8 @@ namespace NakedObjects.Reflect {
         private readonly IReflector reflector;
         private Type introspectedType;
         private MethodInfo[] methods;
-        private IOrderSet<IAssociationSpecImmutable> orderedFields;
-        private IOrderSet<IActionSpecImmutable> orderedObjectActions;
+        private List<IAssociationSpecImmutable> orderedFields;
+        private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
         public Introspector(IReflector reflector, IMetamodel metamodel) {
@@ -82,11 +82,11 @@ namespace NakedObjects.Reflect {
         }
 
         public IList<IAssociationSpecImmutable> Fields {
-            get { return orderedFields.ElementList().ToImmutableList(); }
+            get { return orderedFields.ToImmutableList(); }
         }
 
         public IList<IActionSpecImmutable> ObjectActions {
-            get { return orderedObjectActions.ElementList().ToImmutableList(); }
+            get { return orderedObjectActions.ToImmutableList(); }
         }
 
         public IObjectSpecBuilder[] Interfaces { get; set; }
@@ -145,7 +145,7 @@ namespace NakedObjects.Reflect {
 
             // find the properties and collections (fields) ...
             IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
-            orderedFields = CreateOrderSet(findFieldMethods);
+            orderedFields = CreateSortedListOfMembers<IAssociationSpecImmutable>(findFieldMethods);
         }
 
         public void IntrospectActions(IObjectSpecImmutable spec) {
@@ -153,7 +153,7 @@ namespace NakedObjects.Reflect {
 
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object, spec);
-            orderedObjectActions = CreateOrderSet(findObjectActionMethods);
+            orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
         }
 
         private MethodInfo[] GetFilteredMethods() {
@@ -301,8 +301,10 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static IOrderSet<T> CreateOrderSet<T>(T[] members) where T :  IMemberSpecImmutable {
-            return new OrderSet<T>(members);
+        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T :  IMemberSpecImmutable {
+            var list = new List<T>(members);
+            list.Sort(new MemberOrderComparator<T>());
+            return list;
         }
 
         private static object InvokeMethod(MethodInfo method, object[] parameters) {

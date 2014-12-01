@@ -83,14 +83,17 @@ namespace NakedObjects.SystemTest.Menus {
             items[0].AssertIsAction().AssertNameEquals("Action2");
             items[1].AssertIsAction().AssertNameEquals("Renamed1");
             var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
-            sub.AllItems()[3].AssertIsAction().AssertNameEquals("Action4");
-            sub.AllItems()[4].AssertIsAction().AssertNameEquals("Action8");
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+             sub = items[3].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
+            sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
+
+            sub = items[4].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
 

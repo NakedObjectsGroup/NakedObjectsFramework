@@ -201,11 +201,7 @@
     <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
     <Compile Include="Reflect\Introspector.cs" />
-    <Compile Include="Reflect\IOrderSet.cs" />
     <Compile Include="Reflect\MethodRemoverConstants.cs" />
-    <Compile Include="Reflect\OrderSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Reflect\Reflector.cs" />
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />
     <Compile Include="Reflect\MemberOrderComparator.cs" />
