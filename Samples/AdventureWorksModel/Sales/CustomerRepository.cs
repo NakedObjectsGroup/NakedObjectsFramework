@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]
@@ -20,6 +21,18 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public static void Menu(ITypedMenu<CustomerRepository> menu) {
+            menu.CreateSubMenuOfSameType("Stores")
+                .AddAction("FindStoreByName")
+                .AddAction("CreateNewStoreCustomer")
+                .AddAction("RandomStore");
+            menu.CreateSubMenuOfSameType("Individuals")
+                .AddAction("FindIndividualByName")
+                .AddAction("CreateNewIndividualCustomer")
+                .AddAction("RandomIndividual");
+            menu.AddRemainingNativeActions();
+        }
 
         #region FindCustomerByAccountNumber
 
@@ -43,7 +56,7 @@ namespace AdventureWorksModel {
 
         #region Stores Menu
 
-        [MemberOrder(20, Name = "Stores")]
+        [MemberOrder(20)]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
         public IQueryable<Store> FindStoreByName(string name) {
@@ -52,14 +65,14 @@ namespace AdventureWorksModel {
                 select obj;
         }
 
-        [MemberOrder(40, Name = "Stores")]
+        [MemberOrder(40)]
         public Store CreateNewStoreCustomer() {
             var store = NewTransientInstance<Store>();
             store.CustomerType = "S";
             return store;
         }
 
-        [MemberOrder(60, Name = "Stores"), QueryOnly]
+        [MemberOrder(60), QueryOnly]
         public Store RandomStore() {
             return Random<Store>();
         }
@@ -68,7 +81,7 @@ namespace AdventureWorksModel {
 
         #region Individuals Menu
 
-        [MemberOrder(30, Name = "Individuals")]
+        [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public IQueryable<Individual> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
             IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
@@ -80,7 +93,7 @@ namespace AdventureWorksModel {
                 select indv;
         }
 
-        [MemberOrder(50, Name = "Individuals")]
+        [MemberOrder(50)]
         public Individual CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
             var indv = NewTransientInstance<Individual>();
             indv.CustomerType = "I";
@@ -95,7 +108,7 @@ namespace AdventureWorksModel {
             return indv;
         }
 
-        [MemberOrder(70, Name = "Individuals"), QueryOnly]
+        [MemberOrder(70), QueryOnly]
         public Individual RandomIndividual() {
             return Random<Individual>();
         }

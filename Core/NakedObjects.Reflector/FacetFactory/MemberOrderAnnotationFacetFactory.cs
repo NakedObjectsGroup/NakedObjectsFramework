@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
+            return attribute == null ? null : new MemberOrderFacet(attribute.Sequence, holder);
         }
     }
 }

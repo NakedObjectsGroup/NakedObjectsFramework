@@ -12,22 +12,15 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class MemberOrderFacet : MultipleValueFacetAbstract, IMemberOrderFacet {
-        private readonly string name;
 
         private readonly string sequence;
 
-        public MemberOrderFacet(string name, string sequence, ISpecification holder)
+        public MemberOrderFacet(string sequence, ISpecification holder)
             : base(typeof (IMemberOrderFacet), holder) {
-            this.name = name;
             this.sequence = sequence;
         }
 
         #region IMemberOrderFacet Members
-
-        public virtual string Name {
-            get { return name; }
-        }
-
         public virtual string Sequence {
             get { return sequence; }
         }

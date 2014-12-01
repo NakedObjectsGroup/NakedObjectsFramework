@@ -18,10 +18,6 @@ namespace NakedObjects.Architecture.Facet {
     /// <seealso cref="IMemberOrderFacet" />
     /// <seealso cref="IFieldOrderFacet" />
     public interface IMemberOrderFacet : IMultipleValueFacet {
-        /// <summary>
-        ///     To group members
-        /// </summary>
-        string Name { get; }
 
         /// <summary>
         ///     The sequence, in dewey-decimal notation
