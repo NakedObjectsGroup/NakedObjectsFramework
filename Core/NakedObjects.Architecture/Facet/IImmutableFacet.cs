@@ -17,6 +17,5 @@ namespace NakedObjects.Architecture.Facet {
     ///     <see cref="ImmutableAttribute" /> annotation at the class level
     /// </para>
     /// <seealso cref="IEqualByContentFacet" />
-    /// <seealso cref="IValueFacet" />
     public interface IImmutableFacet : ISingleWhenValueFacet, IDisablingInteractionAdvisor {}
 }

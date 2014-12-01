@@ -93,7 +93,10 @@ namespace MvcTestApp.Tests.Helpers {
                     GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
 
                 var types3 = new Type[] {
-                    typeof (EnumerableQuery<string>)
+                    typeof (EnumerableQuery<string>),
+                    typeof(Claim[]),
+                    typeof(Object[]),
+
                 };
 
                 return types1.Union(types2).Union(types3).ToArray();

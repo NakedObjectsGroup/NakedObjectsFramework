@@ -19,7 +19,6 @@ namespace NakedObjects.Architecture.Adapter {
         /// <summary>
         ///     Returns the adapted domain object, the POCO, that this adapter represents with the NOF
         /// </summary>
-        /// <seealso cref="AdapterUtils.GetDomainObject{T}" />
         object Object { get; }
 
         /// <summary>

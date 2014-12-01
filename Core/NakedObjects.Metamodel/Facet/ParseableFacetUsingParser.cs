@@ -25,9 +25,6 @@ namespace NakedObjects.Meta.Facet {
 
         #region IParseableFacet Members
 
-        public bool IsValid {
-            get { return parser != null; }
-        }
 
         public INakedObject ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {

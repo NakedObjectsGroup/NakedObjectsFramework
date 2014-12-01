@@ -26,10 +26,6 @@ namespace NakedObjects.Meta.Facet {
             get { return defaultsProvider.DefaultValue; }
         }
 
-        public bool IsValid {
-            get { return defaultsProvider != null; }
-        }
-
         #endregion
 
         protected override string ToStringValues() {

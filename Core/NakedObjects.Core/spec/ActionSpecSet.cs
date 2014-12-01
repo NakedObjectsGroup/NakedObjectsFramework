@@ -211,12 +211,6 @@ namespace NakedObjects.Core.Spec {
         /// <summary>
         ///     Does nothing
         /// </summary>
-        public virtual void AddFacet(IMultiTypedFacet facet) {}
-
-
-        /// <summary>
-        ///     Does nothing
-        /// </summary>
         public virtual void RemoveFacet(IFacet facet) {}
 
         /// <summary>

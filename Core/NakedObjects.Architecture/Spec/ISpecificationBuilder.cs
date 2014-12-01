@@ -18,15 +18,5 @@ namespace NakedObjects.Architecture.Spec {
         ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
         /// </para>
         void AddFacet(IFacet facet);
-
-        /// <summary>
-        ///     Adds the <see cref="IMultiTypedFacet" />, extracting each of its <see cref="IMultiTypedFacet.FacetTypes" /> as keys.
-        /// </summary>
-        /// <para>
-        ///     If there are any facet of the same type, they will be overwritten <i>provided</i>
-        ///     that either the <see cref="IFacet" /> specifies to <see cref="IFacet.CanAlwaysReplace" />
-        ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
-        /// </para>
-        void AddFacet(IMultiTypedFacet facet);
     }
 }

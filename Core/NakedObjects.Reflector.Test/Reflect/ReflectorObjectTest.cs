@@ -5,13 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
+    public class TestDomainObject {}
+
     [TestFixture]
     public class ReflectorObjectTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
@@ -58,10 +58,6 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsNull(facet);
         }
 
-        [Test]
-        public void TestNotAnAssociatedMetadataTypeTypeDescriptionProvider() {
-            Assert.IsFalse(TypeDescriptor.GetProvider(typeof (TestDomainObject)) is AssociatedMetadataTypeTypeDescriptionProvider);
-        }
 
         [Test]
         public void TestPluralFaced() {

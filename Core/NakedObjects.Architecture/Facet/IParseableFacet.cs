@@ -12,9 +12,7 @@ namespace NakedObjects.Architecture.Facet {
     /// <summary>
     ///     Indicates that this class can parse an entry string
     /// </summary>
-    public interface IParseableFacet : IMultipleValueFacet {
-        bool IsValid { get; }
-
+    public interface IParseableFacet : IFacet{
         /// <summary>
         ///     Parses a text entry made by a user and sets the domain object's value.
         /// </summary>

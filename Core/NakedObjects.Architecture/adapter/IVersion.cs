@@ -15,7 +15,7 @@ namespace NakedObjects.Architecture.Adapter {
     /// <para>
     ///     This is normally done using some form of incrementing number or timestamp, which would be held within
     ///     the implementing class. The numbers, timestamps, etc should change for each changed object, and the
-    ///     <see cref="IsDifferent" /> method should indicate that the two Version objects are different
+    ///     <see cref="IVersion.IsDifferent(IVersion)" /> method should indicate that the two Version objects are different
     /// </para>
     /// <para>
     ///     The user's name and a timestamp should also be kept so that when an message is passed to the user it can be

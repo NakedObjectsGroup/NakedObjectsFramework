@@ -12,12 +12,12 @@ namespace NakedObjects.Architecture.Facet {
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to annotating each of the
-    ///     member methods with the <see cref="MemberOrderAttribute" />.  An alternative approach is to use the
-    ///     action <see cref="IActionOrderFacet" /> or field <see cref="IFieldOrderFacet" /> order facets
+    ///     member methods with the <see cref="MemberOrderAttribute" />. 
     /// </para>
     /// <seealso cref="IMemberOrderFacet" />
-    /// <seealso cref="IFieldOrderFacet" />
-    public interface IMemberOrderFacet : IMultipleValueFacet {
+
+
+    public interface IMemberOrderFacet : IFacet {
 
         /// <summary>
         ///     The sequence, in dewey-decimal notation

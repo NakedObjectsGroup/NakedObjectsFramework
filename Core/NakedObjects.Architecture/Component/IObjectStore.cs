@@ -18,8 +18,7 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IObjectStore {
         /// <summary>
-        ///     Determine if the object store has been initialized with its set of start up objects. This method is
-        ///     called only once after <see cref="IRequiresSetup.Init" /> has been called. If this flag returns
+        ///     Determine if the object store has been initialized with its set of start up objects. If this flag returns
         ///     <c>false</c> the framework will run the fixtures to initialise the object store.
         /// </summary>
         bool IsInitialized { get; set; }
@@ -55,8 +54,7 @@ namespace NakedObjects.Architecture.Component {
 
         /// <summary>
         ///     Persists the specified object's state. Essentially the data held by the persistence mechanism should be
-        ///     updated to reflect the state of the specified objects. Once updated, the object store should issue a
-        ///     notification to all of the object's users via the <see cref="IUpdateNotifier" /> object.
+        ///     updated to reflect the state of the specified objects. 
         /// </summary>
         ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session);
 

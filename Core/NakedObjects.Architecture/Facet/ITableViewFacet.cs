@@ -10,7 +10,7 @@ namespace NakedObjects.Architecture.Facet {
     /// </summary>
     /// <para>
     /// </para>
-    public interface ITableViewFacet : IMultipleValueFacet {
+    public interface ITableViewFacet : IFacet {
         bool Title { get; set; }
         string[] Columns { get; }
     }

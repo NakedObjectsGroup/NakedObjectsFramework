@@ -20,7 +20,6 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
         public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
             FacetUtils.AddFacet(semanticsProvider as IFacet);
 
-
             // value implies aggregated 
             FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
 

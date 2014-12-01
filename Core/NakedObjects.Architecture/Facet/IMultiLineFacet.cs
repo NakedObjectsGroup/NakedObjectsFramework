@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facet {
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to the <see cref="MultiLineAttribute" /> annotation
     /// </para>
-    public interface IMultiLineFacet : IMultipleValueFacet {
+    public interface IMultiLineFacet : IFacet {
         /// <summary>
         ///     How many lines to use
         /// </summary>
