@@ -135,6 +135,7 @@
     <Compile Include="Component\IBatchRunner.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
+    <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Menu\IMenuBuilder.cs" />
     <Compile Include="Menu\ITypedMenuBuilder.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />
@@ -267,9 +268,6 @@
     <Compile Include="Facet\ITypicalLengthFacet.cs" />
     <Compile Include="Facet\IValidateProgrammaticUpdatesFacet.cs" />
     <Compile Include="Facet\IAggregatedFacet.cs" />
-    <Compile Include="Facet\IActionOrderFacet.cs" />
-    <Compile Include="Facet\IFieldOrderFacet.cs" />
-    <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Facet\INotPersistedFacet.cs" />
     <Compile Include="Facet\IPropertyAccessorFacet.cs" />
     <Compile Include="Facet\IPropertyChoicesFacet.cs" />
@@ -330,7 +328,6 @@
     <Compile Include="SpecImmutable\IObjectSpecImmutable.cs" />
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Spec\IActionSpec.cs" />
-    <Compile Include="Reflect\IOrderableElement.cs" />
     <Compile Include="Spec\IActionParameterSpec.cs" />
     <Compile Include="Reflect\ActionType.cs" />
     <Compile Include="Spec\IAssociationSpec.cs" />
