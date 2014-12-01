@@ -106,23 +106,19 @@ namespace NakedObjects.Meta.Menu {
         #endregion
 
         protected IList<IActionSpecImmutable> GetActionsForObject<TObject>() {
-            return GetObjectSpec<TObject>().ObjectActions.Select(x => x.Spec).ToList();
+            return GetObjectSpec<TObject>().ObjectActions.ToList();
         }
 
         protected IObjectSpecImmutable GetObjectSpec<TObject>() {
             return metamodel.GetSpecification(typeof (TObject));
         }
 
-        public void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, MenuImpl toMenu) {
-            foreach (var element in ordeableElements) {
-                var action = element.Spec;
+        public void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
+            foreach (var action in ordeableElements) {
                 if (action != null) {
                     if (!toMenu.HasAction(action)) {
                         toMenu.AddMenuItem(new MenuAction(action, null));
                     }
-                } else if (!string.IsNullOrEmpty(element.GroupFullName)) { //i.e. sub-menu
-                    var sub = CreateMenuImmutableAsSubMenu(element.GroupFullName);
-                    AddOrderableElementsToMenu(element.Set, sub);
                 }
             }
         }

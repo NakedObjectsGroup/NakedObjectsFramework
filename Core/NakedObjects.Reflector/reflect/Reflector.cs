@@ -179,18 +179,18 @@ namespace NakedObjects.Reflect {
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             if (!spec.Service) {
-                IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
+                IList<Tuple<string, string, IList<IActionSpecImmutable>>> contributedActions = new List<Tuple<string, string, IList<IActionSpecImmutable>>>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
 
-                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
+                        var matchingServiceActions = serviceSpecification.ObjectActions.Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToList();
 
                         if (matchingServiceActions.Any()) {
-                            IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingServiceActions);
+                            matchingServiceActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
                             string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                             string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
+                            var t = new Tuple<string, string, IList<IActionSpecImmutable>>(id, name, matchingServiceActions);
 
                             contributedActions.Add(t);
                         }
@@ -201,12 +201,12 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
-            IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
+            IList<Tuple<string, string, IList<IActionSpecImmutable>>> relatedActions = new List<Tuple<string, string, IList<IActionSpecImmutable>>>();
             foreach (Type serviceType in services) {
                 IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
-                foreach (IActionSpecImmutable serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(a => a.IsFinderMethod)) {
+                foreach (IActionSpecImmutable serviceAction in serviceSpecification.ObjectActions.Where(s => s != null).Where(a => a.IsFinderMethod)) {
                     IObjectSpecImmutable returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
                         IObjectSpecImmutable elementType = serviceAction.ElementType;
@@ -220,11 +220,10 @@ namespace NakedObjects.Reflect {
                 }
 
                 if (matchingActions.Any()) {
-                    IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingActions.ToArray());
+                    matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
                     string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                     string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                    var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
-
+                    var t = new Tuple<string, string, IList<IActionSpecImmutable>>(id, name, matchingActions);
                     relatedActions.Add(t);
                 }
             }

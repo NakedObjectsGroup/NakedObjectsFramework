@@ -21,9 +21,8 @@ namespace NakedObjects.Architecture.Reflect {
 
         string FullName { get; }
         string ShortName { get; }
-        IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }
-        IList<IOrderableElement<IActionSpecImmutable>> ClassActions { get; }
-        IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
+        IList<IAssociationSpecImmutable> Fields { get; }
+        IList<IActionSpecImmutable> ObjectActions { get; }
         IObjectSpecBuilder[] Interfaces { get; set; }
         IObjectSpecBuilder Superclass { get; set; }
         void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable specification);

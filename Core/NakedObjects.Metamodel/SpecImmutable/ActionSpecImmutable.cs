@@ -49,7 +49,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return this; }
         }
 
-        public IList<IOrderableElement<IActionSpecImmutable>> Set {
+        public IList<IActionSpecImmutable> Set {
             get { return null; }
         }
 

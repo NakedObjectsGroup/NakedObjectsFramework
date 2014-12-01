@@ -341,14 +341,11 @@ namespace NakedObjects.Core.Spec {
         }
 
 
-        private IAssociationSpec[] OrderFields(IList<IOrderableElement<IAssociationSpecImmutable>> order) {
+        private IAssociationSpec[] OrderFields(IList<IAssociationSpecImmutable> order) {
             var orderedFields = new List<IAssociationSpec>();
             foreach (var element in order) {
-                if (element.Spec != null) {
-                    orderedFields.Add(memberFactory.CreateAssociationSpec(element.Spec));
-                }
-                else if (element.Set != null) {
-                    throw new NotImplementedException();
+                if (element != null) {
+                    orderedFields.Add(memberFactory.CreateAssociationSpec(element));
                 }
                 else {
                     throw new UnknownTypeException(element);

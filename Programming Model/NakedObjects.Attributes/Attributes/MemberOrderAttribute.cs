@@ -17,21 +17,16 @@ namespace NakedObjects {
     public class MemberOrderAttribute : Attribute {
         public MemberOrderAttribute() {
             Sequence = "";
-            Name = "";
         }
 
         public MemberOrderAttribute(string sequence) {
             Sequence = sequence;
-            Name = "";
         }
 
         public MemberOrderAttribute(double sequence) {
             Sequence = "" + sequence;
-            Name = "";
         }
 
         public string Sequence { get; set; }
-
-        public string Name { get; set; }
     }
 }

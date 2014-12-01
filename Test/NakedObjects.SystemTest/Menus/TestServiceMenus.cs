@@ -53,81 +53,46 @@ namespace NakedObjects.SystemTest.Menus {
            var menu = GetTestService("Foo Service").GetMenu();
           var items = menu.AssertItemCountIs(3).AllItems();
           items[0].AssertIsAction().AssertNameEquals("Foo Action0");
-          items[1].AssertIsAction().AssertNameEquals("Foo Action1");
-          items[2].AssertIsAction().AssertNameEquals("Foo Action2");
+          items[1].AssertIsAction().AssertNameEquals("Foo Action2");
+          items[2].AssertIsAction().AssertNameEquals("Foo Action1");
         }
 
         [TestMethod]
         public void TestDefaultServiceMenuWithSubMenus() {
 
             var bars = GetTestService("Bars").GetMenu();
-            bars.AssertItemCountIs(3);
+            bars.AssertItemCountIs(4);
 
             bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
             bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
-            var sub1 = bars.AllItems()[2].AssertIsSubMenu().AssertNameEquals("sub1").AsSubMenu();
-            sub1.AssertItemCountIs(2);
-            sub1.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action2");
-            sub1.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action3");
+            bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
+            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
         }
 
         [TestMethod]
         public void TestWhenMainMenusNotSpecifiedServiceMenusAreUsed() {
             var bars = GetMainMenu("Bars"); //i.e. same as asking for GetService("Bars").GetMenu();
-            bars.AssertItemCountIs(3);
+            bars.AssertItemCountIs(4);
 
             bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
             bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
-            var sub1 = bars.AllItems()[2].AssertIsSubMenu().AssertNameEquals("sub1").AsSubMenu();
-            sub1.AssertItemCountIs(2);
-            sub1.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action2");
-            sub1.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action3");
+            bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
+            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
         }
 
     }
 
     #region Classes used in test
 
-    //public class LocalMainMenus : IMainMenuDefinition {
-
-    //    public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-    //        var foos = factory.NewMenu<FooService>(true);
-    //        var bars = factory.NewMenu<BarService>(true);
-
-    //        var q = factory.NewMenu<QuxService>(false, "Qs");
-    //        q.AddAction("QuxAction0");
-    //        q.AddAction("QuxAction3", "Action X");
-    //        q.AddRemainingNativeActions();
-
-    //        var subs = factory.NewMenu<ServiceWithSubMenus>(false);
-    //        var sub1 = subs.CreateSubMenuOfSameType("Sub1");
-    //        sub1.AddAction("Action1");
-    //        sub1.AddAction("Action3");
-    //        var sub2 = subs.CreateSubMenuOfSameType("Sub2");
-    //        sub2.AddAction("Action2");
-    //        sub2.AddAction("Action0");
-
-    //        var hyb = factory.NewMenu("Hybrid");
-    //        hyb.AddActionFrom<FooService>("FooAction0");
-    //        hyb.AddActionFrom<BarService>("BarAction0");
-    //        hyb.AddAllRemainingActionsFrom<QuxService>();
-
-    //        var empty = factory.NewMenu("Empty");
-
-    //        var empty2 = factory.NewMenu("Empty2");
-    //        empty2.CreateSubMenu("Sub");
-
-    //        return new IMenuBuilder[] { foos, bars, q, subs, hyb, empty, empty2 };
-    //    }
-    //}
-
     public class FooService {
 
-
+        [MemberOrder(1)]
         public void FooAction0() { }
 
+        [MemberOrder(3)]
         public void FooAction1() { }
 
+        [MemberOrder(2)]
         public void FooAction2(string p1, int p2) { }
     }
 
@@ -165,10 +130,8 @@ namespace NakedObjects.SystemTest.Menus {
         [MemberOrder(1)]
         public void BarAction1() { }
 
-        [MemberOrder(Name = "sub1", Sequence = "1")]
         public void BarAction2() { }
 
-        [MemberOrder(Name = "sub1", Sequence = "2")]
         public void BarAction3() { }
 
     }

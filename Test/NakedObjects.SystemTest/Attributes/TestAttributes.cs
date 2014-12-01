@@ -67,7 +67,6 @@ namespace NakedObjects.SystemTest.Attributes {
                     new SimpleRepository<Regex2>(),
                     new SimpleRepository<Memberorder1>(),
                     new SimpleRepository<Memberorder2>(),
-                    new SimpleRepository<Memberorder3>(),
                     new SimpleRepository<Stringlength1>(),
                     new SimpleRepository<Title1>(),
                     new SimpleRepository<Title2>(),
@@ -784,33 +783,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
             obj3.AssertActionOrderIs("Action2, Action4, Action1, Action3");
         }
-
-        [TestMethod]
-        public void ActionOrderWithSubMenus() {
-            ITestObject obj4 = NewTestObject<Memberorder3>();
-            obj4.AssertActionOrderIs("Action1, Action4, (Sub1:Action3, Action2), (Sub2:Action5)");
-
-            ITestAction[] actions = obj4.Actions;
-            Assert.AreEqual(actions[0].Name, "Action1");
-            Assert.AreEqual(actions[1].Name, "Action4");
-            Assert.AreEqual(actions[2].Name, "Action3");
-            Assert.AreEqual(actions[3].Name, "Action2");
-            Assert.AreEqual(actions[4].Name, "Action5");
-
-            obj4.GetAction("Action1").AssertIsVisible();
-            obj4.GetAction("Action4").AssertIsVisible();
-            obj4.GetAction("Action3", "Sub1").AssertIsVisible();
-            obj4.GetAction("Action2", "Sub1").AssertIsVisible();
-            obj4.GetAction("Action5", "Sub2").AssertIsVisible();
-
-            try {
-                obj4.GetAction("Action1", "Sub1").AssertIsVisible();
-            }
-            catch (Exception e) {
-                Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub1'", e.Message);
-            }
-        }
-
         #endregion
 
         #region StringLength
@@ -1513,23 +1485,6 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop4 { get; set; }
 
         [MemberOrder(4)]
-        public void Action3() {}
-
-        [MemberOrder(2)]
-        public void Action4() {}
-    }
-
-    public class Memberorder3 {
-        [MemberOrder(1)]
-        public void Action1() {}
-
-        [MemberOrder(Name = "Sub2", Sequence = "1")]
-        public void Action5() {}
-
-        [MemberOrder(Name = "Sub1", Sequence = "2")]
-        public void Action2() {}
-
-        [MemberOrder(Name = "Sub1", Sequence = "1")]
         public void Action3() {}
 
         [MemberOrder(2)]

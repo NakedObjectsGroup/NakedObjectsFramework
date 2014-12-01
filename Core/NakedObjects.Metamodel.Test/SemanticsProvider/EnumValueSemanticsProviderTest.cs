@@ -103,6 +103,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [Test]
         public void TestDefault() {
+        
             object def = value.DefaultValue;
             Assert.AreEqual(TestEnum.London, def);
         }

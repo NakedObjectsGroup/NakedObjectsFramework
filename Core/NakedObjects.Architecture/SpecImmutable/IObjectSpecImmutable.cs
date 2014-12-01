@@ -24,10 +24,10 @@ namespace NakedObjects.Architecture.SpecImmutable {
         string FullName { get; }
         string ShortName { get; }
         IMenuImmutable ObjectMenu { get; }
-        IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
-        IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; }
-        IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; }
-        IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }
+        IList<IActionSpecImmutable> ObjectActions { get; }
+        IList<Tuple<string, string, IList<IActionSpecImmutable>>> ContributedActions { get; }
+        IList<Tuple<string, string, IList<IActionSpecImmutable>>> RelatedActions { get; }
+        IList<IAssociationSpecImmutable> Fields { get; }
         IList<IObjectSpecImmutable> Interfaces { get; }
         IList<IObjectSpecImmutable> Subclasses { get; }
         bool Service { get; }

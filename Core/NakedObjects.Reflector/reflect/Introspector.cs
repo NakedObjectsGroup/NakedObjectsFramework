@@ -34,9 +34,8 @@ namespace NakedObjects.Reflect {
         private readonly IReflector reflector;
         private Type introspectedType;
         private MethodInfo[] methods;
-        private IOrderSet<IActionSpecImmutable> orderedClassActions;
-        private IOrderSet<IAssociationSpecImmutable> orderedFields;
-        private IOrderSet<IActionSpecImmutable> orderedObjectActions;
+        private List<IAssociationSpecImmutable> orderedFields;
+        private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
         public Introspector(IReflector reflector, IMetamodel metamodel) {
@@ -82,16 +81,12 @@ namespace NakedObjects.Reflect {
             get { return TypeNameUtils.GetShortName(introspectedType.Name); }
         }
 
-        public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
-            get { return orderedFields.ElementList().ToImmutableList(); }
+        public IList<IAssociationSpecImmutable> Fields {
+            get { return orderedFields.ToImmutableList(); }
         }
 
-        public IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
-            get { return orderedClassActions.ElementList().ToImmutableList(); }
-        }
-
-        public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
-            get { return orderedObjectActions.ElementList().ToImmutableList(); }
+        public IList<IActionSpecImmutable> ObjectActions {
+            get { return orderedObjectActions.ToImmutableList(); }
         }
 
         public IObjectSpecBuilder[] Interfaces { get; set; }
@@ -150,13 +145,7 @@ namespace NakedObjects.Reflect {
 
             // find the properties and collections (fields) ...
             IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
-
-            // ... and the ordering of the properties and collections  
-            var fieldOrderFacet = spec.GetFacet<IFieldOrderFacet>();
-
-            // TODO: the calling of fieldOrder() should be a facet
-            string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
-            orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
+            orderedFields = CreateSortedListOfMembers<IAssociationSpecImmutable>(findFieldMethods);
         }
 
         public void IntrospectActions(IObjectSpecImmutable spec) {
@@ -164,23 +153,7 @@ namespace NakedObjects.Reflect {
 
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object, spec);
-
-            // ... and the ordering of actions ...
-            var actionOrderFacet = spec.GetFacet<IActionOrderFacet>();
-
-            // TODO: the calling of actionOrder() should be a facet
-            string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
-            orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
-
-
-            // find the class actions ...
-            IActionSpecImmutable[] findClassActionMethods = FindActionMethods(MethodType.Class, spec);
-
-            // ... and the ordering of class actions
-            // TODO: the calling of classActionOrder() should be a facet
-            actionOrder = InvokeSortOrderMethod("ClassAction");
-
-            orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
+            orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
         }
 
         private MethodInfo[] GetFilteredMethods() {
@@ -328,27 +301,10 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static IOrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
-            if (order == null) {
-                return OrderSet<T>.CreateDeweyOrderSet(members);
-            }
-            return OrderSet<T>.CreateSimpleOrderSet(order, members);
-        }
-
-        private string InvokeSortOrderMethod(string name) {
-            MethodInfo method = FindAndRemoveMethod(MethodType.Class, name + "Order", typeof (string), Type.EmptyTypes);
-            if (method == null) {
-                return null;
-            }
-            if (!method.IsStatic) {
-                Log.Warn("method " + ClassName + "." + name + "Order() must be declared as static");
-                return null;
-            }
-            var s = (string) InvokeMethod(method, NoParameters);
-            if (s.Trim().Length == 0) {
-                return null;
-            }
-            return s;
+        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T :  IMemberSpecImmutable {
+            var list = new List<T>(members);
+            list.Sort(new MemberOrderComparator<T>());
+            return list;
         }
 
         private static object InvokeMethod(MethodInfo method, object[] parameters) {
