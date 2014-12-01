@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflect {
-    public interface IOrderSet<T> : IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
+    public interface IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
         /// </summary>

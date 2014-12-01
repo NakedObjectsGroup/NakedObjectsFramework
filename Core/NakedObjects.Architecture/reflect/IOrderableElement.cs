@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
-    public interface IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
+    public interface IOrderableElement<T> where T : ISpecification {
         T Spec { get; }
     }
 }

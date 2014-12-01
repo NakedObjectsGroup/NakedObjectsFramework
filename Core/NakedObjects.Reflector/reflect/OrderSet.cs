@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
-    public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
+    public class OrderSet<T> : IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
 
         //Constructor
@@ -45,13 +45,6 @@ namespace NakedObjects.Reflect {
             }
         }
 
-        #region IComparable<IOrderSet<T>> Members
-
-        public int CompareTo(IOrderSet<T> o) {
-            return this.Equals(0) ? 0 : -1;
-        }
-        #endregion
-
         #region IOrderSet<T> Members
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
@@ -59,28 +52,15 @@ namespace NakedObjects.Reflect {
         public IList<IOrderableElement<T>> ElementList() {
             return new ReadOnlyCollection<IOrderableElement<T>>(elements);
         }
-
-        public T Spec {
-            get { return default(T); }
-        }
-
-        public IList<IOrderableElement<T>> Set {
-            get { return elements.ToList(); }
-        }
-
-        #endregion
-
-        private int Size() {
-            return elements.Count;
-        }
+       #endregion
 
         /// <summary>
-        ///     Format is: <c>XXel/YYm</c>
+        ///     Format is: <c>XXel</c>
         ///     Where 
-        ///     <c>XX</c> is number of elements, <c>YY</c> is number of members, and
+        ///     <c>XX</c> is number of elements
         /// </summary>
         public override string ToString() {
-            return "" + Size() + "el/" + Size()+ "m/" ;
+            return "" + elements.Count() + "el";
         }
     }
 
