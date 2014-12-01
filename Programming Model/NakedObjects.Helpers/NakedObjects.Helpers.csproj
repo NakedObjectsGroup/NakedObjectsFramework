@@ -64,7 +64,6 @@
     <Compile Include="Services\PolymorphicNavigator.cs" />
     <Compile Include="Services\PolymorphicNavigatorWithOid.cs" />
     <Compile Include="Services\SimpleRepository.cs" />
-    <Compile Include="Util\AttributeUtils.cs" />
     <Compile Include="Util\DateTimeExtensions.cs" />
     <Compile Include="Util\IInternalAccess.cs" />
     <Compile Include="Util\KeyUtils.cs" />

@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -21,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<DisabledAttribute>(member);
+            var attribute = member.GetCustomAttribute<DisabledAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

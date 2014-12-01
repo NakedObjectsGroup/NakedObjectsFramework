@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -27,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Action) {}
 
         private void Process(IReflector reflector, MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);
+            var attribute = member.GetCustomAttribute<NotContributedActionAttribute>();
             FacetUtils.AddFacet(Create(reflector, attribute, holder));
         }
 

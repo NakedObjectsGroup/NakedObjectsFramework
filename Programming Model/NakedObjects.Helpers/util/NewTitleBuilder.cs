@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using NakedObjects.Util;
 
 namespace NakedObjects {
     /// <summary>
@@ -63,10 +62,9 @@ namespace NakedObjects {
             }
 
             if (titleFrom[type] == null) {
-                IList<MethodInfo> attributedMethods = new List<MethodInfo>();
                 PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 foreach (PropertyInfo property in properties) {
-                    if (property.GetCustomAttribute<TitleAttribute>() != null) {
+                    if (Attribute.GetCustomAttribute(property, typeof(TitleAttribute)) != null) {
                         titleFrom[type] = new TitleFromProperty(property);
                     }
                 }

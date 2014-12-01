@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,12 +21,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<TypicalLengthAttribute>();
+            var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<TypicalLengthAttribute>(member);
+            var attribute = member.GetCustomAttribute<TypicalLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<TypicalLengthAttribute>();
+            var attribute = parameter.GetCustomAttribute<TypicalLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

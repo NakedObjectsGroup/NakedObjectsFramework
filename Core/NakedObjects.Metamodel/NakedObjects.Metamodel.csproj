@@ -96,7 +96,6 @@
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
-    <Compile Include="Facet\ActionDefaultsFacetDerivedFromDefaultedFacets.cs" />
     <Compile Include="Facet\ActionDefaultsFacetViaMethod.cs" />
     <Compile Include="Facet\ActionInvocationFacetViaMethod.cs" />
     <Compile Include="Facet\ActionParameterValidation.cs" />
@@ -206,7 +205,6 @@
     <Compile Include="Facet\PropertyChoicesFacet.cs" />
     <Compile Include="Facet\PropertyClearFacetViaClearMethod.cs" />
     <Compile Include="Facet\PropertyDefaultFacetAnnotation.cs" />
-    <Compile Include="Facet\PropertyDefaultFacetDerivedFromDefaultedFacet.cs" />
     <Compile Include="Facet\PropertyDefaultFacetViaMethod.cs" />
     <Compile Include="Facet\PropertyInitializationFacet.cs" />
     <Compile Include="Facet\PropertySetterFacetViaModifyMethod.cs" />

@@ -259,7 +259,7 @@ namespace NakedObjects.Reflect {
                     continue;
                 }
 
-                if (AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(actionMethod) != null) {
+                if (actionMethod.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) {
                     continue;
                 }
 

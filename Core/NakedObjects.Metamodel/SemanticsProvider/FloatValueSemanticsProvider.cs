@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IPropertyDefaultFacet {
+    public class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IFloatingPointValueFacet {
         private const float DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 12;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public FloatValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (float); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IFloatingPointValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public float FloatValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<float>();
         }
 
         #endregion
@@ -83,11 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override float DoRestore(string data) {
             return float.Parse(data);
-        }
-
-
-        public float FloatValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<float>();
         }
 
 

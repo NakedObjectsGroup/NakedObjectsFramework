@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -14,10 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
-using MethodInfo = System.Reflection.MethodInfo;
-using PropertyInfo = System.Reflection.PropertyInfo;
-using MemberInfo = System.Reflection.MemberInfo;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -25,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(type.GetCustomAttributeByReflection<HiddenAttribute>,
-                type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, specification);
+            Process(type.GetCustomAttribute<HiddenAttribute>,
+                type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {

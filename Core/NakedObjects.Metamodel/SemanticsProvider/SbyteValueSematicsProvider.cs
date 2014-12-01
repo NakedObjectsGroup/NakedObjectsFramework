@@ -16,18 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, IPropertyDefaultFacet {
+    public class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, ISbyteValueFacet {
         private const sbyte DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 3; // include sign 
 
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public SbyteValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public SbyteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -40,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (sbyte); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region ISbyteValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public sbyte SByteValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<sbyte>();
         }
 
         #endregion
@@ -84,11 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override sbyte DoRestore(string data) {
             return sbyte.Parse(data);
-        }
-
-
-        public sbyte ByteValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<sbyte>();
         }
 
 

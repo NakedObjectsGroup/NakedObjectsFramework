@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -61,6 +62,14 @@ namespace MvcTestApp.Tests.Controllers {
 
         private CustomControllerWrapper controller;
         private ContextMocks mocks;
+
+        protected override Type[] Types {
+            get {
+                return new Type[] {
+                    typeof (ObjectQuery<string>)
+                };
+            }
+        }
 
         protected override object[] MenuServices {
             get {

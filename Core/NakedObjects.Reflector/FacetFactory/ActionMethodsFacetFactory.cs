@@ -49,8 +49,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private bool IsQueryOnly(MethodInfo method) {
-            return (AttributeUtils.GetCustomAttribute<IdempotentAttribute>(method) == null) &&
-                   (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(method) != null);
+            return (method.GetCustomAttribute<IdempotentAttribute>() == null) &&
+                   (method.GetCustomAttribute<QueryOnlyAttribute>() != null);
         }
 
         public override void Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action) {
@@ -247,7 +247,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                         new[] {typeof (string)});
 
                     if (method != null) {
-                        var pageSizeAttr = AttributeUtils.GetCustomAttribute<PageSizeAttribute>(method);
+                        var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof (MinLengthAttribute));
 
                         int pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default

@@ -10,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Container {
     public static class Methods {
@@ -21,7 +20,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public static void InjectRoot(object root, object inlineObject) {
-            PropertyInfo property = inlineObject.GetType().GetProperties().SingleOrDefault(p => AttributeUtils.GetCustomAttribute<RootAttribute>(p) != null &&
+            PropertyInfo property = inlineObject.GetType().GetProperties().SingleOrDefault(p => p.GetCustomAttribute<RootAttribute>() != null &&
                                                                                                 p.PropertyType.IsAssignableFrom(root.GetType()) &&
                                                                                                 p.CanWrite);
             if (property != null) {

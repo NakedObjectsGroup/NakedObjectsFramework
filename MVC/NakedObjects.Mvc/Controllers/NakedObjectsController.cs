@@ -664,11 +664,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ValueProviderResult items = form.GetValue(name);
 
                     if (items != null && assoc.Count(nakedObject) == 0) {
-                        throw new NotImplementedException();
-                        //var itemIds = (string[]) items.RawValue;
-                        //var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
-                        //var collection = assoc.GetNakedObject(nakedObject);
-                        //collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
+                        var itemIds = (string[])items.RawValue;
+                        var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
+                        var collection = assoc.GetNakedObject(nakedObject);
+                        collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
                     }
                 }
 

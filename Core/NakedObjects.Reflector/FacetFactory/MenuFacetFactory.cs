@@ -8,13 +8,11 @@
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MenuFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
@@ -36,7 +34,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
-            } else {
+            }
+            else {
                 FacetUtils.AddFacet(new MenuFacetDefault(specification));
             }
         }

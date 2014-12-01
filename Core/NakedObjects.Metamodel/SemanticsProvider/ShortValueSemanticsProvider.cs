@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IPropertyDefaultFacet {
+    public class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IShortValueFacet {
         private const short DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 6;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public ShortValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -40,10 +35,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (short); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IShortValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public short ShortValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<short>();
         }
 
         #endregion
@@ -84,11 +79,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override short DoRestore(string data) {
             return short.Parse(data);
-        }
-
-
-        public short ShortValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<short>();
         }
 
 

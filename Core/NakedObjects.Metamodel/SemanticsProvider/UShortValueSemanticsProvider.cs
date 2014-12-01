@@ -16,23 +16,17 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IPropertyDefaultFacet {
+    public class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IUnsignedShortValueFacet {
         private const ushort DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 5;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public UShortValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
-
         public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
-            get { return typeof (IShortValueFacet); }
+            get { return typeof (IUnsignedShortValueFacet); }
         }
 
 
@@ -40,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (ushort); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IUnsignedShortValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public ushort UnsignedShortValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<ushort>();
         }
 
         #endregion
@@ -84,11 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override ushort DoRestore(string data) {
             return ushort.Parse(data);
-        }
-
-
-        public ushort UnsignedShortValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<ushort>();
         }
 
 

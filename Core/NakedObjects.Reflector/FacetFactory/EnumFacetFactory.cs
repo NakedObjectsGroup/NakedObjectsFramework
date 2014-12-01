@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = AttributeUtils.GetCustomAttribute<EnumDataTypeAttribute>(property);
+            var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
 
             AddEnumFacet(attribute, specification, property.PropertyType);
         }
@@ -50,7 +50,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<EnumDataTypeAttribute>();
+            var attribute = parameter.GetCustomAttribute<EnumDataTypeAttribute>();
             AddEnumFacet(attribute, holder, parameter.ParameterType);
         }
 

@@ -26,12 +26,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public BooleanValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
-
         private static Type Type {
             get { return typeof (IBooleanValueFacet); }
         }

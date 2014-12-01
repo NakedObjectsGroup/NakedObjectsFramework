@@ -16,17 +16,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IPropertyDefaultFacet {
+    public class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IUnsignedLongValueFacet {
         private const ulong DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 20;
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public ULongValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public ULongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,10 +33,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (ulong); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IUnsignedLongValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public ulong UnsignedLongValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<ulong>();
         }
 
         #endregion
@@ -50,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (ulong);
         }
-
 
         protected override ulong DoParse(string entry) {
             try {
@@ -84,12 +77,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override ulong DoRestore(string data) {
             return ulong.Parse(data);
         }
-
-
-        public ulong UnsignedLongValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<ulong>();
-        }
-
 
         public override string ToString() {
             return "ULongAdapter: ";

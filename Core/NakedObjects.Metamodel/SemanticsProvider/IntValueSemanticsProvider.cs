@@ -16,18 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IPropertyDefaultFacet {
+    public class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IIntegerValueFacet {
         private const int DefaultValueConst = 0;
         private const bool EqualBycontent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 11;
 
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public IntValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) {}
@@ -40,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (int); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IIntegerValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public int IntegerValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<int>();
         }
 
         #endregion
@@ -82,10 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override int DoRestore(string data) {
             return int.Parse(data);
-        }
-
-        public int IntegerValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<int>();
         }
 
 

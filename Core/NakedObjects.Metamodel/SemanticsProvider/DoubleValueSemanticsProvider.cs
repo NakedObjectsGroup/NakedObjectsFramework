@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstract<double>, IPropertyDefaultFacet {
+    public class DoubleValueSemanticsProvider : ValueSemanticsProviderAbstract<double>, IDoubleFloatingPointValueFacet {
         private const double DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 22;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public DoubleValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public DoubleValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (double); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IDoubleFloatingPointValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public Double DoubleValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<double>();
         }
 
         #endregion
@@ -82,10 +77,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override double DoRestore(string data) {
             return double.Parse(data);
-        }
-
-        public Double DoubleValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<double>();
         }
 
 

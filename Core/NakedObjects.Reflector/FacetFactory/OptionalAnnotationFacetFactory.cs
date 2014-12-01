@@ -24,12 +24,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<OptionallyAttribute>(member);
+            var attribute = member.GetCustomAttribute<OptionallyAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
+            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive parameter on " + method.ReflectedType + "." + method.Name);
                 return;
             }
@@ -37,7 +37,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(property) != null) {
+            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<OptionallyAttribute>() != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return;
             }
@@ -49,12 +49,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if ((parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType))) {
-                if (AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
+                if (method.GetCustomAttribute<OptionallyAttribute>() != null) {
                     Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
                 }
                 return;
             }
-            var attribute = parameter.GetCustomAttributeByReflection<OptionallyAttribute>();
+            var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

@@ -28,23 +28,28 @@ namespace NakedObjects.Core.Util {
             return typeName;
         }
 
-        public static string EncodeTypeName(this IObjectSpec spec) {
-            return EncodeTypeName(spec.FullName);
+        public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) {
+            return EncodeTypeName(spec.FullName, "-", elements);
         }
 
-        public static string EncodeTypeName(string typeName, string separator = "-") {
+        public static string EncodeTypeName(string typeName,  string separator = "-", params IObjectSpec[] elements) {
             Type type = TypeUtils.GetType(typeName);
 
             if (type.IsGenericType) {
-                return EncodeGenericTypeName(type, separator);
+                return EncodeGenericTypeName(type, separator, elements);
             }
 
             return type.FullName;
         }
 
-        public static string EncodeGenericTypeName(Type type, string separator = "-") {
+        public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
             string rootType = type.GetGenericTypeDefinition().FullName;
-            return type.GetGenericArguments().Aggregate(rootType, (s, t) => s + separator + t.FullName);
+
+            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName);
+
+            args = args.Any() ? args : elements.Select(e => e.FullName);
+
+            return args.Aggregate(rootType, (s, t) => s + separator + t);
         }
 
         public static string GetShortName(string name) {
