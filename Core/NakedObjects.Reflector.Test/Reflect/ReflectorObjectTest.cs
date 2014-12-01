@@ -10,6 +10,8 @@ using NakedObjects.Architecture.SpecImmutable;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
+    public class TestDomainObject {}
+
     [TestFixture]
     public class ReflectorObjectTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {

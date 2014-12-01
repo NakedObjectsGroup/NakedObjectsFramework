@@ -165,13 +165,11 @@
     <Compile Include="FacetFactory\RangeAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\RegExAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\AbstractFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\MetadataAnnotationFacetFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflect\ProxyCreatorTest.cs" />
     <Compile Include="Reflect\AbstractReflectorTest.cs" />
     <Compile Include="Reflect\ReflectorTest.cs" />
     <Compile Include="Reflect\ReflectorValidateTest.cs" />
-    <Compile Include="Reflect\ReflectorMetadataTest.cs" />
     <Compile Include="Reflect\ReflectorArrayTest.cs" />
     <Compile Include="Reflect\ReflectorCollectionTest.cs" />
     <Compile Include="Reflect\ReflectorGenericCollectionTest.cs" />

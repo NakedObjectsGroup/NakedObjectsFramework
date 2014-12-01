@@ -11,9 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-
     public class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
-   
         private readonly string sequence;
 
         public MemberOrderFacet(string sequence, ISpecification holder)
@@ -22,6 +20,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         #region IMemberOrderFacet Members
+
         public virtual string Sequence {
             get { return sequence; }
         }
