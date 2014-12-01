@@ -112,16 +112,14 @@ namespace NakedObjects.SystemTest.Menus.Service {
         }
 
         [TestMethod]
-        public virtual void TestAddAllActionsRecognisesMemberOrderInclSubMenus() {
+        public virtual void TestAddAllActionsRecognisesMemberOrder() {
             var bars = GetMainMenu("Bars");
-            bars.AssertItemCountIs(3);
+            bars.AssertItemCountIs(4);
 
             bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
             bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
-            var sub1 = bars.AllItems()[2].AssertIsSubMenu().AssertNameEquals("sub1").AsSubMenu();
-            sub1.AssertItemCountIs(2);
-            sub1.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action2");
-            sub1.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action3");
+            bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
+            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
         }
         [TestMethod]
         public void TestHybridMenu() {
@@ -240,10 +238,8 @@ namespace NakedObjects.SystemTest.Menus.Service {
         [MemberOrder(1)]
         public void BarAction1() { }
 
-        [MemberOrder(Name = "sub1", Sequence = "1")]
         public void BarAction2() { }
 
-        [MemberOrder(Name = "sub1", Sequence = "2")]
         public void BarAction3() { }
 
     }

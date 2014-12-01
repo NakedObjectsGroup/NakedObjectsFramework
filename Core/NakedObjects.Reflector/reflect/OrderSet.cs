@@ -19,6 +19,32 @@ namespace NakedObjects.Reflect {
     public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
 
+        //Constructor
+        public OrderSet(T[] members) {
+            var annotatedMembers = new List<T>();
+            var nonAnnotatedMembers = new List<T>();
+
+            foreach (T member in members) {
+                var memberOrder = member.Spec.GetFacet<IMemberOrderFacet>();
+                if (memberOrder != null) {
+                    annotatedMembers.Add(member);
+                } else {
+                    nonAnnotatedMembers.Add(member.Spec);
+                }
+            }
+
+            annotatedMembers.Sort(new MemberOrderComparator<T>());
+            nonAnnotatedMembers.Sort(new MemberIdentifierComparator<T>());
+
+            //elements.AddRange(annotatedMembers);
+            foreach (T ordeableElement in annotatedMembers) {
+                elements.Add(ordeableElement);
+            }
+            foreach (T ordeableElement in nonAnnotatedMembers) {
+                elements.Add(ordeableElement);
+            }
+        }
+
         #region IComparable<IOrderSet<T>> Members
 
         public int CompareTo(IOrderSet<T> o) {
@@ -46,31 +72,6 @@ namespace NakedObjects.Reflect {
 
         private int Size() {
             return elements.Count;
-        }
-
-        //Construct
-        public OrderSet(T[] members) {
-            var annotatedMembers = new List<T>();
-            var nonAnnotatedMembers = new List<T>();
-
-            foreach (T member in members) {
-                var memberOrder = member.Spec.GetFacet<IMemberOrderFacet>();
-                if (memberOrder != null) {
-                    annotatedMembers.Add(member);
-                } else {
-                    nonAnnotatedMembers.Add(member.Spec);
-                }
-            }
-
-            annotatedMembers.Sort(new MemberOrderComparator<T>());
-            nonAnnotatedMembers.Sort(new MemberIdentifierComparator<T>());
-
-                foreach (T ordeableElement in annotatedMembers) {
-                    elements.Add(ordeableElement);
-                }
-                foreach (T ordeableElement in nonAnnotatedMembers) {
-                    elements.Add(ordeableElement);
-                }
         }
 
         /// <summary>
