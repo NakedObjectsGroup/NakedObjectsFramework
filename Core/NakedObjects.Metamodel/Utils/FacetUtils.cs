@@ -48,14 +48,6 @@ namespace NakedObjects.Meta.Utils {
             return false;
         }
 
-        public static bool AddFacet(IMultiTypedFacet facet) {
-            if (facet != null) {
-                ((ISpecificationBuilder) facet.Specification).AddFacet(facet);
-                return true;
-            }
-            return false;
-        }
-
         /// <summary>
         ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>

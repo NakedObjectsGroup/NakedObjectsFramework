@@ -72,11 +72,6 @@ namespace NakedObjects.Meta.Spec {
             AddFacet(facet.FacetType, facet);
         }
 
-        public void AddFacet(IMultiTypedFacet facet) {
-            foreach (Type facetType in facet.FacetTypes) {
-                AddFacet(facetType, facet.GetFacet(facetType));
-            }
-        }
 
         #endregion
 

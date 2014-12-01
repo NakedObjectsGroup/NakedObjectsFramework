@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to the <see cref="RegExAttribute" /> annotation
     /// </para>
     /// <seealso cref="IMaskFacet" />
-    public interface IRegExFacet : IMultipleValueFacet, IValidatingInteractionAdvisor {
+    public interface IRegExFacet : IFacet, IValidatingInteractionAdvisor {
         Regex Pattern { get; }
         string FailureMessage { get; }
         bool DoesNotMatch(string proposed);

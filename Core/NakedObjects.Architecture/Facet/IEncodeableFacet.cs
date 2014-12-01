@@ -12,19 +12,10 @@ namespace NakedObjects.Architecture.Facet {
     /// <summary>
     ///     Indicates that this class can be encoded/decoded as a string
     /// </summary>
-    public interface IEncodeableFacet : IMultipleValueFacet {
-        bool IsValid { get; }
-
-        /// <summary>
-        ///     Equivalent to <see cref="IEncoderDecoder{T}.FromEncodedString" /> though may be
-        ///     implemented through some other equivalent mechanism.
-        /// </summary>
+    public interface IEncodeableFacet {
         INakedObject FromEncodedString(string encodedData, INakedObjectManager manager);
 
-        /// <summary>
-        ///     Equivalent to <see cref="IEncoderDecoder{T}.ToEncodedString" />, though may be
-        ///     implemented through some other equivalent mechanism.
-        /// </summary>
+
         string ToEncodedString(INakedObject nakedObject);
     }
 }

@@ -10,6 +10,5 @@ namespace NakedObjects.Architecture.Facet {
     ///     Indicates that the instances of this class are equal-by-content
     /// </summary>
     /// <seealso cref="IImmutableFacet" />
-    /// <seealso cref="IValueFacet" />
     public interface IEqualByContentFacet : IMarkerFacet {}
 }

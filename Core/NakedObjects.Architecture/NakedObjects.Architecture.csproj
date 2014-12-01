@@ -229,8 +229,6 @@
     <Compile Include="Facet\IMarkerFacet.cs" />
     <Compile Include="FacetFactory\IMethodFilteringFacetFactory.cs" />
     <Compile Include="FacetFactory\IMethodRemover.cs" />
-    <Compile Include="Facet\IMultipleValueFacet.cs" />
-    <Compile Include="Facet\IMultiTypedFacet.cs" />
     <Compile Include="Facet\IDescribedAsFacet.cs" />
     <Compile Include="Facet\INamedFacet.cs" />
     <Compile Include="Facet\IComplexTypeFacet.cs" />
@@ -269,7 +267,6 @@
     <Compile Include="Facet\ITypicalLengthFacet.cs" />
     <Compile Include="Facet\IValidateProgrammaticUpdatesFacet.cs" />
     <Compile Include="Facet\IAggregatedFacet.cs" />
-    <Compile Include="Facet\IValueFacet.cs" />
     <Compile Include="Facet\IActionOrderFacet.cs" />
     <Compile Include="Facet\IFieldOrderFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />

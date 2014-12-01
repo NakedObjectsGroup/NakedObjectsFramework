@@ -17,7 +17,7 @@ namespace NakedObjects.Architecture.Facet {
     /// </para>
     /// <seealso cref="IMemberOrderFacet" />
     /// <seealso cref="IFieldOrderFacet" />
-    public interface IMemberOrderFacet : IMultipleValueFacet {
+    public interface IMemberOrderFacet : IFacet {
         /// <summary>
         ///     To group members
         /// </summary>

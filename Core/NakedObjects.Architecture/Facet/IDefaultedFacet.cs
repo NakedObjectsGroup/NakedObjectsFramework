@@ -18,6 +18,5 @@ namespace NakedObjects.Architecture.Facet {
     /// </para>
     public interface IDefaultedFacet : ISingleValueFacet {
         object Default { get; }
-        bool IsValid { get; }
     }
 }

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TableViewFacet : MultipleValueFacetAbstract, ITableViewFacet {
+    public class TableViewFacet : FacetAbstract, ITableViewFacet {
         public TableViewFacet(bool title, string[] columns, ISpecification holder)
             : base(typeof (ITableViewFacet), holder) {
             Title = title;

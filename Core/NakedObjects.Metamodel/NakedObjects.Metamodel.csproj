@@ -247,7 +247,6 @@
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />
     <Compile Include="Facet\HideForSessionFacetNone.cs" />
     <Compile Include="Facet\MarkerFacetAbstract.cs" />
-    <Compile Include="Facet\MultipleValueFacetAbstract.cs" />
     <Compile Include="Spec\NamedAndDescribedSpecification.cs" />
     <Compile Include="Facet\DescribedAsFacetAbstract.cs" />
     <Compile Include="Facet\DescribedAsFacetNone.cs" />

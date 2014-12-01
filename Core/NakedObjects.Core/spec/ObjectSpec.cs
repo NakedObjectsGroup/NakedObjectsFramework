@@ -123,7 +123,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual bool IsAggregated {
-            get { return innerSpec.ContainsFacet(typeof (IAggregatedFacet)) || innerSpec.ContainsFacet(typeof (IValueFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IAggregatedFacet)); }
         }
 
         public virtual bool IsCollection {
