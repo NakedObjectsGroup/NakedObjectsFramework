@@ -22,12 +22,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<MultiLineAttribute>();
+            var attribute = type.GetCustomAttribute<MultiLineAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<MultiLineAttribute>(member);
+            var attribute = member.GetCustomAttribute<MultiLineAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -46,7 +46,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
-                var attribute = parameter.GetCustomAttributeByReflection<MultiLineAttribute>();
+                var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
                 FacetUtils.AddFacet(Create(attribute, holder));
             }
         }

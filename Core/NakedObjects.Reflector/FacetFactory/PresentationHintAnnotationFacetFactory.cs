@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PresentationHintAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,12 +21,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Everything) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<PresentationHintAttribute>();
+            var attribute = type.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<PresentationHintAttribute>(member);
+            var attribute = member.GetCustomAttribute<PresentationHintAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<PresentationHintAttribute>();
+            var attribute = parameter.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

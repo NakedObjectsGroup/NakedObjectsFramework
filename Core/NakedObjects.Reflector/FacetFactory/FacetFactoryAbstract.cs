@@ -46,10 +46,10 @@ namespace NakedObjects.Meta.Facet {
             return new PropertyInfo[] {};
         }
 
-        #endregion
-
         public int CompareTo(IFacetFactory other) {
             return NumericOrder.CompareTo(other.NumericOrder);
         }
+
+        #endregion
     }
 }

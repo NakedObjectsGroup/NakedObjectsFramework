@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -21,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<MemberOrderAttribute>(member);
+            var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 

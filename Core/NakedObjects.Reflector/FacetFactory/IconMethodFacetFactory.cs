@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
@@ -29,7 +28,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
-            var attribute = type.GetCustomAttributeByReflection<IconNameAttribute>();
+            var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute == null ? null : attribute.Value));

@@ -24,12 +24,12 @@ namespace NakedObjects.Reflect.FacetFactory {
 
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttributeByReflection<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<RegExAttribute>();
+            Attribute attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            Attribute attribute = AttributeUtils.GetCustomAttribute<RegularExpressionAttribute>(member) ?? (Attribute) AttributeUtils.GetCustomAttribute<RegExAttribute>(member);
+            Attribute attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) member.GetCustomAttribute<RegExAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -49,7 +49,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
-                Attribute attribute = parameter.GetCustomAttributeByReflection<RegularExpressionAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<RegExAttribute>();
+                Attribute attribute = parameter.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) parameter.GetCustomAttribute<RegExAttribute>();
                 FacetUtils.AddFacet(Create(attribute, holder));
             }
         }

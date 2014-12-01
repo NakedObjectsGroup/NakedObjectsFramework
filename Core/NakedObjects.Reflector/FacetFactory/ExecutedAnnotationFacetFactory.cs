@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -25,7 +24,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Action) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(member);
+            var attribute = member.GetCustomAttribute<ExecutedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

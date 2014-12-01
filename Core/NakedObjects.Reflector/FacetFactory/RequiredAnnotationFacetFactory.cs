@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class RequiredAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -25,7 +24,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<RequiredAttribute>(member);
+            var attribute = member.GetCustomAttribute<RequiredAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<RequiredAttribute>();
+            var attribute = parameter.GetCustomAttribute<RequiredAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

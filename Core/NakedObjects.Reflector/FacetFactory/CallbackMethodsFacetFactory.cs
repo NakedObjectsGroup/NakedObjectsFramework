@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -68,7 +67,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistedMethod, typeof (void), Type.EmptyTypes);
-   
+
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new PersistedCallbackFacetViaMethod(method, specification));

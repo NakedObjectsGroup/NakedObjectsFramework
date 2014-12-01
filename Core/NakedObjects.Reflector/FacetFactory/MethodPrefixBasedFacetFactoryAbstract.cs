@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
@@ -45,14 +44,14 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         protected MethodInfo[] FindMethods(IReflector reflector,
-            Type type,
-            MethodType methodType,
-            string name,
-            Type returnType = null) {
+                                           Type type,
+                                           MethodType methodType,
+                                           string name,
+                                           Type returnType = null) {
             return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).
                 Where(m => m.Name == name).
                 Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).
-                Where(m => AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(m) == null).
+                Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).
                 Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
         }
 
@@ -69,12 +68,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="paramTypes">the set of parameters the method should have, if null then is ignored</param>
         /// <param name="paramNames">the names of the parameters the method should have, if null then is ignored</param>
         protected MethodInfo FindMethod(IReflector reflector,
-            Type type,
-            MethodType methodType,
-            string name,
-            Type returnType,
-            Type[] paramTypes,
-            string[] paramNames = null) {
+                                        Type type,
+                                        MethodType methodType,
+                                        string name,
+                                        Type returnType,
+                                        Type[] paramTypes,
+                                        string[] paramNames = null) {
             try {
                 MethodInfo method = paramTypes == null
                     ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))
@@ -93,7 +92,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     return null;
                 }
 
-                if (AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(method) != null) {
+                if (method.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) {
                     return null;
                 }
 
@@ -194,7 +193,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         protected static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(method);
+            var attribute = method.GetCustomAttribute<ExecutedAttribute>();
             if (attribute != null && !attribute.IsAjax) {
                 var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
                 if (executedFacet == null) {
@@ -211,7 +210,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 FacetUtils.AddFacet(new AjaxFacet(holder));
             }
             else {
-                var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(method);
+                var attribute = method.GetCustomAttribute<ExecutedAttribute>();
                 if (attribute != null && attribute.IsAjax) {
                     if (attribute.AjaxValue == Ajax.Disabled) {
                         FacetUtils.AddFacet(new AjaxFacet(holder));

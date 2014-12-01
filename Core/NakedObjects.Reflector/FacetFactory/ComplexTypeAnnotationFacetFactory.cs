@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -14,7 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();
+            Attribute ctAttribute = type.GetCustomAttribute<ComplexTypeAttribute>();
             FacetUtils.AddFacet(Create(ctAttribute, specification));
         }
 

@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             return properties.Any(p => p.Name == name &&
                                        p.GetGetMethod() != null &&
-                                       AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(p) == null &&
+                                       p.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                        !CollectionUtils.IsCollection(p.PropertyType) &&
                                        !CollectionUtils.IsQueryable(p.PropertyType));
         }

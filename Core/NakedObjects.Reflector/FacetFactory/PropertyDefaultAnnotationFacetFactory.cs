@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -23,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<DefaultValueAttribute>(member);
+            var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

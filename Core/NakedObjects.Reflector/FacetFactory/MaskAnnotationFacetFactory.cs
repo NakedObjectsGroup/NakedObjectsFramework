@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MaskAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,12 +21,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<MaskAttribute>();
+            var attribute = type.GetCustomAttribute<MaskAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<MaskAttribute>(member);
+            var attribute = member.GetCustomAttribute<MaskAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -41,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<MaskAttribute>();
+            var attribute = parameter.GetCustomAttribute<MaskAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

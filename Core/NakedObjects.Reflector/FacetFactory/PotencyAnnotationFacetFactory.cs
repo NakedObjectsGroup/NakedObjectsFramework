@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -26,10 +25,10 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private static void Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 
-            if (AttributeUtils.GetCustomAttribute<IdempotentAttribute>(member) != null) {
+            if (member.GetCustomAttribute<IdempotentAttribute>() != null) {
                 FacetUtils.AddFacet(new IdempotentFacet(holder));
             }
-            else if (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(member) != null) {
+            else if (member.GetCustomAttribute<QueryOnlyAttribute>() != null) {
                 FacetUtils.AddFacet(new QueryOnlyFacet(holder));
             }
         }

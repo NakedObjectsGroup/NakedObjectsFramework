@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
@@ -43,7 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
-                if (AttributeUtils.GetCustomAttribute<TitleAttribute>(propertyInfo) != null) {
+                if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
                     if (attributedMethods.Count > 0) {
                         Log.Warn("Title annotation is used more than once in " + type.Name + ", this time on property " + propertyInfo.Name + "; this will be ignored");
                     }

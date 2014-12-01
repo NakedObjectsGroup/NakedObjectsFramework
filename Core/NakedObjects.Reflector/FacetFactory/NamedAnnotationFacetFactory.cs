@@ -36,24 +36,24 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<NamedAttribute>();
+            Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = AttributeUtils.GetCustomAttribute<DisplayNameAttribute>(method) ?? (Attribute) AttributeUtils.GetCustomAttribute<NamedAttribute>(method);
+            Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             UpdateScratchPad(property.ReflectedType);
-            Attribute attribute = AttributeUtils.GetCustomAttribute<DisplayNameAttribute>(property) ?? (Attribute) AttributeUtils.GetCustomAttribute<NamedAttribute>(property);
+            Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(CreateProperty(attribute, specification));
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<NamedAttribute>();
+            Attribute attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

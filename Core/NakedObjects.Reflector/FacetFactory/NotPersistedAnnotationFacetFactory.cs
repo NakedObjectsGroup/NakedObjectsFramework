@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,12 +21,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();
+            var attribute = type.GetCustomAttribute<NotPersistedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<NotPersistedAttribute>(member);
+            var attribute = member.GetCustomAttribute<NotPersistedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

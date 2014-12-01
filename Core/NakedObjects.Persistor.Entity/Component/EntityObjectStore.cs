@@ -722,7 +722,7 @@ namespace NakedObjects.Persistor.Entity {
         private static void InjectParentIntoChild(object parent, object child) {
             PropertyInfo property = child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
                                                                                          p.PropertyType.IsAssignableFrom(parent.GetType()) &&
-                                                                                         AttributeUtils.GetCustomAttribute<RootAttribute>(p) != null);
+                                                                                         p.GetCustomAttribute<RootAttribute>() != null);
             if (property != null) {
                 property.SetValue(child, parent, null);
             }
@@ -1028,7 +1028,7 @@ namespace NakedObjects.Persistor.Entity {
                     }
                 }
 
-                PropertyInfo[] notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && AttributeUtils.GetCustomAttribute<NotPersistedAttribute>(p) != null).ToArray();
+                PropertyInfo[] notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.GetCustomAttribute<NotPersistedAttribute>() != null).ToArray();
                 notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
             }
 

@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -24,7 +23,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
-                var attribute = AttributeUtils.GetCustomAttribute<TableViewAttribute>(member);
+                var attribute = member.GetCustomAttribute<TableViewAttribute>();
                 FacetUtils.AddFacet(Create(attribute, specification));
             }
         }

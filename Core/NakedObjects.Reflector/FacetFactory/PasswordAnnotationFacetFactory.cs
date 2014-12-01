@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -22,7 +21,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            var attribute = AttributeUtils.GetCustomAttribute<DataTypeAttribute>(member);
+            var attribute = member.GetCustomAttribute<DataTypeAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -32,7 +31,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttributeByReflection<DataTypeAttribute>();
+            var attribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 

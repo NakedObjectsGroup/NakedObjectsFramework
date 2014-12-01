@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
@@ -22,17 +21,17 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.EverythingButParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();
+            var attribute = type.GetCustomAttribute<EagerlyAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(property);
+            var attribute = property.GetCustomAttribute<EagerlyAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(method);
+            var attribute = method.GetCustomAttribute<EagerlyAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
