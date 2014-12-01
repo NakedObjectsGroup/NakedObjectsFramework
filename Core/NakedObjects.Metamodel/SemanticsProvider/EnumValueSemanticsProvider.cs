@@ -15,16 +15,10 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IPropertyDefaultFacet, IEnumValueFacet {
+    public class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
         private const bool EqualBycontent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 11;
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public EnumValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), spec) {}
@@ -44,14 +38,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 return Convert.ChangeType(nakedObject.Object, Enum.GetUnderlyingType(typeof (T))).ToString();
             }
             return null;
-        }
-
-        #endregion
-
-        #region IPropertyDefaultFacet Members
-
-        public object GetDefault(INakedObject inObject) {
-            return default(T);
         }
 
         #endregion

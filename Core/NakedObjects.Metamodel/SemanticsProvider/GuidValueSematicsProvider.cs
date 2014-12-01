@@ -15,17 +15,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IPropertyDefaultFacet {
+    public class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IGuidValueFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 36;
         private static readonly Guid DefaultValueConst = Guid.Empty;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public GuidValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -38,10 +33,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (Guid); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IGuidValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public Guid GuidValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<Guid>();
         }
 
         #endregion
@@ -81,10 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override Guid DoRestore(string data) {
             return new Guid(data);
-        }
-
-        public Guid GuidValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<Guid>();
         }
 
 

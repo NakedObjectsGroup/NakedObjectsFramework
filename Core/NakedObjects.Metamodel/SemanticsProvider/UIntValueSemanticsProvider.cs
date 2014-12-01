@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IPropertyDefaultFacet {
+    public class UIntValueSemanticsProvider : ValueSemanticsProviderAbstract<uint>, IUnsignedIntegerValueFacet {
         private const uint DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
@@ -40,13 +40,17 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (uint); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IUnsignedIntegerValueFacet Members
+
+        public uint UnsignedIntegerValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<uint>();
+        }
+
+        #endregion
 
         public object GetDefault(INakedObject inObject) {
             return DefaultValueConst;
         }
-
-        #endregion
 
         public static bool IsAdaptedType(Type type) {
             return type == typeof (uint);
@@ -82,10 +86,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override uint DoRestore(string data) {
             return uint.Parse(data);
-        }
-
-        public uint UnsignedIntegerValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<uint>();
         }
 
 

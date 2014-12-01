@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, IPropertyDefaultFacet {
+    public class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 20;
         private const long DefaultValueConst = 0;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public LongValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (long); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region ILongValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public long LongValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<long>();
         }
 
         #endregion
@@ -83,11 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override long DoRestore(string data) {
             return long.Parse(data);
-        }
-
-
-        public long LongValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<long>();
         }
 
 

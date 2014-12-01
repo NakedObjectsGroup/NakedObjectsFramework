@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IPropertyDefaultFacet, IByteValueFacet {
+    public class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IByteValueFacet {
         private const byte DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 3;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public ByteValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -43,14 +38,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public byte ByteValue(INakedObject nakedObject) {
             return nakedObject.GetDomainObject<byte>();
-        }
-
-        #endregion
-
-        #region IPropertyDefaultFacet Members
-
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
         }
 
         #endregion

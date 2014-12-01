@@ -15,17 +15,12 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFromStream {
+    public class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthDefault = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (FileAttachmentValueSemanticsProvider));
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) {}

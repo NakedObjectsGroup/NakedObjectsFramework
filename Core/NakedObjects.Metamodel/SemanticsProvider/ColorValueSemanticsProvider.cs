@@ -16,17 +16,12 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IPropertyDefaultFacet {
+    public class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 4;
         private static readonly Color DefaultValueConst = Color.Black;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public ColorValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,13 +34,21 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (Color); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IColorValueFacet Members
+
+        public int ColorValue(INakedObject nakedObject) {
+            if (nakedObject == null) {
+                return 0;
+            }
+            var color = (Color) nakedObject.Object;
+            return color.ToArgb();
+        }
+
+        #endregion
 
         public object GetDefault(INakedObject inObject) {
             return DefaultValueConst;
         }
-
-        #endregion
 
         public static bool IsAdaptedType(Type type) {
             return type == typeof (Color);
@@ -90,14 +93,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override Color DoRestore(string data) {
             return Color.FromArgb(int.Parse(data));
-        }
-
-        public int ColorValue(INakedObject nakedObject) {
-            if (nakedObject == null) {
-                return 0;
-            }
-            var color = (Color) nakedObject.Object;
-            return color.ToArgb();
         }
 
 

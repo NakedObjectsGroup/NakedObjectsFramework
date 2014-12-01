@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using Common.Logging;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -15,17 +16,13 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IFromStream {
+    public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (ImageValueSemanticsProvider));
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        //public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
-        //    : this(spec, null) {}
+
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 
@@ -41,6 +38,22 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
             return new Image(stream, name, mimeType);
+        }
+
+        #endregion
+
+        #region IImageValueFacet Members
+
+        public System.Drawing.Image GetImage(INakedObject nakedObject) {
+            throw new NotImplementedException();
+        }
+
+        public int GetHeight(INakedObject nakedObject) {
+            throw new NotImplementedException();
+        }
+
+        public int GetWidth(INakedObject nakedObject) {
+            throw new NotImplementedException();
         }
 
         #endregion

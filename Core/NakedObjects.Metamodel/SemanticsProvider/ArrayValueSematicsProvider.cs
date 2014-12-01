@@ -19,17 +19,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IPropertyDefaultFacet, IArrayValueFacet<T>, IFromStream {
+    public class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IArrayValueFacet<T>, IFromStream {
         private const T[] DefaultValueConst = null;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 20;
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public ArrayValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -64,13 +58,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        #region IPropertyDefaultFacet Members
-
         public object GetDefault(INakedObject inObject) {
             return DefaultValueConst;
         }
-
-        #endregion
 
         public static bool IsAdaptedType(Type type) {
             return type == typeof (T[]);

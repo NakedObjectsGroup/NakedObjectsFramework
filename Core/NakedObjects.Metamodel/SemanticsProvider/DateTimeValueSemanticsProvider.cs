@@ -21,12 +21,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 18;
         private static readonly DateTime DefaultValueConst = new DateTime();
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
-
         public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 

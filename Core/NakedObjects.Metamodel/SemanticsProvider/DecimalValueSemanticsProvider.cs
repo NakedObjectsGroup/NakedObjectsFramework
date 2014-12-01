@@ -16,17 +16,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IPropertyDefaultFacet {
+    public class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IDecimalValueFacet {
         private const decimal DefaultValueConst = 0;
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 18;
 
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public DecimalValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -39,10 +34,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (decimal); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region IDecimalValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public decimal DecimalValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<decimal>();
         }
 
         #endregion
@@ -83,11 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override decimal DoRestore(string data) {
             return decimal.Parse(data);
-        }
-
-
-        public decimal DecimalValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<decimal>();
         }
 
 

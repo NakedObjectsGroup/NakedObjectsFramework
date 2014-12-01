@@ -16,18 +16,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, IPropertyDefaultFacet {
+    public class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, ICharValueFacet {
         private const char DefaultValueConst = ' ';
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 2;
-
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public CharValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
 
         public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -40,10 +33,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (char); }
         }
 
-        #region IPropertyDefaultFacet Members
+        #region ICharValueFacet Members
 
-        public object GetDefault(INakedObject inObject) {
-            return DefaultValueConst;
+        public char CharValue(INakedObject nakedObject) {
+            return nakedObject.GetDomainObject<char>();
         }
 
         #endregion
@@ -89,11 +82,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override char DoRestore(string data) {
             return char.Parse(data);
-        }
-
-
-        public char CharValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<char>();
         }
 
 

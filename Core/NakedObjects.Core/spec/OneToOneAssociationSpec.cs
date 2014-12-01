@@ -166,20 +166,28 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
-            var typeofDefaultValue = TypeOfDefaultValue.Explicit;
+            Tuple<object, TypeOfDefaultValue> defaultValue = null;
 
-            // look for a default on the association ...
-            var propertyDefaultFacet = GetFacet<IPropertyDefaultFacet>();
-            // ... if none, attempt to find a default on the specification (eg an int should default to 0).
-            if (propertyDefaultFacet == null || propertyDefaultFacet.IsNoOp) {
-                typeofDefaultValue = TypeOfDefaultValue.Implicit;
-                propertyDefaultFacet = Spec.GetFacet<IPropertyDefaultFacet>();
+            // Check Facet on property, then facet on type finally fall back on type; 
+
+            var defaultsFacet = GetFacet<IPropertyDefaultFacet>();
+            if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
+                defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObject), TypeOfDefaultValue.Explicit);
             }
-            if (propertyDefaultFacet == null) {
-                return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
+
+            if (defaultValue == null) {
+                var defaultFacet = Spec.GetFacet<IDefaultedFacet>();
+                if (defaultFacet != null && !defaultFacet.IsNoOp) {
+                    defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
+                }
             }
-            object obj = propertyDefaultFacet.GetDefault(fromObject);
-            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(obj, null, null), typeofDefaultValue);
+
+            if (defaultValue == null) {
+                var rawValue = fromObject == null ? null : fromObject.Object.GetType().IsValueType ? (object) 0 : null;
+                defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
+            }
+
+            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
         public override string ToString() {

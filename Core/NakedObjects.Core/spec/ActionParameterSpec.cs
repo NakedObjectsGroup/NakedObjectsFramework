@@ -146,30 +146,6 @@ namespace NakedObjects.Core.Spec {
             return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacets() : new IFacet[] {};
         }
 
-        //public virtual void AddFacet(IFacet facet) {
-        //    if (actionParameterSpecImmutable != null) {
-        //        actionParameterSpecImmutable.AddFacet(facet);
-        //    }
-        //}
-
-        //public virtual void AddFacet(IMultiTypedFacet facet) {
-        //    if (actionParameterSpecImmutable != null) {
-        //        actionParameterSpecImmutable.AddFacet(facet);
-        //    }
-        //}
-
-        //public virtual void RemoveFacet(IFacet facet) {
-        //    if (actionParameterSpecImmutable != null) {
-        //        actionParameterSpecImmutable.RemoveFacet(facet);
-        //    }
-        //}
-
-        //public virtual void RemoveFacet(Type facetType) {
-        //    if (actionParameterSpecImmutable != null) {
-        //        actionParameterSpecImmutable.RemoveFacet(facetType);
-        //    }
-        //}
-
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
                 return GetConsent("Not a suitable type; must be a " + Spec.SingularName);
@@ -261,12 +237,29 @@ namespace NakedObjects.Core.Spec {
                     return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);
                 }
             }
+
+            Tuple<object, TypeOfDefaultValue> defaultValue = null;
+
+            // Check Facet on parm, then facet on type finally fall back on type; 
+
             var defaultsFacet = GetFacet<IActionDefaultsFacet>();
-            if (defaultsFacet != null) {
-                Tuple<object, TypeOfDefaultValue> defaultvalue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject));
-                return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(defaultvalue.Item1, null, null), defaultvalue.Item2);
+            if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
+                defaultValue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject));
             }
-            return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
+
+            if (defaultValue == null) {
+                var defaultFacet = Spec.GetFacet<IDefaultedFacet>();
+                if (defaultFacet != null && !defaultFacet.IsNoOp) {
+                    defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
+                }
+            }
+
+            if (defaultValue == null) {
+                var rawValue = nakedObject == null ? null : nakedObject.Object.GetType().IsValueType ? (object) 0 : null;
+                defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
+            }
+
+            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
         protected internal virtual IConsent GetConsent(string message) {
