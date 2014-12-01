@@ -6,6 +6,12 @@ namespace NakedObjects.Menu {
     /// during reflection time.
     /// </summary>
     public interface IMenu  {
+        /// <summary>
+        /// Allows the default name for the menu to be over-ridden
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>This menu (for fluent programming)</returns>
+        IMenu WithMenuName(string name);
 
         /// <summary>
         /// Adds specified action as the next menu item

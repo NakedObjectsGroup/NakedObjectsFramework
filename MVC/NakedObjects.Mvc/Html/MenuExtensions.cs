@@ -43,20 +43,32 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
-            var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ServicesContainerName);
-            var menus = (IEnumerable)html.ViewData[IdHelper.NofMainMenus];
-
-            if (menus != null && menus.Cast<IMenuImmutable>().Any()) {
-                foreach (IMenuImmutable menu in menus) {
-                    tag.InnerHtml += html.MenuAsHtml(menu, null, false);
+            var mainMenusFromViewData = (IEnumerable)html.ViewData[IdHelper.NofMainMenus];
+            if (mainMenusFromViewData != null && mainMenusFromViewData.Cast<IMenuImmutable>().Any()) {
+                return RenderMainMenus(html, mainMenusFromViewData.Cast<IMenuImmutable>());
+            } else { //Use the MenuServices to derive the menus
+                var services = (IEnumerable)html.ViewData[IdHelper.NofServices];
+                var mainMenus = new List<IMenuImmutable>();
+                foreach (object service in services.Cast<object>()) {
+                    INakedObject nakedObject = html.Framework().GetNakedObject(service);
+                    mainMenus.Add(nakedObject.Spec.ObjectMenu);
                 }
-                return MvcHtmlString.Create(tag.ToString());
+                return RenderMainMenus(html, mainMenus);
             }
-            return MvcHtmlString.Create("");
         }
 
-        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObject nakedObject, bool isEdit) {
+        private static MvcHtmlString RenderMainMenus(HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
+            var tag = new TagBuilder("div");
+            tag.AddCssClass(IdHelper.ServicesContainerName);
+                foreach (IMenuImmutable menu in menus) {
+                    tag.InnerHtml += MenuAsHtml(html, menu, null, false);
+                }
+                return MvcHtmlString.Create(tag.ToString());
+        }
+
+
+
+            private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObject nakedObject, bool isEdit) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItemImmutable item in menu.MenuItems) {
                 ElementDescriptor descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);

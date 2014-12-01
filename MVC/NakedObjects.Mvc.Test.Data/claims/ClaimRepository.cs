@@ -12,6 +12,7 @@ using Expenses.Services;
 using NakedObjects;
 using NakedObjects.Core.Util;
 using NakedObjects.Services;
+using NakedObjects.Menu;
 
 namespace Expenses {
     namespace ExpenseClaims {
@@ -37,6 +38,17 @@ namespace Expenses {
             #endregion
 
             public static string CLAIM_DIFFERENTIATOR = " - ";
+
+            public static void Menu(ITypedMenu<ClaimRepository> menu) {
+                menu.CreateSubMenuOfSameType("Find")
+                    .AddAction("MyRecentClaims")
+                    .AddAction("FindMyClaims")
+                    .AddAction("FindMyClaimsByEnumStatus")
+                    .AddAction("ClaimsAwaitingMyApproval");
+                menu.CreateSubMenuOfSameType("Approve")
+                    .AddAction("ApproveClaims");
+                menu.AddRemainingNativeActions();
+            }
 
 
             [NakedObjectsIgnore]
@@ -124,22 +136,18 @@ namespace Expenses {
                 return query.ToList();
             }
 
-            [MemberOrder(Name = "Find", Sequence = "2")]
             [Eagerly(EagerlyAttribute.Do.Rendering)]
             [TableView(false, "Status", "DateCreated", "Approver")]
             public virtual IList<Claim> FindMyClaims([Optionally] ClaimStatus status, [Optionally] string description) {
                 return FindClaims(MeAsEmployee(), status, description);
             }
 
-            [MemberOrder(Name = "Find", Sequence = "3")]
             public virtual IList<Claim> FindMyClaimsByEnumStatus(ClaimStatusEnum eStatus) {
                 ClaimStatus status = FindClaimStatus(eStatus.ToString());
 
                 return FindClaims(MeAsEmployee(), status, null);
             }
 
-
-            [MemberOrder(Name = "Find", Sequence = "1")]
             public virtual IList<Claim> MyRecentClaims() {
                 return FindClaims(MeAsEmployee(), null, null);
             }
@@ -162,7 +170,6 @@ namespace Expenses {
                 return DefaultUniqueClaimDescription(MeAsEmployee());
             }
 
-            [MemberOrder(Name = "Find", Sequence = "6")]
             public virtual IList<Claim> ClaimsAwaitingMyApproval() {
                 return findClaimsAwaitingApprovalBy(MeAsEmployee());
             }
@@ -212,7 +219,6 @@ namespace Expenses {
                 return item;
             }
 
-            [MemberOrder(Name = "Approve", Sequence = "7")]
             public void ApproveClaims(IEnumerable<Claim> claims) {
                 claims.ForEach(c => c.ApproveItems(true));
             }

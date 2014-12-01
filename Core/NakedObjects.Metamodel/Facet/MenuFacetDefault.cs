@@ -4,6 +4,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Util;
 using System;
 using System.Reflection;
 
@@ -17,14 +18,13 @@ namespace NakedObjects.Meta.Facet {
 
         //Creates a menu based on the object's actions and their specified ordering
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            ObjectSpecImmutable spec = (ObjectSpecImmutable)Specification;
-            if (spec.Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
-            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(spec.Type);
-            m.Invoke(this, new object[] { metamodel });
+            if ( Spec().Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
+            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec().Type);
+            m.Invoke(this, new object[] { metamodel, GetMenuName(Spec()) });
         }
 
-        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel) {
-            var menu = new TypedMenu<T>(metamodel, false, ObjectMenuName);
+        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName) {
+            var menu = new TypedMenu<T>(metamodel, false, menuName);
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
             this.menu = menu;

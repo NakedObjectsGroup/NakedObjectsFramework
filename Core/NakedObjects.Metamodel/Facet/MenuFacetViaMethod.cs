@@ -28,15 +28,15 @@ namespace NakedObjects.Meta.Facet {
         }
 
         //Creates a menu based on the definition in the object's Menu method
-        public override void CreateMenu(IMetamodelBuilder metamodel) {        
+        public override void CreateMenu(IMetamodelBuilder metamodel) {
             MethodInfo m = GetType().GetMethod("CreateTypedMenu").MakeGenericMethod(method.DeclaringType);
-            MenuImpl menu = (MenuImpl) m.Invoke(this, new object[] { metamodel });
-            InvokeUtils.InvokeStatic(method, new object[] {menu});
+            MenuImpl menu = (MenuImpl)m.Invoke(this, new object[] { metamodel, GetMenuName(Spec()) });
+            InvokeUtils.InvokeStatic(method, new object[] { menu, });
             this.menu = menu;
         }
 
-        public TypedMenu<T> CreateTypedMenu<T>(IMetamodelBuilder metamodel) {
-            return new TypedMenu<T>(metamodel, false, ObjectMenuName);
+        public TypedMenu<T> CreateTypedMenu<T>(IMetamodelBuilder metamodel, string menuName) {
+            return new TypedMenu<T>(metamodel, false, menuName);
         }
     }
 

@@ -297,7 +297,9 @@ namespace NakedObjects.Mvc.App.App_Start {
             var menu9 = factory.NewMenu<PurchaseOrderRepository>(true);
             var menu10 = factory.NewMenu<WorkOrderRepository>(true);
 
-            return new IMenuBuilder[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
+            //return new IMenuBuilder[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
+
+            return new IMenuBuilder[] { };
         }
     }
 }

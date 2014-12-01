@@ -182,14 +182,10 @@ namespace NakedObjects.Web.Mvc.Html {
         #region menu
 
         /// <summary>
-        ///     Create menu from actions of domainObject
+        ///     Create menu from actions of domainObject. (Just delegates to MenuExtenions#ObjectMenu)
         /// </summary>
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject) {
-            INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.GetActionContainerId(nakedObject),
-                                                       IdHelper.GetActionLabel(nakedObject));
+            return MenuExtensions.ObjectMenu(html, domainObject);
         }
 
         /// <summary>

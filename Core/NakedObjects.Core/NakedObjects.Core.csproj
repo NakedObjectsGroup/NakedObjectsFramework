@@ -164,6 +164,7 @@
     <Compile Include="Component\ObjectPersistor.cs" />
     <Compile Include="Component\ServicesManager.cs" />
     <Compile Include="Framework\NakedObjectsFramework.cs" />
+    <Compile Include="Spec\ActionSpecSet.cs" />
     <Compile Include="Transaction\NestedTransaction.cs" />
     <Compile Include="Component\TransactionManager.cs" />
     <Compile Include="Configuration\ServicesConfiguration.cs" />
@@ -192,7 +193,6 @@
     <Compile Include="Spec\ActionSpec.cs" />
     <Compile Include="Spec\ActionParameterSpec.cs" />
     <Compile Include="Spec\ActionParseableParameterSpec.cs" />
-    <Compile Include="Spec\ActionSpecSet.cs" />
     <Compile Include="Spec\AssociationSpecAbstract.cs" />
     <Compile Include="Spec\ObjectSpec.cs" />
     <Compile Include="Spec\OneToManyActionParameter.cs" />

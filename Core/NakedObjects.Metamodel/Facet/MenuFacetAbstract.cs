@@ -3,12 +3,24 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
+using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Util;
 using System.Reflection;
 
 namespace NakedObjects.Meta.Facet {
     public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
 
-        protected const string ObjectMenuName = "Actions";
+        protected ObjectSpecImmutable Spec() {
+            return (ObjectSpecImmutable)Specification;
+        }
+
+        protected static string GetMenuName(ObjectSpecImmutable spec) {
+            if (spec.Service) {
+                return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
+            } else {
+                return "Actions";
+            }
+        }
 
         protected MenuImpl menu;
 

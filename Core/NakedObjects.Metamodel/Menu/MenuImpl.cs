@@ -63,6 +63,11 @@ namespace NakedObjects.Meta.Menu {
 
         #region IMenu Members
 
+        public IMenu WithMenuName(string name) {
+            this.Name = name;
+            return this;
+        }
+
         public IMenu AddActionFrom<TObject>(string actionName, string renamedTo = null) {
             Type serviceType = typeof (TObject);
 

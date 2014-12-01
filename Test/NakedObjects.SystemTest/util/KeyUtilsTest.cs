@@ -133,7 +133,7 @@ namespace NakedObjects.SystemTest.Util {
             #region IInternalAccess Members
 
             public PropertyInfo[] GetKeys(Type type) {
-                return type.GetProperties().Where(p => AttributeUtils.GetCustomAttribute<KeyAttribute>(p) != null).ToArray();
+                return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
             }
 
             public object FindByKeys(Type type, object[] keys) {

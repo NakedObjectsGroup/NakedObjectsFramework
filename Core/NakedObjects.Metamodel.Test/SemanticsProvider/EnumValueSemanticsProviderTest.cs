@@ -104,7 +104,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [Test]
         public void TestDefault() {
             INakedObject nakedObject = MockNakedObject(null);
-            object def = value.GetDefault(nakedObject);
+            object def = value.DefaultValue;
             Assert.AreEqual(TestEnum.London, def);
         }
 
@@ -117,41 +117,41 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [Test]
         public void TestIntegralValue() {
-            Assert.AreEqual(sbyte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null).IntegralValue(MockNakedObject(TestEnumSb.London)));
-            Assert.AreEqual(byte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null).IntegralValue(MockNakedObject(TestEnumB.London)));
-            Assert.AreEqual(ushort.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null).IntegralValue(MockNakedObject(TestEnumUs.London)));
-            Assert.AreEqual(short.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null).IntegralValue(MockNakedObject(TestEnumS.London)));
-            Assert.AreEqual(uint.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null).IntegralValue(MockNakedObject(TestEnumUi.London)));
-            Assert.AreEqual(int.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null).IntegralValue(MockNakedObject(TestEnumI.London)));
-            Assert.AreEqual(ulong.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null).IntegralValue(MockNakedObject(TestEnumUl.London)));
-            Assert.AreEqual(long.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null).IntegralValue(MockNakedObject(TestEnumL.London)));
+            Assert.AreEqual(sbyte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject(TestEnumSb.London)));
+            Assert.AreEqual(byte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject(TestEnumB.London)));
+            Assert.AreEqual(ushort.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject(TestEnumUs.London)));
+            Assert.AreEqual(short.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject(TestEnumS.London)));
+            Assert.AreEqual(uint.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject(TestEnumUi.London)));
+            Assert.AreEqual(int.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(TestEnumI.London)));
+            Assert.AreEqual(ulong.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject(TestEnumUl.London)));
+            Assert.AreEqual(long.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject(TestEnumL.London)));
 
-            Assert.AreEqual(sbyte.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null).IntegralValue(MockNakedObject(TestEnumSb.NewYork)));
-            Assert.AreEqual(byte.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null).IntegralValue(MockNakedObject(TestEnumB.NewYork)));
-            Assert.AreEqual(ushort.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null).IntegralValue(MockNakedObject(TestEnumUs.NewYork)));
-            Assert.AreEqual(short.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null).IntegralValue(MockNakedObject(TestEnumS.NewYork)));
-            Assert.AreEqual(uint.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null).IntegralValue(MockNakedObject(TestEnumUi.NewYork)));
-            Assert.AreEqual(int.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null).IntegralValue(MockNakedObject(TestEnumI.NewYork)));
-            Assert.AreEqual(ulong.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null).IntegralValue(MockNakedObject(TestEnumUl.NewYork)));
-            Assert.AreEqual(long.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null).IntegralValue(MockNakedObject(TestEnumL.NewYork)));
+            Assert.AreEqual(sbyte.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject(TestEnumSb.NewYork)));
+            Assert.AreEqual(byte.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject(TestEnumB.NewYork)));
+            Assert.AreEqual(ushort.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject(TestEnumUs.NewYork)));
+            Assert.AreEqual(short.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject(TestEnumS.NewYork)));
+            Assert.AreEqual(uint.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject(TestEnumUi.NewYork)));
+            Assert.AreEqual(int.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(TestEnumI.NewYork)));
+            Assert.AreEqual(ulong.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject(TestEnumUl.NewYork)));
+            Assert.AreEqual(long.MaxValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject(TestEnumL.NewYork)));
 
-            Assert.AreEqual(sbyte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null).IntegralValue(MockNakedObject(sbyte.MinValue)));
-            Assert.AreEqual(byte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null).IntegralValue(MockNakedObject(byte.MinValue)));
-            Assert.AreEqual(ushort.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null).IntegralValue(MockNakedObject(ushort.MinValue)));
-            Assert.AreEqual(short.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null).IntegralValue(MockNakedObject(short.MinValue)));
-            Assert.AreEqual(uint.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null).IntegralValue(MockNakedObject(uint.MinValue)));
-            Assert.AreEqual(int.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null).IntegralValue(MockNakedObject(int.MinValue)));
-            Assert.AreEqual(ulong.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null).IntegralValue(MockNakedObject(ulong.MinValue)));
-            Assert.AreEqual(long.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null).IntegralValue(MockNakedObject(long.MinValue)));
+            Assert.AreEqual(sbyte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject(sbyte.MinValue)));
+            Assert.AreEqual(byte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject(byte.MinValue)));
+            Assert.AreEqual(ushort.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject(ushort.MinValue)));
+            Assert.AreEqual(short.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject(short.MinValue)));
+            Assert.AreEqual(uint.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject(uint.MinValue)));
+            Assert.AreEqual(int.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(int.MinValue)));
+            Assert.AreEqual(ulong.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject(ulong.MinValue)));
+            Assert.AreEqual(long.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject(long.MinValue)));
 
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null).IntegralValue(MockNakedObject((sbyte) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null).IntegralValue(MockNakedObject((byte) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null).IntegralValue(MockNakedObject((ushort) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null).IntegralValue(MockNakedObject((short) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null).IntegralValue(MockNakedObject((uint) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null).IntegralValue(MockNakedObject(2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null).IntegralValue(MockNakedObject((ulong) 2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null).IntegralValue(MockNakedObject((long) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject((sbyte)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject((byte)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject((ushort)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject((short)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject((uint)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject((ulong)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long)2)));
         }
 
         [Test]
