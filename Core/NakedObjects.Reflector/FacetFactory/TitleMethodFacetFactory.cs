@@ -51,7 +51,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             if (attributedMethods.Count > 0) {
+                // attributes takes priority
                 FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
+                return;
             }
 
             try {

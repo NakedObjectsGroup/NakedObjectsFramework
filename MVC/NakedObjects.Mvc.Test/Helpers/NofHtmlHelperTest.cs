@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
@@ -94,6 +95,7 @@ namespace MvcTestApp.Tests.Helpers {
 
                 var types3 = new Type[] {
                     typeof (EnumerableQuery<string>),
+                    typeof (ObjectQuery<Claim>),
                     typeof(Claim[]),
                     typeof(Object[]),
 
