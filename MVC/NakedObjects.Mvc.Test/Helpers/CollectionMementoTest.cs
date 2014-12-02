@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -76,7 +77,9 @@ namespace MvcTestApp.Tests.Helpers {
                 var types2 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
                     GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
 
-                return types1.Union(types2).ToArray();
+                var types3 = new Type[] {typeof (IEnumerable<Claim>)};
+
+                return types1.Union(types2).Union(types3).ToArray();
             }
         }
     

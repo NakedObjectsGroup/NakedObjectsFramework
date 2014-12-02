@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System.Data.Entity.Infrastructure.Interception;
 using MvcTestApp.Tests.Helpers;
 using NakedObjects;
 
@@ -82,6 +83,11 @@ namespace Expenses.Fixtures {
         private BoolTestClass CreateBoolTest(string name) {
             var btc = Container.NewTransientInstance<BoolTestClass>();
             btc.Name = name;
+            btc.TestBool1 = true;
+            btc.TestBool2 = false;
+            btc.TestNullableBool1 = true;
+            btc.TestNullableBool2 = false;
+            btc.TestNullableBool3 = null;
             Container.Persist(ref btc);
             return btc;
         }

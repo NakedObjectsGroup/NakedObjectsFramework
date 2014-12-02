@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using Expenses.ExpenseClaims;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
@@ -71,7 +72,12 @@ namespace MvcTestApp.Tests.Helpers {
                 var types2 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
                     GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
 
-                return types1.Union(types2).ToArray();
+                var tempIt = new List<CustomHelperTestClass>().Where(i => true).Select(i => i);
+
+                var types3 = new Type[] { tempIt.GetType() };
+
+
+                return types1.Union(types2).Union(types3).ToArray();
             }
         }
 

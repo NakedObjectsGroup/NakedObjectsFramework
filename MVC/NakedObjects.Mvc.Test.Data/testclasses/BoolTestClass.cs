@@ -10,16 +10,8 @@ using NakedObjects;
 
 namespace MvcTestApp.Tests.Helpers {
     [Bounded]
-    public class BoolTestClass {
-        private bool testBool1 = true;
-        private bool? testNullableBool1 = true;
-        private bool? testNullableBool2 = false;
-        private bool? testNullableBool3 = null;
-
-        public BoolTestClass() {
-            TestBool2 = false;
-        }
-
+    public class
+        BoolTestClass {
         [Hidden, Key]
         public int Id { get; set; }
 
@@ -27,27 +19,15 @@ namespace MvcTestApp.Tests.Helpers {
         [Title]
         public string Name { get; set; }
 
-        public bool TestBool1 {
-            get { return testBool1; }
-            set { testBool1 = value; }
-        }
+        public bool TestBool1 { get; set; }
 
         public bool TestBool2 { get; set; }
 
-        public bool? TestNullableBool1 {
-            get { return testNullableBool1; }
-            set { testNullableBool1 = value; }
-        }
+        public bool? TestNullableBool1 { get; set; }
 
-        public bool? TestNullableBool2 {
-            get { return testNullableBool2; }
-            set { testNullableBool2 = value; }
-        }
+        public bool? TestNullableBool2 { get; set; }
 
-        public bool? TestNullableBool3 {
-            get { return testNullableBool3; }
-            set { testNullableBool3 = value; }
-        }
+        public bool? TestNullableBool3 { get; set; }
 
 
         public void TestBoolAction(bool parm) {}
