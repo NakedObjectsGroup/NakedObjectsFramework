@@ -13,7 +13,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1 = null;
         private ITestObject customer2 = null;

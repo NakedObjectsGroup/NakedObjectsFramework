@@ -13,7 +13,7 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
         #region Setup/Teardown
 

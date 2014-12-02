@@ -15,7 +15,7 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1;
         private ITestObject customer2;

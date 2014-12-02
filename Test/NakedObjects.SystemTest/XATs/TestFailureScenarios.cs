@@ -14,6 +14,8 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.XATs {
+
+
     /// <summary>
     ///     Tests various functions of the XATs themselves
     /// </summary>
@@ -50,6 +52,10 @@ namespace NakedObjects.SystemTest.XATs {
 
         protected override object[] MenuServices {
             get { return (new object[] {new SimpleRepository<Object1>()}); }
+        }
+
+        protected override object[] Fixtures {
+            get { return base.Fixtures; }
         }
 
         [TestMethod]
@@ -153,7 +159,11 @@ namespace NakedObjects.SystemTest.XATs {
         public virtual void TestPropertyValue() {
             ITestObject obj = NewTestObject<Object1>();
 
+            obj.GetPropertyById("Prop3").SetValue("16/08/2013");
+
             ITestProperty p1 = obj.GetPropertyById("Prop3");
+
+            
 
             p1.AssertValueIsEqual("16/08/2013 00:00:00");
             p1.AssertTitleIsEqual("16/08/2013");
@@ -209,6 +219,8 @@ namespace NakedObjects.SystemTest.XATs {
     public class XatDbContext : DbContext {
         public const string DatabaseName = "TestXats";
         public XatDbContext() : base(DatabaseName) {}
+
+      
     }
 
     #endregion

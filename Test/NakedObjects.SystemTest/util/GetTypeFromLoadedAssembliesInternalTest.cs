@@ -88,7 +88,7 @@ namespace NakedObjects.SystemTest.Util {
             TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes() {
             TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }

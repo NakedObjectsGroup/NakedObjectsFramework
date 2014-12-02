@@ -62,11 +62,10 @@ namespace NakedObjects.Reflect.FacetFactory {
             IObjectSpecBuilder returnSpec = reflector.LoadSpecification(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
-            bool isQueryable = false;
+            bool isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
                 elementSpec = reflector.LoadSpecification(elementType);
-                isQueryable = returnSpec.GetFacet<ICollectionFacet>().IsQueryable || IsQueryOnly(actionMethod);
             }
 
             RemoveMethod(methodRemover, actionMethod);

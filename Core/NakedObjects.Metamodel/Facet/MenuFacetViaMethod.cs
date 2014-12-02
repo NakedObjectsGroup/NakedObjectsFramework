@@ -7,32 +7,27 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class MenuFacetViaMethod : MenuFacetAbstract {
-
         private readonly MethodInfo method;
 
         public MenuFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base( holder) {
+            : base(holder) {
             this.method = method;
         }
 
         //Creates a menu based on the definition in the object's Menu method
         public override void CreateMenu(IMetamodelBuilder metamodel) {
             MethodInfo m = GetType().GetMethod("CreateTypedMenu").MakeGenericMethod(method.DeclaringType);
-            MenuImpl menu = (MenuImpl)m.Invoke(this, new object[] { metamodel, GetMenuName(Spec()) });
-            InvokeUtils.InvokeStatic(method, new object[] { menu, });
-            this.menu = menu;
+            var menu = (MenuImpl) m.Invoke(this, new object[] {metamodel, GetMenuName(Spec())});
+            InvokeUtils.InvokeStatic(method, new object[] {menu});
+            Menu = menu;
         }
 
         public TypedMenu<T> CreateTypedMenu<T>(IMetamodelBuilder metamodel, string menuName) {

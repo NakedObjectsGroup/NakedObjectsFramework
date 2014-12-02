@@ -54,19 +54,23 @@ namespace NakedObjects.Reflect {
 
 
         public string GetKeyForType(Type type) {
-            //if (!type.IsPublic) {
-            //    var interfaces = type.GetInterfaces();
-            //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
-            //    var publicEnumerables = publicInterfaces.Where(t => typeof(IEnumerable).IsAssignableFrom(t));
-            //    var publicGenericEnumerables = publicInterfaces.Where(IsGenericCollection);
-                
-            //    return GetKeyForType(publicGenericEnumerables.FirstOrDefault() ??
-            //                         publicEnumerables.FirstOrDefault() ??
-            //                         publicInterfaces.FirstOrDefault() ??
-            //                         type.BaseType);
-            //}
+           
    
             if (IsGenericCollection(type)) {
+
+                //if (!type.IsPublic) {
+                //    var interfaces = type.GetInterfaces();
+                //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
+                //    var publicEnumerables = publicInterfaces.Where(t => typeof(IEnumerable).IsAssignableFrom(t));
+                //    var publicGenericEnumerables = publicInterfaces.Where(IsGenericCollection);
+
+                //    return GetKeyForType(publicGenericEnumerables.FirstOrDefault() ??
+                //                         publicEnumerables.FirstOrDefault() ??
+                //                         publicInterfaces.FirstOrDefault() ??
+                //                         type.BaseType);
+                //}
+
+
                 return type.Namespace + "." + type.Name;
             }
 

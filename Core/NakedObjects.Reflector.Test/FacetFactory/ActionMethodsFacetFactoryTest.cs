@@ -15,7 +15,6 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
@@ -515,6 +514,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+        private class Customer33 {
+            public IQueryable<Customer33> SomeQueryableAction1() {
+                return null;
+            }
+            [QueryOnly]
+            public IEnumerable<Customer33> SomeQueryableAction2() {
+                return null;
+            }
+
+
+
+        }
+
         // ReSharper restore UnusedMember.Local
         // ReSharper restore UnusedParameter.Local
 
@@ -527,6 +539,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
+            Assert.IsFalse(actionInvocationFacetViaMethod.IsQueryOnly);
+
+            AssertMethodRemoved(actionMethod);
+        }
+
+        [Test]
+        public void TestActionInvocationFacetQueryableByType() {
+            MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IActionInvocationFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
+            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
+            Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
+            Assert.IsTrue(actionInvocationFacetViaMethod.IsQueryOnly);
+
+            AssertMethodRemoved(actionMethod);
+        }
+
+
+        [Test]
+        public void TestActionInvocationFacetQueryableByAnnotation() {
+            MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IActionInvocationFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
+            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
+            Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
+            Assert.IsTrue(actionInvocationFacetViaMethod.IsQueryOnly);
 
             AssertMethodRemoved(actionMethod);
         }

@@ -181,7 +181,6 @@
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />
     <Compile Include="Injection\TestInjection.cs" />
-    <Compile Include="Attributes\TestMetadataTypeAttribute.cs" />
     <Compile Include="Persistence\TestPersistence.cs" />
     <Compile Include="Repositories\TestSimpleRepository.cs" />
     <Compile Include="XATs\TestFailureScenarios.cs" />

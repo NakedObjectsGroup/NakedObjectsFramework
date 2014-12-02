@@ -220,6 +220,9 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorAction() {
+
+            MyDefaultAuditor.SetActionCallbacksExpected();
+
             ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
             MyDefaultAuditor.SetActionCallbacksUnexpected();
@@ -309,6 +312,8 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorQueryOnlyServiceAction() {
+
+            MyDefaultAuditor.SetActionCallbacksExpected();
             ITestService foo = GetTestService("Foo Service");
 
             MyDefaultAuditor.SetActionCallbacksUnexpected();
