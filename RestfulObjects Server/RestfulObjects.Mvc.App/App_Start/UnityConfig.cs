@@ -6,9 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Services.Description;
 using Microsoft.Practices.Unity;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
@@ -56,6 +59,12 @@ namespace MvcTestApp {
 
         #endregion
 
+        private static Type[] Types {
+            get {
+                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>) };
+            }
+        }
+
         private static object[] MenuServices {
             get {
                 return new object[] {
@@ -90,6 +99,12 @@ namespace MvcTestApp {
                 typeof (ContributorService),
                 typeof (TestTypeCodeMapper)
             };
+        }
+
+        private static EntityObjectStoreConfiguration EntityObjectStore() {
+            var config = new EntityObjectStoreConfiguration();
+            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));            
+            return config;
         }
 
         private static void RegisterFacetFactories(IUnityContainer container) {
@@ -195,28 +210,8 @@ namespace MvcTestApp {
             // container.LoadConfiguration();
 
             RegisterFacetFactories(container);
-            container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>();
-            container.RegisterType<IMenuFactory, MenuFactory>();
 
-
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
-
-            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
-
-            var config = new EntityObjectStoreConfiguration();
-
-            //config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-
-            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
-
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, new ContainerControlledLifetimeManager());
-
-            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+            var reflectorConfig = new ReflectorConfiguration(Types,
                MenuServices.Select(s => s.GetType()).ToArray(),
                ContributedActions.Select(s => s.GetType()).ToArray(),
                SystemServices.Select(s => s.GetType()).ToArray());
@@ -224,36 +219,47 @@ namespace MvcTestApp {
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
+            container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
 
-            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
-            container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());
+            // in architecture
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMenuFactory, MenuFactory>(new ContainerControlledLifetimeManager());
+
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
-
-
             container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new PerResolveLifetimeManager());
-
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
-
             container.RegisterType<ITransactionManager, TransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
-
-            container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
-
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
 
-            container.RegisterType<IOidStrategy, ExternalOid>(new PerResolveLifetimeManager());
 
+            // surface
+            container.RegisterType<IOidStrategy, ExternalOid>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
 
+            //Temporary scaffolding
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());
+
+            //Externals
+            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+
+            //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
 
         }
