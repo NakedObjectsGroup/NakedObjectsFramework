@@ -25,8 +25,8 @@ namespace NakedObjects.Architecture.SpecImmutable {
         string ShortName { get; }
         IMenuImmutable ObjectMenu { get; }
         IList<IActionSpecImmutable> ObjectActions { get; }
-        IList<Tuple<string, string, IList<IActionSpecImmutable>>> ContributedActions { get; }
-        IList<Tuple<string, string, IList<IActionSpecImmutable>>> RelatedActions { get; }
+        IList<ActionsForService> ContributedActions { get; }
+        IList<ActionsForService> RelatedActions { get; }
         IList<IAssociationSpecImmutable> Fields { get; }
         IList<IObjectSpecImmutable> Interfaces { get; }
         IList<IObjectSpecImmutable> Subclasses { get; }

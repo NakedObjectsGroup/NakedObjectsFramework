@@ -59,9 +59,9 @@ namespace NakedObjects.Core.Spec {
             return actions.ToArray();
         }
 
-        public IActionSpec[] OrderActions(IList<Tuple<string, string, IList<IActionSpecImmutable>>> order) {
+        public IActionSpec[] OrderActions(IList<ActionsForService> order) {
             Assert.AssertNotNull(framework);
-            return order.Select(element => CreateActionSpecSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
+            return order.Select(element => CreateActionSpecSet(element.Id, element.Name, element.Specs)).Cast<IActionSpec>().ToArray();
         }
 
         private ActionSpecSet CreateActionSpecSet(IList<IActionSpecImmutable> orderSet, string groupFullName) {

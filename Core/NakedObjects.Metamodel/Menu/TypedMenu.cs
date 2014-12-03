@@ -41,9 +41,9 @@ namespace NakedObjects.Meta.Menu {
 
         public ITypedMenu<TObject> AddContributedActions() {
             foreach (var ca in GetObjectSpec<TObject>().ContributedActions) {
-                string subMenuName = ca.Item2; //Item 2 should be friendly name of the contributing service
+                string subMenuName = ca.Name; //Item 2 should be friendly name of the contributing service
                 MenuImpl subMenu = GetSub(subMenuName) ??  CreateMenuImmutableAsSubMenu(subMenuName);
-                subMenu.AddOrderableElementsToMenu(ca.Item3, subMenu); //Item 3 should be the actions  
+                subMenu.AddOrderableElementsToMenu(ca.Specs, subMenu); //Item 3 should be the actions  
             }
             return this;
         }
