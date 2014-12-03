@@ -225,7 +225,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(7, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
