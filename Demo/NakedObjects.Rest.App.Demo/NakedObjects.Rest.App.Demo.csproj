@@ -71,34 +71,6 @@
       <HintPath>..\..\packages\Unity.AspNet.WebApi.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.ConnectionInfoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.Smo.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.SmoExtended.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.SqlClrProvider, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.SqlClrProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Shared.Management.Objects.for.SQL.Server.2008.R2.11.0.3000.0\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -111,7 +83,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Core">
+    <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -129,27 +102,26 @@
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Reflector">
+    <Reference Include="NakedObjects.Reflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Reflector.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Snapshot.Xml">
+    <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Surface">
+    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-alpha2\lib\net451\NakedObjects.Surface.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Surface.Nof4">
+    <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0-alpha2\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -9,6 +9,7 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -51,9 +52,8 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
         #endregion
-           
-        private static void RegisterFacetFactories(IUnityContainer container) {
 
+        private static void RegisterFacetFactories(IUnityContainer container) {
             container.RegisterType<IFacetFactory, FallbackFacetFactory>("FallbackFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
             container.RegisterType<IFacetFactory, IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(1));
             container.RegisterType<IFacetFactory, UnsupportedParameterTypesMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(2));
@@ -143,7 +143,6 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterType<IFacetFactory, ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(80));
             container.RegisterType<IFacetFactory, ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", new ContainerControlledLifetimeManager(), new InjectionConstructor(81));
             container.RegisterType<IFacetFactory, CollectionFacetFactory>("CollectionFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(82)); // written to not trample over TypeOf if already installed
-
         }
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
@@ -202,11 +201,6 @@ namespace NakedObjects.Rest.App.Demo {
 
             //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
-
         }
     }
-
-   
-
-    
 }
