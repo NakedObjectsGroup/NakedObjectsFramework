@@ -17,6 +17,7 @@
                     new {id = Html.GetObjectId(Model).ToString()},
                     FormMethod.Post,
                     new {@class = IdHelper.EditName})) {
+                    @*TODO: Replace with Html.ObjectMenuOnTransient(Model)*@
                     @(Html.MenuOnTransient(Model))
                     if (Html.ObjectHasVisibleFields(Model)) {
                         @(Html.PropertyList(Model))
@@ -24,6 +25,7 @@
                 }
             }
             else {
+                @*TODO: Replace with Html.ObjectMenu(Model)*@
                 @(Html.Menu(Model))
                 if (Html.ObjectHasVisibleFields(Model)) {
                     @(Html.PropertyList(Model))

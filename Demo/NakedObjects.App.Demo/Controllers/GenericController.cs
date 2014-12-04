@@ -10,13 +10,9 @@ namespace NakedObjects.App.Demo.Controllers {
     //[Authorize] 
     public class GenericController : GenericControllerImpl {
 
-         public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
-            
-        }
-
-
-
         #region actions
+
+        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {

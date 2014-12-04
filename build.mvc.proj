@@ -178,7 +178,7 @@
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsActivator.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RouteConfig.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityConfig.cs"/>
-      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnitMvcActivator.cs"/> 
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityMvcActivator.cs"/> 
 		</ItemGroup>
 
 		<FileUpdate Files="@(ToUpdatePartialNamespace)"

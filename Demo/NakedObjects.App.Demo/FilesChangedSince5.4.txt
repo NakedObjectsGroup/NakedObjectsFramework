@@ -1,0 +1,51 @@
+Existing files updated:
+
+NakedObjects-Ajax.js
+NakedObjects.css
+
+SystemController.cs
+
+Most of the shared view files have changed, but in small ways.  The principal differences are:
+
+- Use of the new Html.TabbedHistory in place of the existing Html.History
+  (though the latter may be used if you do not wish to use the new tabbed presentation)
+- Some changes to rendering of object titles to avoid duplication with Tabs
+
+Index.aspx
+ActionDialog.aspx
+ConcurrencyError.aspx
+DataUpdateError.aspx
+DestroyedError.aspx
+DomainError.aspx
+FormWithFinderDialog.aspx
+FormWithSelections.aspx
+ObjectEdit.aspx
+ObjectView.aspx
+ScalarView.aspx
+StandaloneTable.aspx
+ObjectEditControl.ascx
+
+Index.cshtml
+ActionDialog.cshtml
+ConcurrencyError.cshtml
+DataUpdateError.cshtml
+DestroyedError.cshtml
+DomainError.cshtml
+FormWithFinderDialog.cshtml
+FormWithSelections.cshtml
+ObjectEdit.cshtml
+ObjectView.cshtml
+ScalarView.cshtml
+StandaloneTable.cshtml
+ObjectEditControl.cshtml
+
+
+Previous files removed:
+
+None
+
+New files added:
+
+None
+
+

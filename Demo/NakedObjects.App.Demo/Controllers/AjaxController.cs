@@ -10,11 +10,7 @@ namespace NakedObjects.App.Demo.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-
-         public AjaxController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
-            
-        }
-
+        public AjaxController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {

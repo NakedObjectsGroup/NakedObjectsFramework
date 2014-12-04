@@ -15,11 +15,9 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 
-namespace NakedObjects.Rest.App.Demo {
+namespace NakedObjects.App.Demo {
     public static class NakedObjectsSettings {
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
+        
 
         private static Type[] Types {
             get {

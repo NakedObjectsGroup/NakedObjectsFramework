@@ -195,7 +195,7 @@
     <Compile Include="Mvc\ObjectCache.cs" />
     <Compile Include="Mvc\SessionCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mvc\RunMvc.cs" />
+    <Compile Include="Mvc\NakedObjectsRouteConfig.cs" />
     <Compile Include="Mvc\SpecificActionConstraint.cs" />
   </ItemGroup>
   <ItemGroup>

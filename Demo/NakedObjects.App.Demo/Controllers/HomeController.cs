@@ -5,15 +5,11 @@ using System.Web.Mvc;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
-namespace NakedObjects.App.Demo.Controllers {
+namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-
-        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
-            
-        }
-
+        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         public ActionResult Index() {
             return View();
@@ -37,6 +33,11 @@ namespace NakedObjects.App.Demo.Controllers {
         [HttpPost]
         public override ActionResult ClearHistoryItem(string id, string nextId, ObjectAndControlData controlData) {
             return base.ClearHistoryItem(id, nextId, controlData);
+        }
+
+        [HttpPost]
+        public override ActionResult Cancel(string nextId, ObjectAndControlData controlData) {
+            return base.Cancel(nextId, controlData);
         }
 
         [HttpPost]

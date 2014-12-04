@@ -16,11 +16,7 @@ namespace NakedObjects.App.Demo.Controllers {
     /// </summary>
     [HandleError]
     public class WifAccountController : NakedObjectsController {
-
-         public WifAccountController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
-            
-        }
-
+        public WifAccountController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         public ActionResult LogOn(string returnUrl) {
             return LogOnCommon(returnUrl);
