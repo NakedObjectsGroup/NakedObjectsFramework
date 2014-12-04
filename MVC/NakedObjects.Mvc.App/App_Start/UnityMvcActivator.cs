@@ -12,14 +12,14 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Mvc.App.App_Start;
+using NakedObjects.Mvc.App;
 using WebActivatorEx;
 using WebApiResolver = Microsoft.Practices.Unity.WebApi.UnityDependencyResolver;
 
 [assembly: PreApplicationStartMethod(typeof (UnityWebActivator), "Start")]
 [assembly: ApplicationShutdownMethod(typeof (UnityWebActivator), "Shutdown")]
 
-namespace NakedObjects.Mvc.App.App_Start {
+namespace NakedObjects.Mvc.App {
     /// <summary>Provides the bootstrapping for integrating Unity with ASP.NET MVC.</summary>
     public static class UnityWebActivator {
         /// <summary>Integrates Unity when the application starts.</summary>

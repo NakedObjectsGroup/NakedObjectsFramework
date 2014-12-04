@@ -6,9 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Services.Description;
@@ -34,8 +31,6 @@ using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using RestfulObjects.Test.Data;
-using NakedObjects.Menu;
 
 namespace MvcTestApp {
     /// <summary>
@@ -58,55 +53,7 @@ namespace MvcTestApp {
         }
 
         #endregion
-
-        private static Type[] Types {
-            get {
-                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>) };
-            }
-        }
-
-        private static object[] MenuServices {
-            get {
-                return new object[] {
-                    new RestDataRepository(),
-                    new WithActionService()
-                };
-            }
-        }
-
-
-        private static object[] ContributedActions {
-            get {
-                return new object[] {
-                    new ContributorService()
-                };
-            }
-        }
-
-
-        private static object[] SystemServices {
-            get {
-                return new object[] {
-                    new TestTypeCodeMapper()
-                };
-            }
-        }
-
-        public static Type[] Services() {
-            return new[] {
-                typeof (RestDataRepository),
-                typeof (WithActionService),
-                typeof (ContributorService),
-                typeof (TestTypeCodeMapper)
-            };
-        }
-
-        private static EntityObjectStoreConfiguration EntityObjectStore() {
-            var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));            
-            return config;
-        }
-
+           
         private static void RegisterFacetFactories(IUnityContainer container) {
 
             container.RegisterType<IFacetFactory, FallbackFacetFactory>("FallbackFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
@@ -211,16 +158,12 @@ namespace MvcTestApp {
 
             RegisterFacetFactories(container);
 
-            var reflectorConfig = new ReflectorConfiguration(Types,
-               MenuServices.Select(s => s.GetType()).ToArray(),
-               ContributedActions.Select(s => s.GetType()).ToArray(),
-               SystemServices.Select(s => s.GetType()).ToArray());
+            // config 
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
-
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
             container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
@@ -267,16 +210,5 @@ namespace MvcTestApp {
 
    
 
-    public class MyMainMenuDefinition : IMainMenuDefinition {
-
-        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-            var menu1 = factory.NewMenu<RestDataRepository>(true);
-            var menu2 = factory.NewMenu<WithActionService>(true);
-            var menu3 = factory.NewMenu<ContributorService>(true);
-            var menu4 = factory.NewMenu<TestTypeCodeMapper>(true);
-
-
-            return new IMenuBuilder[] { menu1, menu2, menu3, menu4 };
-        }
-    }
+    
 }

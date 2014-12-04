@@ -6,15 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using System.Security.Principal;
 using System.Web;
-using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
@@ -22,6 +19,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
@@ -31,87 +29,15 @@ using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Web.Mvc.Helpers;
-using NakedObjects.Web.Mvc.Models;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menu;
-using NakedObjects.Menu;
 
-namespace NakedObjects.Mvc.App.App_Start {
+namespace NakedObjects.Mvc.App {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
     public class UnityConfig {
-        #region Application Configuration
-
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
-
-
-        private static Type[] Types {
-            get {
-                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>), typeof(ActionResultModelQ<object>) };
-            }
-        }
-
-
-        private static object[] MenuServices {
-            get {
-                return new object[] {
-                new CustomerRepository(),
-                new OrderRepository(),
-                new ProductRepository(),
-                new EmployeeRepository(),
-                new SalesRepository(),
-                new SpecialOfferRepository(),
-                new ContactRepository(),
-                new VendorRepository(),
-                new PurchaseOrderRepository(),
-                new WorkOrderRepository()
-                };
-            }
-        }
-
-
-        private static object[] ContributedActions {
-            get {
-                return new object[] {
-                     new OrderContributedActions(),
-                new CustomerContributedActions()
-                };
-            }
-        }
-
-
-        private static object[] SystemServices {
-            get {
-                return new object[] {
-                   new SimpleEncryptDecrypt()
-                };
-            }
-        }
-
-        private static EntityObjectStoreConfiguration EntityObjectStore() {
-            var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-            return config;
-        }
-
-        private static Type[] AdventureWorksTypes() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
-        }
-
-
-
-        #endregion
-
         #region Framework Configuration
 
         private static void RegisterFacetFactories(IUnityContainer container) {
-
             container.RegisterType<IFacetFactory, FallbackFacetFactory>("FallbackFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
             container.RegisterType<IFacetFactory, IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(1));
             container.RegisterType<IFacetFactory, UnsupportedParameterTypesMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(2));
@@ -209,18 +135,12 @@ namespace NakedObjects.Mvc.App.App_Start {
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container) {
-
             RegisterFacetFactories(container);
 
-            var reflectorConfig = new ReflectorConfiguration(Types,
-               MenuServices.Select(s => s.GetType()).ToArray(),
-               ContributedActions.Select(s => s.GetType()).ToArray(),
-               SystemServices.Select(s => s.GetType()).ToArray());
-
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
-
+            // config
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
             container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
 
             // in architecture
@@ -281,25 +201,5 @@ namespace NakedObjects.Mvc.App.App_Start {
         }
 
         #endregion
-    }
-
-    public class MyMainMenuDefinition : IMainMenuDefinition {
-
-        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-            var menu1 = factory.NewMenu<CustomerRepository>(true);
-            var menu2 = factory.NewMenu<OrderRepository>(true);
-            var menu3 = factory.NewMenu<ProductRepository>(true);
-            var menu4 = factory.NewMenu<EmployeeRepository>(true);
-            var menu5 = factory.NewMenu<SalesRepository>(true);
-            var menu6 = factory.NewMenu<SpecialOfferRepository>(true);
-            var menu7 = factory.NewMenu<ContactRepository>(true);
-            var menu8 = factory.NewMenu<VendorRepository>(true);
-            var menu9 = factory.NewMenu<PurchaseOrderRepository>(true);
-            var menu10 = factory.NewMenu<WorkOrderRepository>(true);
-
-            //return new IMenuBuilder[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
-
-            return new IMenuBuilder[] { };
-        }
     }
 }

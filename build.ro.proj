@@ -173,6 +173,9 @@
   <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
    
     <ItemGroup>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\MyMainMenuDefinition.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsSettings.cs.pp"/>
+      
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityFrameworkResolver.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>

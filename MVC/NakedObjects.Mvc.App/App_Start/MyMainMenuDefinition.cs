@@ -5,21 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.Practices.Unity;
-using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Mvc.App {
-    public class UnityFrameworkResolver : IFrameworkResolver {
-        private readonly IUnityContainer unityContainer;
+    public class MyMainMenuDefinition : IMainMenuDefinition {
+        #region IMainMenuDefinition Members
 
-        public UnityFrameworkResolver(IUnityContainer unityContainer) {
-            this.unityContainer = unityContainer;
-        }
-
-        #region IFrameworkResolver Members
-
-        public INakedObjectsFramework GetFramework() {
-            return unityContainer.Resolve<INakedObjectsFramework>();
+        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+            return new IMenuBuilder[] {};
         }
 
         #endregion
