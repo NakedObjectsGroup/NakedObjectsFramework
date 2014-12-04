@@ -24,6 +24,8 @@ namespace NakedObjects.Meta.Menu {
 
         public string Name { get; set; }
 
+        public string Id { get; set; }
+
         public IActionSpecImmutable Action { get; set; }
 
         #endregion

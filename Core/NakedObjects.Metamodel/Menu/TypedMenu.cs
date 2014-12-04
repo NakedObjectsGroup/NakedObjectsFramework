@@ -21,6 +21,7 @@ namespace NakedObjects.Meta.Menu {
             if (name == null) {
                 this.Name = GetFriendlyNameForObject();
             }
+            Id = typeof(TObject).Name;
             if (addAllActions) {
                 AddRemainingNativeActions();
                 AddContributedActions();
@@ -40,10 +41,13 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> AddContributedActions() {
-            foreach (var ca in GetObjectSpec<TObject>().ContributedActions) {
-                string subMenuName = ca.Name; //Item 2 should be friendly name of the contributing service
-                MenuImpl subMenu = GetSub(subMenuName) ??  CreateMenuImmutableAsSubMenu(subMenuName);
-                subMenu.AddOrderableElementsToMenu(ca.Specs, subMenu); //Item 3 should be the actions  
+            var spec = GetObjectSpec<TObject>();
+            foreach (var ca in spec.ContributedActions) {
+                string subMenuName = ca.Name;
+                //Id specified as below purely for backwards UI compatibility: Id is not needed otherwise
+                string id = spec.ShortName+"-"+ca.Id;
+                MenuImpl subMenu = GetSub(subMenuName) ??  CreateMenuImmutableAsSubMenu(subMenuName, id);
+                subMenu.AddOrderableElementsToMenu(ca.Specs, subMenu);  
             }
             return this;
         }

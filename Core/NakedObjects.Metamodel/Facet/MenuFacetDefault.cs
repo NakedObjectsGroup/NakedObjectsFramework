@@ -18,18 +18,25 @@ namespace NakedObjects.Meta.Facet {
             : base(holder) {}
 
         //Creates a menu based on the object's actions and their specified ordering
+        //For backwards compatibility of UI only, it gives the menu an Id of the type name
         public override void CreateMenu(IMetamodelBuilder metamodel) {
             if (Spec().Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
+            //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
+            //It is not needed for menus to function
+            string id = Spec().ShortName;
+            if (!Spec().Service) {
+                id += "-Actions";
+            }           
             MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec().Type);
-
             // possible spec type is generic in which case invoke would fail without this check
             if (!m.ContainsGenericParameters) {
-                m.Invoke(this, new object[] {metamodel, GetMenuName(Spec())});
+                m.Invoke(this, new object[] {metamodel, GetMenuName(Spec()), id});
             }
         }
 
-        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName) {
+        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName, string id) {
             var menu = new TypedMenu<T>(metamodel, false, menuName);
+            menu.Id = id;
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
             this.Menu = menu;

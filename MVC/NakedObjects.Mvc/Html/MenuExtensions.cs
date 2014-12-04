@@ -76,11 +76,10 @@ namespace NakedObjects.Web.Mvc.Html {
                     descriptors.Add(descriptor);
                 }
             }
-            string menuName = menu.Name;
             return CommonHtmlHelper.BuildMenuContainer(descriptors,
-                                                       IdHelper.MenuContainerName + " " + menuName,
-                                                       null,
-                                                       menuName);
+                                                       IdHelper.MenuContainerName,
+                                                       menu.Id,
+                                                       menu.Name);
         }
 
 
@@ -136,11 +135,13 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenuImmutable subMenu, INakedObject nakedObject, bool isEdit) {
+        private static ElementDescriptor SubMenuAsElementDescriptor(
+                this HtmlHelper html, IMenuImmutable subMenu, INakedObject nakedObject, bool isEdit) {
             string tagType = "div";
             string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdHelper.MenuNameLabel).ToString();
             RouteValueDictionary attributes = new RouteValueDictionary(new {
-                @class = IdHelper.SubMenuName + " " + subMenu.Name
+                @class = IdHelper.SubMenuName,
+                @id = subMenu.Id
             });
 
             return new ElementDescriptor {

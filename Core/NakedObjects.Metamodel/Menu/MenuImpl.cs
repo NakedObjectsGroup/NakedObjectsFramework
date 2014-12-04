@@ -42,7 +42,16 @@ namespace NakedObjects.Meta.Menu {
         /// </summary>
         public IMenu SuperMenu { get; private set; }
 
+        /// <summary>
+        /// The name of the menu -  will typically be rendered on the UI
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Id is optional.  It is only included to facilitate backwards compatibility with
+        /// existing auto-generated menus.
+        /// </summary>
+        public string Id { get; set; }
 
         //Includes both actions and sub-menus
         public IList<IMenuItemImmutable> MenuItems {
@@ -68,6 +77,11 @@ namespace NakedObjects.Meta.Menu {
             return this;
         }
 
+        public IMenu WithId(string id) {
+            this.Id = id;
+            return this;
+        }
+
         public IMenu AddActionFrom<TObject>(string actionName, string renamedTo = null) {
             Type serviceType = typeof (TObject);
 
@@ -86,7 +100,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenu CreateSubMenu(string subMenuName) {
-            return CreateMenuImmutableAsSubMenu(subMenuName);
+            return CreateMenuImmutableAsSubMenu(subMenuName, null);
         }
 
         public IMenuActionImmutable GetAction(string actionName) {
@@ -128,8 +142,9 @@ namespace NakedObjects.Meta.Menu {
             }
         }
 
-        protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName) {
+        protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id) {
             var subMenu = new MenuImpl(metamodel, subMenuName);
+            subMenu.Id = id;
             this.AddAsSubMenu(subMenu);
             return subMenu;
         }

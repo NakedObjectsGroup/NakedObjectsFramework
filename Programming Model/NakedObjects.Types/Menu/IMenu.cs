@@ -14,6 +14,13 @@ namespace NakedObjects.Menu {
         IMenu WithMenuName(string name);
 
         /// <summary>
+        /// Allows the id for the menu to be specified or over-ridden
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>This menu (for fluent programming)</returns>
+        IMenu WithId(string id);
+
+        /// <summary>
         /// Adds specified action as the next menu item
         /// </summary>
         /// <typeparam name="TObject"></typeparam>

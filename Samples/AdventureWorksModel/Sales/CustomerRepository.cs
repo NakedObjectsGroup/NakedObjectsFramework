@@ -23,6 +23,7 @@ namespace AdventureWorksModel {
         #endregion
 
         public static void Menu(ITypedMenu<CustomerRepository> menu) {
+            menu.AddAction("FindCustomerByAccountNumber");
             menu.CreateSubMenuOfSameType("Stores")
                 .AddAction("FindStoreByName")
                 .AddAction("CreateNewStoreCustomer")
@@ -31,7 +32,8 @@ namespace AdventureWorksModel {
                 .AddAction("FindIndividualCustomerByName")
                 .AddAction("CreateNewIndividualCustomer")
                 .AddAction("RandomIndividual");
-            menu.AddRemainingNativeActions();
+            menu.AddAction("CustomerDashboard");
+            menu.AddAction("ThrowDomainException");
         }
 
         #region FindCustomerByAccountNumber

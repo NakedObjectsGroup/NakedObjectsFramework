@@ -30,6 +30,7 @@ namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem : IMenuItemImmutable {
         public string Controller { get; set; }
         public string Name { get; set; }
+        public string Id { get; set; }
         public string Action { get; set; }
         public object RouteValues { get; set; }
         public int MemberOrder { get; set; }

@@ -11,5 +11,10 @@ namespace NakedObjects.Architecture.Menu {
     /// </summary>
     public interface IMenuItemImmutable {
         string Name { get; }
+
+        /// <summary>
+        /// Id is optional
+        /// </summary>
+        string Id { get; }
     }
 }
