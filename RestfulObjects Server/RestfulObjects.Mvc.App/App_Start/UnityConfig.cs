@@ -8,7 +8,6 @@
 using System;
 using System.Security.Principal;
 using System.Web;
-using System.Web.Services.Description;
 using Microsoft.Practices.Unity;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
@@ -53,9 +52,8 @@ namespace MvcTestApp {
         }
 
         #endregion
-           
-        private static void RegisterFacetFactories(IUnityContainer container) {
 
+        private static void RegisterFacetFactories(IUnityContainer container) {
             container.RegisterType<IFacetFactory, FallbackFacetFactory>("FallbackFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
             container.RegisterType<IFacetFactory, IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(1));
             container.RegisterType<IFacetFactory, UnsupportedParameterTypesMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(2));
@@ -145,7 +143,6 @@ namespace MvcTestApp {
             container.RegisterType<IFacetFactory, ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(80));
             container.RegisterType<IFacetFactory, ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", new ContainerControlledLifetimeManager(), new InjectionConstructor(81));
             container.RegisterType<IFacetFactory, CollectionFacetFactory>("CollectionFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(82)); // written to not trample over TypeOf if already installed
-
         }
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
@@ -204,11 +201,6 @@ namespace MvcTestApp {
 
             //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
-
         }
     }
-
-   
-
-    
 }

@@ -8,9 +8,7 @@
 using System;
 using System.Security.Principal;
 using System.Web;
-using System.Web.Services.Description;
 using Microsoft.Practices.Unity;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -27,7 +25,6 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using NakedObjects.Rest.App.Demo.App_Start;
 using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;

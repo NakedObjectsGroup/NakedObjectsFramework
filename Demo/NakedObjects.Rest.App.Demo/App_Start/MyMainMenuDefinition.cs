@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Menu;
 
-namespace NakedObjects.Rest.App.Demo.App_Start {
+namespace NakedObjects.Rest.App.Demo {
     public class MyMainMenuDefinition : IMainMenuDefinition {
         #region IMainMenuDefinition Members
 

@@ -9,8 +9,8 @@ using System;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 
-namespace NakedObjects.Rest.App.Demo.App_Start {
-    public class NakedObjects {
+namespace NakedObjects.Rest.App.Demo {
+    public class NakedObjectsSettings {
         
 		private static Type[] Types {
             get {

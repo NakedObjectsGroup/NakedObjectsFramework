@@ -10,7 +10,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 
 namespace $rootnamespace$ {
-    public class NakedObjects {
+    public class NakedObjectsSettings {
         
 		private static Type[] Types {
             get {
