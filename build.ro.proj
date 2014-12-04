@@ -141,10 +141,11 @@
     <Copy SourceFiles="@(RestApiSrc)" DestinationFolder="$(ROPath)\$(ROMVC).package\src\%(RecursiveDir)" />
 
     <ItemGroup>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>   
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>   
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityFrameworkResolver.cs"/>
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
@@ -153,9 +154,10 @@
 
     <ItemGroup>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsConfig.cs"/>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsActivator.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsConfig.cs"/>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityConfig.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityFrameworkResolver.cs"/>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityWebApiActivator.cs"/>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
