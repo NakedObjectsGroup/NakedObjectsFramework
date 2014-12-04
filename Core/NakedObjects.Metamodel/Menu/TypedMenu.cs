@@ -13,6 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NakedObjects.Meta.Menu {
     public class TypedMenu<TObject> : MenuImpl, ITypedMenuBuilder<TObject> {
@@ -45,7 +46,7 @@ namespace NakedObjects.Meta.Menu {
             foreach (var ca in spec.ContributedActions) {
                 string subMenuName = ca.Name;
                 //Id specified as below purely for backwards UI compatibility: Id is not needed otherwise
-                string id = spec.ShortName+"-"+ca.Id;
+                string id = spec.ShortName + "-" + ca.Id.Split('.').Last(); ;
                 MenuImpl subMenu = GetSub(subMenuName) ??  CreateMenuImmutableAsSubMenu(subMenuName, id);
                 subMenu.AddOrderableElementsToMenu(ca.Specs, subMenu);  
             }
