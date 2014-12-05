@@ -104,22 +104,16 @@
     <Copy SourceFiles="@(RestApiSrc)" DestinationFolder="$(ROPath)\$(ROMVC).package\src\%(RecursiveDir)" />
 
     <ItemGroup>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>    
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>       
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(RestSrcFiles)" DestinationFolder="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)" />
 
     <ItemGroup>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsConfig.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsActivator.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityConfig.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityWebApiActivator.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>      
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsConfig.cs"/>  
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
 
@@ -143,18 +137,20 @@
     
 
     <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\MyMainMenuDefinition.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsSettings.cs.pp"/>    
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityFrameworkResolver.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
 
     <ItemGroup>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsConfig.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsActivator.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityConfig.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityFrameworkResolver.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityWebApiActivator.cs"/>
     </ItemGroup>
        

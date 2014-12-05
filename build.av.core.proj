@@ -39,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Architecture.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Core.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
@@ -119,8 +118,7 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Metamodel\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
-  
+      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/> 
       <FWSrc Include="$(CorePath)\*NakedObjects.Snapshot.Xml\**\*.cs"/>
     </ItemGroup>
     <Copy SourceFiles="@(FWSrc)" DestinationFolder="$(CorePath)\$(NOCore).package\src\%(RecursiveDir)" />
@@ -144,7 +142,6 @@
     <!--<Copy SourceFiles="$(CorePath)\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.dll.config" DestinationFolder="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)" />-->
 
    
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
