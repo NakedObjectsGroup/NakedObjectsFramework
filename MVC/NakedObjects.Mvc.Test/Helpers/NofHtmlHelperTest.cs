@@ -771,14 +771,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("DialogWithAjaxDisabled", s);
         }
 
-
-        //
-
-
-        //
-
-
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void DisplayName() {
             mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().Menu(DescribedTestClass).ToString();
@@ -786,7 +779,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("DisplayName", s);
         }
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void DuplicateAction() {
             var testBool = (BoolTestClass) GetBoundedInstance<BoolTestClass>("BoolClass").GetDomainObject();
             mocks.ViewDataContainer.Object.ViewData.Model = testBool;
@@ -1125,7 +1118,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test, Ignore]
         public void ObjectActions() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = claim;
@@ -1135,7 +1128,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void ObjectActionsTestNotContributed1() {
             var nc1 = (NotContributedTestClass1) GetBoundedInstance<NotContributedTestClass1>("NC1Class").GetDomainObject();
             string s = mocks.HtmlHelper.Menu(nc1).ToString();
@@ -1144,7 +1137,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectActionsTestNotContributed1", s);
         }
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void ObjectActionsTestNotContributed2() {
             var nc2 = (NotContributedTestClass2) GetBoundedInstance<NotContributedTestClass2>("NC2Class").GetDomainObject();
             string s = mocks.HtmlHelper.Menu(nc2).ToString();
@@ -1162,7 +1155,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectActionsWithConcurrency", s);
         }
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void ObjectActionsWithHints() {
             var hint = (HintTestClass) GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
 
@@ -2059,7 +2052,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ViewModel", s);
         }
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void ViewModelActions() {
             Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
