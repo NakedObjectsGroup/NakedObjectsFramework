@@ -71,8 +71,9 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObject nakedObject, bool isEdit) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItemImmutable item in menu.MenuItems) {
-                ElementDescriptor descriptor;
-                if (IsDuplicate(item, menu.MenuItems)) {
+                var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+               if (IsDuplicateAndIsVisibleActions(html, item, menu.MenuItems, nakedObject)) {
+                   //Test that both items are in fact visible
                     //The Id is set just to preseve backwards compatiblity
                     string id = menu.Id;
                     if (id.EndsWith("Actions")) {
@@ -87,9 +88,7 @@ namespace NakedObjects.Web.Mvc.Html {
                             title = MvcUi.DuplicateAction
                         })
                     };
-                } else {
-                    descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
-                }
+                } 
                 if (descriptor != null) { //Would be null for an invisible action
                     descriptors.Add(descriptor);
                 }
@@ -100,10 +99,12 @@ namespace NakedObjects.Web.Mvc.Html {
                                                        menu.Name);
         }
 
-
-
-        private static bool IsDuplicate(IMenuItemImmutable item, IList<IMenuItemImmutable> items) {
-            return items.Count(i => i.Name == item.Name) > 1;
+        private static bool IsDuplicateAndIsVisibleActions(
+                HtmlHelper html, IMenuItemImmutable item, 
+                IList<IMenuItemImmutable> items, INakedObject nakedObject) {
+            var itemsOfSameName = items.Where(i => i.Name == item.Name);
+            if (itemsOfSameName.Count() == 1) return false;
+           return itemsOfSameName.Count(i => MenuActionAsElementDescriptor(html, i as IMenuActionImmutable, nakedObject, false) != null) > 1;
         }
 
 

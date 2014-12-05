@@ -1118,7 +1118,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test, Ignore]
+        [Test]
         public void ObjectActions() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = claim;
