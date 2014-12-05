@@ -182,7 +182,7 @@
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
 
     <ItemGroup>
-      <ROSUpdate Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsActivator.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityConfig.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityFrameworkResolver.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityWebApiActivator.cs"/>

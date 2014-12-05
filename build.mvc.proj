@@ -168,9 +168,10 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
 
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\MyMainMenuDefinition.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsSettings.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityFrameworkResolver.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\MyMainMenuDefinition.cs.pp"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsSettings.cs.pp"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityFrameworkResolver.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
      
 		</ItemGroup>
 

@@ -12,8 +12,7 @@ using System.Linq;
 using AdventureWorksModel;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Web.Mvc.Helpers;
-using NakedObjects.Web.Mvc.Models;
+
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsSettings {
@@ -25,8 +24,7 @@ namespace NakedObjects.Rest.App.Demo {
             get {
                 return new[] {
                     typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>)
+                    typeof (ObjectQuery<object>)
                 };
             }
         }
@@ -59,8 +57,7 @@ namespace NakedObjects.Rest.App.Demo {
 
         private static Type[] SystemServices {
             get {
-                return new[] {
-                    typeof (SimpleEncryptDecrypt)
+                return new Type[] {
                 };
             }
         }
