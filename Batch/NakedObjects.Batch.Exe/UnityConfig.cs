@@ -23,8 +23,9 @@ using NakedObjects.Core.Component;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
+using NakedObjects.Menu;
 using NakedObjects.Meta;
-using NakedObjects.Meta.Menus;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
@@ -157,11 +158,12 @@ namespace NakedObjects.Batch.Exe {
         public class NullMenuDefinition : IMainMenuDefinition {
             #region IMainMenuDefinition Members
 
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[] {};
-            }
 
             #endregion
+
+            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+               return new IMenuBuilder[]{};
+            }
         }
 
         #endregion
