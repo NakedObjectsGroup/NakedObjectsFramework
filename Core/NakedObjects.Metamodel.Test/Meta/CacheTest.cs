@@ -10,17 +10,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect;
 using NakedObjects.Value;
 using NUnit.Framework;
 using NakedObjects.Menu;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Meta.Test {
     public class AbstractTestWithByteArray {
@@ -141,7 +144,24 @@ namespace NakedObjects.Meta.Test {
         Value2
     };
 
+    [TestFixture]
     public class CacheTest {
+
+        private string testDir; 
+
+
+        [SetUp]
+        public void Setup() {
+
+      
+            var curDir = Directory.GetCurrentDirectory();
+            testDir =  Path.Combine(curDir, "testmetadata");    
+            Directory.CreateDirectory(testDir); 
+            Directory.GetFiles(testDir).ForEach(File.Delete);
+        }
+
+
+
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
             RegisterTypes(c);
@@ -232,7 +252,7 @@ namespace NakedObjects.Meta.Test {
         [Test]
         public void BinarySerializeIntTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadataint.bin";
+            string file =  Path.Combine(testDir, "metadataint.bin");
             BinarySerialize(rc, file);
         }
 
@@ -240,14 +260,14 @@ namespace NakedObjects.Meta.Test {
         [Test]
         public void BinarySerializeImageTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (Image)}, new Type[] {}, new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadataimg.bin";
+            string file = Path.Combine(testDir, "metadataimg.bin");
             BinarySerialize(rc, file);
         }
 
         [Test]
         public void BinarySerializeBaTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (AbstractTestWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadataba.bin";
+            string file = Path.Combine(testDir, "metadataba.bin");
             BinarySerialize(rc, file);
         }
 
@@ -263,7 +283,7 @@ namespace NakedObjects.Meta.Test {
         [Test]
         public void BinarySerializeEnumTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestEnum)}, new Type[] {}, new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadataenum.bin";
+            string file = Path.Combine(testDir, "metadataenum.bin");
             BinarySerialize(rc, file);
         }
 
@@ -271,7 +291,7 @@ namespace NakedObjects.Meta.Test {
         public void BinarySerializeSimpleDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestSimpleDomainObject)}, new[] {typeof (TestService)},
                 new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadatatsdo.bin";
+            string file = Path.Combine(testDir, "metadatatsdo.bin");
             BinarySerialize(rc, file);
         }
 
@@ -280,7 +300,8 @@ namespace NakedObjects.Meta.Test {
         public void BinarySerializeAnnotatedDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
                 new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadatatado.bin";
+            
+            string file = Path.Combine(testDir, "metadatatado.bin");
             BinarySerialize(rc, file);
         }
 
