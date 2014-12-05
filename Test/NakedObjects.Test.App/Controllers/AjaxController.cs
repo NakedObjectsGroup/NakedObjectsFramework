@@ -5,16 +5,12 @@ using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Web.Mvc.Controllers;
 
-namespace NakedObjects.Mvc.App.Controllers {
+namespace NakedObjects.Test.App.Controllers {
 
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-
-        
-        public AjaxController(INakedObjectsFramework framework) : base(framework) {
-            
-        }
+        public AjaxController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {

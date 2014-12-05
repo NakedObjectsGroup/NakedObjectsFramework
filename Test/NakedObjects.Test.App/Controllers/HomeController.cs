@@ -1,8 +1,6 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-
-using System.Runtime.Versioning;
 using System.Web.Mvc;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
@@ -11,11 +9,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-
-        public HomeController(INakedObjectsFramework framework) : base(framework) {
-            
-        }
-
+        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         public ActionResult Index() {
             return View();
@@ -39,6 +33,11 @@ namespace NakedObjects.Mvc.App.Controllers {
         [HttpPost]
         public override ActionResult ClearHistoryItem(string id, string nextId, ObjectAndControlData controlData) {
             return base.ClearHistoryItem(id, nextId, controlData);
+        }
+
+        [HttpPost]
+        public override ActionResult Cancel(string nextId, ObjectAndControlData controlData) {
+            return base.Cancel(nextId, controlData);
         }
 
         [HttpPost]

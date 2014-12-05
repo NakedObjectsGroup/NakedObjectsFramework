@@ -5,22 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Web.Routing;
-using RestfulObjects.Test.App;
-using WebActivatorEx;
-
-[assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
-[assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
+using Microsoft.Practices.Unity;
+using NakedObjects;
+using NakedObjects.Architecture.Component;
 
 namespace RestfulObjects.Test.App {
-    public static class RestfulObjectsActivator {
-        public static void PreStart() {
-            RestfulObjectsConfig.RestPreStart();
-            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
+    public class UnityFrameworkResolver : IFrameworkResolver {
+        private readonly IUnityContainer unityContainer;
+
+        public UnityFrameworkResolver(IUnityContainer unityContainer) {
+            this.unityContainer = unityContainer;
         }
 
-        public static void PostStart() {
-            RestfulObjectsConfig.RestPostStart();
+        #region IFrameworkResolver Members
+
+        public INakedObjectsFramework GetFramework() {
+            return unityContainer.Resolve<INakedObjectsFramework>();
         }
+
+        #endregion
     }
 }

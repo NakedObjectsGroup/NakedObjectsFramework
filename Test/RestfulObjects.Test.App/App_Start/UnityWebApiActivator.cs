@@ -8,13 +8,12 @@
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
-using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using RestfulObjects.Test.App;
+using NakedObjects.Architecture.Component;
+using WebActivatorEx;
 
-
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
+[assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
+[assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]
 
 namespace RestfulObjects.Test.App {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
@@ -26,7 +25,6 @@ namespace RestfulObjects.Test.App {
             var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
             UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
-         
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

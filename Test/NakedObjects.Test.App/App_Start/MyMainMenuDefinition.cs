@@ -5,22 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Web.Routing;
-using RestfulObjects.Test.App;
-using WebActivatorEx;
+using NakedObjects.Architecture.Menu;
 
-[assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
-[assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
+namespace NakedObjects.Test.App {
+    public class MyMainMenuDefinition : IMainMenuDefinition {
+        #region IMainMenuDefinition Members
 
-namespace RestfulObjects.Test.App {
-    public static class RestfulObjectsActivator {
-        public static void PreStart() {
-            RestfulObjectsConfig.RestPreStart();
-            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
+        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+            return new IMenuBuilder[] {};
         }
 
-        public static void PostStart() {
-            RestfulObjectsConfig.RestPostStart();
-        }
+        #endregion
     }
 }

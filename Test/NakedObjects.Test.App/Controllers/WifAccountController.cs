@@ -8,7 +8,7 @@ using System.Web.Security;
 //using Microsoft.IdentityModel.Web;
 using NakedObjects.Web.Mvc.Controllers;
 
-namespace NakedObjects.Mvc.App.Controllers {
+namespace NakedObjects.Test.App.Controllers {
     /// <summary>
     /// Account controller for Windows Identity Foundation. Based on code in 
     /// "Programming Windows Identity Foundation" Bertocci, Microsoft Press (c) 2011.  
@@ -16,11 +16,7 @@ namespace NakedObjects.Mvc.App.Controllers {
     /// </summary>
     [HandleError]
     public class WifAccountController : NakedObjectsController {
-
-        
-        public WifAccountController(INakedObjectsFramework framework) : base(framework) {
-            
-        }
+        public WifAccountController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         public ActionResult LogOn(string returnUrl) {
             return LogOnCommon(returnUrl);

@@ -5,17 +5,14 @@ using System.Web.Mvc;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
-namespace NakedObjects.Mvc.App.Controllers {
+namespace NakedObjects.Test.App.Controllers {
 
     //[Authorize] 
     public class GenericController : GenericControllerImpl {
 
-        
-        public GenericController(INakedObjectsFramework framework) : base(framework) {
-            
-        }
-
         #region actions
+
+        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {
