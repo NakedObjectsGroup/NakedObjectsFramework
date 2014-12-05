@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Web.Routing;
-using NakedObjects.Rest.App.Demo;
 using WebActivatorEx;
+using NakedObjects.Rest.App.Demo;
 
 [assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
