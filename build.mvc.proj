@@ -167,6 +167,11 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RouteConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
+
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\MyMainMenuDefinition.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsSettings.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityFrameworkResolver.cs"/>
+     
 		</ItemGroup>
 
 		<Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)"/>
@@ -178,8 +183,9 @@
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsActivator.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RouteConfig.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityConfig.cs"/>
-      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityMvcActivator.cs"/> 
-		</ItemGroup>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityMvcActivator.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityFrameworkResolver.cs"/>
+    </ItemGroup>
 
 		<FileUpdate Files="@(ToUpdatePartialNamespace)"
 							  RegEx= 'NakedObjects.Mvc.App\.'
@@ -192,13 +198,13 @@
 		<Move SourceFiles="@(ToUpdatePartialNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
     <Move SourceFiles="@(ToUpdateWholeNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
     
-    <ItemGroup>
+    <!--<ItemGroup>
 			<ToZip Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\**\*.*"/>
 		</ItemGroup>    
 
     <Zip Files="@(ToZip)"
 				WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package\content"
-				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files($(MVCVersion)).zip" />
+				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files($(MVCVersion)).zip" />-->
 
 	</Target>
 
