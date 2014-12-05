@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using RestfulObjects.Test.Data;
@@ -13,7 +15,10 @@ using RestfulObjects.Test.Data;
 namespace RestfulObjects.Test.App {
     public class NakedObjectsSettings {
         private static Type[] Types {
-            get { return new Type[] {}; }
+            get { return new Type[] {
+                    typeof (EntityCollection<object>), 
+                    typeof (ObjectQuery<object>)
+            }; }
         }
 
         private static Type[] MenuServices {

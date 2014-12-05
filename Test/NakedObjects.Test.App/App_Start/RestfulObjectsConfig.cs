@@ -13,7 +13,7 @@ using RestfulObjects.Mvc.Media;
 namespace NakedObjects.Test.App {
     public class RestfulObjectsConfig {
         public static string RestRoot {
-            get { return ""; }
+            get { return null; }
         }
 
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {

@@ -6,10 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksModel;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Test.App {
     public class NakedObjectsSettings {
@@ -17,6 +20,9 @@ namespace NakedObjects.Test.App {
 		private static Type[] Types {
             get {
                 return new Type[] {
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>),
+                    typeof (ActionResultModelQ<object>)
                 };
             }
         }

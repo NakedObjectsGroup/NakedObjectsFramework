@@ -19,7 +19,12 @@ namespace MvcTestApp {
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
         private static Type[] Types {
-            get { return new Type[] {typeof (EntityCollection<object>), typeof (ObjectQuery<object>)}; }
+            get { 
+                return new Type[] {
+                    typeof (EntityCollection<object>), 
+                    typeof (ObjectQuery<object>)
+                }; 
+            }
         }
 
         private static Type[] MenuServices {
