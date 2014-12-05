@@ -16,17 +16,7 @@ namespace NakedObjects.Web.Mvc.Html {
         //TODO: Mark obsolete when Menus refactoring complete
         //[Obsolete("Use MenuExtensions#MainMenus")]
         public static MvcHtmlString Services(this HtmlHelper html) {
-            var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ServicesContainerName);
-            var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
-
-            if (services != null && services.Cast<object>().Any()) {
-                foreach (object service in services) {
-                    tag.InnerHtml += html.Service(service);
-                }
-                return MvcHtmlString.Create(tag.ToString());
-            }
-            return MvcHtmlString.Create("");
+            return MenuExtensions.MainMenus(html);
         }
 
         //TODO: Mark obsolete when Menus refactoring complete

@@ -40,16 +40,15 @@ namespace Expenses {
             public static string CLAIM_DIFFERENTIATOR = " - ";
 
             public static void Menu(ITypedMenu<ClaimRepository> menu) {
+                menu.AddAction("CreateNewClaim");
+                menu.CreateSubMenuOfSameType("Approve")
+                    .AddAction("ApproveClaims");
                 menu.CreateSubMenuOfSameType("Find")
                     .AddAction("MyRecentClaims")
                     .AddAction("FindMyClaims")
                     .AddAction("FindMyClaimsByEnumStatus")
                     .AddAction("ClaimsAwaitingMyApproval");
-                menu.CreateSubMenuOfSameType("Approve")
-                    .AddAction("ApproveClaims");
-                menu.AddRemainingNativeActions();
             }
-
 
             [NakedObjectsIgnore]
             public virtual IList<Claim> AllClaims() {

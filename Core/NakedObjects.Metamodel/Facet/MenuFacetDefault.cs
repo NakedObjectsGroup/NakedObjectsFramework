@@ -6,10 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
+using NakedObjects.Util;
+using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -23,15 +26,27 @@ namespace NakedObjects.Meta.Facet {
             if (Spec().Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
             //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
             //It is not needed for menus to function
-            string id = Spec().ShortName;
+            string id = null;
+            if (Spec().Service) {
+                id = UniqueShortName(Spec());
+            }
             if (!Spec().Service) {
-                id += "-Actions";
+                id =Spec().ShortName+ "-Actions";
             }           
             MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec().Type);
             // possible spec type is generic in which case invoke would fail without this check
             if (!m.ContainsGenericParameters) {
                 m.Invoke(this, new object[] {metamodel, GetMenuName(Spec()), id});
             }
+        }
+
+        private string UniqueShortName(ObjectSpecImmutable spec) {
+            string usn = spec.ShortName;
+            Type type = spec.Type;
+            if (type.IsGenericType) {
+                usn += "-" + type.GetGenericArguments().First().Name;
+                }
+            return usn;
         }
 
         public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName, string id) {
@@ -42,6 +57,5 @@ namespace NakedObjects.Meta.Facet {
             this.Menu = menu;
         }
     }
-
     // Copyright (c) Naked Objects Group Ltd.
 }

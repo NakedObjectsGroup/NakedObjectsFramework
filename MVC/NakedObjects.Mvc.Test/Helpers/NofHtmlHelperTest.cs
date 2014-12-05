@@ -1146,7 +1146,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test, Ignore] // todo menu problem ? 
+        [Test]
         public void ObjectActionsWithConcurrency() {
             RecordedAction recordedAction = NakedObjectsFramework.Persistor.Instances<RecordedAction>().First();
             string s = mocks.HtmlHelper.Menu(recordedAction).ToString();
@@ -1971,7 +1971,8 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("MainMenus", s);
         }
 
-        [Test, Ignore] //TODO: Remove when transition to Menus design complete
+        [Test, Ignore] //TODO: Failing on title of menu derived from SimpleRepository<T>; 
+            //Previously this was because menu was derived from the title of the service object.
         public void ServiceList() {
             string s = mocks.HtmlHelper.Services().ToString();
 
