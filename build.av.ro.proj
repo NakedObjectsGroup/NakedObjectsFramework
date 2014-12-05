@@ -94,7 +94,7 @@
       <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\RestfulObjects.Mvc.pdb"/>
     </ItemGroup>
 
-    <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net451" />
+    <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net452" />
 
     <ItemGroup>
       <RestApiSrc Include="*$(ROPath)\RestfulObjects.Snapshot\**\*.cs" />
