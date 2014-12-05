@@ -318,10 +318,6 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="FilesChangedSince5.0.txt" />
-    <Content Include="FilesChangedSince5.1.txt" />
-    <Content Include="FilesChangedSince5.4.txt" />
-    <Content Include="FilesChangedSince5.6.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -352,9 +348,6 @@
     <Content Include="Images\tab-close.png" />
     <Content Include="Images\Table.png" />
     <Content Include="Images\unchecked.png" />
-    <Content Include="NakedObjects.Mvc-Files%28%29.zip" />
-    <Content Include="5.7 Release Notes.rtf" />
-    <Content Include="5.6 Release Notes.rtf" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -446,6 +439,7 @@
     <Content Include="Views\Shared\BrowserError.cshtml" />
     <Content Include="Views\Shared\ActionDialog.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_NofLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

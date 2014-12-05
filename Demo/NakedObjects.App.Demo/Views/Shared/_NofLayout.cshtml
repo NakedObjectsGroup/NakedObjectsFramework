@@ -32,8 +32,9 @@
             </div>
         </div>
         <header>         
-            <div class="content-wrapper">                   
-                @(Html.Services())
+            <div class="content-wrapper">  
+                @(Html.MainMenus())
+               @* @(Html.Services())*@
             </div>
            
             <div class="no-home-path" style="display: none">@(Html.ActionLink("Home", "Index", "Home"))</div>
