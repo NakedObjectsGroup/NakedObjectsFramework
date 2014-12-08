@@ -43,7 +43,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SetPolymorphicPropertyOnPersistentObject() {
             SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
         }
@@ -53,7 +53,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.ChangePolymorphicPropertyOnPersistentObject();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }

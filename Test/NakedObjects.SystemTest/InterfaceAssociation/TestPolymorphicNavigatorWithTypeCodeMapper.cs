@@ -45,7 +45,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SetPolymorphicPropertyOnPersistentObject() {
             base.SetPolymorphicPropertyOnPersistentObject("CUS");
         }
