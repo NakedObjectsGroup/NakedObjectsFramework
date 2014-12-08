@@ -104,7 +104,18 @@ namespace RestfulObjects.Test.EndToEnd {
                 }
             }
             catch (WebException e) {
-                Assert.Fail(e.Message);
+                var content = "";
+
+                try {
+                    using (var sr = new StreamReader(e.Response.GetResponseStream())) {
+                        content = sr.ReadToEnd();
+                    }
+                }
+                catch {
+                    // suppress failures 
+                }
+
+                Assert.Fail(e.Message + " " + content);
             }
         }
 

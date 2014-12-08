@@ -24,7 +24,7 @@ namespace MvcTestApp {
             // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
             var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
+            UnityConfig.GetConfiguredContainer().Resolve<IReflector>().Reflect();
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

@@ -10,6 +10,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
 namespace MvcTestApp {
@@ -21,6 +22,9 @@ namespace MvcTestApp {
         private static Type[] Types {
             get { 
                 return new Type[] {
+                    typeof (MostSimple[]), 
+                    typeof (Image), 
+                    typeof (FileAttachment), 
                     typeof (EntityCollection<object>), 
                     typeof (ObjectQuery<object>)
                 }; 

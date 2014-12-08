@@ -10,12 +10,18 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
 namespace RestfulObjects.Test.App {
     public class NakedObjectsSettings {
         private static Type[] Types {
             get { return new Type[] {
+                    typeof (MostSimple[]), 
+                    typeof (Image), 
+                    typeof (FileAttachment), 
+                    typeof (EntityCollection<object>), 
+                    typeof (ObjectQuery<object>),
                     typeof (EntityCollection<object>), 
                     typeof (ObjectQuery<object>)
             }; }
@@ -41,7 +47,7 @@ namespace RestfulObjects.Test.App {
         private static Type[] SystemServices {
             get {
                 return new Type[] {
-                    typeof (TestTypeCodeMapper)
+                   typeof (TestTypeCodeMapper)
                 };
             }
         }
