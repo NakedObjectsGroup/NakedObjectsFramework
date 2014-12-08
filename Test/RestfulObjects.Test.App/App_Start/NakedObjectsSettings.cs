@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using NakedObjects.Core.Configuration;
@@ -17,6 +18,12 @@ namespace RestfulObjects.Test.App {
     public class NakedObjectsSettings {
         private static Type[] Types {
             get { return new Type[] {
+                    typeof (List<MostSimple>),
+                    typeof (HashSet<MostSimple>),
+                    typeof (WithScalars), 
+                    typeof (WithAttachments), 
+                    typeof (VerySimpleEager), 
+                    typeof (Immutable), 
                     typeof (MostSimple[]), 
                     typeof (Image), 
                     typeof (FileAttachment), 
