@@ -111,7 +111,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VerySimple2, "VerySimple", body.ToString(), Methods.Put);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptWithWrongType() {
             var ms1 = new JProperty("MostSimple", new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.Immutable1)))));
             var name = new JProperty("Name", new JObject(new JProperty("value", null)));
@@ -119,7 +119,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VerySimple2, "VerySimpleFail", body.ToString(), Methods.Put, Codes.ValidationFailed);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ValidateOnlyGood() {
             var ms1 = new JProperty("MostSimple", new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1)))));
             var name = new JProperty("Name", new JObject(new JProperty("value", null)));
@@ -128,7 +128,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptValidateOnlyWrongType() {
             var ms1 = new JProperty("MostSimple", new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.Immutable1)))));
             var name = new JProperty("Name", new JObject(new JProperty("value", null)));

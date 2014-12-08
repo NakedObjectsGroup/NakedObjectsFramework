@@ -217,6 +217,10 @@ namespace RestfulObjects.Test.EndToEnd {
             if (machineName == "STEF-PRECISION") {
                 return @"E:\Users\scasc_000\Documents\GitHub\NakedObjectsFramework\" + suffix;
             }
+
+            if (machineName == "STEF-LAPTOP") {
+                return @"C:\Users\Stefano\Documents\GitHub\NakedObjectsFramework\" + suffix;
+            }
      
             // Jupiter
             return @"C:\Program Files (x86)\Jenkins\jobs\CleanBuildWithSystemTest\workspace\" + suffix;

@@ -44,7 +44,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientWithValue() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post);
@@ -56,7 +56,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientWithCollection() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post);

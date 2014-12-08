@@ -18,6 +18,13 @@ namespace RestfulObjects.Test.App {
     public class NakedObjectsSettings {
         private static Type[] Types {
             get { return new Type[] {
+                    typeof (WithValueViewModel),
+                    typeof (WithReferenceViewModel),
+                    typeof (WithCollectionViewModel),
+                    typeof (WithActionViewModel),
+                    typeof (VerySimple),
+                    typeof (TestEnum),
+                    typeof (SetWrapper<MostSimple>),
                     typeof (List<MostSimple>),
                     typeof (HashSet<MostSimple>),
                     typeof (WithScalars), 
