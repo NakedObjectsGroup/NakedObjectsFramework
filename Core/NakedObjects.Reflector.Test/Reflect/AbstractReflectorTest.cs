@@ -68,7 +68,6 @@ namespace NakedObjects.Reflect.Test {
             new RequiredAnnotationFacetFactory(46),
             new PluralAnnotationFacetFactory(47),
             new DefaultNamingFacetFactory(48),
-            new KeyAnnotationFacetFactory(49),
             new ConcurrencyCheckAnnotationFacetFactory(50),
             new ContributedActionAnnotationFacetFactory(51),
             new ExcludeFromFindMenuAnnotationFacetFactory(52),

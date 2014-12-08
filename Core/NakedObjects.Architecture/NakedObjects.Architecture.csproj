@@ -262,7 +262,6 @@
     <Compile Include="Facet\IPluralFacet.cs" />
     <Compile Include="Facet\ITitleFacet.cs" />
     <Compile Include="Facet\IImmutableFacet.cs" />
-    <Compile Include="Facet\IKeyFacet.cs" />
     <Compile Include="Facet\IProgramPersistableOnlyFacet.cs" />
     <Compile Include="Facet\IFromStreamFacet.cs" />
     <Compile Include="Facet\IParseableFacet.cs" />

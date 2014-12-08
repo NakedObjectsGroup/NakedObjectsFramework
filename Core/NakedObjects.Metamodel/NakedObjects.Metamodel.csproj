@@ -171,7 +171,6 @@
     <Compile Include="Facet\IImperativeFacet.cs" />
     <Compile Include="Facet\ImmutableFacetAnnotation.cs" />
     <Compile Include="Facet\InterfaceFacet.cs" />
-    <Compile Include="Facet\KeyFacet.cs" />
     <Compile Include="Facet\LoadedCallbackFacetNull.cs" />
     <Compile Include="Facet\LoadedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\LoadingCallbackFacetNull.cs" />

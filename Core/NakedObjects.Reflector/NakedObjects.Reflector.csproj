@@ -184,7 +184,6 @@
     <Compile Include="FacetFactory\PropertyMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\PropertyValidateDefaultFacetFactory.cs" />
     <Compile Include="FacetFactory\PropertyOrCollectionIdentifyingFacetFactoryAbstract.cs" />
-    <Compile Include="FacetFactory\KeyAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\MultiLineAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\TypicalLengthAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\TypicalLengthDerivedFromTypeFacetFactory.cs" />

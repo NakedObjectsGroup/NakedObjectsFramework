@@ -80,11 +80,7 @@ namespace NakedObjects.Reflect {
             // do not proxy key properties as we don't want ObjectChanged called when key is set
             foreach (IAssociationSpec assoc in metamodel.GetSpecification(typeToProxy).Properties) {
                 PropertyInfo property = typeToProxy.GetProperty(assoc.Id);
-
-                if (!assoc.ContainsFacet<IKeyFacet>()) {
-                    CreateBaseSetter(typeBuilder, property, containerField);
-                }
-
+                CreateBaseSetter(typeBuilder, property, containerField);
                 CreateBaseGetter(typeBuilder, property, containerField);
             }
         }
