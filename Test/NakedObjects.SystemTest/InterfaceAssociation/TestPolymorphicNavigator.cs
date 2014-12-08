@@ -12,7 +12,7 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestClass] // temp ignore to get build running on server 
+    [TestClass]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
 
 
@@ -48,7 +48,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangePolymorphicPropertyOnPersistentObject() {
             base.ChangePolymorphicPropertyOnPersistentObject();
         }

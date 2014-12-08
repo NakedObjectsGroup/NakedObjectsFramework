@@ -143,7 +143,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\TestKeyAttribute.cs" />
     <Compile Include="Attributes\TestAttributes.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
     <Compile Include="Authorization\TestCustomAuthorizer.cs" />

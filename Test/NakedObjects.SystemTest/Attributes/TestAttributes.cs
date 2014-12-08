@@ -835,7 +835,7 @@ namespace NakedObjects.SystemTest.Attributes {
             obj8.AssertTitleEquals("Foo");
         }
 
-        [TestMethod, Ignore] // fix
+        [TestMethod, Ignore] // fix & note also that Title7 does not in fact have a Title method!
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod() {
             var obj4 = NewTestObject<Title4>();
             obj4.GetPropertyByName("Prop1").SetValue("Foo");
