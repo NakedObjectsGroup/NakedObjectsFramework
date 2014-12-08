@@ -15,7 +15,7 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1;
         private ITestObject customer2;
@@ -35,9 +35,11 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
             }
         }
 
+        #region Setup/Teardown
+
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestObjectFinderWithGuids());
+            Database.SetInitializer(new DatabaseInitializer());
         }
 
         [ClassCleanup]
@@ -48,6 +50,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         [TestInitialize]
         public void Initialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
 
             payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
@@ -60,7 +63,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
             supplier1 = GetTestService("Suppliers").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
         }
 
-
+        #endregion
         [TestMethod]
         public void SetAssociatedObject() {
             payee1.SetObject(customer1);

@@ -11,6 +11,10 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.Xat;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.Entity;
+using NakedObjects.SystemTest.ObjectFinderGuid;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
@@ -20,14 +24,16 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         // to get EF SqlServer Dll in memory
         public SqlProviderServices instance = SqlProviderServices.Instance;
 
-        [TestInitialize]
-        public void Initialize() {
-            StartTest();
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
         }
 
-        [TestCleanup]
-        public void CleanUp() {}
-
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+        }
         #endregion
 
         public virtual void SetPolymorphicPropertyOnTransientObject(string roleObjectType) {
@@ -86,7 +92,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             string cusId = customer1.GetPropertyByName("Id").Title;
 
             ITestProperty payeeProp = payment2.GetPropertyByName("Payee");
-            ITestProperty payeeLinkProp = payment2.GetPropertyByName("Payee Link").AssertIsUnmodifiable().AssertIsEmpty();
+            ITestProperty payeeLinkProp = payment2.GetPropertyByName("Payee Link").AssertIsUnmodifiable();
             payeeProp.SetObject(customer1);
 
             ITestObject payeeLink = payeeLinkProp.AssertIsNotEmpty().ContentAsObject;

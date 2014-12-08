@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
         protected override object[] MenuServices {
             get {

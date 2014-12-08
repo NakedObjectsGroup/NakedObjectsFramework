@@ -13,7 +13,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1 = null;
         private ITestObject customer2 = null;
@@ -36,19 +36,16 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             }
         }
 
+        #region Setup/Teardown
+
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestObjectFinderWithSingleKeys());
+            Database.SetInitializer(new DatabaseInitializer());
         }
 
-        [ClassCleanup]
-        public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestObjectFinderWithSingleKeys());
-            Database.Delete(PaymentContext.DatabaseName);
-        }
-
-        [TestInitialize]
-        public void Initialize() {
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             payment1 = GetAllInstances<Payment>(0);
             payee1 = payment1.GetPropertyByName("Payee");
@@ -59,6 +56,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             emp1 = GetAllInstances<Employee>(1);
             emp2 = GetAllInstances<Employee>(0); //They seem to be persisted in reverse order!
         }
+        #endregion
 
         [TestCleanup]
         public void CleanUp() {

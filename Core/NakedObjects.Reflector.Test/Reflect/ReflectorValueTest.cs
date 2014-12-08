@@ -16,7 +16,7 @@ namespace NakedObjects.Reflect.Test {
             return reflector.LoadSpecification(typeof (string));
         }
 
-        [Test, Ignore]
+        [Test]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);

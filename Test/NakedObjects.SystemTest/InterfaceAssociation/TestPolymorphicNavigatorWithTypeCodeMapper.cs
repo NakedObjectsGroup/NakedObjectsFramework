@@ -13,25 +13,10 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
-        #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestPolymorphicNavigatorWithTypeCodeMapper());
-        }
-
-        [ClassCleanup]
-        public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestPolymorphicNavigatorWithTypeCodeMapper());
-        }
-
-        #endregion
 
         #region Run configuration
-
         protected override object[] MenuServices {
             get {
                 return (new object[] {
@@ -60,17 +45,17 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        [TestMethod, Ignore] // temp ignore to get build running on server
+        [TestMethod]
         public void SetPolymorphicPropertyOnPersistentObject() {
             base.SetPolymorphicPropertyOnPersistentObject("CUS");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //Test is wrong: object is being set up without a type code
         public override void ChangePolymorphicPropertyOnPersistentObject() {
             base.ChangePolymorphicPropertyOnPersistentObject();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore]//Test is wrong: object is being set up without a type code
         public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }

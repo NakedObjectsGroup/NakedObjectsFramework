@@ -12,22 +12,9 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestClass, Ignore] // temp ignore to get build running on server 
+    [TestClass] // temp ignore to get build running on server 
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
-        #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestPolymorphicNavigator());
-        }
-
-        [ClassCleanup]
-        public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestPolymorphicNavigator());
-        }
-
-        #endregion
 
         #region Run configuration
 

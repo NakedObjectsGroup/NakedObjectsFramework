@@ -29,11 +29,9 @@ namespace NakedObjects.SystemTest.ParentChild {
 
             [TestInitialize()]
             public void TestInitialize() {
+                InitializeNakedObjectsFrameworkOnce();
                 StartTest();
             }
-
-            [TestCleanup()]
-            public void TestCleanup() {}
 
             #endregion
 

@@ -12,7 +12,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
         protected override object[] MenuServices {
             get {

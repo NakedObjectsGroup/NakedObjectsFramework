@@ -14,10 +14,24 @@ using NakedObjects.Reflect.Test;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 using NakedObjects.Persistor.Entity.Configuration;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.Entity.Core.Objects;
 
 namespace NakedObjects.SystemTest {
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
+
+        protected override Type[] Types {
+            get {
+                return new Type[] {
+                    typeof(List<object>),
+                    typeof(EntityCollection<object>),
+                    typeof(ObjectQuery<object>)
+                };
+            }
+        }
+
         #region Run Configuration
 
         protected override void RegisterTypes(IUnityContainer container) {

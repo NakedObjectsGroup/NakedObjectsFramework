@@ -51,14 +51,14 @@ namespace NakedObjects.SystemTest.Injection {
             Assert.IsInstanceOfType(testObject.Container, typeof (DomainObjectContainer));
         }
 
-        [TestMethod, Ignore] // fix
+        [TestMethod]
         public void InjectService() {
             var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
             Assert.IsNotNull(testObject.MyService1);
             Assert.IsInstanceOfType(testObject.MyService1, typeof (Service1));
         }
 
-        [TestMethod, Ignore] // fix
+        [TestMethod]
         public void InjectServiceDefinedByInterface() {
             var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
             Assert.IsNotNull(testObject.MyService2);
@@ -67,7 +67,7 @@ namespace NakedObjects.SystemTest.Injection {
             Assert.IsInstanceOfType(testObject.MyService3, typeof (ServiceImplementation));
         }
 
-        [TestMethod, Ignore] // fix
+        [TestMethod]
         public void InjectedPropertiesAreHidden() {
             var obj = NewTestObject<Object2>();
             try {
