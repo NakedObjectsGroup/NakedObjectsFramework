@@ -33,10 +33,11 @@
   <Target Name="Clean" DependsOnTargets="Config">
     <ItemGroup>
       <OldPackages Include="$(PMPath)\$(NOIDE).package\*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOIDE)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOIDE)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\*.nupkg"/>
+      <OldPackages Include="$(InstalledPackagesPath)\*.nupkg"/>
       <OldZips Include="$(PMPath)\**\*.zip"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOIDE).package\**\*.*"/>   
+      <OldPackageFiles Include="$(InstalledPackagesPath)\**\*.nupkg"/>   
     </ItemGroup>
 
     <Delete Files="@(OldPackages)"/>
