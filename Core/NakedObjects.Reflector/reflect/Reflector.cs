@@ -33,7 +33,6 @@ namespace NakedObjects.Reflect {
         private readonly IMainMenuDefinition menuDefinition;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
-        private readonly IServicesConfiguration servicesConfig;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
@@ -42,7 +41,6 @@ namespace NakedObjects.Reflect {
         public Reflector(IClassStrategy classStrategy,
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
-                         IServicesConfiguration servicesConfig,
                          IMainMenuDefinition menuDefinition,
                          IMenuFactory menuFactory,
                          IFacetDecorator[] facetDecorators,
@@ -50,14 +48,12 @@ namespace NakedObjects.Reflect {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
-            Assert.AssertNotNull(servicesConfig);
             Assert.AssertNotNull(menuDefinition);
             Assert.AssertNotNull(menuFactory);
 
             this.classStrategy = classStrategy;
             this.metamodel = metamodel;
             this.config = config;
-            this.servicesConfig = servicesConfig;
             this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
@@ -131,10 +127,6 @@ namespace NakedObjects.Reflect {
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus();
             InstallObjectMenus();
-
-            servicesConfig.AddMenuServices(s1.Select(Activator.CreateInstance).ToArray());
-            servicesConfig.AddContributedActions(s2.Select(Activator.CreateInstance).ToArray());
-            servicesConfig.AddMenuServices(s3.Select(Activator.CreateInstance).ToArray());
         }
 
         #endregion

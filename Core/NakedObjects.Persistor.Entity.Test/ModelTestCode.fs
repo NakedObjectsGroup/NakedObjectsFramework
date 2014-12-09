@@ -14,6 +14,8 @@ open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Component
+open NakedObjects.Core.Component
+open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects
 open Moq
 open NakedObjects.Core.Container
@@ -26,10 +28,11 @@ let ModelConfig =
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 
-let injector = new DomainObjectContainerInjector()
+
+let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |],[||],[||]  )
+let injector = new DomainObjectContainerInjector(config)
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
-injector.set_ServiceTypes [| typeof<NakedObjects.Services.SimpleRepository<Person>> |]
 
 let setupPersistorForInjectorTesting (p : EntityObjectStore) = 
     p.SetupForTesting

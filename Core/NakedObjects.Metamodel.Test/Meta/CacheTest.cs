@@ -177,7 +177,6 @@ namespace NakedObjects.Meta.Test {
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 
 

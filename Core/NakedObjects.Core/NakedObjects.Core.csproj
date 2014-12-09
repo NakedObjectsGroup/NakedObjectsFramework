@@ -152,7 +152,7 @@
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="Exception\DisposeFailedException.cs" />
     <Compile Include="Container\DomainObjectContainer.cs" />
-    <Compile Include="Container\DomainObjectContainerInjector.cs" />
+    <Compile Include="Component\DomainObjectContainerInjector.cs" />
     <Compile Include="Container\Methods.cs" />
     <Compile Include="Exception\PersistFailedException.cs" />
     <Compile Include="Component\MessageBroker.cs" />
@@ -166,7 +166,6 @@
     <Compile Include="Spec\ActionSpecSet.cs" />
     <Compile Include="Transaction\NestedTransaction.cs" />
     <Compile Include="Component\TransactionManager.cs" />
-    <Compile Include="Configuration\ServicesConfiguration.cs" />
     <Compile Include="Exception\AdapterException.cs" />
     <Compile Include="Adapter\CollectionMemento.cs" />
     <Compile Include="Util\CollectionMementoHelper.cs" />

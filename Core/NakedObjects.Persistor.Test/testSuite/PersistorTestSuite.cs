@@ -421,9 +421,9 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void CollectionPropertyObjectHasContributedServiceInjected() {
             Person person = GetPersonFromPersonOneCollection();
+            
             Assert.IsTrue(person.HasContributedActions, "no contributed service injected");
         }
-
 
         public void CollectionPropertyObjectResolveStateIsPersistent() {
             INakedObject adapter = AdapterFor(GetPersonFromPersonOneCollection());

@@ -110,10 +110,9 @@ namespace NakedObjects.Reflect.Test {
             var cache = new ImmutableInMemorySpecCache();
             var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
-            var servicesConfig = new ServicesConfiguration();
             var menuDefinition = new ReflectorTest.NullMenuDefinition();
             var menuFactory = new NullMenuFactory();
-            var reflector = new Reflector(classStrategy, metamodel, config, servicesConfig, menuDefinition, menuFactory, new IFacetDecorator[] {}, facetFactories);
+            var reflector = new Reflector(classStrategy, metamodel, config, menuDefinition, menuFactory, new IFacetDecorator[] {}, facetFactories);
 
             Specification = LoadSpecification(reflector);
             //reflector.PopulateAssociatedActions(Specification, new Type[] {});

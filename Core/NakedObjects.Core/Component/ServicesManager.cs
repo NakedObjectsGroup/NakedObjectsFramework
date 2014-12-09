@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
@@ -12,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
@@ -20,18 +22,21 @@ namespace NakedObjects.Core.Component {
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
         private readonly List<IServiceWrapper> services = new List<IServiceWrapper>();
-        private readonly IServicesConfiguration servicesConfig;
         private bool servicesInit;
 
-        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IServicesConfiguration servicesConfig) {
+        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
             Assert.AssertNotNull(injector);
             Assert.AssertNotNull(manager);
-            Assert.AssertNotNull(servicesConfig);
+            Assert.AssertNotNull(config);
 
             this.injector = injector;
             this.manager = manager;
-            this.servicesConfig = servicesConfig;
-            injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
+
+            var ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
+            var cs = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
+            var ss = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
+
+            services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
         }
 
         #region IServicesManager Members
@@ -42,7 +47,7 @@ namespace NakedObjects.Core.Component {
 
         public virtual INakedObject GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
-            return (Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service))).FirstOrDefault();
+            return Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service)).FirstOrDefault();
         }
 
         public INakedObject GetService(IObjectSpec spec) {
@@ -73,10 +78,9 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private List<IServiceWrapper> Services {
+        private IList<IServiceWrapper> Services {
             get {
                 if (!servicesInit) {
-                    AddServices(servicesConfig.Services);
                     services.ForEach(sw => injector.InitDomainObject(sw.Service));
                     servicesInit = true;
                 }
@@ -85,9 +89,5 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        private void AddServices(IEnumerable<IServiceWrapper> ss) {
-            Log.DebugFormat("AddServices count: {0}", ss.Count());
-            services.AddRange(ss);
-        }
     }
 }

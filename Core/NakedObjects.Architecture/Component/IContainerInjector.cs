@@ -14,7 +14,6 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IContainerInjector {
         INakedObjectsFramework Framework { set; }
-        Type[] ServiceTypes { set; }
 
         /// <summary>
         ///     Among other things, will inject all services into the object

@@ -16,8 +16,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Menu;
@@ -157,7 +155,6 @@ namespace MvcTestApp {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());

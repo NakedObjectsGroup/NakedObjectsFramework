@@ -46,7 +46,6 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 
         [TestMethod]

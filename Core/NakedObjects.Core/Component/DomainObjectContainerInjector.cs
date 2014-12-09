@@ -9,18 +9,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Container {
+namespace NakedObjects.Core.Component {
     public class DomainObjectContainerInjector : IContainerInjector {
         private IDomainObjectContainer container;
         private bool initialized;
         private List<object> services;
+        private readonly List<Type> serviceTypes; 
+
+        public DomainObjectContainerInjector(IReflectorConfiguration config) {
+            Assert.AssertNotNull(config);
+
+            serviceTypes = config.MenuServices.Union(config.ContributedActions).Union(config.SystemServices).ToList();
+        }
 
         private List<object> Services {
             get {
                 if (services == null) {
-                    services = ServiceTypes.Select(Activator.CreateInstance).ToList();
+                    services = serviceTypes.Select(Activator.CreateInstance).ToList();
                     services.Add(Framework);
                     services.ForEach(InitDomainObject);
                 }
@@ -31,7 +40,6 @@ namespace NakedObjects.Core.Container {
         #region IContainerInjector Members
 
         public INakedObjectsFramework Framework { private get; set; }
-        public Type[] ServiceTypes { set; private get; }
 
         public void InitDomainObject(object obj) {
             Initialize();

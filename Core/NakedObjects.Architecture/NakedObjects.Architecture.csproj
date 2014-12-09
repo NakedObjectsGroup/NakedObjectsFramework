@@ -182,7 +182,6 @@
     <Compile Include="Component\IObjectStore.cs" />
     <Compile Include="Component\IPersistAlgorithm.cs" />
     <Compile Include="Component\IPocoAdapterMap.cs" />
-    <Compile Include="Configuration\IServicesConfiguration.cs" />
     <Compile Include="Facet\IAbstractFacet.cs" />
     <Compile Include="Facet\IInterfaceFacet.cs" />
     <Compile Include="Facet\ISealedFacet.cs" />

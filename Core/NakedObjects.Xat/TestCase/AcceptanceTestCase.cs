@@ -437,8 +437,6 @@ namespace NakedObjects.Xat {
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
-
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
             container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());
 
