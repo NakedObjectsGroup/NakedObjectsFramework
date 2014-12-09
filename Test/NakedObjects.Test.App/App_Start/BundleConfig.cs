@@ -55,8 +55,8 @@ namespace NakedObjects.Test.App {
             bundles.Add(new ScriptBundle("~/bundles/jquerydatepicker").Include(
                 "~/Scripts/ui/i18n/jquery.ui.datepicker-en-GB*"));
 
-            bundles.Add(new StyleBundle("~/Content/nakedobjectscss").Include(
-                "~/Content/NakedObjects.css"));
+            //bundles.Add(new StyleBundle("~/Content/nakedobjectscss").Include(
+            //    "~/Content/NakedObjects.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                 "~/Content/themes/base/jquery.ui.core.css",
