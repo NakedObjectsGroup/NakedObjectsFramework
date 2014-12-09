@@ -17,20 +17,26 @@ namespace NakedObjects.Core.Component {
         private INakedObjectManager nakedObjectManager;
         private IObjectPersistor persistor;
         private ISession session;
+        private bool isInitialized;
 
         public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(session);
+            Assert.AssertNotNull(lifecycleManager);
+            Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(nakedObjectManager);
+         
             this.metamodel = metamodel;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.nakedObjectManager = nakedObjectManager;
+            isInitialized = true;
         }
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(session);
-            Assert.AssertNotNull(lifecycleManager);
-
+            Assert.AssertTrue(isInitialized);
+          
             return new PocoAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }

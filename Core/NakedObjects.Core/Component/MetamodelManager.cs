@@ -21,8 +21,11 @@ namespace NakedObjects.Core.Component {
         private readonly IMetamodel metamodel;
         private readonly SpecFactory specFactory;
 
-        public MetamodelManager(SpecFactory memberFactory, IMetamodel metamodel) {
-            this.specFactory = memberFactory;
+        public MetamodelManager(SpecFactory specFactory, IMetamodel metamodel) {
+            Assert.AssertNotNull(specFactory);
+            Assert.AssertNotNull(metamodel);
+
+            this.specFactory = specFactory;
             this.metamodel = metamodel;
         }
 

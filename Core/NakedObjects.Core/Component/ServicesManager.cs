@@ -16,34 +16,22 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class ServicesManager : IServicesManager {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
         private readonly List<IServiceWrapper> services = new List<IServiceWrapper>();
         private readonly IServicesConfiguration servicesConfig;
         private bool servicesInit;
 
-        static ServicesManager() {
-            Log = LogManager.GetLogger(typeof (ServicesManager));
-        }
-
         public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IServicesConfiguration servicesConfig) {
+            Assert.AssertNotNull(injector);
+            Assert.AssertNotNull(manager);
+            Assert.AssertNotNull(servicesConfig);
+
             this.injector = injector;
             this.manager = manager;
             this.servicesConfig = servicesConfig;
             injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
-        }
-
-        protected virtual List<IServiceWrapper> Services {
-            get {
-                if (!servicesInit) {
-                    AddServices(servicesConfig.Services);
-                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
-                    servicesInit = true;
-                }
-
-                return services;
-            }
         }
 
         #region IServicesManager Members
@@ -84,6 +72,18 @@ namespace NakedObjects.Core.Component {
         }
 
         #endregion
+
+        private List<IServiceWrapper> Services {
+            get {
+                if (!servicesInit) {
+                    AddServices(servicesConfig.Services);
+                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
+                    servicesInit = true;
+                }
+
+                return services;
+            }
+        }
 
         private void AddServices(IEnumerable<IServiceWrapper> ss) {
             Log.DebugFormat("AddServices count: {0}", ss.Count());

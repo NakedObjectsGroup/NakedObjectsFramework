@@ -16,15 +16,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class IdentityMapImpl : IIdentityMap {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(IdentityMapImpl));
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly IOidGenerator oidGenerator;
         private readonly IPocoAdapterMap pocoAdapterMap;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
-
-        static IdentityMapImpl() {
-            Log = LogManager.GetLogger(typeof (IdentityMapImpl));
-        }
 
         public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap) {
             Assert.AssertNotNull(oidGenerator);

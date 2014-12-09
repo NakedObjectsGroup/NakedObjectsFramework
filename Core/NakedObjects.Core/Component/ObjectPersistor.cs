@@ -24,24 +24,25 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public class ObjectPersistor : IObjectPersistor {
-        private static readonly ILog Log;
-        private readonly INakedObjectManager manager;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
 
-        static ObjectPersistor() {
-            Log = LogManager.GetLogger(typeof (ObjectPersistor));
-        }
-
         public ObjectPersistor(IObjectStore objectStore,
                                ITransactionManager transactionManager,
                                ISession session,
-                               INakedObjectManager manager) {
+                               INakedObjectManager nakedObjectManager) {
+            Assert.AssertNotNull(objectStore);
+            Assert.AssertNotNull(transactionManager);
+            Assert.AssertNotNull(session);
+            Assert.AssertNotNull(nakedObjectManager);
+
             this.objectStore = objectStore;
             this.transactionManager = transactionManager;
             this.session = session;
-            this.manager = manager;
+            this.nakedObjectManager = nakedObjectManager;
         }
 
         #region IObjectPersistor Members
@@ -115,7 +116,7 @@ namespace NakedObjects.Core.Component {
 
             if (nakedObject.Spec.IsViewModel) {
                 INakedObject collection = associationSpec.GetNakedObject(nakedObject);
-                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, manager).Count();
+                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, nakedObjectManager).Count();
             }
 
             return objectStore.CountField(nakedObject, associationSpec);
@@ -214,17 +215,17 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        protected IQueryable<T> GetInstances<T>() where T : class {
+        private IQueryable<T> GetInstances<T>() where T : class {
             Log.Debug("GetInstances<T> of: " + typeof (T));
             return objectStore.GetInstances<T>();
         }
 
-        protected IQueryable GetInstances(Type type) {
+        private IQueryable GetInstances(Type type) {
             Log.Debug("GetInstances of: " + type);
             return objectStore.GetInstances(type);
         }
 
-        protected IQueryable GetInstances(IObjectSpec spec) {
+        private IQueryable GetInstances(IObjectSpec spec) {
             Log.Debug("GetInstances<T> of: " + spec);
             return objectStore.GetInstances(spec);
         }

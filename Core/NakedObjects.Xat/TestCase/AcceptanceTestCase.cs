@@ -461,7 +461,6 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
 
-            container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));

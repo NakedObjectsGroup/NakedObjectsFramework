@@ -13,7 +13,6 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
@@ -22,46 +21,39 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public class LifeCycleManager : ILifecycleManager {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof (LifeCycleManager));
         private readonly IContainerInjector injector;
-        private readonly INakedObjectManager manager;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodel;
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly ISession session;
-        private readonly ITransactionManager transactionManager;
-
-        static LifeCycleManager() {
-            Log = LogManager.GetLogger(typeof (LifeCycleManager));
-        }
 
         public LifeCycleManager(ISession session,
                                 IMetamodelManager metamodel,
-                                IObjectStore objectStore,
                                 IPersistAlgorithm persistAlgorithm,
                                 IOidGenerator oidGenerator,
-                                IIdentityMap identityMap,
                                 IContainerInjector injector,
-                                ITransactionManager transactionManager,
                                 IObjectPersistor objectPersistor,
-                                INakedObjectManager manager
+                                INakedObjectManager nakedObjectManager
             ) {
-            Assert.AssertNotNull(objectStore);
+            Assert.AssertNotNull(session);
+            Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
-            Assert.AssertNotNull(identityMap);
-            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(injector);
+            Assert.AssertNotNull(objectPersistor);
+            Assert.AssertNotNull(nakedObjectManager);
 
-            this.transactionManager = transactionManager;
-            this.objectPersistor = objectPersistor;
-            this.manager = manager;
             this.session = session;
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
             this.oidGenerator = oidGenerator;
             this.injector = injector;
-
+            this.objectPersistor = objectPersistor;
+            this.nakedObjectManager = nakedObjectManager;
+            
             Log.DebugFormat("Creating {0}", this);
         }
 
@@ -71,7 +63,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", spec);
-            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, spec);
+            return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, spec);
         }
 
         /// <summary>
@@ -83,7 +75,7 @@ namespace NakedObjects.Core.Component {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
             object obj = CreateObject(spec);
-            var adapter = manager.CreateInstanceAdapter(obj);
+            var adapter = nakedObjectManager.CreateInstanceAdapter(obj);
             InitializeNewObject(adapter);
             return adapter;
         }
@@ -91,7 +83,7 @@ namespace NakedObjects.Core.Component {
         public INakedObject CreateViewModel(IObjectSpec spec) {
             Log.DebugFormat("CreateViewModel of: {0}", spec);
             object viewModel = CreateObject(spec);
-            var adapter = manager.CreateViewModelAdapter(spec, viewModel);
+            var adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
             InitializeNewObject(adapter);
             return adapter;
         }
@@ -99,7 +91,7 @@ namespace NakedObjects.Core.Component {
 
         public virtual INakedObject RecreateInstance(IOid oid, IObjectSpec spec) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
-            INakedObject adapter = manager.GetAdapterFor(oid);
+            INakedObject adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
                 if (!adapter.Spec.Equals(spec)) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", spec.FullName, adapter));
@@ -108,11 +100,11 @@ namespace NakedObjects.Core.Component {
             }
             Log.DebugFormat("Recreating instance for {0}", spec);
             object obj = CreateObject(spec);
-            return manager.AdapterForExistingObject(obj, oid);
+            return nakedObjectManager.AdapterForExistingObject(obj, oid);
         }
 
         public virtual INakedObject GetViewModel(IOid oid) {
-            return manager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
+            return nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
 
 
@@ -176,54 +168,12 @@ namespace NakedObjects.Core.Component {
             return objectPersistor.CreateObject(spec);
         }
 
-
-        public void AbortTransaction() {
-            Log.Debug("AbortTransaction");
-            transactionManager.AbortTransaction();
-        }
-
-        public void UserAbortTransaction() {
-            Log.Debug("UserAbortTransaction");
-            transactionManager.UserAbortTransaction();
-        }
-
-        public void EndTransaction() {
-            Log.Debug("EndTransaction");
-            transactionManager.EndTransaction();
-        }
-
-        public bool FlushTransaction() {
-            Log.Debug("FlushTransaction");
-            return transactionManager.FlushTransaction();
-        }
-
-        public void StartTransaction() {
-            Log.Debug("StartTransaction");
-            transactionManager.StartTransaction();
-        }
-
-        public void AddCommand(IPersistenceCommand command) {
-            Log.Debug("AddCommand: " + command);
-            transactionManager.AddCommand(command);
-        }
-
-
-        public void Abort(ITransactionManager transactionManager, ISpecification holder) {
-            Log.Info("exception executing " + holder + ", aborting transaction");
-            try {
-                transactionManager.AbortTransaction();
-            }
-            catch (Exception e2) {
-                Log.Error("failure during abort", e2);
-            }
-        }
-
-        public IOid RestoreGenericOid(string[] encodedData) {
+        private IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
             IObjectSpec spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, manager, metamodel, encodedData);
+                return new CollectionMemento(this, nakedObjectManager, metamodel, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
@@ -248,16 +198,16 @@ namespace NakedObjects.Core.Component {
             IObjectSpec spec = oid.Spec;
             INakedObject vm = CreateViewModel(spec);
             vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm);
-            manager.UpdateViewModel(vm, keys);
+            nakedObjectManager.UpdateViewModel(vm, keys);
             return vm;
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
-            foreach (IOneToOneAssociationSpec assoc in parentObject.Spec.Properties.Where(p => p.IsInline)) {
+            foreach (IOneToOneAssociationSpec assoc in parentObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
                 object inlineObject = CreateObject(assoc.Spec);
 
                 InitInlineObject(rootObject, inlineObject);
-                INakedObject inlineNakedObject = manager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
+                INakedObject inlineNakedObject = nakedObjectManager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
                 InitializeNewObject(inlineNakedObject, rootObject);
                 assoc.InitAssociation(parentObject, inlineNakedObject);
             }

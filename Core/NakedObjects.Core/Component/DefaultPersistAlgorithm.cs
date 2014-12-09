@@ -16,19 +16,16 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class DefaultPersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultPersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
-        private readonly IServicesManager services;
 
-        static DefaultPersistAlgorithm() {
-            Log = LogManager.GetLogger(typeof (DefaultPersistAlgorithm));
-        }
+        public DefaultPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
+            Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(manager);
 
-        public DefaultPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager, IServicesManager services) {
             this.persistor = persistor;
             this.manager = manager;
-            this.services = services;
         }
 
         #region IPersistAlgorithm Members
@@ -61,7 +58,7 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        protected void Persist(INakedObject nakedObject, ISession session) {
+        private void Persist(INakedObject nakedObject, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Spec.Persistable != PersistableType.Transient)) {

@@ -13,15 +13,8 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
     public class PocoAdapterHashMap : IPocoAdapterMap {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PocoAdapterHashMap));
         private readonly IDictionary<object, INakedObject> domainObjects;
-
-        static PocoAdapterHashMap() {
-            Log = LogManager.GetLogger(typeof (PocoAdapterHashMap));
-        }
-
-        public PocoAdapterHashMap()
-            : this(10) {}
 
         public PocoAdapterHashMap(int capacity) {
             domainObjects = new Dictionary<object, INakedObject>(capacity);

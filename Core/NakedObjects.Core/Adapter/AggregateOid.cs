@@ -20,6 +20,9 @@ namespace NakedObjects.Core.Adapter {
 
         public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
             Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(oid);
+            Assert.AssertNotNull(id);
+            Assert.AssertNotNull(typeName);
 
             this.metamodel = metamodel;
             parentOid = oid;

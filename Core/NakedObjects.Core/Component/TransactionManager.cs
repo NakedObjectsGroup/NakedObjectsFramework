@@ -10,24 +10,23 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Transaction;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class TransactionManager : ITransactionManager {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(TransactionManager));
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private int transactionLevel;
         private bool userAborted;
 
-        static TransactionManager() {
-            Log = LogManager.GetLogger(typeof (TransactionManager));
-        }
-
         public TransactionManager(IObjectStore objectStore) {
+            Assert.AssertNotNull(objectStore);
+
             this.objectStore = objectStore;
         }
 
-        public virtual ITransaction Transaction {
+        private ITransaction Transaction {
             get {
                 if (transaction == null) {
                     return new NestedTransaction(objectStore);

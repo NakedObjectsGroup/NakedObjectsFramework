@@ -142,7 +142,7 @@
     <Compile Include="Component\BatchRunner.cs" />
     <Compile Include="Component\IdentityMapImpl.cs" />
     <Compile Include="Adapter\INoIdentityAdapterCache.cs" />
-    <Compile Include="Component\NoIdentityAdapterCache.cs" />
+    <Compile Include="Adapter\NoIdentityAdapterCache.cs" />
     <Compile Include="Component\PocoAdapterHashMap.cs" />
     <Compile Include="Adapter\NullVersion.cs" />
     <Compile Include="Adapter\PocoAdapter.cs" />
@@ -160,7 +160,6 @@
     <Compile Include="Component\MetamodelManager.cs" />
     <Compile Include="Component\NakedObjectFactory.cs" />
     <Compile Include="Component\NakedObjectManager.cs" />
-    <Compile Include="Component\NullAuthorisationManager.cs" />
     <Compile Include="Component\ObjectPersistor.cs" />
     <Compile Include="Component\ServicesManager.cs" />
     <Compile Include="Framework\NakedObjectsFramework.cs" />

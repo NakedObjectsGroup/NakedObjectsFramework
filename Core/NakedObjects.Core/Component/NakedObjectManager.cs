@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class NakedObjectManager : INakedObjectManager {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectManager));
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
         private readonly IMetamodelManager metamodel;
@@ -28,17 +28,18 @@ namespace NakedObjects.Core.Component {
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
 
-        static NakedObjectManager() {
-            Log = LogManager.GetLogger(typeof (NakedObjectManager));
-        }
-
         public NakedObjectManager(IMetamodelManager metamodel, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(session);
+            Assert.AssertNotNull(identityMap);
+            Assert.AssertNotNull(oidGenerator);
+            Assert.AssertNotNull(nakedObjectFactory);
+
             this.metamodel = metamodel;
             this.session = session;
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
-            this.oidGenerator = oidGenerator;
         }
 
         #region INakedObjectManager Members
