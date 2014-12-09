@@ -374,22 +374,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSelectAndUnselectIndividually();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionParmsValidateFail() {
            DoInvokeContributedActionParmsValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }
@@ -454,22 +454,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSelectAndUnselectIndividually();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionParmsValidateFail() {
             DoInvokeContributedActionParmsValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }
@@ -490,7 +490,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class StandaloneCollectionTestsChrome : StandaloneCollectionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
