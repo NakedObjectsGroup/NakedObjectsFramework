@@ -454,7 +454,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSelectAndUnselectIndividually();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }

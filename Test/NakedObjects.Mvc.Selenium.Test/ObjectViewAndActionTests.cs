@@ -935,7 +935,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] // strange failure perhaps to do with formatting a decimal value?
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }
@@ -980,12 +980,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoInvokeActionOnViewModelPopup();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeActionOnViewModelReturnCollectionPopup() {
             DoInvokeActionOnViewModelReturnCollectionPopup();
         }
@@ -1071,7 +1071,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionFindOnActionDialog();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }

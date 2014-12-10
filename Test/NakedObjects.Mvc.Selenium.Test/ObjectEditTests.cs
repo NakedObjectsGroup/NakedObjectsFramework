@@ -508,37 +508,37 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSaveWithNoChanges();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeStringField() {
             DoChangeStringField();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeDropDownField() {
             DoChangeDropDownField();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeReferencePropertyViaRecentlyViewed() {
             DoChangeReferencePropertyViaRecentlyViewed();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeReferencePropertyViaRemove() {
             DoChangeReferencePropertyViaRemove();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeReferencePropertyViaAFindAction() {
             DoChangeReferencePropertyViaAFindAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeReferencePropertyViaNewAction() {
             DoChangeReferencePropertyViaANewAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ChangeReferencePropertyViaAutoComplete() {
             DoChangeReferencePropertyViaAutoComplete();
         }

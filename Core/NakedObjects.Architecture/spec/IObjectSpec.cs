@@ -53,8 +53,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         string UntitledName { get; }
 
-        string UniqueShortName(string sep);
-
         #endregion
 
         /// <summary>

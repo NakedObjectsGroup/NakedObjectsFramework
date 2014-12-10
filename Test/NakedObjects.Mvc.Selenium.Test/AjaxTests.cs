@@ -624,7 +624,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoRemoteValidationProperty();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void RemoteValidationParameter() {
             DoRemoteValidationParameter();
         }
@@ -644,12 +644,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionChoicesPopup();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
@@ -664,7 +664,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionCrossValidateFailPopup();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopup() {
             DoActionMultipleChoicesPopup();
         }
@@ -676,7 +676,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesEnum() {
             DoActionMultipleChoicesEnum();
         }
@@ -686,22 +686,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionMultipleChoicesPopupEnum();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopupConditionalEnum() {
             DoActionMultipleChoicesPopupConditionalEnum();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopupValidateFail() {
             DoActionMultipleChoicesPopupValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();
         }

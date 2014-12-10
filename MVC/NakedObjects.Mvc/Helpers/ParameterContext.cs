@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 

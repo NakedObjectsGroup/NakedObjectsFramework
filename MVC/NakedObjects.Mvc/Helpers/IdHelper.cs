@@ -3,7 +3,9 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Resources;
 using NakedObjects.Util;
 using System.Linq;
@@ -169,10 +171,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return (spec.IsParseable ? inputName : selectName);
         }
 
-        private static string UniqueShortName(this IObjectSpec spec) {
-            return spec.UniqueShortName(sep);
-        }
-
         public static string GetDisplayFormatId(string id) {
             return MakeId(id, DisplayFormatFieldId);
         }
@@ -182,7 +180,16 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetObjectId(INakedObject owner) {
-            return owner.Spec.UniqueShortName();
+            string postFix = "";
+
+            if (owner.Spec.IsCollection) {
+                var elementFacet = owner.Spec.GetFacet<ITypeOfFacet>();
+                var elementType = elementFacet.GetValue(owner);
+
+                postFix = sep + elementType.Name;
+            }
+
+            return owner.Spec.ShortName + postFix;
         }
 
         public static string GetFieldId(INakedObject owner, IAssociationSpec assoc) {
@@ -242,7 +249,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetSubMenuId(INakedObject owner, INakedObject service) {
-            return EnsureEndsWithColon(GetObjectId(owner) + sep + service.Spec.UniqueShortName());
+            return EnsureEndsWithColon(GetObjectId(owner) + sep + service.Spec.ShortName);
         }
 
         public static string GetFindMenuId(INakedObject nakedObject, IActionSpec action, string propertyName) {
@@ -251,7 +258,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetParameterId(IActionSpec action, IActionParameterSpec parameter) {
-            return action.OnType.UniqueShortName() + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
+            return action.OnType.ShortName + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
         public static string GetParameterInputId(IActionSpec action, IActionParameterSpec parameter) {
@@ -264,7 +271,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetCollectionContainerId(INakedObject collection) {
-            return CollContainerName + sep + collection.Spec.UniqueShortName();
+            return CollContainerName + sep + collection.Spec.ShortName;
         }
 
         public static string GetActionContainerId(INakedObject nakedObject) {
@@ -285,7 +292,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetGenericActionId(INakedObject owner, string type) {
-            return ActionName + sep + owner.Spec.UniqueShortName() + sep + type;
+            return ActionName + sep + owner.Spec.ShortName + sep + type;
         }
 
         public static string GetActionLabel(INakedObject nakedObject) {

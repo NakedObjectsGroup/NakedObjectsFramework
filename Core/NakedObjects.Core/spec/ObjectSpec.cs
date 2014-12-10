@@ -313,18 +313,6 @@ namespace NakedObjects.Core.Spec {
             return cons;
         }
 
-
-        public string UniqueShortName(string sep) {
-            string postfix = string.Empty;
-            Type type = TypeUtils.GetType(FullName);
-
-            if (type.IsGenericType) {
-                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metamodelManager.GetSpecification(y).UniqueShortName(sep));
-            }
-
-            return ShortName + postfix;
-        }
-
         #endregion
 
         private string TypeNameFor() {

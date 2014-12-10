@@ -24,6 +24,7 @@ namespace NakedObjects.Mvc.App {
         private static Type[] Types {
             get {
                 return new[] {
+                    typeof (EnumerableQuery<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (ActionResultModelQ<object>)

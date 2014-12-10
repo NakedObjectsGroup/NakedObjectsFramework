@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -194,15 +195,9 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
-                var instanceSpec = metamodel.GetSpecification(Spec.GetFacet<IElementTypeFacet>().ValueSpec);
-
-                var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
-
-                if (instanceEnumFacet != null) {
-                    return Manager.GetCollectionOfAdaptedObjects(instanceEnumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
-                }
-
-                return Manager.GetCollectionOfAdaptedObjects(persistor.Instances(instanceSpec)).ToArray();
+                var elementEnumFacet = ElementSpec.GetFacet<IEnumFacet>();
+                IEnumerable domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObject)) : persistor.Instances(ElementSpec);
+                return Manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
             }
 
             return null;

@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -21,15 +22,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             IWebElement photoField = br.GetField("Product-Photo");
 
             IWebElement alink = photoField.FindElement(By.CssSelector("a"));
-            Assert.AreEqual(
-                "http://mvc.nakedobjects.net:1081/UnitTestAjax/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
-                , alink.GetAttribute("href"));
+            Assert.AreEqual(Path.Combine(url, "Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"),
+                alink.GetAttribute("href"));
 
             IWebElement img = photoField.FindElement(By.CssSelector("img"));
             Assert.AreEqual("frame_black_large.gif", img.GetAttribute("alt"));
-            Assert.AreEqual(
-                "http://mvc.nakedobjects.net:1081/UnitTestAjax/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
-                , img.GetAttribute("src"));
+            Assert.AreEqual(Path.Combine(url, "Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"),
+                img.GetAttribute("src"));
         }
 
 
@@ -76,7 +75,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class ImageAndAttachmentTestsFirefox : ImageAndAttachmentTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
