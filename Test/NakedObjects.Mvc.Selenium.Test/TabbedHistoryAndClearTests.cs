@@ -808,12 +808,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoCollectionKeepsPage();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void CollectionKeepsFormat() {
             DoCollectionKeepsFormat();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ClearActiveCollectionItem() {
            DoClearActiveCollectionItem();
         }

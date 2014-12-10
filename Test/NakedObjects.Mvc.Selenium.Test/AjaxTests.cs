@@ -634,7 +634,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoRemoteValidationParameterPopup();
         }
 
-        [TestMethod, Ignore] // broken in firefox - retest later version selenium
+        [TestMethod] 
         public override void ActionChoices() {
             DoActionChoices();
         }

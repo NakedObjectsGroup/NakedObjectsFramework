@@ -58,7 +58,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class NonAjaxTestsFirefox : NonAjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

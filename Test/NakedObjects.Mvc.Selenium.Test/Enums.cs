@@ -104,7 +104,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoViewEnumProperty();
         }
 
-        [TestMethod, Ignore] //This one seems to cause a lot of failures on the server
+        [TestMethod] //This one seems to cause a lot of failures on the server
         public override void EditEnumProperty() {
             DoEditEnumProperty();
         }

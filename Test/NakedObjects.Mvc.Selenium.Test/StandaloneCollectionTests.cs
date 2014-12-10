@@ -429,12 +429,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ViewStandaloneCollection() {
             DoViewStandaloneCollection();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ViewStandaloneCollectionTable() {
             DoViewStandaloneCollectionTable();
         }
@@ -459,32 +459,32 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionParmsValidateFail() {
             DoInvokeContributedActionParmsValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void PagingWithDefaultPageSize() {
             DoPagingWithDefaultPageSize();
         }
 
-        [TestMethod, Ignore] // fails on server too often
+        [TestMethod] // fails on server too often
         public override void PagingWithOverriddenPageSize() {
             DoPagingWithOverriddenPageSize();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void PagingWithFormat() {
             DoPagingWithFormat();
         }
