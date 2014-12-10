@@ -705,7 +705,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ObjectViewAndActionTestsIE : ObjectViewAndActionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -935,7 +935,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }
@@ -980,12 +980,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoInvokeActionOnViewModelPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeActionOnViewModelReturnCollectionPopup() {
             DoInvokeActionOnViewModelReturnCollectionPopup();
         }
@@ -1071,7 +1071,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionFindOnActionDialog();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
@@ -1195,12 +1195,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoInvokeActionOnViewModelPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void InvokeActionOnViewModelReturnCollectionPopup() {
             DoInvokeActionOnViewModelReturnCollectionPopup();
         }
@@ -1290,7 +1290,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionFindOnActionDialog();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }

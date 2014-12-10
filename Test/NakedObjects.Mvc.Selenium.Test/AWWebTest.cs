@@ -16,12 +16,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class AWWebTest {
         #region overhead
 
-        protected const string url = "http://mvc.nakedobjects.net:1081/unittestajax";
+        //protected const string url = "http://mvc.nakedobjects.net:1081/unittestajax";
         protected const string server = @"Saturn\SqlExpress";
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
 
-        //protected const string url = "http://localhost:56696/";
+        protected const string url = "http://localhost:56696/";
         //protected const string server = @".\SQLEXPRESS";
         //protected const string database = "AdventureWorks";
         //protected const string backup = "AdventureWorks";
@@ -31,7 +31,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-            DatabaseUtils.RestoreDatabase(database, backup, server);
+           // DatabaseUtils.RestoreDatabase(database, backup, server);
             KillAllProcesses("iexplore");
             KillAllProcesses("firefox");
         }

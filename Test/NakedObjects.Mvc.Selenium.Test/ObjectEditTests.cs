@@ -363,7 +363,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   [TestClass]
+   [TestClass, Ignore]
     public class ObjectEditTestsIE : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -508,37 +508,37 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSaveWithNoChanges();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeStringField() {
             DoChangeStringField();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeDropDownField() {
             DoChangeDropDownField();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeReferencePropertyViaRecentlyViewed() {
             DoChangeReferencePropertyViaRecentlyViewed();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeReferencePropertyViaRemove() {
             DoChangeReferencePropertyViaRemove();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeReferencePropertyViaAFindAction() {
             DoChangeReferencePropertyViaAFindAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeReferencePropertyViaNewAction() {
             DoChangeReferencePropertyViaANewAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ChangeReferencePropertyViaAutoComplete() {
             DoChangeReferencePropertyViaAutoComplete();
         }

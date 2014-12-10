@@ -330,7 +330,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class StandaloneCollectionTestsIE : StandaloneCollectionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -429,12 +429,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ViewStandaloneCollection() {
             DoViewStandaloneCollection();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ViewStandaloneCollectionTable() {
             DoViewStandaloneCollectionTable();
         }
@@ -474,17 +474,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoInvokeContributedActionNoSelections();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void PagingWithDefaultPageSize() {
             DoPagingWithDefaultPageSize();
         }
 
-        [TestMethod] // fails on server too often
+        [TestMethod, Ignore] // fails on server too often
         public override void PagingWithOverriddenPageSize() {
             DoPagingWithOverriddenPageSize();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void PagingWithFormat() {
             DoPagingWithFormat();
         }

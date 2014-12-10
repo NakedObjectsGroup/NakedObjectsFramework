@@ -50,7 +50,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ConditionalChoicesTestsIE : ConditionalChoicesTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

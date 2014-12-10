@@ -618,7 +618,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TabbedHistoryAndClearTestsIE : TabbedHistoryAndClearTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -808,12 +808,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoCollectionKeepsPage();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void CollectionKeepsFormat() {
             DoCollectionKeepsFormat();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ClearActiveCollectionItem() {
            DoClearActiveCollectionItem();
         }

@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ExceptionTestsIE : ExceptionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

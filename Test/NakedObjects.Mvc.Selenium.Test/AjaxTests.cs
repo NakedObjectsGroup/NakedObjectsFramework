@@ -464,7 +464,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class AjaxTestsIE : AjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -624,7 +624,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoRemoteValidationProperty();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void RemoteValidationParameter() {
             DoRemoteValidationParameter();
         }
@@ -644,12 +644,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionChoicesPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
@@ -664,7 +664,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionCrossValidateFailPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopup() {
             DoActionMultipleChoicesPopup();
         }
@@ -676,7 +676,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesEnum() {
             DoActionMultipleChoicesEnum();
         }
@@ -686,22 +686,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionMultipleChoicesPopupEnum();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopupConditionalEnum() {
             DoActionMultipleChoicesPopupConditionalEnum();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopupValidateFail() {
             DoActionMultipleChoicesPopupValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();
         }
@@ -785,7 +785,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionChoicesPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
@@ -807,7 +807,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionCrossValidateFailPopup();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopup() {
             DoActionMultipleChoicesPopup();
         }
@@ -819,7 +819,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesEnum() {
             DoActionMultipleChoicesEnum();
         }
@@ -829,22 +829,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionMultipleChoicesPopupEnum();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopupConditionalEnum() {
             DoActionMultipleChoicesPopupConditionalEnum();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesPopupValidateFail() {
             DoActionMultipleChoicesPopupValidateFail();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();
         }

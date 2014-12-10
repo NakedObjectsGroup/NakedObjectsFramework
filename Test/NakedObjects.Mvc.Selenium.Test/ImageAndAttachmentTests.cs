@@ -51,7 +51,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         //}
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ImageAndAttachmentTestsIE : ImageAndAttachmentTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ImageAndAttachmentTestsFirefox : ImageAndAttachmentTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -96,7 +96,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class ImageAndAttachmentTestsChrome : ImageAndAttachmentTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
