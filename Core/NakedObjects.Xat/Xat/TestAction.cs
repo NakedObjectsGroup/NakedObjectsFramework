@@ -44,7 +44,7 @@ namespace NakedObjects.Xat {
         #region ITestAction Members
 
         public string Name {
-            get { return actionSpec.GetName(); }
+            get { return actionSpec.Name; }
         }
 
         public string SubMenu { get; private set; }

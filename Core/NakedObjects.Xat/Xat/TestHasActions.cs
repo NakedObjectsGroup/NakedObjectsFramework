@@ -39,7 +39,7 @@ namespace NakedObjects.Xat {
                     Select(x => factory.CreateTestAction(x, this)).ToList();
 
                 foreach (ActionSpecSet set in NakedObject.Spec.GetAllActions().OfType<ActionSpecSet>()) {
-                    actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.GetName(), x, this)));
+                    actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.Name, x, this)));
                 }
 
                 return actions.ToArray();
@@ -129,7 +129,7 @@ namespace NakedObjects.Xat {
             var order = new StringBuilder();
             for (int i = 0; i < actionsSpec.Length; i++) {
                 IActionSpec actionSpec = actionsSpec[i];
-                string name = actionSpec.GetName();
+                string name = actionSpec.Name;
                 if (actionSpec is ActionSpecSet) {
                     order.Append("(").Append(name).Append(":");
                     order.Append(AppendActions(actionSpec.Actions));

@@ -78,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         public override string ToString() {
-            return GetName();
+            return Name;
         }
 
         #region Nested Type: IdentifierNull
@@ -94,7 +94,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
 
             public override string ToString() {
-                return owner.GetName();
+                return owner.Name;
             }
         };
 

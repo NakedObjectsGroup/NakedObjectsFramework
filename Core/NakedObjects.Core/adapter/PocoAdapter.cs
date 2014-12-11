@@ -149,12 +149,12 @@ namespace NakedObjects.Core.Adapter {
                 INakedObject referencedObject = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.GetName());
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.Name);
                     }
                     if (property.IsObject) {
                         IConsent valid = ((IOneToOneAssociationSpec) property).IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, property.GetName(), valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, property.Name, valid.Reason);
                         }
                     }
                 }

@@ -76,12 +76,14 @@ namespace NakedObjects.Core.Spec {
             get { return id; }
         }
 
-        public virtual string GetName() {
-            if (name == null) {
-                var service = servicesManager.GetService(shortId);
-                return service.TitleString();
+        public virtual string Name {
+            get {
+                if (name == null) {
+                    var service = servicesManager.GetService(shortId);
+                    return service.TitleString();
+                }
+                return name;
             }
-            return name;
         }
 
         public virtual IObjectSpec OnSpec {

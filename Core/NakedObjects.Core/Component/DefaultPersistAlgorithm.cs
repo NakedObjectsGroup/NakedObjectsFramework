@@ -77,7 +77,7 @@ namespace NakedObjects.Core.Component {
                         if (field is IOneToManyAssociationSpec) {
                             INakedObject collection = field.GetNakedObject(nakedObject);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.GetName() + " does not exist in " + nakedObject.Spec.FullName);
+                                throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObject.Spec.FullName);
                             }
                             MakePersistent(collection, session);
                         }

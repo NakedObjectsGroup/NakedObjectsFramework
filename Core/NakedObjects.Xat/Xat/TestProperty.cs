@@ -43,7 +43,7 @@ namespace NakedObjects.Xat {
         #region ITestProperty Members
 
         public string Name {
-            get { return field.GetName(); }
+            get { return field.Name; }
         }
 
         public string Id {

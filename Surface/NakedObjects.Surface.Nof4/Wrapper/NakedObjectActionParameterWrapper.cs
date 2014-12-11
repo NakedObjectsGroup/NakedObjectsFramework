@@ -44,7 +44,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return nakedObjectActionParameter.GetName(); }
+            get { return nakedObjectActionParameter.Name; }
         }
 
         public string Description {

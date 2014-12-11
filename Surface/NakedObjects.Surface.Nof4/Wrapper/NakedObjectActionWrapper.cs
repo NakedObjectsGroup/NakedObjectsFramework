@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return action.GetName(); }
+            get { return action.Name; }
         }
 
         protected IDictionary<string, object> ExtensionData {

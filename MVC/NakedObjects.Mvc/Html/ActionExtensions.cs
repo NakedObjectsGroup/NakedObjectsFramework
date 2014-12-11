@@ -1391,7 +1391,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Spec.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetName());
+            return MvcHtmlString.Create(nakedObject.Spec.GetAllActions().Single(p => p.Id == actionId).Parameters[index].Name);
         }
 
         #endregion

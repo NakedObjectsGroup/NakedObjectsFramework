@@ -31,8 +31,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public abstract IObjectSpecImmutable ReturnSpec { get; }
 
-        public string GetName() {
-            return GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(identifier.MemberName); ;
+        public string Name {
+            get {
+                return GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(identifier.MemberName);
+                ;
+            }
         }
 
         public string Description {

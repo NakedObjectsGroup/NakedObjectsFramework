@@ -29,6 +29,15 @@ namespace NakedObjects.Core.Spec {
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
 
+        // cache 
+        private bool? isAutoCompleteEnabled;
+        private bool? isChoicesEnabled;
+        private bool? isMultipleChoicesEnabled;
+        private IObjectSpec spec;
+        private IObjectSpec elementSpec;
+        private bool checkedForElementSpec;
+        private string name;
+
         protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(actionSpec);
@@ -46,25 +55,34 @@ namespace NakedObjects.Core.Spec {
             this.persistor = persistor;
         }
 
-        protected INakedObjectManager Manager {
-            get { return manager; }
-        }
-
         #region IActionParameterSpec Members
 
         public bool IsAutoCompleteEnabled {
-            get { return ContainsFacet<IAutoCompleteFacet>(); }
+            get {
+                if (!isAutoCompleteEnabled.HasValue) {
+                    isAutoCompleteEnabled = ContainsFacet<IAutoCompleteFacet>();
+                }
+                return isAutoCompleteEnabled.Value;
+            }
         }
 
         public bool IsChoicesEnabled {
-            get { return !IsMultipleChoicesEnabled && (Spec.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>()); }
+            get {
+                if (!isChoicesEnabled.HasValue) {
+                    isChoicesEnabled = !IsMultipleChoicesEnabled && (Spec.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
+                }
+                return isChoicesEnabled.Value;
+            }
         }
 
         public bool IsMultipleChoicesEnabled {
             get {
-                return Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                       Spec.IsCollectionOfEnum(ElementSpec) ||
-                       (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple);
+                if (!isMultipleChoicesEnabled.HasValue) {
+                    isMultipleChoicesEnabled = Spec.IsCollectionOfBoundedSet(ElementSpec) ||
+                                               Spec.IsCollectionOfEnum(ElementSpec) ||
+                                               (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple);
+                }
+                return isMultipleChoicesEnabled.Value;
             }
         }
 
@@ -91,21 +109,37 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec Spec {
-            get { return metamodel.GetSpecification(actionParameterSpecImmutable.Specification); }
+            get {
+                if (spec == null) {
+                    spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification);
+                }
+                return spec;
+            }
         }
 
         public virtual IObjectSpec ElementSpec {
             get {
-                var facet = GetFacet<IElementTypeFacet>();
-                var spec = facet != null ? facet.ValueSpec : null;
-                return spec == null ? null : metamodel.GetSpecification(spec);
+
+                if (!checkedForElementSpec) {
+                    var facet = GetFacet<IElementTypeFacet>();
+                    var es = facet != null ? facet.ValueSpec : null;
+                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
+                    checkedForElementSpec = true;
+                }
+
+                return elementSpec;
             }
         }
 
-        public string GetName() {
-            var facet = GetFacet<INamedFacet>();
-            string name = facet == null ? null : facet.Value;
-            return name ?? Spec.SingularName;
+        public string Name {
+            get {
+                if (name == null) {
+                    var facet = GetFacet<INamedFacet>();
+                    string nv = facet == null ? null : facet.Value;
+                    name = nv ?? Spec.SingularName;
+                }
+                return name;
+            }
         }
 
         public virtual string Description {
@@ -179,25 +213,25 @@ namespace NakedObjects.Core.Spec {
             if (choicesFacet != null) {
                 object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObject), parameterNameValues);
                 if (enumFacet == null) {
-                    return Manager.GetCollectionOfAdaptedObjects(options).ToArray();
+                    return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
 
-                return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject), options)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject), options)).ToArray();
             }
 
 
             if (enumFacet != null) {
-                return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
             }
 
             if (Spec.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
             }
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
                 var elementEnumFacet = ElementSpec.GetFacet<IEnumFacet>();
                 IEnumerable domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObject)) : persistor.Instances(ElementSpec);
-                return Manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
             }
 
             return null;
@@ -206,7 +240,7 @@ namespace NakedObjects.Core.Spec {
 
         public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject), autoCompleteParm)).ToArray();
+            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject), autoCompleteParm)).ToArray();
         }
 
         public INakedObject GetDefault(INakedObject nakedObject) {
@@ -254,7 +288,7 @@ namespace NakedObjects.Core.Spec {
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 
-            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+            return new Tuple<INakedObject, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
         protected internal virtual IConsent GetConsent(string message) {

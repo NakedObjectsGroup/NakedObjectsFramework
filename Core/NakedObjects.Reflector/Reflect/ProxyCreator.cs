@@ -151,7 +151,7 @@ namespace NakedObjects.Reflect {
         private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             IAssociationSpec[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
-            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName()));
+            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.Name));
         }
 
         private static FieldBuilder CreateContainerProperty(TypeBuilder typeBuilder) {

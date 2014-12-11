@@ -71,8 +71,8 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Return the default label for this member. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="Id()" />
-        public virtual string GetName() {
-            return memberSpecImmutable.GetName();
+        public virtual string Name {
+            get { return memberSpecImmutable.Name; }
         }
 
         public virtual string Description {

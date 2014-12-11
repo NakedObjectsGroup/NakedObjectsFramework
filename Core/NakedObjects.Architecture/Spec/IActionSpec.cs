@@ -75,7 +75,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         INakedObject RealTarget(INakedObject target);
 
-
         /// <summary>
         ///     Returns true if the represented action returns something, else returns false
         /// </summary>
@@ -85,7 +84,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Invokes the action's method on the target object given the specified set of parameters
         /// </summary>
         INakedObject Execute(INakedObject target, INakedObject[] parameterSet);
-
 
         /// <summary>
         ///     Whether the provided parameter set is valid

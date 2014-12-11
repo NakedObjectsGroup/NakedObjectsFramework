@@ -31,7 +31,7 @@ namespace NakedObjects.Xat {
         #region ITestParameter Members
 
         public string Name {
-            get { return parameterSpec.GetName(); }
+            get { return parameterSpec.Name; }
         }
 
         public INakedObject NakedObject {

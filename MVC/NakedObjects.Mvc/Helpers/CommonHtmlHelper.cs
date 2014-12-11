@@ -574,7 +574,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
 
         internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsent consent, out string value, out RouteValueDictionary attributes) {
-            value = actionContext.Action.GetName();
+            value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
                 @class =  actionContext.GetActionClass(html.Framework()), 
@@ -584,7 +584,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string GetDuplicateAction(this HtmlHelper html, ActionContext actionContext, string reason, out string value, out RouteValueDictionary attributes) {
-            value = actionContext.Action.GetName();
+            value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
                 @class = actionContext.GetActionClass(html.Framework()), 
@@ -594,7 +594,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetActionSet(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
-            value = WrapInDiv(actionContext.Action.GetName(), IdHelper.MenuNameLabel).ToString();
+            value = WrapInDiv(actionContext.Action.Name, IdHelper.MenuNameLabel).ToString();
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetSubMenuId(),
                 @class = IdHelper.SubMenuName
@@ -673,7 +673,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
 
-            value = (elements + GetSubmitButton(null, actionContext.Action.GetName(), IdHelper.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
+            value = (elements + GetSubmitButton(null, actionContext.Action.Name, IdHelper.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
 
             attributes = new RouteValueDictionary(new {
                 action = html.GenerateUrl(Action(actionContext.Action.Id), controllerName, new RouteValueDictionary(routeValues)),
@@ -687,7 +687,7 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static string GetActionAsButton(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
             const string tagType = "button";
 
-            value = actionContext.Action.GetName();
+            value = actionContext.Action.Name;
             attributes = html.GetActionAttributes(IdHelper.ActionInvokeAction, actionContext, new ActionContext(actionContext.Target, null), string.Empty);
 
             return tagType;
@@ -719,7 +719,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
-            return new Tuple<bool, string>(allActions.Count(a => a.GetName() == action.GetName()) > 1, MvcUi.DuplicateAction);
+            return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
         }
 
    
@@ -772,7 +772,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             var nameTag = new TagBuilder("div");
             nameTag.AddCssClass(IdHelper.ActionNameLabel);
-            nameTag.SetInnerText(targetActionContext.Action.GetName());
+            nameTag.SetInnerText(targetActionContext.Action.Name);
 
             TagBuilder parms = ElementDescriptor.BuildElementSet(paramElements);
             parms.AddCssClass(IdHelper.ParamContainerName);
@@ -918,7 +918,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 innerHtml += (row + Environment.NewLine);
             }
 
-            var headers = collectionAssocs.Select(a => a.GetName()).ToArray();
+            var headers = collectionAssocs.Select(a => a.Name).ToArray();
             html.AddHeader(headers, table, isStandalone, withSelection, withTitle, defaultChecked);
             table.InnerHtml += innerHtml;
 
@@ -1226,7 +1226,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
-            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Spec.IsImage(html.Framework()) ? propertyContext.Property.GetName() : MvcUi.ShowFile) : title;
+            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Spec.IsImage(html.Framework()) ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
 
             string imageUrl = html.GenerateUrl(IdHelper.GetFileAction + "/" + title.Replace(' ', '_'),
                                                html.Framework().GetObjectTypeName(propertyContext.Target.Object),
@@ -1613,7 +1613,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetLabel(this HtmlHelper html, PropertyContext propertyContext) {
             bool isAutoComplete = propertyContext.IsEdit && propertyContext.Property is IOneToOneAssociationSpec && ((IOneToOneAssociationSpec) propertyContext.Property).IsAutoCompleteEnabled;
             Func<string> propId = isAutoComplete ? (Func<string>) propertyContext.GetAutoCompleteFieldId : propertyContext.GetFieldInputId;
-            return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.GetName(), propId);
+            return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.Name, propId);
         }
 
         private static string GetLabel(this HtmlHelper html, ParameterContext parameterContext) {
@@ -1622,7 +1622,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             bool isAutoComplete = parameterContext.Parameter.IsAutoCompleteEnabled;
             Func<string> parmId = isAutoComplete ? (Func<string>) parameterContext.GetParameterAutoCompleteId : parameterContext.GetParameterInputId;
-            return GetLabelTag(parameterContext.IsParameterEdit || isAutoComplete, parameterContext.Parameter.GetName(), parmId);
+            return GetLabelTag(parameterContext.IsParameterEdit || isAutoComplete, parameterContext.Parameter.Name, parmId);
         }
 
         internal static string GetSubmitButton(string classAttribute, string label, string name, RouteValueDictionary data) {
@@ -2511,7 +2511,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return new ElementDescriptor {
                 TagType = "button",
-                Value = targetActionContext.Action.GetName(),
+                Value = targetActionContext.Action.Name,
                 Attributes = html.GetActionAttributes(IdHelper.ActionFindAction, targetActionContext, actionContext, propertyName)
             };
         }
@@ -2528,7 +2528,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (children.Any()) {
                 return new ElementDescriptor {
                     TagType = "div",
-                    Value = WrapInDiv(targetActionContext.Action.GetName(), IdHelper.MenuNameLabel).ToString(),
+                    Value = WrapInDiv(targetActionContext.Action.Name, IdHelper.MenuNameLabel).ToString(),
                     Attributes = html.GetActionAttributes(IdHelper.ActionFindAction, targetActionContext, actionContext, propertyName),
                     Children = children
                 };

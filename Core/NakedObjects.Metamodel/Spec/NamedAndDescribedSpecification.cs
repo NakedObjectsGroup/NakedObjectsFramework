@@ -25,8 +25,8 @@ namespace NakedObjects.Meta.Spec {
 
         #region INamedAndDescribed Members
 
-        public string GetName() {
-            return name;
+        public string Name {
+            get { return name; }
         }
 
         public virtual string Description {

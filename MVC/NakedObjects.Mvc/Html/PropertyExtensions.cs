@@ -701,7 +701,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Spec.Properties.Single(p => p.Id == propertyId).GetName());
+            return MvcHtmlString.Create(nakedObject.Spec.Properties.Single(p => p.Id == propertyId).Name);
         }
 
         #endregion

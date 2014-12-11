@@ -138,7 +138,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsInstanceOf(typeof (T), data.Model);
         }
 
-
         private static void AssertIsEditViewOf<T>(ViewResult result) {
             Assert.AreEqual("ObjectEdit", result.ViewName);
             ViewDataDictionary data = result.ViewData;
@@ -149,7 +148,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf(typeof (FindViewModel), data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName());
+            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name);
         }
 
 

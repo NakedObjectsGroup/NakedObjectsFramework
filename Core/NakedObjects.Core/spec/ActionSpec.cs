@@ -29,10 +29,9 @@ namespace NakedObjects.Core.Spec {
         private readonly SpecFactory memberFactory;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
+        private readonly IActionParameterSpec[] parametersSpec;
 
-
-        // cached values 
-        private IActionParameterSpec[] parametersSpec;
+        // cached values     
         private IObjectSpec returnSpec;
         private IObjectSpec elementSpec;
         private IObjectSpec onSpec;
@@ -222,10 +221,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         private bool FindServiceOnSpecOrSpecSuperclass(IObjectSpec spec) {
-            if (spec == null) {
-                return false;
-            }
-            return spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass);
+            return spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
         }
 
         private INakedObject FindService() {
@@ -234,7 +230,7 @@ namespace NakedObjects.Core.Spec {
                     return serviceAdapter;
                 }
             }
-            throw new FindObjectException("failed to find service for action " + GetName());
+            throw new FindObjectException("failed to find service for action " + Name);
         }
 
         private IActionParameterSpec GetParameter(int position) {

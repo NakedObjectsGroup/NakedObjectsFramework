@@ -14,7 +14,7 @@ namespace NakedObjects.Meta.Menu {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
             this.Action = actionSpec;
             if (renamedTo == null) {
-                Name = actionSpec.GetName();               
+                Name = actionSpec.Name;               
             } else {
                 Name = renamedTo;
             }
