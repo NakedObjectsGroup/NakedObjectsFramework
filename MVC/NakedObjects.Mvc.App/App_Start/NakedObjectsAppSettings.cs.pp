@@ -10,8 +10,13 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 
 namespace $rootnamespace$ {
+
+    // Use this class to configure the application running under Naked Objects
     public class NakedObjectsSettings {
         
+
+        // Specify any types that need to be reflected-over by the framework and that
+        // will not be discovered via the services
 		private static Type[] Types {
             get {
                 return new Type[] {

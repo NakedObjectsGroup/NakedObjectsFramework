@@ -414,7 +414,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="App_Start\NakedObjectsSettings.cs.pp" />
+    <Content Include="App_Start\NakedObjectsAppSettings.cs.pp" />
     <None Include="Scripts\jquery-2.1.1-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.min.js" />
@@ -444,7 +444,7 @@
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\NakedObjectsSettings.cs" />
+    <Compile Include="App_Start\NakedObjectsAppSettings.cs" />
     <Compile Include="App_Start\NakedObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />

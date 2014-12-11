@@ -18,11 +18,18 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Mvc.App {
-    public static class NakedObjectsSettings {
+    /// <summary>
+    /// Use this class to configure the application running under Naked Objects
+    /// </summary>
+    public static class NakedObjectsAppSettings {
         //TODO: Add similar Configuration mechanisms for Authentication, Auditing
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
+        /// <summary>
+        /// Specify any types that need to be reflected-over by the framework and that
+        /// will not be discovered via the services
+        /// </summary>
         private static Type[] Types {
             get {
                 return new[] {
@@ -68,7 +75,7 @@ namespace NakedObjects.Mvc.App {
             }
         }
 
-        private static Type[] AssociatedTypes() {
+        private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
             return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
@@ -79,7 +86,7 @@ namespace NakedObjects.Mvc.App {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
+            config.UsingEdmxContext("Model").AssociateTypes(AllPersistedTypesInMainModel);
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }

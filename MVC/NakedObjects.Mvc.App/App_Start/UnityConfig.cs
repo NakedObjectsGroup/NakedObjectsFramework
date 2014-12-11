@@ -134,8 +134,8 @@ namespace NakedObjects.Mvc.App {
             RegisterFacetFactories(container);
 
             // config
-            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsAppSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsAppSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
            
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
