@@ -19,12 +19,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
-        private readonly string defaultName;
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
+        private readonly IMemberSpecImmutable memberSpecImmutable;
         private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
-        private readonly IMemberSpecImmutable memberSpecImmutable;
 
 
         protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
@@ -34,7 +33,7 @@ namespace NakedObjects.Architecture.Reflect {
             AssertArgNotNull(lifecycleManager);
 
             this.id = id;
-            defaultName = NameUtils.NaturalName(id);
+            NameUtils.NaturalName(id);
             memberSpecImmutable = memberSpec;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
@@ -129,14 +128,12 @@ namespace NakedObjects.Architecture.Reflect {
         #endregion
 
         private static void AssertArgNotNull(object arg, string msg = null) {
-            if (arg == null) {
-                throw new ArgumentException(msg ?? "");
-            }
+            Assert.AssertNotNull(msg ?? "", arg);
         }
 
-        //public override string ToString() {
-        //    return "id=" + Id + ",name='" + GetName() + "'";
-        //}
+        public override string ToString() {
+            return "id=" + Id + ",name='" + Name + "'";
+        }
 
         protected internal virtual IConsent GetConsent(string message) {
             return message == null ? (IConsent) Allow.Default : new Veto(message);

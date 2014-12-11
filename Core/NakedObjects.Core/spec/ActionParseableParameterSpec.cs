@@ -12,19 +12,41 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
+        
+        // cached values 
+        private int? maximumLength;
+        private int? noLines;
+        private int? typicalLineLength;
+
         public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) {}
 
+
         public virtual int NoLines {
-            get { return GetFacet<IMultiLineFacet>().NumberOfLines; }
+            get {
+                if (!noLines.HasValue) {
+                    noLines = GetFacet<IMultiLineFacet>().NumberOfLines;
+                }
+                return noLines.Value;
+            }
         }
 
         public virtual int MaximumLength {
-            get { return GetFacet<IMaxLengthFacet>().Value; }
+            get {
+                if (!maximumLength.HasValue) {
+                    maximumLength = GetFacet<IMaxLengthFacet>().Value;
+                }
+                return maximumLength.Value;
+            }
         }
 
         public virtual int TypicalLineLength {
-            get { return GetFacet<ITypicalLengthFacet>().Value; }
+            get {
+                if (!typicalLineLength.HasValue) {
+                    typicalLineLength = GetFacet<ITypicalLengthFacet>().Value;
+                }
+                return typicalLineLength.Value;
+            }
         }
     }
 }

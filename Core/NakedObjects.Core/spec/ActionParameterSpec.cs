@@ -30,13 +30,17 @@ namespace NakedObjects.Core.Spec {
         private readonly ISession session;
 
         // cache 
+        private bool checkedForElementSpec;
+        private Tuple<string, IObjectSpec>[] choicesParameters;
+        private string description;
+        private IObjectSpec elementSpec;
         private bool? isAutoCompleteEnabled;
         private bool? isChoicesEnabled;
+        private bool? isMandatory;
         private bool? isMultipleChoicesEnabled;
-        private IObjectSpec spec;
-        private IObjectSpec elementSpec;
-        private bool checkedForElementSpec;
+        private bool? isNullable;
         private string name;
+        private IObjectSpec spec;
 
         protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
@@ -119,7 +123,6 @@ namespace NakedObjects.Core.Spec {
 
         public virtual IObjectSpec ElementSpec {
             get {
-
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
                     var es = facet != null ? facet.ValueSpec : null;
@@ -143,18 +146,25 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual string Description {
-            get { return GetFacet<IDescribedAsFacet>().Value ?? ""; }
+            get {
+                if (description == null) {
+                    description = GetFacet<IDescribedAsFacet>().Value ?? "";
+                }
+                return description;
+            }
         }
 
         public virtual bool IsMandatory {
             get {
-                var mandatoryFacet = GetFacet<IMandatoryFacet>();
-                return mandatoryFacet.IsMandatory;
+                if (!isMandatory.HasValue) {
+                    isMandatory = GetFacet<IMandatoryFacet>().IsMandatory;
+                }
+                return isMandatory.Value;
             }
         }
 
         public virtual Type[] FacetTypes {
-            get { return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.FacetTypes : new Type[] {}; }
+            get { return actionParameterSpecImmutable.FacetTypes; }
         }
 
         public virtual IIdentifier Identifier {
@@ -162,23 +172,23 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual bool ContainsFacet(Type facetType) {
-            return actionParameterSpecImmutable != null && actionParameterSpecImmutable.ContainsFacet(facetType);
+            return actionParameterSpecImmutable.ContainsFacet(facetType);
         }
 
         public virtual bool ContainsFacet<T>() where T : IFacet {
-            return actionParameterSpecImmutable != null && actionParameterSpecImmutable.ContainsFacet<T>();
+            return actionParameterSpecImmutable.ContainsFacet<T>();
         }
 
         public virtual IFacet GetFacet(Type type) {
-            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacet(type) : null;
+            return actionParameterSpecImmutable.GetFacet(type);
         }
 
         public virtual T GetFacet<T>() where T : IFacet {
-            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacet<T>() : default(T);
+            return actionParameterSpecImmutable.GetFacet<T>();
         }
 
         public virtual IEnumerable<IFacet> GetFacets() {
-            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacets() : new IFacet[] {};
+            return actionParameterSpecImmutable.GetFacets();
         }
 
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
@@ -197,13 +207,21 @@ namespace NakedObjects.Core.Spec {
         }
 
         public bool IsNullable {
-            get { return ContainsFacet(typeof (INullableFacet)); }
+            get {
+                if (!isNullable.HasValue) {
+                    isNullable = ContainsFacet(typeof (INullableFacet));
+                }
+                return isNullable.Value;
+            }
         }
 
         public Tuple<string, IObjectSpec>[] GetChoicesParameters() {
-            var choicesFacet = GetFacet<IActionChoicesFacet>();
-            return choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+            if (choicesParameters == null) {
+                var choicesFacet = GetFacet<IActionChoicesFacet>();
+                choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
+                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+            }
+            return choicesParameters;
         }
 
         public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
@@ -291,7 +309,7 @@ namespace NakedObjects.Core.Spec {
             return new Tuple<INakedObject, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
-        protected internal virtual IConsent GetConsent(string message) {
+        private IConsent GetConsent(string message) {
             return message == null ? (IConsent) Allow.Default : new Veto(message);
         }
     }
