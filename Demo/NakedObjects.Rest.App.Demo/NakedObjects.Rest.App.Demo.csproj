@@ -194,8 +194,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\CorsConfig.cs" />
-    <Compile Include="App_Start\MyMainMenuDefinition.cs" />
-    <Compile Include="App_Start\NakedObjectsSettings.cs" />
+    <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />

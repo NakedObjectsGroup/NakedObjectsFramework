@@ -378,9 +378,8 @@
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\MyMainMenuDefinition.cs" />
     <Compile Include="App_Start\NakedObjectsActivator.cs" />
-    <Compile Include="App_Start\NakedObjectsSettings.cs" />
+    <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />

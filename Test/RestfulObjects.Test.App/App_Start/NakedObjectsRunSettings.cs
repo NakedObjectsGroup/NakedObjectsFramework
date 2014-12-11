@@ -13,9 +13,11 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Value;
 using RestfulObjects.Test.Data;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace RestfulObjects.Test.App {
-    public class NakedObjectsSettings {
+    public class NakedObjectsRunSettings {
         private static Type[] Types {
             get { return new Type[] {
                     typeof (WithValueViewModel),
@@ -74,6 +76,15 @@ namespace RestfulObjects.Test.App {
             var config = new EntityObjectStoreConfiguration();
             config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
             return config;
+        }
+
+        /// <summary>
+        /// Return an array of IMenus (obtained via the factory, then configured) to
+        /// specify the Main Menus for the application. If none are returned then
+        /// the Main Menus will be derived automatically from the MenuServices.
+        /// </summary>
+        public static IMenu[] MainMenus(IMenuFactory factory) {
+            return new IMenu[] { };
         }
     }
 }

@@ -137,9 +137,8 @@ namespace NakedObjects.App.Demo {
             RegisterFacetFactories(container);
 
             // config
-            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
-            container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
