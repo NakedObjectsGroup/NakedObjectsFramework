@@ -12,6 +12,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Value;
 using RestfulObjects.Test.Data;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace MvcTestApp {
     public static class NakedObjectsSettings {
@@ -62,13 +64,23 @@ namespace MvcTestApp {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices);
+            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
             config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
             return config;
+        }
+
+        public static IMenu[] MainMenus(IMenuFactory factory) {
+            var menu1 = factory.NewMenu<RestDataRepository>(true);
+            var menu2 = factory.NewMenu<WithActionService>(true);
+            var menu3 = factory.NewMenu<ContributorService>(true);
+            var menu4 = factory.NewMenu<TestTypeCodeMapper>(true);
+
+
+            return new IMenu[] { menu1, menu2, menu3, menu4 };
         }
     }
 }

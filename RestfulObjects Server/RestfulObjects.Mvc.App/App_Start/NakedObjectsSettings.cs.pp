@@ -55,5 +55,10 @@ namespace $rootnamespace$ {
             //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }
+
+		public static IMenuBuilder[] MainMenus(IMenuFactory factory) {
+            //e.g. var menu1 = factory.NewMenu<MyService1>(true); //then add to returned array
+            return new IMenuBuilder[] {  };
+        }
     }
 }

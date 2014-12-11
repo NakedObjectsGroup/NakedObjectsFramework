@@ -29,12 +29,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
-            var menuDefinition = new ReflectorTest.NullMenuDefinition();
             var menuFactory = new NullMenuFactory();
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(0);
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuDefinition, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[]{facetFactory});
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[]{facetFactory});
 
         }
 

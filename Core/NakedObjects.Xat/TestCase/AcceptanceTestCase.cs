@@ -408,8 +408,6 @@ namespace NakedObjects.Xat {
         protected virtual void RegisterTypes(IUnityContainer container) {
 
             RegisterFacetFactories(container);
-
-            container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
             container.RegisterType<IMenuFactory, MenuFactory>();
 
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
@@ -474,20 +472,6 @@ namespace NakedObjects.Xat {
         protected IUnityContainer GetConfiguredContainer() {
             return unityContainer.Value;
         }
-
-        #region Nested type: NullMainMenuDefinition
-
-        public class NullMainMenuDefinition : IMainMenuDefinition {
-            #region IMainMenuDefinition Members
-
-            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-                return new IMenuBuilder[] { };
-            }
-
-            #endregion
-        }
-
-        #endregion
     }
 
     // Copyright (c) INakedObject Objects Group Ltd.

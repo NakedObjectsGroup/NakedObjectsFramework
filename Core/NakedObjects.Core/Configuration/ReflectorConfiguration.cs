@@ -23,6 +23,7 @@ namespace NakedObjects.Core.Configuration {
             ContributedActions = contributedActions;
             SystemServices = systemServices;
             IgnoreCase = false;
+            MainMenus = mainMenus;
         }
 
         #region IReflectorConfiguration Members
@@ -32,7 +33,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] MenuServices { get; private set; }
         public Type[] ContributedActions { get; private set; }
         public Type[] SystemServices { get; private set; }
-
+        public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
         #endregion
     }
 }

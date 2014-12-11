@@ -170,7 +170,6 @@ namespace NakedObjects.Meta.Test {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMenuFactory, NullMenuFactory>();
-            container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
                 new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
@@ -333,30 +332,16 @@ namespace NakedObjects.Meta.Test {
             }
         }
 
-        #region Nested type: NullMenuDefinition
-
-        public class NullMenuDefinition : IMainMenuDefinition {
-            #region IMainMenuDefinition Members
-
-            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-                return new IMenuBuilder[] { };
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         #region Nested type: NullMenuFactory
 
         public class NullMenuFactory : IMenuFactory {
             #region IMenuFactory Members
 
-            public IMenuBuilder NewMenu(string name) {
+            public IMenu NewMenu(string name) {
                 return null;
             }
 
-            public ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
                 return null;
             }
 

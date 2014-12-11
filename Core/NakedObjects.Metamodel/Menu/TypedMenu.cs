@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedObjects.Meta.Menu {
-    public class TypedMenu<TObject> : MenuImpl, ITypedMenuBuilder<TObject> {
+    public class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {

@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 using System;
 
 namespace NakedObjects.Architecture.Configuration {
@@ -13,6 +15,7 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] MenuServices { get; }
         Type[] ContributedActions { get; }
         Type[] SystemServices { get; }
+        Func<IMenuFactory, IMenu[]> MainMenus { get; }
         bool IgnoreCase { get; }
     }
 }

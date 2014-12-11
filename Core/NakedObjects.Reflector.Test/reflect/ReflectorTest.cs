@@ -26,11 +26,11 @@ namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {
         #region IMenuFactory Members
 
-        public IMenuBuilder NewMenu(string name) {
+        public IMenu NewMenu(string name) {
             return null;
         }
 
-        public ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null) {
+        public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
             return null;
         }
 
@@ -136,7 +136,6 @@ namespace NakedObjects.Reflect.Test {
 
             RegisterFacetFactories(container);
 
-            container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IReflector, Reflector>();
@@ -268,21 +267,6 @@ namespace NakedObjects.Reflect.Test {
             // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
-
-
-        #region Nested type: NullMenuDefinition
-
-        public class NullMenuDefinition : IMainMenuDefinition {
-            #region IMainMenuDefinition Members
-
-            public IMenuBuilder[] MainMenus(IMenuFactory factory) {
-                return new IMenuBuilder[] { };
-            }
-
-            #endregion
-        }
-
-        #endregion
 
         #region Nested type: SetWrapper
 

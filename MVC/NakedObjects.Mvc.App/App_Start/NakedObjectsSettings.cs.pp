@@ -46,7 +46,7 @@ namespace $rootnamespace$ {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices);
+            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
@@ -54,6 +54,15 @@ namespace $rootnamespace$ {
             //config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
             //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
+        }
+
+		/// <summary>
+        /// Return an array of IMenus (obtained via the factory, then configured) to
+        /// specify the Main Menus for the application. If none are returned then
+        /// the Main Menus will be derived automatically from the MenuServices.
+        /// </summary>
+		public static IMenu[] MainMenus(IMenuFactory factory) {
+            return new IMenu[] {};
         }
     }
 }

@@ -23,11 +23,11 @@ namespace NakedObjects.Meta.Menu {
 
         #region IMenuFactory Members
 
-        public IMenuBuilder NewMenu(string name) {
+        public IMenu NewMenu(string name) {
             return new MenuImpl(metamodel, name);
         }
 
-        public ITypedMenuBuilder<TObject> NewMenu<TObject>(bool addAllActions, string name = null) {
+        public ITypedMenu<TObject> NewMenu<TObject>(bool addAllActions, string name = null) {
             return new TypedMenu<TObject>(metamodel, addAllActions, name);
         }
 

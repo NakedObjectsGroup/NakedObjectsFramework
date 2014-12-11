@@ -1,9 +1,12 @@
 ﻿using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Xat;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using TestObjectMenu;
@@ -45,8 +48,19 @@ namespace NakedObjects.SystemTest.Menus.Service {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             container.RegisterType<IMenuFactory, MenuFactory>();
-            container.RegisterType<IMainMenuDefinition, LocalMainMenus>();
+            container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
         }
+
+        private IReflectorConfiguration MyReflectorConfig() {
+            return new ReflectorConfiguration(
+                this.Types ?? new Type[] { },
+                MenuServices.Select(s => s.GetType()).ToArray(),
+                ContributedActions.Select(s => s.GetType()).ToArray(),
+                SystemServices.Select(s => s.GetType()).ToArray(),
+                LocalMainMenus.MainMenus);
+        }
+
+
         #endregion
 
         [TestMethod]
@@ -161,9 +175,9 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     #region Classes used in test
 
-    public class LocalMainMenus : IMainMenuDefinition {
+    public class LocalMainMenus  {
 
-        public IMenuBuilder[] MainMenus(IMenuFactory factory) {
+        public static IMenu[] MainMenus(IMenuFactory factory) {
             var foos = factory.NewMenu<FooService>(true);
             var bars = factory.NewMenu<BarService>(true);
 
@@ -190,7 +204,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             var empty2 = factory.NewMenu("Empty2");
             empty2.CreateSubMenu("Sub");
 
-            return new IMenuBuilder[] { foos, bars, q, subs, hyb, empty, empty2 };
+            return new IMenu[] { foos, bars, q, subs, hyb, empty, empty2 };
         }
     }
 

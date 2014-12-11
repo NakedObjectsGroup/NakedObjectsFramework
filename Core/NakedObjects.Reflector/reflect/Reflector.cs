@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -30,7 +31,6 @@ namespace NakedObjects.Reflect {
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IFacetFactorySet facetFactorySet;
-        private readonly IMainMenuDefinition menuDefinition;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
 
@@ -41,20 +41,17 @@ namespace NakedObjects.Reflect {
         public Reflector(IClassStrategy classStrategy,
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
-                         IMainMenuDefinition menuDefinition,
                          IMenuFactory menuFactory,
                          IFacetDecorator[] facetDecorators,
                          IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
-            Assert.AssertNotNull(menuDefinition);
             Assert.AssertNotNull(menuFactory);
 
             this.classStrategy = classStrategy;
             this.metamodel = metamodel;
             this.config = config;
-            this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
             facetFactorySet = new FacetFactorySet(facetFactories);
@@ -125,7 +122,10 @@ namespace NakedObjects.Reflect {
             PopulateAssociatedActions(s1.Union(s2).ToArray());
 
             //Menus installed once rest of metamodel has been built:
-            InstallMainMenus();
+            if (config.MainMenus != null) {
+                IMenu[] mainMenus = config.MainMenus(menuFactory);
+                InstallMainMenus(mainMenus);
+            }
             InstallObjectMenus();
         }
 
@@ -157,9 +157,8 @@ namespace NakedObjects.Reflect {
             PopulateRelatedActions(spec, services);
         }
 
-        private void InstallMainMenus() {
-            if (menuDefinition == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
-            foreach (IMenuImmutable menu in menuDefinition.MainMenus(menuFactory)) {
+        private void InstallMainMenus(IMenu[] menus) {
+          foreach (IMenuImmutable menu in menus) {
                 metamodel.AddMainMenu(menu);
             }
         }

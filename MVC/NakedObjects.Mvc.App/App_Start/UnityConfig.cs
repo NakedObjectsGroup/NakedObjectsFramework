@@ -136,8 +136,7 @@ namespace NakedObjects.Mvc.App {
             // config
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
-            container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
-
+           
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());

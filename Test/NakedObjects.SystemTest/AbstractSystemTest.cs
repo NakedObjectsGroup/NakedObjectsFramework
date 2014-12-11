@@ -39,7 +39,6 @@ namespace NakedObjects.SystemTest {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IMainMenuDefinition, ReflectorTest.NullMenuDfinition>();
             container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 

@@ -12,10 +12,10 @@ namespace NakedObjects.Architecture.Menu {
     /// </summary>
     public interface IMenuFactory {
         //Creates an empty, un-typed menu, (for which a name must be specified).
-        IMenuBuilder NewMenu(string name);
+        IMenu NewMenu(string name);
 
         //Creates a new menu based on a service of type T. If the optional name
         //parameter is not specified, then the menu takes its name from the service.
-        ITypedMenuBuilder<T> NewMenu<T>(bool addAllActions, string name = null);
+        ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null);
     }
 }

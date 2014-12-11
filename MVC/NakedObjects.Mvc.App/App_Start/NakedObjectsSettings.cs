@@ -14,6 +14,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Mvc.App {
     public static class NakedObjectsSettings {
@@ -72,7 +74,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices);
+            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
@@ -80,6 +82,15 @@ namespace NakedObjects.Mvc.App {
             config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
+        }
+
+        /// <summary>
+        /// Return an array of IMenus (obtained via the factory, then configured) to
+        /// specify the Main Menus for the application. If none are returned then
+        /// the Main Menus will be derived automatically from the MenuServices.
+        /// </summary>
+        public static IMenu[] MainMenus(IMenuFactory factory) {
+            return new IMenu[] {};
         }
     }
 }
