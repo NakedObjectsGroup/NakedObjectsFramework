@@ -9,6 +9,7 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -134,8 +135,8 @@ namespace NakedObjects.Mvc.App {
             RegisterFacetFactories(container);
 
             // config
-            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsAppSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsAppSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
            
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());

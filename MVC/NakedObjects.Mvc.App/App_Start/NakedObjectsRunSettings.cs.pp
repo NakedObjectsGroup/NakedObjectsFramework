@@ -8,11 +8,13 @@
 using System;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace $rootnamespace$ {
 
     // Use this class to configure the application running under Naked Objects
-    public class NakedObjectsSettings {
+    public class NakedObjectsRunSettings {
         
 
         // Specify any types that need to be reflected-over by the framework and that
@@ -45,20 +47,14 @@ namespace $rootnamespace$ {
             }
         }
 
-        //private static Type[] AssociatedTypes() {
-        //    var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-        //    return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
-        //}
-
         public static ReflectorConfiguration ReflectorConfig() {
             return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            //config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
-            //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
-            return config;
+			//config.UsingCodeFirstContext(() => new MyDbContext());
+			return config;
         }
 
 		/// <summary>

@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
 using System.Web.UI;
+using NakedObjects;
 using NakedObjects.Web.Mvc.Controllers;
 
 namespace NakedObjects.Mvc.App.Controllers {

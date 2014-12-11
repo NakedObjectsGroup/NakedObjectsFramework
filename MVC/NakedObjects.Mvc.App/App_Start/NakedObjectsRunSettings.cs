@@ -21,7 +21,7 @@ namespace NakedObjects.Mvc.App {
     /// <summary>
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
-    public static class NakedObjectsAppSettings {
+    public static class NakedObjectsRunSettings {
         //TODO: Add similar Configuration mechanisms for Authentication, Auditing
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 

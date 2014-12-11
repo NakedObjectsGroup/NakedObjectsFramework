@@ -169,7 +169,7 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
 
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\MyMainMenuDefinition.cs.pp"/>
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsSettings.cs.pp"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityFrameworkResolver.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
      

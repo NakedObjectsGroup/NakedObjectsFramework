@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 //using Microsoft.IdentityModel.Protocols.WSFederation;
 //using Microsoft.IdentityModel.Web;
+using NakedObjects;
 using NakedObjects.Web.Mvc.Controllers;
 
 namespace NakedObjects.Mvc.App.Controllers {
