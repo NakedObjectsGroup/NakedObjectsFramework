@@ -93,7 +93,9 @@ namespace NakedObjects.Core.Spec {
             get { return null; }
         }
 
-        public Type[] FacetTypes { get; private set; }
+        public Type[] FacetTypes {
+            get { return innerSpec.FacetTypes; }
+        }
 
         public IIdentifier Identifier {
             get { return innerSpec.Identifier; }
@@ -200,37 +202,75 @@ namespace NakedObjects.Core.Spec {
             get { return innerSpec.ObjectMenu; }
         }
 
+        private bool? isASet;
+        private bool? hasSubclasses;
+        private IObjectSpec[] interfaces;
+        private IObjectSpec[] subclasses;
+        private bool? isAbstract;
+        private bool? isInterface;
+        private string singularName;
+        private string untitledName;
+
+
         public bool IsASet {
             get {
-                var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
-                return collectionFacet != null && collectionFacet.IsASet;
+                if (!isASet.HasValue) {
+                    var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
+                    isASet = collectionFacet != null && collectionFacet.IsASet;
+                }
+
+                return isASet.Value;
             }
         }
 
         public bool HasSubclasses {
-            get { return innerSpec.Subclasses.Count > 0; }
+            get {
+                if (!hasSubclasses.HasValue) {
+                    hasSubclasses = innerSpec.Subclasses.Any();
+                }
+                return hasSubclasses.Value;
+            }
         }
 
         public IObjectSpec[] Interfaces {
-            get { return innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
+            get {
+                if (interfaces == null) {
+                    interfaces = innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray();
+                }
+                return interfaces;
+            }
         }
 
         public IObjectSpec[] Subclasses {
-            get { return innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
+            get {
+                if (subclasses == null) {
+                    subclasses = innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray();
+                }
+                return subclasses;
+            }
         }
 
         public bool IsAbstract {
-            get { return innerSpec.ContainsFacet(typeof (IAbstractFacet)); }
+            get {
+                if (!isAbstract.HasValue) {
+                    isAbstract = innerSpec.ContainsFacet(typeof (IAbstractFacet));
+                }
+                return isAbstract.Value;
+            }
         }
 
         public bool IsInterface {
-            get { return innerSpec.ContainsFacet(typeof (IInterfaceFacet)); }
+            get {
+                if (!isInterface.HasValue) {
+                    isInterface = innerSpec.ContainsFacet(typeof (IInterfaceFacet));
+                }
+                return isInterface.Value;
+            }
         }
 
         public bool IsService {
             get { return innerSpec.Service; }
         }
-
 
         public string ShortName {
             get {
@@ -248,11 +288,21 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string SingularName {
-            get { return innerSpec.GetFacet<INamedFacet>().Value; }
+            get {
+                if (singularName == null) {
+                    singularName = innerSpec.GetFacet<INamedFacet>().Value;
+                }
+                return singularName;
+            }
         }
 
         public string UntitledName {
-            get { return Resources.NakedObjects.Untitled + SingularName; }
+            get {
+                if (untitledName == null) {
+                    untitledName = Resources.NakedObjects.Untitled + SingularName;
+                }
+                return untitledName;
+            }
         }
 
         public string PluralName {

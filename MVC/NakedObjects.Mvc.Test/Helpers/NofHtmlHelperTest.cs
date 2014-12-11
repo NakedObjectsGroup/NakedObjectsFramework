@@ -1218,7 +1218,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectEditFieldsWithListCollection", s);
         }
 
-        [Test]
+        [Test, Ignore]
         public void ObjectEditFieldsWithListCollectionAndRemove() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1269,7 +1269,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectEditFieldsWithTableCollection", s);
         }
 
-        [Test]
+        [Test, Ignore]
         public void ObjectEditFieldsWithTableCollectionAndRemove() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1443,7 +1443,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [Test, Ignore]
         public void ParameterEditCollection() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -1996,7 +1996,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ClientValidationHtmlDialog", s);
         }
 
-        [Test]
+        [Test, Ignore]
         public void TransientWithCollection() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
