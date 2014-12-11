@@ -20,7 +20,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {
@@ -28,26 +27,32 @@ namespace NakedObjects.Core.Spec {
         private readonly IObjectSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
+
+        // todo continue cacahing values for all specs 
+        // cached values 
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
+        private bool? isAggregated;
+        private bool? isCollection;
+        private bool? isEncodeable;
+        private bool? isParseable;
+        private bool? isViewModel;
         private IActionSpec[] objectActions;
         private IAssociationSpec[] objectFields;
         private IActionSpec[] relatedActions;
+        private string shortName;
 
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
+            Assert.AssertNotNull(memberFactory);
+            Assert.AssertNotNull(metamodelManager);
+            Assert.AssertNotNull(innerSpec);
+
             this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;
-
-            Assert.AssertNotNull(metamodelManager);
-            Assert.AssertNotNull(innerSpec);
         }
 
-        public bool IsSealed {
-            get { return innerSpec.ContainsFacet(typeof (ISealedFacet)); }
-        }
-
-        public Type Type {
+        private Type Type {
             get { return innerSpec.Type; }
         }
 
@@ -114,24 +119,50 @@ namespace NakedObjects.Core.Spec {
             return innerSpec.GetFacets();
         }
 
+
         public virtual bool IsParseable {
-            get { return innerSpec.ContainsFacet(typeof (IParseableFacet)); }
+            get {
+                if (!isParseable.HasValue) {
+                    isParseable = innerSpec.ContainsFacet(typeof (IParseableFacet));
+                }
+                return isParseable.Value;
+            }
         }
 
         public virtual bool IsEncodeable {
-            get { return innerSpec.ContainsFacet(typeof (IEncodeableFacet)); }
+            get {
+                if (!isEncodeable.HasValue) {
+                    isEncodeable = innerSpec.ContainsFacet(typeof (IEncodeableFacet));
+                }
+                return isEncodeable.Value;
+            }
         }
 
         public virtual bool IsAggregated {
-            get { return innerSpec.ContainsFacet(typeof (IAggregatedFacet)); }
+            get {
+                if (!isAggregated.HasValue) {
+                    isAggregated = innerSpec.ContainsFacet(typeof (IAggregatedFacet));
+                }
+                return isAggregated.Value;
+            }
         }
 
         public virtual bool IsCollection {
-            get { return innerSpec.ContainsFacet(typeof (ICollectionFacet)); }
+            get {
+                if (!isCollection.HasValue) {
+                    isCollection = innerSpec.ContainsFacet(typeof (ICollectionFacet));
+                }
+                return isCollection.Value;
+            }
         }
 
         public virtual bool IsViewModel {
-            get { return innerSpec.ContainsFacet(typeof (IViewModelFacet)); }
+            get {
+                if (!isViewModel.HasValue) {
+                    isViewModel = innerSpec.ContainsFacet(typeof (IViewModelFacet));
+                }
+                return isViewModel.Value;
+            }
         }
 
         public virtual bool IsObject {
@@ -200,8 +231,20 @@ namespace NakedObjects.Core.Spec {
             get { return innerSpec.Service; }
         }
 
+
         public string ShortName {
-            get { return innerSpec.ShortName; }
+            get {
+                if (shortName == null) {
+                    string postfix = "";
+                    if (Type.IsGenericType && !IsCollection) {
+                        postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + metamodelManager.GetSpecification(y).ShortName);
+                    }
+
+                    shortName = innerSpec.ShortName + postfix;
+                }
+
+                return shortName;
+            }
         }
 
         public string SingularName {
