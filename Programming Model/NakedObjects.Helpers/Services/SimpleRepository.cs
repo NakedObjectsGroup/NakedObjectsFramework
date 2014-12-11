@@ -12,7 +12,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
-    ///     Simple repository of T - gives initial ability to create and retrieve instances of T
+    ///  As of version 7.0, the SimpleRepository is no longer recommended for use in
+    ///  prototyping, because its title (as rendered by the new main menu mechanism)
+    ///  does not reflect the type  -  it just says 'Simple Repository'.  It may still 
+    ///  be useful for writing XAT tests, though, where it may still be retrieved by 
+    ///  name, using the pluralised friendly-name of the type, as before.
     /// </summary>
     public sealed class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
         private readonly string title;
