@@ -84,7 +84,7 @@ namespace NakedObjects.Core.Spec {
             return name;
         }
 
-        public virtual IObjectSpec OnType {
+        public virtual IObjectSpec OnSpec {
             get { return null; }
         }
 
@@ -92,11 +92,11 @@ namespace NakedObjects.Core.Spec {
             get { return 0; }
         }
 
-        public virtual IObjectSpec ReturnType {
+        public virtual IObjectSpec ReturnSpec {
             get { return null; }
         }
 
-        public virtual Where Target {
+        public virtual Where ExecutedWhere {
             get { return Where.Default; }
         }
 
@@ -177,8 +177,8 @@ namespace NakedObjects.Core.Spec {
             return new INakedObject[] {};
         }
 
-        public virtual bool HasReturn() {
-            return false;
+        public virtual bool HasReturn {
+            get { return false; }
         }
 
         public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {

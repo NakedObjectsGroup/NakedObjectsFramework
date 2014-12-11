@@ -441,7 +441,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // handle contributed actions 
 
-            if (actionContext.Action.IsContributedMethod && !actionContext.Action.OnType.Equals(actionContext.Target.Spec)) {
+            if (actionContext.Action.IsContributedMethod && !actionContext.Action.OnSpec.Equals(actionContext.Target.Spec)) {
                 IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
                 if (parm != null) {
@@ -654,7 +654,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, IObjectSpec targetSpec, string uid) {
             IActionParameterSpec[] parms;
-            if (action.IsContributedMethod && !action.OnType.Equals(targetSpec)) {
+            if (action.IsContributedMethod && !action.OnSpec.Equals(targetSpec)) {
                 var tempParms = new List<IActionParameterSpec>();
 
                 bool skipped = false;

@@ -28,19 +28,33 @@ namespace NakedObjects.Core.Spec {
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
 
-        // todo continue cacahing values for all specs 
         // cached values 
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
+        private string description;
+        private bool? hasNoIdentity;
+        private bool? hasSubclasses;
+        private IObjectSpec[] interfaces;
+        private bool? isASet;
+        private bool? isAbstract;
         private bool? isAggregated;
         private bool? isCollection;
         private bool? isEncodeable;
+        private bool? isInterface;
         private bool? isParseable;
+        private bool? isQueryable;
         private bool? isViewModel;
+        private bool? isVoid;
         private IActionSpec[] objectActions;
         private IAssociationSpec[] objectFields;
+        private PersistableType? persistable;
+        private string pluralName;
         private IActionSpec[] relatedActions;
         private string shortName;
+        private string singularName;
+        private IObjectSpec[] subclasses;
+        private IObjectSpec superclass;
+        private string untitledName;
 
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
             Assert.AssertNotNull(memberFactory);
@@ -172,13 +186,18 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec Superclass {
-            get { return innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass); }
+            get {
+                if (superclass == null && innerSpec.Superclass != null) {
+                    superclass = metamodelManager.GetSpecification(innerSpec.Superclass);
+                }
+                return superclass;
+            }
         }
 
         public virtual IAssociationSpec[] Properties {
             get {
                 if (objectFields == null) {
-                    objectFields = OrderFields(innerSpec.Fields);
+                    objectFields = innerSpec.Fields.Select(element => memberFactory.CreateAssociationSpec(element)).ToArray();
                 }
                 return objectFields;
             }
@@ -201,15 +220,6 @@ namespace NakedObjects.Core.Spec {
         public IMenuImmutable ObjectMenu {
             get { return innerSpec.ObjectMenu; }
         }
-
-        private bool? isASet;
-        private bool? hasSubclasses;
-        private IObjectSpec[] interfaces;
-        private IObjectSpec[] subclasses;
-        private bool? isAbstract;
-        private bool? isInterface;
-        private string singularName;
-        private string untitledName;
 
 
         public bool IsASet {
@@ -306,43 +316,57 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string PluralName {
-            get { return innerSpec.GetFacet<IPluralFacet>().Value; }
+            get {
+                if (pluralName == null) {
+                    pluralName = innerSpec.GetFacet<IPluralFacet>().Value;
+                }
+                return pluralName;
+            }
         }
 
         public string Description {
-            get { return innerSpec.GetFacet<IDescribedAsFacet>().Value ?? ""; }
+            get {
+                if (description == null) {
+                    description = innerSpec.GetFacet<IDescribedAsFacet>().Value ?? "";
+                }
+                return description;
+            }
         }
 
         public bool HasNoIdentity {
             get {
-                // TODO need to tell whether an obj should be treated as a value or not
-                return innerSpec.GetFacet<ICollectionFacet>() != null || innerSpec.GetFacet<IParseableFacet>() != null;
+                if (!hasNoIdentity.HasValue) {
+                    hasNoIdentity = innerSpec.GetFacet<ICollectionFacet>() != null || innerSpec.GetFacet<IParseableFacet>() != null;
+                }
+                return hasNoIdentity.Value;
             }
         }
 
         public bool IsQueryable {
             get {
-                var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
-                return collectionFacet != null && collectionFacet.IsQueryable;
+                if (!isQueryable.HasValue) {
+                    var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
+                    isQueryable = collectionFacet != null && collectionFacet.IsQueryable;
+                }
+                return isQueryable.Value;
             }
         }
 
         public bool IsVoid {
-            get { return innerSpec.ContainsFacet(typeof (IVoidFacet)); }
+            get {
+                if (!isVoid.HasValue) {
+                    isVoid = innerSpec.ContainsFacet(typeof (IVoidFacet));
+                }
+                return isVoid.Value;
+            }
         }
 
         public PersistableType Persistable {
             get {
-                if (IsService) {
-                    return PersistableType.ProgramPersistable;
+                if (!persistable.HasValue) {
+                    persistable = GetPersistable();
                 }
-                if (innerSpec.ContainsFacet<INotPersistedFacet>()) {
-                    return PersistableType.Transient;
-                }
-                if (innerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
-                    return PersistableType.ProgramPersistable;
-                }
-                return PersistableType.UserPersistable;
+                return persistable.Value;
             }
         }
 
@@ -408,6 +432,19 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
+        private PersistableType GetPersistable() {
+            if (IsService) {
+                return PersistableType.ProgramPersistable;
+            }
+            if (innerSpec.ContainsFacet<INotPersistedFacet>()) {
+                return PersistableType.Transient;
+            }
+            if (innerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
+                return PersistableType.ProgramPersistable;
+            }
+            return PersistableType.UserPersistable;
+        }
+
         private string TypeNameFor() {
             return IsCollection ? "Collection" : "Object";
         }
@@ -419,20 +456,6 @@ namespace NakedObjects.Core.Spec {
             str.Append("persistable", Persistable);
             str.Append("superclass", innerSpec.Superclass == null ? "object" : innerSpec.Superclass.FullName);
             return str.ToString();
-        }
-
-
-        private IAssociationSpec[] OrderFields(IList<IAssociationSpecImmutable> order) {
-            var orderedFields = new List<IAssociationSpec>();
-            foreach (var element in order) {
-                if (element != null) {
-                    orderedFields.Add(memberFactory.CreateAssociationSpec(element));
-                }
-                else {
-                    throw new UnknownTypeException(element);
-                }
-            }
-            return orderedFields.ToArray();
         }
 
         protected bool Equals(ObjectSpec other) {

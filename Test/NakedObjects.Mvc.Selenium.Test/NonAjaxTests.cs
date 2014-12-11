@@ -77,7 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }

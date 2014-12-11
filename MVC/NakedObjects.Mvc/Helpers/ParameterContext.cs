@@ -167,7 +167,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private  bool IsFileActionNoParms(INakedObjectsFramework framework) {
-            return Action != null && Action.ReturnType.IsFile(framework) && !Action.Parameters.Any();
+            return Action != null && Action.ReturnSpec.IsFile(framework) && !Action.Parameters.Any();
         }
 
         public string GetActionClass(INakedObjectsFramework framework) {

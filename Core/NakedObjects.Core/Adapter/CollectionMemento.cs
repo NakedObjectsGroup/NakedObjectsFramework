@@ -127,7 +127,7 @@ namespace NakedObjects.Core.Adapter {
 
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper {Encode = true};
-            helper.Add(Action.ReturnType.EncodeTypeName(Action.ReturnType.IsCollection ? new[] {Action.ElementSpec} : new IObjectSpec[] {}));
+            helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : new IObjectSpec[] {}));
             helper.Add(Action.Id);
             helper.Add(Target.Oid as IEncodedToStrings);
 

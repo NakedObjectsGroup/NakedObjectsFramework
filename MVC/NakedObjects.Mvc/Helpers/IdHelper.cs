@@ -258,7 +258,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetParameterId(IActionSpec action, IActionParameterSpec parameter) {
-            return action.OnType.ShortName + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
+            return action.OnSpec.ShortName + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
         public static string GetParameterInputId(IActionSpec action, IActionParameterSpec parameter) {

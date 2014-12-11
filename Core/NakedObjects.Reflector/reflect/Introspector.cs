@@ -145,7 +145,7 @@ namespace NakedObjects.Reflect {
 
             // find the properties and collections (fields) ...
             IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
-            orderedFields = CreateSortedListOfMembers<IAssociationSpecImmutable>(findFieldMethods);
+            orderedFields = CreateSortedListOfMembers(findFieldMethods);
         }
 
         public void IntrospectActions(IObjectSpecImmutable spec) {

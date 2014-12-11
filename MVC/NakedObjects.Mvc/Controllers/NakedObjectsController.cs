@@ -774,7 +774,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal static bool ActionExecutingAsContributed(IActionSpec action, INakedObject targetNakedObject) {
-            return action.IsContributedMethod && !action.OnType.Equals(targetNakedObject.Spec);
+            return action.IsContributedMethod && !action.OnSpec.Equals(targetNakedObject.Spec);
         }
 
         internal void SetMessagesAndWarnings() {

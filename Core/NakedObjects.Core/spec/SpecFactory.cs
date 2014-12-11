@@ -64,16 +64,12 @@ namespace NakedObjects.Core.Spec {
             return order.Select(element => CreateActionSpecSet(element.Id, element.Name, element.Specs)).Cast<IActionSpec>().ToArray();
         }
 
-        private ActionSpecSet CreateActionSpecSet(IList<IActionSpecImmutable> orderSet, string groupFullName) {
-            return new ActionSpecSet(groupFullName.Replace(" ", ""), groupFullName, OrderActions(orderSet), framework.Services);
-        }
-
         private ActionSpecSet CreateActionSpecSet(string id, string name, IList<IActionSpecImmutable> orderSet) {
             return new ActionSpecSet(id, name, OrderActions(orderSet), framework.Services);
         }
 
         public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
-            return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, specImmutable);
+            return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.Manager, specImmutable);
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {

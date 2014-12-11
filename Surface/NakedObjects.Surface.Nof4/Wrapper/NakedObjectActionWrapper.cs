@@ -63,7 +63,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public bool IsQueryOnly {
             get {
-                if (action.ReturnType.IsQueryable) {
+                if (action.ReturnSpec.IsQueryable) {
                     return true;
                 }
                 return action.ContainsFacet<IQueryOnlyFacet>();
@@ -94,7 +94,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface ReturnType {
-            get { return new NakedObjectSpecificationWrapper(action.ReturnType, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
         }
 
         public INakedObjectSpecificationSurface ElementType {
@@ -121,7 +121,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface OnType {
-            get { return new NakedObjectSpecificationWrapper(action.OnType, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(action.OnSpec, Surface, framework); }
         }
 
         public INakedObjectsSurface Surface { get; set; }

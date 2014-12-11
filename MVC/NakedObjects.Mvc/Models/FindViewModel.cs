@@ -29,7 +29,7 @@ namespace NakedObjects.Web.Mvc.Models {
         public string DialogClass( INakedObjectsFramework framework) {
 
             if (ViewType == ViewTypes.Dialog) {
-                return ContextAction.ReturnType.IsFile(framework) ? IdHelper.DialogNameFileClass : IdHelper.DialogNameClass;
+                return ContextAction.ReturnSpec.IsFile(framework) ? IdHelper.DialogNameFileClass : IdHelper.DialogNameClass;
             }
 
             return IdHelper.EditName;

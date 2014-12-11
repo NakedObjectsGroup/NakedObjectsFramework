@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface.Nof4.Wrapper;
 
@@ -21,7 +20,7 @@ namespace NakedObjects.Surface.Nof4.Context {
         }
 
         public override IObjectSpec Specification {
-            get { return Action.ReturnType; }
+            get { return Action.ReturnSpec; }
         }
 
         public ParameterContext[] VisibleParameters {

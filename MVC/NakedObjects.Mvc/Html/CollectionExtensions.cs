@@ -55,7 +55,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Func<IAssociationSpec, int> orderFunc;
             bool withTitle;
 
-            if (action == null || action.ReturnType.IsVoid) {
+            if (action == null || action.ReturnSpec.IsVoid) {
                 var memento = nakedObject.Oid as CollectionMemento;
                 if (memento != null) {
                     action = memento.Action;

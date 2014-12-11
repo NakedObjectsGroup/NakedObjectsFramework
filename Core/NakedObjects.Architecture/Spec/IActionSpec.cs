@@ -21,12 +21,12 @@ namespace NakedObjects.Architecture.Spec {
         /// <seealso cref="Where.Locally" />
         /// <seealso cref="Where.Remotely" />
         /// <seealso cref="Where.Default" />
-        Where Target { get; }
+        Where ExecutedWhere { get; }
 
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon
         /// </summary>
-        IObjectSpec OnType { get; }
+        IObjectSpec OnSpec { get; }
 
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
@@ -48,7 +48,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns the specifications for the return type
         /// </summary>
-        IObjectSpec ReturnType { get; }
+        IObjectSpec ReturnSpec { get; }
 
         /// <summary>
         ///     Lists the sub-actions that are available under this name. If any actions are returned then this action
@@ -70,14 +70,6 @@ namespace NakedObjects.Architecture.Spec {
         IActionParameterSpec[] Parameters { get; }
 
         /// <summary>
-        ///     Return true if the action is run on a service object using the target object as a parameter
-        /// </summary>
-        bool IsContributedTo(IObjectSpec spec);
-
-        bool PromptForParameters(INakedObject nakedObject);
-
-
-        /// <summary>
         ///     Determine the real target for this action. If this action represents an object action than the target
         ///     is returned. If this action is on a service then that service will be returned.
         /// </summary>
@@ -87,7 +79,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns true if the represented action returns something, else returns false
         /// </summary>
-        bool HasReturn();
+        bool HasReturn { get; }
 
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters

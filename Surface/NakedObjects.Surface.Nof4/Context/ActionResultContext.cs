@@ -37,7 +37,7 @@ namespace NakedObjects.Surface.Nof4.Context {
         }
 
         public override IObjectSpec Specification {
-            get { return ActionContext.Action.ReturnType; }
+            get { return ActionContext.Action.ReturnSpec; }
         }
 
         public ActionResultContextSurface ToActionResultContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {

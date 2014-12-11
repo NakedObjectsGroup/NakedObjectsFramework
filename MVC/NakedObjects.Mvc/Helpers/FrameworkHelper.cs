@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static bool IsOfTypeOrCollectionOfType(IActionSpec actionSpec, IObjectSpec spec) {
-            var returnType = actionSpec.ReturnType;
+            var returnType = actionSpec.ReturnSpec;
             return returnType.IsOfType(spec) || (returnType.IsCollection && actionSpec.ElementSpec.IsOfType(spec));
         }
 
@@ -210,7 +210,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetActionId(IActionSpec action) {
-            return action == null ? string.Empty : string.Format("{0};{1}", action.OnType.FullName, action.Id);
+            return action == null ? string.Empty : string.Format("{0};{1}", action.OnSpec.FullName, action.Id);
         }
 
         public static IActionSpec GetActionFromId(this INakedObjectsFramework framework, string actionId) {
@@ -254,7 +254,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsQueryOnly(this IActionSpec action) {
-            return action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
+            return action.ReturnSpec.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
         }
 
         public static bool IsIdempotent(this IActionSpec action) {
