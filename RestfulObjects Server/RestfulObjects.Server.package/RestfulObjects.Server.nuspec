@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>RestfulObjects.Server</id>
-    <version>7.0.0-alpha2</version>
+    <version>7.0.0-beta1</version>
     <title>NakedObjects.RestfulObjects.Server</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -15,10 +15,11 @@
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Restful Objects Server. Add to an ASP.NET MVC4 (Empty) Web Application project to auto-create a restful interface for a domain model.</description>
     <dependencies>
-      <dependency id="RestfulObjects.Mvc" version="[7.0.0-alpha2, 8)" />
+      <dependency id="RestfulObjects.Mvc" version="7.0.0-beta1" />
+      <dependency id="NakedObjects.Surface.Nof4" version="7.0.0-beta1" />
       <dependency id="WebActivatorEx" version="[2.0.6, 3.0)" />
-      <dependency id="Unity" version="[3.5.1404.0, 4.0)"  />
-      <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)"  />
+      <dependency id="Unity" version="[3.5.1404.0, 4.0)" />
+      <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)" />
     </dependencies>
   </metadata>
 </package>
