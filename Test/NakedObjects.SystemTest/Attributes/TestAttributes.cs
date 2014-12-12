@@ -964,7 +964,7 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.IsTrue(actions[0] is ActionSpecSet);
             Assert.AreEqual(1, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is ActionSpec);
-            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName());
+            Assert.AreEqual("Contributed Action", actions[0].Actions[0].Name);
         }
 
         #endregion
@@ -983,8 +983,8 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(2, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is ActionSpec);
             Assert.IsTrue(actions[0].Actions[1] is ActionSpec);
-            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName());
-            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName());
+            Assert.AreEqual("Finder Action1", actions[0].Actions[0].Name);
+            Assert.AreEqual("Finder Action2", actions[0].Actions[1].Name);
         }
 
         #endregion
