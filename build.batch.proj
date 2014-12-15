@@ -8,10 +8,12 @@
     <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
-
+  <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
+  
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
     <Platform>x86</Platform>
@@ -86,23 +88,23 @@
       <ToUpdate Include="$(BATPath)\$(NOBAT).package\content*\*.cs"/>
     </ItemGroup>
 
-    <FileUpdate Files="@(ToUpdate)"
+    <!--<FileUpdate Files="@(ToUpdate)"
             RegEx= 'MyBatch.Exe'
             ReplacementText ='$rootnamespace$'/>
 
-    <Move SourceFiles="@(ToUpdate)" DestinationFiles="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
+    <Move SourceFiles="@(ToUpdate)" DestinationFiles="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />-->
     
   </Target>
 
   <Target Name="BatchPackage" DependsOnTargets="Batch">
-    <Exec WorkingDirectory="$(BATPath)\$(NOBAT).package" Command="..\$(Nuget) pack $(NOBAT).nuspec -Symbols"/>
+    <!--<Exec WorkingDirectory="$(BATPath)\$(NOBAT).package" Command="..\$(Nuget) pack $(NOBAT).nuspec -Symbols"/>
 
     <ItemGroup>
       <BatchPackage Include="$(BATPath)\$(NOBAT).package\*.nupkg"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(PackageSourcePath)" />
-    <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+    <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(BuiltPackagesPath)" />-->
    
   </Target>
 </Project>
