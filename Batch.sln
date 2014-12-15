@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksModel", "Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Batch.Exe", "Batch\NakedObjects.Batch.Exe\NakedObjects.Batch.Exe.csproj", "{6F10CA5C-4362-4311-9FDD-4F18F4978B38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Batch", "Batch\NakedObjects.Batch\NakedObjects.Batch.csproj", "{5C48D95A-47CF-4C2C-B376-79C1AD886835}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{30942F54-63D7-4CC3-8F14-9ADF294A2D7E}"
 	ProjectSection(SolutionItems) = preProject
 		Build.proj = Build.proj
@@ -41,12 +39,6 @@ Global
 		{6F10CA5C-4362-4311-9FDD-4F18F4978B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F10CA5C-4362-4311-9FDD-4F18F4978B38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F10CA5C-4362-4311-9FDD-4F18F4978B38}.Release|x86.ActiveCfg = Release|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C48D95A-47CF-4C2C-B376-79C1AD886835}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

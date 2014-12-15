@@ -2,7 +2,7 @@
  
   <PropertyGroup>
     <BATPath>Batch</BATPath>
-    <NOBAT>NakedObjects.Batch</NOBAT>
+    <NOBAT>NakedObjects.Batch.Exe</NOBAT>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
@@ -69,32 +69,29 @@
   </Target>
 
   <Target Name="Batch" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
-    <ItemGroup>
-      <BatchFiles Include="$(BATPath)\$(NOBAT)\*.csproj"/>
-    </ItemGroup>
-
-    <MSBuild Projects="@(BatchFiles)"  Properties="Configuration=%(Configuration.Identity)">
-      <Output TaskParameter="TargetOutputs" ItemName="BatchArtifacts"/>
-    </MSBuild>
-
-    <Copy SourceFiles="@(BatchArtifacts)" DestinationFolder="$(BATPath)\$(NOBAT).package\lib\net451" />
+    
 
     <ItemGroup>
-      <BatchPdb Include="$(BATPath)\$(NOBAT)\bin\%(Configuration.Identity)\$(NOBAT).pdb"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\BatchStartPoint.cs"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\NakedObjectsRunSettings.cs.pp"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\Program.cs"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityActivator.cs"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityConfig.cs"/>
+      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityFrameworkResolver.cs"/>      
     </ItemGroup>
     
-    <Copy SourceFiles="@(BatchPdb)" DestinationFolder="$(BATPath)\$(NOBAT).package\lib\net451" />
+    <Copy SourceFiles="@(BatchSrc)" DestinationFolder="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)"/>
 
     <ItemGroup>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\**\*.cs"/>
+      <ToUpdate Include="$(BATPath)\$(NOBAT).package\content*\*.cs"/>
     </ItemGroup>
-    <Copy SourceFiles="@(BatchSrc)" DestinationFolder="$(BATPath)\$(NOBAT).package\src\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <BatchExamples Include="$(BATPath)\$(NOBAT)\*.cs.pp" />
-    </ItemGroup>
-    <Copy SourceFiles="@(BatchExamples)" DestinationFolder="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)" />
+    <FileUpdate Files="@(ToUpdate)"
+            RegEx= 'MyBatch.Exe'
+            ReplacementText ='$rootnamespace$'/>
 
+    <Move SourceFiles="@(ToUpdate)" DestinationFiles="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
+    
   </Target>
 
   <Target Name="BatchPackage" DependsOnTargets="Batch">
