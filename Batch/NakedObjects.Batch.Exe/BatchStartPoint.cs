@@ -5,20 +5,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using AdventureWorksModel;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Async;
 
 namespace MyBatch.Exe {
     public class BatchStartPoint : IBatchStartPoint {
-
         public IAsyncService AsyncService { private get; set; }
 
+        #region IBatchStartPoint Members
+
         public void Execute() {
-
             AsyncService.RunAsync
-                (doc => {
+                (domainObjectContainer => {
 
-            });
+                    var a = domainObjectContainer.GetService<CustomerRepository>();
+
+                    a.FindCustomerByAccountNumber("123");
+                });
         }
+
+        #endregion
     }
 }

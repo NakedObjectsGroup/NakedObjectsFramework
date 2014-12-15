@@ -38,7 +38,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NakedObjects.Batch.Exe.Program</StartupObject>
+    <StartupObject>MyBatch.Exe.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=2.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -119,11 +119,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NakedObjectsRunSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BatchStartPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityActivator.cs" />
     <Compile Include="UnityConfig.cs" />
+    <Compile Include="UnityFrameworkResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj">
