@@ -20,6 +20,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -176,6 +177,16 @@ namespace NakedObjects.Mvc.App {
 
             //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerRequestLifetimeManager());
+
+            // decorators 
+
+            foreach (var setting in NakedObjectsRunSettings.FacetDecorators()) {
+                container.RegisterType(typeof (IFacetDecorator), setting.Impl, setting.Name, new ContainerControlledLifetimeManager());
+
+                if (setting.Config != null) {
+                    container.RegisterInstance(setting.ConfigType, setting.Config, new ContainerControlledLifetimeManager());
+                }
+            }
         }
 
         #endregion

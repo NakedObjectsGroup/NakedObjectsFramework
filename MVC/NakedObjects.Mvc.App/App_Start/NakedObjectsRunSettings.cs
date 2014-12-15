@@ -22,6 +22,15 @@ namespace NakedObjects.Mvc.App {
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
+
+        public class FacetDecoratorSettings {
+            public string Name { get; set; }
+            public Type Impl { get; set; }
+            public object Config { get; set; }
+            public Type ConfigType { get; set; }
+        
+        }
+
         //TODO: Add similar Configuration mechanisms for Authentication, Auditing
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
@@ -90,6 +99,23 @@ namespace NakedObjects.Mvc.App {
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }
+
+        public static FacetDecoratorSettings[] FacetDecorators() {
+
+            //var config = new AuditConfiguration { DefaultAuditor = typeof(MyDefaultAuditor) };
+            //config.SetNameSpaceAuditors(fooAuditor, quxAuditor);
+
+            //var auditSettings = new FacetDecoratorSettings() {Name = "AuditManager", 
+            //    Config = config, 
+            //    ConfigType = typeof (IAuditConfiguration),
+            //    Impl = typeof (AuditManager)};
+
+            //return new[] {auditSettings};
+
+            return new FacetDecoratorSettings[]{};
+        }
+
+
 
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
