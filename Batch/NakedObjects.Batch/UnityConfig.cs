@@ -9,7 +9,6 @@ using System;
 using System.Security.Principal;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -26,7 +25,7 @@ using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 using NakedObjects.Service;
 
-namespace MyBatch.Exe {
+namespace NakedObjects.Batch {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
