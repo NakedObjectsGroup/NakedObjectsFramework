@@ -7,17 +7,35 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using Microsoft.Practices.Unity;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
+     public class DatabaseInitializer : DropCreateDatabaseAlways<ProxyTestContext> {}
+
+    public class ProxyTestContext : DbContext {
+        public ProxyTestContext()
+            : base("ProxyCreatorTest") {}
+
+        public DbSet<HasProperty> HasProperties { get; set; }
+        public DbSet<HasCollectionWithVirtualAccessors> HasCollectionWithVirtualAccessors { get; set; }
+        public DbSet<HasCollectionWithNonVirtualAccessors> HasCollectionWithNonVirtualAccessors { get; set; }
+    }
+
+
     public class HasProperty {
+        public virtual int Id { get; set; }
+
         public virtual string Prop { get; set; }
     }
 
     public class HasCollectionWithVirtualAccessors {
+        public virtual int Id { get; set; }
+
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
 
         public virtual ICollection<HasProperty> ACollection {
@@ -39,6 +57,8 @@ namespace NakedObjects.Reflect.Test {
     }
 
     public class HasCollectionWithNonVirtualAccessors {
+        public virtual int Id { get; set; }
+
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
 
         public virtual ICollection<HasProperty> ACollection {
@@ -60,12 +80,13 @@ namespace NakedObjects.Reflect.Test {
     }
 
 
-    [TestFixture, Ignore] // fix by changing to codefirst
+    [TestFixture] 
     public class ProxyCreatorTest : AcceptanceTestCase {
         #region Setup/Teardown
 
         [SetUp]
         public void Setup() {
+            InitializeNakedObjectsFramework(this);
             StartTest();
         }
 
@@ -76,22 +97,28 @@ namespace NakedObjects.Reflect.Test {
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            // replace INakedObjectStore types
-
-            //container.RegisterType<IOidGenerator, SimpleOidGenerator>(new InjectionConstructor(typeof (INakedObjectReflector), 0L));
-            //container.RegisterType<IPersistAlgorithm, DefaultPersistAlgorithm>();
-            //container.RegisterType<INakedObjectStore, MemoryObjectStore>();
-            //container.RegisterType<IIdentityMap, IdentityMapImpl>();
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(Activator.CreateInstance<ProxyTestContext>);
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
         [TestFixtureSetUp]
         public void SetupFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework(this);
         }
 
         [TestFixtureTearDown]
         public void TearDownFixture() {
             CleanupNakedObjectsFramework(this);
+        }
+
+        protected override Type[] Types {
+            get {
+                return new Type[] {
+                    typeof (HasProperty), typeof (HasCollectionWithNonVirtualAccessors), typeof (HasCollectionWithVirtualAccessors)
+                };
+            }
         }
 
         protected override object[] MenuServices {

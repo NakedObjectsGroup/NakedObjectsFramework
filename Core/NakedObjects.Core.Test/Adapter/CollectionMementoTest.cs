@@ -152,7 +152,10 @@ namespace NakedObjects.Core.Test.Adapter {
 
         private void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
             IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(memento.RecoverCollection(), manager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
-            Assert.IsTrue(originalCollection.SequenceEqual(recoveredCollection), "recovered collection not same as original");
+            var oc = originalCollection.ToList();
+            var rc = recoveredCollection.ToList();
+            
+            Assert.IsTrue(oc.SequenceEqual(rc), "recovered collection not same as original");
         }
 
         [Test]
@@ -197,7 +200,7 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
 
-        [Test, Ignore] // Fix !
+        [Test] 
         public void TestActionObjectCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -215,7 +218,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [Test, Ignore]
+        [Test]
         public void TestActionObjectCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -256,7 +259,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action3(null), memento, NakedObjectsFramework.Manager);
         }
 
-        [Test, Ignore] // Fix !
+        [Test] 
         public void TestActionValueCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -269,7 +272,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [Test, Ignore] // Fix !
+        [Test] 
         public void TestActionValueCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -282,7 +285,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [Test, Ignore] // Fix !
+        [Test] 
         public void TestActionValueCollectionParmString() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
