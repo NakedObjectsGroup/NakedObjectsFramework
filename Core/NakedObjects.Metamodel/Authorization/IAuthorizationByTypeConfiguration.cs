@@ -5,15 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Security;
 using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Meta.Authorization {
     public interface IAuthorizationByTypeConfiguration {
-        Type DefaultAuthorizer { get; set; }
+
+        Type DefaultAuthorizer { get; }
+
         IDictionary<Type, Type> TypeAuthorizers { get; set; }
 
-        [Obsolete("pass in types directly")]
-        void SetTypeAuthorizers(object defaultAuthorizer, params object[] typeAuthorizers);
+        void AddTypeAuthorizer<TDomain, TAuth>()
+            where TDomain : new()
+            where TAuth : ITypeAuthorizer<TDomain>;
     }
 }

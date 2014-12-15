@@ -66,9 +66,8 @@ namespace NakedObjects.Reflect.Test {
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
-            container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration {DefaultAuditor = typeof (TestAuditor), NamespaceAuditors = new Dictionary<string, Type>()});
-            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(new AuthorizationByNamespaceConfiguration() {DefaultAuthorizer = typeof (TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>()});
-
+            container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration<TestAuditor>());
+            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(new AuthorizationByNamespaceConfiguration<TestAuthorizer>());
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager");
             container.RegisterType<IFacetDecorator, AuthorizationByNamespaceManager>("AuthorizationManager");
             container.RegisterType<IFacetDecorator, I18NManager>("I18NManager");
@@ -81,7 +80,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreEqual(7, set.FacetDecorators.Count());
         }
 
-        public class TestAuthorizer : INamespaceAuthorizer {
+        public class TestAuthorizer : ITypeAuthorizer<object> {
             public bool IsEditable(IPrincipal principal, object target, string memberName) {
                 throw new NotImplementedException();
             }
@@ -90,7 +89,13 @@ namespace NakedObjects.Reflect.Test {
                 throw new NotImplementedException();
             }
 
-            public string NamespaceToAuthorize { get; private set; }
+            public void Init() {
+                throw new NotImplementedException();
+            }
+
+            public void Shutdown() {
+                throw new NotImplementedException();
+            }
         }
 
         private static Type[] AdventureWorksTypes() {

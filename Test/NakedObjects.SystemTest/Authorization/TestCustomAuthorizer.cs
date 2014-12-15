@@ -24,17 +24,17 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             get { return (new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected void RegisterAuthorizerTypes(IUnityContainer container, Type authType) {
+        protected void RegisterAuthorizerTypes<TDefault>(IUnityContainer container)
+                where TDefault : ITypeAuthorizer<object>
+        {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration {DefaultAuthorizer = authType};
+            var config = new AuthorizationByTypeConfiguration<TDefault>();
 
             container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
-                new[] {
-                    authType
-                },
+                new Type[] {typeof(TDefault)},
                 new Type[] {typeof (SimpleRepository<Foo>)},
                 new Type[] {},
                 new Type[] {});
@@ -47,7 +47,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer1 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer1));
+            RegisterAuthorizerTypes<DefaultAuthorizer1>(container);
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer2 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer2));
+            RegisterAuthorizerTypes<DefaultAuthorizer2>(container);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer3 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer1));
+            RegisterAuthorizerTypes<DefaultAuthorizer1>(container);
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthoriser4 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthoriser5 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthoriser6 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthoriser7 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
         }
 
         [TestMethod]

@@ -57,6 +57,15 @@ namespace $rootnamespace$ {
 			return config;
         }
 
+		public static IAuditConfiguration AuditConfig() {
+            return null; //No auditing set up
+			//Example:
+            //var config = new AuditConfiguration<MyDefaultAuditor>();
+            //config.AddNamespaceAuditor<FooAuditor>("MySpace.Foo");
+            //config.AddNamespaceAuditor<BarAuditor>("MySpace.Bar");
+            //return config;
+        }
+
 		/// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Security.Principal;
 
 namespace NakedObjects.Security {
@@ -12,12 +13,8 @@ namespace NakedObjects.Security {
     ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types within
     ///     a namespace.
     /// </summary>
+    [Obsolete("Use ITypeAuthorizer<object> and specify the namespace when registering in IAuthorizationByNamespaceConfiguration")]
     public interface INamespaceAuthorizer {
-        /// <summary>
-        ///     May be a partial namespace, a complete namespace, or a fully-qualified type name
-        /// </summary>
-        string NamespaceToAuthorize { get; }
-
         /// <summary>
         ///     Determine whether the member (applies to properties only) may be edited by the current user.
         /// </summary>

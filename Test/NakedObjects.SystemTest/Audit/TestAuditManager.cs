@@ -29,8 +29,9 @@ namespace NakedObjects.SystemTest.Audit {
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuditConfiguration {DefaultAuditor = typeof (MyDefaultAuditor)};
-            config.SetNameSpaceAuditors(fooAuditor, quxAuditor);
+            var config = new AuditConfiguration<MyDefaultAuditor>();
+            config.AddNamespaceAuditor<FooAuditor>(typeof(Foo).FullName);
+            config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
             container.RegisterInstance<IAuditConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager", new ContainerControlledLifetimeManager());
 
@@ -80,125 +81,6 @@ namespace NakedObjects.SystemTest.Audit {
         private static readonly FooAuditor fooAuditor = new FooAuditor();
         protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
         protected static QuxAuditor quxAuditor = new QuxAuditor();
-
-        #region Nested type: Da
-
-        public class Da : IAuditor {
-            public IDomainObjectContainer Container { get; set; }
-            public SimpleRepository<Foo> Service { get; set; }
-
-            #region IAuditor Members
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                myDefaultAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
-            }
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                myDefaultAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
-            }
-
-            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                myDefaultAuditor.ObjectUpdated(byPrincipal, updatedObject);
-            }
-
-            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                myDefaultAuditor.ObjectPersisted(byPrincipal, updatedObject);
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: Fa
-
-        public class Fa : INamespaceAuditor {
-            public IDomainObjectContainer Container { get; set; }
-            public SimpleRepository<Foo> Service { get; set; }
-
-            #region INamespaceAuditor Members
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                fooAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
-            }
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                fooAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
-            }
-
-            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                fooAuditor.ObjectUpdated(byPrincipal, updatedObject);
-            }
-
-            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                fooAuditor.ObjectPersisted(byPrincipal, updatedObject);
-            }
-
-            public string NamespaceToAudit {
-                get { return fooAuditor.NamespaceToAudit; }
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: Qa
-
-        public class Qa : INamespaceAuditor {
-            public IDomainObjectContainer Container { get; set; }
-            public SimpleRepository<Foo> Service { get; set; }
-
-            #region INamespaceAuditor Members
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                quxAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
-            }
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                quxAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
-            }
-
-            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                quxAuditor.ObjectUpdated(byPrincipal, updatedObject);
-            }
-
-            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-                Assert.IsNotNull(Container);
-                Assert.IsNotNull(Service);
-                quxAuditor.ObjectPersisted(byPrincipal, updatedObject);
-            }
-
-            public string NamespaceToAudit {
-                get { return quxAuditor.NamespaceToAudit; }
-            }
-
-            #endregion
-        }
-
-        #endregion
 
         #endregion
 
@@ -655,7 +537,7 @@ namespace NakedObjects.SystemTest.Audit {
         }
     }
 
-    public class MyDefaultAuditor : INamespaceAuditor {
+    public class MyDefaultAuditor : IAuditor {
         public static readonly Auditor Auditor = new Auditor("default");
 
         public MyDefaultAuditor() {
@@ -696,7 +578,7 @@ namespace NakedObjects.SystemTest.Audit {
         public string NamespaceToAudit { get; private set; }
     }
 
-    public class FooAuditor : INamespaceAuditor {
+    public class FooAuditor : IAuditor {
         public static readonly Auditor Auditor = new Auditor("foo");
 
         public FooAuditor() {
@@ -727,7 +609,7 @@ namespace NakedObjects.SystemTest.Audit {
         #endregion
     }
 
-    public class QuxAuditor : INamespaceAuditor {
+    public class QuxAuditor : IAuditor {
         public static readonly Auditor Auditor = new Auditor("qux");
 
         public QuxAuditor() {

@@ -9,38 +9,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Core;
+using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
-    public class AuthorizationByTypeConfiguration : IAuthorizationByTypeConfiguration {
-        private IDictionary<Type, Type> typeAuthorizers = new Dictionary<Type, Type>();
+    //Add type authorizers individually via AddTypeAuthorizer, or create the whole dictionary
+    //and set the TypeAuthorizers property.
+    public class AuthorizationByTypeConfiguration<TDefault> 
+        : IAuthorizationByTypeConfiguration 
+        where TDefault : ITypeAuthorizer<object>{
+
+        public AuthorizationByTypeConfiguration() {
+            DefaultAuthorizer = typeof(TDefault);
+            TypeAuthorizers = new Dictionary<Type, Type>();
+        }
 
         #region IAuthorizationByTypeConfiguration Members
 
-        public Type DefaultAuthorizer { get; set; }
+        public Type DefaultAuthorizer { get; private set; }
 
-        public IDictionary<Type, Type> TypeAuthorizers {
-            get { return typeAuthorizers; }
-            set { typeAuthorizers = value; }
+        public IDictionary<Type, Type> TypeAuthorizers { get; set; }
+
+        public void AddTypeAuthorizer<TDomain, TAuth>() 
+            where TDomain : new()
+            where TAuth : ITypeAuthorizer<TDomain> {
+                TypeAuthorizers.Add(typeof(TDomain), typeof(TAuth));
         }
-
-        public void SetTypeAuthorizers(object defaultAuthorizer, params object[] typeAuthorizers) {
-            ValidateAuthorizer(defaultAuthorizer);
-            DefaultAuthorizer = defaultAuthorizer.GetType();
-
-            foreach (object typeAuth in typeAuthorizers) {
-                var domainType = ValidateAuthorizer(typeAuth);
-                TypeAuthorizers.Add(domainType, typeAuth.GetType());
-            }
-        }
-
         #endregion
-
-        private static Type ValidateAuthorizer(object typeAuth) {
-            Type authInt = typeAuth.GetType().GetInterface("ITypeAuthorizer`1");
-            if (authInt == null || authInt.GetGenericArguments().First().IsAbstract) {
-                throw new InitialisationException("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete");
-            }
-            return authInt.GetGenericArguments().First();
-        }
     }
 }

@@ -26,9 +26,9 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration();
-
-            config.SetTypeAuthorizers(new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer());
+            var config = new AuthorizationByTypeConfiguration<MyDefaultAuthorizer>();
+            config.AddTypeAuthorizer<Foo, FooAuthorizer>();
+            config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
 
             container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());

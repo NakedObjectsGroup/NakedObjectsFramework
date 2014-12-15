@@ -11,21 +11,33 @@ using System.Linq;
 using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
-    public class AuthorizationByNamespaceConfiguration : IAuthorizationByNamespaceConfiguration {
-        private IDictionary<string, Type> namespaceAuthorizers = new Dictionary<string, Type>();
+    //Add namespace authorizers individually via AddNamespaceAuthorizer, or create the whole dictionary
+    //and set the NamespaceAuthorizers property.
+    public class AuthorizationByNamespaceConfiguration<TDefault> 
+        : IAuthorizationByNamespaceConfiguration 
+        where TDefault : ITypeAuthorizer<object> {
+
+        public AuthorizationByNamespaceConfiguration() {
+            DefaultAuthorizer = typeof(TDefault);
+            NamespaceAuthorizers = new Dictionary<string, Type>();
+        }
 
         #region IAuthorizationByNamespaceConfiguration Members
 
-        public Type DefaultAuthorizer { get; set; }
+        public Type DefaultAuthorizer { get; private set; }
 
-        public IDictionary<string, Type> NamespaceAuthorizers {
-            get { return namespaceAuthorizers; }
-            set { namespaceAuthorizers = value; }
+        public IDictionary<string, Type> NamespaceAuthorizers { get; set; }
+
+        public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
+            where TAuth : ITypeAuthorizer<object> {
+            NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
         }
 
-        public void SetNameSpaceAuthorizers(INamespaceAuthorizer defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers) {
-            DefaultAuthorizer = defaultAuthorizer.GetType();
-            NamespaceAuthorizers = namespaceAuthorizers.ToDictionary(na => na.NamespaceToAuthorize, na => na.GetType());
+        public void AddTypeAuthorizer<TDomain, TAuth>()
+            where TDomain : new()
+            where TAuth : ITypeAuthorizer<TDomain> {
+            string fullyQualifiedName = typeof(TDomain).FullName;
+            NamespaceAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
 
         #endregion

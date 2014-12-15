@@ -11,10 +11,15 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
     public interface IAuthorizationByNamespaceConfiguration {
-        Type DefaultAuthorizer { get; set; }
+        Type DefaultAuthorizer { get; }
+
         IDictionary<string, Type> NamespaceAuthorizers { get; set; }
 
-        [Obsolete("pass in types directly")]
-        void SetNameSpaceAuthorizers(INamespaceAuthorizer defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers);
+        void AddNamespaceAuthorizer<TAuth>(string namespaceCovered) where TAuth : ITypeAuthorizer<object>;
+
+        //The specified type authorizer will apply only to the domain object specified
+        void AddTypeAuthorizer<TDomain, TAuth>()
+            where TDomain : new()
+            where TAuth : ITypeAuthorizer<TDomain>;
     }
 }

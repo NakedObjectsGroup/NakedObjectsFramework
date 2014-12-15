@@ -7,17 +7,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Audit;
 
 namespace NakedObjects.Meta.Audit {
-    public interface IAuditConfiguration {
-        Type DefaultAuditor { get; set; }
 
-        // either set the NamespaceAuditors directly with the property or use teh old method and pass 
-        // in a list of auditor objects that each return their audited namespace. List of objects takes priority.
+    public interface IAuditConfiguration {
+
+        Type DefaultAuditor { get; }
+
         Dictionary<string, Type> NamespaceAuditors { get; set; }
 
-        [Obsolete]
-        void SetNameSpaceAuditors(params INamespaceAuditor[] namespaceAuditors);
+        void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
     }
 }

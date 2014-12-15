@@ -11,14 +11,21 @@ using System.Linq;
 using NakedObjects.Audit;
 
 namespace NakedObjects.Meta.Audit {
-    public class AuditConfiguration : IAuditConfiguration {
+
+    //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
+    //and set the NamespaceAuditors property.
+    public class AuditConfiguration<Tdefault> : IAuditConfiguration where Tdefault : IAuditor {
+        public AuditConfiguration()  {
+            DefaultAuditor = typeof(Tdefault);
+            NamespaceAuditors = new Dictionary<string, Type>();
+        }
         #region IAuditConfiguration Members
 
-        public Type DefaultAuditor { get; set; }
+        public Type DefaultAuditor { get; private set; }
         public Dictionary<string, Type> NamespaceAuditors { get; set; }
 
-        public void SetNameSpaceAuditors(params INamespaceAuditor[] namespaceAuditors) {
-            NamespaceAuditors = namespaceAuditors.ToDictionary(na => na.NamespaceToAudit, na => na.GetType());
+        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor {
+            NamespaceAuditors.Add(namespaceCovered, typeof(T));
         }
 
         #endregion

@@ -16,25 +16,14 @@ using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using System.Collections.Generic;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
-
-        public class FacetDecoratorSettings {
-            public string Name { get; set; }
-            public Type Impl { get; set; }
-            public object Config { get; set; }
-            public Type ConfigType { get; set; }
-        
-        }
-
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
-
         /// <summary>
         /// Specify any types that need to be reflected-over by the framework and that
         /// will not be discovered via the services
@@ -100,21 +89,20 @@ namespace NakedObjects.Mvc.App {
             return config;
         }
 
-        public static FacetDecoratorSettings[] FacetDecorators() {
-
-            //var config = new AuditConfiguration { DefaultAuditor = typeof(MyDefaultAuditor) };
-            //config.SetNameSpaceAuditors(fooAuditor, quxAuditor);
-
-            //var auditSettings = new FacetDecoratorSettings() {Name = "AuditManager", 
-            //    Config = config, 
-            //    ConfigType = typeof (IAuditConfiguration),
-            //    Impl = typeof (AuditManager)};
-
-            //return new[] {auditSettings};
-
-            return new FacetDecoratorSettings[]{};
+        public static IAuditConfiguration AuditConfig() {
+            return null;
         }
 
+        //public static IAuthorizationConfig AuthConfig {
+        //    get {
+        //        return new AuthorizationConfig(new MyDefaultAuthorizer(), new FooAuthorizer(), new BarAuthorizer());
+        //    }
+        //}
+
+
+        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
+        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
+        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
 
         /// <summary>

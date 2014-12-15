@@ -178,14 +178,10 @@ namespace NakedObjects.Mvc.App {
             //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerRequestLifetimeManager());
 
-            // decorators 
-
-            foreach (var setting in NakedObjectsRunSettings.FacetDecorators()) {
-                container.RegisterType(typeof (IFacetDecorator), setting.Impl, setting.Name, new ContainerControlledLifetimeManager());
-
-                if (setting.Config != null) {
-                    container.RegisterInstance(setting.ConfigType, setting.Config, new ContainerControlledLifetimeManager());
-                }
+            // Facet decorators 
+            if (NakedObjectsRunSettings.AuditConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuditManager), "AuditManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuditConfiguration), NakedObjectsRunSettings.AuditConfig(), new ContainerControlledLifetimeManager());
             }
         }
 
