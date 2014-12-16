@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class MaskAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new MaskAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -69,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction([Mask("###")] int foo) {}
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -79,21 +80,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestMaskAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -104,7 +105,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("###", maskFacet.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMaskAnnotationPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
@@ -114,7 +115,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("###", maskFacet.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMaskAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

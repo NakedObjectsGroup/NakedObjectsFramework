@@ -7,19 +7,19 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<double> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
 
@@ -36,42 +36,42 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         private ISpecification holder;
 
-        [Test]
+        [TestMethod]
         public void TestDecode() {
             Double decoded = GetValue().FromEncodedString("3.042112234E6");
             Assert.AreEqual(3042112.234, decoded);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncode() {
             string encoded = GetValue().ToEncodedString(0.0000454566);
             Assert.AreEqual("4.54566E-05", encoded);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInvalidParse() {
             try {
                 GetValue().ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParse() {
             object newValue = GetValue().ParseTextEntry("120.56");
             Assert.AreEqual(120.56, newValue);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParse2() {
             object newValue = GetValue().ParseTextEntry("1,20.0");
             Assert.AreEqual(120D, newValue);
         }
 
-        [Test]
+        [TestMethod]
         public new void TestParseEmptyString() {
             try {
                 object newValue = GetValue().ParseTextEntry("");
@@ -82,7 +82,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             const double c1 = 123.456;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
@@ -90,12 +90,12 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(c1, c2);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleOf() {
             Assert.AreEqual("35000000", GetValue().DisplayTitleOf(35000000.0));
         }
 
-        [Test]
+        [TestMethod]
         public void TestValue() {
             Assert.AreEqual("32.5", GetValue().DisplayTitleOf(doubleObj));
         }

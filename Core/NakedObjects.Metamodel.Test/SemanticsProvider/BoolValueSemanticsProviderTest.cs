@@ -7,6 +7,7 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -14,15 +15,14 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             booleanObj = true;
@@ -39,39 +39,39 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification specification;
         private BooleanValueSemanticsProvider value;
 
-        [Test]
+        [TestMethod]
         public void TestDecodeFalse() {
             object parsed = value.FromEncodedString("F");
             Assert.AreEqual(false, parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDecodeTrue() {
             object parsed = value.FromEncodedString("T");
             Assert.AreEqual(true, parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncodeFalse() {
             Assert.AreEqual("F", value.ToEncodedString(false));
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncodeTrue() {
             Assert.AreEqual("T", value.ToEncodedString(true));
         }
 
-        [Test]
+        [TestMethod]
         public void TestIsNotSet() {
             Assert.AreEqual(false, value.IsSet(CreateAdapter(false)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestIsSet() {
             Assert.AreEqual(true, value.IsSet(booleanNO));
         }
 
-        [Test]
+        [TestMethod]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
@@ -82,24 +82,24 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseFalseString() {
             object parsed = value.ParseTextEntry("faLSe");
             Assert.AreEqual(false, parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvalidString() {
             try {
                 value.ParseTextEntry("yes");
                 Assert.Fail("Invalid string");
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             CollectionUtils.ForEach(new[] {true, false}, b => {
                 string b1 = b.ToString(CultureInfo.InvariantCulture);
@@ -108,18 +108,18 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             });
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseTrueString() {
             object parsed = value.ParseTextEntry("TRue");
             Assert.AreEqual(true, parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleFalse() {
             Assert.AreEqual("False", value.DisplayTitleOf(false));
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleTrue() {
             Assert.AreEqual("True", value.DisplayTitleOf(true));
         }

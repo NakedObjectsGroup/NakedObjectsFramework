@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -16,20 +17,20 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new CallbackMethodsFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -129,7 +130,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         // ReSharper restore UnusedParameter.Local
         // ReSharper restore UnusedMember.Local
 
-        [Test]
+        [TestMethod]
         public void TestCreatedLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer), "Created");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
@@ -141,7 +142,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestDeletedLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer8), "Deleted");
             facetFactory.Process(Reflector, typeof (Customer8), MethodRemover, Specification);
@@ -153,7 +154,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestDeletingLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer7), "Deleting");
             facetFactory.Process(Reflector, typeof (Customer7), MethodRemover, Specification);
@@ -165,7 +166,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -175,7 +176,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestLoadedLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer6), "Loaded");
             facetFactory.Process(Reflector, typeof (Customer6), MethodRemover, Specification);
@@ -187,7 +188,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestLoadingLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer5), "Loading");
             facetFactory.Process(Reflector, typeof (Customer5), MethodRemover, Specification);
@@ -199,7 +200,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestOnPersistingErrorLifecycleMethodNullFacet() {
             MethodInfo method = FindMethod(typeof (Customer10), "OnPersistingError", new[] {typeof (Exception)});
             Assert.IsNull(method);
@@ -209,7 +210,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is OnPersistingErrorCallbackFacetNull);
         }
 
-        [Test]
+        [TestMethod]
         public void TestOnPersistingErrorLifecycleMethodPickedUpOn() {
             MethodInfo method1 = FindMethod(typeof (Customer11), "OnUpdatingError", new[] {typeof (Exception)});
             MethodInfo method2 = FindMethod(typeof (Customer11), "OnPersistingError", new[] {typeof (Exception)});
@@ -225,7 +226,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 
-        [Test]
+        [TestMethod]
         public void TestOnUpdatingErrorLifecycleMethodPickedUpOn() {
             MethodInfo method1 = FindMethod(typeof (Customer11), "OnUpdatingError", new[] {typeof (Exception)});
             MethodInfo method2 = FindMethod(typeof (Customer11), "OnPersistingError", new[] {typeof (Exception)});
@@ -241,7 +242,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 
-        [Test]
+        [TestMethod]
         public void TestOnUpdatingErrorLifecycleNullFacet() {
             MethodInfo method = FindMethod(typeof (Customer10), "OnUpdatingError", new[] {typeof (Exception)});
             Assert.IsNull(method);
@@ -251,7 +252,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetNull);
         }
 
-        [Test]
+        [TestMethod]
         public void TestPersistedLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer2), "Persisted");
             facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
@@ -263,7 +264,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestPersistingLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer1), "Persisting");
             facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
@@ -275,7 +276,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestSavedLifecycleMethodNotPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer10), "Saved");
             facetFactory.Process(Reflector, typeof (Customer10), MethodRemover, Specification);
@@ -285,7 +286,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
           
         }
 
-        [Test]
+        [TestMethod]
         public void TestSavingLifecycleMethodNotPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer9), "Saving");
             facetFactory.Process(Reflector, typeof (Customer9), MethodRemover, Specification);
@@ -295,7 +296,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         
         }
 
-        [Test]
+        [TestMethod]
         public void TestUpdatedLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer4), "Updated");
             facetFactory.Process(Reflector, typeof (Customer4), MethodRemover, Specification);
@@ -307,7 +308,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {method});
         }
 
-        [Test]
+        [TestMethod]
         public void TestUpdatingLifecycleMethodPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer3), "Updating");
             facetFactory.Process(Reflector, typeof (Customer3), MethodRemover, Specification);

@@ -8,26 +8,27 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             annotationFacetFactory = new EagerlyAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             annotationFacetFactory = null;
             base.TearDown();
@@ -69,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnClass() {
             annotationFacetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
@@ -79,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Coll");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -90,7 +91,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer1), "Act");
             annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
@@ -101,7 +102,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -112,14 +113,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyNotPickedUpOnClass() {
             annotationFacetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyNotPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Coll");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -127,7 +128,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyNotPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer2), "Act");
             annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
@@ -135,7 +136,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEagerlyNotPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Prop");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -143,7 +144,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = annotationFacetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));

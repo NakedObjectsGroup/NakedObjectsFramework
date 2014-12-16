@@ -6,13 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public enum TestEnum {
@@ -22,11 +22,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     };
 
 
-    [TestFixture]
+    [TestClass]
     public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TestEnum> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             holder = new Mock<ISpecification>().Object;
@@ -94,28 +94,28 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             return mock.Object;
         }
 
-        [Test]
+        [TestMethod]
         public void TestDecode() {
             TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
             Assert.AreEqual(TestEnum.Paris, decoded);
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestDefault() {
             INakedObject nakedObject = MockNakedObject(null);
             object def = value.DefaultValue;
             Assert.AreEqual(TestEnum.London, def);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncode() {
             string encoded = GetValue().ToEncodedString(TestEnum.Paris);
             Assert.AreEqual("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris", encoded);
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestIntegralValue() {
             Assert.AreEqual(sbyte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject(TestEnumSb.London)));
             Assert.AreEqual(byte.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject(TestEnumB.London)));
@@ -154,24 +154,24 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long)2)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestInvalidParse() {
             try {
                 value.ParseTextEntry("fail");
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParse() {
             object newValue = value.ParseTextEntry("0");
             Assert.AreEqual(TestEnum.London, newValue);
         }
 
-        [Test]
+        [TestMethod]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
@@ -183,7 +183,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             const TestEnum c1 = TestEnum.London;
             string s1 = c1.ToString();
@@ -191,7 +191,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(c1, c2);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseOverflow() {
             try {
                 object newValue = value.ParseTextEntry(long.MaxValue.ToString());
@@ -202,7 +202,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleString() {
             Assert.AreEqual("New York", value.DisplayTitleOf(TestEnum.NewYork));
         }

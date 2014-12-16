@@ -5,72 +5,72 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
-using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
     public class TestDomainObject {}
 
-    [TestFixture]
+    [TestClass]
     public class ReflectorObjectTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
             return reflector.LoadSpecification(typeof (TestDomainObject));
         }
 
-        [Test]
+        [TestMethod]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDescriptionFaced() {
             IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
             Assert.IsNotNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestFacets() {
             Assert.AreEqual(17, Specification.FacetTypes.Length);
         }
 
-        [Test]
+        [TestMethod]
         public void TestName() {
             Assert.AreEqual(typeof (TestDomainObject).FullName, Specification.FullName);
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedFaced() {
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestNoCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestNoTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNull(facet);
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestPluralFaced() {
             IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestType() {
             Assert.IsTrue(Specification.IsObject);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNull(facet);

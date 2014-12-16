@@ -7,19 +7,19 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<int> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             integer = 32;
@@ -34,36 +34,36 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private int integer;
         private IntValueSemanticsProvider value;
 
-        [Test]
+        [TestMethod]
         public void TestDecode() {
             int decoded = GetValue().FromEncodedString("304211223");
             Assert.AreEqual(304211223, decoded);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncode() {
             string encoded = GetValue().ToEncodedString(213434790);
             Assert.AreEqual("213434790", encoded);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInvalidParse() {
             try {
                 value.ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParse() {
             object newValue = value.ParseTextEntry("120");
             Assert.AreEqual(120, newValue);
         }
 
-        [Test]
+        [TestMethod]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
@@ -74,7 +74,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             const int c1 = 123;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
@@ -82,13 +82,13 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(c1, c2);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseOddlyFormedEntry() {
             object newValue = value.ParseTextEntry("1,20.0");
             Assert.AreEqual(120, newValue);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleString() {
             Assert.AreEqual("32", value.DisplayTitleOf(integer));
         }

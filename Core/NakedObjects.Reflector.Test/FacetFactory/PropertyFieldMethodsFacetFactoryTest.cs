@@ -11,26 +11,27 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new PropertyMethodsFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -449,7 +450,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetAddedIfNoValidate() {
             PropertyInfo property = FindProperty(typeof (Customer2), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -458,7 +459,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is AjaxFacet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
             PropertyInfo property = FindProperty(typeof (Customer19), "FirstName");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer19), "ValidateFirstName", new[] {typeof (string)});
@@ -469,7 +470,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
             PropertyInfo property = FindProperty(typeof (Customer20), "FirstName");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer20), "ValidateFirstName", new[] {typeof (string)});
@@ -479,7 +480,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetNotAddedByDefault() {
             PropertyInfo property = FindProperty(typeof (Customer12), "FirstName");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer12), "ValidateFirstName", new[] {typeof (string)});
@@ -489,7 +490,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAutoCompleteFacetAttributes() {
             PropertyInfo property = FindProperty(typeof (Customer26), "FirstName");
             MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer26), "AutoCompleteFirstName");
@@ -504,7 +505,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(3, propertyAutoCompleteFacet.MinLength);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAutoCompleteFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer21), "FirstName");
             MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer21), "AutoCompleteFirstName");
@@ -519,7 +520,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAutoCompleteFacetFoundAndMethodRemovedForInterface() {
             PropertyInfo property = FindProperty(typeof (Customer27), "FirstName");
             MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer27), "AutoCompleteFirstName");
@@ -534,7 +535,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAutoCompleteFacetIgnored() {
             PropertyInfo property = FindProperty(typeof (Customer22), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -554,7 +555,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer10), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10), "ChoicesFirstName");
@@ -569,7 +570,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facetExecuted);
         }
 
-        [Test]
+        [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer18), "FirstName");
             MethodInfo propertyChoicesMethod1 = FindMethod(typeof (Customer18), "ChoicesFirstName", new Type[] {});
@@ -587,7 +588,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedLocal() {
             PropertyInfo property = FindProperty(typeof (Customer10l), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10l), "ChoicesFirstName");
@@ -603,7 +604,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Locally);
         }
 
-        [Test]
+        [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedRemote() {
             PropertyInfo property = FindProperty(typeof (Customer10r), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10r), "ChoicesFirstName");
@@ -619,7 +620,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Remotely);
         }
 
-        [Test]
+        [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedWithParms() {
             PropertyInfo property = FindProperty(typeof (Customer17), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer17), "ChoicesFirstName", new[] {typeof (string)});
@@ -633,7 +634,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facetExecuted);
         }
 
-        [Test]
+        [TestMethod]
         public void TestClearFacet() {
             PropertyInfo property = FindProperty(typeof (Customer8), "FirstName");
             MethodInfo propertyClearMethod = FindMethod(typeof (Customer8), "ClearFirstName");
@@ -646,7 +647,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyClearMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestClearFacetViaSetterIfNoExplicitClearMethod() {
             PropertyInfo property = FindProperty(typeof (Customer9), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -654,7 +655,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDefaultFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer11), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11), "DefaultFirstName");
@@ -669,7 +670,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facetExecuted);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDefaultFacetFoundAndMethodRemovedLocal() {
             PropertyInfo property = FindProperty(typeof (Customer11l), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11l), "DefaultFirstName");
@@ -685,7 +686,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Locally);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDefaultFacetFoundAndMethodRemovedRemote() {
             PropertyInfo property = FindProperty(typeof (Customer11r), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11r), "DefaultFirstName");
@@ -701,7 +702,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Remotely);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisableDefaultMethodFacet() {
             PropertyInfo property = FindProperty(typeof (Customer16), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer16), "DisablePropertyDefault", new Type[0]);
@@ -714,7 +715,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodNotRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisableMethodOverridsDefault() {
             PropertyInfo property = FindProperty(typeof (Customer16), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer16), "DisableSecondName", new Type[0]);
@@ -727,7 +728,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisableMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableFirstName", new[] {typeof (string)});
@@ -740,7 +741,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisableMethodWithoutParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableSecondName", new Type[0]);
@@ -753,7 +754,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -763,7 +764,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestHideDefaultMethodFacet() {
             PropertyInfo property = FindProperty(typeof (Customer14), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer14), "HidePropertyDefault", new Type[0]);
@@ -776,7 +777,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodNotRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestHideMethodOverridesDefault() {
             PropertyInfo property = FindProperty(typeof (Customer14), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer14), "HideSecondName", new[] {typeof (string)});
@@ -788,7 +789,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestHideMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer13), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideSecondName", new[] {typeof (string)});
@@ -801,7 +802,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestHideMethodWithoutParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer13), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideFirstName", new Type[0]);
@@ -814,7 +815,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(hideMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestIfHaveSetterAndModifyFacetThenTheModifyFacetWinsOut() {
             PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer7), "ModifyFirstName", new[] {typeof (string)});
@@ -827,7 +828,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyModifyMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInitializationFacetIsInstalledForSetterMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer2), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -838,7 +839,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetSetMethod(), propertySetterFacet.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsDisabledForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -847,7 +848,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is DisableForSessionFacetNone);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -856,7 +857,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
 
-        [Test]
+        [TestMethod]
         public void TestModifyMethodWithNoSetterStillInstallsDisabledAndDerivedFacets() {
             PropertyInfo property = FindProperty(typeof (Customer6), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer6), "ModifyFirstName", new[] {typeof (string)});
@@ -869,7 +870,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is DisabledFacetAlways);
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -880,7 +881,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetterFacetIsInstalledForModifyMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer4), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer4), "ModifyFirstName", new[] {typeof (string)});
@@ -893,7 +894,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyModifyMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetterFacetIsInstalledForSetterMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -904,7 +905,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetSetMethod(), propertySetterFacet.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetterFacetIsInstalledMeansNoDisabledOrDerivedFacetsInstalled() {
             PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -912,7 +913,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(Specification.GetFacet(typeof (IDisabledFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer12), "FirstName");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer12), "ValidateFirstName", new[] {typeof (string)});

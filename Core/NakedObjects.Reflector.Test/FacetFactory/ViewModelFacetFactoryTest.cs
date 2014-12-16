@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -15,21 +16,21 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
 
             facetFactory = new ViewModelFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public new void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -75,7 +76,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -85,7 +86,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestViewModelDerive() {
             facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             var facet = Specification.GetFacet<IViewModelFacet>();
@@ -104,14 +105,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(testClass.Value2, key[1]);
         }
 
-        [Test]
+        [TestMethod]
         public void TestViewModelNotPickedUp() {
             facetFactory.Process(Reflector, typeof (Class2), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestViewModelPickedUp() {
             facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
@@ -124,7 +125,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodsRemoved(new[] {m1, m2});
         }
 
-        [Test]
+        [TestMethod]
         public void TestViewModelPopulate() {
             facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
             var facet = Specification.GetFacet<IViewModelFacet>();

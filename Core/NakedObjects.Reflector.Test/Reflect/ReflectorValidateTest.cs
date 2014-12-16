@@ -6,35 +6,35 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.SpecImmutable;
-using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
-    [TestFixture]
+    [TestClass]
     public class ReflectorValidateTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
             return reflector.LoadSpecification(typeof (Product));
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetup() {
             Assert.AreEqual("Product", Specification.ShortName);
             Assert.AreEqual(3, Specification.Fields.Count);
         }
 
-        [Test, Ignore] // fix with new validation factory
+        [TestMethod, Ignore] // fix with new validation factory
         public void ValidateMethodThatDontMatchAreIgnored() {
             var actions = Specification.ObjectActions;
             Assert.AreEqual(4, actions.Count);
         }
 
-        [Test, Ignore] // fix with new validation factory
+        [TestMethod, Ignore] // fix with new validation factory
         public void ValidateMethodsDetected() {
             //var validation = Specification.ValidationMethods;
             //Assert.AreEqual(2, validation.Length);
         }
 
-        [Test, Ignore] // fix with new validation factory
+        [TestMethod, Ignore] // fix with new validation factory
         public void ValidateMethodsRun() {
             //INakedObjectValidation[] validation = Specification.ValidationMethods;
         }

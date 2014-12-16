@@ -7,18 +7,18 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
@@ -34,7 +34,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification holder;
         private TimeSpan time;
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             var d1 = new TimeSpan(1, 5, 1, 25);
             string s1 = d1.ToString(null, CultureInfo.InvariantCulture);
@@ -43,7 +43,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestRestoreOfInvalidDatal() {
             try {
                 adapter.FromEncodedString("two ten");
@@ -52,13 +52,13 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (FormatException /*expected*/) {}
         }
 
-        [Test]
+        [TestMethod]
         public void TestRestoreTime() {
             object parsed = adapter.FromEncodedString("21:30:00");
             Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTimeAsEncodedString() {
             Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
         }

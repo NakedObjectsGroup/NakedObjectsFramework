@@ -7,18 +7,23 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test {
     public abstract class AbstractReflectorTest {
         protected IMetamodel Metamodel;
         protected IObjectSpecImmutable Specification;
+
+        protected void AssertIsInstanceOfType<T>(object o) {
+            Assert.IsInstanceOfType(o, typeof (T));
+        }
 
         private readonly IFacetFactory[] facetFactories = {
             new FallbackFacetFactory(0),
@@ -104,7 +109,7 @@ namespace NakedObjects.Reflect.Test {
         };
 
 
-        [SetUp]
+        [TestInitialize]
         public virtual void SetUp() {
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();

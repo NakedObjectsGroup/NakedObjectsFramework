@@ -10,27 +10,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Principal;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
 
             facetFactory = new CollectionFieldMethodsFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -244,14 +245,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Order {}
 
 
-        [Test]
+        [TestMethod]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
             PropertyInfo property = FindProperty(typeof (Customer6), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (ITypeOfFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -261,7 +262,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsDisabledAlways() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -270,7 +271,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is DisabledFacetAlways);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -279,7 +280,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForArrayListAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -290,7 +291,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForIListAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -301,7 +302,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForObjectArrayAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer3), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -312,7 +313,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForOrderArrayAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -323,7 +324,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForSetAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -334,17 +335,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetFacetAddedToSet() {
             Type type = typeof (Customer18);
             PropertyInfo property = FindProperty(type, "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IIsASetFacet));
             Assert.IsNotNull(facet);
-            Assert.IsInstanceOf(typeof (IsASetFacet), facet);
+            Assert.IsInstanceOfType(facet, typeof (IsASetFacet));
         }
 
-        [Test]
+        [TestMethod]
         public void TestSetFacetNoAddedToList() {
             Type type = typeof (Customer17);
             PropertyInfo property = FindProperty(type, "Orders");

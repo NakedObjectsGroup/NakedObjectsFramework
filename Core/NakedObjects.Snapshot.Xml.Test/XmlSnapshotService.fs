@@ -1,6 +1,5 @@
 ﻿module NakedObjects.XmlSnapshotService
 
-open NUnit.Framework
 open NakedObjects.Xat
 open NakedObjects.Services
 open Snapshot.Xml.Test
@@ -18,6 +17,8 @@ open NakedObjects.Core.Util
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Snapshot.Xml.Service
+open System.Text.RegularExpressions
+open Microsoft.VisualStudio.TestTools.UnitTesting
 
 
 let writetests = false
@@ -29,9 +30,18 @@ let checkResults resultsFile s =
     if writetests then writeTestData resultsFile s
     else 
         let actionView = getTestData resultsFile
+
+        // ignore keys 
+        let pattern = "TEOID#\\d+";
+        let replacement = "TEOID#X";
+        let rgx = new Regex(pattern);
+        let actionView = rgx.Replace(actionView, replacement);
+        let s = rgx.Replace(s, replacement);
+
         Assert.AreEqual(actionView, s)
+ 
                  
-[<TestFixture>]
+[<TestClass>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()
@@ -42,26 +52,23 @@ type DomainTests() =
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-            let types = [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<List<TestObject>>  |]
+            let types = [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>  |]
             let ms = [| typeof<SimpleRepository<TestObject>>;  typeof<XmlSnapshotService>; typeof<TransformRepository> |]
             let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
-        [<TestFixtureSetUp>]
-        member x.FixtureSetup() = AcceptanceTestCase.InitializeNakedObjectsFramework(x)
-        
-        [<TestFixtureTearDown>]
-        member x.FixtureTearDown() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
-        
-        [<SetUp>]
+       
+        [<TestInitialize>]
         member x.Setup() = 
+            AcceptanceTestCase.InitializeNakedObjectsFramework(x)
             x.RunFixtures()
             x.StartTest()
         
-        [<TearDown>]
+        [<TestCleanup>]
         member x.TearDown() = ()
-        
+       
+            
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()
             let xmlService = new XmlSnapshotService()
@@ -114,24 +121,21 @@ type DomainTests() =
         member x.TransFormWithSubObject() = 
             x.TransformService.GetAction("Transform With Sub Object").InvokeReturnObject().NakedObject.GetDomainObject<Two.TransformFull>()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForSimpleObject() = 
             let testObject = x.SimpleTestObject()
             let ss = x.GenerateSnapshot testObject
             checkResults "simpleTestData" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObject() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             checkResults "complexTestData" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObjectIncludeReference() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -139,8 +143,7 @@ type DomainTests() =
             checkResults "complexTestDataWithReference" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObjectIncludeCollection() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -148,8 +151,7 @@ type DomainTests() =
             checkResults "complexTestDataWithCollection" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObjectIncludeReferenceWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -157,8 +159,7 @@ type DomainTests() =
             checkResults "complexTestDataWithReferenceAnnotation" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObjectIncludeCollectionWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -166,8 +167,7 @@ type DomainTests() =
             checkResults "complexTestDataWithCollectionAnnotation" ss.Xml
             ()
         
-        [<Test>]
-        [<Ignore>] // doesn't work with reflector changes must fix 
+        [<TestMethod>]
         member x.XmlForComplexObjectIncludeNestedReference() = 
             let testObject = x.NestedComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -218,7 +218,7 @@ type DomainTests() =
                     Assert.IsNotNull matchingAttr
                     Assert.AreEqual(attr.Value, matchingAttr.Value)
         
-        [<Test>]
+        [<TestMethod>]
         member x.TransformXmlToMatchFull() = 
             let fullTestObject = x.TransFormFullObject()
             let nestedTestObject = x.TransFormWithSubObject()
@@ -236,7 +236,7 @@ type DomainTests() =
             with expected -> ()
             x.CompareXml fullXml nestedTransformedXml
         
-        [<Test>]
+        [<TestMethod>]
         [<Ignore>]
         member x.TransformXsdToIdentity() = 
             let nestedTestObject = x.TransFormWithSubObject()

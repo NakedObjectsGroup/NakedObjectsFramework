@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -19,7 +20,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using NUnit.Framework;
+
 using NakedObjects.Menu;
 
 namespace NakedObjects.Reflect.Test {
@@ -144,7 +145,7 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMenuFactory, NullMenuFactory>();
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectNoTypes() {
             var container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
@@ -156,7 +157,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectObjectType() {
             var container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
@@ -169,7 +170,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof (object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectListTypes() {
             var container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new Type[] {}, new Type[] {});
@@ -182,7 +183,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectSetTypes() {
             var container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {typeof (SetWrapper<object>)}, new Type[] {}, new Type[] {}, new Type[] {});
@@ -195,7 +196,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectQueryableTypes() {
             var container = GetContainer();
             var qo = new List<object>() {}.AsQueryable();
@@ -210,7 +211,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectWhereIterator() {
             var container = GetContainer();
             var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
@@ -226,7 +227,7 @@ namespace NakedObjects.Reflect.Test {
         }
 
 
-        [Test]
+        [TestMethod]
         public void ReflectByteArray() {
             var container = GetContainer();
 
@@ -240,7 +241,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectStringArray() {
             var container = GetContainer();
 
@@ -254,7 +255,7 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        [Test]
+        [TestMethod]
         public void ReflectWithScalars() {
             var container = GetContainer();
 

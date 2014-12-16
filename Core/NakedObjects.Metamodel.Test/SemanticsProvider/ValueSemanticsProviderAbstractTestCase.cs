@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -13,7 +14,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
@@ -44,10 +44,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             return parseableFacet;
         }
 
-        [SetUp]
+        [TestInitialize]
         public virtual void SetUp() {}
 
-        [TearDown]
+        [TestCleanup]
         public virtual void TearDown() {
             value = null;
             encodeableFacet = null;
@@ -66,7 +66,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestParseNull() {
             try {
                 value.ParseTextEntry(null);
@@ -75,19 +75,19 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (ArgumentException /*expected*/) {}
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseEmptyString() {
             object newValue = value.ParseTextEntry("");
             Assert.IsNull(newValue);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDecodeNull() {
             object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
             Assert.IsNull(newValue);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEmptyEncoding() {
             Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
         }

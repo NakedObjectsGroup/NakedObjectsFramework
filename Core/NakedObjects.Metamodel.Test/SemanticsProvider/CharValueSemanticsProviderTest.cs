@@ -7,19 +7,19 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             character = 'r';
@@ -34,18 +34,18 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification holder;
         private CharValueSemanticsProvider value;
 
-        [Test]
+        [TestMethod]
         public void TestDecode() {
             object restore = value.FromEncodedString("Y");
             Assert.AreEqual('Y', restore);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncode() {
             Assert.AreEqual("r", value.ToEncodedString(character));
         }
 
-        [Test]
+        [TestMethod]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
@@ -56,7 +56,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             const char c1 = 'z';
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
@@ -64,23 +64,23 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(c1, c2);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseLongString() {
             try {
                 value.ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleOf() {
             Assert.AreEqual("r", value.DisplayTitleOf(character));
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidParse() {
             object parse = value.ParseTextEntry("t");
             Assert.AreEqual('t', parse);

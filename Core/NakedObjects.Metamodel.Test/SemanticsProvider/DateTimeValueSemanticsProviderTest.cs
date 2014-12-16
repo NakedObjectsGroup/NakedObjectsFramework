@@ -7,18 +7,18 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
@@ -37,25 +37,25 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDecode() {
             DateTime decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
             Assert.AreEqual(new DateTime(TestClock.GetTicks()), decoded);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEmptyClears() {
             Assert.IsNull(adapter.ParseTextEntry(""));
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncode() {
             string encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
             Assert.AreEqual("2003-08-17T21:30:25", encoded);
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestEntryWithLongISOFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
             dt = dt.ToUniversalTime();
@@ -63,7 +63,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEntryWithMediumFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
             string entry = dt.ToString("f");
@@ -71,7 +71,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEntryWithShortFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
             string entry = dt.ToString("g");
@@ -83,13 +83,13 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             AssertEntry(entry, year, month, day, hour, minute, 0);
         }
 
-        [Test]
+        [TestMethod]
         public void TestEntryWithShortISOFormat() {
             // not currently recognised
             //assertEntry("20070521T1030", 2007, 5, 21, 10, 30, 0);
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
             string s1 = d1.ToString(CultureInfo.InvariantCulture);

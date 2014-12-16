@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -14,14 +15,14 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
@@ -35,7 +36,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -77,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        [Test]
+        [TestMethod]
         public void TestActionWithNoParameters() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
 
@@ -92,7 +93,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));

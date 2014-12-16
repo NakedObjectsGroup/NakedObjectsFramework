@@ -6,19 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.Facet {
-    [TestFixture]
+    [TestClass]
     public class FacetAbstractTest {
         #region Setup/Teardown
 
-        [SetUp]
+       [TestInitialize]
         public void SetUp() {
             specification = new Mock<ISpecificationBuilder>().Object;
             facetHolder2 = new Mock<ISpecification>().Object;
@@ -38,17 +38,17 @@ namespace NakedObjects.Meta.Test.Facet {
 
         public interface IFooFacet : IFacet {}
 
-        [Test]
+        [TestMethod]
         public void FacetType() {
             Assert.AreEqual(typeof (IFooFacet), fooFacet.FacetType);
         }
 
-        [Test]
+        [TestMethod]
         public void GetFacetHolder() {
             Assert.AreEqual(specification, fooFacet.Specification);
         }
 
-        //[Test]
+        //[TestMethod]
         //public void Reparent() {
         //    Assert.AreEqual(specification, fooFacet.Specification);
         //    Assert.IsNotNull(specification.GetFacet<IFooFacet>());
@@ -59,13 +59,13 @@ namespace NakedObjects.Meta.Test.Facet {
         //    Assert.IsNotNull(facetHolder2.GetFacet<IFooFacet>());
         //}
 
-        [Test]
+        [TestMethod]
         public void SetFacetHolder() {
             fooFacet.Specification = facetHolder2;
             Assert.AreEqual(facetHolder2, fooFacet.Specification);
         }
 
-        [Test]
+        [TestMethod]
         public void TestToString() {
             Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
         }

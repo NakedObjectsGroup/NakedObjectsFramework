@@ -7,12 +7,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Core.Util;
-using NUnit.Framework;
-using NAssert = NUnit.Framework.Assert;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Core.Test.Util {
-    [TestFixture]
+    [TestClass]
     public class CopyUtilsTest {
         public class SimpleObject {
             public int ValueOne { get; set; }
@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Test.Util {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestAllClone() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -52,16 +52,16 @@ namespace NakedObjects.Core.Test.Util {
             ao.CollectionOne.Add(so2);
 
             AllObject clone = (AllObject) CopyUtils.CloneObjectTest(ao);
-            NAssert.AreNotSame(ao, clone);
-            NAssert.AreSame(ao.GetType(), clone.GetType());
-            NAssert.AreEqual(ao.ValueOne, clone.ValueOne);
-            NAssert.AreEqual(ao.ValueTwo, clone.ValueTwo);
-            NAssert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
-            NAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-            NAssert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
+            Assert.AreNotSame(ao, clone);
+            Assert.AreSame(ao.GetType(), clone.GetType());
+            Assert.AreEqual(ao.ValueOne, clone.ValueOne);
+            Assert.AreEqual(ao.ValueTwo, clone.ValueTwo);
+            Assert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
+            Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+            Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
         }
 
-        [Test]
+        [TestMethod]
         public void TestAllUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -76,41 +76,41 @@ namespace NakedObjects.Core.Test.Util {
             clone.ReferenceOne = so3;
             clone.CollectionOne.Add(so4);
 
-            NAssert.AreNotSame(ao, clone);
-            NAssert.AreSame(ao.GetType(), clone.GetType());
-            NAssert.AreEqual(ao.ValueOne, clone.ValueOne);
-            NAssert.AreNotEqual(ao.ValueTwo, clone.ValueTwo);
-            NAssert.AreNotSame(ao.ReferenceOne, clone.ReferenceOne);
-            NAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-            NAssert.AreNotEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreNotSame(ao, clone);
+            Assert.AreSame(ao.GetType(), clone.GetType());
+            Assert.AreEqual(ao.ValueOne, clone.ValueOne);
+            Assert.AreNotEqual(ao.ValueTwo, clone.ValueTwo);
+            Assert.AreNotSame(ao.ReferenceOne, clone.ReferenceOne);
+            Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+            Assert.AreNotEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
 
             CopyUtils.UpdateFromClone(ao, clone);
 
-            NAssert.AreNotSame(ao, clone);
-            NAssert.AreSame(ao.GetType(), clone.GetType());
-            NAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-            NAssert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
-            NAssert.AreEqual(ao.ValueOne, clone.ValueOne);
-            NAssert.AreEqual(ao.ValueTwo, clone.ValueTwo);
-            NAssert.AreEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
-            NAssert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
-            NAssert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
+            Assert.AreNotSame(ao, clone);
+            Assert.AreSame(ao.GetType(), clone.GetType());
+            Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+            Assert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
+            Assert.AreEqual(ao.ValueOne, clone.ValueOne);
+            Assert.AreEqual(ao.ValueTwo, clone.ValueTwo);
+            Assert.AreEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
+            Assert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }
 
-        [Test]
+        [TestMethod]
         public void TestCollectionClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var co = new CollectionObject();
             co.CollectionOne.Add(so);
 
             CollectionObject clone = (CollectionObject) CopyUtils.CloneObjectTest(co);
-            NAssert.AreNotSame(co, clone);
-            NAssert.AreSame(co.GetType(), clone.GetType());
-            NAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-            NAssert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
+            Assert.AreNotSame(co, clone);
+            Assert.AreSame(co.GetType(), clone.GetType());
+            Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+            Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
         }
 
-        [Test]
+        [TestMethod]
         public void TestCollectionUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -121,35 +121,35 @@ namespace NakedObjects.Core.Test.Util {
 
             clone.CollectionOne.Add(so2);
 
-            NAssert.AreNotSame(co, clone);
-            NAssert.AreSame(co.GetType(), clone.GetType());
-            NAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-            NAssert.AreNotEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreNotSame(co, clone);
+            Assert.AreSame(co.GetType(), clone.GetType());
+            Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+            Assert.AreNotEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
 
             CopyUtils.UpdateFromClone(co, clone);
 
-            NAssert.AreNotSame(co, clone);
-            NAssert.AreSame(co.GetType(), clone.GetType());
-            NAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-            NAssert.AreEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
-            NAssert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
-            NAssert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
+            Assert.AreNotSame(co, clone);
+            Assert.AreSame(co.GetType(), clone.GetType());
+            Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+            Assert.AreEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
+            Assert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }
 
-        [Test]
+        [TestMethod]
         public void TestReferenceClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var ro = new ReferenceObject {ReferenceOne = so};
 
             ReferenceObject clone = (ReferenceObject) CopyUtils.CloneObjectTest(ro);
 
-            NAssert.AreNotSame(ro, clone);
-            NAssert.AreSame(ro.GetType(), clone.GetType());
+            Assert.AreNotSame(ro, clone);
+            Assert.AreSame(ro.GetType(), clone.GetType());
 
-            NAssert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
+            Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
         }
 
-        [Test]
+        [TestMethod]
         public void TestReferenceUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -158,45 +158,45 @@ namespace NakedObjects.Core.Test.Util {
             ReferenceObject clone = (ReferenceObject) CopyUtils.CloneObjectTest(ro);
             clone.ReferenceOne = so2;
 
-            NAssert.AreNotSame(ro, clone);
-            NAssert.AreSame(ro.GetType(), clone.GetType());
-            NAssert.AreNotSame(ro.ReferenceOne, clone.ReferenceOne);
+            Assert.AreNotSame(ro, clone);
+            Assert.AreSame(ro.GetType(), clone.GetType());
+            Assert.AreNotSame(ro.ReferenceOne, clone.ReferenceOne);
 
             CopyUtils.UpdateFromClone(ro, clone);
 
-            NAssert.AreNotSame(ro, clone);
-            NAssert.AreSame(ro.GetType(), clone.GetType());
-            NAssert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
+            Assert.AreNotSame(ro, clone);
+            Assert.AreSame(ro.GetType(), clone.GetType());
+            Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
         }
 
-        [Test]
+        [TestMethod]
         public void TestSimpleClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             SimpleObject clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
 
-            NAssert.AreNotSame(so, clone);
-            NAssert.AreSame(so.GetType(), clone.GetType());
-            NAssert.AreEqual(so.ValueOne, clone.ValueOne);
-            NAssert.AreEqual(so.ValueTwo, clone.ValueTwo);
+            Assert.AreNotSame(so, clone);
+            Assert.AreSame(so.GetType(), clone.GetType());
+            Assert.AreEqual(so.ValueOne, clone.ValueOne);
+            Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
         }
 
-        [Test]
+        [TestMethod]
         public void TestSimpleUpdate() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             SimpleObject clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
             clone.ValueTwo = 3;
 
-            NAssert.AreNotSame(so, clone);
-            NAssert.AreSame(so.GetType(), clone.GetType());
-            NAssert.AreEqual(so.ValueOne, clone.ValueOne);
-            NAssert.AreNotEqual(so.ValueTwo, clone.ValueTwo);
+            Assert.AreNotSame(so, clone);
+            Assert.AreSame(so.GetType(), clone.GetType());
+            Assert.AreEqual(so.ValueOne, clone.ValueOne);
+            Assert.AreNotEqual(so.ValueTwo, clone.ValueTwo);
 
             CopyUtils.UpdateFromClone(so, clone);
 
-            NAssert.AreNotSame(so, clone);
-            NAssert.AreSame(so.GetType(), clone.GetType());
-            NAssert.AreEqual(so.ValueOne, clone.ValueOne);
-            NAssert.AreEqual(so.ValueTwo, clone.ValueTwo);
+            Assert.AreNotSame(so, clone);
+            Assert.AreSame(so.GetType(), clone.GetType());
+            Assert.AreEqual(so.ValueOne, clone.ValueOne);
+            Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
         }
     }
 }
