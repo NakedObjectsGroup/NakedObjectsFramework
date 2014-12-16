@@ -307,6 +307,15 @@ namespace NakedObjects.Xat {
             tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
         }
 
+        private bool isInit;
+
+        protected void InitializeNakedObjectsFrameworkOnceOnly() {
+            if (!isInit) {
+                isInit = true;
+                InitializeNakedObjectsFramework(this);
+            }
+        }
+
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
             Log.Info("test cleanup " + tc.Name);
             Log.Info("cleanup " + tc.Name);
