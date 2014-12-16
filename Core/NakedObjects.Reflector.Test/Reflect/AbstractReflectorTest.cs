@@ -114,7 +114,6 @@ namespace NakedObjects.Reflect.Test {
             var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, facetFactories);
 
             Specification = LoadSpecification(reflector);
-            //reflector.PopulateAssociatedActions(Specification, new Type[] {});
             Metamodel = metamodel;
         }
 

@@ -22,38 +22,37 @@ namespace NakedObjects.Reflect.FacetFactory {
         public CollectionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
-        private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
+        private void ProcessArray(ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
-
-            Type elementType = type.GetElementType();
-            IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
-            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
         }
 
         private void ProcessGenericEnumerable(Type type, ISpecification holder) {
-            var elementTypeFacet = holder.GetFacet<IElementTypeFacet>();
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
             bool isSet = CollectionUtils.IsSet(type);
 
-            if (elementTypeFacet == null) {
-                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+            FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+
+            IFacet facet;
+            if (isQueryable) {
+                facet = new GenericIQueryableFacet(holder, isSet);
+            }
+            else if (isCollection) {
+                facet = new GenericCollectionFacet(holder, isSet);
+            }
+            else {
+                facet = new GenericIEnumerableFacet(holder, isSet);
             }
 
-            Type facetType = isQueryable ? typeof (GenericIQueryableFacet) : (isCollection ? typeof (GenericCollectionFacet) : typeof (GenericIEnumerableFacet));
-            FacetUtils.AddFacet((IFacet) Activator.CreateInstance(facetType, holder, isSet));
+            FacetUtils.AddFacet(facet);
         }
 
 
         private void ProcessCollection(IReflector reflector, ISpecification holder) {
-            var elementTypeFacet = holder.GetFacet<IElementTypeFacet>();
-            if (elementTypeFacet == null) {
-                Type collectionElementType = typeof (object);
-                IObjectSpecBuilder spec = reflector.LoadSpecification(collectionElementType);
-                FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
-                FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, spec));
-            }
+            Type collectionElementType = typeof (object);
+            IObjectSpecBuilder spec = reflector.LoadSpecification(collectionElementType);
+            FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
         }
 
@@ -63,7 +62,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 ProcessGenericEnumerable(type, specification);
             }
             else if (type.IsArray) {
-                ProcessArray(reflector, type, specification);
+                ProcessArray(specification);
             }
             else if (CollectionUtils.IsCollectionButNotArray(type)) {
                 ProcessCollection(reflector, specification);
