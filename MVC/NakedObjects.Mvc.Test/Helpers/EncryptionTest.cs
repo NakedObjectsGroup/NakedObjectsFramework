@@ -14,21 +14,32 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
-    [TestFixture]
+    [TestClass]
     public class EncryptionTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+        private static bool runFixtures;
+
+        private void RunFixturesOnce() {
+            if (!runFixtures) {
+                RunFixtures();
+                runFixtures = true;
+            }
+        }
+
+        [TestInitialize]
         public void SetupTest() {
+            InitializeNakedObjectsFrameworkOnceOnly();
+            //RunFixturesOnce();
             StartTest();
             controller = new DummyController();
             mocks = new ContextMocks(controller);
@@ -44,15 +55,13 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
             Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
         }
 
-        [TestFixtureTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
+        [ClassCleanup]
+        public static void TearDownTest() {
             Database.Delete("EncryptionTest");
         }
 
@@ -94,7 +103,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void CustomEncrypted() {
             CustomHelperTestClass tc = TestClass;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
@@ -111,7 +120,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(@"<input id=""name"" name=""-encryptedField-name"" type=""hidden"" value=""+xG+YO3ZY8KuTB6z4pUXjQ=="" />", result);
         }
 
-        [Test]
+        [TestMethod]
         public void Decrypt() {
             IEncryptDecrypt encrypter = new SimpleEncryptDecrypt();
 
@@ -140,7 +149,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(encryptValue.Item2, collection[encryptValue.Item1]);
         }
 
-        [Test]
+        [TestMethod]
         public void Encrypted() {
             CustomHelperTestClass tc = TestClass;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
