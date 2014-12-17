@@ -21,6 +21,15 @@ open System.Text.RegularExpressions
 open Microsoft.VisualStudio.TestTools.UnitTesting
 
 
+let normalizeData d1 d2 =
+    // ignore keys 
+    let pattern = "TEOID#\\d+";
+    let replacement = "TEOID#X";
+    let rgx = new Regex(pattern);
+    let nd1 = rgx.Replace(d1, replacement);
+    let nd2 = rgx.Replace(d2, replacement); 
+    (nd1, nd2)
+
 let writetests = false
 let testFiles = @"..\..\testfiles"
 let getFile name = Path.Combine(testFiles, name) + ".htm"
@@ -30,17 +39,9 @@ let checkResults resultsFile s =
     if writetests then writeTestData resultsFile s
     else 
         let actionView = getTestData resultsFile
-
-        // ignore keys 
-        let pattern = "TEOID#\\d+";
-        let replacement = "TEOID#X";
-        let rgx = new Regex(pattern);
-        let actionView = rgx.Replace(actionView, replacement);
-        let s = rgx.Replace(s, replacement);
-
-        Assert.AreEqual(actionView, s)
- 
-                 
+        let nd = normalizeData actionView s
+        Assert.AreEqual(fst(nd), snd(nd))
+                
 [<TestClass>]
 type DomainTests() = 
     class
@@ -216,7 +217,8 @@ type DomainTests() =
                 for attr in node.Attributes() do
                     let matchingAttr = matchingNode.Attributes() |> Seq.find (fun a -> a.Name = attr.Name)
                     Assert.IsNotNull matchingAttr
-                    Assert.AreEqual(attr.Value, matchingAttr.Value)
+                    let nd = normalizeData attr.Value matchingAttr.Value
+                    Assert.AreEqual(fst(nd), snd(nd))
         
         [<TestMethod>]
         member x.TransformXmlToMatchFull() = 
