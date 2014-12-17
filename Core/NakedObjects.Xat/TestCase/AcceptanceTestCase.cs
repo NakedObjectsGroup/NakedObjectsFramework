@@ -307,7 +307,7 @@ namespace NakedObjects.Xat {
             tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
         }
 
-        private bool isInit;
+        private static bool isInit;
 
         protected void InitializeNakedObjectsFrameworkOnceOnly() {
             if (!isInit) {

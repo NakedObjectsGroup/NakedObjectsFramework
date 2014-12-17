@@ -15,10 +15,8 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
@@ -95,24 +93,24 @@ namespace NakedObjects.Core.Test.Adapter {
     }
 
 
-    [TestClass]
+    [TestClass, Ignore]
     public class CollectionMementoTest : AcceptanceTestCase {
         #region Setup/Teardown
 
         [TestInitialize]
         public void Setup() {
-            InitializeNakedObjectsFrameworkOnce();
+            InitializeNakedObjectsFrameworkOnceOnly();
+            RunFixturesOnce();
             StartTest();
         }
 
         #endregion
 
-        private bool isInit;
+        private static bool runFixtures;
 
-        private void InitializeNakedObjectsFrameworkOnce() {
-            if (!isInit) {
-                isInit = true;
-                InitializeNakedObjectsFramework(this);
+        private void RunFixturesOnce() {
+            if (!runFixtures) {
+                runFixtures = true;             
                 RunFixtures();
             }
         }
@@ -124,13 +122,16 @@ namespace NakedObjects.Core.Test.Adapter {
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
 
-            var types = new Type[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
-            var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
-            var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
+            //var types = new Type[] { typeof(TestDomainObject), typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<Int32>) };
+            //var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
+            //var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
 
-            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
+            //container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
         }
 
+        protected override Type[] Types {
+            get { return new[] {typeof (TestDomainObject), typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)}; }
+        }
 
         protected override object[] Fixtures {
             get { return new object[] {new TestDataFixture()}; }
