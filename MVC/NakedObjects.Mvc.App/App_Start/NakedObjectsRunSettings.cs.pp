@@ -10,18 +10,26 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 
 namespace $rootnamespace$ {
 
     // Use this class to configure the application running under Naked Objects
     public class NakedObjectsRunSettings {
         
-
         // Specify any types that need to be reflected-over by the framework and that
         // will not be discovered via the services
 		private static Type[] Types {
             get {
                 return new Type[] {
+				    // TODO: This list is a temporary kludge pending completion of ticket #4135. 
+					// When released, NOF 7 will register these (and other) generic collection types
+					// transparently, not explicitly here.
+				    typeof (EnumerableQuery<object>),
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>),
+                    typeof (ActionResultModelQ<object>)
                 };
             }
         }
@@ -62,8 +70,16 @@ namespace $rootnamespace$ {
 			//Example:
             //var config = new AuditConfiguration<MyDefaultAuditor>();
             //config.AddNamespaceAuditor<FooAuditor>("MySpace.Foo");
-            //config.AddNamespaceAuditor<BarAuditor>("MySpace.Bar");
             //return config;
+        }
+
+		public static IAuthorizationConfiguration AuthorizationConfig() {
+            return null; //No authorization set up
+			//Example:
+			//var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+    		//config.AddTypeAuthorizer<Foo, FooAuthorizer>();
+			//config.AddNamespaceAuthorizer<BarAuthorizer>("MySpace.Bar");
+			//return config;
         }
 
 		/// <summary>
