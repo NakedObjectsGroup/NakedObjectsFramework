@@ -75,14 +75,11 @@
     <Compile Include="Audit\AuditUpdatedFacet.cs" />
     <Compile Include="Audit\IAuditConfiguration.cs" />
     <Compile Include="Audit\IAuditManager.cs" />
-    <Compile Include="Authorization\AuthorizationByTypeConfiguration.cs" />
-    <Compile Include="Authorization\AuthorizationByNamespaceConfiguration.cs" />
+    <Compile Include="Authorization\AuthorizationConfiguration.cs" />
     <Compile Include="Authorization\AuthorizationDisableForSessionFacet.cs" />
     <Compile Include="Authorization\AuthorizationHideForSessionFacet.cs" />
-    <Compile Include="Authorization\AuthorizationByNamespaceManager.cs" />
-    <Compile Include="Authorization\AuthorizationByTypeManager.cs" />
-    <Compile Include="Authorization\IAuthorizationByNamespaceConfiguration.cs" />
-    <Compile Include="Authorization\IAuthorizationByTypeConfiguration.cs" />
+    <Compile Include="Authorization\AuthorizationManager.cs" />
+    <Compile Include="Authorization\IAuthorizationConfiguration.cs" />
     <Compile Include="Facet\MenuFacetAbstract.cs" />
     <Compile Include="Facet\MenuFacetDefault.cs" />
     <Compile Include="Facet\MenuFacetViaMethod.cs" />

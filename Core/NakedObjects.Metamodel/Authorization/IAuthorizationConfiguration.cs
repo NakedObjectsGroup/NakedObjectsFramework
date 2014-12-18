@@ -5,17 +5,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Security;
 using System;
 using System.Collections.Generic;
+using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
-    public interface IAuthorizationByTypeConfiguration {
-
+    public interface IAuthorizationConfiguration {
         Type DefaultAuthorizer { get; }
 
-        IDictionary<Type, Type> TypeAuthorizers { get; set; }
+        IDictionary<string, Type> NamespaceAuthorizers { get; }
 
+        IDictionary<string, Type> TypeAuthorizers { get; }
+
+        //The specified type authorizer will apply to the whole namespace specified
+        void AddNamespaceAuthorizer<TAuth>(string namespaceCovered) where TAuth : INamespaceAuthorizer;
+
+        //The specified type authorizer will apply only to the domain object type specified (not even sub-classes)
         void AddTypeAuthorizer<TDomain, TAuth>()
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain>;

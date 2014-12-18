@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Audit {
 
         Type DefaultAuditor { get; }
 
-        Dictionary<string, Type> NamespaceAuditors { get; set; }
+        Dictionary<string, Type> NamespaceAuditors { get;}
 
         void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
     }

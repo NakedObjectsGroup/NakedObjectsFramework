@@ -13,16 +13,25 @@ namespace NakedObjects.Security {
     ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types within
     ///     a namespace.
     /// </summary>
-    [Obsolete("Use ITypeAuthorizer<object> and specify the namespace when registering in IAuthorizationByNamespaceConfiguration")]
     public interface INamespaceAuthorizer {
+
         /// <summary>
-        ///     Determine whether the member (applies to properties only) may be edited by the current user.
+        ///     Called only for properties on an object when user attempts to edit the object
         /// </summary>
+        /// <param name="principal">Representation of the user</param>
+        /// <param name="target">Domain object instance</param>
+        /// <param name="memberName">String representation of property name</param>
+        /// <returns></returns>
         bool IsEditable(IPrincipal principal, object target, string memberName);
 
         /// <summary>
-        ///     Determine whether the member (property or action method) may be seen by the current user.
+        ///     Called on properties and actions on an object when user attempts to view the object
         /// </summary>
+        /// <param name="principal">Representation of the user</param>
+        /// <param name="target">Domain object instance</param>
+        /// <param name="memberName">String representation of property or action name</param>
+        /// <returns></returns>
         bool IsVisible(IPrincipal principal, object target, string memberName);
+
     }
 }

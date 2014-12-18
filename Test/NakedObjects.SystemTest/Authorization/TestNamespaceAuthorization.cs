@@ -27,13 +27,13 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationByNamespaceConfiguration<MyDefaultAuthorizer>();
+            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
             config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
             config.AddNamespaceAuthorizer<MyCluster1Authorizer>("MyApp.MyCluster1");
             config.AddNamespaceAuthorizer<MyBar1Authorizer>("MyApp.MyCluster1.Bar1");
 
-            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationByNamespaceManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {
@@ -64,7 +64,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.Message);
+                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.InnerException.Message);
             }
 
             //Foo1
@@ -74,7 +74,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.Message);
+                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.InnerException.Message);
             }
 
             //Foo2
@@ -84,7 +84,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.Message);
+                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.InnerException.Message);
             }
 
             //Bar2
@@ -164,7 +164,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
     }
 
-    public class MyAppAuthorizer : ITypeAuthorizer<object> {
+    public class MyAppAuthorizer : INamespaceAuthorizer {
         #region ITypeAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
@@ -184,7 +184,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
     }
 
-    public class MyCluster1Authorizer : ITypeAuthorizer<object> {
+    public class MyCluster1Authorizer : INamespaceAuthorizer {
         #region ITypeAuthorizer Members
 
         public string NamespaceToAuthorize {
@@ -210,7 +210,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
     }
 
-    public class MyBar1Authorizer : ITypeAuthorizer<object> {
+    public class MyBar1Authorizer : INamespaceAuthorizer {
         #region ITypeAuthorizer Members
 
         public string NamespaceToAuthorize {

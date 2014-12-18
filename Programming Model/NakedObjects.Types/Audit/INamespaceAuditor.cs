@@ -7,13 +7,8 @@
 
 using System;
 namespace NakedObjects.Audit {
-    /// <summary>
-    /// Specific sub-type of IAuditor, where the methods will only
-    /// be called in relation to types that fall within the specified
-    /// namespace.
-    /// </summary>
+
     [Obsolete("Use IAuditor, and specify the namespace when registering via the IAuditConfiguration")]
     public interface INamespaceAuditor : IAuditor {
-        string NamespaceToAudit { get; }
     }
 }

@@ -11,25 +11,27 @@ using System.Linq;
 using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
-    //Add namespace authorizers individually via AddNamespaceAuthorizer, or create the whole dictionary
-    //and set the NamespaceAuthorizers property.
-    public class AuthorizationByNamespaceConfiguration<TDefault> 
-        : IAuthorizationByNamespaceConfiguration 
+
+    public class AuthorizationConfiguration<TDefault> 
+        : IAuthorizationConfiguration 
         where TDefault : ITypeAuthorizer<object> {
 
-        public AuthorizationByNamespaceConfiguration() {
+        public AuthorizationConfiguration() {
             DefaultAuthorizer = typeof(TDefault);
             NamespaceAuthorizers = new Dictionary<string, Type>();
+            TypeAuthorizers = new Dictionary<string, Type>();
         }
 
         #region IAuthorizationByNamespaceConfiguration Members
 
         public Type DefaultAuthorizer { get; private set; }
 
-        public IDictionary<string, Type> NamespaceAuthorizers { get; set; }
+        public IDictionary<string, Type> NamespaceAuthorizers { get; private set; }
+
+        public IDictionary<string, Type> TypeAuthorizers { get; private set; }
 
         public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
-            where TAuth : ITypeAuthorizer<object> {
+            where TAuth : INamespaceAuthorizer {
             NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
         }
 
@@ -37,7 +39,7 @@ namespace NakedObjects.Meta.Authorization {
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain> {
             string fullyQualifiedName = typeof(TDomain).FullName;
-            NamespaceAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
+            TypeAuthorizers.Add(typeof(TDomain).FullName, typeof(TAuth));
         }
 
         #endregion

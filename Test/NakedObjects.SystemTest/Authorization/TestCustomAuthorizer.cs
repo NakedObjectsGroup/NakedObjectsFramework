@@ -28,10 +28,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
                 where TDefault : ITypeAuthorizer<object>
         {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration<TDefault>();
+            var config = new AuthorizationConfiguration<TDefault>();
 
-            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
                 new Type[] {typeof(TDefault)},

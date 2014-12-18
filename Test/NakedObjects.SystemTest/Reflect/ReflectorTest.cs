@@ -67,9 +67,9 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration<TestAuditor>());
-            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(new AuthorizationByNamespaceConfiguration<TestAuthorizer>());
+            container.RegisterInstance<IAuthorizationConfiguration>(new AuthorizationConfiguration<TestAuthorizer>());
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager");
-            container.RegisterType<IFacetDecorator, AuthorizationByNamespaceManager>("AuthorizationManager");
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager");
             container.RegisterType<IFacetDecorator, I18NManager>("I18NManager");
 
             var reflector = container.Resolve<IReflector>();

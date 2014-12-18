@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using System.Collections.Generic;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -93,14 +94,10 @@ namespace NakedObjects.Mvc.App {
             return null;
         }
 
-        //public static IAuthorizationConfig AuthConfig {
-        //    get {
-        //        return new AuthorizationConfig(new MyDefaultAuthorizer(), new FooAuthorizer(), new BarAuthorizer());
-        //    }
-        //}
+        public static IAuthorizationConfiguration AuthorizationConfig() {
+                return null;
+        }
 
-
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 

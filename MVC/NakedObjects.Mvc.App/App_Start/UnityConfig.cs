@@ -31,6 +31,7 @@ using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -182,6 +183,11 @@ namespace NakedObjects.Mvc.App {
             if (NakedObjectsRunSettings.AuditConfig() != null) {
                 container.RegisterType(typeof(IFacetDecorator), typeof(AuditManager), "AuditManager", new ContainerControlledLifetimeManager());
                 container.RegisterInstance(typeof(IAuditConfiguration), NakedObjectsRunSettings.AuditConfig(), new ContainerControlledLifetimeManager());
+            }
+
+            if (NakedObjectsRunSettings.AuthorizationConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuthorizationManager), "AuthorizationManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuthorizationConfiguration), NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
             }
         }
 

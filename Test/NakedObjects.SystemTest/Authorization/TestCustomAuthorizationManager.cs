@@ -26,12 +26,12 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration<MyDefaultAuthorizer>();
+            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
             config.AddTypeAuthorizer<Foo, FooAuthorizer>();
             config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
 
-            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {
@@ -43,6 +43,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 new[] {
                     typeof (SimpleRepository<Foo>),
                     typeof (SimpleRepository<FooSub>),
+                    typeof (SimpleRepository<SubTypeOfFoo>),
                     typeof (SimpleRepository<Bar>),
                     typeof (SimpleRepository<Qux>),
                     typeof (FooService),
@@ -129,6 +130,14 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         [TestMethod]
         public void SubClassIsNotPickedUpByTypeAuthorizer() {
             ITestObject fooSub = GetTestService(typeof(SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
+            ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
+            prop1.AssertIsVisible();
+            prop1.AssertIsModifiable();
+        }
+
+        [TestMethod]
+        public void SubClassIsNotPickedUpByTypeAuthorizerWhereSubTypeNameExtendsSupertypeName() {
+            ITestObject fooSub = GetTestService(typeof(SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -268,6 +277,11 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class FooSub : Foo {
+        [Optionally]
+        public virtual string Prop2 { get; set; }
+    }
+
+    public class SubTypeOfFoo : Foo {
         [Optionally]
         public virtual string Prop2 { get; set; }
     }
