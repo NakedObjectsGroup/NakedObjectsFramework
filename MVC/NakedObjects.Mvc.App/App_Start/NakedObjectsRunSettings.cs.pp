@@ -12,6 +12,10 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Web.Mvc.Models;
+using System.Linq;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.Entity.Core.Objects;
 
 namespace $rootnamespace$ {
 
