@@ -235,7 +235,7 @@
     <MSBuild Projects="@(MVCTFiles)" Targets="$(Targets)" Properties="ReferencePath=$(RefPath);Configuration=%(Configuration.Identity)" />
     
     <Exec Command='"$(MSTestPath)\MSTest.exe" /noisolation /testcontainer:"$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).App.Test.trx' />
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /noisolation /testcontainer:"$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.Javascript.trx' />
+    <!--<Exec Command='"$(MSTestPath)\MSTest.exe" /noisolation /testcontainer:"$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.Javascript.trx' />-->
     <Exec Command='"$(MSTestPath)\MSTest.exe" /noisolation /testcontainer:"$(MVCPath)\$(NOMVC).Test\bin\%(Configuration.Identity)\$(NOMVC).Test.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.trx' />
 
   </Target>
