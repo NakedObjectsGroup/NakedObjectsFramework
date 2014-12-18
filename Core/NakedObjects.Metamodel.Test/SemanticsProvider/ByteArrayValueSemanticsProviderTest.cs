@@ -72,7 +72,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         [TestMethod]
-        public new void TestParseEmptyString() {
+        public override void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
@@ -127,6 +127,22 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestTitleEmpty() {
             Assert.AreEqual("", value.DisplayTitleOf(new byte[] {}));
+        }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
         }
     }
 

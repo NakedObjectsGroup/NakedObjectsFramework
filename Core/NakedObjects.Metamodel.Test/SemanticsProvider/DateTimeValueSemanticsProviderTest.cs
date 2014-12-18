@@ -101,6 +101,26 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             object d2 = adapter.ParseInvariant(s1);
             Assert.AreEqual(d1, d2);
         }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+        [TestMethod]
+        public override void TestParseEmptyString() {
+            base.TestParseEmptyString();
+        }
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

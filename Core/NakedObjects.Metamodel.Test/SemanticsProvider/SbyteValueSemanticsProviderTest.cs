@@ -68,7 +68,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         [TestMethod]
-        public new void TestParseEmptyString() {
+        public override void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
@@ -84,6 +84,22 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
             object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
+        }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
         }
 
         // Copyright (c) Naked Objects Group Ltd.

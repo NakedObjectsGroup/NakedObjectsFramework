@@ -67,6 +67,26 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public void TestTimeAsEncodedString() {
             Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
         }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+        [TestMethod]
+        public override void TestParseEmptyString() {
+            base.TestParseEmptyString();
+        }
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
+        }
     }
 
     public class TestClock {

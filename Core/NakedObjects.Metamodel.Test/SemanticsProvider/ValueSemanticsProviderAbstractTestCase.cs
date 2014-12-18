@@ -66,8 +66,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
 
-        [TestMethod]
-        public void TestParseNull() {
+        public virtual void TestParseNull() {
             try {
                 value.ParseTextEntry(null);
                 Assert.Fail();
@@ -75,20 +74,20 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (ArgumentException /*expected*/) {}
         }
 
-        [TestMethod]
-        public void TestParseEmptyString() {
+
+        public virtual void TestParseEmptyString() {
             object newValue = value.ParseTextEntry("");
             Assert.IsNull(newValue);
         }
 
-        [TestMethod]
-        public void TestDecodeNull() {
+
+        public virtual void TestDecodeNull() {
             object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
             Assert.IsNull(newValue);
         }
 
-        [TestMethod]
-        public void TestEmptyEncoding() {
+
+        public virtual void TestEmptyEncoding() {
             Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
         }
     }
