@@ -8,32 +8,35 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte[]> {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             byteArray = new byte[0];
-            byteArrayNakedObject = CreateAdapter(byteArray);
+            CreateAdapter(byteArray);
             specification = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion
 
-        private INakedObject byteArrayNakedObject;
         private object byteArray;
         private ISpecification specification;
         private ArrayValueSemanticsProvider<byte> value;
@@ -44,27 +47,32 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             string encodedValue = value.ToEncodedString(originalValue);
             byte[] decodedValue = value.FromEncodedString(encodedValue);
 
-            Assert.AreEqual(decodedValue, originalValue);
+            if (originalValue == null) {
+                Assert.IsNull(decodedValue);
+            }
+            else {
+                Assert.IsTrue(decodedValue.SequenceEqual(originalValue));
+            }
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestEncodeDecode() {
             TestEncodeDecode(new byte[] {1, 2, 100});
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncodeDecodeEmpty() {
             TestEncodeDecode(new byte[] {});
         }
 
-        [Test]
+        [TestMethod]
         public void TestEncodeDecodeNull() {
             TestEncodeDecode(null);
         }
 
-        [Test]
-        public new void TestParseEmptyString() {
+        [TestMethod]
+        public override void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
@@ -74,50 +82,67 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvalidString() {
             try {
                 value.ParseTextEntry("fred");
                 Assert.Fail("Invalid string");
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             var b1 = new byte[] {1, 2, 3, 4};
             string s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
             object b2 = value.ParseInvariant(s1);
-            Assert.AreEqual(b1, b2);
+
+            Assert.IsTrue(b1.SequenceEqual((byte[]) b2));
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseOutOfRangeString() {
             try {
                 value.ParseTextEntry("1 2 1000");
                 Assert.Fail("out of range string");
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseString() {
-            object parsed = value.ParseTextEntry("0 0 1 100 255");
-            Assert.AreEqual(new byte[] {0, 0, 1, 100, 255}, parsed);
+            var parsed = (byte[]) value.ParseTextEntry("0 0 1 100 255");
+            Assert.IsTrue(parsed.SequenceEqual(new byte[] {0, 0, 1, 100, 255}));
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitle() {
             Assert.AreEqual("1 2 100", value.DisplayTitleOf(new byte[] {1, 2, 100}));
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleEmpty() {
             Assert.AreEqual("", value.DisplayTitleOf(new byte[] {}));
+        }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
         }
     }
 

@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -20,20 +21,20 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new ActionMethodsFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -530,7 +531,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         // ReSharper restore UnusedMember.Local
         // ReSharper restore UnusedParameter.Local
 
-        [Test]
+        [TestMethod]
         public void TestActionInvocationFacetIsInstalledAndMethodRemoved() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -544,7 +545,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(actionMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionInvocationFacetQueryableByType() {
             MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -559,7 +560,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestActionInvocationFacetQueryableByAnnotation() {
             MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -573,7 +574,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(actionMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionOnType() {
             Type type = typeof (Customer16);
             MethodInfo actionMethod = FindMethod(type, "SomeAction");
@@ -583,7 +584,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(Reflector.LoadSpecification(type), actionInvocationFacetViaMethod.OnType);
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionReturnTypeWhenNotVoid() {
             MethodInfo actionMethod = FindMethod(typeof (Customer15), "SomeAction");
             //   reflector.LoadSpecification(typeof(string));
@@ -593,7 +594,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(Reflector.LoadSpecification(typeof (string)), actionInvocationFacetViaMethod.ReturnType);
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionReturnTypeWhenVoid() {
             MethodInfo actionMethod = FindMethod(typeof (Customer14), "SomeAction");
             //     reflector.setLoadSpecificationClassReturn(voidNoSpec);
@@ -603,7 +604,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(Reflector.LoadSpecification(typeof (void)), actionInvocationFacetViaMethod.ReturnType);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAddsNullableFacetToParm() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer1), "AnActionWithNullableParm");
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -612,7 +613,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is NullableFacetAlways);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetAddedIfNoValidate() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer25), "SomeAction");
             ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
@@ -622,7 +623,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is AjaxFacet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer24), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer24), "ValidateSomeAction", new[] {typeof (int)});
@@ -636,7 +637,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer23), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer23), "ValidateSomeAction", new[] {typeof (int)});
@@ -648,7 +649,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestAjaxFacetNotAddedByDefault() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer20), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer20), "ValidateSomeAction", new[] {typeof (int)});
@@ -660,7 +661,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyValidateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDoesntAddNullableFacetToParm() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer1), "AnActionWithoutNullableParm");
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -669,7 +670,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -679,7 +680,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestIgnoresParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer27), "SomeAction");
             MethodInfo autoComplete0Method = FindMethodIgnoreParms(typeof (Customer27), "AutoComplete0SomeAction");
@@ -695,7 +696,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsDisabledForSessionFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (CustomerStatic), "SomeAction", new[] {typeof (int), typeof (long)});
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -705,7 +706,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (CustomerStatic), "SomeAction", new[] {typeof (int), typeof (long)});
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -714,7 +715,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterAutoCompleteMethodAttrributes() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer28), "SomeAction");
             MethodInfo autoComplete0Method = FindMethodIgnoreParms(typeof (Customer28), "AutoComplete0SomeAction");
@@ -728,7 +729,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer26), "SomeAction");
             MethodInfo autoComplete0Method = FindMethodIgnoreParms(typeof (Customer26), "AutoComplete0SomeAction");
@@ -743,7 +744,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             CheckAutoCompleteFacetIsNull(autoComplete2Method, facetHolderWithParms.Parameters[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethodInterface() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer32), "SomeAction");
             MethodInfo autoComplete0Method = FindMethodIgnoreParms(typeof (Customer32), "AutoComplete0SomeAction");
@@ -758,7 +759,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             CheckAutoCompleteFacetIsNull(autoComplete2Method, facetHolderWithParms.Parameters[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo choices0Method = FindMethod(typeof (Customer13), "Choices0SomeAction", new Type[] {});
@@ -790,7 +791,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethodDuplicate() {
             MethodInfo actionMethod = FindMethod(typeof (Customer30), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo choices0Method1 = FindMethod(typeof (Customer30), "Choices0SomeAction", new[] {typeof (long), typeof (long)});
@@ -809,7 +810,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodNotRemoved(choices0Method3);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethodWithParms() {
             MethodInfo actionMethod = FindMethod(typeof (Customer30), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo choices0Method = FindMethod(typeof (Customer30), "Choices0SomeAction", new[] {typeof (long), typeof (long)});
@@ -841,7 +842,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterChoicesMethodByNameNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer21), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo choices0Method = FindMethod(typeof (Customer21), "ChoicesSomeAction", new[] {typeof (int)});
@@ -873,7 +874,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterDefaultsMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo default0Method = FindMethod(typeof (Customer11), "Default0SomeAction", new Type[] {});
@@ -907,7 +908,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterDefaultsMethodByNameNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer22), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo default0Method = FindMethod(typeof (Customer22), "DefaultSomeAction", new[] {typeof (int)});
@@ -941,7 +942,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterValidationMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer17), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo validateParameter0Method = FindMethod(typeof (Customer17), "Validate0SomeAction", new[] {typeof (int)});
@@ -962,7 +963,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facetExecuted1);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsParameterValidationMethodByNameNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer20), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
             MethodInfo validateParameter0Method = FindMethod(typeof (Customer20), "ValidateSomeAction", new[] {typeof (int)});
@@ -984,7 +985,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestInstallsValidateMethodNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer8), "SomeAction");
             MethodInfo validateMethod = FindMethod(typeof (Customer8), "ValidateSomeAction");
@@ -997,7 +998,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(validateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestInstallsValidateMethodSomeArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction", new[] {typeof (int), typeof (int)});
             MethodInfo validateMethod = FindMethod(typeof (Customer9), "ValidateSomeAction", new[] {typeof (int), typeof (int)});
@@ -1010,7 +1011,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(validateMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDefaultDisableMethod() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer18), "SomeActionThree");
             MethodInfo disableMethod = FindMethodIgnoreParms(typeof (Customer18), "DisableActionDefault");
@@ -1023,7 +1024,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodNotRemoved(disableMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDefaultHideMethod() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer19), "SomeActionThree");
             MethodInfo disableMethod = FindMethodIgnoreParms(typeof (Customer19), "HideActionDefault");
@@ -1037,7 +1038,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDisableMethodDifferentSignature() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer12), "SomeActionThree");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer12), "DisableSomeActionThree");
@@ -1049,7 +1050,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDisableMethodNoParms() {
             MethodInfo actionMethod = FindMethod(typeof (Customer12), "SomeActionOne");
             MethodInfo hideMethod = FindMethod(typeof (Customer12), "DisableSomeActionOne");
@@ -1061,7 +1062,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDisableMethodOverriddingDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer18), "SomeActionTwo");
             MethodInfo disableMethod = FindMethodIgnoreParms(typeof (Customer18), "DisableSomeActionTwo");
@@ -1073,7 +1074,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDisableMethodSameSignature() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer12), "SomeActionTwo");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer12), "DisableSomeActionTwo");
@@ -1085,7 +1086,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpDisableMethodSignatureChoice() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer12), "SomeActionFour");
             MethodInfo hideMethodGood = FindMethod(typeof (Customer12), "DisableSomeActionFour", new[] {typeof (int), typeof (int)});
@@ -1099,7 +1100,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreNotEqual(hideMethodBad, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpHideMethodDifferentSignature() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer10), "SomeActionThree");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer10), "HideSomeActionThree");
@@ -1111,7 +1112,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpHideMethodNoParms() {
             MethodInfo actionMethod = FindMethod(typeof (Customer10), "SomeActionOne");
             MethodInfo hideMethod = FindMethod(typeof (Customer10), "HideSomeActionOne");
@@ -1123,7 +1124,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpHideMethodOverriddingDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer19), "SomeActionTwo");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer19), "HideSomeActionTwo");
@@ -1135,7 +1136,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpHideMethodSameSignature() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer10), "SomeActionTwo");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer10), "HideSomeActionTwo");
@@ -1147,7 +1148,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestPickUpHideMethodSignatureChoice() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer10), "SomeActionFour");
             MethodInfo hideMethodGood = FindMethod(typeof (Customer10), "HideSomeActionFour", new[] {typeof (int), typeof (int)});
@@ -1161,7 +1162,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreNotEqual(hideMethodBad, ((IImperativeFacet) facet).GetMethod());
         }
 
-        [Test]
+        [TestMethod]
         public void TestProvidesDefaultNameForActionButIgnoresAnyNamedAnnotation() {
             MethodInfo method = FindMethod(typeof (Customer1), "AnActionWithNamedAnnotation");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);

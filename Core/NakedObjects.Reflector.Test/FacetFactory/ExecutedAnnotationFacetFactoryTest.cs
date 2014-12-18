@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class ExecutedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new ExecutedAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -54,7 +55,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction() {}
         }
 
-        [Test]
+        [TestMethod]
         public void TestExecutedLocallyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestExecutedRemotelyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -78,7 +79,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));

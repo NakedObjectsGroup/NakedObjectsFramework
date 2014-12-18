@@ -8,26 +8,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new RegExAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -106,7 +107,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -116,21 +117,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationMessageNullWhenNotSpecified() {
             PropertyInfo property = FindProperty(typeof (Customer5), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -139,7 +140,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -152,7 +153,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
@@ -164,7 +165,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegExAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -177,21 +178,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegularExpressionAnnotationIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer9), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegularExpressionAnnotationIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer10), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegularExpressionAnnotationMessageNullWhenNotSpecified() {
             PropertyInfo property = FindProperty(typeof (Customer11), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -200,7 +201,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegularExpressionAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer8), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -213,7 +214,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(true, regExFacet.IsCaseSensitive);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRegularExpressionAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

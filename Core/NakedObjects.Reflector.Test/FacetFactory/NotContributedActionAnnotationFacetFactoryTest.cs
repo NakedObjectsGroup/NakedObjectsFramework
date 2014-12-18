@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -15,20 +16,20 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class NotContributedActonAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new ContributedActionAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -76,7 +77,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestNotContributedAnnotationNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -85,7 +86,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestNotContributedAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -98,7 +99,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestNotContributedAnnotationPickedUpWithType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -115,7 +116,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestNotContributedAnnotationPickedUpWithTypes() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);

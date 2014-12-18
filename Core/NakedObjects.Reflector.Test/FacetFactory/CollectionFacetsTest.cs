@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -17,11 +18,11 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
-using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class CollectionFacetsTest {
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
 
@@ -81,7 +82,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreSame(((IEnumerable) pagedCollection.Object).Cast<string>().First(), first);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayContains() {
             var testArray = new[] {"element1", "element2"};
             var testArrayFacet = new ArrayFacet(specification);
@@ -90,7 +91,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
-        [Test]
+        [TestMethod]
         public void ArrayFirstElement() {
             var testArray = new[] {"element1", "element2"};
             var testArrayFacet = new ArrayFacet(specification);
@@ -98,7 +99,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             FirstElement(testArrayFacet, testAdaptedArray, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayGetEnumeratorFor() {
             var testArray = new[] {"element1", "element2"};
             var testArrayFacet = new ArrayFacet(specification);
@@ -106,7 +107,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testArrayFacet, testAdaptedArray, testArray);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayInit() {
             var testArray = new[] {"element1", "element2"};
             var testArray1 = new[] {"element2", "element3"};
@@ -115,7 +116,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayInitAllEmpty() {
             var testArray = new string[] {};
             var testArray1 = new string[] {};
@@ -124,7 +125,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayInitEmpty() {
             var testArray = new string[] {};
             var testArray1 = new[] {"element2", "element3"};
@@ -133,7 +134,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayInitToEmpty() {
             var testArray = new[] {"element1", "element2"};
             var testArray1 = new string[] {};
@@ -142,7 +143,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
 
-        [Test]
+        [TestMethod]
         public void ArrayPage() {
             var testArray = new[] {"element1", "element2"};
             var testArrayFacet = new ArrayFacet(specification);
@@ -150,7 +151,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Page(testArrayFacet, testAdaptedArray, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void ArraySize() {
             var testArray = new[] {"element1", "element2"};
             var testArrayFacet = new ArrayFacet(specification);
@@ -158,7 +159,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Size(testArrayFacet, testAdaptedArray);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionContains() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollectionFacet = new CollectionFacet(specification);
@@ -166,7 +167,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionFirstElement() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollectionFacet = new CollectionFacet(specification);
@@ -174,7 +175,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionGetEnumeratorFor() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollectionFacet = new CollectionFacet(specification);
@@ -182,7 +183,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>());
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInit() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollection1 = new[] {"element2", "element3"};
@@ -191,7 +192,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInitAllEmpty() {
             var testCollection = new ArrayList();
             var testCollection1 = new string[] {};
@@ -200,7 +201,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInitEmpty() {
             var testCollection = new ArrayList();
             var testCollection1 = new[] {"element2", "element3"};
@@ -209,7 +210,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInitToEmpty() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollection1 = new string[] {};
@@ -218,7 +219,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionNotIsSet() {
             ICollectionFacet testCollectionFacet = new CollectionFacet(specification);
             Assert.IsFalse(testCollectionFacet.IsASet);
@@ -228,7 +229,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(testCollectionFacet.IsASet);
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionPage() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollectionFacet = new CollectionFacet(specification);
@@ -236,7 +237,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionSize() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollectionFacet = new CollectionFacet(specification);
@@ -244,7 +245,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Size(testCollectionFacet, testAdaptedCollection);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionContains() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericCollectionFacet(specification);
@@ -252,7 +253,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionFirstElement() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericCollectionFacet(specification);
@@ -260,7 +261,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionGetEnumeratorFor() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericCollectionFacet(specification);
@@ -268,7 +269,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionInit() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new[] {"element2", "element3"};
@@ -277,7 +278,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionInitAllEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new string[] {};
@@ -286,7 +287,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionInitEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new[] {"element2", "element3"};
@@ -295,7 +296,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionInitToEmpty() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new string[] {};
@@ -304,7 +305,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionIsSet() {
             ICollectionFacet testCollectionFacet = new GenericCollectionFacet(specification, true);
             Assert.IsTrue(testCollectionFacet.IsASet);
@@ -314,7 +315,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(testCollectionFacet.IsASet);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionNotIsSet() {
             ICollectionFacet testCollectionFacet = new GenericCollectionFacet(specification);
             Assert.IsFalse(testCollectionFacet.IsASet);
@@ -324,7 +325,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(testCollectionFacet.IsASet);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionPage() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericCollectionFacet(specification);
@@ -332,7 +333,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericCollectionSize() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericCollectionFacet(specification);
@@ -340,7 +341,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Size(testCollectionFacet, testAdaptedCollection);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericEnumerableContains() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericIEnumerableFacet(specification);
@@ -348,7 +349,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericEnumerableFirstElement() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericIEnumerableFacet(specification);
@@ -356,7 +357,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericEnumerableGetEnumeratorFor() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericIEnumerableFacet(specification);
@@ -364,7 +365,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
 
-        //[Test]
+        //[TestMethod]
         //public void GenericEnumerableInit() {
         //    var testCollection = new List<string> {"element1", "element2"};
         //    var testCollection1 = new[] {"element2", "element3"};
@@ -373,7 +374,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericEnumerableInitAllEmpty() {
         //    var testCollection = new List<string>();
         //    var testCollection1 = new string[] {};
@@ -382,7 +383,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericEnumerableInitEmpty() {
         //    var testCollection = new List<string>();
         //    var testCollection1 = new[] {"element2", "element3"};
@@ -391,7 +392,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericEnumerableInitToEmpty() {
         //    var testCollection = new List<string> {"element1", "element2"};
         //    var testCollection1 = new string[] {};
@@ -400,7 +401,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        [Test]
+        [TestMethod]
         public void GenericEnumerablePage() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericIEnumerableFacet(specification);
@@ -408,7 +409,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericEnumerableSize() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollectionFacet = new GenericIEnumerableFacet(specification);
@@ -416,7 +417,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Size(testCollectionFacet, testAdaptedCollection);
         }
 
-        [Test]
+        [TestMethod]
         public void GenericQueryableContains() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             var testCollectionFacet = new GenericIQueryableFacet(specification);
@@ -424,7 +425,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericQueryableFirstElement() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             var testCollectionFacet = new GenericIQueryableFacet(specification);
@@ -432,7 +433,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericQueryableGetEnumeratorFor() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             var testCollectionFacet = new GenericIQueryableFacet(specification);
@@ -440,7 +441,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
 
-        //[Test]
+        //[TestMethod]
         //public void GenericQueryableInit() {
         //    IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
         //    IQueryable<string> testCollection1 = new[] {"element2", "element3"}.AsQueryable();
@@ -449,7 +450,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericQueryableInitAllEmpty() {
         //    IQueryable<string> testCollection = new List<string>().AsQueryable();
         //    IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
@@ -458,7 +459,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericQueryableInitEmpty() {
         //    IQueryable<string> testCollection = new List<string>().AsQueryable();
         //    var testCollection1 = new[] {"element2", "element3"};
@@ -467,7 +468,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void GenericQueryableInitToEmpty() {
         //    IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
         //    IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
@@ -476,7 +477,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         //}
 
-        [Test]
+        [TestMethod]
         public void GenericQueryablePage() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             var testCollectionFacet = new GenericIQueryableFacet(specification);
@@ -484,7 +485,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
 
-        [Test]
+        [TestMethod]
         public void GenericQueryableSize() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             var testCollectionFacet = new GenericIQueryableFacet(specification);

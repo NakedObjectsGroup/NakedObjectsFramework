@@ -11,7 +11,7 @@
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>2.6.3</NUnitVer>
+    <NUnitVer>2.6.4</NUnitVer>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
@@ -26,6 +26,19 @@
     <Otherwise>
       <PropertyGroup>
         <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <Choose>
+    <When Condition="Exists('C:\Program Files (x86)')">
+      <PropertyGroup>
+        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSTestPath>C:\Program Files\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </Otherwise>
   </Choose>
@@ -188,12 +201,12 @@
 
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Test.xml" />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Core.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Metamodel.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Reflector.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Snapshot.Xml.Test.trx' />
+
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Metamodel.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Reflector.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Snapshot.Xml.Test.xml" />
   </Target>
 
   <Target Name="FrameworkPackage">

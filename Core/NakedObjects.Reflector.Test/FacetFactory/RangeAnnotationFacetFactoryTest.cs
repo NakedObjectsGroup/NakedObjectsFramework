@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class RangeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new RangeAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -53,7 +54,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void someAction([System.ComponentModel.DataAnnotations.Range(1, 10)] int foo) {}
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -63,7 +64,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestRangeAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -75,7 +76,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(10, RangeFacetAnnotation.Max);
         }
 
-        [Test]
+        [TestMethod]
         public void TestRangeAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

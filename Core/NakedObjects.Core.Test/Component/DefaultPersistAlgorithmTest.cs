@@ -5,15 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NUnit.Framework;
 
 // TODO Write new tests for this 
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.Core.Test.Component {
     /// <summary>
     /// Summary description for DefaultPersistAlgorithmTest
     /// </summary>
-    [TestFixture, Ignore]
+    [TestClass, Ignore]
     public class DefaultPersistAlgorithmTest {
         //#region Setup/Teardown
 
@@ -277,7 +278,7 @@ namespace NakedObjects.Core.Test.Component {
         //    }
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void TestMakePersistent() {
         //    algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
         //    Assert.IsTrue(roleAdapter.ResolveState.IsResolved());
@@ -286,7 +287,7 @@ namespace NakedObjects.Core.Test.Component {
         //    Assert.That(adder.PersistedCount, Is.EqualTo(2));
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void TestMakePersistentFailsIfObjectAlreadyPersistent() {
         //    roleAdapter.ResolveState.Handle(Events.StartResolvingEvent);
         //    roleAdapter.ResolveState.Handle(Events.EndResolvingEvent);
@@ -298,7 +299,7 @@ namespace NakedObjects.Core.Test.Component {
         //    catch (NotPersistableException /*expected*/) {}
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void TestMakePersistentFailsIfObjectMustBeTransient() {
         //    roleAdapter.Specification.AddFacet(new PersistingCallbackFacetNull(roleAdapter.Specification));
         //    roleAdapter.Specification.AddFacet(new PersistedCallbackFacetNull(roleAdapter.Specification));
@@ -312,7 +313,7 @@ namespace NakedObjects.Core.Test.Component {
         //    catch (NotPersistableException /*expected*/) {}
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void TestMakePersistentSkipsAlreadyPersistedObjects() {
         //    algorithm.MakePersistent(personAdapter, adder, NakedObjectsContext.Session);
         //    adder.Reset();
@@ -323,7 +324,7 @@ namespace NakedObjects.Core.Test.Component {
         //    Assert.That(adder.PersistedCount, Is.EqualTo(1));
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void TestMakePersistentSkipsAggregatedObjects() {
         //    Person person = new Person();
         //    system.AdapterFor(person, Events.InitializeAggregateEvent);

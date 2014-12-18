@@ -7,25 +7,30 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             byteObj = 102;
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion
@@ -45,7 +50,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 
@@ -62,8 +67,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual((sbyte) -91, parsed);
         }
 
-        [Test]
-        public new void TestParseEmptyString() {
+        [TestMethod]
+        public override void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
@@ -73,12 +78,28 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             const sbyte c1 = (sbyte) 11;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
             object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
+        }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
         }
 
         // Copyright (c) Naked Objects Group Ltd.

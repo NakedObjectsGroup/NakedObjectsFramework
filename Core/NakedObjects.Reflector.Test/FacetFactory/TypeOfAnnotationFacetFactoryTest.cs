@@ -8,26 +8,27 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class TypeOfAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new TypeOfAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -45,7 +46,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        //[Test]
+        //[TestMethod]
         //public void TestTypeOfAnnotationIgnoredForActionIfReturnTypeIsntACollectionType() {
         //    MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction");
         //    facetFactory.Process(actionMethod, methodRemover, specification);
@@ -80,7 +81,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Order {}
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
@@ -90,7 +91,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -105,7 +106,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -119,7 +120,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -133,7 +134,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
             PropertyInfo property = FindProperty(typeof (Customer10), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

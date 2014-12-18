@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -15,14 +16,14 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class UnsupportedParameterTypesMethodFilteringFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
@@ -37,7 +38,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -82,58 +83,58 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionWithDictionaryParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithDictionaryParameter");
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionWithGenericParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithGenericParameter");
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestActionWithNoParameters() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNoParameters");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionWithNullableParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNullableParameter");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestActionWithOneBadParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneBadParameter");
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionWithOneGoodOneBadParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneGoodOneBadParameter");
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-        [Test]
+        [TestMethod]
         public void TestActionWithOneGoodParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneGoodParameter");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestActionWithTwoGoodParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithTwoGoodParameter");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));

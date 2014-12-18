@@ -19,21 +19,33 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
-    [TestFixture]
+    [TestClass]
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+        private static bool runFixtures;
+
+        private void RunFixturesOnce() {
+            if (!runFixtures) {
+                RunFixtures();
+                runFixtures = true;
+            }
+        }
+
+
+        [TestInitialize]
         public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            RunFixturesOnce();
             StartTest();
             controller = new DummyController();
             mocks = new ContextMocks(controller);
@@ -49,16 +61,13 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
             Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
-            RunFixtures();
         }
 
-        [TestFixtureTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
+        [ClassCleanup]
+        public static void TearDownTest() {
             Database.Delete("CustomHtmlHelperTest");
         }
 
@@ -208,19 +217,19 @@ namespace MvcTestApp.Tests.Helpers {
             get { return (DescribedCustomHelperTestClass) GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionExclusions() {
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout("TestCollectionOne", "TestInt").ToString(),
                 "CollectionWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionExclusionsGeneric() {
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout(y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "CollectionWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionExclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(tc, null, null);
@@ -229,7 +238,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "CollectionWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionExclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(tc, null, null);
@@ -238,19 +247,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "CollectionWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInclusions() {
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith("TestInt", "TestCollectionOne").ToString(),
                 "CollectionWithInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInclusionsGeneric() {
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "CollectionWithInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(tc, null, null);
@@ -259,7 +268,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "CollectionWithInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionInclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(tc, null, null);
@@ -268,174 +277,174 @@ namespace MvcTestApp.Tests.Helpers {
                 "CollectionWithInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void CollectionTitles() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().CollectionTitles(tc, "{0} {1}").ToString(), "CollectionTitles");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [TestMethod, Ignore] // todo problem with specs needs thorough investigation
         public void Collections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc).ToString(), "Collections");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [TestMethod, Ignore] // todo problem with specs needs thorough investigation
         public void CollectionsFormatList() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.ListDisplayFormat).ToString(), "CollectionsFormatList");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [TestMethod, Ignore] // todo problem with specs needs thorough investigation
         public void CollectionsFormatTable() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.TableDisplayFormat).ToString(), "CollectionsFormatTable");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsFourParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsFourParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsFourParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int, int, int>(tc, y => y.FourValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsFourParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int, int, int, int>(tc, y => y.FourValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsOneParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int>(y => y.OneValueParameterAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsOneParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsOneParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsOneParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents("OneValueParameterAction", 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents(tc, "OneValueParameterAction", 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsProperty() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents("TestInt").ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsPropertyGeneric() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents(y => y.TestInt).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsPropertyGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents(tc, y => y.TestInt).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsPropertyOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents(tc, "TestInt").ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsThreeParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsThreeParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsThreeParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int, int>(tc, y => y.ThreeValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsThreeParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int, int, int>(tc, y => y.ThreeValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsTwoParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsTwoParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Contents<CustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsTwoParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int>(tc, y => y.TwoValueParametersAction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void ContentsTwoParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Contents<CustomHelperTestClass, int, int, int>(tc, y => y.TwoValueParametersFunction, 0).ToString(),
                 "0");
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestAsDialog() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(tc);
@@ -443,7 +452,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("CustomHelperTestAsDialog", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestAsDialogOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(tc);
@@ -451,7 +460,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("CustomHelperTestAsDialog", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringId() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(tc);
@@ -461,7 +470,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("NoParameterAction", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdDisabled() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(tc);
@@ -471,7 +480,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("DisabledAction", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdHidden() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(tc);
@@ -479,7 +488,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual("", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(new object());
@@ -490,7 +499,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("NoParameterAction", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdOnOtherObjectDisabled() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(new object());
@@ -501,7 +510,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdOnOtherObjectEdit() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(new object());
@@ -511,7 +520,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("NoParameterEditAction", s);
         }
 
-        [Test]
+        [TestMethod]
         public void CustomHelperTestStringIdOnOtherObjectHidden() {
             CustomHelperTestClass tc = TestClass;
             SetupViewData(new object());
@@ -519,7 +528,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual("", s);
         }
 
-        [Test]
+        [TestMethod]
         public void DateTimePropertyEdit() {
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(new NotPersistedTestClass());
 
@@ -531,163 +540,163 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("TestDateTime", s);
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionFourParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionFourParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionFourParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int>(tc, y => y.FourValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionFourParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int, int>(tc, y => y.FourValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionOneParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int>(y => y.OneValueParameterAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionOneParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionOneParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionOneParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description("OneValueParameterAction", 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, "OneValueParameterAction", 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionProperty() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description("TestInt").ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionPropertyGeneric() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description(y => y.TestInt).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionPropertyGenericOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, y => y.TestInt).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionPropertyOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, "TestInt").ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionTest() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description().ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionThreeParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionThreeParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionThreeParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int>(tc, y => y.ThreeValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionThreeParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int>(tc, y => y.ThreeValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionTwoParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionTwoParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionTwoParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int>(tc, y => y.TwoValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [TestMethod, Ignore]
         public void DescriptionTwoParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int>(tc, y => y.TwoValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -698,7 +707,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -710,7 +719,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersActionOnOtherObject");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -722,7 +731,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersActionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -732,7 +741,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersEditActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -744,7 +753,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersEditAction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -755,7 +764,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -768,7 +777,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -781,7 +790,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourRefParametersFunctionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourRefParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -793,13 +802,13 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction).ToString(),
                 "FourValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -807,7 +816,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -815,19 +824,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, new {parm1 = 0, parm2 = 1, parm3 = 2, parm4 = 3}).ToString(),
                 "FourValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction).ToString(),
                 "FourValueParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -835,7 +844,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourValueParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -843,34 +852,34 @@ namespace MvcTestApp.Tests.Helpers {
                 "FourValueParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void FourValueParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, new {parm1 = 0, parm2 = 1, parm3 = 2, parm4 = 3}).ToString(),
                 "FourValueParametersFunctionWithParameters");
         }
 
 
-        [Test]
+        [TestMethod]
         public void IconNameOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.IconName(tc).ToString(),
                 "Default");
         }
 
-        [Test]
+        [TestMethod]
         public void IconNameTest() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().IconName().ToString(),
                 "Default");
         }
 
-        [Test]
+        [TestMethod]
         public void InlinePropertyEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestInline).ToString(),
                 "TestInlineEdit");
         }
 
 
-        [Test]
+        [TestMethod]
         public void IntPropertyDefault() {
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(new CustomHelperTestClass());
 
@@ -884,25 +893,25 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("TestIntDefault", s);
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestInt).ToString(),
                 "TestIntEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyEditDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.DisabledTestInt).ToString(),
                 "DisabledTestIntEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyEditHidden() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.HiddenTestInt).ToString(),
                 "");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyEditOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -910,25 +919,25 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestIntEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("TestInt").ToString(),
                 "TestIntEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringEditDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("DisabledTestInt").ToString(),
                 "TestIntEditDisabled");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringEditHidden() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("HiddenTestInt").ToString(),
                 "TestIntEditHidden");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringEditOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -936,25 +945,25 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestIntEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView("TestInt").ToString(),
                 "TestIntView");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringViewDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView("DisabledTestInt").ToString(),
                 "TestIntViewDisabled");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringViewHidden() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView("HiddenTestInt").ToString(),
                 "TestIntViewHidden");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyStringViewOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -962,25 +971,25 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestIntView");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView(y => y.TestInt).ToString(),
                 "TestIntView");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyViewDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView(y => y.DisabledTestInt).ToString(),
                 "TestIntViewDisabled");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyViewHidden() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView(y => y.HiddenTestInt).ToString(),
                 "");
         }
 
-        [Test]
+        [TestMethod]
         public void IntPropertyViewOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -988,7 +997,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestIntView");
         }
 
-        [Test]
+        [TestMethod]
         public void MenuWithCustomItems() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu(TestClass,
                 new CustomMenuItem {
@@ -1006,7 +1015,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "MenuWithCustomItems");
         }
 
-        [Test]
+        [TestMethod]
         public void MenuWithOnlyCustomItems() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu("Test Menu", new CustomMenuItem {
                 Controller = "ControllerName",
@@ -1023,169 +1032,169 @@ namespace MvcTestApp.Tests.Helpers {
                 "MenuWithOnlyCustomItems");
         }
 
-        [Test]
+        [TestMethod]
         public void NameFourParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameFourParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameFourParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int, int, int>(tc, y => y.FourValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameFourParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int, int, int, int>(tc, y => y.FourValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameOneParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int>(y => y.OneValueParameterAction, 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameOneParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameOneParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameOneParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name(tc).ToString(),
                 "Untitled Custom Helper Test Class");
         }
 
-        [Test]
+        [TestMethod]
         public void NameParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name("OneValueParameterAction", 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name(tc, "OneValueParameterAction", 0).ToString(),
                 "Parm");
         }
 
-        [Test]
+        [TestMethod]
         public void NameProperty() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name("TestInt").ToString(),
                 "Test Int");
         }
 
-        [Test]
+        [TestMethod]
         public void NamePropertyGeneric() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name(y => y.TestInt).ToString(),
                 "Test Int");
         }
 
-        [Test]
+        [TestMethod]
         public void NamePropertyGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name(tc, y => y.TestInt).ToString(),
                 "Test Int");
         }
 
-        [Test]
+        [TestMethod]
         public void NamePropertyOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name(tc, "TestInt").ToString(),
                 "Test Int");
         }
 
-        [Test]
+        [TestMethod]
         public void NameTest() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name().ToString(),
                 "Untitled Custom Helper Test Class");
         }
 
-        [Test]
+        [TestMethod]
         public void NameThreeParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameThreeParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameThreeParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int, int>(tc, y => y.ThreeValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameThreeParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int, int, int>(tc, y => y.ThreeValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameTwoParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameTwoParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().Name<CustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameTwoParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int>(tc, y => y.TwoValueParametersAction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NameTwoParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Name<CustomHelperTestClass, int, int, int>(tc, y => y.TwoValueParametersFunction, 0).ToString(),
                 "Parm1");
         }
 
-        [Test]
+        [TestMethod]
         public void NoParameterAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction(y => y.NoParameterAction).ToString(),
                 "NoParameterAction");
         }
 
-        [Test]
+        [TestMethod]
         public void NoParameterActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1193,19 +1202,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "NoParameterAction");
         }
 
-        [Test]
+        [TestMethod]
         public void NoValueParameterFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int>(y => y.NoValueParameterFunction).ToString(),
                 "NoValueParameterFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void NoValueParameterFunctionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, int>(y => y.NoValueParameterFunction).ToString(),
                 "NoValueParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void NoValueParameterFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1213,7 +1222,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "NoValueParameterFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void NoValueParameterFunctionOnOtherObjectAsDialog() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1221,19 +1230,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "NoValueParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, List<CustomHelperTestClass>>(y => y.OneCollectionParameterAction).ToString(),
                 "OneCollectionParameterAction");
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterActionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, List<CustomHelperTestClass>>(y => y.OneCollectionParameterAction).ToString(),
                 "OneCollectionParameterActionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterActionWithParameters() {
             try {
                 CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, List<CustomHelperTestClass>>(y => y.OneCollectionParameterAction, new {collection = new List<CustomHelperTestClass>()}).ToString(),
@@ -1245,19 +1254,19 @@ namespace MvcTestApp.Tests.Helpers {
             catch (NotSupportedException) {} // expected
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, List<CustomHelperTestClass>, int>(y => y.OneCollectionParameterFunction).ToString(),
                 "OneCollectionParameterFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterFunctionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, List<CustomHelperTestClass>, int>(y => y.OneCollectionParameterFunction).ToString(),
                 "OneCollectionParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneCollectionParameterFunctionWithParameters() {
             try {
                 CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, List<CustomHelperTestClass>, int>(y => y.OneCollectionParameterFunction, new {collection = new List<CustomHelperTestClass>()}).ToString(),
@@ -1268,7 +1277,7 @@ namespace MvcTestApp.Tests.Helpers {
             catch (NotSupportedException) {} // expected
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.OneRefParameterAction).ToString(),
@@ -1276,56 +1285,56 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.OneRefParameterAction).ToString(),
                 "OneRefParameterActionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionAsDialogDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.DisabledOneRefParameterAction).ToString(),
                 "OneRefParameterActionAsDialogDisabled");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionAsDialogHidden() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.HiddenOneRefParameterAction).ToString(),
                 "");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionDisabled() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.DisabledOneRefParameterAction).ToString(),
                 "OneRefParameterActionDisabled");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionDisabledWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.DisabledOneRefParameterAction, new {parm = TestClass}).ToString(),
                 "OneRefParameterActionDisabledWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionHidden() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.HiddenOneRefParameterAction).ToString(),
                 "");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionHiddenWithParameter() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.HiddenOneRefParameterAction, new {parm = TestClass}).ToString(),
                 "");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1335,7 +1344,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionOnOtherObjectAsDialog() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1344,7 +1353,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneRefParameterActionOnOtherObjectAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionOnOtherObjectWithParameter() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1353,28 +1362,28 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneRefParameterActionOnOtherObjectWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterActionWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.OneRefParameterAction, new {parm = TestClass}).ToString(),
                 "OneRefParameterActionWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass, int>(y => y.OneRefParameterFunction).ToString(),
                 "OneRefParameterFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunctionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass, int>(y => y.OneRefParameterFunction).ToString(),
                 "OneRefParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1383,7 +1392,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneRefParameterFunctionOnOtherObject");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunctionOnOtherObjectAsDialog() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1392,7 +1401,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneRefParameterFunctionOnOtherObjectAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunctionOnOtherObjectWithParameter() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1401,14 +1410,14 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneRefParameterFunctionOnOtherObjectWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterFunctionWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass, int>(y => y.OneRefParameterFunction, new {parm = TestClass}).ToString(),
                 "OneRefParameterFunctionWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneRefParameterPopulatedActionAsDialog() {
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
 
@@ -1423,19 +1432,19 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("OneRefParameterPopulatedActionAsDialog", s);
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int>(y => y.OneValueParameterAction).ToString(),
                 "OneValueParameterAction");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterActionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, int>(y => y.OneValueParameterAction).ToString(),
                 "OneValueParameterActionasDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1444,7 +1453,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterActionOnOtherObjectAsDialog() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1452,7 +1461,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneValueParameterActionOnOtherObjectAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterActionOnOtherObjectWithParameter() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1460,25 +1469,25 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneValueParameterActionOnOtherObjectWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterActionWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int>(y => y.OneValueParameterAction, new {parm = 1}).ToString(),
                 "OneValueParameterActionWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction).ToString(),
                 "OneValueParameterFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunctionAsDialog() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction).ToString(),
                 "OneValueParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1486,7 +1495,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneValueParameterFunctionOnOtherObject");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunctionOnOtherObjectAsDialog() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1494,7 +1503,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneValueParameterFunctionAsDialog");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunctionOnOtherObjectWithParameter() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1502,13 +1511,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "OneValueParameterFunctionOnOtherObjectWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void OneValueParameterFunctionWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, new {parm = 1}).ToString(),
                 "OneValueParameterFunctionWithParameter");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertiesListOnlyCollections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertiesListOnlyCollections(tc).Aggregate("", (s, t) => s + t.ToString()), "PropertiesListOnlyCollections");
@@ -1517,349 +1526,349 @@ namespace MvcTestApp.Tests.Helpers {
         //out
 
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditExclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWithout("TestCollectionOne", "TestInt").ToString(),
                 "PropertyListEditWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditExclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWithout(y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "PropertyListEditExclusionsGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditExclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "PropertyListEditExclusionsGenericOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditExclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWithout(tc, "TestCollectionOne", "TestInt").ToString(),
                 "PropertyListEditExclusionsOtherObj");
         }
 
-        [Test]
+        [TestMethod, Ignore]
         public void PropertyListEditInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith("TestInt", "TestCollectionOne").ToString(),
                 "PropertyListEditInclusions");
         }
 
-        [Test]
+        [TestMethod, Ignore]
         public void PropertyListEditInclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListEditInclusionsGeneric");
         }
 
-        [Test]
+        [TestMethod, Ignore]
         public void PropertyListEditInclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListEditInclusionsGenericOtherObj");
         }
 
-        [Test]
+        [TestMethod, Ignore]
         public void PropertyListEditInclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, "TestInt", "TestCollectionOne").ToString(),
                 "PropertyListEditInclusionsOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditList() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit("TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListEditList");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListEditListDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListEditListDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListEditListGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListEditListOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListEditListOtherObjDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListEditListOtherObjDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditListOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListEditListOtherObjGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTable() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit("TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListEditTable");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListEditTableDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListEditTableDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListEditTableGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListEditTableOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListEditTableOtherObjDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListEditTableOtherObjDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListEditTableOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListEditTableOtherObjGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListExclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWithout("TestCollectionOne", "TestInt").ToString(),
                 "PropertyListExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListExclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWithout(y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "PropertyListExclusionsGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListExclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "PropertyListExclusionsGenericOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListExclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWithout(tc, "TestCollectionOne", "TestInt").ToString(),
                 "PropertyListWithExclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWith("TestInt", "TestCollectionOne").ToString(),
                 "PropertyListInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListInclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListInclusionsGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListInclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListInclusionsGenericOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListInclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWith(tc, "TestInt", "TestCollectionOne").ToString(),
                 "PropertyListWithInclusions");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListList() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList("TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListList");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListListDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListListDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListListGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListListOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListListOtherObjDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
                 "PropertyListListOtherObjDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListListOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListListOtherObjGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListOnlyCollections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListOnlyCollections(tc).ToString(), "PropertyListOnlyCollections");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListOnlyCollectionsFormatList() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListOnlyCollections(tc, PropertyExtensions.CollectionFormat.List).ToString(), "PropertyListOnlyCollectionsFormatList");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListOnlyCollectionsFormatTable() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListOnlyCollections(tc, PropertyExtensions.CollectionFormat.Table).ToString(), "PropertyListOnlyCollectionsFormatTable");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTable() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList("TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListTable");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListTableDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListTableDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListTableGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListTableOtherObj");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListTableOtherObjDict");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
                 "PropertyListTableOtherObjDictGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListTableOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
                 "PropertyListTableOtherObjGeneric");
         }
 
-        [Test]
+        [TestMethod]
         public void PropertyListWithoutCollections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWithoutCollections(tc).ToString(), "PropertyListWithoutCollections");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestRef).ToString(),
                 "RefPropertyEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyEditOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1867,13 +1876,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefEditOther");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyStringEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("TestRef").ToString(),
                 "RefPropertyStringEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyStringEditExistingValue() {
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
 
@@ -1888,7 +1897,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void RefPropertyStringEditOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1896,13 +1905,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyStringView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView("TestRef").ToString(),
                 "TestRefView");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyStringViewOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1910,13 +1919,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefView");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView(y => y.TestRef).ToString(),
                 "TestRefView");
         }
 
-        [Test]
+        [TestMethod]
         public void RefPropertyViewOtherObj() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1924,7 +1933,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefView");
         }
 
-        [Test] //TODO: When transition to Menus complete, replace with test of adding CustomMenuItems to a menu
+        [TestMethod] //TODO: When transition to Menus complete, replace with test of adding CustomMenuItems to a menu
         public void ServiceWithCustomItems() {
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
 
@@ -1944,7 +1953,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ServiceWithCustomItems");
         }
 
-        [Test] //TODO: When conversion to Menus complete, replace this test with call to MenuExtensions#MainMenu.
+        [TestMethod] //TODO: When conversion to Menus complete, replace this test with call to MenuExtensions#MainMenu.
         public void SingleServiceMenu() {
             SetupViewData(new object());
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
@@ -1954,13 +1963,13 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("SingleServiceMenu", s);
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestString).ToString(),
                 "TestStringEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyOtherObjEdit() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1968,7 +1977,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestStringEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyOtherObjView() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1976,13 +1985,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestStringView");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyStringEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("TestString").ToString(),
                 "TestStringEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyStringOtherObjEdit() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1990,7 +1999,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestStringEdit");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyStringOtherObjView() {
             CustomHelperTestClass tc = TestClass;
 
@@ -1998,19 +2007,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestStringView");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyStringView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView("TestString").ToString(),
                 "TestStringView");
         }
 
-        [Test]
+        [TestMethod]
         public void StringPropertyView() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyView(y => y.TestString).ToString(),
                 "TestStringView");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2019,7 +2028,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2030,7 +2039,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2041,7 +2050,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersActionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2050,7 +2059,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2060,7 +2069,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2072,7 +2081,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2084,7 +2093,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersFunctionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeRefParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2094,13 +2103,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeRefParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction).ToString(),
                 "ThreeValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2108,7 +2117,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2116,19 +2125,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, new {parm1 = 1, parm2 = 2, parm3 = 3}).ToString(),
                 "ThreeValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction).ToString(),
                 "ThreeValueParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2136,7 +2145,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeValueParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2144,13 +2153,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "ThreeValueParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeValueParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, new {parm1 = 1, parm2 = 2, parm3 = 3}).ToString(),
                 "ThreeValueParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2158,7 +2167,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2168,7 +2177,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2178,7 +2187,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersActionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2186,7 +2195,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2195,7 +2204,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2206,7 +2215,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2217,7 +2226,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersFunctionOnOtherObjectWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoRefParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
@@ -2226,13 +2235,13 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoRefParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersAction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int>(y => y.TwoValueParametersAction).ToString(),
                 "TwoValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersActionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2240,7 +2249,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoValueParametersAction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersActionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2248,19 +2257,19 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersActionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, new {parm1 = 1, parm2 = 2}).ToString(),
                 "TwoValueParametersActionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersFunction() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction).ToString(),
                 "TwoValueParametersFunction");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersFunctionOnOtherObject() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2270,7 +2279,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         //
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersFunctionOnOtherObjectWithParameters() {
             CustomHelperTestClass tc = TestClass;
 
@@ -2278,7 +2287,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TwoValueParametersFunctionWithParameters");
         }
 
-        [Test]
+        [TestMethod]
         public void TwoValueParametersFunctionWithParameters() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, new {parm1 = 1, parm2 = 2}).ToString(),
                 "TwoValueParametersFunctionWithParameters");
@@ -2287,85 +2296,85 @@ namespace MvcTestApp.Tests.Helpers {
 
         // object
 
-        [Test]
+        [TestMethod]
         public void TypeName() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName().ToString(),
                 "CustomHelperTestClass");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameFourParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameFourParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameFourParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int, int, int>(tc, y => y.FourValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameFourParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int, int, int, int>(tc, y => y.FourValueParametersFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameOneParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int>(y => y.OneValueParameterAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameOneParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameOneParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameOneParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName(tc).ToString(),
                 "CustomHelperTestClass");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName("OneValueParameterAction", 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName(tc, "OneValueParameterAction", 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameProperty() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName("TestInt").ToString(),
                 "Int32");
@@ -2373,20 +2382,20 @@ namespace MvcTestApp.Tests.Helpers {
 
         // property
 
-        [Test]
+        [TestMethod]
         public void TypeNamePropertyGeneric() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName(y => y.TestInt).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNamePropertyGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName(tc, y => y.TestInt).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNamePropertyOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName(tc, "TestInt").ToString(),
@@ -2396,52 +2405,52 @@ namespace MvcTestApp.Tests.Helpers {
         // parm 
 
 
-        [Test]
+        [TestMethod]
         public void TypeNameThreeParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameThreeParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameThreeParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int, int>(tc, y => y.ThreeValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameThreeParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int, int, int>(tc, y => y.ThreeValueParametersFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameTwoParm() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameTwoParmFunc() {
             CustomHelperTestCompareDirect(x => x.GetHtmlHelper<CustomHelperTestClass>().TypeName<CustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameTwoParmOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int>(tc, y => y.TwoValueParametersAction, 0).ToString(),
                 "Int32");
         }
 
-        [Test]
+        [TestMethod]
         public void TypeNameTwoParmOtherObjFunc() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.TypeName<CustomHelperTestClass, int, int, int>(tc, y => y.TwoValueParametersFunction, 0).ToString(),

@@ -17,13 +17,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Container;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
@@ -461,9 +459,9 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
 
-            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>();
+            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
 
-            container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>();
+            container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
         }
 
         /// <summary>

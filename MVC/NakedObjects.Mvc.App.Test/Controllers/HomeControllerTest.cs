@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
@@ -18,15 +19,16 @@ using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
-using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Controllers {
-    [TestFixture]
+    [TestClass]
     public class HomeControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+
+        [TestInitialize]
         public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
             StartTest();
             controller = new HomeController(NakedObjectsFramework);
             mocks = new ContextMocks(controller);
@@ -41,17 +43,13 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
-            InitializeNakedObjectsFramework(this);
         }
 
-        [TestFixtureTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
-        }
+      
 
         private HomeController controller;
         private ContextMocks mocks;
@@ -93,7 +91,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void ClearAllHistory() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
@@ -103,7 +101,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearEmptyHistory() {
             var result = (RedirectToRouteResult) controller.ClearHistory(false);
 
@@ -111,7 +109,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearHistory() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
@@ -119,10 +117,10 @@ namespace MvcTestApp.Tests.Controllers {
 
             Assert.AreEqual("ObjectView", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof (Employee), data.Model);
+            Assert.IsInstanceOfType(data.Model, typeof(Employee));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearHistoryItemNext1() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
@@ -131,10 +129,10 @@ namespace MvcTestApp.Tests.Controllers {
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof (Vendor), data.Model);
+            Assert.IsInstanceOfType(data.Model, typeof(Vendor));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearHistoryItemNext2() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
@@ -143,10 +141,10 @@ namespace MvcTestApp.Tests.Controllers {
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof (Employee), data.Model);
+            Assert.IsInstanceOfType(data.Model, typeof(Employee));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearHistoryItemNoNext() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
@@ -157,7 +155,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void ClearHistoryOthers1() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
@@ -166,10 +164,10 @@ namespace MvcTestApp.Tests.Controllers {
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof (Employee), data.Model);
+            Assert.IsInstanceOfType(data.Model, typeof(Employee));
         }
 
-        [Test]
+        [TestMethod]
         public void ClearHistoryOthers2() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
@@ -178,7 +176,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof (Vendor), data.Model);
+            Assert.IsInstanceOfType(data.Model, typeof(Vendor));
         }
     }
 }

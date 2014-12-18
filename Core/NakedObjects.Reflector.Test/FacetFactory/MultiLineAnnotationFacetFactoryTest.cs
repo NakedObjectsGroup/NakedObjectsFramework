@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new MultiLineAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -72,7 +73,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -82,7 +83,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationDefaults() {
             facetFactory.Process(Reflector, typeof (Customer3), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
@@ -91,14 +92,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(0, multiLineFacetAnnotation.Width);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringActionParameters() {
             MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IMultiLineFacet)));
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringProperties() {
             PropertyInfo property = FindProperty(typeof (Customer5), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -106,7 +107,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -118,7 +119,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(24, multiLineFacetAnnotation.Width);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
@@ -129,7 +130,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(9, multiLineFacetAnnotation.Width);
         }
 
-        [Test]
+        [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

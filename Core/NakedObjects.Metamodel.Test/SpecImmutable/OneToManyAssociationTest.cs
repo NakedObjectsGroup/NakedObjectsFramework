@@ -5,7 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NUnit.Framework;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.Meta.Test.SpecImmutable {
     // TODO redo tests
@@ -13,7 +14,7 @@ namespace NakedObjects.Meta.Test.SpecImmutable {
     /// <summary>
     ///     Summary description for OneToManyAssociationTest
     /// </summary>
-    [TestFixture]
+    [TestClass]
     public class OneToManyAssociationTest {
         //[SetUp]
         //public override void SetUp() {
@@ -59,7 +60,7 @@ namespace NakedObjects.Meta.Test.SpecImmutable {
         //}
 
 
-        //[Test]
+        //[TestMethod]
         //public void TestCount() {
         //    Assert.AreEqual(0, association.Count(nakedObject, NakedObjectsContext.LifecycleManager));
         //}

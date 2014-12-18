@@ -11,24 +11,20 @@
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>2.6.3</NUnitVer>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
-  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
 
   <Choose>
     <When Condition="Exists('C:\Program Files (x86)')">
       <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
         <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
         <MSTestPath>C:\Program Files\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </Otherwise>
@@ -116,7 +112,6 @@
       <SolutionRestoreCommand>"$(NugetToolsPath)\nuget.exe" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
     </PropertyGroup>
     <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
-    <!--<Exec WorkingDirectory="$(MVCPath)" Command="$(Nuget) install Nunit.Runners  -o ..\$(InstalledPackagesPath)"/>-->
   </Target>
 
   
@@ -239,9 +234,10 @@
    
     <MSBuild Projects="@(MVCTFiles)" Targets="$(Targets)" Properties="ReferencePath=$(RefPath);Configuration=%(Configuration.Identity)" />
     
-    <NUnit Assemblies="$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOMVC).App.Test.xml" />
-    <NUnit Assemblies="$(MVCPath)\$(NOMVC).Test\bin\%(Configuration.Identity)\$(NOMVC).Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOMVC).Test.xml" />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).App.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.Javascript.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(MVCPath)\$(NOMVC).Test\bin\%(Configuration.Identity)\$(NOMVC).Test.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.trx' />
+
   </Target>
 
 

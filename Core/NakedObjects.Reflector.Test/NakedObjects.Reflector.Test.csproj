@@ -77,6 +77,7 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -93,9 +94,6 @@
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-beta1\lib\net40\NakedObjects.Types.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -187,6 +185,10 @@
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
       <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
       <Name>NakedObjects.Metamodel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
+      <Project>{3E188CC2-9F88-47F1-A197-22518958AE25}</Project>
+      <Name>NakedObjects.Persistor.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>

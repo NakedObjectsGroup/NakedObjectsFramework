@@ -16,7 +16,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
-namespace MyBatch.Exe {
+namespace NakedObjects.Batch {
     /// <summary>
     /// Use this class to configure the application running under Naked Objects
     /// </summary>

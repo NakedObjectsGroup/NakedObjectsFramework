@@ -2,7 +2,7 @@
  
   <PropertyGroup>
     <BATPath>Batch</BATPath>
-    <NOBAT>NakedObjects.Batch.Exe</NOBAT>
+    <NOBAT>NakedObjects.Batch</NOBAT>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
@@ -74,37 +74,37 @@
     
 
     <ItemGroup>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\BatchStartPoint.cs"/>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\NakedObjectsRunSettings.cs.pp"/>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\Program.cs"/>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityActivator.cs"/>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityConfig.cs"/>
-      <BatchSrc Include="$(BATPath)\*$(NOBAT)\UnityFrameworkResolver.cs"/>      
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\BatchStartPoint.cs"/>
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\NakedObjectsRunSettings.cs.pp"/>
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\Program.cs"/>
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityActivator.cs"/>
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityConfig.cs"/>
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityFrameworkResolver.cs"/>      
     </ItemGroup>
     
-    <Copy SourceFiles="@(BatchSrc)" DestinationFolder="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)"/>
+    <Copy SourceFiles="@(BatchSrc)" DestinationFolder="$(BATPath)\$(NOBAT).package\content"/>
 
     <ItemGroup>
-      <ToUpdate Include="$(BATPath)\$(NOBAT).package\content*\*.cs"/>
+      <ToUpdate Include="$(BATPath)\$(NOBAT).package\content\*.cs"/>
     </ItemGroup>
 
-    <!--<FileUpdate Files="@(ToUpdate)"
-            RegEx= 'MyBatch.Exe'
+    <FileUpdate Files="@(ToUpdate)"
+            RegEx= 'NakedObjects.Batch'
             ReplacementText ='$rootnamespace$'/>
 
-    <Move SourceFiles="@(ToUpdate)" DestinationFiles="$(BATPath)\$(NOBAT).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />-->
+    <Move SourceFiles="@(ToUpdate)" DestinationFiles="$(BATPath)\$(NOBAT).package\content\%(Filename)%(Extension).pp" />
     
   </Target>
 
   <Target Name="BatchPackage" DependsOnTargets="Batch">
-    <!--<Exec WorkingDirectory="$(BATPath)\$(NOBAT).package" Command="..\$(Nuget) pack $(NOBAT).nuspec -Symbols"/>
+    <Exec WorkingDirectory="$(BATPath)\$(NOBAT).package" Command="..\$(Nuget) pack $(NOBAT).nuspec -Symbols"/>
 
     <ItemGroup>
       <BatchPackage Include="$(BATPath)\$(NOBAT).package\*.nupkg"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(PackageSourcePath)" />
-    <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(BuiltPackagesPath)" />-->
+    <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(BuiltPackagesPath)" />
    
   </Target>
 </Project>

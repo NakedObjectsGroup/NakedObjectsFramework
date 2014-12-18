@@ -33,7 +33,7 @@ namespace Snapshot.Xml.Test {
 
         #endregion
 
-        private ICollection<TestObject> testCollection = new List<TestObject>();
+        private IList<TestObject> testCollection = new List<TestObject>();
 
         [Key, Hidden]
         public virtual int TestObjectId { get; set; }
@@ -45,7 +45,7 @@ namespace Snapshot.Xml.Test {
 
         public virtual TestObject TestReference { get; set; }
 
-        public virtual ICollection<TestObject> TestCollection {
+        public virtual IList<TestObject> TestCollection {
             get { return testCollection; }
             set { testCollection = value; }
         }

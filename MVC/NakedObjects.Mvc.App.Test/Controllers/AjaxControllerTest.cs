@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
@@ -27,17 +28,19 @@ using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NUnit.Framework;
 using NakedObjects.Core.Util;
-using Assert = NUnit.Framework.Assert;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
-    [TestFixture]
+    [TestClass]
     public class AjaxControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+
+        [TestInitialize]
         public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+
             StartTest();
             controller = new AjaxController(NakedObjectsFramework);
             mocks = new ContextMocks(controller);
@@ -52,16 +55,10 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
         }
 
         private AjaxController controller;
@@ -117,7 +114,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, value}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -146,7 +143,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, value}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -176,7 +173,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id0, value + value}, {parm1Id1, value}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -191,7 +188,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new[] {value + value + "postfix1", value + "postfix2"}));
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionAutoComplete() {
             INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
 
@@ -204,7 +201,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}});
 
             JsonResult result = controller.GetActionCompletions(id, actionName, 0, "avalue");
-            Assert.IsInstanceOf(typeof (List<object>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (List<object>));
 
             var list = result.Data as IList<object>;
 
@@ -226,7 +223,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("String", nv1["alt"]);
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesDefault() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
@@ -241,7 +238,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -257,37 +254,37 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParms1() {
             TestGetActionChoicesOtherParms("value1");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParms2() {
             TestGetActionChoicesOtherParms("value2");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParmsMultiple1() {
             TestGetActionChoicesOtherParmsMultiple("value1");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParmsMultiple2() {
             TestGetActionChoicesOtherParmsMultiple("value2");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect1() {
             TestGetActionChoicesOtherParmsMultipleMultiSelect("value1");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect2() {
             TestGetActionChoicesOtherParmsMultipleMultiSelect("value2");
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetActionMultipleChoicesDefault() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
@@ -302,7 +299,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -318,7 +315,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestGetPropertyAutoComplete() {
             INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
             object autoCompleteObject = autoCompleteRepo.GetDomainObject<AutoCompleteRepository>().GetAutoCompleteObject();
@@ -351,7 +348,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("String", nv1["alt"]);
         }
 
-        [Test]
+        [TestMethod]
         public void TestGetPropertyChoicesDefault() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
@@ -365,7 +362,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}});
 
             JsonResult result = controller.GetPropertyChoices(id);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -378,7 +375,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestGetPropertyChoicesOtherValue() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
@@ -392,7 +389,7 @@ namespace MvcTestApp.Tests.Controllers {
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, "AName"}, {parm2Id, ""}});
 
             JsonResult result = controller.GetPropertyChoices(id);
-            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOfType(result.Data, typeof (IDictionary<string, string[][]>));
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -403,7 +400,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new[] {"AName-A", "AName-B"}));
         }
 
-        [Test]
+        [TestMethod]
         public void TestJsonp() {
             const string data = "testData";
 
@@ -426,7 +423,7 @@ namespace MvcTestApp.Tests.Controllers {
             mockResponse.VerifySet(x => x.ContentEncoding = Encoding.UTF8);
         }
 
-        [Test]
+        [TestMethod]
         public void TestJsonpDefaults() {
             const string data = "testData";
 
@@ -448,7 +445,7 @@ namespace MvcTestApp.Tests.Controllers {
             mockResponse.VerifySet(x => x.ContentType = "application/json");
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateFailRefParameter() {
             Store store = NakedObjectsFramework.Persistor.Instances<Store>().First();
             Vendor vendor = NakedObjectsFramework.Persistor.Instances<Vendor>().First();
@@ -462,7 +459,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Not a suitable type; must be a Customer", result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateFailRefProperty() {
             Store store = NakedObjectsFramework.Persistor.Instances<Store>().First();
             Store store1 = NakedObjectsFramework.Persistor.Instances<Store>().OrderBy(x => "").Skip(1).First();
@@ -475,7 +472,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Not a suitable type; must be a Sales Person", result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateFailValueParameter() {
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
 
@@ -492,7 +489,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Mandatory", result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateFailValueProperty() {
             Vendor vendor = NakedObjectsFramework.Persistor.Instances<Vendor>().First();
             string id = NakedObjectsFramework.GetObjectId(vendor);
@@ -505,7 +502,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Mandatory", result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateOkInlineValueProperty() {
             TimePeriod timePeriod = NakedObjectsFramework.Persistor.Instances<Shift>().First().Times;
             string id = NakedObjectsFramework.GetObjectId(timePeriod);
@@ -518,7 +515,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue((bool) result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateOkRefParameter() {
             Store store = NakedObjectsFramework.Persistor.Instances<Store>().First();
             const string actionName = "CreateNewOrder";
@@ -532,7 +529,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue((bool) result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateOkRefProperty() {
             Store store = NakedObjectsFramework.Persistor.Instances<Store>().First();
             SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().First();
@@ -545,7 +542,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue((bool) result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateOkValueParameter() {
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
 
@@ -562,7 +559,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue((bool) result.Data);
         }
 
-        [Test]
+        [TestMethod]
         public void TestValidateOkValueProperty() {
             Vendor vendor = NakedObjectsFramework.Persistor.Instances<Vendor>().First();
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);

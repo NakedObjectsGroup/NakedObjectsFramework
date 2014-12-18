@@ -6,16 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
-using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Resolve {
-    [TestFixture]
+    [TestClass]
     public class ResolveStateTest {
         private static void ExpectException(Action x) {
             try {
@@ -120,7 +120,7 @@ namespace NakedObjects.Core.Test.Resolve {
             return sm;
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromGhost() {
             ExpectException(() => GhostSM().Handle(Events.InitializePersistentEvent));
             ExpectException(() => GhostSM().Handle(Events.EndPartResolvingEvent));
@@ -130,7 +130,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => GhostSM().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromNew() {
             ExpectException(() => NewSm().Handle(Events.EndPartResolvingEvent));
             ExpectException(() => NewSm().Handle(Events.EndResolvingEvent));
@@ -141,7 +141,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => NewSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromPartResolved() {
             ExpectException(() => ResolvedPartSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => ResolvedPartSm().Handle(Events.EndPartResolvingEvent));
@@ -152,7 +152,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromResolved() {
             ExpectException(() => ResolvedSm().Handle(Events.EndPartResolvingEvent));
             ExpectException(() => ResolvedSm().Handle(Events.EndResolvingEvent));
@@ -164,7 +164,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromResolving() {
             ExpectException(() => ResolvingSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => ResolvingSm().Handle(Events.EndPartResolvingEvent));
@@ -180,7 +180,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvingSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromResolvingPart() {
             ExpectException(() => ResolvingPartSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => ResolvingPartSm().Handle(Events.StartResolvingEvent));
@@ -195,7 +195,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvingPartSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromSerializingPartResolved() {
             ExpectException(() => SerializingPartResolvedSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => SerializingPartResolvedSm().Handle(Events.EndResolvingEvent));
@@ -211,7 +211,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => SerializingPartResolvedSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromSerializingResolved() {
             ExpectException(() => SerializingResolvedSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => SerializingResolvedSm().Handle(Events.EndPartResolvingEvent));
@@ -227,7 +227,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => SerializingResolvedSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromSerializingTransient() {
             ExpectException(() => SerializingTransientSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => SerializingTransientSm().Handle(Events.EndPartResolvingEvent));
@@ -243,7 +243,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => SerializingTransientSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromTransient() {
             ExpectException(() => TransientSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => TransientSm().Handle(Events.EndPartResolvingEvent));
@@ -258,7 +258,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => TransientSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void InvalidChangesFromUpdating() {
             ExpectException(() => UpdatingSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => UpdatingSm().Handle(Events.EndPartResolvingEvent));
@@ -274,7 +274,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => UpdatingSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromGhost() {
             ExpectNoException(() => GhostSM().Handle(Events.StartResolvingEvent));
             ExpectNoException(() => GhostSM().Handle(Events.StartPartResolvingEvent));
@@ -283,14 +283,14 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectNoException(() => GhostSM().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromNew() {
             ExpectNoException(() => NewSm().Handle(Events.InitializePersistentEvent));
             ExpectNoException(() => NewSm().Handle(Events.InitializeTransientEvent));
             ExpectNoException(() => NewSm().Handle(Events.InitializeAggregateEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromPartResolved() {
             ExpectNoException(() => ResolvedPartSm().Handle(Events.StartResolvingEvent));
             ExpectNoException(() => ResolvedPartSm().Handle(Events.StartPartResolvingEvent));
@@ -299,7 +299,7 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectNoException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromResolved() {
             ExpectNoException(() => ResolvedSm().Handle(Events.ResetEvent));
             ExpectNoException(() => ResolvedSm().Handle(Events.DestroyEvent));
@@ -307,39 +307,39 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectNoException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromResolving() {
             ExpectNoException(() => ResolvingSm().Handle(Events.EndResolvingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromResolvingPart() {
             ExpectNoException(() => ResolvingPartSm().Handle(Events.EndPartResolvingEvent));
             ExpectNoException(() => ResolvingPartSm().Handle(Events.EndResolvingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromSerializingPartResolved() {
             ExpectNoException(() => SerializingPartResolvedSm().Handle(Events.EndSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromSerializingResolved() {
             ExpectNoException(() => SerializingResolvedSm().Handle(Events.EndSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromSerializingTransient() {
             ExpectNoException(() => SerializingTransientSm().Handle(Events.EndSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromTransient() {
             ExpectNoException(() => TransientSm().Handle(Events.StartResolvingEvent));
             ExpectNoException(() => TransientSm().Handle(Events.StartSerializingEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void ValidChangesFromUpdating() {
             ExpectNoException(() => UpdatingSm().Handle(Events.EndUpdatingEvent));
         }

@@ -6,18 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp() {
             ISpecification holder = null;
             var customer = new Customer17();
@@ -31,7 +32,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             facet = new ActionParameterValidation(method, 0, holder);
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TearDown() {}
 
         #endregion
@@ -39,21 +40,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private INakedObject target;
         private ActionParameterValidation facet;
 
-        [Test]
+        [TestMethod]
         public void Test1() {
             var mock = new Mock<INakedObject>();
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(10);
-            Assert.That(facet.InvalidReason(target, value), Is.Null);
+            Assert.IsNull(facet.InvalidReason(target, value));
         }
 
 
-        [Test]
+        [TestMethod]
         public void Test2() {
             var mock = new Mock<INakedObject>();
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(-7);
-            Assert.That(facet.InvalidReason(target, value), Is.EqualTo("must be positive"));
+            Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
         }
     }
 

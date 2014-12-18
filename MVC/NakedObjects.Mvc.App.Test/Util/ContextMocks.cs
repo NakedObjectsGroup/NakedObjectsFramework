@@ -11,9 +11,9 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Mvc.App;
-using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Util {
     public static class Constants {

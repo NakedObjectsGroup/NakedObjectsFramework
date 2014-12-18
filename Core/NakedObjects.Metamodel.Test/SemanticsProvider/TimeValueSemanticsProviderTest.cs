@@ -7,18 +7,18 @@
 
 using System;
 using System.Globalization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
-    [TestFixture]
+    [TestClass]
     public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
@@ -28,13 +28,18 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }
 
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
         #endregion
 
         private TimeValueSemanticsProvider adapter;
         private ISpecification holder;
         private TimeSpan time;
 
-        [Test]
+        [TestMethod]
         public void TestParseInvariant() {
             var d1 = new TimeSpan(1, 5, 1, 25);
             string s1 = d1.ToString(null, CultureInfo.InvariantCulture);
@@ -43,7 +48,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
 
-        [Test]
+        [TestMethod]
         public void TestRestoreOfInvalidDatal() {
             try {
                 adapter.FromEncodedString("two ten");
@@ -52,15 +57,35 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (FormatException /*expected*/) {}
         }
 
-        [Test]
+        [TestMethod]
         public void TestRestoreTime() {
             object parsed = adapter.FromEncodedString("21:30:00");
             Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTimeAsEncodedString() {
             Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
+        }
+
+        [TestMethod]
+        public override void TestParseNull() {
+            base.TestParseNull();
+        }
+
+        [TestMethod]
+        public override void TestParseEmptyString() {
+            base.TestParseEmptyString();
+        }
+
+        [TestMethod]
+        public override void TestDecodeNull() {
+            base.TestDecodeNull();
+        }
+
+        [TestMethod]
+        public override void TestEmptyEncoding() {
+            base.TestEmptyEncoding();
         }
     }
 

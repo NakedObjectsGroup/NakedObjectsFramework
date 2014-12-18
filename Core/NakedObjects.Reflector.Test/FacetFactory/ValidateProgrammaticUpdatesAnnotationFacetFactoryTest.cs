@@ -6,26 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -49,7 +50,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer1 {}
 
 
-        [Test]
+        [TestMethod]
         public void TestApplyValidationNotPickup() {
             facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
@@ -57,7 +58,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestApplyValidationPickup() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));

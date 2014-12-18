@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class TypicalLengthAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new TypicalLengthAnnotationFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -58,7 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void someAction([TypicalLength(20)] int foo) {}
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -68,7 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
@@ -79,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(20, typicalLengthFacetAnnotation.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypicalLengthAnnotationPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
@@ -89,7 +90,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(16, typicalLengthFacetAnnotation.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestTypicalLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);

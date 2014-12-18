@@ -7,26 +7,27 @@
 
 using System;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new TitleMethodFacetFactory(0);
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -58,7 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer2 {}
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -68,14 +69,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestNoExplicitTitleOrToStringMethod() {
             facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (ITitleFacet)));
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo titleMethod = FindMethod(typeof (Customer), "Title");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
@@ -87,7 +88,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(titleMethod);
         }
 
-        [Test]
+        [TestMethod]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString");
             facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);

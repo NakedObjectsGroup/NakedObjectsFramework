@@ -7,18 +7,35 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<ProxyTestContext> {}
+
+    public class ProxyTestContext : DbContext {
+        public ProxyTestContext()
+            : base("ProxyCreatorTest") {}
+
+        public DbSet<HasProperty> HasProperties { get; set; }
+        public DbSet<HasCollectionWithVirtualAccessors> HasCollectionWithVirtualAccessors { get; set; }
+        public DbSet<HasCollectionWithNonVirtualAccessors> HasCollectionWithNonVirtualAccessors { get; set; }
+    }
+
+
     public class HasProperty {
+        public virtual int Id { get; set; }
+
         public virtual string Prop { get; set; }
     }
 
     public class HasCollectionWithVirtualAccessors {
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
+        public virtual int Id { get; set; }
 
         public virtual ICollection<HasProperty> ACollection {
             get { return aCollection; }
@@ -40,6 +57,7 @@ namespace NakedObjects.Reflect.Test {
 
     public class HasCollectionWithNonVirtualAccessors {
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
+        public virtual int Id { get; set; }
 
         public virtual ICollection<HasProperty> ACollection {
             get { return aCollection; }
@@ -60,45 +78,41 @@ namespace NakedObjects.Reflect.Test {
     }
 
 
-    [TestFixture, Ignore] // fix by changing to codefirst
+    [TestClass, Ignore]
     public class ProxyCreatorTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void Setup() {
-            StartTest();
-        }
-
-        [TearDown]
-        public void TearDown() {}
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            // replace INakedObjectStore types
-
-            //container.RegisterType<IOidGenerator, SimpleOidGenerator>(new InjectionConstructor(typeof (INakedObjectReflector), 0L));
-            //container.RegisterType<IPersistAlgorithm, DefaultPersistAlgorithm>();
-            //container.RegisterType<INakedObjectStore, MemoryObjectStore>();
-            //container.RegisterType<IIdentityMap, IdentityMapImpl>();
-        }
-
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDownFixture() {
-            CleanupNakedObjectsFramework(this);
+        protected override Type[] Types {
+            get {
+                return new Type[] {
+                    typeof (HasProperty), typeof (HasCollectionWithNonVirtualAccessors), typeof (HasCollectionWithVirtualAccessors)
+                };
+            }
         }
 
         protected override object[] MenuServices {
             get { return new[] {new SimpleRepository<HasProperty>()}; }
         }
 
-        [Test]
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(Activator.CreateInstance<ProxyTestContext>);
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public static void SetupFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+
+     
+
+        [TestInitialize]
+        public void Setup() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
+        }
+
+        [TestMethod]
         public void CreateProxyWithNonVirtualAccessors() {
             Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Metamodel, NakedObjectsFramework.LifecycleManager, typeof (HasCollectionWithNonVirtualAccessors));
             var proxy = (HasCollectionWithNonVirtualAccessors) Activator.CreateInstance(proxyType);
@@ -111,7 +125,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsTrue(proxy.ACollection.Contains(hasProperty));
         }
 
-        [Test]
+        [TestMethod]
         public void CreateProxyWithVirtualAddTo() {
             Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Metamodel, NakedObjectsFramework.LifecycleManager, typeof (HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
@@ -124,7 +138,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsTrue(proxy.ACollection.Contains(hasProperty));
         }
 
-        [Test]
+        [TestMethod]
         public void CreateProxyWithVirtualClear() {
             Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Metamodel, NakedObjectsFramework.LifecycleManager, typeof (HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
@@ -141,7 +155,7 @@ namespace NakedObjects.Reflect.Test {
         }
 
 
-        [Test]
+        [TestMethod]
         public void CreateProxyWithVirtualProperty() {
             Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Metamodel, NakedObjectsFramework.LifecycleManager, typeof (HasProperty));
             var proxy = (HasProperty) Activator.CreateInstance(proxyType);
@@ -153,7 +167,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreEqual(testValue, proxy.Prop);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateProxyWithVirtualRemoveFrom() {
             Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Metamodel, NakedObjectsFramework.LifecycleManager, typeof (HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);

@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -16,21 +17,21 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using NUnit.Framework;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestFixture]
+    [TestClass]
     public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             facetFactory = new NamedAnnotationFacetFactory(0);
             //BasicConfigurator.Configure(new WarningAppender());
         }
 
-        [TearDown]
+        [TestCleanup]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
@@ -139,7 +140,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private readonly ISpecificationBuilder facetHolder1 = new TestSpecification();
 
 
-        [Test]
+        [TestMethod]
         public void ATestDisplayNameAnnotationOnActionIgnoresDuplicate() {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer18), "SomeAction");
@@ -163,7 +164,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void ATestNamedAnnotationOnActionIgnoresDuplicate() {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "SomeAction");
@@ -187,7 +188,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisplayNameAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer16), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer16), "NumberOfOrders1");
@@ -212,7 +213,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             //Assert.Contains("Duplicate name: some name found on type: NakedObjects.Reflector.DotNet.Facets.Naming.Named.NamedAnnotationFacetFactoryTest+Customer16", NakedObjectsContext.InitialisationWarnings);
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisplayNameAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer8), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -224,7 +225,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisplayNameAnnotationPickedUpOnClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer5), "someAction");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
@@ -236,7 +237,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisplayNameAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -248,7 +249,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestDisplayNameAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer6), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -260,7 +261,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -270,7 +271,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer11), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer11), "NumberOfOrders1");
@@ -295,7 +296,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             // Assert.Contains("Duplicate name: some name found on type: NakedObjects.Reflector.DotNet.Facets.Naming.Named.NamedAnnotationFacetFactoryTest+Customer11", NakedObjectsContext.InitialisationWarnings);
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
@@ -307,7 +308,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationPickedUpOnActionParameter() {
             MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification);
@@ -318,7 +319,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("some name", namedFacetAbstract.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationPickedUpOnClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "someAction");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
@@ -330,7 +331,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -342,7 +343,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Test]
+        [TestMethod]
         public void TestNamedAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
