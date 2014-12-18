@@ -33,7 +33,9 @@ namespace $rootnamespace$ {
 				    typeof (EnumerableQuery<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>)
+                    typeof (ActionResultModelQ<object>),
+                    typeof (NakedObjects.Value.Image),
+                    typeof (NakedObjects.Value.FileAttachment)
                 };
             }
         }
