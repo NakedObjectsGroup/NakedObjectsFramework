@@ -36,9 +36,10 @@ namespace MvcTestApp.Tests.Controllers {
     public class AjaxControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
+
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
 
             StartTest();
             controller = new AjaxController(NakedObjectsFramework);

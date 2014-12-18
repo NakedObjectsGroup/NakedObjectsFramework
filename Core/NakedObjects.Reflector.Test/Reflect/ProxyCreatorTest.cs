@@ -14,9 +14,8 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
-
 namespace NakedObjects.Reflect.Test {
-     public class DatabaseInitializer : DropCreateDatabaseAlways<ProxyTestContext> {}
+    public class DatabaseInitializer : DropCreateDatabaseAlways<ProxyTestContext> {}
 
     public class ProxyTestContext : DbContext {
         public ProxyTestContext()
@@ -35,9 +34,8 @@ namespace NakedObjects.Reflect.Test {
     }
 
     public class HasCollectionWithVirtualAccessors {
-        public virtual int Id { get; set; }
-
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
+        public virtual int Id { get; set; }
 
         public virtual ICollection<HasProperty> ACollection {
             get { return aCollection; }
@@ -58,9 +56,8 @@ namespace NakedObjects.Reflect.Test {
     }
 
     public class HasCollectionWithNonVirtualAccessors {
-        public virtual int Id { get; set; }
-
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
+        public virtual int Id { get; set; }
 
         public virtual ICollection<HasProperty> ACollection {
             get { return aCollection; }
@@ -81,31 +78,8 @@ namespace NakedObjects.Reflect.Test {
     }
 
 
-    [TestClass] 
+    [TestClass, Ignore]
     public class ProxyCreatorTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(Activator.CreateInstance<ProxyTestContext>);
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
-
-        [TestInitialize]
-        public void SetupFixture() {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
-            StartTest();
-        }
-
-        [TestCleanup]
-        public void TearDownFixture() {
-            CleanupNakedObjectsFramework(this);
-        }
-
         protected override Type[] Types {
             get {
                 return new Type[] {
@@ -116,6 +90,26 @@ namespace NakedObjects.Reflect.Test {
 
         protected override object[] MenuServices {
             get { return new[] {new SimpleRepository<HasProperty>()}; }
+        }
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(Activator.CreateInstance<ProxyTestContext>);
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public static void SetupFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+
+     
+
+        [TestInitialize]
+        public void Setup() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
         }
 
         [TestMethod]

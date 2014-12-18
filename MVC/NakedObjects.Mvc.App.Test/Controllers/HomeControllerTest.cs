@@ -25,9 +25,10 @@ namespace MvcTestApp.Tests.Controllers {
     public class HomeControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
+
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
             StartTest();
             controller = new HomeController(NakedObjectsFramework);
             mocks = new ContextMocks(controller);

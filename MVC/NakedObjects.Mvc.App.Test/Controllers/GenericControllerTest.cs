@@ -38,7 +38,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
             StartTest();
             controller = new GenericController(NakedObjectsFramework);
             mocks = new ContextMocks(controller);
@@ -2096,9 +2096,10 @@ namespace MvcTestApp.Tests.Controllers {
     public class ConcurrencyTest : AcceptanceTestCase {
         #region Setup/Teardown
 
+
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
             StartTest();
             controller = new GenericController(NakedObjectsFramework);
             mocks = new ContextMocks(controller);

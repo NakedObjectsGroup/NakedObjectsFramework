@@ -41,9 +41,10 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
+
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
             StartTest();
             controller = new DummyController();

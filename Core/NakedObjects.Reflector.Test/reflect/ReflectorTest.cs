@@ -38,6 +38,7 @@ namespace NakedObjects.Reflect.Test {
         #endregion
     }
 
+    [TestClass]
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();

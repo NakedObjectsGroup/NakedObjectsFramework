@@ -32,9 +32,10 @@ namespace MvcTestApp.Tests.Controllers {
     public class CustomControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
+
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFrameworkOnceOnly();
+            InitializeNakedObjectsFramework(this);
             StartTest();
             controller = new CustomControllerWrapper(NakedObjectsFramework);
             mocks = new ContextMocks(controller);
