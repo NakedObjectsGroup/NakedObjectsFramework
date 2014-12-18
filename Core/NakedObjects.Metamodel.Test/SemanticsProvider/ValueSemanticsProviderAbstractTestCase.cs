@@ -44,10 +44,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             return parseableFacet;
         }
 
-        [TestInitialize]
+
         public virtual void SetUp() {}
 
-        [TestCleanup]
+
         public virtual void TearDown() {
             value = null;
             encodeableFacet = null;

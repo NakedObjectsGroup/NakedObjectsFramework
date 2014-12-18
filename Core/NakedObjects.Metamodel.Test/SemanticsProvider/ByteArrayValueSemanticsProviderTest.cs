@@ -30,6 +30,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
         }
 
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
         #endregion
 
         private object byteArray;

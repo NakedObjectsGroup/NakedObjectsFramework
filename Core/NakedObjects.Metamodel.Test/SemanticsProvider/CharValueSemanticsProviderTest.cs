@@ -19,13 +19,18 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             character = 'r';
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new CharValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion
@@ -71,7 +76,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 

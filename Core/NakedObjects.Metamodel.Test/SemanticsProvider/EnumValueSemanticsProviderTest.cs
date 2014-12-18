@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TestEnum> {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             holder = new Mock<ISpecification>().Object;
@@ -34,17 +34,14 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
         #endregion
 
-        private ISpecification holder;
-        private EnumValueSemanticsProvider<TestEnum> value;
-
-
-        public enum TestEnumSb : sbyte {
-            London = sbyte.MinValue,
-            Paris,
-            NewYork = sbyte.MaxValue
-        }
+        #region TestEnumB enum
 
         public enum TestEnumB : byte {
             London = byte.MinValue,
@@ -52,23 +49,9 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             NewYork = byte.MaxValue
         }
 
-        public enum TestEnumUs : ushort {
-            London = ushort.MinValue,
-            Paris,
-            NewYork = ushort.MaxValue
-        }
+        #endregion
 
-        public enum TestEnumS : short {
-            London = short.MinValue,
-            Paris,
-            NewYork = short.MaxValue
-        }
-
-        public enum TestEnumUi : uint {
-            London = uint.MinValue,
-            Paris,
-            NewYork = uint.MaxValue
-        }
+        #region TestEnumI enum
 
         public enum TestEnumI {
             London = int.MinValue,
@@ -76,17 +59,70 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             NewYork = int.MaxValue
         }
 
-        public enum TestEnumUl : ulong {
-            London = ulong.MinValue,
-            Paris,
-            NewYork = ulong.MaxValue
-        }
+        #endregion
+
+        #region TestEnumL enum
 
         public enum TestEnumL : long {
             London = long.MinValue,
             Paris,
             NewYork = long.MaxValue
         }
+
+        #endregion
+
+        #region TestEnumS enum
+
+        public enum TestEnumS : short {
+            London = short.MinValue,
+            Paris,
+            NewYork = short.MaxValue
+        }
+
+        #endregion
+
+        #region TestEnumSb enum
+
+        public enum TestEnumSb : sbyte {
+            London = sbyte.MinValue,
+            Paris,
+            NewYork = sbyte.MaxValue
+        }
+
+        #endregion
+
+        #region TestEnumUi enum
+
+        public enum TestEnumUi : uint {
+            London = uint.MinValue,
+            Paris,
+            NewYork = uint.MaxValue
+        }
+
+        #endregion
+
+        #region TestEnumUl enum
+
+        public enum TestEnumUl : ulong {
+            London = ulong.MinValue,
+            Paris,
+            NewYork = ulong.MaxValue
+        }
+
+        #endregion
+
+        #region TestEnumUs enum
+
+        public enum TestEnumUs : ushort {
+            London = ushort.MinValue,
+            Paris,
+            NewYork = ushort.MaxValue
+        }
+
+        #endregion
+
+        private ISpecification holder;
+        private EnumValueSemanticsProvider<TestEnum> value;
 
         private static INakedObject MockNakedObject(object toWrap) {
             var mock = new Mock<INakedObject>();
@@ -144,14 +180,14 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(ulong.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject(ulong.MinValue)));
             Assert.AreEqual(long.MinValue.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject(long.MinValue)));
 
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject((sbyte)2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject((byte)2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject((ushort)2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject((short)2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject((uint)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject((sbyte) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject((byte) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject((ushort) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject((short) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject((uint) 2)));
             Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject((ulong)2)));
-            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long)2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject((ulong) 2)));
+            Assert.AreEqual(2.ToString(), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long) 2)));
         }
 
         [TestMethod]
@@ -161,7 +197,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 

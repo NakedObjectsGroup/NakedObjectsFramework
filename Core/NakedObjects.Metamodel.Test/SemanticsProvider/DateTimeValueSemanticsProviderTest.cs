@@ -18,13 +18,18 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion

@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
             booleanObj = true;
@@ -30,6 +30,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             specification = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion

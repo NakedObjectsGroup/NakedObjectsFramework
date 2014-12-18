@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public override void SetUp() {
             base.SetUp();
 
@@ -28,6 +28,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 
             floatObj = 32.5F;
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
         }
 
         #endregion
@@ -55,7 +60,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+                Assert.IsInstanceOfType(e, typeof (InvalidEntryException));
             }
         }
 
