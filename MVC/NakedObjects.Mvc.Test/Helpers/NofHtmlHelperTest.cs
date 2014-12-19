@@ -48,6 +48,7 @@ namespace MvcTestApp.Tests.Helpers {
     }
 
     [TestClass]
+    [DeploymentItem(@"Generated Html reference files\", @"Generated Html reference files")]
     public class NofHtmlHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -156,7 +157,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         private static bool Writetests = false;
-        private const string GeneratedHtmlReferenceFiles = @"..\..\Generated Html reference files";
+        private const string GeneratedHtmlReferenceFiles = @"Generated Html reference files";
 
         private static void CheckResults(string resultsFile, string s) {
             if (Writetests) {

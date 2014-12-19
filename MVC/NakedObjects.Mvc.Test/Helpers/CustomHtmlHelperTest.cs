@@ -29,6 +29,7 @@ using NakedObjects.Xat;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestClass]
+    [DeploymentItem(@"Custom Html reference files\", @"Custom Html reference files")]
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -119,7 +120,7 @@ namespace MvcTestApp.Tests.Helpers {
         // for testcreation 
 
         private static bool Writetests = false;
-        private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
+        private const string CustomHtmlReferenceFiles = @"Custom Html reference files";
 
         private static void WriteTestData(string name, string data) {
             File.WriteAllText(GetFile(name), data);
