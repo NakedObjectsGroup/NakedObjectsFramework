@@ -15,7 +15,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -29,14 +29,16 @@ using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+
 
 namespace MvcTestApp.Tests.Controllers {
-    [TestClass]
+    [TestFixture]
     public class GenericControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
@@ -53,8 +55,8 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
@@ -111,40 +113,40 @@ namespace MvcTestApp.Tests.Controllers {
         private static void AssertIsCollectionViewOf<T>(ViewResult result) {
             Assert.AreEqual("StandaloneTable", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof (IEnumerable<T>));
-            Assert.IsNotInstanceOfType(data.Model, typeof (IQueryable<T>));
+            Assert.IsInstanceOf<IEnumerable<T>>(data.Model);
+            Assert.IsNotInstanceOf<IQueryable<T>>(data.Model);
             Assert.IsTrue(((IEnumerable<T>) data.Model).Any());
         }
 
         private static void AssertIsQueryableViewOf<T>(ViewResult result) {
             Assert.AreEqual("StandaloneTable", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof(IQueryable<T>));
+            Assert.IsInstanceOf<IQueryable<T>>(data.Model);
             Assert.IsTrue(((IQueryable<T>) data.Model).Any());
         }
 
         private static void AssertIsDetailsViewOf<T>(ViewResult result) {
             Assert.AreEqual("ObjectView", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof(T));
+            Assert.IsInstanceOf<T>(data.Model);
         }
 
         private static void AssertIsSetAfterTransactionViewOf<T>(ViewResult result) {
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof(T));
+            Assert.IsInstanceOf<T>(data.Model);
         }
 
         private static void AssertIsEditViewOf<T>(ViewResult result) {
             Assert.AreEqual("ObjectEdit", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof(T));
+            Assert.IsInstanceOf<T>(data.Model);
         }
 
         private void AssertIsDialogViewOfAction(ViewResult result, string actionName) {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof(FindViewModel));
+            Assert.IsInstanceOf<FindViewModel>(data.Model);
             Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name);
         }
 
@@ -521,7 +523,7 @@ namespace MvcTestApp.Tests.Controllers {
         private static void AssertNameAndParms(ViewResult result, string name, int? count, object contextObject, IActionSpec contextAction, object targetObject, IActionSpec targetAction, string pName) {
             Assert.AreEqual(name, result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOfType(data.Model, typeof (FindViewModel));
+            Assert.IsInstanceOf<FindViewModel>(data.Model);
             var fvm = data.Model as FindViewModel;
 
             if (count == null) {
@@ -861,7 +863,7 @@ namespace MvcTestApp.Tests.Controllers {
             #endregion
         }
 
-        [TestMethod]
+        [Test]
         public void AAInitialInvokeContributedActionOnEmptyCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.SalesOrderHeader;RecentOrders;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False;Object;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False",
@@ -883,7 +885,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("No objects selected", warnings.First());
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindNoParmsForActionReturnMulti() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -902,7 +904,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 2, EmployeeRepo.Object, action, contactRepo.Object, randomContact, "contactDetails");
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindNoParmsForActionReturnOne() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -921,7 +923,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "ActionDialog", null, EmployeeRepo.Object, action, null, null, null);
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -940,13 +942,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindParmsForActionUpdatesViewState() {
             ActionAsFindParmsForActionUpdatesViewState(true);
             ActionAsFindParmsForActionUpdatesViewState(false);
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindParmsForActionWithDefaults() {
             IActionSpec action = GetAction(OrderContributedActions, "FindRate");
             INakedObject orderContribAction = NakedObjectsFramework.GetAdaptedService("OrderContributedActions");
@@ -968,7 +970,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(result.ViewData["OrderContributedActions-FindRate-Currency1-Input"], "Euro");
         }
 
-        [TestMethod]
+        [Test]
         public void ActionFailCrossValidation() {
             Contact contact = Contact;
 
@@ -985,7 +987,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDialogViewOfAction(result, "Change Password");
         }
 
-        [TestMethod]
+        [Test]
         public void ActionGet() {
             SalesOrderHeader order = Order;
             IActionSpec action = GetAction(NakedObjectsFramework.GetNakedObject(order), "Recalculate");
@@ -999,7 +1001,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "ActionDialog", null, order, action, null, null, null);
         }
 
-        [TestMethod]
+        [Test]
         public void ActionOnNotPersistedObject() {
             NotPersistedObject obj = NotPersistedObject;
 
@@ -1012,7 +1014,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<NotPersistedObject>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ActionOnNotPersistedObjectWithReturn() {
             NotPersistedObject obj = NotPersistedObject;
 
@@ -1026,7 +1028,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("aName", ((NotPersistedObject) result.ViewData.Model).Name);
         }
 
-        [TestMethod]
+        [Test]
         public void CrossFieldValidationFail() {
             IDictionary<string, string> idToRawvalue;
             IObjectSpec ccSpec = NakedObjectsFramework.Metamodel.GetSpecification(typeof (CreditCard));
@@ -1043,7 +1045,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<CreditCard>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void CrossFieldValidationSuccess() {
             IDictionary<string, string> idToRawvalue;
             IObjectSpec ccSpec = NakedObjectsFramework.Metamodel.GetSpecification(typeof (CreditCard));
@@ -1060,12 +1062,12 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<CreditCard>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditActionAsFindNoParmsForObject() {
             EditActionAsFindNoParmsForObject(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditActionAsFindNoParmsForObjectForTransient() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1074,12 +1076,12 @@ namespace MvcTestApp.Tests.Controllers {
             EditActionAsFindNoParmsForObject(store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditActionAsFindParmsForObject() {
             EditActionAsFindParmsForObject(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditActionAsFindParmsForObjectForTransient() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1088,12 +1090,12 @@ namespace MvcTestApp.Tests.Controllers {
             EditActionAsFindParmsForObject(store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditFindForObject() {
             EditFindForObject(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditFindForObjectForTransient() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1102,51 +1104,51 @@ namespace MvcTestApp.Tests.Controllers {
             EditFindForObject(store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditFindForObjectMultiCached() {
             EditFindForObjectMultiCached(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditFindForObjectOneCached() {
             EditFindForObjectOneCached(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditInlineSaveValidationFail() {
             EditInlineSaveValidationFail(Employee.DepartmentHistory.First().Shift);
         }
 
-        [TestMethod]
+        [Test]
         public void EditInlineSaveValidationFailForTransient() {
             EditInlineSaveValidationFail(TransientShift);
         }
 
-        [TestMethod]
+        [Test]
         public void EditInlineSaveValidationOk() {
             EditInlineSaveValidationOk(Employee.DepartmentHistory.First().Shift);
         }
 
-        [TestMethod, Ignore] // todo make more reliable
+        [Test, Ignore] // todo make more reliable
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObject() {
             var objectModel = new ObjectAndControlData {Id = EmployeeId};
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(new Dictionary<string, string>()));
             AssertIsEditViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectGet() {
             var objectModel = new ObjectAndControlData {Id = EmployeeId};
             var result = (ViewResult) controller.EditObject(objectModel);
             AssertIsEditViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectGetWithInline() {
             Shift shift = Employee.DepartmentHistory.First().Shift;
 
@@ -1155,7 +1157,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Shift>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectKeepTableFormat() {
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list&DepartmentHistory=table"}});
             var objectModel = new ObjectAndControlData {Id = EmployeeId};
@@ -1168,7 +1170,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInViewDataDictionary(result, "DepartmentHistory", "table");
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectNotPersisted() {
             NotPersistedObject obj = NotPersistedObject;
 
@@ -1179,7 +1181,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<NotPersistedObject>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectPage() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.Store;FindStoreByName;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.CustomerRepository;1;System.Int32;0;False;;0;False;Value;System.String;Cycling",
@@ -1202,7 +1204,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertPagingData(result, 1, 3, 8);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectRedisplay() {
             var objectModel = new ObjectAndControlData {
                 Id = NakedObjectsFramework.GetObjectId(TransientEmployee),
@@ -1217,7 +1219,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditObjectWithInline() {
             Shift shift = Employee.DepartmentHistory.First().Shift;
 
@@ -1226,17 +1228,17 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Shift>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void EditRedisplay() {
             EditRedisplay(Employee);
         }
 
-        [TestMethod]
+        [Test]
         public void EditRedisplayForTransient() {
             EditRedisplay(TransientEmployee);
         }
 
-        [TestMethod]
+        [Test]
         public void EditRefreshTransient() {
             const string redisplay = "DepartmentHistory=table&editMode=True";
             Employee employee = TransientEmployee;
@@ -1262,7 +1264,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(2, ((Employee) result.ViewData.Model).DirectReports.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveConcurrencyFail() {
             Store store = Store;
             INakedObject adaptedStore = NakedObjectsFramework.Manager.CreateAdapter(store, null, null);
@@ -1286,7 +1288,7 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveConcurrencyOk() {
             Store store = Store;
             INakedObject adaptedStore = NakedObjectsFramework.Manager.CreateAdapter(store, null, null);
@@ -1310,42 +1312,42 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveValidationFail() {
             EditSaveValidationFail(Vendor);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveValidationFailEmptyForm() {
             EditSaveValidationFailEmptyForm(Individual);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveValidationFailForTransient() {
             EditSaveValidationFail(TransientVendor);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveValidationFailForTransientEmptyForm() {
             EditSaveValidationFailEmptyForm(TransientIndividual);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSaveValidationOk() {
             EditSaveValidationOk(Vendor);
         }
 
-        [TestMethod, Ignore] // todo make more reliable
+        [Test, Ignore] // todo make more reliable
         public void EditSaveValidationOkForTransient() {
             EditSaveValidationOk(TransientVendor);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSelectForObject() {
             EditSelectForObject(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void EditSelectForObjectForTransient() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1354,7 +1356,7 @@ namespace MvcTestApp.Tests.Controllers {
             EditSelectForObject(store);
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void FindForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             IDictionary<string, string> idToRawvalue;
@@ -1370,13 +1372,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 0, EmployeeRepo.Object, action, null, null, "ContactDetails");
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void FindForActionUpdatesViewState() {
             FindForActionUpdatesViewState(true);
             FindForActionUpdatesViewState(false);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFile() {
             Product product = Product;
 
@@ -1391,7 +1393,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(bytes.SequenceEqual(result.FileContents));
         }
 
-        [TestMethod]
+        [Test]
         public void InitialInvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.SalesOrderHeader;RecentOrders;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False;Object;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False",
@@ -1413,7 +1415,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         // run first
 
-        [TestMethod]
+        [Test]
         [Ignore] // fix !!
         public void InitialInvokeCovariantContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
@@ -1437,7 +1439,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void InvokeActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1456,7 +1458,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void InvokeActionAsFindParmsForActionWithParms() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1475,7 +1477,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 11, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void InvokeActionAsSaveForActionFailValidation() {
             Store store = Store;
             Store transientStore = TransientStore;
@@ -1500,7 +1502,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsFalse(result.ViewData.ModelState.IsValid);
         }
 
-        [TestMethod, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void InvokeActionAsSaveForActionPassValidation() {
             Store store = Store;
             Vendor transientVendor = TransientVendor;
@@ -1528,7 +1530,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeActionWithMultiSelectObjects() {
             string id = NakedObjectsFramework.GetObjectId(Order);
 
@@ -1557,7 +1559,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeActionWithMultiSelectParseable() {
             string id = NakedObjectsFramework.GetObjectId(Order);
 
@@ -1586,7 +1588,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1604,7 +1606,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1625,7 +1627,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDialogViewOfAction(result, "Append Comment");
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "CommentAsUsersUnhappy",
@@ -1645,7 +1647,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDialogViewOfAction(result, "Comment As Users Unhappy");
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnTarget() {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
@@ -1662,7 +1664,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnTargetConcurrencyFail() {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
@@ -1685,7 +1687,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void InvokeContributedActionOnTargetPopulatesTargetParm() {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
@@ -1704,12 +1706,12 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(NakedObjectsFramework.GetNakedObject(store), result.ViewData["OrderContributedActions-CreateNewOrder-Customer-Select"]);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsFindParmsForObject() {
             InvokeEditActionAsFindParmsForObject(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsFindParmsForObjectForTransient() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1718,7 +1720,7 @@ namespace MvcTestApp.Tests.Controllers {
             InvokeEditActionAsFindParmsForObject(store);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsFindParmsForObjectForTransientWithParms() {
             Store store = TransientStore;
             store.Name = "Aname";
@@ -1727,12 +1729,12 @@ namespace MvcTestApp.Tests.Controllers {
             InvokeEditActionAsFindParmsForObjectWithParms(store);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsFindParmsForObjectWithParms() {
             InvokeEditActionAsFindParmsForObjectWithParms(Store);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsSaveForObjectFailValidation() {
             Store store = Store;
             Store transientStore = TransientStore;
@@ -1756,7 +1758,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsFalse(result.ViewData.ModelState.IsValid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeEditActionAsSaveForObjectPassValidation() {
             Store store = Store;
             Vendor transientVendor = TransientVendor;
@@ -1785,7 +1787,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeNotPersistedObjectActionParmsSet() {
             NotPersistedObject obj = NotPersistedObject;
 
@@ -1797,7 +1799,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<NotPersistedObject>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeNotPersistedObjectActionParmsSetWithReturn() {
             NotPersistedObject obj = NotPersistedObject;
 
@@ -1811,7 +1813,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionDefaultSet() {
             var objectModel = new ObjectAndControlData {ActionId = "CreateNewOrder", Id = OrderContribId, InvokeAction = "action=action"};
 
@@ -1823,7 +1825,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(true, result.ViewData["OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input"]);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionNoParms() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
@@ -1837,7 +1839,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionParmsNotSet() {
             INakedObject adaptedProduct = NakedObjectsFramework.Manager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "");
@@ -1851,7 +1853,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Mandatory", result.ViewData.ModelState["Product-BestSpecialOffer-Quantity-Input"].Errors[0].ErrorMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionParmsSet() {
             INakedObject adaptedProduct = NakedObjectsFramework.Manager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "1");
@@ -1862,7 +1864,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SpecialOffer>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionReturnCollectionOfOneItem() {
             FormCollection form = GetFormForListProductsBySubCategory(ProductRepo, GetBoundedId<ProductSubcategory>("Hydration Packs"));
             var objectModel = new ObjectAndControlData {ActionId = "ListProductsBySubCategory", Id = ProductRepoId};
@@ -1872,7 +1874,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<Product>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionReturnOrderedPagedCollectionAsc() {
             FormCollection form = GetForm(new Dictionary<string, string> {
                 {"OrderRepository-OrdersByValue-Ordering-Input", "Ascending"}
@@ -1892,7 +1894,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertPagingData(result, 1, 20, 31465);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionReturnOrderedPagedCollectionDesc() {
             FormCollection form = GetForm(new Dictionary<string, string> {
                 {"OrderRepository-OrdersByValue-Ordering-Input", "Descending"}
@@ -1912,7 +1914,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertPagingData(result, 1, 20, 31465);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionReturnPagedCollection() {
             var form = new FormCollection();
             var objectModel = new ObjectAndControlData {ActionId = "HighestValueOrders", Id = OrderRepoId};
@@ -1930,7 +1932,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertPagingData(result, 1, 20, 31465);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeServiceActionMandatoryParmNotSet() {
             FormCollection form = GetFormForFindEmployeeByName(EmployeeRepo, "", "");
             var objectModel = new ObjectAndControlData {ActionId = "FindEmployeeByName", Id = EmployeeRepoId};
@@ -1945,7 +1947,7 @@ namespace MvcTestApp.Tests.Controllers {
             //Assert.IsFalse(result.ViewData.ModelState["EmployeeRepository-FindEmployeeByName-FirstName-Input"].Errors.Any());
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeServiceActionNoParms() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "RandomEmployee",
@@ -1958,7 +1960,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeServiceActionOptionalParmNotSet() {
             FormCollection form = GetFormForFindEmployeeByName(EmployeeRepo, "", "Smith");
             var objectModel = new ObjectAndControlData {ActionId = "FindEmployeeByName", Id = EmployeeRepoId};
@@ -1968,7 +1970,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsQueryableViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeServiceActionParmsSet() {
             FormCollection form = GetFormForFindEmployeeByName(EmployeeRepo, "S", "Smith");
             var objectModel = new ObjectAndControlData {ActionId = "FindEmployeeByName", Id = EmployeeRepoId};
@@ -1978,7 +1980,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void SelectForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             Contact contactDetails = NakedObjectsFramework.Persistor.Instances<Contact>().First();
@@ -1992,13 +1994,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "ActionDialog", null, EmployeeRepo.Object, action, null, null, null);
         }
 
-        [TestMethod]
+        [Test]
         public void SelectForActionUpdatesViewState() {
             SelectForActionUpdatesViewState(true);
             SelectForActionUpdatesViewState(false);
         }
 
-        [TestMethod]
+        [Test]
         [Ignore] // fix !!
         public void ViewCollectionDisplay() {
             FormCollection form = GetForm(new Dictionary<string, string> {
@@ -2023,7 +2025,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertPagingData(result, 1, 2, 2);
         }
 
-        [TestMethod]
+        [Test]
         public void ViewObjectDetails() {
             var objectModel = new ObjectAndControlData {Id = EmployeeId};
 
@@ -2032,7 +2034,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ViewObjectDetailsCancel() {
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string cancel = "cancel=cancel";
@@ -2043,7 +2045,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ViewObjectDetailsCancelTransient() {
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string cancel = "cancel=cancel";
@@ -2053,7 +2055,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ViewObjectDetailsRedisplay() {
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string redisplay = "DepartmentHistory=table";
@@ -2067,7 +2069,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInViewDataDictionary(result, "DepartmentHistory", "table");
         }
 
-        [TestMethod]
+        [Test]
         public void ViewObjectRedisplay() {
             var objectModel = new ObjectAndControlData {
                 Id = NakedObjectsFramework.GetObjectId(TransientEmployee),
@@ -2082,7 +2084,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<Employee>(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ViewServiceDetails() {
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId};
 
@@ -2092,12 +2094,12 @@ namespace MvcTestApp.Tests.Controllers {
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class ConcurrencyTest : AcceptanceTestCase {
         #region Setup/Teardown
 
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
@@ -2114,8 +2116,8 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
@@ -2187,7 +2189,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
         // System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
         //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
@@ -2234,7 +2236,7 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeObjectActionConcurrencyFail() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {

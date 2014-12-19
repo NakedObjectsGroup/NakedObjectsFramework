@@ -16,7 +16,7 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
@@ -25,12 +25,13 @@ using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
+using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
     public class DatabaseInitializer : DropCreateDatabaseAlways<MvcTestContext> {}
 
 
-    [TestClass]
+    [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -44,7 +45,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
@@ -63,15 +64,15 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
             //InitializeNakedObjectsFramework(this);
             //RunFixtures();
         }
 
-        [ClassCleanup]
-        public static void TearDownTest() {
+        [TestFixtureTearDown]
+        public  void TearDownTest() {
             //CleanupNakedObjectsFramework(this);
             Database.Delete("CollectionMementoTest");
         }
@@ -108,7 +109,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         private class DummyController : Controller {}
 
-        [TestMethod]
+        [Test]
         public void CollectionMemento() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -122,7 +123,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(cm, cm.RecoverCollection().Oid);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoToStringWithEnum() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -139,7 +140,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoToStringWithNull() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -155,7 +156,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoToStringWithObject() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -173,7 +174,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoWithFilterAll() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -194,7 +195,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(newCm, newCm.RecoverCollection().Oid);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoWithFilterNone() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -213,7 +214,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(newCm, newCm.RecoverCollection().Oid);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionMementoWithFilterOne() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 

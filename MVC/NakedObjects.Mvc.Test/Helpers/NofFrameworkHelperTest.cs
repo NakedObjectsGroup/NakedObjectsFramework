@@ -15,7 +15,7 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
@@ -25,10 +25,12 @@ using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+
 
 namespace MvcTestApp.Tests.Helpers {
-    [TestClass]
+    [TestFixture]
     public class NofFrameworkHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -42,7 +44,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
@@ -59,13 +61,13 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
         }
 
-        [ClassCleanup]
-        public static void TearDownTest() {
+        [TestFixtureTearDown]
+        public  void TearDownTest() {
             Database.Delete("NofFrameworkHelperTest");
         }
 
@@ -98,7 +100,7 @@ namespace MvcTestApp.Tests.Helpers {
         private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
         private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;1;System.Int64;507;True;;0";
 
-        [TestMethod]
+        [Test]
         public void ActionsForHelper() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -106,7 +108,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(8, actions.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetCollectionNakedObjectFromId() {
             IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
             INakedObject no = NakedObjectsFramework.Manager.CreateAdapter(claims, null, null);
@@ -132,7 +134,7 @@ namespace MvcTestApp.Tests.Helpers {
             dict.ForEach(kvp => Assert.AreSame(kvp.Key, kvp.Value));
         }
 
-        [TestMethod, Ignore] // fix later
+        [Test, Ignore] // fix later
         public void GetGenericObjectFromId() {
             var repo1 = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             var id = NakedObjectsFramework.GetObjectId(repo1);
@@ -142,7 +144,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void GetNakedObjectFromId() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var id = NakedObjectsFramework.GetObjectId(claim1);
@@ -151,21 +153,21 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(claim1, claim2.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void GetObjectFromId() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             object claim2 = NakedObjectsFramework.GetObjectFromId(objectId);
             Assert.AreSame(claim1, claim2);
         }
 
-        [TestMethod, Ignore] // fix later
+        [Test, Ignore] // fix later
         public void GetObjectIdForGenericObject() {
             object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             string id = NakedObjectsFramework.GetObjectId(repo);
             Assert.AreEqual(genericObjectId, id);
         }
 
-        [TestMethod]
+        [Test]
         public void GetObjectIdForNakedObjectObject() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -173,21 +175,21 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(id, objectId);
         }
 
-        [TestMethod]
+        [Test]
         public void GetObjectIdForObject() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string id = NakedObjectsFramework.GetObjectId(claim);
             Assert.AreEqual(id, objectId);
         }
 
-        [TestMethod]
+        [Test]
         public void GetObjectTypeForObject() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string typeId = NakedObjectsFramework.GetObjectTypeName(claim);
             Assert.AreEqual(typeId, "Claim");
         }
 
-        [TestMethod]
+        [Test]
         public void GetServiceId() {
             const string serviceName = "ClaimRepository";
             string serviceId = NakedObjectsFramework.GetServiceId(serviceName);
@@ -195,14 +197,14 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void GetServices() {
             var services = NakedObjectsFramework.GetAllServices();
             Assert.AreEqual(6, services.Count());
         }
 
 
-        [TestMethod]
+        [Test]
         public void GetServicesMatch() {
             var s1 = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
             var s2 = NakedObjectsFramework.GetAdaptedService("ClaimRepository");

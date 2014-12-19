@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
@@ -25,15 +25,17 @@ using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+
 
 namespace MvcTestApp.Tests.Controllers {
-    [TestClass]
+    [TestFixture]
     public class CustomControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
@@ -50,8 +52,8 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
@@ -251,7 +253,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void InvokeActionByLambda() {
             bool valid;
             Employee result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), out valid);
@@ -259,7 +261,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(valid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeActionByLambdaWithInvalidParms() {
             bool valid;
             IQueryable<Employee> result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), out valid);
@@ -267,7 +269,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsFalse(valid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeActionByLambdaWithValidParms() {
             bool valid;
             FormCollection fc = GetForm(new Dictionary<string, string> {
@@ -279,7 +281,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(valid);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeActionByName() {
             bool valid;
             var result = controller.InvokeAction<Employee>(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), out valid);
@@ -288,35 +290,35 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambda() {
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambdaWithInvalidParms() {
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("FailView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambdaWithInvalidParmsWithOid() {
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepoId, x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("FailView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambdaWithOid() {
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepoId, x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambdaWithValidParms() {
             FormCollection fc = GetForm(new Dictionary<string, string> {
                 {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
@@ -327,7 +329,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("OKView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByLambdaWithValidParmsWithOid() {
             FormCollection fc = GetForm(new Dictionary<string, string> {
                 {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
@@ -338,14 +340,14 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("OKView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByName() {
             ViewResult result = controller.InvokeAction(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
         }
 
-        [TestMethod]
+        [Test]
         public void InvokeViewActionByNameWithOid() {
             ViewResult result = controller.InvokeAction(EmployeeRepoId, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
