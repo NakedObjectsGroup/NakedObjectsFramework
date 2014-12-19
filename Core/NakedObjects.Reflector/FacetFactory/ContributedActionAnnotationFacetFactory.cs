@@ -7,6 +7,7 @@
 
 using System.Linq;
 using System.Reflection;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -18,24 +19,29 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    ///     Creates an <see cref="INotContributedActionFacet" /> based on the presence of an
+    ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ContributedActionAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
-        private void Process(IReflector reflector, MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NotContributedActionAttribute>();
-            FacetUtils.AddFacet(Create(reflector, attribute, holder));
+        private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
+            var paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
+            if (paramsWithAttribute.Count() == 0) return; //Nothing to do
+
+            var facet = new ContributedActionFacet(holder);
+            foreach (var p in paramsWithAttribute) {
+                var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
+                var subMenu = attribute.SubMenu;
+                var type = reflector.LoadSpecification(p.ParameterType.FullName);
+                facet.AddContributee(type, subMenu);
+            }
+            FacetUtils.AddFacet(facet);
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Process(reflector, method, specification);
-        }
-
-        private INotContributedActionFacet Create(IReflector reflector, NotContributedActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotContributedActionFacet(holder, attribute.NotContributedToTypes.Select(reflector.LoadSpecification).Cast<IObjectSpecImmutable>().ToArray());
         }
     }
 }

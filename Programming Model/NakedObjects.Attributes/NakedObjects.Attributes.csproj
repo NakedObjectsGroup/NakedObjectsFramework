@@ -74,6 +74,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="Attributes\AuthorizePropertyAttribute.cs" />
+    <Compile Include="Attributes\ContributedActionAttribute.cs" />
     <Compile Include="Attributes\PresentationHintAttribute.cs" />
     <Compile Include="Enums\Ajax.cs" />
     <Compile Include="Attributes\TableViewAttribute.cs" />

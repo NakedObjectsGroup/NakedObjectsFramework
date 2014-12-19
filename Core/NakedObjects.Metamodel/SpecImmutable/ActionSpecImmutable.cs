@@ -63,12 +63,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsContributedMethod {
             get {
-                if (ReturnSpec.Service && parameters.Any() &&
-                    (!ContainsFacet(typeof (INotContributedActionFacet)) ||
-                     !GetFacet<INotContributedActionFacet>().NeverContributed())) {
-                    return Parameters.Any(p => p.Specification.IsObject || p.Specification.IsCollection);
-                }
-                return false;
+                //TODO: Note that ReturnSpec is pending a rename (it is actually the spec of the owning object)
+                return ReturnSpec.Service && parameters.Any() &&
+                    ContainsFacet(typeof(IContributedActionFacet));
             }
         }
 
@@ -98,14 +95,15 @@ namespace NakedObjects.Meta.SpecImmutable {
             return spec.IsCollection && !spec.IsParseable;
         }
 
+        //TODO: Does this need to change, to know parameter number also ?
         private bool ContributeTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
-            var ncf = GetFacet<INotContributedActionFacet>();
+            var facet = GetFacet<IContributedActionFacet>();
 
-            if (ncf == null) {
-                return contributeeSpec.IsOfType(parmSpec);
+            if (facet == null) {
+                return false;
             }
 
-            return contributeeSpec.IsOfType(parmSpec) && !ncf.NotContributedTo(contributeeSpec);
+            return contributeeSpec.IsOfType(parmSpec) && facet.ContributedTo(contributeeSpec);
         }
 
         #region ISerializable

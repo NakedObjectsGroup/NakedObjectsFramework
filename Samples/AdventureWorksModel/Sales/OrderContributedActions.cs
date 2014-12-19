@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
         }
 
 
-        public void AppendComment(string commentToAppend, SalesOrderHeader order) {
+        public void AppendComment(string commentToAppend, [ContributedAction("Foo")] SalesOrderHeader order) {
             if (order.Comment == null) {
                 order.Comment = commentToAppend;
             }
@@ -52,7 +52,7 @@ namespace AdventureWorksModel {
         }
 
 
-        public void CommentAsUserUnhappy(SalesOrderHeader order) {
+        public void CommentAsUserUnhappy([ContributedAction("Bar")] SalesOrderHeader order) {
             AppendComment("User unhappy", order);
         }
 

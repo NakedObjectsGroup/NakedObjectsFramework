@@ -169,7 +169,15 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
+            //TODO: Replace all this
+            //Instead get a list of all ActionSpecs that have the ContributedAction facet
+            // Then test if contributed to the 'spec' passed in
+            // Group them by the subMenu name & create the ActionsForService.
+
             if (!spec.Service) {
+
+
+
                 IList<ActionsForService> contributedActions = new List<ActionsForService>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
