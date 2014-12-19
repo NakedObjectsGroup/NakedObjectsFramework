@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Security;
+using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public abstract class WithAction {
