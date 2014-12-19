@@ -169,30 +169,19 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
-            //TODO: Replace all this
-            //Instead get a list of all ActionSpecs that have the ContributedAction facet
-            // Then test if contributed to the 'spec' passed in
-            // Group them by the subMenu name & create the ActionsForService.
-
             if (!spec.Service) {
-
-
-
                 IList<ActionsForService> contributedActions = new List<ActionsForService>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
 
-                        var matchingServiceActions = serviceSpecification.ObjectActions.Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToList();
+                        var matchingServiceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).Where(sa => sa.IsContributedTo(spec)).ToList();
 
-                        if (matchingServiceActions.Any()) {
-                            matchingServiceActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
-                            string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                        foreach (var action in matchingServiceActions) {
+                            string subMenu = action.GetFacet<IContributedActionFacet>().SubMenuWhenContributedTo(spec);
                             string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            //var t = new Tuple<string, string, IList<IActionSpecImmutable>>(id, name, matchingServiceActions);
-
-                            var t = new ActionsForService() {Id = id, Name = name, Specs = matchingServiceActions};
-
+                            //TODO: Get rid of ActionsForService & use simple dictionary of subName & action spec
+                            var t = new ActionsForService() { Id = id, Name = subMenu, Specs = new List<IActionSpecImmutable> { action } };
                             contributedActions.Add(t);
                         }
                     }

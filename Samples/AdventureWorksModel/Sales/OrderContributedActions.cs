@@ -51,6 +51,9 @@ namespace AdventureWorksModel {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
+        public void DoSomething(Customer c, [ContributedAction("Bar")] SalesOrderHeader order) { }
+
+        public void DoSomethingElse(string c, [ContributedAction()] SalesOrderHeader order) { }
 
         public void CommentAsUserUnhappy([ContributedAction("Bar")] SalesOrderHeader order) {
             AppendComment("User unhappy", order);

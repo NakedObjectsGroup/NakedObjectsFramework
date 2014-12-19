@@ -112,14 +112,14 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenuImmutable GetSubMenu(string menuName) {
-            var menu = GetSub(menuName);
+            var menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
                 throw new Exception("No sub-menu named " + menuName);
             }
             return menu;
         }
 
-        protected MenuImpl GetSub(string menuName) {
+        protected MenuImpl GetSubMenuIfExists(string menuName) {
             return MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
         }
         #endregion
