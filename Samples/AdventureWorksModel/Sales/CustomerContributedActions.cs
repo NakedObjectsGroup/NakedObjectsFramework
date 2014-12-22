@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
     [DisplayName("Customers")]
     public class CustomerContributedActions : AbstractFactoryAndRepository {
         [QueryOnly]
-        public CustomerCollectionViewModel ShowCustomersWithAddressInRegion(CountryRegion region, IQueryable<Customer> customers) {
+        public CustomerCollectionViewModel ShowCustomersWithAddressInRegion(CountryRegion region, [ContributedAction] IQueryable<Customer> customers) {
             List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
             var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();
             ccvm.Customers = cc.ToList();

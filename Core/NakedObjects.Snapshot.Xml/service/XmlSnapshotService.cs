@@ -14,7 +14,6 @@ namespace NakedObjects.Snapshot.Xml.Service {
 
         #region IXmlSnapshotService Members
 
-        [NotContributedAction]
         public IXmlSnapshot GenerateSnapshot(object domainObject) {
             return new XmlSnapshot(domainObject, Framework.LifecycleManager, Framework.Manager, Framework.Metamodel);
         }

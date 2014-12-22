@@ -12,10 +12,11 @@ using System;
 namespace AdventureWorksModel {
     [DisplayName("Orders")]
     public class OrderContributedActions : AbstractFactoryAndRepository  {
-       
+
+        private const string subMenu = "Orders";
         #region Comments
 
-        public void AppendComment(string commentToAppend, IQueryable<SalesOrderHeader> toOrders) {
+        public void AppendComment(string commentToAppend, [ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
             foreach (SalesOrderHeader order in toOrders) {
                 AppendComment(commentToAppend, order);
             }
@@ -30,7 +31,7 @@ namespace AdventureWorksModel {
         }
 
 
-        public void AppendComment(string commentToAppend, [ContributedAction("Foo")] SalesOrderHeader order) {
+        public void AppendComment(string commentToAppend, [ContributedAction(subMenu)] SalesOrderHeader order) {
             if (order.Comment == null) {
                 order.Comment = commentToAppend;
             }
@@ -43,7 +44,7 @@ namespace AdventureWorksModel {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public void CommentAsUsersUnhappy(IQueryable<SalesOrderHeader> toOrders) {
+        public void CommentAsUsersUnhappy([ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
             AppendComment("User unhappy", toOrders);
         }
 
@@ -51,11 +52,7 @@ namespace AdventureWorksModel {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
-        public void DoSomething(Customer c, [ContributedAction("Bar")] SalesOrderHeader order) { }
-
-        public void DoSomethingElse(string c, [ContributedAction()] SalesOrderHeader order) { }
-
-        public void CommentAsUserUnhappy([ContributedAction("Bar")] SalesOrderHeader order) {
+        public void CommentAsUserUnhappy([ContributedAction(subMenu)] SalesOrderHeader order) {
             AppendComment("User unhappy", order);
         }
 
@@ -75,7 +72,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(22)]
         [TableView(true,"OrderDate","Status","TotalDue")]
-        public IQueryable<SalesOrderHeader> RecentOrders(Customer customer)
+        public IQueryable<SalesOrderHeader> RecentOrders([ContributedAction(subMenu)]Customer customer)
         {
             return from obj in Instances<SalesOrderHeader>()
                         where obj.Customer.Id == customer.Id
@@ -88,7 +85,7 @@ namespace AdventureWorksModel {
         #region LastOrder
 
         [MemberOrder(20), QueryOnly]
-        public SalesOrderHeader LastOrder(Customer customer)
+        public SalesOrderHeader LastOrder([ContributedAction(subMenu)]Customer customer)
         {
             var query = from obj in Container.Instances<SalesOrderHeader>()
                         where obj.Customer.Id == customer.Id
@@ -104,7 +101,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(21)]
         [TableView(true, "OrderDate", "TotalDue")]
-        public IQueryable<SalesOrderHeader> OpenOrders(Customer customer)
+        public IQueryable<SalesOrderHeader> OpenOrders([ContributedAction(subMenu)]Customer customer)
         {
             return from obj in Container.Instances<SalesOrderHeader>()
                         where obj.Customer.Id == customer.Id &&
@@ -120,7 +117,7 @@ namespace AdventureWorksModel {
         [MemberOrder(12), PageSize(10)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public IQueryable<SalesOrderHeader> SearchForOrders(
-            [Optionally]  Customer customer,
+            [ContributedAction(subMenu)][Optionally]  Customer customer,
             [Optionally] [Mask("d")] DateTime? fromDate,
             [Optionally] [Mask("d")] DateTime? toDate)
         {
@@ -154,7 +151,7 @@ namespace AdventureWorksModel {
         #region CreateNewOrder
 
         [MemberOrder(1)]
-        public SalesOrderHeader CreateNewOrder(Customer customer,
+        public SalesOrderHeader CreateNewOrder([ContributedAction(subMenu)]Customer customer,
                                                [Optionally] bool copyHeaderFromLastOrder)
         {
             var newOrder = Container.NewTransientInstance<SalesOrderHeader>();
@@ -182,7 +179,7 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(1)]
-        public QuickOrderForm QuickOrder(Customer customer) {
+        public QuickOrderForm QuickOrder([ContributedAction(subMenu)] Customer customer) {
             var qo = Container.NewViewModel<QuickOrderForm>();
             qo.Customer = customer;
             return qo;
