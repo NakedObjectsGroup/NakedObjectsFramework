@@ -28,5 +28,8 @@ namespace NakedObjects {
         }
 
         public string Sequence { get; set; }
+
+        [Obsolete("This parameter is no longer recognised as of NOF 7. Sub-menus may now be specified via the Menu method")]
+        public string Name { get; set; }
     }
 }
