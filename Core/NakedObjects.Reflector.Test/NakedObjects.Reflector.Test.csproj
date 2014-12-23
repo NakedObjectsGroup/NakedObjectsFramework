@@ -114,7 +114,7 @@
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ExcludeFromFindMenuAnnotationFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\NotContributedActionAnnotationFacetFactoryTest.cs" />
+    <Compile Include="FacetFactory\ContributedActionAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ComplementaryMethodsFilteringFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ExecutedAnnotationFacetFactoryTest.cs" />

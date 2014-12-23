@@ -80,8 +80,8 @@ namespace NakedObjects.SystemTest.Attributes {
                     new SimpleRepository<Validateprogrammaticupdates1>(),
                     new SimpleRepository<Validateprogrammaticupdates2>(),
                     new TestServiceValidateProgrammaticUpdates(),
-                    new SimpleRepository<Notcontributedaction1>(),
-                    new TestServiceNotContributedAction(),
+                    new SimpleRepository<Contributee>(),
+                    new TestServiceContributedAction(),
                     new SimpleRepository<Exclude1>(),
                     new TestServiceExcludeFromFindMenu()
                 };
@@ -953,10 +953,11 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #region NotContributedAction
 
-        [TestMethod, Ignore] //Needs re-writing to use new framework
+        [TestMethod, Ignore] //TODO: Not sure if this test should in fact run as is. 
+            //Note that [ContributedAction] attribute is being tested under MenuTests
         public virtual void Contributed() {
-            var service = (TestServiceNotContributedAction) GetTestService(typeof (TestServiceNotContributedAction)).NakedObject.Object;
-            var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
+            var service = (TestServiceContributedAction) GetTestService(typeof (TestServiceContributedAction)).NakedObject.Object;
+            var obj = NewTestObject<Contributee>().GetDomainObject();
             var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetAllActions();
 
@@ -1033,9 +1034,23 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Title9> Title9s { get; set; }
         public DbSet<Validateprogrammaticupdates1> ValidateProgrammaticUpdates1s { get; set; }
         public DbSet<Validateprogrammaticupdates2> ValidateProgrammaticUpdates2s { get; set; }
-        public DbSet<Notcontributedaction1> NotContributedAction1s { get; set; }
+        public DbSet<Contributee> Contributees { get; set; }
         public DbSet<Exclude1> Exclude1s { get; set; }
     }
+
+    #region ContributedAction
+
+    public class TestServiceContributedAction {
+        public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) { }
+
+        public void NotContributedAction(Contributee obj) { }
+    }
+
+    public class Contributee {
+        public virtual int Id { get; set; }
+    }
+
+    #endregion
 
     #region Default
 
@@ -1643,21 +1658,6 @@ namespace NakedObjects.SystemTest.Attributes {
         public void SaveObject2(Validateprogrammaticupdates2 obj) {
             Container.Persist(ref obj);
         }
-    }
-
-    #endregion
-
-    #region NotContributedAction
-
-    public class TestServiceNotContributedAction {
-        public void ContributedAction(Notcontributedaction1 obj) {}
-
-        [NotContributedAction]
-        public void NotContributedAction(Notcontributedaction1 obj) {}
-    }
-
-    public class Notcontributedaction1 {
-        public virtual int Id { get; set; }
     }
 
     #endregion

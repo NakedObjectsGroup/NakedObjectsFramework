@@ -132,23 +132,21 @@ namespace TestObjectMenu {
     public class Contrib1 {
 
         [MemberOrder(2)]
-        public void Action5(Foo foo, Bar bar) { }
+        public void Action5([ContributedAction("Contrib1")] Foo foo, [ContributedAction("Contrib1")] Bar bar) { }
 
         [MemberOrder(1), Named("Action6a")]
-        public void Action6(Foo foo, Bar bar) { }
+        public void Action6([ContributedAction("Contrib1")]Foo foo, [ContributedAction("Contrib1")]Bar bar) { }
 
     }
 
-    [Named("Contrib2a")]
     public class Contrib2 {
 
-        public void Action7(Foo foo, Bar bar) { }
+        public void Action7([ContributedAction("Contrib2a")]Foo foo, [ContributedAction("Contrib2a")]Bar bar) { }
     }
 
-    [Named("Docs")]
     public class Contrib3 {
 
-        public void Action8(Bar bar) { }
+        public void Action8([ContributedAction("Docs")] Bar bar) { }
     }
 
     public class Bar {

@@ -19,8 +19,8 @@ using NakedObjects.Reflect.FacetFactory;
 
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestClass]
-    public class NotContributedActonAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    [TestClass, Ignore] //TODO: Write tests (the code here is just borrowed from 'NotContributed')
+    public class ContributedActonAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
         [TestInitialize]
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private ContributedActionAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (INotContributedActionFacet)}; }
+            get { return new[] {typeof (IContributedActionFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -48,7 +48,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
-            [NotContributedAction]
             public void SomeAction() {}
         }
 
@@ -57,12 +56,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            [NotContributedAction(typeof (Customer2))]
             public void SomeAction() {}
         }
 
         private class Customer3 {
-            [NotContributedAction(typeof (Customer2), typeof (Customer3))]
             public void SomeAction() {}
         }
 
@@ -78,7 +75,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestNotContributedAnnotationNullByDefault() {
+        public void TestContributedAnnotationNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
@@ -87,30 +84,28 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestNotContributedAnnotationPickedUp() {
+        public void TestContributedAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
+            var facet = (IContributedActionFacet)Specification.GetFacet(typeof(IContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacet);
+            Assert.IsTrue(facet is ContributedActionFacet);
 
-            Assert.IsTrue(facet.NeverContributed());
-
+          
             AssertNoMethodsRemoved();
         }
 
         [TestMethod]
-        public void TestNotContributedAnnotationPickedUpWithType() {
+        public void TestContributedAnnotationPickedUpWithType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
+            var facet = (IContributedActionFacet) Specification.GetFacet(typeof (IContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacet);
+            Assert.IsTrue(facet is ContributedActionFacet);
 
             var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
 
-            Assert.IsTrue(facet.NotContributedTo(sp.Object));
 
             AssertNoMethodsRemoved();
         }
@@ -120,17 +115,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestNotContributedAnnotationPickedUpWithTypes() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
+            var facet = (IContributedActionFacet) Specification.GetFacet(typeof (IContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacet);
+            Assert.IsTrue(facet is ContributedActionFacet);
 
             var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
             var sp1 = new Mock<IObjectSpecImmutable>();
             sp1.Setup(s => s.IsOfType(null)).Returns(true);
 
-            Assert.IsTrue(facet.NotContributedTo(sp.Object));
-            Assert.IsTrue(facet.NotContributedTo(sp1.Object));
+            Assert.IsTrue(facet.ContributedTo(sp.Object));
+            Assert.IsTrue(facet.ContributedTo(sp1.Object));
 
             AssertNoMethodsRemoved();
         }

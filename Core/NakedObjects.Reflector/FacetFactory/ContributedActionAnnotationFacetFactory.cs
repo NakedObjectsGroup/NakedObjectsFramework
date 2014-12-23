@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
-    ///     <see cref="NotContributedActionAttribute" /> annotation
+    ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ContributedActionAnnotationFacetFactory(int numericOrder)
