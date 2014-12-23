@@ -193,7 +193,7 @@
     <Compile Include="Facet\ITableViewFacet.cs" />
     <Compile Include="Facet\ITypeOfFacet.cs" />
     <Compile Include="Facet\IActionChoicesFacet.cs" />
-    <Compile Include="Facet\IExcludeFromFindMenuFacet.cs" />
+    <Compile Include="Facet\IFinderActionFacet.cs" />
     <Compile Include="Facet\IActionDefaultsFacet.cs" />
     <Compile Include="Facet\IAjaxFacet.cs" />
     <Compile Include="Facet\IExecutedFacet.cs" />

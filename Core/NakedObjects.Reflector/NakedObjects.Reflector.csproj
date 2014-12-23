@@ -140,7 +140,7 @@
     <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\ComplementaryMethodsFilteringFacetFactory.cs" />
     <Compile Include="FacetFactory\ContributedActionAnnotationFacetFactory.cs" />
-    <Compile Include="FacetFactory\ExcludeFromFindMenuAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\FinderActionFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionDefaultAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ExecutedAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\IteratorFilteringFacetFactory.cs" />

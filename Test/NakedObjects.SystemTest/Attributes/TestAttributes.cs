@@ -82,8 +82,8 @@ namespace NakedObjects.SystemTest.Attributes {
                     new TestServiceValidateProgrammaticUpdates(),
                     new SimpleRepository<Contributee>(),
                     new TestServiceContributedAction(),
-                    new SimpleRepository<Exclude1>(),
-                    new TestServiceExcludeFromFindMenu()
+                    new SimpleRepository<FinderAction1>(),
+                    new TestServiceFinderAction()
                 };
             }
         }
@@ -970,12 +970,12 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #endregion
 
-        #region ExcludeFromFindMenu
+        #region FinderAction
 
         [TestMethod, Ignore] //Needs re-writing for new framework
-        public virtual void ActionExcludedFromFindMenu() {
-            var service = (TestServiceExcludeFromFindMenu) GetTestService(typeof (TestServiceExcludeFromFindMenu)).NakedObject.Object;
-            Exclude1 obj = service.NewObject1();
+        public virtual void ActionsIncludedInFinderMenu() {
+            var service = (TestServiceFinderAction) GetTestService(typeof (TestServiceFinderAction)).NakedObject.Object;
+            FinderAction1 obj = service.NewObject1();
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetRelatedServiceActions();
 
@@ -1035,7 +1035,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Validateprogrammaticupdates1> ValidateProgrammaticUpdates1s { get; set; }
         public DbSet<Validateprogrammaticupdates2> ValidateProgrammaticUpdates2s { get; set; }
         public DbSet<Contributee> Contributees { get; set; }
-        public DbSet<Exclude1> Exclude1s { get; set; }
+        public DbSet<FinderAction1> Exclude1s { get; set; }
     }
 
     #region ContributedAction
@@ -1662,34 +1662,34 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #endregion
 
-    #region ExcludeFromFindMenu
+    #region FinderAction
 
-    public class TestServiceExcludeFromFindMenu {
-        public Exclude1 FinderAction1() {
+    public class TestServiceFinderAction {
+
+        [FinderAction]
+        public FinderAction1 FinderAction1() {
             return null;
         }
 
-        public ICollection<Exclude1> FinderAction2() {
+        [FinderAction]
+        public ICollection<FinderAction1> FinderAction2() {
             return null;
         }
 
-        [ExcludeFromFindMenu]
-        public Exclude1 NotFinderAction1() {
+        public FinderAction1 NotFinderAction1() {
             return null;
         }
 
-        [ExcludeFromFindMenu]
-        public ICollection<Exclude1> NotFinderAction2() {
+        public ICollection<FinderAction1> NotFinderAction2() {
             return null;
         }
 
-        [ExcludeFromFindMenu]
-        public Exclude1 NewObject1() {
-            return new Exclude1();
+        public FinderAction1 NewObject1() {
+            return new FinderAction1();
         }
     }
 
-    public class Exclude1 {
+    public class FinderAction1 {
         public virtual int Id { get; set; }
     }
 

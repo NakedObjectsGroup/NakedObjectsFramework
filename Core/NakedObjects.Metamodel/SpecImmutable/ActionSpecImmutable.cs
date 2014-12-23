@@ -75,7 +75,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsFinderMethod {
-            get { return HasReturn() && !ContainsFacet(typeof (IExcludeFromFindMenuFacet)); }
+            get { return HasReturn() && ContainsFacet(typeof (IFinderActionFacet)); }
         }
 
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {

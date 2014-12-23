@@ -75,7 +75,7 @@ namespace NakedObjects.Reflect.Test {
             new DefaultNamingFacetFactory(48),
             new ConcurrencyCheckAnnotationFacetFactory(50),
             new ContributedActionAnnotationFacetFactory(51),
-            new ExcludeFromFindMenuAnnotationFacetFactory(52),
+            new FinderActionFacetFactory(52),
             new MaskAnnotationFacetFactory(53),
             new RegExAnnotationFacetFactory(54),
             new TypeOfAnnotationFacetFactory(55),

@@ -120,7 +120,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsFinderMethod {
             get {
                 if (!isFinderMethod.HasValue) {
-                    isFinderMethod = HasReturn && !ContainsFacet(typeof (IExcludeFromFindMenuFacet));
+                    isFinderMethod = actionSpecImmutable.IsFinderMethod;
                 }
                 return isFinderMethod.Value;
             }

@@ -18,13 +18,13 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
-    public class ExcludeFromFindMenuAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ExcludeFromFindMenuAnnotationFacetFactory(0);
+            facetFactory = new FinderActionFacetFactory(0);
         }
 
         [TestCleanup]
@@ -35,10 +35,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private ExcludeFromFindMenuAnnotationFacetFactory facetFactory;
+        private FinderActionFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IExcludeFromFindMenuFacet)}; }
+            get { return new[] {typeof (IFinderActionFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -46,17 +46,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
-            [ExcludeFromFindMenu]
             public void SomeAction() {}
         }
 
         private class Customer1 {
+            [FinderActionAttribute]
             public void SomeAction() {}
         }
 
         [TestMethod]
-        public void TestExcludeFromFindMenuAnnotationNullByDefault() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+        public void TestFinderActionFacetNullByDefault() {
+            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
             Assert.IsNull(facet);
@@ -64,12 +64,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestExcludeFromFindMenuAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
+        public void TestFinderActionAnnotationPickedUp() {
+            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IExcludeFromFindMenuFacet));
+            IFacet facet = Specification.GetFacet(typeof (IFinderActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ExcludeFromFindMenuFacet);
+            Assert.IsTrue(facet is FinderActionFacet);
             AssertNoMethodsRemoved();
         }
 

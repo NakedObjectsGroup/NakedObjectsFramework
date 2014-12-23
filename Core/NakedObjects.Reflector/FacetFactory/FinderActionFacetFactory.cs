@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -16,15 +17,15 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    ///     Creates an <see cref="IExcludeFromFindMenuFacet" /> based on the presence of an
-    ///     <see cref="ExcludeFromFindMenuAttribute" /> annotation
+    ///     Creates an <see cref="IFinderActionFacet" /> based on the presence of an
+    ///     <see cref="FinderActionAttribute" /> annotation
     /// </summary>
-    public class ExcludeFromFindMenuAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExcludeFromFindMenuAnnotationFacetFactory(int numericOrder)
+    public class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        public FinderActionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<ExcludeFromFindMenuAttribute>();
+            var attribute = member.GetCustomAttribute<FinderActionAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -32,8 +33,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             Process(method, specification);
         }
 
-        private static IExcludeFromFindMenuFacet Create(ExcludeFromFindMenuAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ExcludeFromFindMenuFacet(holder);
+        private static IFinderActionFacet Create(FinderActionAttribute attribute, ISpecification holder) {
+            return attribute == null ? null : new FinderActionFacet(attribute.Value, holder);
         }
     }
 }

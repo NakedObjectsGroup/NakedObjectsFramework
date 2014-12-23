@@ -218,7 +218,7 @@
     <Compile Include="Facet\TitleFacetViaToStringMethod.cs" />
     <Compile Include="Facet\ActionChoicesFacetAbstract.cs" />
     <Compile Include="Facet\ActionChoicesFacetNone.cs" />
-    <Compile Include="Facet\ExcludeFromFindMenuFacet.cs" />
+    <Compile Include="Facet\FinderActionFacet.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAbstract.cs" />
     <Compile Include="Facet\ActionDefaultsFacetNone.cs" />
     <Compile Include="Facet\AjaxFacet.cs" />

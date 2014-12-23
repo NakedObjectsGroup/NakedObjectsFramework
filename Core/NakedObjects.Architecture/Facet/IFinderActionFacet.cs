@@ -5,14 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
-
-namespace NakedObjects.Meta.Facet {
-    [Serializable]
-    public class ExcludeFromFindMenuFacet : MarkerFacetAbstract, IExcludeFromFindMenuFacet {
-        public ExcludeFromFindMenuFacet(ISpecification holder)
-            : base(typeof (IExcludeFromFindMenuFacet), holder) {}
-    }
+namespace NakedObjects.Architecture.Facet {
+    public interface IFinderActionFacet : ISingleStringValueFacet {}
 }

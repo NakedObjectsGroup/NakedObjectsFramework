@@ -12,5 +12,6 @@ namespace NakedObjects {
     ///     Never allow this method to be used in a 'Find' menu
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [Obsolete("This attribute is no longer recognised as of NOF 7. Finder Actions must be explicitly annotated with the FinderAction attribute.")]
     public class ExcludeFromFindMenuAttribute : Attribute {}
 }
