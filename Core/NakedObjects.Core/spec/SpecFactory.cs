@@ -49,6 +49,7 @@ namespace NakedObjects.Core.Spec {
             throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
 
+        //TODO: rename to CreateActionSpecs?
         public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
             var actions = new List<IActionSpec>();
@@ -57,17 +58,6 @@ namespace NakedObjects.Core.Spec {
             }
 
             return actions.ToArray();
-        }
-
-        public IActionSpec[] OrderActions(IList<ActionsForService> order) {
-            Assert.AssertNotNull(framework);
-            var result = new List<IActionSpec>();
-            foreach (var element in order) {
-                foreach (var spec in element.Specs) {
-                    result.Add(CreateActionSpec(spec));
-                }
-            }
-            return result.ToArray();
         }
 
         public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {

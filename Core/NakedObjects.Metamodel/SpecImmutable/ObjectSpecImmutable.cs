@@ -38,8 +38,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
-            ContributedActions = ImmutableList<ActionsForService>.Empty;
-            RelatedActions = ImmutableList<ActionsForService>.Empty;
+            ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
+            RelatedActions = ImmutableList<IActionSpecImmutable>.Empty;
         }
 
         private string SingularName {
@@ -75,11 +75,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             subclasses = subclasses.Add(subclass);
         }
 
-        public void AddContributedActions(IList<ActionsForService> contributedActions) {
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) {
             ContributedActions = contributedActions.ToImmutableList();
         }
 
-        public void AddRelatedActions(IList<ActionsForService> relatedActions) {
+        public void AddRelatedActions(IList<IActionSpecImmutable> relatedActions) {
             RelatedActions = relatedActions.ToImmutableList();
         }
 
@@ -107,9 +107,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
 
-        public IList<ActionsForService> ContributedActions { get; private set; }
+        public IList<IActionSpecImmutable> ContributedActions { get; private set; }
 
-        public IList<ActionsForService> RelatedActions { get; private set; }
+        public IList<IActionSpecImmutable> RelatedActions { get; private set; }
 
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
 
@@ -235,11 +235,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        private readonly IList<ActionsForService> tempContributedActions;
+        private readonly IList<IActionSpecImmutable> tempContributedActions;
         private readonly IList<IAssociationSpecImmutable> tempFields;
         private readonly IList<IObjectSpecImmutable> tempInterfaces;
         private readonly IList<IActionSpecImmutable> tempObjectActions;
-        private readonly IList<ActionsForService> tempRelatedActions;
+        private readonly IList<IActionSpecImmutable> tempRelatedActions;
         private readonly IList<IObjectSpecImmutable> tempSubclasses;
 
 
@@ -255,8 +255,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             tempInterfaces = info.GetValue<IList<IObjectSpecImmutable>>("Interfaces");
             tempSubclasses = info.GetValue<IList<IObjectSpecImmutable>>("subclasses");
             tempObjectActions = info.GetValue<IList<IActionSpecImmutable>>("ObjectActions");
-            tempContributedActions = info.GetValue<IList<ActionsForService>>("ContributedActions");
-            tempRelatedActions = info.GetValue<IList<ActionsForService>>("RelatedActions");
+            tempContributedActions = info.GetValue<IList<IActionSpecImmutable>>("ContributedActions");
+            tempRelatedActions = info.GetValue<IList<IActionSpecImmutable>>("RelatedActions");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
@@ -270,8 +270,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<IObjectSpecImmutable>("Superclass", Superclass);
             info.AddValue<IList<IObjectSpecImmutable>>("subclasses", subclasses.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", ObjectActions.ToList());
-            info.AddValue<IList<ActionsForService>>("ContributedActions", ContributedActions.ToList());
-            info.AddValue<IList<ActionsForService>>("RelatedActions", RelatedActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("ContributedActions", ContributedActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("RelatedActions", RelatedActions.ToList());
             base.GetObjectData(info, context);
         }
 

@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
 
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
-        void AddContributedActions(IList<ActionsForService> contributedActions);
-        void AddRelatedActions(IList<ActionsForService> relatedActions);
+        void AddContributedActions(IList<IActionSpecImmutable> contributedActions);
+        void AddRelatedActions(IList<IActionSpecImmutable> relatedActions);
     }
 }

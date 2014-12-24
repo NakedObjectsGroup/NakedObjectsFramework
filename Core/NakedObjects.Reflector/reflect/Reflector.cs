@@ -170,7 +170,7 @@ namespace NakedObjects.Reflect {
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             if (!spec.Service) {
-                IList<ActionsForService> contributedActions = new List<ActionsForService>();
+                IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
@@ -178,11 +178,7 @@ namespace NakedObjects.Reflect {
                         var matchingServiceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).Where(sa => sa.IsContributedTo(spec)).ToList();
 
                         foreach (var action in matchingServiceActions) {
-                            string subMenu = action.GetFacet<IContributedActionFacet>().SubMenuWhenContributedTo(spec);
-                            string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            //TODO: Get rid of ActionsForService & use simple dictionary of subName & action spec
-                            var t = new ActionsForService() { Id = id, Name = subMenu, Specs = new List<IActionSpecImmutable> { action } };
-                            contributedActions.Add(t);
+                            contributedActions.Add(action);
                         }
                     }
                 }
@@ -191,7 +187,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
-            IList<ActionsForService> relatedActions = new List<ActionsForService>();
+            IList<IActionSpecImmutable> relatedActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
@@ -211,12 +207,9 @@ namespace NakedObjects.Reflect {
 
                 if (matchingActions.Any()) {
                     matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
-                    string name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
-                    string id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                    //var t = new Tuple<string, string, IList<IActionSpecImmutable>>(id, name, matchingActions);
-
-                    var t = new ActionsForService() {Id = id, Name = name, Specs = matchingActions};
-                    relatedActions.Add(t);
+                    foreach (var action in matchingActions) {
+                        relatedActions.Add(action);
+                    }
                 }
             }
             spec.AddRelatedActions(relatedActions);

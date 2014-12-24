@@ -44,15 +44,14 @@ namespace NakedObjects.Meta.Menu {
         public ITypedMenu<TObject> AddContributedActions() {
             var spec = GetObjectSpec<TObject>();
             foreach (var ca in spec.ContributedActions) {
-                string subMenuName = ca.Name;
+                var facet = ca.GetFacet<IContributedActionFacet>();
+                string subMenuName = facet.SubMenuWhenContributedTo(spec);
                 if (subMenuName != null) {
-                    //Id specified as below purely for backwards UI compatibility: Id is not needed otherwise
-                    string id = spec.ShortName + "-" + ca.Id.Split('.').Last() + ":";
+                    string id = facet.IdWhenContributedTo(spec);
                     MenuImpl subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-                    subMenu.AddOrderableElementsToMenu(ca.Specs, subMenu);
+                    subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
                 } else { //i.e. no sub-menu
-                    IActionSpecImmutable actionSpec = ca.Specs.Single();
-                    AddMenuItem(new MenuAction(actionSpec));
+                    AddMenuItem(new MenuAction(ca));
                 }
             }
             return this;
