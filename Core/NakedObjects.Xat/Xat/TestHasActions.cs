@@ -37,15 +37,9 @@ namespace NakedObjects.Xat {
                 List<ITestAction> actions = NakedObject.Spec.GetAllActions().
                     OfType<ActionSpec>().
                     Select(x => factory.CreateTestAction(x, this)).ToList();
-
-                foreach (ActionSpecSet set in NakedObject.Spec.GetAllActions().OfType<ActionSpecSet>()) {
-                    actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.Name, x, this)));
-                }
-
                 return actions.ToArray();
             }
         }
-
 
         public ITestAction GetAction(string actionName) {
             ITestAction[] actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu)).ToArray();
@@ -130,16 +124,8 @@ namespace NakedObjects.Xat {
             for (int i = 0; i < actionsSpec.Length; i++) {
                 IActionSpec actionSpec = actionsSpec[i];
                 string name = actionSpec.Name;
-                if (actionSpec is ActionSpecSet) {
-                    order.Append("(").Append(name).Append(":");
-                    order.Append(AppendActions(actionSpec.Actions));
-                    order.Append(")");
-                }
-                else {
                     order.Append(name);
-                }
-
-                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
+                 order.Append(i < actionsSpec.Length - 1 ? ", " : "");
             }
             return order.ToString();
         }

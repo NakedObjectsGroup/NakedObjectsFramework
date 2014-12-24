@@ -163,7 +163,6 @@
     <Compile Include="Component\ObjectPersistor.cs" />
     <Compile Include="Component\ServicesManager.cs" />
     <Compile Include="Framework\NakedObjectsFramework.cs" />
-    <Compile Include="Spec\ActionSpecSet.cs" />
     <Compile Include="Transaction\NestedTransaction.cs" />
     <Compile Include="Component\TransactionManager.cs" />
     <Compile Include="Exception\AdapterException.cs" />

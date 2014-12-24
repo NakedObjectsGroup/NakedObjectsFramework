@@ -618,9 +618,6 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (disabled != null && disabled.Item1) {
                 tagType = html.GetDuplicateAction(actionContext, disabled.Item2, out value, out attributes);
             }
-            else if (actionContext.Action is ActionSpecSet) {
-                tagType = html.GetActionSet(actionContext, out value, out attributes);
-            }
             else if (isEdit) {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
@@ -628,18 +625,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsForm(actionContext, html.Framework().GetObjectTypeName(actionContext.Target.Object), routeValues, out value, out attributes);
             }
 
-            IEnumerable<IActionSpec> childActions = html.Framework().GetChildActions(actionContext).ToList();
-
             return new ElementDescriptor {
                 TagType = tagType,
                 Value = value,
-                Attributes = attributes,
-                Children = childActions.
-                    Select(subaction => html.ObjectActionAsElementDescriptor(new ActionContext(false, actionContext.Target, subaction),
-                                                                             new {id = html.Framework().GetObjectId(actionContext.Target)},
-                                                                             isEdit,
-                                                                             html.IsDuplicate(childActions, subaction))).
-                    WrapInCollection("div", new {@class = IdHelper.SubMenuItemsName})
+                Attributes = attributes
             };
         }
 
@@ -2484,7 +2473,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                 ActionContext actionContext,
                                                                 string propertyName) {
             return new RouteValueDictionary(new {
-                @class = (targetActionContext.Action is ActionSpecSet) ? IdHelper.SubMenuName : targetActionContext.GetActionClass(html.Framework()),
+                @class = targetActionContext.GetActionClass(html.Framework()),
                 id = IdHelper.GetActionId(targetActionContext, actionContext, propertyName),
                 name,
                 type = "submit",
@@ -2521,19 +2510,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                         ActionContext actionContext,
                                                                         IObjectSpec spec,
                                                                         string propertyName) {
-            var children = html.Framework().GetChildActionsByReturnType(targetActionContext, spec).
-                Select(subTargetAction => html.GetActionElementDescriptor(new ActionContext(targetActionContext.Target, subTargetAction), actionContext, spec, propertyName)).
-                WrapInCollection("div", new {@class = IdHelper.SubMenuItemsName}).ToList();
-
-            if (children.Any()) {
-                return new ElementDescriptor {
-                    TagType = "div",
-                    Value = WrapInDiv(targetActionContext.Action.Name, IdHelper.MenuNameLabel).ToString(),
-                    Attributes = html.GetActionAttributes(IdHelper.ActionFindAction, targetActionContext, actionContext, propertyName),
-                    Children = children
-                };
-            }
-            return new ElementDescriptor();
+           return new ElementDescriptor();
         }
 
 
@@ -2543,9 +2520,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                     IObjectSpec spec,
                                                                     string propertyName,
                                                                     Tuple<bool, string> disabled = null) {
-            return (targetActionContext.Action is ActionSpecSet) ?
-                html.GetActionMenuElementDescriptor(targetActionContext, actionContext, spec, propertyName) :
-                html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
+            return html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
         }
 
         private static IList<ElementDescriptor> ObjectActionsThatReturn(this HtmlHelper html,

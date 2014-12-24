@@ -23,8 +23,7 @@ namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
      
         public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Spec.GetAllActions().OfType<ActionSpec>().Cast<IActionSpec>().Union(
-                        nakedObject.Spec.GetAllActions().OfType<ActionSpecSet>().SelectMany(set => set.Actions)).
+            return nakedObject.Spec.GetAllActions().OfType<ActionSpec>().Cast<IActionSpec>().
                                Where(a => a.IsUsable( nakedObject).IsAllowed).
                                Where(a => a.IsVisible( nakedObject ));
         }
@@ -36,24 +35,9 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
+          
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a is ActionSpecSet || (IsOfTypeOrCollectionOfType(a, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && IsOfTypeOrCollectionOfType(sa, spec) && sa.IsFinderMethod));
-        }
-
-        public static IEnumerable<IActionSpec> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
-            if (actionContext.Action is ActionSpecSet) {
-                return actionContext.Action.Actions.
-                                     Where(a => a.ActionType == ActionType.User).
-                                     Where(a => a.IsVisible(actionContext.Target));
-            }
-
-            return new List<IActionSpec>();
-        }
-
-        public static IEnumerable<IActionSpec> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, IObjectSpec spec) {
-            return framework.GetChildActions(actionContext).Where(a => IsOfTypeOrCollectionOfType(a, spec)).
-                                                  Where(action => action.Parameters.All(parm => parm.Spec.IsParseable || parm.IsChoicesEnabled || parm.Spec.IsOfType(actionContext.Target.Spec)));
+                Where(a => a.IsFinderMethod && a.IsVisible( nakedObject) && IsOfTypeOrCollectionOfType(a, spec));
         }
 
         private static bool IsOfTypeOrCollectionOfType(IActionSpec actionSpec, IObjectSpec spec) {
