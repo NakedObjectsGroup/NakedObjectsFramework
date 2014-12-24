@@ -16,8 +16,10 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using NakedObjects.SystemTest;
+using NakedObjects;
 
-namespace NakedObjects.SystemTest.Attributes {
+namespace SystemTest.Attributes {
     [TestClass]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
         #region Setup/Teardown
@@ -87,6 +89,22 @@ namespace NakedObjects.SystemTest.Attributes {
                 };
             }
         }
+
+        #region ContributedAction
+
+        [TestMethod]
+        public virtual void Contributed() {
+            var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
+            var obj = NewTestObject<Contributee>().GetDomainObject();
+            var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
+            var actions = adapter.Spec.GetAllActions();
+
+            Assert.AreEqual(1, actions.Count());
+            Assert.IsTrue(actions[0] is ActionSpec);
+            Assert.AreEqual("Contributed Action", actions[0].Name);
+        }
+
+        #endregion
 
         #region Default
 
@@ -314,6 +332,25 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void DisplayNameAppliedToObject() {
             var displayname1 = NewTestObject<Displayname1>();
             displayname1.AssertTitleEquals("Untitled Foo");
+        }
+
+        #endregion
+
+        #region FinderAction
+
+        [TestMethod]
+        public virtual void ActionsIncludedInFinderMenu() {
+            var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
+            FinderAction1 obj = service.NewObject1();
+            INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
+            var actions = adapter.Spec.GetRelatedServiceActions();
+
+
+            Assert.AreEqual(2, actions.Count());
+            Assert.IsTrue(actions[0] is ActionSpec);
+            Assert.IsTrue(actions[1] is ActionSpec);
+            Assert.AreEqual("Finder Action1", actions[0].Name);
+            Assert.AreEqual("Finder Action2", actions[1].Name);
         }
 
         #endregion
@@ -947,45 +984,6 @@ namespace NakedObjects.SystemTest.Attributes {
                 Assert.Fail();
             }
             catch (Exception /*expected*/) {}
-        }
-
-        #endregion
-
-        #region NotContributedAction
-
-        [TestMethod, Ignore] //TODO: Not sure if this test should in fact run as is. 
-            //Note that [ContributedAction] attribute is being tested under MenuTests
-        public virtual void Contributed() {
-            var service = (TestServiceContributedAction) GetTestService(typeof (TestServiceContributedAction)).NakedObject.Object;
-            var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
-            var actions = adapter.Spec.GetAllActions();
-
-            Assert.AreEqual(1, actions.Count());
-            Assert.IsTrue(actions[0] is ActionSpecSet);
-            Assert.AreEqual(1, actions[0].Actions.Count());
-            Assert.IsTrue(actions[0].Actions[0] is ActionSpec);
-            Assert.AreEqual("Contributed Action", actions[0].Actions[0].Name);
-        }
-
-        #endregion
-
-        #region FinderAction
-
-        [TestMethod, Ignore] //Needs re-writing for new framework
-        public virtual void ActionsIncludedInFinderMenu() {
-            var service = (TestServiceFinderAction) GetTestService(typeof (TestServiceFinderAction)).NakedObject.Object;
-            FinderAction1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
-            var actions = adapter.Spec.GetRelatedServiceActions();
-
-            Assert.AreEqual(1, actions.Count());
-            Assert.IsTrue(actions[0] is ActionSpecSet);
-            Assert.AreEqual(2, actions[0].Actions.Count());
-            Assert.IsTrue(actions[0].Actions[0] is ActionSpec);
-            Assert.IsTrue(actions[0].Actions[1] is ActionSpec);
-            Assert.AreEqual("Finder Action1", actions[0].Actions[0].Name);
-            Assert.AreEqual("Finder Action2", actions[0].Actions[1].Name);
         }
 
         #endregion
@@ -1666,12 +1664,12 @@ namespace NakedObjects.SystemTest.Attributes {
 
     public class TestServiceFinderAction {
 
-        [FinderAction]
+        [FinderAction("Test Service Finder Action")]
         public FinderAction1 FinderAction1() {
             return null;
         }
 
-        [FinderAction]
+        [FinderAction("Test Service Finder Action")]
         public ICollection<FinderAction1> FinderAction2() {
             return null;
         }
