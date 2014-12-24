@@ -24,5 +24,11 @@ namespace NakedObjects {
         }
 
         public string SubMenu { get; private set; }
+
+        /// <summary>
+        /// Id has been included for generating UI code that is backwards-compatible with NOF 6.
+        /// Recommended left null if not needed.
+        /// </summary>
+        public string Id { get; private set; }
     }
 }

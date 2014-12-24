@@ -5,6 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Facet {
-    public interface IFinderActionFacet : ISingleStringValueFacet {}
+    public interface IFinderActionFacet : IFacet {
+
+        //Returns null if the action is to be 'top-level'
+        string SubMenu();
+
+        //Id has been included for generating UI code that is backwards-compatible with NOF 6.
+        string Id();
+    }
 }

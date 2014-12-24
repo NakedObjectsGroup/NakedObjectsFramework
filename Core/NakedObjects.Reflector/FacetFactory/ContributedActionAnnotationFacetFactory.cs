@@ -33,9 +33,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facet = new ContributedActionFacet(holder);
             foreach (var p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
-                var subMenu = attribute.SubMenu;
                 var type = reflector.LoadSpecification(p.ParameterType.FullName);
-                facet.AddContributee(type, subMenu);
+                facet.AddContributee(type, attribute.SubMenu, attribute.Id);
             }
             FacetUtils.AddFacet(facet);
         }

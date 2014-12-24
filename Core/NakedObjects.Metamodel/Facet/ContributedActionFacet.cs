@@ -16,31 +16,37 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
 
-        private readonly Dictionary<IObjectSpecImmutable, string> contributees = new Dictionary<IObjectSpecImmutable, string>();
-
+        private readonly List<Tuple<IObjectSpecImmutable, string, string>> contributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 
         public ContributedActionFacet(ISpecification holder)
             : base(typeof (IContributedActionFacet), holder) { }
 
-
-        public void AddContributee(IObjectSpecImmutable type, string subMenu) {
-            contributees.Add(type, subMenu);
+        public void AddContributee(IObjectSpecImmutable type, string subMenu, string id) {
+            contributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
         }
 
         #region IContributedActionFacet Members
 
-        public bool ContributedTo(IObjectSpecImmutable spec) {
-            return contributees.Keys.Any(spec.IsOfType); // IsOfType should handle sub-types correctly
+        public bool IsContributedTo(IObjectSpecImmutable spec) {
+            return contributees.Select(t => t.Item1).Cast<IObjectSpecImmutable>().Any(spec.IsOfType); // IsOfType should handle sub-types correctly
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
-            if (!ContributedTo(spec)) {
-                throw new Exception("Action is not contributed to " + spec.Type);
-            }
-            var contributeeSpec = contributees.Keys.First(spec.IsOfType);
-            return contributees[contributeeSpec];
+            return FindContributee(spec).Item2;
         }
 
+        public string IdWhenContributedTo(IObjectSpecImmutable spec) {
+            return FindContributee(spec).Item3;
+        }
+
+        private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {
+            if (!IsContributedTo(spec)) {
+                throw new Exception("Action is not contributed to " + spec.Type);
+            }
+            var tuple = contributees.First(t => spec.IsOfType(t.Item1));
+            return tuple;
+        }
         #endregion
+
     }
 }

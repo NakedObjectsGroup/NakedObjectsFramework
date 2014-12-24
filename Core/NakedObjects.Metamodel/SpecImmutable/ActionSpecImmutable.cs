@@ -103,7 +103,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 return false;
             }
 
-            return contributeeSpec.IsOfType(parmSpec) && facet.ContributedTo(contributeeSpec);
+            return contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
         }
 
         #region ISerializable

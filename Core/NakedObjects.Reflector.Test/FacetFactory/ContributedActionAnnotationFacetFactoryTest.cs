@@ -124,8 +124,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var sp1 = new Mock<IObjectSpecImmutable>();
             sp1.Setup(s => s.IsOfType(null)).Returns(true);
 
-            Assert.IsTrue(facet.ContributedTo(sp.Object));
-            Assert.IsTrue(facet.ContributedTo(sp1.Object));
+            Assert.IsTrue(facet.IsContributedTo(sp.Object));
+            Assert.IsTrue(facet.IsContributedTo(sp1.Object));
 
             AssertNoMethodsRemoved();
         }

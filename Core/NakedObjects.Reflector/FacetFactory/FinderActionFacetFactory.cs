@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IFinderActionFacet Create(FinderActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new FinderActionFacet(attribute.Value, holder);
+            return attribute == null ? null : new FinderActionFacet(holder, attribute.SubMenu, attribute.Id);
         }
     }
 }

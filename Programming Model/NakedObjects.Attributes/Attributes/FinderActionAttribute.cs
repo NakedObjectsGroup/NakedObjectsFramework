@@ -16,7 +16,7 @@ namespace NakedObjects {
     public class FinderActionAttribute : Attribute {
 
         public FinderActionAttribute() {
-            Value = null;
+            SubMenu = null;
         }
 
         /// <summary>
@@ -24,10 +24,16 @@ namespace NakedObjects {
         /// </summary>
         /// <param name="subMenu"></param>
         public FinderActionAttribute(string subMenu) {
-            Value = subMenu;
+            SubMenu = subMenu;
         }
 
-        public string Value { get; private set; }
+        public string SubMenu { get; private set; }
+
+        /// <summary>
+        /// Id has been included for generating UI code that is backwards-compatible with NOF 6.
+        /// Recommended left null if not needed.
+        /// </summary>
+        public string Id { get; private set; }
 
     }
 }
