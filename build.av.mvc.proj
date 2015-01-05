@@ -47,6 +47,7 @@
  
     <ItemGroup>
       <CFGFiles Include="$(MVCPath)\$(NOMVC).App.Test\App.config"/>
+      <CFGFiles Include="$(MVCPath)\$(NOMVC).Test\App.config"/>
     </ItemGroup>
    
     <FileUpdate Files="@(CFGFiles)"
