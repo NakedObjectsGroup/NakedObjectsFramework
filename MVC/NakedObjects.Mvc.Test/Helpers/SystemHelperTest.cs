@@ -16,15 +16,16 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MvcTestApp.Tests.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
+using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
-    [TestClass]
+    [TestFixture]
     public class SystemHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -37,7 +38,7 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
-        [TestInitialize]
+        [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
@@ -57,13 +58,13 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
+        [TestFixtureSetUp]
+        public  void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
         }
 
-        [ClassCleanup]
-        public static void TearDownTest() {
+        [TestFixtureTearDown]
+        public  void TearDownTest() {
             Database.Delete("SystemHelperTest");
         }
 
@@ -126,7 +127,7 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
-        [TestMethod]
+        [Test]
         [Ignore] // doesn't work now uses urls which are empty in tests
         public void Cancel() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
@@ -140,7 +141,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(fieldView, s);
         }
 
-        [TestMethod]
+        [Test]
         public void History() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
@@ -151,7 +152,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("History", s);
         }
 
-        [TestMethod]
+        [Test]
         public void HistoryWithCount1() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -167,7 +168,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("HistoryWithCount", s);
         }
 
-        [TestMethod]
+        [Test]
         public void HistoryWithCount2() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
@@ -183,7 +184,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         // too hard to mock appropriately - rely on selenium tests
-        [TestMethod, Ignore]
+        [Test, Ignore]
         public void TabbedHistory() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
@@ -194,7 +195,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("TabbedHistory", s);
         }
 
-        [TestMethod, Ignore]
+        [Test, Ignore]
         public void TabbedHistoryWithCount1() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
@@ -209,7 +210,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("TabbedHistoryWithCount", s);
         }
 
-        [TestMethod, Ignore]
+        [Test, Ignore]
         public void TabbedHistoryWithCount2() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();

@@ -14,19 +14,6 @@
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
 
-  <Choose>
-    <When Condition="Exists('C:\Program Files (x86)')">
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>       
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>       
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
     <Platform>x86</Platform>
@@ -52,6 +39,18 @@
   
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
+
+    <ItemGroup>
+      <CFGFiles Include="$(RoPath)\RestfulObjects.Test.Nof4\App.config"/>
+    </ItemGroup>
+
+    <FileUpdate Files="@(CFGFiles)"
+								RegEx= '\.\\SQLEXPRESS'
+								ReplacementText ='(local)\SQL2012SP1'
+                WarnOnNoUpdate='True'/>
+    
+    
+    
   </Target>
 
   <ItemGroup>
@@ -82,7 +81,7 @@
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
     <MSBuild Projects="@(TFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll"'/>
+    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" /noshadow'/>
   </Target>
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
