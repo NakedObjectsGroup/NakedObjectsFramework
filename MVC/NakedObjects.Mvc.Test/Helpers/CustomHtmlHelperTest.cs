@@ -138,11 +138,22 @@ namespace MvcTestApp.Tests.Helpers {
                 var rgx = new Regex(pattern);
                 actionView = rgx.Replace(actionView, replacement);
                 s = rgx.Replace(s, replacement);
-
-                Assert.AreEqual(actionView, s);
+                Compare(actionView, s);
+                //Assert.AreEqual(actionView, s);
             }
         }
 
+        private static void Compare(string expected, string actual) {
+            if (expected == actual) {
+                return;
+            }
+            for (int i = 0; i < expected.Length; i++) {
+                if (expected.Substring(i,1) != actual.Substring(i,1)) {
+                    int start = i > 10 ? i-10 : 0;
+                    Assert.Fail("Strings unequal at "+i+". Expected: " + expected.Substring(start, 50) + " Actual: " + actual.Substring(start, 50));
+                }
+            }
+        }
 
         private void CustomHelperTest(Func<ContextMocks, string> func, string toCompare) {
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;

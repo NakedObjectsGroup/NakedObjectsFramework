@@ -18,7 +18,7 @@ namespace NakedObjects.Services {
     ///  be useful for writing XAT tests, though, where it may still be retrieved by 
     ///  name, using the pluralised friendly-name of the type, as before.
     /// </summary>
-    public sealed class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
+    public class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
         private readonly string title;
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace NakedObjects.Services {
         ///     Returns a new transient instance of T
         /// </summary>
         [MemberOrder(Sequence = "1")]
-        public T NewInstance() {
+        public virtual T NewInstance() {
             return NewTransientInstance<T>();
         }
 
@@ -81,17 +81,17 @@ namespace NakedObjects.Services {
         ///     All Instances of T
         /// </summary>
         [MemberOrder(Sequence = "2")]
-        public IQueryable<T> AllInstances() {
+        public virtual IQueryable<T> AllInstances() {
             return Container.Instances<T>();
         }
 
         [MemberOrder(Sequence = "3")]
-        public T GetRandom() {
+        public virtual T GetRandom() {
             return Random<T>();
         }
 
         [MemberOrder(Sequence = "4")]
-        public T FindByKey(int key) {
+        public virtual T FindByKey(int key) {
             PropertyInfo keyProperty = Container.GetSingleKey(typeof (T));
             if (keyProperty.PropertyType != typeof (int)) {
                 throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof (T)));
