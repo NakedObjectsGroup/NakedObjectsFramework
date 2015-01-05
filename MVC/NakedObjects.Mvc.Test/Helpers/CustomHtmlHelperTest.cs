@@ -141,6 +141,11 @@ namespace MvcTestApp.Tests.Helpers {
                 actionView = rgx.Replace(actionView, replacement);
                 s = rgx.Replace(s, replacement);
 
+                // normalize new lines 
+
+                actionView = actionView.Replace(@"\r\n", @"\n");
+                s = s.Replace(@"\r\n", @"\n");
+
                 Assert.AreEqual(actionView, s);
             }
         }
