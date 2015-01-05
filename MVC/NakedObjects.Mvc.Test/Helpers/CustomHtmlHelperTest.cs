@@ -143,8 +143,8 @@ namespace MvcTestApp.Tests.Helpers {
 
                 // normalize new lines 
 
-                actionView = actionView.Replace(@"\r\n", @"\n");
-                s = s.Replace(@"\r\n", @"\n");
+                actionView = actionView.Replace("\r\n", "\n");
+                s = s.Replace("\r\n", "\n");
 
                 Assert.AreEqual(actionView, s);
             }
