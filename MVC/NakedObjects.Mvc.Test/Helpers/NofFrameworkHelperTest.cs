@@ -96,7 +96,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
-        private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;1;System.Int64;507;True;;0";
+        private const string genericObjectId = @"Expenses.Services.SimpleRepositoryCustomHelperTestClass;1;System.Int64;507;True;;0";
 
         [TestMethod]
         public void ActionsForHelper() {

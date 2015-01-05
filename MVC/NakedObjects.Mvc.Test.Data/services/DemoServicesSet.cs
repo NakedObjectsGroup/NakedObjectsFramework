@@ -25,42 +25,62 @@ namespace Expenses.Services {
                 new RecordActionService(),
                 new DummyMailSender(),
                 new SimpleRepositoryCustomHelperTestClass(),
-                new SimpleRepository<DescribedCustomHelperTestClass>()
+                new SimpleRepositoryDescribedCustomHelperTestClass()
             };
 
             return services.ToArray();
         }
     }
 
-    [DisplayName("Custom Helper Test Classes")]
+    [DisplayName(label)]
     public class SimpleRepositoryCustomHelperTestClass : SimpleRepository<CustomHelperTestClass> {
 
+        const string label = "Custom Helper Test Classes";
 
-              [MemberOrder(Sequence = "1"), FinderAction("Custom Helper Test Classes")]
+              [MemberOrder(Sequence = "1"), FinderAction(label)]
         public override CustomHelperTestClass NewInstance() {
             return base.NewInstance();
         }
-        [MemberOrder(Sequence = "2"), FinderAction("Custom Helper Test Classes")]
+        [MemberOrder(Sequence = "2"), FinderAction(label)]
               public override IQueryable<CustomHelperTestClass> AllInstances() {
                   return Container.Instances<CustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "3"), FinderAction("Custom Helper Test Classes")]
+        [MemberOrder(Sequence = "3"), FinderAction(label)]
         public override CustomHelperTestClass GetRandom() {
-            return Random<CustomHelperTestClass>();
+            return base.Random<CustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "4"), FinderAction("Custom Helper Test Classes")]
+        [MemberOrder(Sequence = "4"), FinderAction(label)]
         public override CustomHelperTestClass FindByKey(int key) {
-            PropertyInfo keyProperty = Container.GetSingleKey(typeof(CustomHelperTestClass));
-            if (keyProperty.PropertyType != typeof (int)) {
-                throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof(CustomHelperTestClass)));
-            }
-            var result = Container.FindByKey<CustomHelperTestClass>(key);
-            if (result == null) {
-                WarnUser(ProgrammingModel.NoMatchSingular);
-            }
-            return result;
+            return base.FindByKey(key);
         }
     }
+
+    [DisplayName(label)]
+    public class SimpleRepositoryDescribedCustomHelperTestClass : SimpleRepository<DescribedCustomHelperTestClass> {
+
+        const string label = "Described Custom Helper Test Classes";
+
+        [MemberOrder(Sequence = "1"), FinderAction(label)]
+        public override DescribedCustomHelperTestClass NewInstance() {
+            return base.NewInstance();
+        }
+        [MemberOrder(Sequence = "2"), FinderAction(label)]
+        public override IQueryable<DescribedCustomHelperTestClass> AllInstances() {
+            return Container.Instances<DescribedCustomHelperTestClass>();
+        }
+
+        [MemberOrder(Sequence = "3"), FinderAction(label)]
+        public override DescribedCustomHelperTestClass GetRandom() {
+            return base.Random<DescribedCustomHelperTestClass>();
+        }
+
+        [MemberOrder(Sequence = "4"), FinderAction(label)]
+        public override DescribedCustomHelperTestClass FindByKey(int key) {
+            return base.FindByKey(key);
+        }
+    }
+
+
 }

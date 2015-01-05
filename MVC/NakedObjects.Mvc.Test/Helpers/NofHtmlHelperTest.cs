@@ -173,7 +173,23 @@ namespace MvcTestApp.Tests.Helpers {
                 s = rgx.Replace(s, replacement);
 
 
-                Assert.AreEqual(actionView, s);
+                //Assert.AreEqual(actionView, s);
+                Compare(actionView, s);
+            }
+        }
+
+        private static void Compare(string expected, string actual) {
+            if (expected == actual) {
+                return;
+            }
+            for (int i = 0; i < expected.Length; i++) {
+                if (expected.Substring(i, 1) != actual.Substring(i, 1)) {
+                    int start = i > 10 ? i - 10 : 0;
+                    int maxLength = Math.Min(actual.Length, expected.Length);
+                    int length = start + 50 < maxLength ? 50 : maxLength - start; 
+
+                    Assert.Fail("Strings unequal at " + i + ". Expected: " + expected.Substring(start, length) + " Actual: " + actual.Substring(start, length));
+                }
             }
         }
 

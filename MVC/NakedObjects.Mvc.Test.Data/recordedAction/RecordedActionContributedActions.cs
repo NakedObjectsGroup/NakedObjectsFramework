@@ -33,7 +33,7 @@ namespace Expenses.RecordedActions {
 
         #endregion
 
-        public virtual IList<RecordedAction> AllRecordedActions(IRecordedActionContext context) {
+        public virtual IList<RecordedAction> AllRecordedActions([ContributedAction(SubMenu = "Recorded Actions", Id = "Claim-RecordedActionContributedActions:")]IRecordedActionContext context) {
             return m_recordedActionRepository.allRecordedActions(context);
         }
     }
