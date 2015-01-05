@@ -39,6 +39,18 @@
   
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
+
+    <ItemGroup>
+      <CFGFiles Include="$(RoPath)\RestfulObjects.Test.Nof4\App.config"/>
+    </ItemGroup>
+
+    <FileUpdate Files="@(CFGFiles)"
+								RegEx= '\.\\SQLEXPRESS'
+								ReplacementText ='(local)\SQL2012SP1'
+                WarnOnNoUpdate='True'/>
+    
+    
+    
   </Target>
 
   <ItemGroup>
