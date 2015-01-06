@@ -93,7 +93,7 @@ namespace NakedObjects.Core.Test.Adapter {
     }
 
 
-    [TestClass, Ignore]
+    [TestClass]
     public class CollectionMementoTest : AcceptanceTestCase {
 
         
