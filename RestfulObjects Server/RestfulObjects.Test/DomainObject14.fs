@@ -675,7 +675,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("UShort", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     //let dt = DateTime.Parse("2012-03-27T08:42:36Z").ToUniversalTime()
-    let dt = (new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc))
+    let dt = (new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc)).ToUniversalTime()
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))

@@ -158,11 +158,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Mvc">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.0-beta1\lib\net451\NakedObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.0-beta2\lib\net451\NakedObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.MvcResources">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.0-beta1\lib\net451\NakedObjects.MvcResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.0-beta2\lib\net451\NakedObjects.MvcResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
@@ -181,12 +181,12 @@
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Surface">
-      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-beta1\lib\net451\NakedObjects.Surface.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-beta2\lib\net451\NakedObjects.Surface.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Surface.Nof4">
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0-beta1\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0-beta2\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
@@ -201,11 +201,11 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Mvc">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0-beta1\lib\net452\RestfulObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0-beta2\lib\net452\RestfulObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0-beta1\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0-beta2\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable">
@@ -348,6 +348,7 @@
     <Content Include="Images\tab-close.png" />
     <Content Include="Images\Table.png" />
     <Content Include="Images\unchecked.png" />
+    <Content Include="NakedObjects.Mvc-Files%28%29.zip" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -420,6 +421,8 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Shared\DialogControl.cshtml" />
+    <Content Include="Views\Shared\_NofLayout.cshtml" />
     <Content Include="Views\Shared\ViewModel.cshtml" />
     <Content Include="Views\Shared\StandaloneTable.cshtml" />
     <Content Include="Views\Shared\ScalarView.cshtml" />
@@ -431,14 +434,12 @@
     <Content Include="Views\Shared\FormWithSelections.cshtml" />
     <Content Include="Views\Shared\FormWithFinderDialog.cshtml" />
     <Content Include="Views\Shared\DomainError.cshtml" />
-    <Content Include="Views\Shared\DialogControl.cshtml" />
     <Content Include="Views\Shared\DestroyedError.cshtml" />
     <Content Include="Views\Shared\DataUpdateError.cshtml" />
     <Content Include="Views\Shared\ConcurrencyError.cshtml" />
     <Content Include="Views\Shared\BrowserError.cshtml" />
     <Content Include="Views\Shared\ActionDialog.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_NofLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

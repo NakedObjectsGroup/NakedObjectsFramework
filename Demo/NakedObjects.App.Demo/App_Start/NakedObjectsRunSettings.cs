@@ -14,16 +14,25 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
-using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using System.Collections.Generic;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.App.Demo {
+    /// <summary>
+    /// Use this class to configure the application running under Naked Objects
+    /// </summary>
     public static class NakedObjectsRunSettings {
-        
-
+        /// <summary>
+        /// Specify any types that need to be reflected-over by the framework and that
+        /// will not be discovered via the services
+        /// </summary>
         private static Type[] Types {
             get {
                 return new[] {
+                    typeof (EnumerableQuery<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (ActionResultModelQ<object>)
@@ -65,7 +74,7 @@ namespace NakedObjects.App.Demo {
             }
         }
 
-        private static Type[] AssociatedTypes() {
+        private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
             return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
@@ -76,10 +85,22 @@ namespace NakedObjects.App.Demo {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
+            config.UsingEdmxContext("Model").AssociateTypes(AllPersistedTypesInMainModel);
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }
+
+        public static IAuditConfiguration AuditConfig() {
+            return null;
+        }
+
+        public static IAuthorizationConfiguration AuthorizationConfig() {
+                return null;
+        }
+
+        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
+        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
+
 
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to

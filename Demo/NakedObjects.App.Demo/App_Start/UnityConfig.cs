@@ -9,6 +9,7 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -19,6 +20,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -29,6 +31,7 @@ using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.App.Demo {
     /// <summary>
@@ -37,96 +40,100 @@ namespace NakedObjects.App.Demo {
     public class UnityConfig {
         #region Framework Configuration
 
-        private static void RegisterFacetFactories(IUnityContainer container) {
-            container.RegisterType<IFacetFactory, FallbackFacetFactory>("FallbackFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
-            container.RegisterType<IFacetFactory, IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(1));
-            container.RegisterType<IFacetFactory, UnsupportedParameterTypesMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(2));
-            container.RegisterType<IFacetFactory, RemoveSuperclassMethodsFacetFactory>("RemoveSuperclassMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(3));
-            container.RegisterType<IFacetFactory, RemoveInitMethodFacetFactory>("RemoveInitMethodFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(4));
-            container.RegisterType<IFacetFactory, RemoveDynamicProxyMethodsFacetFactory>("RemoveDynamicProxyMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(5));
-            container.RegisterType<IFacetFactory, RemoveEventHandlerMethodsFacetFactory>("RemoveEventHandlerMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(6));
-            container.RegisterType<IFacetFactory, TypeMarkerFacetFactory>("TypeMarkerFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(7));
+        protected static void RegisterFacetFactories(IUnityContainer container) {
+            int order = 0;
+            RegisterFacetFactory<FallbackFacetFactory>(container, order++);
+            RegisterFacetFactory<IteratorFilteringFacetFactory>(container, order++);
+            RegisterFacetFactory<UnsupportedParameterTypesMethodFilteringFactory>(container, order++);
+            RegisterFacetFactory<RemoveSuperclassMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<RemoveInitMethodFacetFactory>(container, order++);
+            RegisterFacetFactory<RemoveDynamicProxyMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<RemoveEventHandlerMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<TypeMarkerFacetFactory>(container, order++);
             // must be before any other FacetFactories that install MandatoryFacet.class facets
-            container.RegisterType<IFacetFactory, MandatoryDefaultFacetFactory>("MandatoryDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(8));
-
-            // use this factory for 'optional by default'
-            //container.RegisterType<IFacetFactory, OptionalDefaultFacetFactory>("OptionalDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(8));
-
-            container.RegisterType<IFacetFactory, PropertyValidateDefaultFacetFactory>("PropertyValidateDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(9));
-            container.RegisterType<IFacetFactory, ComplementaryMethodsFilteringFacetFactory>("ComplementaryMethodsFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(10));
-            container.RegisterType<IFacetFactory, ActionMethodsFacetFactory>("ActionMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(11));
-            container.RegisterType<IFacetFactory, CollectionFieldMethodsFacetFactory>("CollectionFieldMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(12));
-            container.RegisterType<IFacetFactory, PropertyMethodsFacetFactory>("PropertyMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(13));
-            container.RegisterType<IFacetFactory, IconMethodFacetFactory>("IconMethodFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(14));
-            container.RegisterType<IFacetFactory, CallbackMethodsFacetFactory>("CallbackMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(15));
-            container.RegisterType<IFacetFactory, TitleMethodFacetFactory>("TitleMethodFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(16));
-            container.RegisterType<IFacetFactory, ValidateObjectFacetFactory>("ValidateObjectFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(17));
-            container.RegisterType<IFacetFactory, ComplexTypeAnnotationFacetFactory>("ComplexTypeAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(19));
-            container.RegisterType<IFacetFactory, ViewModelFacetFactory>("ViewModelFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(20));
-            container.RegisterType<IFacetFactory, BoundedAnnotationFacetFactory>("BoundedAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(21));
-            container.RegisterType<IFacetFactory, EnumFacetFactory>("EnumFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(22));
-            container.RegisterType<IFacetFactory, ActionDefaultAnnotationFacetFactory>("ActionDefaultAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(23));
-            container.RegisterType<IFacetFactory, PropertyDefaultAnnotationFacetFactory>("PropertyDefaultAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(24));
-            container.RegisterType<IFacetFactory, DescribedAsAnnotationFacetFactory>("DescribedAsAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(25));
-            container.RegisterType<IFacetFactory, DisabledAnnotationFacetFactory>("DisabledAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(26));
-            container.RegisterType<IFacetFactory, PasswordAnnotationFacetFactory>("PasswordAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(27));
-            container.RegisterType<IFacetFactory, ExecutedAnnotationFacetFactory>("ExecutedAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(28));
-            container.RegisterType<IFacetFactory, PotencyAnnotationFacetFactory>("PotencyAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(29));
-            container.RegisterType<IFacetFactory, PageSizeAnnotationFacetFactory>("PageSizeAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(30));
-            container.RegisterType<IFacetFactory, HiddenAnnotationFacetFactory>("HiddenAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(32));
-            container.RegisterType<IFacetFactory, HiddenDefaultMethodFacetFactory>("HiddenDefaultMethodFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(33));
-            container.RegisterType<IFacetFactory, DisableDefaultMethodFacetFactory>("DisableDefaultMethodFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(34));
-            container.RegisterType<IFacetFactory, AuthorizeAnnotationFacetFactory>("AuthorizeAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(35));
-            container.RegisterType<IFacetFactory, ValidateProgrammaticUpdatesAnnotationFacetFactory>("ValidateProgrammaticUpdatesAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(36));
-            container.RegisterType<IFacetFactory, ImmutableAnnotationFacetFactory>("ImmutableAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(37));
-            container.RegisterType<IFacetFactory, MaxLengthAnnotationFacetFactory>("MaxLengthAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(38));
-            container.RegisterType<IFacetFactory, RangeAnnotationFacetFactory>("RangeAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(39));
-            container.RegisterType<IFacetFactory, MemberOrderAnnotationFacetFactory>("MemberOrderAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(40));
-            container.RegisterType<IFacetFactory, MultiLineAnnotationFacetFactory>("MultiLineAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(41));
-            container.RegisterType<IFacetFactory, NamedAnnotationFacetFactory>("NamedAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(42));
-            container.RegisterType<IFacetFactory, NotPersistedAnnotationFacetFactory>("NotPersistedAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(43));
-            container.RegisterType<IFacetFactory, ProgramPersistableOnlyAnnotationFacetFactory>("ProgramPersistableOnlyAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(44));
-            container.RegisterType<IFacetFactory, OptionalAnnotationFacetFactory>("OptionalAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(45));
-            container.RegisterType<IFacetFactory, RequiredAnnotationFacetFactory>("RequiredAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(46));
-            container.RegisterType<IFacetFactory, PluralAnnotationFacetFactory>("PluralAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(47));
-            container.RegisterType<IFacetFactory, DefaultNamingFacetFactory>("DefaultNamingFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(48)); // must come after Named and Plural factories
-            container.RegisterType<IFacetFactory, ConcurrencyCheckAnnotationFacetFactory>("ConcurrencyCheckAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(50));
-            container.RegisterType<IFacetFactory, ContributedActionAnnotationFacetFactory>("ContributedActionAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(51));
-            container.RegisterType<IFacetFactory, ExcludeFromFindMenuAnnotationFacetFactory>("ExcludeFromFindMenuAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(52));
+            RegisterFacetFactory<MandatoryDefaultFacetFactory>(container, order++);
+            RegisterFacetFactory<PropertyValidateDefaultFacetFactory>(container, order++);
+            RegisterFacetFactory<ComplementaryMethodsFilteringFacetFactory>(container, order++);
+            RegisterFacetFactory<ActionMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<CollectionFieldMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<PropertyMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<IconMethodFacetFactory>(container, order++);
+            RegisterFacetFactory<CallbackMethodsFacetFactory>(container, order++);
+            RegisterFacetFactory<TitleMethodFacetFactory>(container, order++);
+            RegisterFacetFactory<ValidateObjectFacetFactory>(container, order++);
+            RegisterFacetFactory<ComplexTypeAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ViewModelFacetFactory>(container, order++);
+            RegisterFacetFactory<BoundedAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<EnumFacetFactory>(container, order++);
+            RegisterFacetFactory<ActionDefaultAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PropertyDefaultAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<DescribedAsAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<DisabledAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PasswordAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ExecutedAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PotencyAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PageSizeAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<HiddenAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<HiddenDefaultMethodFacetFactory>(container, order++);
+            RegisterFacetFactory<DisableDefaultMethodFacetFactory>(container, order++);
+            RegisterFacetFactory<AuthorizeAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ValidateProgrammaticUpdatesAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ImmutableAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<MaxLengthAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<RangeAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<MemberOrderAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<MultiLineAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<NamedAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<NotPersistedAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ProgramPersistableOnlyAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<OptionalAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<RequiredAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PluralAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<DefaultNamingFacetFactory>(container, order++);// must come after Named and Plural factories
+            RegisterFacetFactory<ConcurrencyCheckAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<ContributedActionAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<FinderActionFacetFactory>(container, order++);
             // must come after any facets that install titles
-            container.RegisterType<IFacetFactory, MaskAnnotationFacetFactory>("MaskAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(53));
+            RegisterFacetFactory<MaskAnnotationFacetFactory>(container, order++);
             // must come after any facets that install titles, and after mask
             // if takes precedence over mask.
-            container.RegisterType<IFacetFactory, RegExAnnotationFacetFactory>("RegExAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(54));
-            container.RegisterType<IFacetFactory, TypeOfAnnotationFacetFactory>("TypeOfAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(55));
-            container.RegisterType<IFacetFactory, TableViewAnnotationFacetFactory>("TableViewAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(56));
-            container.RegisterType<IFacetFactory, TypicalLengthDerivedFromTypeFacetFactory>("TypicalLengthDerivedFromTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(57));
-            container.RegisterType<IFacetFactory, TypicalLengthAnnotationFacetFactory>("TypicalLengthAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(58));
-            container.RegisterType<IFacetFactory, EagerlyAnnotationFacetFactory>("EagerlyAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(59));
-            container.RegisterType<IFacetFactory, PresentationHintAnnotationFacetFactory>("PresentationHintAnnotationFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(60));
-            container.RegisterType<IFacetFactory, BooleanValueTypeFacetFactory>("BooleanValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(61));
-            container.RegisterType<IFacetFactory, ByteValueTypeFacetFactory>("ByteValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(62));
-            container.RegisterType<IFacetFactory, SbyteValueTypeFacetFactory>("SbyteValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(63));
-            container.RegisterType<IFacetFactory, ShortValueTypeFacetFactory>("ShortValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(64));
-            container.RegisterType<IFacetFactory, IntValueTypeFacetFactory>("IntValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(65));
-            container.RegisterType<IFacetFactory, LongValueTypeFacetFactory>("LongValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(66));
-            container.RegisterType<IFacetFactory, UShortValueTypeFacetFactory>("UShortValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(67));
-            container.RegisterType<IFacetFactory, UIntValueTypeFacetFactory>("UIntValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(68));
-            container.RegisterType<IFacetFactory, ULongValueTypeFacetFactory>("ULongValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(69));
-            container.RegisterType<IFacetFactory, FloatValueTypeFacetFactory>("FloatValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(70));
-            container.RegisterType<IFacetFactory, DoubleValueTypeFacetFactory>("DoubleValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(71));
-            container.RegisterType<IFacetFactory, DecimalValueTypeFacetFactory>("DecimalValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(72));
-            container.RegisterType<IFacetFactory, CharValueTypeFacetFactory>("CharValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(73));
-            container.RegisterType<IFacetFactory, DateTimeValueTypeFacetFactory>("DateTimeValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(74));
-            container.RegisterType<IFacetFactory, TimeValueTypeFacetFactory>("TimeValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(75));
-            container.RegisterType<IFacetFactory, StringValueTypeFacetFactory>("StringValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(76));
-            container.RegisterType<IFacetFactory, GuidValueTypeFacetFactory>("GuidValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(77));
-            container.RegisterType<IFacetFactory, EnumValueTypeFacetFactory>("EnumValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(78));
-            container.RegisterType<IFacetFactory, FileAttachmentValueTypeFacetFactory>("FileAttachmentValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(79));
-            container.RegisterType<IFacetFactory, ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(80));
-            container.RegisterType<IFacetFactory, ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", new ContainerControlledLifetimeManager(), new InjectionConstructor(81));
-            container.RegisterType<IFacetFactory, CollectionFacetFactory>("CollectionFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(82)); // written to not trample over TypeOf if already installed
-            container.RegisterType<IFacetFactory, MenuFacetFactory>("MenuFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(83));
+            order = RegisterFacetFactory<FinderActionFacetFactory>(container, order++);
+            RegisterFacetFactory<TypeOfAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<TableViewAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<TypicalLengthDerivedFromTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<TypicalLengthAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<EagerlyAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<PresentationHintAnnotationFacetFactory>(container, order++);
+            RegisterFacetFactory<BooleanValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<ByteValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<SbyteValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<ShortValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<IntValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<LongValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<UShortValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<UIntValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<ULongValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<FloatValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<DoubleValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<DecimalValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<CharValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<DateTimeValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<TimeValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<StringValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<GuidValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<EnumValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<FileAttachmentValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<ImageValueTypeFacetFactory>(container, order++);
+            RegisterFacetFactory<ArrayValueTypeFacetFactory<byte>>(container, order++);
+            RegisterFacetFactory<CollectionFacetFactory>(container, order++);
+            RegisterFacetFactory<MenuFacetFactory>(container, order++);
+        }
+
+        private static int RegisterFacetFactory<TFactory>(IUnityContainer container, int order) 
+            where TFactory : IFacetFactory
+        {
+            container.RegisterType<IFacetFactory, TFactory>(typeof(TFactory).Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order++));
+            return order;
         }
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
@@ -139,7 +146,7 @@ namespace NakedObjects.App.Demo {
             // config
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
-
+           
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
@@ -178,6 +185,17 @@ namespace NakedObjects.App.Demo {
 
             //DI
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerRequestLifetimeManager());
+
+            // Facet decorators 
+            if (NakedObjectsRunSettings.AuditConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuditManager), "AuditManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuditConfiguration), NakedObjectsRunSettings.AuditConfig(), new ContainerControlledLifetimeManager());
+            }
+
+            if (NakedObjectsRunSettings.AuthorizationConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuthorizationManager), "AuthorizationManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuthorizationConfiguration), NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
+            }
         }
 
         #endregion

@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.Data {
 
     public class WithScalars {
         private char c;
-        private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
+        private DateTime dateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc).ToUniversalTime();
         private ICollection<MostSimple> list = new List<MostSimple>();
         private ICollection<MostSimple> set = new HashSet<MostSimple>();
 
