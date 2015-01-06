@@ -348,7 +348,6 @@
     <Content Include="Images\tab-close.png" />
     <Content Include="Images\Table.png" />
     <Content Include="Images\unchecked.png" />
-    <Content Include="NakedObjects.Mvc-Files%28%29.zip" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
