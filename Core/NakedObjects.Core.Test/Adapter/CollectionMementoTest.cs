@@ -12,16 +12,18 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Test.Adapter {
     public class TestDomainObject {
@@ -93,36 +95,40 @@ namespace NakedObjects.Core.Test.Adapter {
     }
 
 
-    [TestClass]
+    [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
-
-        
         #region Setup/Teardown
 
-        [TestInitialize]
+        [SetUp]
         public void Setup() {
-            InitializeNakedObjectsFramework(this);
-            RunFixturesOnce();
+            RunFixtures();
             StartTest();
         }
 
         #endregion
 
-        private static bool runFixtures;
-
-        private void RunFixturesOnce() {
-            if (!runFixtures) {
-                runFixtures = true;             
-                RunFixtures();
-            }
-        }
-
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-           
+            // replace INakedObjectStore types
             var c = new EntityObjectStoreConfiguration();
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
+
+            var types = new Type[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
+            var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
+            var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupFixture() {
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [TestFixtureTearDown]
+        public void TearDownFixture() {
+            CleanupNakedObjectsFramework(this);
         }
 
         protected override Type[] Types {
@@ -152,11 +158,11 @@ namespace NakedObjects.Core.Test.Adapter {
             IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(memento.RecoverCollection(), manager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
             var oc = originalCollection.ToList();
             var rc = recoveredCollection.ToList();
-            
+
             Assert.IsTrue(oc.SequenceEqual(rc), "recovered collection not same as original");
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionNoParms() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -167,7 +173,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action1(), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionNoParmsTransient() {
             var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (TestDomainObject)));
 
@@ -178,7 +184,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(AdapterUtils.GetDomainObject<TestDomainObject>(targetNo).Action1(), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionNoParmsWithSelected() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -198,7 +204,7 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
 
-        [TestMethod] 
+        [Test]
         public void TestActionObjectCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -216,7 +222,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionObjectCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -233,7 +239,7 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestActionObjectParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -245,7 +251,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action3(target), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionObjectParmNull() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -257,7 +263,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action3(null), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod] 
+        [Test]
         public void TestActionValueCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -270,7 +276,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod] 
+        [Test]
         public void TestActionValueCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -283,7 +289,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod] 
+        [Test]
         public void TestActionValueCollectionParmString() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -296,7 +302,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action7(rawParm), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionValueParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
@@ -308,7 +314,7 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(target.Action2(1), memento, NakedObjectsFramework.Manager);
         }
 
-        [TestMethod]
+        [Test]
         public void TestActionValueParmString() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);

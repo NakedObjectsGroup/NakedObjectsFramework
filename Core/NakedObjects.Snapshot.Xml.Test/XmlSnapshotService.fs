@@ -18,7 +18,7 @@ open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Snapshot.Xml.Service
 open System.Text.RegularExpressions
-open Microsoft.VisualStudio.TestTools.UnitTesting
+open NUnit.Framework
 
 
 let normalizeData d1 d2 =
@@ -42,7 +42,8 @@ let checkResults resultsFile s =
         let nd = normalizeData actionView s
         Assert.AreEqual(fst(nd), snd(nd))
                 
-[<TestClass>]
+[<TestFixture>]
+[<Ignore>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()
@@ -53,23 +54,19 @@ type DomainTests() =
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-            let types = [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>  |]
-            let ms = [| typeof<SimpleRepository<TestObject>>;  typeof<XmlSnapshotService>; typeof<TransformRepository> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
-            container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
-       
-        [<TestInitialize>]
-        member x.Setup() = 
+        [<TestFixtureSetUp>]
+        member x.FixtureSetup() =
             AcceptanceTestCase.InitializeNakedObjectsFramework(x)
-            x.RunFixtures()
+                
+        [<SetUp>]
+        member x.Setup() = 
             x.StartTest()
-        
-        [<TestCleanup>]
-        member x.TearDown() = ()
-       
             
+        override x.Types = 
+            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<List<TestObject>>  |]
+        
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()
             let xmlService = new XmlSnapshotService()
@@ -122,21 +119,21 @@ type DomainTests() =
         member x.TransFormWithSubObject() = 
             x.TransformService.GetAction("Transform With Sub Object").InvokeReturnObject().NakedObject.GetDomainObject<Two.TransformFull>()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForSimpleObject() = 
             let testObject = x.SimpleTestObject()
             let ss = x.GenerateSnapshot testObject
             checkResults "simpleTestData" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObject() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             checkResults "complexTestData" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObjectIncludeReference() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -144,7 +141,7 @@ type DomainTests() =
             checkResults "complexTestDataWithReference" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObjectIncludeCollection() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -152,7 +149,7 @@ type DomainTests() =
             checkResults "complexTestDataWithCollection" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObjectIncludeReferenceWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -160,7 +157,7 @@ type DomainTests() =
             checkResults "complexTestDataWithReferenceAnnotation" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObjectIncludeCollectionWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -168,7 +165,7 @@ type DomainTests() =
             checkResults "complexTestDataWithCollectionAnnotation" ss.Xml
             ()
         
-        [<TestMethod>]
+        [<Test>]
         member x.XmlForComplexObjectIncludeNestedReference() = 
             let testObject = x.NestedComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -220,7 +217,7 @@ type DomainTests() =
                     let nd = normalizeData attr.Value matchingAttr.Value
                     Assert.AreEqual(fst(nd), snd(nd))
         
-        [<TestMethod>]
+        [<Test>]
         member x.TransformXmlToMatchFull() = 
             let fullTestObject = x.TransFormFullObject()
             let nestedTestObject = x.TransFormWithSubObject()
@@ -238,7 +235,7 @@ type DomainTests() =
             with expected -> ()
             x.CompareXml fullXml nestedTransformedXml
         
-        [<TestMethod>]
+        [<Test>]
         [<Ignore>]
         member x.TransformXsdToIdentity() = 
             let nestedTestObject = x.TransFormWithSubObject()

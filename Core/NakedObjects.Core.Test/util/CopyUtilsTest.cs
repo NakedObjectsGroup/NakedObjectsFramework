@@ -7,12 +7,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+
 
 namespace NakedObjects.Core.Test.Util {
-    [TestClass]
+    [TestFixture]
     public class CopyUtilsTest {
         public class SimpleObject {
             public int ValueOne { get; set; }
@@ -44,7 +45,7 @@ namespace NakedObjects.Core.Test.Util {
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestAllClone() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -61,7 +62,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
         }
 
-        [TestMethod]
+        [Test]
         public void TestAllUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -97,7 +98,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestCollectionClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var co = new CollectionObject();
@@ -110,7 +111,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
         }
 
-        [TestMethod]
+        [Test]
         public void TestCollectionUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -136,7 +137,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestReferenceClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var ro = new ReferenceObject {ReferenceOne = so};
@@ -149,7 +150,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
         }
 
-        [TestMethod]
+        [Test]
         public void TestReferenceUpdate() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             var so2 = new SimpleObject {ValueOne = 3, ValueTwo = 4};
@@ -169,7 +170,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSimpleClone() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             SimpleObject clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
@@ -180,7 +181,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSimpleUpdate() {
             var so = new SimpleObject {ValueOne = 1, ValueTwo = 2};
             SimpleObject clone = (SimpleObject) CopyUtils.CloneObjectTest(so);
