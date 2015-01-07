@@ -168,7 +168,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AccessControlExposeHeadersHandler.cs" />
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
-    <Compile Include="App_Start\NakedObjectsSettings.cs" />
+    <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
@@ -185,7 +185,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Start\NakedObjectsSettings.cs.pp" />
+    <Content Include="App_Start\NakedObjectsRunSettings.cs.pp" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
