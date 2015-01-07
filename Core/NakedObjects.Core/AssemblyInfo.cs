@@ -68,8 +68,8 @@ using System.Runtime.InteropServices;
 //       documentation for more information on this.
 //
 
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-[assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ComVisible(false)]
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
+//[assembly: AssemblyKeyName("")]
+//[assembly: AssemblyFileVersion("1.0.0.0")]
+//[assembly: ComVisible(false)]

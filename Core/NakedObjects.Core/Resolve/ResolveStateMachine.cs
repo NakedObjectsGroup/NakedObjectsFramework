@@ -9,11 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Util;
+
+[assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
 namespace NakedObjects.Core.Resolve {
     public class ResolveStateMachine : IResolveStateMachine {
