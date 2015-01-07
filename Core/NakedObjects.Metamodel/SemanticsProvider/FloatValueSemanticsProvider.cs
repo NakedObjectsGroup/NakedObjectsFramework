@@ -73,11 +73,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
 
         protected override string DoEncode(float obj) {
-            return obj.ToString("G");
+            return obj.ToString("G", CultureInfo.InvariantCulture);
         }
 
         protected override float DoRestore(string data) {
-            return float.Parse(data);
+            return float.Parse(data, CultureInfo.InvariantCulture);
         }
 
 

@@ -72,11 +72,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(double obj) {
-            return obj.ToString("G");
+            return obj.ToString("G", CultureInfo.InvariantCulture);
         }
 
         protected override double DoRestore(string data) {
-            return double.Parse(data);
+            return double.Parse(data, CultureInfo.InvariantCulture);
         }
 
 

@@ -447,14 +447,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
-                                throw new ConcurrencyException(nakedObject, null);
+                                throw new ConcurrencyException(nakedObject);
                             }
                         }
                         else if (concurrencyValue == null && currentValue == null) {
                             // OK 
                         }
                         else {
-                            throw new ConcurrencyException(nakedObject, null);
+                            throw new ConcurrencyException(nakedObject);
                         }
                     }
                 }

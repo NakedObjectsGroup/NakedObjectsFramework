@@ -231,34 +231,6 @@ namespace NakedObjects.Core.Util {
 
         #endregion
 
-        #region Nested type: WrappedSizedEnumerable
-
-        private class WrappedSizedEnumerable<T> : IEnumerable<T> where T : class {
-            private readonly int enumerableSize;
-            private readonly int size;
-            private readonly IEnumerable wrappedEnumerable;
-
-            public WrappedSizedEnumerable(IEnumerable wrappedEnumerable, int size) {
-                this.wrappedEnumerable = wrappedEnumerable;
-                this.size = size;
-                enumerableSize = wrappedEnumerable.Cast<object>().Count();
-            }
-
-            #region IEnumerable<T> Members
-
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() {
-                for (int i = 0; i < size; i++) {
-                    yield return i < enumerableSize ? wrappedEnumerable.Cast<T>().Skip(i).First() : null;
-                }
-            }
-
-            public IEnumerator GetEnumerator() {
-                return ((IEnumerable<T>) this).GetEnumerator();
-            }
-
-            #endregion
-        }
-
-        #endregion
+        
     }
 }

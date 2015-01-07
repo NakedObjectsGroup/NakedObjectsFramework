@@ -73,11 +73,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
 
         protected override string DoEncode(ushort obj) {
-            return obj.ToString();
+            return obj.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override ushort DoRestore(string data) {
-            return ushort.Parse(data);
+            return ushort.Parse(data, CultureInfo.InvariantCulture);
         }
 
 

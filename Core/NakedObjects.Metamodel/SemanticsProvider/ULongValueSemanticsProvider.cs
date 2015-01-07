@@ -71,11 +71,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
 
         protected override string DoEncode(ulong obj) {
-            return obj.ToString();
+            return obj.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override ulong DoRestore(string data) {
-            return ulong.Parse(data);
+            return ulong.Parse(data, CultureInfo.InvariantCulture);
         }
 
         public override string ToString() {

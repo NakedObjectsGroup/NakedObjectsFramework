@@ -81,11 +81,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(uint obj) {
-            return obj.ToString();
+            return obj.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override uint DoRestore(string data) {
-            return uint.Parse(data);
+            return uint.Parse(data, CultureInfo.InvariantCulture);
         }
 
 

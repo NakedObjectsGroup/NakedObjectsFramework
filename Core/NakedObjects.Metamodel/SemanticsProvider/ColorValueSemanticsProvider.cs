@@ -88,11 +88,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(Color obj) {
-            return (obj).ToArgb().ToString();
+            return (obj).ToArgb().ToString(CultureInfo.InvariantCulture);
         }
 
         protected override Color DoRestore(string data) {
-            return Color.FromArgb(int.Parse(data));
+            return Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
         }
 
 

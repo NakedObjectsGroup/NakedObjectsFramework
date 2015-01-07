@@ -77,7 +77,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(char obj) {
-            return obj.ToString();
+            return obj.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override char DoRestore(string data) {
