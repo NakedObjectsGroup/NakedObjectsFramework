@@ -72,8 +72,8 @@ let CrossContextTransactionOK(multiDatabasePersistor : EntityObjectStore) =
     pr.Name <- uniqueName()
     sr.Name <- uniqueName()
     let SaveAndEnd o1 o2 = 
-        let cmd = multiDatabasePersistor.CreateSaveObjectCommand((GetOrAddAdapterForTest o1 null), null)
-        let cmd = multiDatabasePersistor.CreateSaveObjectCommand((GetOrAddAdapterForTest o2 null), null)
+        let cmd = multiDatabasePersistor.CreateSaveObjectCommand(GetOrAddAdapterForTest o1 null)
+        let cmd = multiDatabasePersistor.CreateSaveObjectCommand(GetOrAddAdapterForTest o2 null)
         multiDatabasePersistor.EndTransaction()
     SaveAndEnd pr sr
     Assert.AreNotEqual(origPrName, pr.Name)
@@ -93,8 +93,8 @@ let CrossContextTransactionRollback(multiDatabasePersistor : EntityObjectStore) 
     pr.Name <- uniqueName()
     sr.Name <- sr1.Name
     let SaveAndEnd o1 o2 = 
-        let cmd = multiDatabasePersistor.CreateSaveObjectCommand((GetOrAddAdapterForTest o1 null), null)
-        let cmd = multiDatabasePersistor.CreateSaveObjectCommand((GetOrAddAdapterForTest o2 null), null)
+        let cmd = multiDatabasePersistor.CreateSaveObjectCommand(GetOrAddAdapterForTest o1 null)
+        let cmd = multiDatabasePersistor.CreateSaveObjectCommand(GetOrAddAdapterForTest o2 null)
         multiDatabasePersistor.EndTransaction()
     try 
         SaveAndEnd pr sr

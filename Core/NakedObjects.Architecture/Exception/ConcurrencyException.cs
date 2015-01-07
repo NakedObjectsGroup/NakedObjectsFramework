@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture {
     public class ConcurrencyException : ObjectPersistenceException {
-        public ConcurrencyException(INakedObject nakedObject, IVersion updated)
+        public ConcurrencyException(INakedObject nakedObject)
             : this(Resources.NakedObjects.ConcurrencyMessage, nakedObject.Oid) {
             SourceNakedObject = nakedObject;
         }

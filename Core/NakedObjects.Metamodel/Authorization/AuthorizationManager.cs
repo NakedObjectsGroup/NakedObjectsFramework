@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Security;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Authorization {
     [Serializable]
@@ -64,57 +63,49 @@ namespace NakedObjects.Meta.Authorization {
         public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager, manager);
 
-            if (authorizer.GetType().IsAssignableFrom(typeof(INamespaceAuthorizer))) {
-                ITypeAuthorizer<object> nameAuth = (ITypeAuthorizer<object>)authorizer;
+            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (ITypeAuthorizer<object>) authorizer;
                 return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
-            } else {
-                return (bool)ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
             }
+            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
         }
 
         public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager, manager);
 
-             if (authorizer.GetType().IsAssignableFrom(typeof(INamespaceAuthorizer)))  {
-                ITypeAuthorizer<object> nameAuth = (ITypeAuthorizer<object>) authorizer;
+            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (ITypeAuthorizer<object>) authorizer;
                 return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
-            } else {
-                return (bool)ExecuteOnTypeAuthorizer(session, target, identifier, "IsEditable", authorizer);
             }
+            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsEditable", authorizer);
         }
 
         #endregion
 
         private static object ExecuteOnTypeAuthorizer(ISession session, INakedObject target, IIdentifier identifier, string toInvoke, object authorizer) {
-            return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] { session.Principal, target.Object, identifier.MemberName });
+            return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
         }
 
-        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager, 
-            IMetamodelManager manager) {
-                    
+        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager,
+                                     IMetamodelManager manager) {
             Assert.AssertNotNull(target);
-            Type authorizer = null;
 
             //Look for exact-fit TypeAuthorizer
             string fullyQualifiedOfTarget = target.Spec.FullName;
-            authorizer = typeAuthorizers.
+            Type authorizer = typeAuthorizers.
                 Where(ta => ta.Key == fullyQualifiedOfTarget).
                 Select(ta => ta.Value).
                 FirstOrDefault();
 
-            if (authorizer == null) {//If not find best namespace authorizer
+            if (authorizer == null) {
+                //If not find best namespace authorizer
 
 
                 authorizer = namespaceAuthorizers.
                     Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
                     OrderByDescending(x => x.Key.Length).
                     Select(x => x.Value).
-                    FirstOrDefault();
-
-                //Last resort: use the default
-                if (authorizer == null) {
-                    authorizer = defaultAuthorizer;
-                }
+                    FirstOrDefault() ?? defaultAuthorizer; //Last resort: use the default
             }
             return lifecycleManager.CreateInstance(manager.GetSpecification(authorizer)).GetDomainObject();
         }

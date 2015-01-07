@@ -65,10 +65,8 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            var mockSession = new Mock<ISession>();
-            var testSession = mockSession.Object;
 
-            algorithm.MakePersistent(testAdapter, testSession);
+            algorithm.MakePersistent(testAdapter);
 
             mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
             mockASpec.Verify(s => s.GetNakedObject(testAdapter));
@@ -87,11 +85,9 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            var mockSession = new Mock<ISession>();
-            var testSession = mockSession.Object;
 
             try {
-                algorithm.MakePersistent(testAdapter, testSession);
+                algorithm.MakePersistent(testAdapter);
                 Assert.Fail("Expect exception");
             }
             catch (NotPersistableException /*expected*/) {}
@@ -111,11 +107,9 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            var mockSession = new Mock<ISession>();
-            var testSession = mockSession.Object;
 
             try {
-                algorithm.MakePersistent(testAdapter, testSession);
+                algorithm.MakePersistent(testAdapter);
                 Assert.Fail("Expect exception");
             }
             catch (NotPersistableException /*expected*/) {}
@@ -143,10 +137,8 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            var mockSession = new Mock<ISession>();
-            var testSession = mockSession.Object;
 
-            algorithm.MakePersistent(testAdapter, testSession);
+            algorithm.MakePersistent(testAdapter);
 
             mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
             mockASpec.Verify(s => s.GetNakedObject(testAdapter));
@@ -173,10 +165,8 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-            var mockSession = new Mock<ISession>();
-            var testSession = mockSession.Object;
 
-            algorithm.MakePersistent(testAdapter, testSession);
+            algorithm.MakePersistent(testAdapter);
 
             mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
             mockASpec.Verify(s => s.GetNakedObject(testAdapter), Times.Never);

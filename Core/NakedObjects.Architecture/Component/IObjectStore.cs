@@ -44,7 +44,7 @@ namespace NakedObjects.Architecture.Component {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
+        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject);
 
         /// <summary>
         ///     Removes the specified object from the object store. The specified object's data should be removed from
@@ -56,7 +56,7 @@ namespace NakedObjects.Architecture.Component {
         ///     Persists the specified object's state. Essentially the data held by the persistence mechanism should be
         ///     updated to reflect the state of the specified objects. 
         /// </summary>
-        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session);
+        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject);
 
         void EndTransaction();
 

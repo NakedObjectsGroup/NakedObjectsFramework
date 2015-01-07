@@ -7,22 +7,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
-
-    public class AuthorizationConfiguration<TDefault> 
-        : IAuthorizationConfiguration 
+    public class AuthorizationConfiguration<TDefault>
+        : IAuthorizationConfiguration
         where TDefault : ITypeAuthorizer<object> {
-
         public AuthorizationConfiguration() {
-            DefaultAuthorizer = typeof(TDefault);
+            DefaultAuthorizer = typeof (TDefault);
             NamespaceAuthorizers = new Dictionary<string, Type>();
             TypeAuthorizers = new Dictionary<string, Type>();
         }
 
-        #region IAuthorizationByNamespaceConfiguration Members
+        #region IAuthorizationConfiguration Members
 
         public Type DefaultAuthorizer { get; private set; }
 
@@ -32,14 +29,14 @@ namespace NakedObjects.Meta.Authorization {
 
         public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
             where TAuth : INamespaceAuthorizer {
-            NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
+            NamespaceAuthorizers.Add(namespaceCovered, typeof (TAuth));
         }
 
         public void AddTypeAuthorizer<TDomain, TAuth>()
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain> {
-            string fullyQualifiedName = typeof(TDomain).FullName;
-            TypeAuthorizers.Add(typeof(TDomain).FullName, typeof(TAuth));
+            string fullyQualifiedName = typeof (TDomain).FullName;
+            TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
 
         #endregion

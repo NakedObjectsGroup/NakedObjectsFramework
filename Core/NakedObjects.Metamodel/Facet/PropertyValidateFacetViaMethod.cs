@@ -33,9 +33,7 @@ namespace NakedObjects.Meta.Facet {
             if (proposedValue != null) {
                 return (string) InvokeUtils.Invoke(method, target, new[] {proposedValue});
             }
-            else {
-                return null;
-            }
+            return null;
         }
 
         protected override string ToStringValues() {

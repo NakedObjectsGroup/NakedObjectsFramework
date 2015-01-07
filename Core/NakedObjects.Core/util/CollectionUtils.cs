@@ -143,19 +143,9 @@ namespace NakedObjects.Core.Util {
         }
 
 
-        /// <summary> ICollection but not Array </summary>
-        private static bool IsNonGenericCollectionClassButNotArray(Type type) {
-            return IsNonGenericCollection(type) && !type.IsArray;
-        }
-
         private static Type MakeCollectionType(object toClone, Type genericCollectionType) {
             Type itemType = toClone.GetType().IsGenericType ? toClone.GetType().GetGenericArguments().Single() : typeof (object);
             return genericCollectionType.MakeGenericType(itemType);
-        }
-
-        private static IEnumerable WrapWithSizedCollection(object toClone, int size) {
-            Type collectionType = MakeCollectionType(toClone, typeof (WrappedSizedEnumerable<>));
-            return Activator.CreateInstance(collectionType, toClone, size) as IEnumerable;
         }
 
 

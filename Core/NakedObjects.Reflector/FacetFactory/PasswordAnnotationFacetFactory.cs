@@ -20,9 +20,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PasswordAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DataTypeAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {

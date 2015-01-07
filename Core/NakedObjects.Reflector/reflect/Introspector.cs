@@ -14,12 +14,9 @@ using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Container;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
@@ -29,7 +26,6 @@ namespace NakedObjects.Reflect {
     public class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
 
-        private static readonly object[] NoParameters = new object[0];
         private readonly IMetamodel metamodel;
         private readonly IReflector reflector;
         private Type introspectedType;
@@ -292,14 +288,7 @@ namespace NakedObjects.Reflect {
             return actionSpecs.ToArray();
         }
 
-        /// <summary>
-        ///     Searches for specific method and returns it, also removing it from the
-        ///     array of methods <see cref="Methods" /> if found
-        /// </summary>
-        /// <seealso cref="MethodFinderUtils.RemoveMethod(MethodInfo[],MethodType,string,Type,Type[])" />
-        private MethodInfo FindAndRemoveMethod(MethodType methodType, string name, Type returnType, Type[] paramTypes) {
-            return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
-        }
+       
 
         private static List<T> CreateSortedListOfMembers<T>(T[] members) where T :  IMemberSpecImmutable {
             var list = new List<T>(members);
@@ -307,9 +296,7 @@ namespace NakedObjects.Reflect {
             return list;
         }
 
-        private static object InvokeMethod(MethodInfo method, object[] parameters) {
-            return method.Invoke(null, parameters);
-        }
+    
 
         #region Nested Type: DotnetIntrospectorMethodRemover
 

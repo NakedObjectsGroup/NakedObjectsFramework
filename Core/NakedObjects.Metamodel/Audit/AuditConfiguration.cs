@@ -7,25 +7,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NakedObjects.Audit;
 
 namespace NakedObjects.Meta.Audit {
-
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
     //and set the NamespaceAuditors property.
     public class AuditConfiguration<Tdefault> : IAuditConfiguration where Tdefault : IAuditor {
-        public AuditConfiguration()  {
-            DefaultAuditor = typeof(Tdefault);
+        public AuditConfiguration() {
+            DefaultAuditor = typeof (Tdefault);
             NamespaceAuditors = new Dictionary<string, Type>();
         }
+
         #region IAuditConfiguration Members
 
         public Type DefaultAuditor { get; private set; }
         public Dictionary<string, Type> NamespaceAuditors { get; private set; }
 
         public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor {
-            NamespaceAuditors.Add(namespaceCovered, typeof(T));
+            NamespaceAuditors.Add(namespaceCovered, typeof (T));
         }
 
         #endregion

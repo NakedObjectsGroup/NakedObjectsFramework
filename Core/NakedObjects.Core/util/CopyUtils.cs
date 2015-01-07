@@ -12,11 +12,14 @@ using System.Reflection;
 
 namespace NakedObjects.Core.Util {
     public static class CopyUtils {
+
+        // used by reflection 
         private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             Assert.AssertFalse(toCollection.Any());
             fromCollection.ForEach(toCollection.Add);
         }
 
+        // used by reflection 
         private static void ShallowUpdateCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             var toRemove = new List<T>();
             toCollection.Where(i => !fromCollection.Contains(i)).ForEach(toRemove.Add);
@@ -49,14 +52,6 @@ namespace NakedObjects.Core.Util {
             CopyCollectionProperties(domainObject, clone);
             return clone;
         }
-
-        //public static INakedObject CloneInlineObject(object domainObject, INakedObject parent, INakedObjectAssociation field) {
-        //    object clone = NakedObjectsContext.LifecycleManager.CreateObject(reflector.LoadSpecification(domainObject.GetType()));
-        //    INakedObject nakedObject = PersistorUtils.CreateAggregatedAdapterClone(parent, field, clone);
-        //    NakedObjectsContext.LifecycleManager.InitInlineObject(parent, clone);
-        //    CopyProperties(domainObject, clone);
-        //    return nakedObject;
-        //}
 
         private static void CopyCollectionProperties(object fromObject, object toObject) {
             fromObject.GetType().GetProperties().

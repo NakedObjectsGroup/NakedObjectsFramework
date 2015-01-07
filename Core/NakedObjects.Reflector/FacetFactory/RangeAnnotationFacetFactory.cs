@@ -25,9 +25,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
 
-        private static bool Process(MemberInfo member, bool isDate, ISpecification specification) {
+        private static void Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, isDate, specification));
+            FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {

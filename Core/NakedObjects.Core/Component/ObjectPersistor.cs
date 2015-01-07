@@ -75,7 +75,7 @@ namespace NakedObjects.Core.Component {
             if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
             }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, session);
+            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject);
             transactionManager.AddCommand(createObjectCommand);
         }
 
@@ -166,7 +166,7 @@ namespace NakedObjects.Core.Component {
                         throw new NotPersistableException("cannot change immutable object");
                     }
                     nakedObject.Updating();
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session);
+                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject);
                     transactionManager.AddCommand(saveObjectCommand);
                     nakedObject.Updated();
                 }

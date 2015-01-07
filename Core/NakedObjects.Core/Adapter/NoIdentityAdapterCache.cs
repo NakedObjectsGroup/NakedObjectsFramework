@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Adapter {
     public class NoIdentityAdapterCache : INoIdentityAdapterCache {

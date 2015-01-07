@@ -64,7 +64,7 @@ namespace NakedObjects.Reflect {
                         TypeBuilder typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeToProxy);
                         FieldBuilder containerField = CreateContainerProperty(typeBuilder);
                         CreateProperties(metamodel, typeBuilder, typeToProxy, containerField);
-                        SubclassAllCollectionAccessors(metamodel, persistor, typeBuilder, typeToProxy, containerField);
+                        SubclassAllCollectionAccessors(metamodel, typeBuilder, typeToProxy, containerField);
                         proxyType = typeBuilder.CreateType();
                     }
                     return proxyType;
@@ -148,7 +148,7 @@ namespace NakedObjects.Reflect {
                 ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             IAssociationSpec[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.Name));

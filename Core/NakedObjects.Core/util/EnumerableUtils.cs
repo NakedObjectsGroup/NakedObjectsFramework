@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Util.Enumer {
         public static bool Contains(this IEnumerable e, object item) {
             MethodInfo containsMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Contains" && Enumerable.Count(m.GetParameters()) == 2);
             MethodInfo gm = containsMethod.MakeGenericMethod(e.ElementType());
-            return (bool) gm.Invoke(null, new object[] {e, item});
+            return (bool) gm.Invoke(null, new[] {e, item});
         }
 
         public static object[] ToArray(this IEnumerable e) {

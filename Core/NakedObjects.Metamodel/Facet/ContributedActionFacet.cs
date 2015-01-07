@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
         #region IContributedActionFacet Members
 
         public bool IsContributedTo(IObjectSpecImmutable spec) {
-            return contributees.Select(t => t.Item1).Cast<IObjectSpecImmutable>().Any(spec.IsOfType); // IsOfType should handle sub-types correctly
+            return contributees.Select(t => t.Item1).Any(spec.IsOfType); // IsOfType should handle sub-types correctly
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {

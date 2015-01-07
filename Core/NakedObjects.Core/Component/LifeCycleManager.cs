@@ -134,7 +134,7 @@ namespace NakedObjects.Core.Component {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
 
-            persistAlgorithm.MakePersistent(nakedObject, session);
+            persistAlgorithm.MakePersistent(nakedObject);
         }
 
         public void PopulateViewModelKeys(INakedObject nakedObject) {

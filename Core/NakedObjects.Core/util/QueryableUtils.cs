@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Util.Query {
         public static bool Contains(this IQueryable q, object item) {
             MethodInfo containsMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Contains" && Enumerable.Count(m.GetParameters()) == 2);
             MethodInfo gm = containsMethod.MakeGenericMethod(q.ElementType);
-            return (bool) gm.Invoke(null, new object[] {q, item});
+            return (bool) gm.Invoke(null, new[] {q, item});
         }
 
         public static object[] ToArray(this IQueryable q) {

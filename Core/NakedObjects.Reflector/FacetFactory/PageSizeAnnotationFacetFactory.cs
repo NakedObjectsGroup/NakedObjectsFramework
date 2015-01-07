@@ -23,9 +23,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PageSizeAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<PageSizeAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {

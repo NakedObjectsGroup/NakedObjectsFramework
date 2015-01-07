@@ -46,7 +46,7 @@ namespace NakedObjects.Meta {
         public void Serialize(string file) {
             using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
                 IFormatter formatter = new BinaryFormatter();
-                var data = new SerializedData() {Keys = specs.Keys.ToList(), Values = specs.Values.ToList()};
+                var data = new SerializedData {Keys = specs.Keys.ToList(), Values = specs.Values.ToList()};
                 formatter.Serialize(fs, data);
             }
         }

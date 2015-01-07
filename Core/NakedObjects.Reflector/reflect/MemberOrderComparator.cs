@@ -5,10 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -16,9 +14,6 @@ namespace NakedObjects.Reflect {
     /// <summary>
     ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>
-    /// <para>
-    ///     Will also compare <see cref="OrderSet{T}" />s; these are put after any <see cref="IMemberSpecImmutable" />s.
-    /// </para>
     /// <para>
     ///     If there is no attribute on either member, then will compare the members by name instead.
     /// </para>

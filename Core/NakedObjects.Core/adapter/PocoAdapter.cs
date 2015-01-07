@@ -23,7 +23,7 @@ namespace NakedObjects.Core.Adapter {
     public class PocoAdapter : INakedObject {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager manager;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodel;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
@@ -40,7 +40,7 @@ namespace NakedObjects.Core.Adapter {
 
         public PocoAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
-            //Assert.AssertNotNull(session);
+            Assert.AssertNotNull(session);
 
             if (poco is INakedObject) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
@@ -48,7 +48,7 @@ namespace NakedObjects.Core.Adapter {
             this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
-            this.manager = nakedObjectManager;
+            this.nakedObjectManager = nakedObjectManager;
             this.lifecycleManager = lifecycleManager;
 
             this.poco = poco;
@@ -181,7 +181,7 @@ namespace NakedObjects.Core.Adapter {
         public virtual void CheckLock(IVersion otherVersion) {
             if (version != null && version.IsDifferent(otherVersion)) {
                 Log.Info("concurrency conflict on " + this + " (" + otherVersion + ")");
-                throw new ConcurrencyException(this, otherVersion);
+                throw new ConcurrencyException(this);
             }
         }
 
@@ -244,7 +244,7 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private string CollectionTitleString(ICollectionFacet facet) {
-            int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
+            int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
             var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }

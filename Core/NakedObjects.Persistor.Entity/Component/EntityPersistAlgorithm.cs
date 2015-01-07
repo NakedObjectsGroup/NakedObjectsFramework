@@ -30,9 +30,9 @@ namespace NakedObjects.Persistor.Entity {
             get { return "Entity Framework Persist Algorithm"; }
         }
 
-        public void MakePersistent(INakedObject nakedObject, ISession session) {
+        public void MakePersistent(INakedObject nakedObject) {
             if (nakedObject.Spec.IsCollection) {
-                MakeCollectionPersistent(nakedObject, session);
+                MakeCollectionPersistent(nakedObject);
             }
             else {
                 MakeObjectPersistent(nakedObject);
@@ -52,7 +52,7 @@ namespace NakedObjects.Persistor.Entity {
             persistor.AddPersistedObject(nakedObject);
         }
 
-        private void MakeCollectionPersistent(INakedObject collection, ISession session) {
+        private void MakeCollectionPersistent(INakedObject collection) {
             if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
                 return;
             }
@@ -62,7 +62,7 @@ namespace NakedObjects.Persistor.Entity {
                 collection.ResolveState.Handle(Events.EndResolvingEvent);
             }
             manager.MadePersistent(collection);
-            collection.GetAsEnumerable(manager).ForEach(no => MakePersistent(no, session));
+            collection.GetAsEnumerable(manager).ForEach(MakePersistent);
         }
 
         public override string ToString() {

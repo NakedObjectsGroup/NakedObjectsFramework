@@ -14,7 +14,6 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Util;
 
 [assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
@@ -583,7 +582,6 @@ namespace NakedObjects.Core.Resolve {
         }
 
         private ISession Session { get; set; }
-        private ILifecycleManager Persistor { get; set; }
 
         private INakedObject Owner { get; set; }
         public bool FullTrace { get; set; }

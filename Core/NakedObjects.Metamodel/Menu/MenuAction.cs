@@ -7,17 +7,12 @@
 
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Menu {
     public class MenuAction : IMenuActionImmutable {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
-            this.Action = actionSpec;
-            if (renamedTo == null) {
-                Name = actionSpec.Name;               
-            } else {
-                Name = renamedTo;
-            }
+            Action = actionSpec;
+            Name = renamedTo ?? actionSpec.Name;
         }
 
         #region IMenuActionImmutable Members

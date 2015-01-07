@@ -183,7 +183,7 @@ namespace NakedObjects.Persistor.Entity {
         }
 
 
-        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session) {
+        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject), session));
@@ -209,7 +209,7 @@ namespace NakedObjects.Persistor.Entity {
             }
         }
 
-        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session) {
+        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
@@ -287,11 +287,6 @@ namespace NakedObjects.Persistor.Entity {
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
 
-        //public IOid GetOidForService(string name, string typeName) {
-        //    Log.DebugFormat("GetOidForService name: {0}", name);
-        //    return oidGenerator.CreateOid(typeName, new object[] {0});
-        //}
-
         public bool IsInitialized {
             get { return IsInitializedCheck(); }
             set { }
@@ -301,11 +296,6 @@ namespace NakedObjects.Persistor.Entity {
             get { return "Entity Object Store"; }
         }
 
-
-        //public void RegisterService(string name, IOid oid) {
-        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
-        //    // do nothing 
-        //}
 
         public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);

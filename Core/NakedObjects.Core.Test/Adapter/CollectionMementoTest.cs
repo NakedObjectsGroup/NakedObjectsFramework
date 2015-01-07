@@ -80,9 +80,9 @@ namespace NakedObjects.Core.Test.Adapter {
         public IDomainObjectContainer Container { protected get; set; }
 
         public void Install() {
-            TestDomainObject tdo1 = NewTdo(1);
-            TestDomainObject tdo2 = NewTdo(2);
-            TestDomainObject tdo3 = NewTdo(3);
+            NewTdo(1);
+            NewTdo(2);
+            NewTdo(3);
         }
 
         private TestDomainObject NewTdo(int id) {
@@ -114,7 +114,7 @@ namespace NakedObjects.Core.Test.Adapter {
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
 
-            var types = new Type[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
+            var types = new[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
             var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
             var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
 

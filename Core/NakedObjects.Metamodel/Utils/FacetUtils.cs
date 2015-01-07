@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Utils {
     public static class FacetUtils {
@@ -40,12 +41,10 @@ namespace NakedObjects.Meta.Utils {
         /// <returns>
         ///     <c>true</c> if a non-<c>null</c> facet was added, <c>false</c> otherwise.
         /// </returns>
-        public static bool AddFacet(IFacet facet) {
+        public static void AddFacet(IFacet facet) {
             if (facet != null) {
                 ((ISpecificationBuilder) facet.Specification).AddFacet(facet);
-                return true;
             }
-            return false;
         }
 
         /// <summary>
@@ -54,8 +53,8 @@ namespace NakedObjects.Meta.Utils {
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        public static bool AddFacets(IEnumerable<IFacet> facetList) {
-            return facetList.Aggregate(false, (current, facet) => current | AddFacet(facet));
+        public static void AddFacets(IEnumerable<IFacet> facetList) {
+            facetList.ForEach(AddFacet);
         }
 
         public static INakedObject[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObject> parameterNameValues) {

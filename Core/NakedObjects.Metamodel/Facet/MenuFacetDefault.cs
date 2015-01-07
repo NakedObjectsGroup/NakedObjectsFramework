@@ -11,7 +11,6 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Util;
 using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
@@ -54,7 +53,7 @@ namespace NakedObjects.Meta.Facet {
             menu.Id = id;
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
-            this.Menu = menu;
+            Menu = menu;
         }
     }
     // Copyright (c) Naked Objects Group Ltd.

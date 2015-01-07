@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Facet {
             Pattern = new Regex(validation, PatternFlags);
             formatPattern = format;
             isCaseSensitive = caseSensitive;
-            this.failureMessage = message;
+            failureMessage = message;
         }
 
         private RegexOptions PatternFlags {

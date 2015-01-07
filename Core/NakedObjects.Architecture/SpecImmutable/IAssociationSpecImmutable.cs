@@ -5,13 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Reflect;
-
 namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable{
+    public interface IAssociationSpecImmutable : IMemberSpecImmutable {
         /// <summary>
         ///     If this is a scalar association, representing (in old terminology)
         ///     a reference to another entity or a value.

@@ -12,12 +12,10 @@ using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
-
     public class MenuImpl : IMenu, IMenuImmutable {
         #region Injected Services
 
@@ -27,10 +25,7 @@ namespace NakedObjects.Meta.Menu {
 
         public MenuImpl(IMetamodel metamodel, string name) {
             this.metamodel = metamodel;
-            this.Name = name;
-            if (name == null) {
-                this.Name = "Undefined";
-            }
+            Name = name ?? "Undefined";
         }
 
         #region properties
@@ -73,19 +68,19 @@ namespace NakedObjects.Meta.Menu {
         #region IMenu Members
 
         public IMenu WithMenuName(string name) {
-            this.Name = name;
+            Name = name;
             return this;
         }
 
         public IMenu WithId(string id) {
-            this.Id = id;
+            Id = id;
             return this;
         }
 
         public IMenu AddActionFrom<TObject>(string actionName, string renamedTo = null) {
             Type serviceType = typeof (TObject);
 
-            IActionSpecImmutable actionSpec = GetActionsForObject<TObject>().Where(a => a.Identifier.MemberName == actionName).FirstOrDefault();
+            IActionSpecImmutable actionSpec = GetActionsForObject<TObject>().FirstOrDefault(a => a.Identifier.MemberName == actionName);
             if (actionSpec == null) {
                 throw new ReflectionException("No such action: " + actionName + " on " + serviceType);
             }
@@ -103,6 +98,10 @@ namespace NakedObjects.Meta.Menu {
             return CreateMenuImmutableAsSubMenu(subMenuName, null);
         }
 
+        #endregion
+
+        #region IMenuImmutable Members
+
         public IMenuActionImmutable GetAction(string actionName) {
             var action = MenuItems.OfType<MenuAction>().FirstOrDefault(a => a.Name == actionName);
             if (action == null) {
@@ -119,10 +118,11 @@ namespace NakedObjects.Meta.Menu {
             return menu;
         }
 
+        #endregion
+
         protected MenuImpl GetSubMenuIfExists(string menuName) {
             return MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
         }
-        #endregion
 
         protected IList<IActionSpecImmutable> GetActionsForObject<TObject>() {
             return GetObjectSpec<TObject>().ObjectActions.ToList();
@@ -136,7 +136,7 @@ namespace NakedObjects.Meta.Menu {
             foreach (var action in ordeableElements) {
                 if (action != null) {
                     if (!toMenu.HasAction(action)) {
-                        toMenu.AddMenuItem(new MenuAction(action, null));
+                        toMenu.AddMenuItem(new MenuAction(action));
                     }
                 }
             }
@@ -145,7 +145,7 @@ namespace NakedObjects.Meta.Menu {
         protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id) {
             var subMenu = new MenuImpl(metamodel, subMenuName);
             subMenu.Id = id;
-            this.AddAsSubMenu(subMenu);
+            AddAsSubMenu(subMenu);
             return subMenu;
         }
 

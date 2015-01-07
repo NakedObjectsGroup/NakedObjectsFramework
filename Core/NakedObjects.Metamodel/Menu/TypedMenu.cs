@@ -5,24 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NakedObjects.Meta.Menu {
     public class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {
-                this.Name = GetFriendlyNameForObject();
+                Name = GetFriendlyNameForObject();
             }
-            Id = typeof(TObject).Name;
+            Id = typeof (TObject).Name;
             if (addAllActions) {
                 AddRemainingNativeActions();
                 AddContributedActions();
@@ -50,7 +46,9 @@ namespace NakedObjects.Meta.Menu {
                     string id = facet.IdWhenContributedTo(spec);
                     MenuImpl subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
                     subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
-                } else { //i.e. no sub-menu
+                }
+                else {
+                    //i.e. no sub-menu
                     AddMenuItem(new MenuAction(ca));
                 }
             }
@@ -59,7 +57,7 @@ namespace NakedObjects.Meta.Menu {
 
         public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
             var sub = new TypedMenu<TObject>(metamodel, false, subMenuName);
-            sub.Id += "-"+subMenuName+":";
+            sub.Id += "-" + subMenuName + ":";
             AddMenuItem(sub);
             return sub;
         }

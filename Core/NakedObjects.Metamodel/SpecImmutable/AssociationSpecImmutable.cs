@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 

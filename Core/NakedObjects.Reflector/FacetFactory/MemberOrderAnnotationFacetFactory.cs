@@ -19,9 +19,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         public MemberOrderAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {

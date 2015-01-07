@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Spec {
         public override IObjectSpec ElementSpec {
             get {
                 // TODO make all this more obvious return collection spec in Spec and element spec here
-                return this.Spec;
+                return Spec;
             }
         }
 
