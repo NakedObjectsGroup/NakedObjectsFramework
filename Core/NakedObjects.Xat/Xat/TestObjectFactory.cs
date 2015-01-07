@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
@@ -36,7 +37,8 @@ namespace NakedObjects.Xat {
         public ISession Session { get; set; }
 
         public ITestService CreateTestService(Object service) {
-            var no = manager.GetAdapterFor(service);
+            var no = manager.GetServiceAdapter(service);
+            Assert.IsNotNull(no);
             return CreateTestService(no);
         }
 

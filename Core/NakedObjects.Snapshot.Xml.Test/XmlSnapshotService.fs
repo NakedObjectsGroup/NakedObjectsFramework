@@ -43,7 +43,7 @@ let checkResults resultsFile s =
         Assert.AreEqual(fst(nd), snd(nd))
                 
 [<TestFixture>]
-[<Ignore>]
+//[<Ignore>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()
@@ -62,10 +62,11 @@ type DomainTests() =
                 
         [<SetUp>]
         member x.Setup() = 
+            
             x.StartTest()
             
         override x.Types = 
-            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<List<TestObject>>  |]
+            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>  |]
         
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()
