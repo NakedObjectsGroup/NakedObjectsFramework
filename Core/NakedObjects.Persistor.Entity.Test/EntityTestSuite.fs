@@ -138,7 +138,7 @@ type EntityTestSuite() =
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-        let types = [| typeof<TestData.Person>;typeof<TestData.Order>;typeof<TestData.OrderFail>;typeof<TestData.Person[]>;typeof<EntityCollection<TestData.Person>>;typeof<List<TestData.Person>>  |]
+        let types = [| typeof<TestData.Person>;typeof<TestData.Order>;typeof<TestData.OrderFail>;typeof<TestData.Person[]>;typeof<EntityCollection<TestData.Person>>;typeof<System.Collections.Generic.List<TestData.Person>>  |]
         let ms = [| typeof<SimpleRepository<Person>> |]
         let ca = [| typeof<SimpleRepository<Product>> |]
         let ss = [| typeof<SimpleRepository<Address>> |]
@@ -420,11 +420,9 @@ type EntityTestSuite() =
     member x.CountUnResolvedCollectionOnPersistent() = x.Tests.CountUnResolvedCollectionOnPersistent()
     
     [<Test>]
-    [<Ignore>] // doesn't work with reflector changes must fix 
     member x.CountCollectionOnTransient() = x.Tests.CountCollectionOnTransient()
     
     [<Test>]
-    [<Ignore>] // doesn't work with reflector changes must fix 
     member x.CountEmptyCollectionOnTransient() = x.Tests.CountEmptyCollectionOnTransient()
     
     [<Test>]
