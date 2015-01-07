@@ -201,7 +201,6 @@
     <Compile Include="Util\AdapterUtils.cs" />
     <Compile Include="Util\Assert.cs" />
     <Compile Include="Util\AsString.cs" />
-    <Compile Include="Util\CallbackUtils.cs" />
     <Compile Include="Util\CollectionUtils.cs" />
     <Compile Include="Util\FeatureSpecUtils.cs" />
     <Compile Include="Util\HashCodeUtils.cs" />

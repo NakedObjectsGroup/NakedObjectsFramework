@@ -65,7 +65,7 @@ namespace NakedObjects.Core.Component {
                 IAssociationSpec[] fields = nakedObject.Spec.Properties;
                 if (!nakedObject.Spec.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
-                    nakedObject.Persisting(session);
+                    nakedObject.Persisting();
                     if (!nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                         manager.MadePersistent(nakedObject);
                     }

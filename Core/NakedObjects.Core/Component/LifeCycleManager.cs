@@ -216,7 +216,7 @@ namespace NakedObjects.Core.Component {
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
             nakedObject.Spec.Properties.ForEach(field => field.ToDefault(nakedObject));
             CreateInlineObjects(nakedObject, rootObject);
-            nakedObject.Created(session);
+            nakedObject.Created();
         }
 
         private void InitializeNewObject(INakedObject nakedObject) {

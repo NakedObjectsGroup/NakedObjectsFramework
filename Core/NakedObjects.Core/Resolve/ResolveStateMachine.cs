@@ -294,12 +294,12 @@ namespace NakedObjects.Core.Resolve {
             }
 
             protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s) {
-                no.Loading(s);
+                no.Loading();
                 rsm.AddHistoryNote("Loading");
             }
 
             protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s) {
-                no.Loaded(s);
+                no.Loaded();
                 rsm.AddHistoryNote("Loaded");
             }
 

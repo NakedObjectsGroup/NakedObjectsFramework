@@ -157,18 +157,18 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
                 if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                    nakedObject.Updating(session);
-                    nakedObject.Updated(session, lifecycleManager, metamodel);
+                    nakedObject.Updating();
+                    nakedObject.Updated();
                 }
                 else {
                     IObjectSpec spec = nakedObject.Spec;
                     if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
-                    nakedObject.Updating(session);
+                    nakedObject.Updating();
                     ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session);
                     transactionManager.AddCommand(saveObjectCommand);
-                    nakedObject.Updated(session, lifecycleManager, metamodel);
+                    nakedObject.Updated();
                 }
             }
 
@@ -179,11 +179,11 @@ namespace NakedObjects.Core.Component {
         public void DestroyObject(INakedObject nakedObject) {
             Log.DebugFormat("DestroyObject nakedObject: {0}", nakedObject);
 
-            nakedObject.Deleting(session);
+            nakedObject.Deleting();
             IDestroyObjectCommand command = objectStore.CreateDestroyObjectCommand(nakedObject);
             transactionManager.AddCommand(command);
             nakedObject.ResolveState.Handle(Events.DestroyEvent);
-            nakedObject.Deleted(session);
+            nakedObject.Deleted();
         }
 
         public object CreateObject(IObjectSpec spec) {
