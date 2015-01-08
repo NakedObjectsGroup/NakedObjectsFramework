@@ -15,6 +15,7 @@ namespace NakedObjects {
     ///     NewTitleBuilder is an alternative implementation to TitleBuilder, that uses a simpler, if slightly more
     ///     verbose, syntax. Each method:  Append, Concat, Separator, Format, Default takes just one param.
     /// </summary>
+    [Obsolete("Use TitleBuilder")]
     public class NewTitleBuilder {
         private const string Space = " ";
         private static readonly IDictionary<Type, Title> titleFrom = new Dictionary<Type, Title>();
