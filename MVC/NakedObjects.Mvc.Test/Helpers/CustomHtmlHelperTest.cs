@@ -298,19 +298,22 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().CollectionTitles(tc, "{0} {1}").ToString(), "CollectionTitles");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [Test] 
+        [Ignore]
         public void Collections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc).ToString(), "Collections");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [Test]
+        [Ignore]
         public void CollectionsFormatList() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.ListDisplayFormat).ToString(), "CollectionsFormatList");
         }
 
-        [Test, Ignore] // todo problem with specs needs thorough investigation
+        [Test]
+        [Ignore]
         public void CollectionsFormatTable() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.TableDisplayFormat).ToString(), "CollectionsFormatTable");
@@ -555,156 +558,156 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("TestDateTime", s);
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionFourParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int>(y => y.FourValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionFourParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int, int>(y => y.FourValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionFourParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int>(tc, y => y.FourValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionFourParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int, int>(tc, y => y.FourValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionOneParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int>(y => y.OneValueParameterAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionOneParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int>(y => y.OneValueParameterFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionOneParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionOneParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description("OneValueParameterAction", 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, "OneValueParameterAction", 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionProperty() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description("TestInt").ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionPropertyGeneric() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description(y => y.TestInt).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionPropertyGenericOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, y => y.TestInt).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionPropertyOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description(tc, "TestInt").ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionTest() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description().ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionThreeParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int>(y => y.ThreeValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionThreeParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int, int>(y => y.ThreeValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionThreeParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int>(tc, y => y.ThreeValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionThreeParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int, int>(tc, y => y.ThreeValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionTwoParm() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int>(y => y.TwoValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionTwoParmFunc() {
             DescriptionCustomHelperTestCompareDirect(x => x.GetHtmlHelper<DescribedCustomHelperTestClass>().Description<DescribedCustomHelperTestClass, int, int, int>(y => y.TwoValueParametersFunction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionTwoParmOtherObj() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int>(tc, y => y.TwoValueParametersAction, 0).ToString(),
                 "aDescription");
         }
 
-        [Test, Ignore]
+        [Test]
         public void DescriptionTwoParmOtherObjFunc() {
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             DescriptionCustomHelperTestCompareDirectOtherObj(x => x.HtmlHelper.Description<DescribedCustomHelperTestClass, int, int, int>(tc, y => y.TwoValueParametersFunction, 0).ToString(),
@@ -1567,26 +1570,26 @@ namespace MvcTestApp.Tests.Helpers {
                 "PropertyListEditExclusionsOtherObj");
         }
 
-        [Test, Ignore]
+        [Test]
         public void PropertyListEditInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith("TestInt", "TestCollectionOne").ToString(),
                 "PropertyListEditInclusions");
         }
 
-        [Test, Ignore]
+        [Test]
         public void PropertyListEditInclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListEditInclusionsGeneric");
         }
 
-        [Test, Ignore]
+        [Test]
         public void PropertyListEditInclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "PropertyListEditInclusionsGenericOtherObj");
         }
 
-        [Test, Ignore]
+        [Test]
         public void PropertyListEditInclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, "TestInt", "TestCollectionOne").ToString(),

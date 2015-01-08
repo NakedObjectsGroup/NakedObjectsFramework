@@ -98,7 +98,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
-        private const string genericObjectId = @"Expenses.Services.SimpleRepositoryCustomHelperTestClass;1;System.Int64;507;True;;0";
+        private const string genericObjectId = @"Expenses.Services.SimpleRepositoryCustomHelperTestClass;1;System.Int32;0;False;;0";
 
         [Test]
         public void ActionsForHelper() {
@@ -134,12 +134,12 @@ namespace MvcTestApp.Tests.Helpers {
             dict.ForEach(kvp => Assert.AreSame(kvp.Key, kvp.Value));
         }
 
-        [Test, Ignore] // fix later
+        [Test] // fix later
         public void GetGenericObjectFromId() {
             var repo1 = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             var id = NakedObjectsFramework.GetObjectId(repo1);
 
-            object repo2 = NakedObjectsFramework.GetObjectFromId(genericObjectId);
+            object repo2 = NakedObjectsFramework.GetObjectFromId(id);
             Assert.AreSame(repo1, repo2);
         }
 
@@ -160,7 +160,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(claim1, claim2);
         }
 
-        [Test, Ignore] // fix later
+        [Test] 
         public void GetObjectIdForGenericObject() {
             object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             string id = NakedObjectsFramework.GetObjectId(repo);
