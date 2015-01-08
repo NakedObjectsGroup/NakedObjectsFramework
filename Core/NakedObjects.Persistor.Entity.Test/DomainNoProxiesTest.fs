@@ -143,7 +143,7 @@ type DomainNoProxiesTests() =
         [<Test>]
         member x.TestContainerInjectionCalledForGetInstance() = CanContainerInjectionCalledForGetInstance(resetPersistor persistor)
         
-        [<Test; Ignore("#993")>]
+        [<Test>]
         member x.TestCreateManyToManyWithFixup() = CanCreateManyToManyWithFixup persistor
         
         [<Test>]

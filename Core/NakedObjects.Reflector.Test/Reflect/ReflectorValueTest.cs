@@ -55,7 +55,7 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsNotNull(facet);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void TestType() {
             Assert.IsTrue(Specification.IsCollection);
         }

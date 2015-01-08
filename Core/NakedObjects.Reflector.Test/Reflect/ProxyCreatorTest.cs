@@ -78,7 +78,7 @@ namespace NakedObjects.Reflect.Test {
     }
 
 
-    [TestClass, Ignore]
+    [TestClass]
     public class ProxyCreatorTest : AcceptanceTestCase {
         protected override Type[] Types {
             get {

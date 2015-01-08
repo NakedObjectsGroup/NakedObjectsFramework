@@ -7,13 +7,11 @@
 
 using System.Linq;
 using System.Reflection;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -28,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
-            if (paramsWithAttribute.Count() == 0) return; //Nothing to do
+            if (!paramsWithAttribute.Any()) return; //Nothing to do
 
             var facet = new ContributedActionFacet(holder);
             foreach (var p in paramsWithAttribute) {

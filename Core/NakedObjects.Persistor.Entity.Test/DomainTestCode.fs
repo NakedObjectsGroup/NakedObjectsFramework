@@ -451,7 +451,7 @@ let CanContainerInjectionCalledForGetInstance persistor =
 let noEntryFor (persistor : EntityObjectStore) (p : Product) (so : SpecialOffer) = 
     let hasEntry = 
         persistor.GetInstances<SpecialOfferProduct>() 
-        |> Seq.exists (fun i -> i.Product.ProductID = p.ProductID && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID)
+        |> Seq.exists (fun i -> (i.Product <> null && i.Product.ProductID = p.ProductID) && (i.SpecialOffer <> null && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID))
     not (hasEntry)
 
 let CanCreateManyToMany(persistor : EntityObjectStore) = 

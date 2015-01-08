@@ -43,7 +43,6 @@ let checkResults resultsFile s =
         Assert.AreEqual(fst(nd), snd(nd))
                 
 [<TestFixture>]
-//[<Ignore>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()
@@ -236,13 +235,4 @@ type DomainTests() =
             with expected -> ()
             x.CompareXml fullXml nestedTransformedXml
         
-        [<Test>]
-        [<Ignore>]
-        member x.TransformXsdToIdentity() = 
-            let nestedTestObject = x.TransFormWithSubObject()
-            let nestedSS = x.GenerateSnapshot nestedTestObject
-            nestedSS.Include "Content"
-            let nestedXsd = nestedSS.Xsd
-            let nestedTransformedXsd = nestedSS.TransformedXsd x.stylesheet2
-            x.CompareXml nestedXsd nestedTransformedXsd
     end
