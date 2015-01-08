@@ -110,7 +110,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) {
-            return new TestParameter(lifecycleManager, actionSpec, parameterSpec, owningObject, this);
+            return new TestParameter(parameterSpec, owningObject, this);
         }
 
         #endregion

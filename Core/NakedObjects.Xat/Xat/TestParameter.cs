@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Xat {
@@ -17,12 +16,8 @@ namespace NakedObjects.Xat {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;
         private readonly IActionParameterSpec parameterSpec;
-        private readonly ILifecycleManager persistor;
-        private IActionSpec actionSpec;
 
-        public TestParameter(ILifecycleManager persistor, IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
-            this.persistor = persistor;
-            this.actionSpec = actionSpec;
+        public TestParameter(IActionParameterSpec parameterSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
             this.parameterSpec = parameterSpec;
             this.owningObject = owningObject;
             this.factory = factory;

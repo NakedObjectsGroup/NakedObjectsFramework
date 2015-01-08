@@ -66,7 +66,7 @@ namespace NakedObjects.Architecture.Component {
 
         IQueryable GetInstances(IObjectSpec spec);
 
-        T CreateInstance<T>(ILifecycleManager persistor) where T : class;
+        T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class;
 
         object CreateInstance(Type type);
 

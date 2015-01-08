@@ -16,17 +16,17 @@ using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable {
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
 
-        public MemberPeerStub(string name, ILifecycleManager persistor)
+        public MemberPeerStub(string name, ILifecycleManager lifecycleManager)
             : base(name) {
-            this.persistor = persistor;
+            this.lifecycleManager = lifecycleManager;
         }
 
         #region IMemberSpecImmutable Members
 
         public override IIdentifier Identifier {
-            get { return new IdentifierNull(this, persistor); }
+            get { return new IdentifierNull(this); }
         }
 
         public IObjectSpecImmutable ReturnSpec { get; private set; }
@@ -85,12 +85,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class IdentifierNull : IdentifierImpl {
             private readonly MemberPeerStub owner;
-            private readonly ILifecycleManager persistor;
 
-            public IdentifierNull(MemberPeerStub owner, ILifecycleManager persistor)
+            public IdentifierNull(MemberPeerStub owner)
                 : base(null, "", "") {
                 this.owner = owner;
-                this.persistor = persistor;
             }
 
             public override string ToString() {

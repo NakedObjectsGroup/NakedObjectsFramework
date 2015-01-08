@@ -27,6 +27,6 @@ namespace NakedObjects.Architecture.Component {
 
         INakedObject[] GetServices(ServiceType serviceType);
 
-        INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager persistor);
+        INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager lifecycleManager);
     }
 }

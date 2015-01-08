@@ -41,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 
-        public abstract string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager);
+        public abstract string HiddenReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager);
 
         #endregion
     }

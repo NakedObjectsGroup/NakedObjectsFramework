@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
             this.users = FacetUtils.SplitOnComma(users);
         }
 
-        public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
+        public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return FacetUtils.IsAllowed(session, roles, users) ? null : "Not authorized to view";
         }
     }

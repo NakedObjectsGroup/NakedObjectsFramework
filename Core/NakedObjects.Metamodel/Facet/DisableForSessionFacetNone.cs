@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
+        public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return null;
         }
     }

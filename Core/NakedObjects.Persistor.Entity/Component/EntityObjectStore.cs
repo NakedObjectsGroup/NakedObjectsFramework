@@ -393,7 +393,7 @@ namespace NakedObjects.Persistor.Entity {
             Refresh(nakedObject);
         }
 
-        public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
+        public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class {
             Log.Debug("CreateInstance<T> of: " + typeof (T));
             return (T) CreateInstance(typeof (T));
         }

@@ -44,7 +44,7 @@ namespace NakedObjects.Reflect {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(IMetamodelManager metamodel, ILifecycleManager persistor, Type typeToProxy) {
+        public static Type CreateProxyType(IMetamodelManager metamodel, ILifecycleManager lifecycleManager, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||

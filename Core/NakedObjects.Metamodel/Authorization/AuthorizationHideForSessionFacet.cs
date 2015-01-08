@@ -25,8 +25,8 @@ namespace NakedObjects.Meta.Authorization {
             this.authorizationManager = authorizationManager;
         }
 
-        public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
-            return authorizationManager.IsVisible(session, persistor, manager, target, identifier)
+        public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+            return authorizationManager.IsVisible(session, lifecycleManager, manager, target, identifier)
                 ? null
                 : "Not authorized to view";
         }

@@ -59,7 +59,7 @@ namespace NakedObjects.Core.Component {
             return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager persistor) {
+        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager lifecycleManager) {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
