@@ -58,7 +58,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
 	build.sf.proj /t:Clean
-	build.wif.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
 	
@@ -66,7 +65,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.pm.proj 
 	build.core.proj 
 	build.sf.proj 
-	build.wif.proj 
 	build.ro.proj 
 	build.mvc.proj 
 
@@ -85,7 +83,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
 		build build.sf.proj /t:Clean
-		build build.wif.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
 		
@@ -93,7 +90,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.pm.proj 
 		build build.core.proj 
 		build build.sf.proj 
-		build build.wif.proj 
 		build build.ro.proj 
 		build build.mvc.proj 
 	}
@@ -111,7 +107,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
 	build.sf.proj /t:Clean
-	build.wif.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
 	
@@ -119,7 +114,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.pm.proj 
 	build.core.proj /t:FrameworkPackageNoTest
 	build.sf.proj 
-	build.wif.proj /t:WifPackageNoTest
 	build.ro.proj /t:RestfulObjectsPackageNoTest
 	build.mvc.proj /t:MvcPackageNoTest
 
@@ -138,7 +132,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
 		build build.sf.proj /t:Clean
-		build build.wif.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
 		
@@ -147,7 +140,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.pm.proj 
 		build build.core.proj /t:FrameworkPackageNoTest
 		build build.sf.proj 
-		build build.wif.proj /t:WifPackageNoTest
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
 		build build.mvc.proj /t:MvcPackageNoTest
 	}
