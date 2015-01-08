@@ -1014,7 +1014,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("MultilineParameter", s);
         }
 
-        [Test, Ignore] // needs fixing
+        [Test] // needs fixing
         public void MultipleChoicesParameterBounded() {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
@@ -1242,7 +1242,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectEditFieldsWithListCollection", s);
         }
 
-        [Test, Ignore]
+        [Test]
         public void ObjectEditFieldsWithListCollectionAndRemove() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1293,7 +1293,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ObjectEditFieldsWithTableCollection", s);
         }
 
-        [Test, Ignore]
+        [Test]
         public void ObjectEditFieldsWithTableCollectionAndRemove() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1467,7 +1467,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
 
-        [Test, Ignore]
+        [Test]
         public void ParameterEditCollection() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
@@ -1995,7 +1995,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("MainMenus", s);
         }
 
-        [Test, Ignore] //TODO: Failing on title of menu derived from SimpleRepository<T>; 
+        [Test] //TODO: Failing on title of menu derived from SimpleRepository<T>; 
             //Previously this was because menu was derived from the title of the service object.
         public void ServiceList() {
             string s = mocks.HtmlHelper.Services().ToString();
@@ -2020,7 +2020,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ClientValidationHtmlDialog", s);
         }
 
-        [Test, Ignore]
+        [Test]
         public void TransientWithCollection() {
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
