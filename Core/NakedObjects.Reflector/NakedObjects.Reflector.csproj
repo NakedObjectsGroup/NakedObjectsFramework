@@ -205,7 +205,6 @@
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />
     <Compile Include="Reflect\MemberOrderComparator.cs" />
     <Compile Include="Reflect\MethodFinderUtils.cs" />
-    <Compile Include="Reflect\ProxyCreator.cs" />
     <Compile Include="Reflect\DefaultClassStrategy.cs" />
     <Compile Include="Reflect\FacetDecoratorSet.cs" />
     <Compile Include="TypeFacetFactory\ArrayValueTypeFacetFactory.cs" />
