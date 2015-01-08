@@ -9,6 +9,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
+#pragma warning disable 618
     [TestClass]
     public class NewTitleBuilderWithNoInitialContentTest {
         private NewTitleBuilder initiallyEmptyBuilder;
@@ -199,4 +200,5 @@ namespace NakedObjects.SystemTest.Util {
             return "Harry Smith";
         }
     }
+    #pragma warning restore 618
 }

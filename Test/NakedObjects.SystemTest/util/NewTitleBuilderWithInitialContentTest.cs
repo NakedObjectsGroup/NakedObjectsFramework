@@ -8,9 +8,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
+#pragma warning disable 618
     [TestClass]
     public class NewTitleBuilderWithInitialContentTest {
         private NewTitleBuilder builder;
+
 
         [TestInitialize]
         public void NewBuilder() {
@@ -131,4 +133,5 @@ namespace NakedObjects.SystemTest.Util {
 
         #endregion
     }
+#pragma warning restore 618
 }
