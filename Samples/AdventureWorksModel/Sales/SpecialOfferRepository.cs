@@ -14,6 +14,7 @@ namespace AdventureWorksModel {
     public class SpecialOfferRepository : AbstractFactoryAndRepository {
         #region CurrentSpecialOffers
 
+        [FinderAction]
         [MemberOrder(1)]
         [TableView(false, "Description", "Category", "DiscountPct")]
         public IQueryable<SpecialOffer> CurrentSpecialOffers() {
@@ -46,7 +47,7 @@ namespace AdventureWorksModel {
         #region AssociateSpecialOfferWithProduct
 
         [MemberOrder(2)]
-        public SpecialOfferProduct AssociateSpecialOfferWithProduct(SpecialOffer offer, Product product) {
+        public SpecialOfferProduct AssociateSpecialOfferWithProduct([ContributedAction("Special Offers")]SpecialOffer offer, [ContributedAction("Special Offers")]Product product) {
             //First check if association already exists
             IQueryable<SpecialOfferProduct> query = from sop in Instances<SpecialOfferProduct>()
                                                     where sop.SpecialOfferID == offer.SpecialOfferID &&
@@ -79,6 +80,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [FinderAction]
         [MemberOrder(3)]
         public SpecialOffer CreateNewSpecialOffer() {
             var obj = NewTransientInstance<SpecialOffer>();

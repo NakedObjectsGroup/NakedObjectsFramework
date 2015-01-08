@@ -19,7 +19,7 @@ namespace AdventureWorksModel {
 
 
         #region FindContactByName
-
+        [FinderAction]
         [TableView(true,"Phone", "EmailAddress", "AdditionalContactInfo")]
         public IQueryable<Contact> FindContactByName([Optionally] string firstName, string lastName) {
             IQueryable<Contact> query = from obj in Instances<Contact>()
@@ -33,11 +33,13 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [FinderAction]
         [QueryOnly]
         public Contact RandomContact() {
             return Random<Contact>();
         }
 
+        [FinderAction]
          [TableView(true, "Phone", "EmailAddress", "AdditionalContactInfo")]
         public IQueryable<Contact> RandomContacts() {
             Contact contact1 = RandomContact();
@@ -55,7 +57,7 @@ namespace AdventureWorksModel {
         /* This method is needed because the AW database insists that every address has a StateProvince (silly design!), yet
          * many Countries in the database have no associated StateProvince.
          */
-
+        [FinderAction]
         [QueryOnly]
         [TableView(true)] //Tableview == list view
         public List<CountryRegion> ValidCountries() {

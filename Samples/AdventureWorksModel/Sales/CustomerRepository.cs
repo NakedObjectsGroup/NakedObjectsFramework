@@ -38,6 +38,7 @@ namespace AdventureWorksModel {
 
         #region FindCustomerByAccountNumber
 
+        [FinderAction]
         [MemberOrder(10), QueryOnly]
         public Customer FindCustomerByAccountNumber([DefaultValue("AW")] string accountNumber) {
             IQueryable<Customer> query = from obj in Instances<Customer>()
@@ -57,7 +58,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Stores Menu
-
+        [FinderAction]
         [MemberOrder(20)]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
@@ -67,6 +68,7 @@ namespace AdventureWorksModel {
                 select obj;
         }
 
+        [FinderAction]
         [MemberOrder(40)]
         public Store CreateNewStoreCustomer() {
             var store = NewTransientInstance<Store>();
@@ -74,6 +76,7 @@ namespace AdventureWorksModel {
             return store;
         }
 
+        [FinderAction]
         [MemberOrder(60), QueryOnly]
         public Store RandomStore() {
             return Random<Store>();
@@ -83,6 +86,7 @@ namespace AdventureWorksModel {
 
         #region Individuals Menu
 
+        [FinderAction]
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public IQueryable<Individual> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
@@ -95,6 +99,7 @@ namespace AdventureWorksModel {
                 select indv;
         }
 
+        [FinderAction]
         [MemberOrder(50)]
         public Individual CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
             var indv = NewTransientInstance<Individual>();
@@ -110,6 +115,7 @@ namespace AdventureWorksModel {
             return indv;
         }
 
+        [FinderAction]
         [MemberOrder(70), QueryOnly]
         public Individual RandomIndividual() {
             return Random<Individual>();

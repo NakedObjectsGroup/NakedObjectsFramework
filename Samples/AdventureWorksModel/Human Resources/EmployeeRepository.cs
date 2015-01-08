@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindEmployeeByName
-
+        [FinderAction]
         [TableView(true, "Current", "Title", "Manager")]
         public IQueryable<Employee> FindEmployeeByName([Optionally] string firstName, string lastName) {
             IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
@@ -39,7 +39,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindEmployeeByNationalIDNumber
-
+        [FinderAction]
         [QueryOnly]
         public Employee FindEmployeeByNationalIDNumber(string nationalIDNumber) {
             IQueryable<Employee> query = from obj in Instances<Employee>()
@@ -51,7 +51,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public Employee CreateNewEmployeeFromContact(Contact contactDetails) {
+        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] Contact contactDetails) {
             var _Employee = NewTransientInstance<Employee>();
             _Employee.ContactDetails = contactDetails;
             return _Employee;
@@ -62,7 +62,7 @@ namespace AdventureWorksModel {
             return Container.Instances<Contact>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
-
+        [FinderAction]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, "GroupName")]
         public IQueryable<Department> ListAllDepartments() {
@@ -78,6 +78,7 @@ namespace AdventureWorksModel {
             return query.FirstOrDefault();
         }
 
+        [FinderAction]
         [QueryOnly]
         public Employee Me() {
             Employee currentUser = CurrentUserAsEmployee();
@@ -89,6 +90,7 @@ namespace AdventureWorksModel {
 
         #region RandomEmployee
 
+        [FinderAction]
         [QueryOnly]
         public Employee RandomEmployee() {
             return Random<Employee>();

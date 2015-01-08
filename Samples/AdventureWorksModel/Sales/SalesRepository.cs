@@ -23,6 +23,7 @@ namespace AdventureWorksModel {
 
         #region FindSalesPersonByName
 
+        [FinderAction]
         [TableView(true, "SalesTerritory")]
         public IQueryable<SalesPerson> FindSalesPersonByName([Optionally] string firstName, string lastName) {
             IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
@@ -36,13 +37,15 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [FinderAction]
         [QueryOnly]
         public SalesPerson RandomSalesPerson() {
             return Random<SalesPerson>();
         }
 
+        [FinderAction]
         [Idempotent]
-        public SalesPerson CreateNewSalesPerson(Employee employee) {
+        public SalesPerson CreateNewSalesPerson([ContributedAction("Sales")]Employee employee) {
             var salesPerson = NewTransientInstance<SalesPerson>();
             salesPerson.Employee = employee;
             return salesPerson;
@@ -51,7 +54,7 @@ namespace AdventureWorksModel {
         #region ListAccountsForSalesPerson
 
         [TableView(true)] //TableView == ListView
-        public IQueryable<Store> ListAccountsForSalesPerson(SalesPerson sp) {
+        public IQueryable<Store> ListAccountsForSalesPerson([ContributedAction("Sales")]SalesPerson sp) {
             return from obj in Instances<Store>()
                 where obj.SalesPerson.SalesPersonID == sp.SalesPersonID
                 select obj;

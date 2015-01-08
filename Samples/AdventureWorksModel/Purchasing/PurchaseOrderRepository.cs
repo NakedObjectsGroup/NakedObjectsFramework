@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
         #region OpenPurchaseOrdersForVendor
 
         [TableView(true, "OrderDate", "TotalDue")]
-        public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor(Vendor vendor)
+        public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor([ContributedAction("Purchase Orders")] Vendor vendor)
         {
             return from obj in Instances<PurchaseOrderHeader>()
                                                     where obj.Vendor.VendorID == vendor.VendorID && obj.Status <= 2
@@ -37,10 +37,10 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region OpenPurchaseOrdersForVendor
+        #region ListPurchaseOrdersForVendor
 
         [TableView(true, "OrderDate", "Status", "TotalDue")]
-        public IQueryable<PurchaseOrderHeader> ListPurchaseOrders(Vendor vendor, DateTime? fromDate, DateTime? toDate)
+        public IQueryable<PurchaseOrderHeader> ListPurchaseOrders([ContributedAction("Purchase Orders")]Vendor vendor, DateTime? fromDate, DateTime? toDate)
         {
             IQueryable<PurchaseOrderHeader> query = from obj in Instances<PurchaseOrderHeader>()
                                                     where obj.Vendor.VendorID == vendor.VendorID &&
@@ -62,7 +62,7 @@ namespace AdventureWorksModel {
         #region OpenPurchaseOrdersForProduct
 
          [TableView(true, "Vendor", "OrderDate", "Status")]
-        public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(Product product)
+        public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct([ContributedAction("Purchase Orders")]Product product)
         {
             return from obj in Instances<PurchaseOrderDetail>()
                                                     where obj.Product.ProductID == product.ProductID &&
@@ -78,7 +78,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region RandomPurchaseOrder
-
+        [FinderAction]
         [QueryOnly]
         public PurchaseOrderHeader RandomPurchaseOrder() {
             return Random<PurchaseOrderHeader>();
@@ -86,7 +86,8 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public PurchaseOrderHeader CreateNewPurchaseOrder(Vendor vendor) {
+        [FinderAction]
+        public PurchaseOrderHeader CreateNewPurchaseOrder([ContributedAction("Purchase Orders")]Vendor vendor) {
             var purchaseOrderHeader = NewTransientInstance<PurchaseOrderHeader>();
             purchaseOrderHeader.Vendor = vendor;
             //MakePersistent(_PurchaseOrderHeader);

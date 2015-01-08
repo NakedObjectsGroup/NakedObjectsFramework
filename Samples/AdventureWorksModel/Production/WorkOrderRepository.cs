@@ -18,12 +18,14 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [FinderAction]
         [QueryOnly]
         public WorkOrder RandomWorkOrder() {
             return Random<WorkOrder>();
         }
 
-        public WorkOrder CreateNewWorkOrder(Product product) {
+        [FinderAction]
+        public WorkOrder CreateNewWorkOrder([ContributedAction("Work Orders")]Product product) {
             var wo = NewTransientInstance<WorkOrder>();
             wo.Product = product;
 
@@ -38,7 +40,7 @@ namespace AdventureWorksModel {
         #region CurrentWorkOrders
 
         [TableView(true, "Product", "OrderQty", "StartDate")]
-        public IQueryable<WorkOrder> WorkOrders(Product product, bool currentOrdersOnly) {
+        public IQueryable<WorkOrder> WorkOrders([ContributedAction("Work Orders")]Product product, bool currentOrdersOnly) {
             return from obj in Instances<WorkOrder>()
                 where obj.Product.ProductID == product.ProductID &&
                       (currentOrdersOnly == false || obj.EndDate == null)

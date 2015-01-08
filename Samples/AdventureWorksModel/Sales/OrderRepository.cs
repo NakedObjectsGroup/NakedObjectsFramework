@@ -18,6 +18,7 @@ namespace AdventureWorksModel {
     public class OrderRepository : AbstractFactoryAndRepository {
         #region FindOrder
 
+        [FinderAction]
         [MemberOrder(10)]
         public SalesOrderHeader FindOrder([DefaultValue("SO")] string orderNumber) {
             IQueryable<SalesOrderHeader> query = from obj in Instances<SalesOrderHeader>()
@@ -29,12 +30,14 @@ namespace AdventureWorksModel {
 
         #region HighestValueOrders
 
+        [FinderAction]
         [MemberOrder(90)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson", "Comment")]
         public IQueryable<SalesOrderHeader> HighestValueOrders() {
             return OrdersByValue(Ordering.Descending);
         }
 
+        [FinderAction]
         [MemberOrder(91)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson")]
         public IQueryable<SalesOrderHeader> OrdersByValue(Ordering ordering) {
@@ -46,6 +49,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [FinderAction]
         [MemberOrder(99)]
         public SalesOrderHeader RandomOrder() {
             return Random<SalesOrderHeader>();
@@ -53,6 +57,7 @@ namespace AdventureWorksModel {
 
         #region OrdersInProcess
 
+        [FinderAction]
         [MemberOrder(5)]
         [TableView(true, "OrderDate", "DueDate")]
         public IQueryable<SalesOrderHeader> OrdersInProcess() {

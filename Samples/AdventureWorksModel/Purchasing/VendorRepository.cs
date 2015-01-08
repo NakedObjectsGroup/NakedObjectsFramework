@@ -18,7 +18,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindVendorByName
-
+        [FinderAction]
         [TableView(true, "AccountNumber", "ActiveFlag", "PreferredVendorStatus")]
         public IQueryable<Vendor> FindVendorByName(string name) {
             return Container.Instances<Vendor>().Where(v => v.Name == name).OrderBy(v => v.Name);
@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
         #endregion;
 
         #region FindVendorByAccountNumber
-
+        [FinderAction]
         [QueryOnly]
         public Vendor FindVendorByAccountNumber(string accountNumber) {
             IQueryable<Vendor> query = from obj in Instances<Vendor>()
@@ -40,7 +40,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region RandomVendor
-
+        [FinderAction]
         [QueryOnly]
         public Vendor RandomVendor() {
             return Random<Vendor>();
