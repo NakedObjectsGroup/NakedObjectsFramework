@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
@@ -72,6 +73,7 @@ namespace MvcTestApp.Tests.Controllers {
                     typeof (ObjectQuery<string>),
                     typeof (EnumerableQuery<string>),
                     typeof (ActionResultModelQ<string>),
+                    typeof (EntityCollection<string>),
                 };
             }
         }
@@ -885,7 +887,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("No objects selected", warnings.First());
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void ActionAsFindNoParmsForActionReturnMulti() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -904,7 +906,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 2, EmployeeRepo.Object, action, contactRepo.Object, randomContact, "contactDetails");
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void ActionAsFindNoParmsForActionReturnOne() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -923,7 +925,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "ActionDialog", null, EmployeeRepo.Object, action, null, null, null);
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void ActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -942,13 +944,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void ActionAsFindParmsForActionUpdatesViewState() {
             ActionAsFindParmsForActionUpdatesViewState(true);
             ActionAsFindParmsForActionUpdatesViewState(false);
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void ActionAsFindParmsForActionWithDefaults() {
             IActionSpec action = GetAction(OrderContributedActions, "FindRate");
             INakedObject orderContribAction = NakedObjectsFramework.GetAdaptedService("OrderContributedActions");
@@ -1129,7 +1131,7 @@ namespace MvcTestApp.Tests.Controllers {
             EditInlineSaveValidationOk(Employee.DepartmentHistory.First().Shift);
         }
 
-        [Test, Ignore] // todo make more reliable
+        [Test] 
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift);
         }
@@ -1337,7 +1339,7 @@ namespace MvcTestApp.Tests.Controllers {
             EditSaveValidationOk(Vendor);
         }
 
-        [Test, Ignore] // todo make more reliable
+        [Test]
         public void EditSaveValidationOkForTransient() {
             EditSaveValidationOk(TransientVendor);
         }
@@ -1356,7 +1358,7 @@ namespace MvcTestApp.Tests.Controllers {
             EditSelectForObject(store);
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void FindForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             IDictionary<string, string> idToRawvalue;
@@ -1372,7 +1374,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 0, EmployeeRepo.Object, action, null, null, "ContactDetails");
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void FindForActionUpdatesViewState() {
             FindForActionUpdatesViewState(true);
             FindForActionUpdatesViewState(false);
@@ -1416,7 +1418,6 @@ namespace MvcTestApp.Tests.Controllers {
         // run first
 
         [Test]
-        [Ignore] // fix !!
         public void InitialInvokeCovariantContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.Store;FindStoreByName;NakedObjects.Core.Adapter.EntityOid;8;AdventureWorksModel.CustomerRepository;1;System.Int32;0;False;;0;False;Value;System.String;cycling",
@@ -1439,7 +1440,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void InvokeActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1458,7 +1459,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void InvokeActionAsFindParmsForActionWithParms() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1477,7 +1478,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 11, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void InvokeActionAsSaveForActionFailValidation() {
             Store store = Store;
             Store transientStore = TransientStore;
@@ -1502,7 +1503,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsFalse(result.ViewData.ModelState.IsValid);
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+        [Test] 
         public void InvokeActionAsSaveForActionPassValidation() {
             Store store = Store;
             Vendor transientVendor = TransientVendor;
@@ -2001,7 +2002,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // fix !!
         public void ViewCollectionDisplay() {
             FormCollection form = GetForm(new Dictionary<string, string> {
                 {"CustomerRepository-ShowCustomersWithAddressInRegion-Region-Select", ""},
