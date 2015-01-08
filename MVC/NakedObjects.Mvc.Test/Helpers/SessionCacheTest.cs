@@ -116,14 +116,6 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
 
-        [Test, Ignore] // revisit - value object is transient and so has no object id
-        public void AddStringToSession() {
-            HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            const string testvalue = "test string";
-            session.AddObjectToSession(NakedObjectsFramework, "key1", testvalue);
-            Assert.AreEqual(testvalue, session.GetObjectFromSession<string>(NakedObjectsFramework, "key1"));
-        }
-
         [Test]
         public void AddTransientToSession() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;

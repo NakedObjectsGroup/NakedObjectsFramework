@@ -128,20 +128,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // doesn't work now uses urls which are empty in tests
-        public void Cancel() {
-            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
-
-
-            mocks.HtmlHelper.History(claim);
-            mocks.HtmlHelper.History(emp);
-            string s = mocks.HtmlHelper.CancelButton(null).ToString();
-            string fieldView = GetTestData("Cancel");
-            Assert.AreEqual(fieldView, s);
-        }
-
-        [Test]
         public void History() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
@@ -183,46 +169,6 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("History", s);
         }
 
-        // too hard to mock appropriately - rely on selenium tests
-        [Test, Ignore]
-        public void TabbedHistory() {
-            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
-
-            mocks.HtmlHelper.TabbedHistory(claim);
-            mocks.HtmlHelper.TabbedHistory(emp);
-            string s = mocks.HtmlHelper.TabbedHistory().StripWhiteSpace();
-            CheckResults("TabbedHistory", s);
-        }
-
-        [Test, Ignore]
-        public void TabbedHistoryWithCount1() {
-            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
-
-
-            mocks.HtmlHelper.TabbedHistory(emp2);
-            mocks.HtmlHelper.TabbedHistory(claim);
-            mocks.HtmlHelper.TabbedHistory(emp1);
-
-            string s = mocks.HtmlHelper.TabbedHistory(3).StripWhiteSpace();
-            CheckResults("TabbedHistoryWithCount", s);
-        }
-
-        [Test, Ignore]
-        public void TabbedHistoryWithCount2() {
-            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
-
-
-            mocks.HtmlHelper.TabbedHistory(emp2);
-            mocks.HtmlHelper.TabbedHistory(claim);
-            mocks.HtmlHelper.TabbedHistory(emp1);
-
-            string s = mocks.HtmlHelper.TabbedHistory(2).StripWhiteSpace();
-            CheckResults("TabbedHistory", s);
-        }
+       
     }
 }

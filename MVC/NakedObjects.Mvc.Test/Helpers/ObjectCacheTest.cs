@@ -114,7 +114,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test, Ignore] // temp ignore pending proper tests 
         public void AddCollection() {
-            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var claims = new List<Claim> {claim};
             var claimAdapter = NakedObjectsFramework.GetNakedObject(claim);
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
@@ -244,20 +244,6 @@ namespace MvcTestApp.Tests.Helpers {
             NakedObjectsFramework.TransactionManager.StartTransaction();
             NakedObjectsFramework.Persistor.DestroyObject(claim);
             NakedObjectsFramework.TransactionManager.EndTransaction();
-
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
-        }
-
-        [Test, Ignore] // not sure what this is trying to test
-        public void ClearNotExistentFromCache() {
-            INakedObject claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim)));
-
-            // mangle oid 
-            new EntityOidGenerator(NakedObjectsFramework.Metamodel).ConvertTransientToPersistentOid(claim.Oid);
-
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.TestAddToCache(NakedObjectsFramework, claim);
-
-            // object not found 
 
             Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
         }
