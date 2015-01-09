@@ -76,7 +76,6 @@ type Nof4TestsTypeDomainType() =
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
-        [<Ignore>]
         member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType x.api
         
         [<Test>]

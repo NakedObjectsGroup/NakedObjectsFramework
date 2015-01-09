@@ -2089,6 +2089,6 @@ let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) =
     // different stack trace on sercver - just test not empty body 
     Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode)
     Assert.AreEqual
-        ("199 RestfulObjects \"No such domain type RestfulObjects.Test.Data.NoKey\"", 
+        ("199 RestfulObjects \"No such domain type " + dt + "\"", 
          persistResult.Headers.Warning.ToString()) //
    

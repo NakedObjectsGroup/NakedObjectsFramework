@@ -260,7 +260,6 @@ type Nof4TestsDomainType() =
         member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]

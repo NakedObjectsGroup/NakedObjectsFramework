@@ -28,7 +28,7 @@ let getExpected() =
                    (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Services.AbstractFactoryAndRepository") 
                         RepresentationTypes.DomainType "")
                
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Value.IStreamResource") RepresentationTypes.DomainType ""); 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Value.IStreamResource") RepresentationTypes.DomainType ""); 
                TObjectJson
                    (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.ContributorService") 
                         RepresentationTypes.DomainType "")
@@ -170,7 +170,7 @@ let getExpectedDomainType() =
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IKeyCodeMapper") RepresentationTypes.DomainType "")
                  //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "Immutable") RepresentationTypes.DomainType ""); 
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IRedirectedObject") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IStreamResource") RepresentationTypes.DomainType "");
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IStreamResource") RepresentationTypes.DomainType "");
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ITypeCodeMapper") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "MostSimple") RepresentationTypes.DomainType "")
