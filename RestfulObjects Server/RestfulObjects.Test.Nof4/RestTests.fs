@@ -56,6 +56,7 @@ type Nof4Tests() =
                    typeof<WithCollection>
                    typeof<WithDateTimeKey>
                    typeof<WithError>
+                   typeof<WithGetError>
                    typeof<WithNestedViewModel>
                    typeof<TestEnum>
                    typeof<MostSimple[]>
@@ -465,11 +466,9 @@ type Nof4Tests() =
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // still fails 
         member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
         [<Test>]
-        [<Ignore>] // still fails      
         member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
         
         [<Test>]       
@@ -670,15 +669,11 @@ type Nof4Tests() =
         [<Test>]
         member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
         
-        [<Test>]
-        [<Ignore>]
-         // temp ignore fails on server
-         member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
+        [<Test>]   
+        member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
         
-        [<Test>]
-        [<Ignore>]
-         // temp ignore fails on server
-         member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
+        [<Test>]      
+        member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
         
         [<Test>]
         member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api
@@ -852,11 +847,9 @@ type Nof4Tests() =
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>]  // fix
         member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>]    // fails on server - fix 
         member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
         [<Test>]
@@ -905,11 +898,9 @@ type Nof4Tests() =
         member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // still fails 
         member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>]     // fails on server - fix 
         member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
         
         [<Test>]

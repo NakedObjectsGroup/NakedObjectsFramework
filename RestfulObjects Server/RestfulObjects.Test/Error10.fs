@@ -30,13 +30,8 @@ let Error(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(new typeType(RepresentationTypes.Error), result.Content.Headers.ContentType)
@@ -58,14 +53,9 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(new typeType(RepresentationTypes.Error), result.Content.Headers.ContentType)

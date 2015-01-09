@@ -24,7 +24,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual int AnErrorValue {
             get {
-                if (ThrowErrors) {
+                if (Container != null && ThrowErrors) {
                     // so no errors on startup 
                     throw new DomainException("An error exception");
                 }
@@ -36,7 +36,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual MostSimple AnErrorReference {
             get {
-                if (ThrowErrors) {
+                if (Container != null && ThrowErrors) {
                     // so no errors on startup 
                     throw new DomainException("An error exception");
                 }
@@ -45,9 +45,9 @@ namespace RestfulObjects.Test.Data {
             set { }
         }
 
-        public virtual IList<MostSimple> AnErrorCollection {
+        public virtual ICollection<MostSimple> AnErrorCollection {
             get {
-                if (ThrowErrors) {
+                if (Container != null && ThrowErrors) {
                     // so no errors on startup 
                     throw new DomainException("An error exception");
                 }

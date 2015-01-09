@@ -2598,7 +2598,7 @@ let PutWithValuePropertyInvalidArgsNameValidateOnly(api : RestfulObjectsControll
 // 500    
 let PutWithValuePropertyInternalError(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"
-    let oid = ktc "1"
+    let oid = ktc "2"
     let pid = "AnErrorValue"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid
@@ -2606,19 +2606,17 @@ let PutWithValuePropertyInternalError(api : RestfulObjectsControllerBase) =
     let msg = jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let arg = CreateSingleValueArg parms
     api.Request <- msg
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
     let result = api.PutProperty(oType, oid, pid, arg)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -2628,7 +2626,7 @@ let PutWithValuePropertyInternalError(api : RestfulObjectsControllerBase) =
 // 500    
 let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"
-    let oid = ktc "1"
+    let oid = ktc "2"
     let pid = "AnErrorReference"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid
@@ -2638,19 +2636,18 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     let msg = jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let arg = CreateSingleValueArg parms
     api.Request <- msg
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
     let result = api.PutProperty(oType, oid, pid, arg)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -2918,26 +2915,24 @@ let DeleteValuePropertyInvalidArgsNameValidateOnly(api : RestfulObjectsControlle
 // 500    
 let DeleteValuePropertyInternalError(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"
-    let oid = ktc "1"
+    let oid = ktc "2"
     let pid = "AnErrorValue"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid
     let msg = jsonDeleteMsg (sprintf "http://localhost/%s" purl)
     let args = CreateReservedArgs ""
     api.Request <- msg
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
     let result = api.DeleteProperty(oType, oid, pid, args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -2961,19 +2956,18 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     let msg = jsonDeleteMsg (sprintf "http://localhost/%s" purl)
     let args = CreateReservedArgs ""
     api.Request <- msg
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
     let result = api.DeleteProperty(oType, oid, pid, args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)

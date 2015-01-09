@@ -74,6 +74,12 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     context.WithCollections.Add(wc1) |> ignore
     let we1 = new WithError(Id = 1)
     context.WithErrors.Add(we1) |> ignore
+    let we2 = new WithError(Id = 2)
+    context.WithErrors.Add(we2) |> ignore
+    let we3 = new WithError(Id = 3)
+    context.WithErrors.Add(we3) |> ignore
+    let we4 = new WithError(Id = 4)
+    context.WithErrors.Add(we4) |> ignore
     let wge1 = new WithGetError(Id = 1)
     context.WithGetErrors.Add(wge1) |> ignore
     let i1 = new Immutable(Id = 1)
@@ -92,7 +98,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     let wat1 = new WithAttachments(Id = 1)
     context.WithAttachments.Add(wat1) |> ignore
     let added = context.SaveChanges()
-    Assert.AreEqual(42, added)
+    Assert.AreEqual(45, added)
     wc1.ACollection.Remove(ms3) |> ignore
     context.SaveChanges() |> ignore
     ()

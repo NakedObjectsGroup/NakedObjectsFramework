@@ -5088,24 +5088,22 @@ let GetObjectIgnoreWrongDomainType(api : RestfulObjectsControllerBase) =
 // 500    
 let PutWithValueInternalError(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"
-    let oid = "RestfulObjects.Test.Data.WithError/1"
+    let oid = "RestfulObjects.Test.Data.WithError/4"
     let url = sprintf "http://localhost/objects/%s" oid
     let props = new JObject(new JProperty("AnErrorValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     let args = CreateArgMap props
     api.Request <- jsonPutMsg url (props.ToString())
-    let result = api.PutObject(oType, ktc "1", args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
+    let result = api.PutObject(oType, ktc "4", args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26")) ]))
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -5114,27 +5112,28 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
 
 // 500    
 let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) = 
+    
     let oType = ttc "RestfulObjects.Test.Data.WithError"
-    let oid = "RestfulObjects.Test.Data.WithError/1"
+    let oid = "RestfulObjects.Test.Data.WithError/3"
     let url = sprintf "http://localhost/objects/%s" oid
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
     let props = new JObject(new JProperty("AnErrorReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
     let args = CreateArgMap props
     api.Request <- jsonPutMsg url (props.ToString())
-    let result = api.PutObject(oType, ktc "1", args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- true
+    let result = api.PutObject(oType, ktc "3", args)
+    RestfulObjects.Test.Data.WithError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorReference(MostSimple value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 46\r")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([
+                             TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in "))
+                             TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)

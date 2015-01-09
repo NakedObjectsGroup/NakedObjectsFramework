@@ -4147,14 +4147,9 @@ let VerifyGetQueryActionWithError refType oType oid f (api : RestfulObjectsContr
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4187,14 +4182,9 @@ let VerifyPostCollectionActionWithError refType oType oid f (api : RestfulObject
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4553,15 +4543,10 @@ let VerifyPostQueryActionWithError refType oType oid f (api : RestfulObjectsCont
     
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
-          
-          TProperty
-              (JsonPropertyNames.StackTrace, 
-               
-               TArray
-                   ([ TObjectVal
-                          (new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12")) ]))
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult

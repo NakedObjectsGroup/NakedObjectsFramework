@@ -105,6 +105,15 @@ namespace RestfulObjects.Test.Data {
             var we1 = new WithError {Id = 1};
             context.WithErrors.Add(we1);
 
+            var we2 = new WithError { Id = 2 };
+            context.WithErrors.Add(we2);
+
+            var we3 = new WithError { Id = 3 };
+            context.WithErrors.Add(we3);
+
+            var we4 = new WithError { Id = 4 };
+            context.WithErrors.Add(we4);
+
             var wge1 = new WithGetError {Id = 1};
             context.WithGetErrors.Add(wge1);
 

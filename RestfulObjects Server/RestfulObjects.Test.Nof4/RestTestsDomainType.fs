@@ -56,6 +56,7 @@ type Nof4TestsDomainType() =
                    typeof<WithCollection>
                    typeof<WithDateTimeKey>
                    typeof<WithError>
+                   typeof<WithGetError>
                    typeof<WithNestedViewModel>
                    typeof<TestEnum>
                    typeof<MostSimple[]>
@@ -362,12 +363,10 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetWithActionObject() = DomainObject14.GetWithActionObject x.api
         
-        [<Test>]
-        
+        [<Test>]        
         member x.GetWithActionObjectSimpleOnly() = DomainObject14.GetWithActionObjectSimpleOnly x.api
         
-        [<Test>]
-        
+        [<Test>]        
         member x.GetWithActionObjectFormalOnly() = DomainObject14.GetWithActionObjectFormalOnly x.api
         
         [<Test>]
@@ -477,11 +476,9 @@ type Nof4TestsDomainType() =
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
         
         [<Test>]
@@ -864,11 +861,9 @@ type Nof4TestsDomainType() =
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
         [<Test>]
@@ -917,11 +912,9 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
         [<Test>] 
-        [<Ignore>] // still failing
         member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
         [<Test>] 
-        [<Ignore>] // still failing
         member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
         
         [<Test>]
