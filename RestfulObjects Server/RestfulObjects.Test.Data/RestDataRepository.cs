@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using NakedObjects;
 using NakedObjects.Services;
 
 namespace RestfulObjects.Test.Data {
@@ -24,19 +25,19 @@ namespace RestfulObjects.Test.Data {
         // 'find' for a method to find a single object by query
         // 'list' for a method to return a list of objects matching a query
 
-        public MostSimple AzContributedAction(WithActionObject withAction) {
+        public MostSimple AzContributedAction([ContributedAction]  WithActionObject withAction) {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
-        public MostSimple AzContributedActionOnBaseClass(WithAction withAction) {
+        public MostSimple AzContributedActionOnBaseClass([ContributedAction]WithAction withAction) {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
-        public MostSimple AzContributedActionWithRefParm(WithActionObject withAction, WithActionObject withOtherAction) {
+        public MostSimple AzContributedActionWithRefParm([ContributedAction]WithActionObject withAction, WithActionObject withOtherAction) {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
-        public MostSimple AzContributedActionWithValueParm(WithActionObject withAction, string parm) {
+        public MostSimple AzContributedActionWithValueParm([ContributedAction]WithActionObject withAction, string parm) {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
