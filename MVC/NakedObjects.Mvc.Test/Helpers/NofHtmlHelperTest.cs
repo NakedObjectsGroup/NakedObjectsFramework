@@ -1505,7 +1505,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ParameterEditForCollection", s);
         }
 
-        [Test, Ignore] // todo investigate change in html
+        [Test] 
         public void ParameterEditWithActionAsFind() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1522,7 +1522,7 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("ParameterEditWithActionAsFind", s);
         }
 
-        [Test, Ignore] // todo investigate change in html
+        [Test]
         public void ParameterEditWithFinders() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
