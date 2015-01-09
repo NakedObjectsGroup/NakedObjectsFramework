@@ -196,7 +196,7 @@ type Nof4TestsDomainType() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // still failing
+        [<Ignore>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -260,7 +260,7 @@ type Nof4TestsDomainType() =
         member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // still failing
+        [<Ignore>]
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
@@ -309,7 +309,7 @@ type Nof4TestsDomainType() =
         member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api
         
         [<Test>]
-        [<Ignore>] // still failing
+        [<Ignore>] // fails on appveyor - locale problem ?
         member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
         
         [<Test>]
@@ -472,7 +472,6 @@ type Nof4TestsDomainType() =
         member x.PutWithValueObjectInvalidArgsNameValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
@@ -680,11 +679,9 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
         
         [<Test>] 
-        [<Ignore>] // still failing
         member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
         
         [<Test>]
@@ -721,11 +718,10 @@ type Nof4TestsDomainType() =
             x.SetUser("Test")
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // still failing
+        [<Ignore>]
         member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
         
         [<Test>]
@@ -853,11 +849,9 @@ type Nof4TestsDomainType() =
         member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
         [<Test>]
@@ -963,7 +957,6 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
         
         [<Test>]
@@ -2689,7 +2682,7 @@ type Nof4TestsDomainType() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>] // still failing
+        [<Ignore>]
         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]

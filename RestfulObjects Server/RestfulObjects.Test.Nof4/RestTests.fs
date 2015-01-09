@@ -187,7 +187,7 @@ type Nof4Tests() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // still failing 
+        [<Ignore>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -251,7 +251,6 @@ type Nof4Tests() =
         member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // still failing
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
@@ -712,7 +711,7 @@ type Nof4Tests() =
         member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // todo fix 
+        [<Ignore>]
         member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
         
         [<Test>]
@@ -955,7 +954,6 @@ type Nof4Tests() =
         member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>]  // temp ignore fails on server
         member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
         
         [<Test>]
@@ -2667,8 +2665,7 @@ type Nof4Tests() =
         [<Test>]
         member x.GetMostSimpleObjectType() = DomainType21.GetMostSimpleObjectType x.api
         
-        [<Test>]
-        
+        [<Test>]        
         member x.GetWithActionObjectType() = DomainType21.GetWithActionObjectType x.api
         
         [<Test>]
@@ -2681,7 +2678,7 @@ type Nof4Tests() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>] // still fails 
+        [<Ignore>]
         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]

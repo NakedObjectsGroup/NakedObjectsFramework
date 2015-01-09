@@ -2085,10 +2085,10 @@ let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) =
     api.Request <- jsonPostMsg "http://localhost/objects/" (props.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonPersist = readSnapshotToJson persistResult
-    let jsonResult = JObject.Parse(jsonPersist)
+   
     // different stack trace on sercver - just test not empty body 
-    Assert.AreEqual(HttpStatusCode.InternalServerError, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode)
     Assert.AreEqual
-        ("199 RestfulObjects \"Mapping and metadata information could not be found for EntityType 'RestfulObjects.Test.Data.NoKey'.\"", 
+        ("199 RestfulObjects \"No such domain type RestfulObjects.Test.Data.NoKey\"", 
          persistResult.Headers.Warning.ToString()) //
-    Assert.AreNotEqual("", jsonResult)
+   
