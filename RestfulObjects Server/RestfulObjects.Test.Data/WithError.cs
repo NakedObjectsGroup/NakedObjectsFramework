@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
@@ -48,9 +49,9 @@ namespace RestfulObjects.Test.Data {
             }
         }
 
-        public virtual IList<MostSimple> ACollection {
+        public virtual ICollection<MostSimple> ACollection {
             get { return aCollection; }
-            set { aCollection = value; }
+            set { aCollection = value.ToList(); }
         }
 
         public virtual int AnError() {

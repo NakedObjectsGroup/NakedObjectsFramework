@@ -26,6 +26,10 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
+        public string ValidateParms(INakedObject nakedObject, Tuple<string, INakedObject>[] parms) {
+            return null;
+        }
+
         #endregion
     }
 }

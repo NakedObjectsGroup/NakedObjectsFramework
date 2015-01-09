@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using NakedObjects.Services;
 
@@ -52,6 +53,7 @@ namespace RestfulObjects.Test.Data {
             withValue.ADisabledValue = 103;
             withValue.AStringValue = "one hundred four";
             withValue.AHiddenValue = 105;
+            withValue.ADateTimeValue = new DateTime(2012, 2, 10);
 
             return withValue;
         }
@@ -75,14 +77,20 @@ namespace RestfulObjects.Test.Data {
             var ms1 = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
             var ms2 = Container.Instances<MostSimple>().Single(ms => ms.Id == 2);
 
+            var msvm1 = Container.NewViewModel<MostSimpleViewModel>();
+            var msvm2 = Container.NewViewModel<MostSimpleViewModel>();
+
+            msvm1.Id = 1;
+            msvm2.Id = 2;
+
             twc.ACollection.Add(ms1);
             twc.ACollection.Add(ms2);
 
-            twc.ASet.Add(ms1);
-            twc.ASet.Add(ms2);
+            twc.ASetAsCollection.Add(ms1);
+            twc.ASetAsCollection.Add(ms2);
 
-            twc.ACollectionViewModels.Add(new MostSimpleViewModel() {Id = 1});
-            twc.ACollectionViewModels.Add(new MostSimpleViewModel() {Id = 2});
+            twc.ACollectionViewModels.Add(msvm1);
+            twc.ACollectionViewModels.Add(msvm2);
 
             twc.ADisabledCollection.Add(ms1);
             twc.ADisabledCollection.Add(ms2);

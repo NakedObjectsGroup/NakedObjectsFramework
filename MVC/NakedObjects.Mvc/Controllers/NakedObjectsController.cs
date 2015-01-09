@@ -494,10 +494,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (ModelState.IsValid) {
+
                 var validateFacet = nakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
                 if (validateFacet != null) {
-                    var result = validateFacet.Validate(nakedObject);
+
+                    var parms = fieldsAndMatchingValues.Select(t => new Tuple<string, INakedObject>(t.Item1.Id.ToLower(), GetNakedObjectValue(t.Item1, nakedObject, t.Item2))).ToArray();
+                    var result = validateFacet.ValidateParms(nakedObject, parms);
 
                     if (!string.IsNullOrEmpty(result)) {
                         ModelState.AddModelError(string.Empty, result);

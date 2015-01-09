@@ -297,13 +297,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return context;
         }
 
-
         private IConsent CrossValidate(ObjectContext context) {
-
             var validateFacet = context.Specification.GetFacet<IValidateObjectFacet>();
 
             if (validateFacet != null) {
-                string result = validateFacet.Validate(context.Target);
+                var allParms = context.VisibleProperties.Select(pc => new Tuple<string, INakedObject>(pc.Id.ToLower(), pc.ProposedNakedObject)).ToArray();
+
+                string result = validateFacet.ValidateParms(context.Target, allParms);
                 if (!string.IsNullOrEmpty(result)) {
                     return new Veto(result);
                 }
@@ -541,7 +541,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             if (ConsentHandler(IsOfCorrectType(property, context), context, Cause.Other)) {
                 if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                    if (ConsentHandler(property.IsUsable( context.Target), context, Cause.Disabled)) {
+                    if (ConsentHandler(property.IsUsable(context.Target), context, Cause.Disabled)) {
                         if (ConsentHandler(validator(context.Target, context.ProposedNakedObject), context, Cause.Other)) {
                             if (!argument.ValidateOnly) {
                                 mutator(context.Target, context.ProposedNakedObject);
@@ -686,7 +686,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
+            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
             IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
             if (action == null) {
@@ -775,8 +775,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
-            IAssociationSpec[] properties = nakedObject.Spec.Properties.Where(p => p.IsVisible( nakedObject)).ToArray();
+            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
+            IAssociationSpec[] properties = nakedObject.Spec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {

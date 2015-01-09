@@ -168,33 +168,25 @@ type Nof4Tests() =
         member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api
         
         [<Test>]
         member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
-         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
+        member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
         
         [<Test>]
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
+        [<Ignore>] // still failing 
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -207,8 +199,6 @@ type Nof4Tests() =
         member x.PersistWithCollectionTransientObjectValidateOnly() = Objects9.PersistWithCollectionTransientObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectValidateOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFail x.api
         
         [<Test>]
@@ -218,23 +208,15 @@ type Nof4Tests() =
         member x.PersistWithCollectionTransientObjectValidateOnlyFail() = Objects9.PersistWithCollectionTransientObjectValidateOnlyFail x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectFail() = Objects9.PersistWithValueTransientObjectFail x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
         member x.PersistWithValueTransientObjectFailInvalid() = Objects9.PersistWithValueTransientObjectFailInvalid x.api
         
         [<Test>]
@@ -268,18 +250,14 @@ type Nof4Tests() =
         member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // todo fix 
+        [<Ignore>] // still failing
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
-         member x.Error() = Error10.Error x.api
+        member x.Error() = Error10.Error x.api
         
-        [<Test>]
-        [<Ignore>]
-         // fix
-         member x.NotAcceptableError() = Error10.NotAcceptableError x.api
+        [<Test>]     
+        member x.NotAcceptableError() = Error10.NotAcceptableError x.api
         
         [<Test>]
         member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
@@ -352,7 +330,6 @@ type Nof4Tests() =
         member x.PutWithValueObject() = DomainObject14.PutWithValueObject x.api
         
         [<Test>]
-        [<Ignore>] // todo fix 
         member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly x.api
         
         [<Test>]
@@ -371,7 +348,6 @@ type Nof4Tests() =
         member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject x.api
         
         [<Test>]
-        [<Ignore>] // todo fix 
         member x.PutWithReferenceObjectValidateOnly() = DomainObject14.PutWithReferenceObjectValidateOnly x.api
         
         [<Test>]
@@ -492,25 +468,19 @@ type Nof4Tests() =
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>]
-         // fix
-         member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
+        member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
         [<Test>]
-        [<Ignore>]
-         // fails on server - fix 
-         member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
+        [<Ignore>] // still fails      
+        member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
         
-        [<Test>]
-        [<Ignore>] // todo fix 
+        [<Test>]       
         member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation x.api
         
-        [<Test>]
-        [<Ignore>] // todo fix 
+        [<Test>]       
         member x.PutWithValueObjectFailCrossValidationValidateOnly() = DomainObject14.PutWithValueObjectFailCrossValidationValidateOnly x.api
         
-        [<Test>]
-        [<Ignore>] // todo fix 
+        [<Test>]       
         member x.PutWithReferenceObjectFailsCrossValidation() = DomainObject14.PutWithReferenceObjectFailsCrossValidation x.api
         
         [<Test>]
@@ -524,7 +494,6 @@ type Nof4Tests() =
         member x.ObjectNotFoundWrongType() = DomainObject14.ObjectNotFoundWrongType x.api
         
         [<Test>]
-        [<Ignore>]
         member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.api
         
         [<Test>]
