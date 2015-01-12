@@ -1269,7 +1269,7 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
-          TProperty(JsonPropertyNames.Value, TArray([ val3; val4 ]))
+          TProperty(JsonPropertyNames.Value, TArray([  ]))
           
           TProperty
               (JsonPropertyNames.Links, 
@@ -1294,18 +1294,18 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "")
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" ResultTypes.List 2))
+                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" ResultTypes.List 0))
                                   
                                   TProperty
                                       ("ACollectionViewModels", 
                                        
                                        TObjectJson
-                                           (makeCollectionMemberType "ACollectionViewModels" oid "A Collection View Models" "" ResultTypes.List 2 
+                                           (makeCollectionMemberType "ACollectionViewModels" oid "A Collection View Models" "" ResultTypes.List 0 
                                                 (ttc "RestfulObjects.Test.Data.MostSimpleViewModel") "Most Simple View Models"))
                                   
                                   TProperty
                                       ("ADisabledCollection", 
-                                       TObjectJson((makeCollectionMember "ADisabledCollection" oid "A Disabled Collection" "" ResultTypes.List 2)))
+                                       TObjectJson((makeCollectionMember "ADisabledCollection" oid "A Disabled Collection" "" ResultTypes.List 0)))
                                   
                                   TProperty
                                       ("AnEmptyCollection", 
@@ -1318,9 +1318,9 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                       ("AnEagerCollection", 
                                        
                                        TObjectJson
-                                           (makeCollectionMemberTypeValue "AnEagerCollection" oid "An Eager Collection" "" "list" 2 roType "Most Simples" 
-                                                (TArray([ val3; val4 ])) details))
-                                  TProperty("ASet", TObjectJson(makeCollectionMember "ASet" oid "A Set" "" "set" 2))
+                                           (makeCollectionMemberTypeValue "AnEagerCollection" oid "An Eager Collection" "" "list" 0 roType "Most Simples" 
+                                                (TArray([ ])) details))
+                                  TProperty("ASet", TObjectJson(makeCollectionMember "ASet" oid "A Set" "" "set" 0))
                                   TProperty("AnEmptySet", TObjectJson(makeCollectionMember "AnEmptySet" oid "An Empty Set" "an empty set for testing" "set" 0))
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(2)))) ]))
           TProperty(JsonPropertyNames.Extensions, 

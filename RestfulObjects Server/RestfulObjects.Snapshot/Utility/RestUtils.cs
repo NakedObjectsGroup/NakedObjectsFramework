@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Metadata.Edm;
 using System.Linq;
 using System.Net.Http;
 using NakedObjects.Surface;
@@ -191,7 +192,13 @@ namespace RestfulObjects.Snapshot.Utility {
         public static object ObjectToPredefinedType(object toMap) {
             PredefinedType predefinedType = TypeToPredefinedType(toMap.GetType());
             if (predefinedType == PredefinedType.Date_time) {
-                return ((DateTime) toMap).ToUniversalTime();
+                var dt = ((DateTime) toMap);
+                if (dt.Kind == DateTimeKind.Unspecified) {
+                    // default datetimes to utc
+                    dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
+                }
+
+                return dt.ToUniversalTime();
             }
             return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
         }

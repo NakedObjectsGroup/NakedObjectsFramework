@@ -75,6 +75,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
             IList<Type> collectionTypes = BuildCollectionTypes(candidates);
             return candidates.Where(property => property.GetGetMethod() != null &&
+                                                property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                                 collectionTypes.Contains(property.PropertyType)).ToList();
         }
     }

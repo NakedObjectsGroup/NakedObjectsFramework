@@ -366,7 +366,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    let dt = new DateTime(k)
+    let dt = (new DateTime(k, DateTimeKind.Utc)).ToUniversalTime()
     let title = dt.ToString()
     
     let expected = 
@@ -386,7 +386,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
                           ("Id", 
                            
                            TObjectJson
-                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal((new DateTime(634835232000000000L)).ToUniversalTime())))) ]))
+                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal((new DateTime(634835232000000000L, DateTimeKind.Utc)).ToUniversalTime())))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Date Time Key"))

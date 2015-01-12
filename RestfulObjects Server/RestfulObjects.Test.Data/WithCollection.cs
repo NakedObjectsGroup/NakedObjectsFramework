@@ -138,7 +138,7 @@ namespace RestfulObjects.Test.Data {
             set { aCollectionViewModels = value; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<MostSimple> ASetAsCollection {
             get { return aSetAsCollection; }
             set { aSetAsCollection = value; }

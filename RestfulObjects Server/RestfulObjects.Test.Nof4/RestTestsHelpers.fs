@@ -42,6 +42,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     ws1.ByteArray <- [| (byte) 2 |]
     ws1.Char <- '3'
     ws1.CharArray <- [| (char) 4 |]
+    ws1.DateTime <-  (new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc)).ToUniversalTime()
     ws1.Decimal <- 5.1M
     ws1.Double <- 6.2
     ws1.Float <- 7.3F

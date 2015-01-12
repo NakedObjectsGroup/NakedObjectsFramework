@@ -20,7 +20,6 @@ namespace RestfulObjects.Test.Data {
 
     public class WithScalars {
         private char c;
-        private DateTime dateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc).ToUniversalTime();
         private ICollection<MostSimple> list = new List<MostSimple>();
         private ICollection<MostSimple> set = new HashSet<MostSimple>();
 
@@ -29,6 +28,7 @@ namespace RestfulObjects.Test.Data {
             UInt = 14;
             ULong = 15;
             UShort = 16;
+            DateTime = DateTime.UtcNow;
         }
 
         [Key, Title, ConcurrencyCheck]
@@ -68,10 +68,7 @@ namespace RestfulObjects.Test.Data {
         public virtual sbyte[] SByteArray { get; set; }
         public virtual char[] CharArray { get; set; }
 
-        public virtual DateTime DateTime {
-            get { return dateTime; }
-            set { dateTime = value; }
-        }
+        public virtual DateTime DateTime { get; set; }
 
         public virtual ICollection<MostSimple> List {
             get { return list; }

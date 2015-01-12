@@ -196,7 +196,6 @@ type Nof4TestsDomainType() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -308,7 +307,6 @@ type Nof4TestsDomainType() =
         member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api
         
         [<Test>]
-        [<Ignore>] // fails on appveyor - locale problem ?
         member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
         
         [<Test>]
@@ -720,7 +718,6 @@ type Nof4TestsDomainType() =
         member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
         
         [<Test>]
-        [<Ignore>]
         member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
         
         [<Test>]
@@ -2667,8 +2664,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMostSimpleObjectType() = DomainType21.GetMostSimpleObjectType x.api
         
-        [<Test>]
-        
+        [<Test>]        
         member x.GetWithActionObjectType() = DomainType21.GetWithActionObjectType x.api
         
         [<Test>]
@@ -2681,7 +2677,6 @@ type Nof4TestsDomainType() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>]
         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]
