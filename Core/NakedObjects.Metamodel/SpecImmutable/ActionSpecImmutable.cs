@@ -60,15 +60,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return GetFacet<IActionInvocationFacet>().ElementType; }
         }
 
-        public bool IsContributedMethod {
-            get {
-                //TODO: Note that ReturnSpec is pending a rename (it is actually the spec of the owning object)
-                return ReturnSpec.Service && parameters.Any() &&
-                    ContainsFacet(typeof(IContributedActionFacet));
-            }
-        }
-
-
         public virtual IObjectSpecImmutable ReturnType {
             get { return GetFacet<IActionInvocationFacet>().ReturnType; }
         }
@@ -77,11 +68,28 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return HasReturn() && ContainsFacet(typeof (IFinderActionFacet)); }
         }
 
+        public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
+            if (!IsFinderMethod) return false;
+            if (ReturnType.IsCollection && ElementType.IsOfType(spec)) {
+                    return true;
+            }
+            return ReturnType.IsOfType(spec);
+        }
+
+        public bool IsContributedMethod {
+            get {
+                //TODO: Note that ReturnSpec is pending a rename (it is actually the spec of the owning object)
+                return ReturnSpec.Service && parameters.Any() &&
+                    ContainsFacet(typeof(IContributedActionFacet));
+            }
+        }
+
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
-            return IsContributedMethod
-                   && Parameters.Any(parm => ContributeTo(parm.Specification, objectSpecImmutable))
-                   &&
-                   !(IsCollection(objectSpecImmutable) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
+            return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));               
+        }
+
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
+            return  Parameters.Any(parm => IsContributedToCollectionOf(parm.Specification, objectSpecImmutable));   
         }
 
         #endregion
@@ -94,8 +102,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             return spec.IsCollection && !spec.IsParseable;
         }
 
-        //TODO: Does this need to change, to know parameter number also ?
-        private bool ContributeTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
+        private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var facet = GetFacet<IContributedActionFacet>();
 
             if (facet == null) {
@@ -103,6 +110,16 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
 
             return contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
+        }
+
+        private bool IsContributedToCollectionOf(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
+
+            var facet = GetFacet<IContributedActionFacet>();
+
+            if (facet == null) {
+                return false;
+            }
+            return facet.IsContributedToCollectionOf(contributeeSpec);      
         }
 
         #region ISerializable

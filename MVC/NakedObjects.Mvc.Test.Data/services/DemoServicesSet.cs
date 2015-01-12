@@ -32,51 +32,47 @@ namespace Expenses.Services {
         }
     }
 
-    [DisplayName(label)]
+    [DisplayName("Custom Helper Test Classes")]
     public class SimpleRepositoryCustomHelperTestClass : SimpleRepository<CustomHelperTestClass> {
 
-        const string label = "Custom Helper Test Classes";
-
-              [MemberOrder(Sequence = "1"), FinderAction(label)]
+              [MemberOrder(Sequence = "1"), FinderAction()]
         public override CustomHelperTestClass NewInstance() {
             return base.NewInstance();
         }
-        [MemberOrder(Sequence = "2"), FinderAction(label)]
+        [MemberOrder(Sequence = "2"), FinderAction()]
               public override IQueryable<CustomHelperTestClass> AllInstances() {
                   return Container.Instances<CustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "3"), FinderAction(label)]
+        [MemberOrder(Sequence = "3"), FinderAction()]
         public override CustomHelperTestClass GetRandom() {
             return base.Random<CustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "4"), FinderAction(label)]
+        [MemberOrder(Sequence = "4"), FinderAction()]
         public override CustomHelperTestClass FindByKey(int key) {
             return base.FindByKey(key);
         }
     }
 
-    [DisplayName(label)]
+    [DisplayName("Described Custom Helper Test Classes")]
     public class SimpleRepositoryDescribedCustomHelperTestClass : SimpleRepository<DescribedCustomHelperTestClass> {
 
-        const string label = "Described Custom Helper Test Classes";
-
-        [MemberOrder(Sequence = "1"), FinderAction(label)]
+        [MemberOrder(Sequence = "1"), FinderAction()]
         public override DescribedCustomHelperTestClass NewInstance() {
             return base.NewInstance();
         }
-        [MemberOrder(Sequence = "2"), FinderAction(label)]
+        [MemberOrder(Sequence = "2"), FinderAction()]
         public override IQueryable<DescribedCustomHelperTestClass> AllInstances() {
             return Container.Instances<DescribedCustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "3"), FinderAction(label)]
+        [MemberOrder(Sequence = "3"), FinderAction()]
         public override DescribedCustomHelperTestClass GetRandom() {
             return base.Random<DescribedCustomHelperTestClass>();
         }
 
-        [MemberOrder(Sequence = "4"), FinderAction(label)]
+        [MemberOrder(Sequence = "4"), FinderAction()]
         public override DescribedCustomHelperTestClass FindByKey(int key) {
             return base.FindByKey(key);
         }

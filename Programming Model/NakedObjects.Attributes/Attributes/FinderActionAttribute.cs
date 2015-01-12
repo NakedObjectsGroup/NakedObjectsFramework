@@ -14,26 +14,5 @@ namespace NakedObjects {
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class FinderActionAttribute : Attribute {
-
-        public FinderActionAttribute() {
-            SubMenu = null;
-        }
-
-        /// <summary>
-        /// Specify a sub-menu that the action should appear within
-        /// </summary>
-        /// <param name="subMenu"></param>
-        public FinderActionAttribute(string subMenu) {
-            SubMenu = subMenu;
-        }
-
-        public string SubMenu { get; set; }
-
-        /// <summary>
-        /// Id has been included for generating UI code that is backwards-compatible with NOF 6.
-        /// Recommended left null if not needed.
-        /// </summary>
-        public string Id { get; set; }
-
     }
 }

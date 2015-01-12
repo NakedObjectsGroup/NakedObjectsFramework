@@ -54,7 +54,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static IActionSpec[] GetActionLeafNodes(this IActionSpec actionSpec) {
-            return actionSpec.ActionType == ActionType.Set ? actionSpec.Actions.SelectMany(GetActionLeafNodes).ToArray() : new[] {actionSpec};
+            return new[] {actionSpec};
         }
 
         public static IActionSpec[] GetActionLeafNodes(this INakedObject nakedObject) {
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static IActionSpec[] GetActionLeafNodes(this IObjectSpec spec) {
-            return spec.GetAllActions().SelectMany(GetActionLeafNodes).ToArray();
+            return spec.GetObjectActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
         public static IActionSpec GetActionLeafNode(this INakedObject nakedObject, string actionName) {

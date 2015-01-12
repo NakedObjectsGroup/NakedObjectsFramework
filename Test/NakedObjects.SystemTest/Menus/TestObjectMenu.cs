@@ -147,6 +147,10 @@ namespace TestObjectMenu {
     public class Contrib3 {
 
         public void Action8([ContributedAction("Docs")] Bar bar) { }
+
+        public void Action9(IQueryable<Bar> bars) { }
+
+        public void Action10([ContributedAction] IQueryable<Bar> bars) { }
     }
 
     public class Bar {

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     public interface IObjectSpecBuilder : IObjectSpecImmutable {
@@ -22,6 +23,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
         void AddContributedActions(IList<IActionSpecImmutable> contributedActions);
-        void AddRelatedActions(IList<IActionSpecImmutable> relatedActions);
+        void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionCntributedActions);
+        void AddFinderActions(IList<IActionSpecImmutable> finderActions);
     }
 }

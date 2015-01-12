@@ -225,7 +225,7 @@ namespace Expenses {
                 return item;
             }
 
-            public void ApproveClaims(IEnumerable<Claim> claims) {
+            public void ApproveClaims([ContributedAction("Claims")] IEnumerable<Claim> claims) {
                 claims.ForEach(c => c.ApproveItems(true));
             }
         }

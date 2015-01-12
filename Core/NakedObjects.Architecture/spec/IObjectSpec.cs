@@ -183,12 +183,22 @@ namespace NakedObjects.Architecture.Spec {
         #region Actions
 
         IMenuImmutable ObjectMenu { get; }
-        IActionSpec[] GetRelatedServiceActions();
 
         /// <summary>
-        ///     Returns an array of actions of the specified type
+        ///     Returns an array of object actions (i.e. native actions and object-contributedActions)
         /// </summary>
-        IActionSpec[] GetAllActions();
+        //TODO: Rename to GetObjectActions for this type
+        IActionSpec[] GetObjectActions();
+
+        /// <summary>
+        ///     Returns an array of actions that would be contributed to a collection of this object type
+        /// </summary>
+        IActionSpec[] GetCollectionContributedActions();
+
+        /// <summary>
+        ///     Returns an array of actions that can find objects of this type
+        /// </summary>
+        IActionSpec[] GetFinderActions();
 
         #endregion
 

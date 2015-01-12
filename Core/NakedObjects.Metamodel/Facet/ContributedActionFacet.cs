@@ -16,19 +16,29 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
 
-        private readonly List<Tuple<IObjectSpecImmutable, string, string>> contributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
+        private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
+        private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
+
 
         public ContributedActionFacet(ISpecification holder)
             : base(typeof (IContributedActionFacet), holder) { }
 
-        public void AddContributee(IObjectSpecImmutable type, string subMenu, string id) {
-            contributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
+        public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) {
+            objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
+        }
+        //Here the type is the ElementType of the collection, not the type of collection.
+        public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
+            collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
         }
 
         #region IContributedActionFacet Members
 
         public bool IsContributedTo(IObjectSpecImmutable spec) {
-            return contributees.Select(t => t.Item1).Any(spec.IsOfType); // IsOfType should handle sub-types correctly
+            return objectContributees.Select(t => t.Item1).Any(spec.IsOfType); 
+        }
+
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) {
+                    return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType); 
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
@@ -43,7 +53,7 @@ namespace NakedObjects.Meta.Facet {
             if (!IsContributedTo(spec)) {
                 throw new Exception("Action is not contributed to " + spec.Type);
             }
-            var tuple = contributees.First(t => spec.IsOfType(t.Item1));
+            var tuple = objectContributees.First(t => spec.IsOfType(t.Item1));
             return tuple;
         }
         #endregion

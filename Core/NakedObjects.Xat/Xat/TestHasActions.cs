@@ -34,7 +34,7 @@ namespace NakedObjects.Xat {
 
         public ITestAction[] Actions {
             get {
-                List<ITestAction> actions = NakedObject.Spec.GetAllActions().
+                List<ITestAction> actions = NakedObject.Spec.GetObjectActions().
                     OfType<ActionSpec>().
                     Select(x => factory.CreateTestAction(x, this)).ToList();
                 return actions.ToArray();
@@ -67,7 +67,7 @@ namespace NakedObjects.Xat {
 
         public virtual string GetObjectActionOrder() {
             IObjectSpec spec = NakedObject.Spec;
-            IActionSpec[] actionsSpec = spec.GetAllActions();
+            IActionSpec[] actionsSpec = spec.GetObjectActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actionsSpec));
             return order.ToString();

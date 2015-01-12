@@ -12,25 +12,8 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class FinderActionFacet : FacetAbstract, IFinderActionFacet {
-        private readonly string id;
-        private readonly string subMenu;
 
-        public FinderActionFacet(ISpecification holder, string subMenu, string id)
-            : base(typeof (IFinderActionFacet), holder) {
-            this.subMenu = subMenu;
-            this.id = id;
-        }
-
-        #region IFinderActionFacet Members
-
-        public string SubMenu() {
-            return subMenu;
-        }
-
-        public string Id() {
-            return id;
-        }
-
-        #endregion
+        public FinderActionFacet(ISpecification holder)
+            : base(typeof(IFinderActionFacet), holder) { }
     }
 }

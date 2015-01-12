@@ -40,21 +40,9 @@ namespace NakedObjects.Architecture.Spec {
         bool IsFinderMethod { get; }
 
         /// <summary>
-        ///     Returns the type of action: user, exploration or debug, or that it is a set of actions.
-        /// </summary>
-        /// <seealso cref="Reflect.ActionType.User" />
-        ActionType ActionType { get; }
-
-        /// <summary>
         ///     Returns the specifications for the return type
         /// </summary>
         IObjectSpec ReturnSpec { get; }
-
-        /// <summary>
-        ///     Lists the sub-actions that are available under this name. If any actions are returned then this action
-        ///     is only a set and not an action itself.
-        /// </summary>
-        IActionSpec[] Actions { get; }
 
         /// <summary>
         ///     Returns the number of parameters used by this method

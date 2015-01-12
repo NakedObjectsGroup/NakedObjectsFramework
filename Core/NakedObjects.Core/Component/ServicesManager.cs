@@ -63,7 +63,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
-                Where(no => no.Spec.GetAllActions().Any(a => a.IsVisible(no))).ToArray();
+                Where(no => no.Spec.GetObjectActions().Any(a => a.IsVisible(no))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceType serviceType) {

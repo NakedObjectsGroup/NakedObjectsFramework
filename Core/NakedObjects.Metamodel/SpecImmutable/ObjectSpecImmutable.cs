@@ -39,7 +39,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
-            RelatedActions = ImmutableList<IActionSpecImmutable>.Empty;
+            CollectionContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
+            FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
         }
 
         private string SingularName {
@@ -79,10 +80,13 @@ namespace NakedObjects.Meta.SpecImmutable {
             ContributedActions = contributedActions.ToImmutableList();
         }
 
-        public void AddRelatedActions(IList<IActionSpecImmutable> relatedActions) {
-            RelatedActions = relatedActions.ToImmutableList();
+        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) {
+            CollectionContributedActions = collectionContributedActions.ToImmutableList();
         }
 
+        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
+            FinderActions = finderActions.ToImmutableList();
+        }
         #endregion
 
         #region IObjectSpecImmutable Members
@@ -109,7 +113,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public IList<IActionSpecImmutable> ContributedActions { get; private set; }
 
-        public IList<IActionSpecImmutable> RelatedActions { get; private set; }
+        public IList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
+
+        public IList<IActionSpecImmutable> FinderActions { get; private set; }
 
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
 
@@ -210,7 +216,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
-
         #endregion
 
 
@@ -236,10 +241,11 @@ namespace NakedObjects.Meta.SpecImmutable {
         #region ISerializable
 
         private readonly IList<IActionSpecImmutable> tempContributedActions;
+        private readonly IList<IActionSpecImmutable> tempCollectionContributedActions;
+        private readonly IList<IActionSpecImmutable> tempFinderActions;
         private readonly IList<IAssociationSpecImmutable> tempFields;
         private readonly IList<IObjectSpecImmutable> tempInterfaces;
         private readonly IList<IActionSpecImmutable> tempObjectActions;
-        private readonly IList<IActionSpecImmutable> tempRelatedActions;
         private readonly IList<IObjectSpecImmutable> tempSubclasses;
 
 
@@ -256,7 +262,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             tempSubclasses = info.GetValue<IList<IObjectSpecImmutable>>("subclasses");
             tempObjectActions = info.GetValue<IList<IActionSpecImmutable>>("ObjectActions");
             tempContributedActions = info.GetValue<IList<IActionSpecImmutable>>("ContributedActions");
-            tempRelatedActions = info.GetValue<IList<IActionSpecImmutable>>("RelatedActions");
+            tempCollectionContributedActions = info.GetValue<IList<IActionSpecImmutable>>("CollectionContributedActions");
+            tempFinderActions = info.GetValue<IList<IActionSpecImmutable>>("FinderActions");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
@@ -271,7 +278,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<IList<IObjectSpecImmutable>>("subclasses", subclasses.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", ObjectActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ContributedActions", ContributedActions.ToList());
-            info.AddValue<IList<IActionSpecImmutable>>("RelatedActions", RelatedActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("CollectionContributedActions", CollectionContributedActions.ToList());
+            info.AddValue<IList<IActionSpecImmutable>>("FinderActions", FinderActions.ToList());
             base.GetObjectData(info, context);
         }
 
@@ -282,7 +290,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             subclasses = tempSubclasses.ToImmutableList();
             ObjectActions = tempObjectActions.ToImmutableList();
             ContributedActions = tempContributedActions.ToImmutableList();
-            RelatedActions = tempRelatedActions.ToImmutableList();
+            CollectionContributedActions = tempCollectionContributedActions.ToImmutableList();
+            FinderActions = tempFinderActions.ToImmutableList();
             base.OnDeserialization(sender);
         }
 

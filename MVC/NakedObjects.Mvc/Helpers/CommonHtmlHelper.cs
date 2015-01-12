@@ -25,6 +25,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem : IMenuItemImmutable {
@@ -296,7 +297,12 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObject collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
+            //Original
+            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";       
+            //New ?
+            //IObjectSpecImmutable elementType = collectionNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel);
+            //string menu = collectionNakedObject.Spec.IsQueryable ? html.CollectionMenu(collectionNakedObject, elementType).ToString() : "";
+           
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
@@ -833,6 +839,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 // no finder menu on collection parameters 
                 return string.Empty;
             }
+            //TODO: Test
 
             IEnumerable<ElementDescriptor> actions = html.GetServices().Select(service => new ElementDescriptor {
                 TagType = "div",
@@ -2605,13 +2612,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IActionSpec GetActionByMethodInfo(this HtmlHelper html, INakedObject nakedObject, MethodInfo methodInfo) {
-            return nakedObject.Spec.GetAllActions().
+            return nakedObject.Spec.GetObjectActions().
                                Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
         }
 
         internal static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            IActionSpec action = nakedObject.Spec.GetAllActions().
+            IActionSpec action = nakedObject.Spec.GetObjectActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
@@ -2654,7 +2661,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            IActionSpec action = nakedObject.Spec.GetAllActions().
+            IActionSpec action = nakedObject.Spec.GetObjectActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible( nakedObject));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));

@@ -324,7 +324,6 @@
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Spec\IActionSpec.cs" />
     <Compile Include="Spec\IActionParameterSpec.cs" />
-    <Compile Include="Reflect\ActionType.cs" />
     <Compile Include="Spec\IAssociationSpec.cs" />
     <Compile Include="Spec\IFeatureSpec.cs" />
     <Compile Include="Reflect\FeatureType.cs" />

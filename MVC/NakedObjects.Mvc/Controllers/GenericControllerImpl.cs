@@ -16,6 +16,8 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class GenericControllerImpl : NakedObjectsController {
@@ -184,20 +186,26 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string targetObjectId = controlData.DataDict["targetObjectId"];
 
             INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
-            INakedObject filteredNakedObject = FilterCollection(targetNakedObject, controlData);
-            IActionSpec targetAction = NakedObjectsContext.GetActions(filteredNakedObject).Single(a => a.Id == targetActionId);
+            if (targetNakedObject.Spec.IsCollection) {
+                INakedObject filteredNakedObject = FilterCollection(targetNakedObject, controlData);
+                var metamodel = NakedObjectsContext.Metamodel.Metamodel;
+                IObjectSpecImmutable elementSpecImmut =
+                    filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
 
-            if (filteredNakedObject.Spec.IsCollection) {
-               
+                var elementSpec = NakedObjectsContext.Metamodel.GetSpecification(elementSpecImmut);
+                 var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
+
                 if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
                 // force any result to not be queryable
                 filteredNakedObject.SetNotQueryable(true);
+                return ExecuteAction(controlData, filteredNakedObject, targetAction);
+            } else {
+                var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
+                return ExecuteAction(controlData, targetNakedObject, targetAction);
             }
-
-            return ExecuteAction(controlData, filteredNakedObject, targetAction);
         }
 
         private  INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {

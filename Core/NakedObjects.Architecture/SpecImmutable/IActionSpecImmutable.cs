@@ -8,11 +8,13 @@
 namespace NakedObjects.Architecture.SpecImmutable {
     public interface IActionSpecImmutable : IMemberSpecImmutable {
         IActionParameterSpecImmutable[] Parameters { get; }
-        bool IsFinderMethod { get; }
         IObjectSpecImmutable ReturnType { get; }
         IObjectSpecImmutable ElementType { get; }
         bool IsContributedMethod { get; }
         bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
+        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);
+        bool IsFinderMethod { get; }
+        bool IsFinderMethodFor(IObjectSpecImmutable spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

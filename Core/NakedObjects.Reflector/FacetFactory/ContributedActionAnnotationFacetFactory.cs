@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using System;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -27,12 +28,23 @@ namespace NakedObjects.Reflect.FacetFactory {
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
             if (!paramsWithAttribute.Any()) return; //Nothing to do
-
             var facet = new ContributedActionFacet(holder);
             foreach (var p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification(p.ParameterType.FullName);
-                facet.AddContributee(type, attribute.SubMenu, attribute.Id);
+                if (type != null) { //TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
+                    if (type.IsCollection) {
+                        //TODO:  Will the return type Spec always exist by this point?
+                        var returnType = reflector.LoadSpecification(member.ReturnType.FullName);
+                        if (!returnType.IsCollection) { //Don't allow collection-contributed actions that return collections
+                            var elementType = p.ParameterType.GetGenericArguments()[0];
+                            type = reflector.LoadSpecification(elementType.FullName);
+                            facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                        }
+                    } else {
+                        facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
+                    }
+                }
             }
             FacetUtils.AddFacet(facet);
         }

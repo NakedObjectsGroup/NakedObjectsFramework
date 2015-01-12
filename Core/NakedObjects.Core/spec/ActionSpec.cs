@@ -169,10 +169,6 @@ namespace NakedObjects.Core.Spec {
             get { return parametersSpec; }
         }
 
-        public virtual ActionType ActionType {
-            get { return ActionType.User; }
-        }
-
         /// <summary>
         ///     Returns true if the represented action returns something, else returns false
         /// </summary>
@@ -244,8 +240,6 @@ namespace NakedObjects.Core.Spec {
             var sb = new StringBuilder();
             sb.Append("Action [");
             sb.Append(base.ToString());
-            sb.Append(",type=");
-            sb.Append(ActionType);
             sb.Append(",returns=");
             sb.Append(ReturnSpec);
             sb.Append(",parameters={");

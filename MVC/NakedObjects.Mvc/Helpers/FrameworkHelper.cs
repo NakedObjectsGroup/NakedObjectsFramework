@@ -18,20 +18,30 @@ using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 using NakedObjects.Value;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
      
         public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Spec.GetAllActions().OfType<ActionSpec>().Cast<IActionSpec>().
+            return nakedObject.Spec.GetObjectActions().OfType<ActionSpec>().Cast<IActionSpec>().
                                Where(a => a.IsUsable( nakedObject).IsAllowed).
                                Where(a => a.IsVisible( nakedObject ));
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
-            return nakedObject.Spec.GetAllActions().
-                               Where(a => a.IsVisible( nakedObject)).
-                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject)));
+ 
+            if (nakedObject.Spec.IsQueryable) {
+                var metamodel = framework.Metamodel.Metamodel;
+                IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+                var elementSpec = framework.Metamodel.GetSpecification(elementSpecImmut);
+                return elementSpec.GetCollectionContributedActions();
+            } else {
+
+                return nakedObject.Spec.GetObjectActions().
+                                   Where(a => a.IsVisible(nakedObject));
+            }
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
@@ -202,7 +212,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IObjectSpec spec = framework.Metamodel.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
-            return spec.GetAllActions().Single(a => a.Id == id);
+            return spec.GetObjectActions().Single(a => a.Id == id);
         }
 
         public static bool IsNotPersistent(this INakedObject nakedObject) {

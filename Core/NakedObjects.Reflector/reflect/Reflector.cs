@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -154,7 +155,7 @@ namespace NakedObjects.Reflect {
             }
 
             PopulateContributedActions(spec, services);
-            PopulateRelatedActions(spec, services);
+            PopulateFinderActions(spec, services);
         }
 
         private void InstallMainMenus(IMenu[] menus) {
@@ -171,48 +172,47 @@ namespace NakedObjects.Reflect {
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             if (!spec.Service) {
                 IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
+                IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
-
-                        var matchingServiceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).Where(sa => sa.IsContributedTo(spec)).ToList();
-
-                        foreach (var action in matchingServiceActions) {
-                            contributedActions.Add(action);
+                        var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null);
+                            var matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                            foreach (var action in matchingActionsForObject) {
+                                contributedActions.Add(action);
                         }
+
+                            var matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                            foreach (var action in matchingActionsForCollection) {
+                                collectionContribActions.Add(action);
+                            }
                     }
                 }
                 spec.AddContributedActions(contributedActions);
+                spec.AddCollectionContributedActions(collectionContribActions);
             }
         }
 
-        private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
-            IList<IActionSpecImmutable> relatedActions = new List<IActionSpecImmutable>();
+        private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
+            IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
-                foreach (IActionSpecImmutable serviceAction in serviceSpecification.ObjectActions.Where(s => s != null).Where(a => a.IsFinderMethod)) {
-                    IObjectSpecImmutable returnType = serviceAction.ReturnType;
-                    if (returnType != null && returnType.IsCollection) {
-                        IObjectSpecImmutable elementType = serviceAction.ElementType;
-                        if (elementType.IsOfType(spec)) {
-                            matchingActions.Add(serviceAction);
-                        }
-                    }
-                    else if (returnType != null && returnType.IsOfType(spec)) {
+                foreach (IActionSpecImmutable serviceAction in 
+                            serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod)) {
+                   if (serviceAction.IsFinderMethodFor(spec)) {
                         matchingActions.Add(serviceAction);
                     }
                 }
-
                 if (matchingActions.Any()) {
                     matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
                     foreach (var action in matchingActions) {
-                        relatedActions.Add(action);
+                        finderActions.Add(action);
                     }
                 }
             }
-            spec.AddRelatedActions(relatedActions);
+            spec.AddFinderActions(finderActions);
         }
 
         private void InstallSpecification(Type type, bool isService) {

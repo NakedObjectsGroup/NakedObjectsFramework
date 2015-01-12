@@ -7,10 +7,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Web.Mvc.Html;
+using System;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
@@ -128,7 +131,18 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public IActionSpec GetAction( INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {
-                nakedObjectAction = framework.GetActions(GetNakedObject(framework)).SingleOrDefault(a => a.Id == ActionId);
+                var nakedObject = GetNakedObject(framework);
+                IActionSpec[] actions = null;
+                if (nakedObject.Spec.IsCollection) {
+                    var metamodel = framework.Metamodel.Metamodel;
+                    IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+                    var elementSpec = framework.Metamodel.GetSpecification(elementSpecImmut);
+                    actions = elementSpec.GetCollectionContributedActions();
+                } else {
+                    actions = nakedObject.Spec.GetObjectActions();
+                }
+                nakedObjectAction = actions.Where(a => a.IsUsable( nakedObject).IsAllowed).
+                               Where(a => a.IsVisible( nakedObject)).SingleOrDefault(a => a.Id == ActionId);
             }
             return nakedObjectAction;
         }

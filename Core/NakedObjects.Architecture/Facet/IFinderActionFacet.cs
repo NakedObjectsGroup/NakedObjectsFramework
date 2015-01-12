@@ -7,11 +7,5 @@
 
 namespace NakedObjects.Architecture.Facet {
     public interface IFinderActionFacet : IFacet {
-
-        //Returns null if the action is to be 'top-level'
-        string SubMenu();
-
-        //Id has been included for generating UI code that is backwards-compatible with NOF 6.
-        string Id();
     }
 }

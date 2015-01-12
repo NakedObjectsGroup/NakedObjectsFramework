@@ -29,7 +29,7 @@ namespace Expenses.ExpenseEmployees {
 
         #endregion
 
-        [MemberOrder(Sequence = "2"), FinderAction(SubMenu="Employees")]
+        [MemberOrder(Sequence = "2"), FinderAction()]
         public virtual IList<Employee> FindEmployeeByName(string name) {
             IQueryable<Employee> query =
                 from employee in Instances<Employee>()
