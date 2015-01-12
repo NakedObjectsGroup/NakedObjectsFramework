@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -42,10 +43,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return null;
         }
 
-
         public void Start() {
-            //framework.EnsureReady();
-            //SetSession();
             framework.TransactionManager.StartTransaction();
         }
 
@@ -183,11 +181,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         #endregion
 
         #region Helpers
-
-        private void SetSession() {
-            //framework.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
-        }
-
 
         private IAssociationSpec GetPropertyInternal(INakedObject nakedObject, string propertyName, bool onlyVisible = true) {
             if (string.IsNullOrWhiteSpace(propertyName)) {
@@ -505,19 +498,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private IConsent IsOfCorrectType(IOneToManyAssociationSpec property, PropertyContext context) {
-            // todo this should probably be in the framework somewhere
-            INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
-            ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
-
-            var introspectableSpecification = facet.GetValueSpec(collectionNakedObject, framework.Metamodel.Metamodel);
-            var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
-            if (context.ProposedNakedObject.Spec.IsOfType(spec)) {
-                return new Allow();
-            }
-            return new Veto(string.Format("Not a suitable type; must be a {0}", introspectableSpecification.FullName));
-        }
-
         private bool ConsentHandler(IConsent consent, Context.Context context, Cause cause) {
             if (consent.IsVetoed) {
                 context.Reason = consent.Reason;
@@ -525,33 +505,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return false;
             }
             return true;
-        }
-
-        private PropertyContext SetupPropertyContext(INakedObject nakedObject, string propertyName, object toAdd) {
-            PropertyContext context = GetProperty(nakedObject, propertyName);
-            context.ProposedValue = toAdd;
-            context.ProposedNakedObject = framework.Manager.CreateAdapter(toAdd, null, null);
-            return context;
-        }
-
-        private PropertyContextSurface ChangeCollection(PropertyContext context, Func<INakedObject, INakedObject, IConsent> validator, Action<INakedObject, INakedObject> mutator, ArgumentContext argument) {
-            ValidateConcurrency(context.Target, argument.Digest);
-
-            var property = (IOneToManyAssociationSpec) context.Property;
-
-            if (ConsentHandler(IsOfCorrectType(property, context), context, Cause.Other)) {
-                if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                    if (ConsentHandler(property.IsUsable(context.Target), context, Cause.Disabled)) {
-                        if (ConsentHandler(validator(context.Target, context.ProposedNakedObject), context, Cause.Other)) {
-                            if (!argument.ValidateOnly) {
-                                mutator(context.Target, context.ProposedNakedObject);
-                            }
-                        }
-                    }
-                }
-            }
-            context.Mutated = true;
-            return context.ToPropertyContextSurface(this, framework);
         }
 
         private ActionResultContextSurface ExecuteAction(ActionContext actionContext, ArgumentsContext arguments) {
@@ -600,18 +553,18 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             var no = framework.Manager.CreateAdapter(rawValue, null, null);
 
-            if (specification.IsCollection) {
+            // the rawValue is not necessarily a collection so need extra check here to avoid 
+            // a potential error getting the element spec. 
+            if (specification.IsCollection && (no.Spec.IsCollection && !no.Spec.IsParseable)) {
                 var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no, framework.Metamodel.Metamodel);
 
                 if (elementSpec.IsParseable) {
-                    //var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
-                    //var elementType = TypeUtils.GetType(elementSpec.FullName);
-                    //Type collType = typeof (List<>).MakeGenericType(elementType);
-                    //var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
-
-                    throw new NotImplementedException();
-                    //collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
-                    //return collection;
+                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
+                    var elementType = TypeUtils.GetType(elementSpec.FullName);
+                    Type collType = typeof (List<>).MakeGenericType(elementType);
+                    var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
+                    return collection;
                 }
             }
 
@@ -825,6 +778,21 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return SetObject(nakedObject, arguments);
         }
 
+
+        private INakedObjectSpecificationSurface GetSpecificationWrapper(IObjectSpec spec) {
+            return new NakedObjectSpecificationWrapper(spec, this, framework);
+        }
+
+        private static bool IsGenericType(IObjectSpec spec) {
+            Type type = TypeUtils.GetType(spec.FullName);
+
+            if (type != null) {
+                return type.IsGenericType;
+            }
+
+            return false;
+        }
+
         private class PropParmAdapter {
             private readonly INakedObjectsFramework framework;
             private readonly IActionParameterSpec parm;
@@ -879,14 +847,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             public INakedObject[] GetList(INakedObject nakedObject, ArgumentsContext arguments) {
                 return IsAutoCompleteEnabled ? GetAutocompleteList(nakedObject, arguments) : GetConditionalList(nakedObject, arguments);
-            }
-
-            private string CheckForMissingArgument(string key, object value, IObjectSpec expectedType) {
-                if (expectedType.IsParseable) {
-                    var valueAsString = value as string;
-                    return valueAsString == null || string.IsNullOrEmpty(valueAsString) ? string.Format("Missing argument {0}", key) : null;
-                }
-                return value == null ? string.Format("Missing argument {0}", key) : null;
             }
 
             private INakedObjectSpecificationSurface GetSpecificationWrapper(IObjectSpec spec) {
@@ -981,19 +941,5 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         #endregion
-
-        private INakedObjectSpecificationSurface GetSpecificationWrapper(IObjectSpec spec) {
-            return new NakedObjectSpecificationWrapper(spec, this, framework);
-        }
-
-        private static bool IsGenericType(IObjectSpec spec) {
-            Type type = TypeUtils.GetType(spec.FullName);
-
-            if (type != null) {
-                return type.IsGenericType;
-            }
-
-            return false;
-        }
     }
 }

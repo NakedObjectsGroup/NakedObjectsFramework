@@ -710,8 +710,7 @@ type Nof4Tests() =
         [<Test>]
         member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
         
-        [<Test>]
-        [<Ignore>]
+        [<Test>]      
         member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
         
         [<Test>]

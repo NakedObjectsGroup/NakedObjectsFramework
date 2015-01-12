@@ -193,7 +193,8 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
-                return GetConsent("Not a suitable type; must be a " + Spec.SingularName);
+                var msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName); 
+                return GetConsent(msg);
             }
 
             var buf = new InteractionBuffer();
