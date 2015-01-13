@@ -19,6 +19,10 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
+    // ReSharper disable UnusedMember.Local
+    // ReSharper disable UnusedParameter.Local
+    // ReSharper disable ClassNeverInstantiated.Local
+
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
@@ -54,14 +58,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
 
         private class Customer {
-            // ReSharper disable once UnusedMember.Local
             public IList Orders {
                 get { return null; }
             }
         }
 
         private class Customer1 {
-            // ReSharper disable once UnusedMember.Local
             public ArrayList Orders {
                 get { return null; }
             }
@@ -356,4 +358,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore UnusedParameter.Local
+    // ReSharper restore ClassNeverInstantiated.Local
+
 }
