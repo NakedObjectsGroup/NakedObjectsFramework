@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Spec;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.I18N {
     public class I18NManager : II18NManager, IFacetDecorator {

@@ -158,7 +158,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void InstallMainMenus(IMenu[] menus) {
-          foreach (IMenuImmutable menu in menus) {
+          foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
                 metamodel.AddMainMenu(menu);
             }
         }
@@ -175,16 +175,16 @@ namespace NakedObjects.Reflect {
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
-                        var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null);
-                            var matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
-                            foreach (var action in matchingActionsForObject) {
-                                contributedActions.Add(action);
+                        var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                        List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                        foreach (IActionSpecImmutable action in matchingActionsForObject) {
+                            contributedActions.Add(action);
                         }
 
-                            var matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
-                            foreach (var action in matchingActionsForCollection) {
-                                collectionContribActions.Add(action);
-                            }
+                        List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                        foreach (IActionSpecImmutable action in matchingActionsForCollection) {
+                            collectionContribActions.Add(action);
+                        }
                     }
                 }
                 spec.AddContributedActions(contributedActions);

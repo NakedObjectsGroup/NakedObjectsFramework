@@ -8,7 +8,6 @@
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Meta.Facet {
     /// <summary>

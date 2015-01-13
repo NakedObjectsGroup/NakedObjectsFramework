@@ -61,21 +61,21 @@ namespace TestData {
         }
 
 
-        public string Validate(string name, Product favouriteProduct) {
-            if (name == "fail") {
-                return name;
+        public string Validate(string newName, Product favouriteProduct) {
+            if (newName == "fail") {
+                return newName;
             }
             return null;
         }
 
-        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string name) {
+        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) {
             return (from r in persons
-                where r.Name == name
+                where r.Name == newName
                 select r).AsQueryable();
         }
 
         [Executed(Where.Remotely)]
-        public string DisableFindRelativesByName(IQueryable<Person> persons, string name) {
+        public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) {
             return "disabled";
         }
 

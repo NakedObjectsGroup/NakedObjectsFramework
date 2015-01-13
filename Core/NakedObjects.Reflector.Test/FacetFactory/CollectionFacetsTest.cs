@@ -53,7 +53,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
-            IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager);
+            var collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager).ToArray();
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
             zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
