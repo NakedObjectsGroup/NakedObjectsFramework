@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (spec.IsService) {
-                    ServiceType st = framework.Services.GetServiceType(spec);
+                    ServiceType st = framework.ServicesManager.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -79,14 +79,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         protected bool IsImage {
             get {
-                var imageSpec = framework.Metamodel.GetSpecification(typeof (Image));
+                var imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
         protected bool IsFileAttachment {
             get {
-                var fileSpec = framework.Metamodel.GetSpecification(typeof (FileAttachment));
+                var fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }
@@ -140,8 +140,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
             if (IsCollection) {
-                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.Metamodel.Metamodel);
-                var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
+                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
+                var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
             }
             return null;

@@ -50,7 +50,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 IObjectSpec spec = WrappedNakedObject.Spec;
 
                 if (spec.IsService) {
-                    ServiceType st = framework.Services.GetServiceType(spec);
+                    ServiceType st = framework.ServicesManager.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -75,8 +75,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
-                var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.Metamodel.Metamodel);
-                var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
+                var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.MetamodelManager.Metamodel);
+                var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(spec, Surface, framework);
             }
         }
@@ -86,7 +86,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(framework.Manager).Select(no => new NakedObjectWrapper(no, Surface, framework));
+            return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new NakedObjectWrapper(no, Surface, framework));
         }
 
         // todo move into adapterutils
@@ -137,7 +137,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         private INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.Manager, true);
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, true);
         }
 
         public override object GetScalarProperty(ScalarProperty name) {
