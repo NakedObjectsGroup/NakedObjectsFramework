@@ -68,7 +68,7 @@ namespace NakedObjects.Xat {
             get {
                 
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Manager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Services);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager);
                 }
                 return testObjectFactory;
             }
@@ -205,11 +205,11 @@ namespace NakedObjects.Xat {
             if (nakedObjectsFramework == null) {
                 nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Injector, Fixtures);
+            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ContainerInjector, Fixtures);
         }
 
         protected ITestService GetTestService(Type type) {
-            return NakedObjectsFramework.Services.GetServices().
+            return NakedObjectsFramework.ServicesManager.GetServices().
                 Where(no => type.IsInstanceOfType(no.Object)).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
@@ -217,7 +217,7 @@ namespace NakedObjects.Xat {
 
         protected ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (INakedObject service in NakedObjectsFramework.Services.GetServices()) {
+                foreach (INakedObject service in NakedObjectsFramework.ServicesManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
                         ITestService testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
@@ -234,7 +234,7 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestMenu GetMainMenu(string menuName) {
-            var mainMenus = NakedObjectsFramework.Metamodel.MainMenus();
+            var mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
                 IMenuImmutable menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
                 if (menu == null) {
@@ -252,11 +252,11 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestMenu[] AllMainMenus() {
-            return NakedObjectsFramework.Metamodel.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
+            return NakedObjectsFramework.MetamodelManager.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
         }
 
         protected void AssertMainMenuCountIs(int expected) {
-            var actual = NakedObjectsFramework.Metamodel.MainMenus().Count();
+            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
             Assert.AreEqual(expected, actual);
         }
 
@@ -265,12 +265,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(classname);
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
@@ -279,8 +279,8 @@ namespace NakedObjects.Xat {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
             IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null).TitleString() == title);
-            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.Manager.CreateAdapter(inst, null, null));
+            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
+            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
         }
 
         private static IPrincipal CreatePrincipal(string name, string[] roles) {

@@ -20,17 +20,17 @@ namespace NakedObjects {
 
         ILifecycleManager LifecycleManager { get; }
 
-        INakedObjectManager Manager { get; }
+        INakedObjectManager NakedObjectManager { get; }
 
-        IServicesManager Services { get; }
+        IServicesManager ServicesManager { get; }
 
         IObjectPersistor Persistor { get; }
 
         IReflector Reflector { get; }
 
-        IMetamodelManager Metamodel { get; }
+        IMetamodelManager MetamodelManager { get; }
 
-        IContainerInjector Injector { get; }
+        IContainerInjector ContainerInjector { get; }
 
         ITransactionManager TransactionManager { get; }
 

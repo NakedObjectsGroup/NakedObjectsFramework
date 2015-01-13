@@ -144,11 +144,11 @@ namespace NakedObjects.Core.Test.Adapter {
 
         private void RoundTrip(CollectionMemento memento) {
             string[] strings1 = memento.ToEncodedStrings();
-            var newMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, strings1);
+            var newMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, strings1);
             string[] strings2 = newMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
 
-            var copyMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, memento, new object[] {});
+            var copyMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, memento, new object[] {});
             string[] strings3 = copyMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
         }
@@ -164,37 +164,37 @@ namespace NakedObjects.Core.Test.Adapter {
         [Test]
         public void TestActionNoParms() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new INakedObject[] {});
             RoundTrip(memento);
-            RecoverCollection(target.Action1(), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action1(), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionNoParmsTransient() {
-            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (TestDomainObject)));
+            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TestDomainObject)));
 
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new INakedObject[] {});
             RoundTrip(memento);
-            RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionNoParmsWithSelected() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new INakedObject[] {});
 
-            var selectedMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, memento, new object[] {target});
+            var selectedMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, memento, new object[] {target});
 
             RoundTrip(selectedMemento);
-            IEnumerable<TestDomainObject> recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable(NakedObjectsFramework.Manager).Select(no => no.GetDomainObject<TestDomainObject>());
+            IEnumerable<TestDomainObject> recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable(NakedObjectsFramework.NakedObjectManager).Select(no => no.GetDomainObject<TestDomainObject>());
             Assert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
 
             IEnumerable<TestDomainObject> selectedCollection = target.Action1().Where(tdo => tdo.Id == target.Id);
@@ -206,123 +206,123 @@ namespace NakedObjects.Core.Test.Adapter {
         [Test]
         public void TestActionObjectCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
 
             TestDomainObject obj2 = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 2);
 
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action5");
 
             var rawParm = new List<TestDomainObject> {target, obj2};
-            INakedObject parm = NakedObjectsFramework.Manager.CreateAdapter(rawParm, null, null);
+            INakedObject parm = NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {parm});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {parm});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionObjectCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
 
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action5");
 
             var rawParm = new List<TestDomainObject>();
-            INakedObject parm = NakedObjectsFramework.Manager.CreateAdapter(rawParm, null, null);
+            INakedObject parm = NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {parm});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {parm});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
 
         [Test]
         public void TestActionObjectParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action3");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {targetNo});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {targetNo});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action3(target), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action3(target), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionObjectParmNull() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action3");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {null});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new INakedObject[] {null});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action3(null), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action3(null), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action4");
 
             var rawParm = new List<int> {1, 2};
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {NakedObjectsFramework.Manager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParmEmpty() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action4");
 
             var rawParm = new List<int>();
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {NakedObjectsFramework.Manager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action4(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueCollectionParmString() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action7");
 
             var rawParm = new List<string> {"1", "2"};
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {NakedObjectsFramework.Manager.CreateAdapter(rawParm, null, null)});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action7(rawParm), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action7(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action2");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {NakedObjectsFramework.Manager.CreateAdapter(1, null, null)});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter(1, null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action2(1), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action2(1), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         [Test]
         public void TestActionValueParmString() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
-            INakedObject targetNo = NakedObjectsFramework.Manager.CreateAdapter(target, null, null);
+            INakedObject targetNo = NakedObjectsFramework.NakedObjectManager.CreateAdapter(target, null, null);
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action6");
 
-            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new[] {NakedObjectsFramework.Manager.CreateAdapter("1", null, null)});
+            var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new[] {NakedObjectsFramework.NakedObjectManager.CreateAdapter("1", null, null)});
 
             RoundTrip(memento);
-            RecoverCollection(target.Action6("1"), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(target.Action6("1"), memento, NakedObjectsFramework.NakedObjectManager);
         }
     }
 }

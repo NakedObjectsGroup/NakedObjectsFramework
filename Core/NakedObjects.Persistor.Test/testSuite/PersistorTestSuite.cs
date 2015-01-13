@@ -46,11 +46,11 @@ namespace NakedObjects.Persistor.TestSuite {
 
 
         private IMetamodelManager Metamodel {
-            get { return framework.Metamodel; }
+            get { return framework.MetamodelManager; }
         }
 
         private INakedObject AdapterFor(object domainObject) {
-            return framework.Manager.CreateAdapter(domainObject, null, null);
+            return framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
         }
 
 

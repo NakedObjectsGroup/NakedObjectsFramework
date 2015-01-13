@@ -15,7 +15,7 @@ namespace NakedObjects.Snapshot.Xml.Service {
         #region IXmlSnapshotService Members
 
         public IXmlSnapshot GenerateSnapshot(object domainObject) {
-            return new XmlSnapshot(domainObject, Framework.Manager, Framework.Metamodel);
+            return new XmlSnapshot(domainObject, Framework.NakedObjectManager, Framework.MetamodelManager);
         }
 
         #endregion

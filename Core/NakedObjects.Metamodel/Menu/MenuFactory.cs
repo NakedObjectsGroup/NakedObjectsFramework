@@ -11,7 +11,7 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
     public class MenuFactory : IMenuFactory {
-        #region Injected Services
+        #region Injected ServicesManager
 
         private readonly IMetamodelBuilder metamodel;
 
