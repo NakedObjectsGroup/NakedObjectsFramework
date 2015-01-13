@@ -33,9 +33,9 @@ namespace NakedObjects.Web.Mvc.Html {
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
  
             if (nakedObject.Spec.IsQueryable) {
-                var metamodel = framework.Metamodel.Metamodel;
+                var metamodel = framework.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.Metamodel.GetSpecification(elementSpecImmut);
+                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
                 return elementSpec.GetCollectionContributedActions();
             } else {
 
@@ -141,7 +141,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static IObjectSpec GetSpecificationFromObjectId(this INakedObjectsFramework framework, string[] asArray, out string[] restOfArray) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(asArray.First()));
-            IObjectSpec spec = framework.Metamodel.GetSpecification(typeName);
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(typeName);
             restOfArray = asArray.ToArray();
             return spec;
         }
@@ -159,7 +159,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, ViewModelOid viewModelOid) {
-            return framework.Manager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
+            return framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
         }
 
         public static INakedObject RestoreObject(this INakedObjectsFramework framework, IOid oid) {
@@ -167,40 +167,40 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetNakedObject(this INakedObjectsFramework framework, object domainObject) {
-            return framework.Manager.CreateAdapter(domainObject, null, null);
+            return framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
         }
 
         public static INakedObject GetAdaptedService(this INakedObjectsFramework framework, string name) {
-            return framework.Services.GetService(name);
+            return framework.ServicesManager.GetService(name);
         }
 
         public static object GetService(this INakedObjectsFramework framework, string name) {
-            return framework.Services.GetService(name).Object;
+            return framework.ServicesManager.GetService(name).Object;
         }
 
         public static T GetService<T>(this INakedObjectsFramework framework, string name) {
-            return framework.Services.GetService(name).GetDomainObject<T>();
+            return framework.ServicesManager.GetService(name).GetDomainObject<T>();
         }
 
         public static INakedObject GetAdaptedService<T>(this INakedObjectsFramework framework) {
-            return framework.Services.GetServices().FirstOrDefault(no => no.Object is T);
+            return framework.ServicesManager.GetServices().FirstOrDefault(no => no.Object is T);
         }
 
         public static T GetService<T>(this INakedObjectsFramework framework) {
-            return framework.Services.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
+            return framework.ServicesManager.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
         }
 
         public static IEnumerable<object> GetAllServices(this INakedObjectsFramework framework) {
-            return framework.Services.GetServices().Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.ServicesManager.GetServices().Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetContributingServices(this INakedObjectsFramework framework) {
-            return framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.ServicesManager.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
             framework.GetAllServices();
-            return framework.Services.GetServicesWithVisibleActions(ServiceType.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.ServicesManager.GetServicesWithVisibleActions(ServiceType.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static string GetActionId(IActionSpec action) {
@@ -209,7 +209,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IActionSpec GetActionFromId(this INakedObjectsFramework framework, string actionId) {
             string[] asArray = actionId.Split(';');
-            IObjectSpec spec = framework.Metamodel.GetSpecification(asArray.First());
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
             return spec.GetObjectActions().Single(a => a.Id == id);
@@ -221,12 +221,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsImage(this IObjectSpec spec, INakedObjectsFramework framework) {
-            IObjectSpec imageSpec = framework.Metamodel.GetSpecification(typeof(Image));
+            IObjectSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this IObjectSpec spec, INakedObjectsFramework framework) {
-            IObjectSpec fileSpec = framework.Metamodel.GetSpecification(typeof(FileAttachment));
+            IObjectSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
@@ -244,7 +244,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject Parse(this IObjectSpec spec, string s, INakedObjectsFramework framework) {
-            return s == null ? framework.Manager.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.Manager);
+            return s == null ? framework.NakedObjectManager.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager);
         }
 
         public static bool IsQueryOnly(this IActionSpec action) {
@@ -262,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, IFeatureSpec featureSpec, IEnumerable collectionValue) {
 
-            IObjectSpec collectionitemSpec = framework.Metamodel.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
+            IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 
@@ -270,7 +270,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
-                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.Manager).Object).ToArray();
+                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager).Object).ToArray();
             }
             else {
                 // need to check if collection is actually a collection memento 
@@ -287,7 +287,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
-            return framework.Manager.CreateAdapter(typedCollection.AsQueryable(), null, null);
+            return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
         public static bool IsViewModelEditView(this INakedObject target) {

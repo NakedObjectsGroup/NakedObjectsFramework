@@ -57,9 +57,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetMainMenus() {
-           var menus = NakedObjectsContext.Metamodel.MainMenus();
+           var menus = NakedObjectsContext.MetamodelManager.MainMenus();
            if (menus.Count() == 0) {
-              menus =  nakedObjectsFramework.Services.GetServices(ServiceType.Menu).Select(s => s.Spec.ObjectMenu).ToArray();
+              menus =  nakedObjectsFramework.ServicesManager.GetServices(ServiceType.Menu).Select(s => s.Spec.ObjectMenu).ToArray();
            }
             ViewData[IdHelper.NofMainMenus] = menus;
         }
@@ -220,7 +220,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
                         if (itemvalues.Any()) {
-                            AddAttemptedValue(name, NakedObjectsContext.Manager.CreateAdapter(itemvalues, null, null));
+                            AddAttemptedValue(name, NakedObjectsContext.NakedObjectManager.CreateAdapter(itemvalues, null, null));
                         }
                     }
                 }
@@ -259,11 +259,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = parm.Spec.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase) value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.Manager);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
             }
             var stringValue = value as string;
             if (parm.Spec.IsParseable) {
-                return parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.Manager);
+                return parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
             }
 
             var collectionValue = value as IEnumerable;
@@ -419,12 +419,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = assoc.Spec.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase)value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.Manager);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
             }
             var stringValue = value as string;
             if (assoc.Spec.IsParseable) {
 
-                return assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.Manager);
+                return assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
             }
        
             if (assoc.IsObject) {
@@ -443,7 +443,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Spec.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
-                        INakedObject concurrencyValue = pair.Item1.Spec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.Manager);
+                        INakedObject concurrencyValue = pair.Item1.Spec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -558,7 +558,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {
-                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.Metamodel );
+                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.MetamodelManager );
                     }
                 }
             }
@@ -646,7 +646,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
-                                    INakedObject value = assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.Manager);
+                                    INakedObject value = assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.NakedObjectManager);
                                     oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {
@@ -709,7 +709,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool IsObjectCompleteAndSaved(INakedObject fieldTarget) {
             if (fieldTarget.Spec.IsCollection) {
-                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.Manager).Any(no => !IsReferenceValidToPersist(no))) {
+                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any(no => !IsReferenceValidToPersist(no))) {
                     ModelState.AddModelError("", MvcUi.CollectionIncomplete);
                     return false;
                 }
@@ -806,7 +806,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObject nakedObject) {
             if (nakedObject.Spec.IsCollection) {
                 int sink1, sink2;
-                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Count(), out sink1, out sink2);
+                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Count(), out sink1, out sink2);
             }
         }
 
@@ -862,9 +862,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
-            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.Manager, forceEnumerable);
-            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Metamodel,  nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
+            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.NakedObjectManager, forceEnumerable);
+            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Select(no => no.Object).ToArray();
+            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager, NakedObjectsContext.MetamodelManager,  nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
 
@@ -872,7 +872,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Spec.IsCollection && nakedObject.Oid is CollectionMemento) {
                 nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
-                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.Manager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
+                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return CloneAndPopulateCollection(nakedObject, selected, false);
             }
@@ -882,8 +882,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-            INakedObject adapter = NakedObjectsContext.Manager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager,  NakedObjectsContext.Metamodel, nakedObject.Oid as CollectionMemento, selected));
+            INakedObject adapter = NakedObjectsContext.NakedObjectManager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
+            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager,  NakedObjectsContext.MetamodelManager, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }
 
@@ -903,13 +903,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     INakedObject nakedObject = NakedObjectsContext.GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.Metamodel.Metamodel).ShortName);
+                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.MetamodelManager.Metamodel).ShortName);
                 }
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
                     if (nakedObject.Spec.IsCollection) {
-                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.Metamodel.Metamodel).ShortName);
+                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.MetamodelManager.Metamodel).ShortName);
                     }
                     else {
                         SetControllerName(nakedObject.Object);

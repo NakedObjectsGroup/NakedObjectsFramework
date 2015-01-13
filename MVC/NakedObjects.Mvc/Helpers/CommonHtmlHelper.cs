@@ -95,12 +95,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ObjectIconAndLink(this HtmlHelper html, string linkText, string actionName, object model, bool withTitleAttr = false) {
-            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectLink(linkText, actionName, model, withTitleAttr);
         }
 
         internal static string ObjectIconAndDetailsLink(this HtmlHelper html, string linkText, string actionName, object model) {
-            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectTitle(model) + html.ObjectLink(MvcUi.Details, actionName, model);
         }
 
@@ -300,7 +300,7 @@ namespace NakedObjects.Web.Mvc.Html {
             //Original
             string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";       
             //New ?
-            //IObjectSpecImmutable elementType = collectionNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel);
+            //IObjectSpecImmutable elementType = collectionNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel);
             //string menu = collectionNakedObject.Spec.IsQueryable ? html.CollectionMenu(collectionNakedObject, elementType).ToString() : "";
            
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
@@ -363,7 +363,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<Tuple<IAssociationSpec, INakedObject>> Items(this IAssociationSpec assoc, HtmlHelper html, INakedObject target) {
-            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().Manager).Select(no => new Tuple<IAssociationSpec, INakedObject>(assoc, no));
+            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().NakedObjectManager).Select(no => new Tuple<IAssociationSpec, INakedObject>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
@@ -881,9 +881,9 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string innerHtml = "";
 
-            INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).ToArray();
+            INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).ToArray();
             
-            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel));
+            var collectionSpec =  html.Framework().MetamodelManager.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel));
                    
             IAssociationSpec[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -982,7 +982,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
                 
-                IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().Metamodel.Metamodel));
+                IObjectSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().MetamodelManager.Metamodel));
 
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
@@ -1430,7 +1430,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (value is string) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string)value, html.Framework().Manager);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string)value, html.Framework().NakedObjectManager);
             }
 
             return html.Framework().GetNakedObject(value);
@@ -1464,12 +1464,12 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
                 if (context.Parameter.IsCollection) {
                     var facet = context.Parameter.GetFacet<IElementTypeFacet>();
-                    IObjectSpec itemSpec = html.Framework().Metamodel.GetSpecification(facet.ValueSpec);
+                    IObjectSpec itemSpec = html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
-                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection, html.Framework().Manager).Select(no => html.GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
-                        return html.Framework().Manager.CreateAdapter(parsedCollection, null, null);
+                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection, html.Framework().NakedObjectManager).Select(no => html.GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
+                        return html.Framework().NakedObjectManager.CreateAdapter(parsedCollection, null, null);
                     }
 
                     return (INakedObject) rawvalue;
@@ -1533,7 +1533,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 existingNakedObjects = new[] {existingNakedObject};
             }
             else {
-                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject, html.Framework().Manager);
+                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject, html.Framework().NakedObjectManager);
             }
 
             var enumFacet = choice.Spec.GetFacet<IEnumValueFacet>();
@@ -1714,7 +1714,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string CollectionItemTypeName(this HtmlHelper html, INakedObject collectionNakedObject) {
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
-            return facet.GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel).ShortName;
+            return facet.GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel).ShortName;
         }
 
 
@@ -1844,7 +1844,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsTable(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue(html.Framework());
-            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).Any();
+            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
             Func<IAssociationSpec, bool> filterFunc;
@@ -1892,7 +1892,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsList(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue(html.Framework());
-            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).Any();
+            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
             return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true);
@@ -2047,7 +2047,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetMaskedValue(this HtmlHelper html, INakedObject valueNakedObject, IMaskFacet mask) {
             if (valueNakedObject != null) {
-                return mask != null ? valueNakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().Manager) : valueNakedObject.TitleString();
+                return mask != null ? valueNakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().NakedObjectManager) : valueNakedObject.TitleString();
             }
             return null;
         }
@@ -2548,7 +2548,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetDisplayTitle(this HtmlHelper html, ISpecification holder, INakedObject nakedObject) {
             var mask = holder.GetFacet<IMaskFacet>();
-            string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().Manager) : nakedObject.TitleString();
+            string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().NakedObjectManager) : nakedObject.TitleString();
             return string.IsNullOrWhiteSpace(title) && !nakedObject.Spec.IsParseable ? nakedObject.Spec.UntitledName : title;
         }
 
