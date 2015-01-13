@@ -69,6 +69,7 @@ namespace NakedObjects.Core.Adapter {
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
             var helper = new StringDecoderHelper(metamodel, strings, true);
+            // ReSharper disable once UnusedVariable
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();

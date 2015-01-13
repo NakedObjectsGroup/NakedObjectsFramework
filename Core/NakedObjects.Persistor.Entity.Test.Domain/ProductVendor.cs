@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel
@@ -41,7 +39,7 @@ namespace AdventureWorksModel
 
         #region LastReceiptDate (DateTime)
     [MemberOrder(150), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  LastReceiptDate {get; set;}
+        public virtual Nullable<DateTime>  LastReceiptDate {get; set;}
 
         #endregion
 
@@ -65,7 +63,7 @@ namespace AdventureWorksModel
 
         #region ModifiedDate (DateTime)
     [MemberOrder(190), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

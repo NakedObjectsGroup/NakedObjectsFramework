@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel
@@ -29,25 +27,25 @@ namespace AdventureWorksModel
 
         #region ScheduledStartDate (DateTime)
     [MemberOrder(130), Mask("d")]
-        public virtual System.DateTime  ScheduledStartDate {get; set;}
+        public virtual DateTime  ScheduledStartDate {get; set;}
 
         #endregion
 
         #region ScheduledEndDate (DateTime)
     [MemberOrder(140), Mask("d")]
-        public virtual System.DateTime  ScheduledEndDate {get; set;}
+        public virtual DateTime  ScheduledEndDate {get; set;}
 
         #endregion
 
         #region ActualStartDate (DateTime)
     [MemberOrder(150), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  ActualStartDate {get; set;}
+        public virtual Nullable<DateTime>  ActualStartDate {get; set;}
 
         #endregion
 
         #region ActualEndDate (DateTime)
     [MemberOrder(160), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  ActualEndDate {get; set;}
+        public virtual Nullable<DateTime>  ActualEndDate {get; set;}
 
         #endregion
 
@@ -71,7 +69,7 @@ namespace AdventureWorksModel
 
         #region ModifiedDate (DateTime)
     [MemberOrder(200), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

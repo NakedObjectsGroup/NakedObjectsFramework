@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
@@ -35,13 +34,13 @@ namespace AdventureWorksModel
 
         #region rowguid (Guid)
     [MemberOrder(140)]
-        public virtual System.Guid  rowguid {get; set;}
+        public virtual Guid  rowguid {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(150), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

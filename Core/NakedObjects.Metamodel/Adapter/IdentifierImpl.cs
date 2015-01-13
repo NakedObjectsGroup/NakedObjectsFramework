@@ -123,7 +123,7 @@ namespace NakedObjects.Meta.Adapter {
             }
             if (obj is IdentifierImpl) {
                 var other = (IdentifierImpl) obj;
-                return string.Equals(other.className, className) && string.Equals(other.name, other.name) && Equals(other.parameterTypes, parameterTypes);
+                return string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes);
             }
             return false;
         }

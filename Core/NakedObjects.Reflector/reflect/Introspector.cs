@@ -198,7 +198,7 @@ namespace NakedObjects.Reflect {
                 IObjectSpecBuilder returnSpec = reflector.LoadSpecification(returnType);
                 Type defaultType = typeof (object);
                 IObjectSpecBuilder defaultSpec = reflector.LoadSpecification(defaultType);
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultSpec);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);

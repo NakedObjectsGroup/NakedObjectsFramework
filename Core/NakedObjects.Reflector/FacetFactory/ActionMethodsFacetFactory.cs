@@ -292,7 +292,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, i, parameters[i]));
+                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i]));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                     AddAjaxFacet(methodToUse, parameters[i]);
                 }

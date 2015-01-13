@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         static DisableDefaultMethodFacetFactory() {
             FixedPrefixes = new[] {
                 PrefixesAndRecognisedMethods.DisablePrefix + "Action" + PrefixesAndRecognisedMethods.DefaultPrefix,
-                PrefixesAndRecognisedMethods.DisablePrefix + "Property" + PrefixesAndRecognisedMethods.DefaultPrefix,
+                PrefixesAndRecognisedMethods.DisablePrefix + "Property" + PrefixesAndRecognisedMethods.DefaultPrefix
             };
         }
 

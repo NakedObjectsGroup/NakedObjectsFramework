@@ -23,19 +23,19 @@ namespace AdventureWorksModel
 
         #region OrderDate (DateTime)
     [MemberOrder(120), Mask("d")]
-        public virtual System.DateTime  OrderDate {get; set;}
+        public virtual DateTime  OrderDate {get; set;}
 
         #endregion
 
         #region DueDate (DateTime)
     [MemberOrder(130), Mask("d")]
-        public virtual System.DateTime  DueDate {get; set;}
+        public virtual DateTime  DueDate {get; set;}
 
         #endregion
 
         #region ShipDate (DateTime)
     [MemberOrder(140), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  ShipDate {get; set;}
+        public virtual Nullable<DateTime>  ShipDate {get; set;}
 
         #endregion
 
@@ -107,13 +107,13 @@ namespace AdventureWorksModel
 
         #region rowguid (Guid)
     [MemberOrder(260)]
-        public virtual System.Guid  rowguid {get; set;}
+        public virtual Guid  rowguid {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(270), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

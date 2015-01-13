@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
@@ -46,12 +46,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer1 {
-            [System.ComponentModel.DataAnnotations.Range(1, 10)]
+            [Range(1, 10)]
             public int Prop { get; set; }
         }
 
         private class Customer2 {
-            public void someAction([System.ComponentModel.DataAnnotations.Range(1, 10)] int foo) {}
+            public void someAction([Range(1, 10)] int foo) {}
         }
 
         [TestMethod]

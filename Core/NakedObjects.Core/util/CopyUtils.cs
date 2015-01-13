@@ -14,12 +14,14 @@ namespace NakedObjects.Core.Util {
     public static class CopyUtils {
 
         // used by reflection 
+        // ReSharper disable once UnusedMember.Local
         private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             Assert.AssertFalse(toCollection.Any());
             fromCollection.ForEach(toCollection.Add);
         }
 
         // used by reflection 
+        // ReSharper disable once UnusedMember.Local
         private static void ShallowUpdateCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             var toRemove = new List<T>();
             toCollection.Where(i => !fromCollection.Contains(i)).ForEach(toRemove.Add);

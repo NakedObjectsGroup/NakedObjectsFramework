@@ -63,8 +63,8 @@ namespace NakedObjects.Persistor.Entity {
 
         private static Action<INakedObject> handleLoaded;
         private static Func<Type, IObjectSpec> loadSpecification;
-        private readonly INakedObjectManager manager;
-        private readonly IMetamodelManager metamodel;
+        private readonly INakedObjectManager nakedObjectManager;
+        private readonly IMetamodelManager metamodelManager;
 
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
@@ -80,21 +80,21 @@ namespace NakedObjects.Persistor.Entity {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
-            this.metamodel = metamodel;
+        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
+            this.metamodelManager = metamodelManager;
             this.session = session;
             this.injector = injector;
-            this.manager = nakedObjectManager;
+            this.nakedObjectManager = nakedObjectManager;
 
-            createAdapter = (oid, domainObject) => manager.CreateAdapter(domainObject, oid, null);
-            replacePoco = (nakedObject, newDomainObject) => manager.ReplacePoco(nakedObject, newDomainObject);
-            removeAdapter = o => manager.RemoveAdapter(o);
-            createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
+            createAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
+            replacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
+            removeAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
+            createAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
 
 
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = metamodel.GetSpecification;
+            loadSpecification = metamodelManager.GetSpecification;
         }
 
 
@@ -272,14 +272,14 @@ namespace NakedObjects.Persistor.Entity {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion(session, manager);
+                adapter.UpdateVersion(session, nakedObjectManager);
                 return adapter;
             }
             var aggregateOid = oid as AggregateOid;
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                IObjectSpec parentSpec = metamodel.GetSpecification(parentType);
+                IObjectSpec parentSpec = metamodelManager.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
@@ -305,7 +305,7 @@ namespace NakedObjects.Persistor.Entity {
         public int CountField(INakedObject nakedObject, IAssociationSpec associationSpec) {
             Type type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
             MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
-            return (int) countMethod.Invoke(this, new object[] {nakedObject, associationSpec, manager});
+            return (int) countMethod.Invoke(this, new object[] {nakedObject, associationSpec, nakedObjectManager});
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
@@ -478,7 +478,7 @@ namespace NakedObjects.Persistor.Entity {
                 }
             };
 
-            context.Manager = manager;
+            context.Manager = nakedObjectManager;
             return context;
         }
 
@@ -735,7 +735,7 @@ namespace NakedObjects.Persistor.Entity {
             INakedObject nakedObject = createAdapter(oid, domainObject);
             injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
-            nakedObject.UpdateVersion(session, manager);
+            nakedObject.UpdateVersion(session, nakedObjectManager);
 
             if (nakedObject.ResolveState.IsGhost()) {
                 StartResolving(nakedObject, context);
@@ -808,7 +808,7 @@ namespace NakedObjects.Persistor.Entity {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             IEnumerable<object> changedObjects = GetChangedObjectsInContext((ObjectContext) sender);
-            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => manager.CreateAdapter(domainObject, null, null)).ToArray();
+            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => nakedObjectManager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
         }
@@ -825,7 +825,7 @@ namespace NakedObjects.Persistor.Entity {
         public void Reset() {
             Log.Debug("Reset");
             contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
-            contexts.Values.ForEach(c => c.Manager = manager);
+            contexts.Values.ForEach(c => c.Manager = nakedObjectManager);
             FirstInitialization = false; // so validation of types only happens once 
         }
 

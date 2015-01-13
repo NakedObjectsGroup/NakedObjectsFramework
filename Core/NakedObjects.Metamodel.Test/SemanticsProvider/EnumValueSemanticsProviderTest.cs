@@ -230,6 +230,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseOverflow() {
             try {
+                // ReSharper disable once UnusedVariable
                 object newValue = value.ParseTextEntry(long.MaxValue.ToString());
                 Assert.Fail("Expect Exception");
             }

@@ -53,7 +53,7 @@ namespace AdventureWorksModel
 
         #region ModifiedDate (DateTime)
     [MemberOrder(170), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

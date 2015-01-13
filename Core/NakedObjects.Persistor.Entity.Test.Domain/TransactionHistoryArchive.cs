@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
@@ -35,7 +34,7 @@ namespace AdventureWorksModel
 
         #region TransactionDate (DateTime)
     [MemberOrder(140), Mask("d")]
-        public virtual System.DateTime  TransactionDate {get; set;}
+        public virtual DateTime  TransactionDate {get; set;}
 
         #endregion
 
@@ -59,7 +58,7 @@ namespace AdventureWorksModel
 
         #region ModifiedDate (DateTime)
     [MemberOrder(180), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

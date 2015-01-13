@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
@@ -143,7 +142,7 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetPropertyOrder() {
-            var props = this.Properties;
+            var props = Properties;
             var order = new StringBuilder();
             for (int i = 0; i < props.Length; i++) {
                 order.Append(props[i].Name);

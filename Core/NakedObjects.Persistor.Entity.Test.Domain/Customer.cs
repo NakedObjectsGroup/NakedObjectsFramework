@@ -29,13 +29,13 @@ namespace AdventureWorksModel
 
         #region rowguid (Guid)
     [MemberOrder(130)]
-        public virtual System.Guid  rowguid {get; set;}
+        public virtual Guid  rowguid {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(140), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

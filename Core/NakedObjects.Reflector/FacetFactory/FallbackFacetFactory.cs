@@ -36,7 +36,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 new IFacet[] {
                     new DescribedAsFacetNone(specification),
                     new ImmutableFacetNever(specification),
-                    new TitleFacetNone(specification),
+                    new TitleFacetNone(specification)
                 });
         }
 

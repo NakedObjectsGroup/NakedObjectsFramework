@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             mock.Setup(no => no.Object).Returns(customer);
 
             MethodInfo method = typeof (Customer17).GetMethod("Validate0SomeAction");
-            facet = new ActionParameterValidation(method, 0, holder);
+            facet = new ActionParameterValidation(method, holder);
         }
 
         [TestCleanup]

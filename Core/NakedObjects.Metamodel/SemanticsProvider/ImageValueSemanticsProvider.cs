@@ -94,10 +94,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return new Image(stream);
         }
 
-        private object ParseFromStream(Stream stream) {
-            return new Image(stream);
-        }
-
         protected override string TitleString(Image obj) {
             return obj.Name;
         }

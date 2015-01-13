@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
@@ -17,7 +16,7 @@ namespace AdventureWorksModel
 
         #region ErrorTime (DateTime)
     [MemberOrder(110), Mask("d")]
-        public virtual System.DateTime  ErrorTime {get; set;}
+        public virtual DateTime  ErrorTime {get; set;}
 
         #endregion
 

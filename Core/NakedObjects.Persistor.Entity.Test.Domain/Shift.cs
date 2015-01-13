@@ -23,19 +23,19 @@ namespace AdventureWorksModel
 
         #region StartTime (DateTime)
     [MemberOrder(120), Mask("d")]
-        public virtual System.DateTime  StartTime {get; set;}
+        public virtual DateTime  StartTime {get; set;}
 
         #endregion
 
         #region EndTime (DateTime)
     [MemberOrder(130), Mask("d")]
-        public virtual System.DateTime  EndTime {get; set;}
+        public virtual DateTime  EndTime {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(140), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

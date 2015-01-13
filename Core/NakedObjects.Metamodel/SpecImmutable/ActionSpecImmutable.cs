@@ -98,10 +98,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             return ReturnType != null;
         }
 
-        private bool IsCollection(IObjectSpecImmutable spec) {
-            return spec.IsCollection && !spec.IsParseable;
-        }
-
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var facet = GetFacet<IContributedActionFacet>();
 

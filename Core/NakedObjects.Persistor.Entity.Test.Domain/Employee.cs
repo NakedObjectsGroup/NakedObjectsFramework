@@ -35,7 +35,7 @@ namespace AdventureWorksModel
 
         #region BirthDate (DateTime)
     [MemberOrder(140), Mask("d")]
-        public virtual System.DateTime  BirthDate {get; set;}
+        public virtual DateTime  BirthDate {get; set;}
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace AdventureWorksModel
 
         #region HireDate (DateTime)
     [MemberOrder(170), Mask("d")]
-        public virtual System.DateTime  HireDate {get; set;}
+        public virtual DateTime  HireDate {get; set;}
 
         #endregion
 
@@ -83,13 +83,13 @@ namespace AdventureWorksModel
 
         #region rowguid (Guid)
     [MemberOrder(220)]
-        public virtual System.Guid  rowguid {get; set;}
+        public virtual Guid  rowguid {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(230), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

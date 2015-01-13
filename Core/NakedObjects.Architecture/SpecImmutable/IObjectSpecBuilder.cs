@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     public interface IObjectSpecBuilder : IObjectSpecImmutable {

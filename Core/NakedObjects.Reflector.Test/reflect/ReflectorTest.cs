@@ -161,7 +161,7 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectObjectType() {
             var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -174,7 +174,7 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectListTypes() {
             var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -187,7 +187,7 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectSetTypes() {
             var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (SetWrapper<object>)}, new Type[] {}, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<object>)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -202,7 +202,7 @@ namespace NakedObjects.Reflect.Test {
             var container = GetContainer();
             var qo = new List<object>() {}.AsQueryable();
             var qi = new List<int>() {}.AsQueryable();
-            var rc = new ReflectorConfiguration(new Type[] {qo.GetType(), qi.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -217,7 +217,7 @@ namespace NakedObjects.Reflect.Test {
             var container = GetContainer();
             var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
 
-            var rc = new ReflectorConfiguration(new Type[] { it.GetType()  }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] { it.GetType()  }, new Type[] { }, new Type[] { }, new Type[] { });
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -232,7 +232,7 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectByteArray() {
             var container = GetContainer();
 
-            var rc = new ReflectorConfiguration(new Type[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -246,7 +246,7 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectStringArray() {
             var container = GetContainer();
 
-            var rc = new ReflectorConfiguration(new Type[] { typeof(TestObjectWithStringArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithStringArray) }, new Type[] { }, new Type[] { }, new Type[] { });
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -260,7 +260,7 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectWithScalars() {
             var container = GetContainer();
 
-            var rc = new ReflectorConfiguration(new Type[] { typeof(WithScalars) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new Type[] { }, new Type[] { });
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 

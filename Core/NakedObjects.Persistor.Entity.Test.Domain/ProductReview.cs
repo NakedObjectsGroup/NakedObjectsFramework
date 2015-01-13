@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
@@ -23,7 +22,7 @@ namespace AdventureWorksModel
 
         #region ReviewDate (DateTime)
     [MemberOrder(120), Mask("d")]
-        public virtual System.DateTime  ReviewDate {get; set;}
+        public virtual DateTime  ReviewDate {get; set;}
 
         #endregion
 
@@ -47,7 +46,7 @@ namespace AdventureWorksModel
 
         #region ModifiedDate (DateTime)
     [MemberOrder(160), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

@@ -85,12 +85,12 @@ namespace NakedObjects.Core.Test.Adapter {
             NewTdo(3);
         }
 
-        private TestDomainObject NewTdo(int id) {
+        private void NewTdo(int id) {
             var tdo = Container.NewTransientInstance<TestDomainObject>();
             tdo.Id = id;
 
             Container.Persist(ref tdo);
-            return tdo;
+            return;
         }
     }
 

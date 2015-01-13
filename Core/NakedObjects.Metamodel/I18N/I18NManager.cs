@@ -53,14 +53,14 @@ namespace NakedObjects.Meta.I18N {
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
             string original = (facet).Value;
             var spec = holder as ActionParameterSpec;
-            string i18NDescription = spec == null ? GetDescription(identifier, original, keyCache) : GetParameterDescription(identifier, spec.Number, original, keyCache);
+            string i18NDescription = spec == null ? GetDescription(identifier, keyCache) : GetParameterDescription(identifier, spec.Number, keyCache);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
         }
 
         private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
             string original = (facet).Value ?? NameUtils.NaturalName(identifier.MemberName);
             var spec = holder as ActionParameterSpec;
-            string i18NName = spec == null ? GetName(identifier, original, keyCache) : GetParameterName(identifier, spec.Number, original, keyCache);
+            string i18NName = spec == null ? GetName(identifier, keyCache) : GetParameterName(identifier, spec.Number, keyCache);
             return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
         }
 
@@ -98,20 +98,20 @@ namespace NakedObjects.Meta.I18N {
             return newKey;
         }
 
-        private string GetName(IIdentifier identifier, string original, IDictionary<string, string> keyCache) {
+        private string GetName(IIdentifier identifier, IDictionary<string, string> keyCache) {
             return GetText(identifier, Name, keyCache);
         }
 
-        private string GetDescription(IIdentifier identifier, string original, IDictionary<string, string> keyCache) {
+        private string GetDescription(IIdentifier identifier, IDictionary<string, string> keyCache) {
             return GetText(identifier, Description, keyCache);
         }
 
-        private string GetParameterName(IIdentifier identifier, int index, string original, IDictionary<string, string> keyCache) {
+        private string GetParameterName(IIdentifier identifier, int index, IDictionary<string, string> keyCache) {
             string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Name;
             return GetText(key, keyCache);
         }
 
-        private string GetParameterDescription(IIdentifier identifier, int index, string original, IDictionary<string, string> keyCache) {
+        private string GetParameterDescription(IIdentifier identifier, int index, IDictionary<string, string> keyCache) {
             string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Description;
             return GetText(key, keyCache);
         }

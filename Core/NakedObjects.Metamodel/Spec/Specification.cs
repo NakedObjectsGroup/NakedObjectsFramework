@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Spec {
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
     [Serializable]
-    public abstract class Specification : ISpecification, ISpecificationBuilder, ISerializable, IDeserializationCallback {
+    public abstract class Specification : ISpecificationBuilder, ISerializable, IDeserializationCallback {
         private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
         protected Specification() {}

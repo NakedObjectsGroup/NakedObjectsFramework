@@ -107,31 +107,31 @@ namespace AdventureWorksModel
 
         #region SellStartDate (DateTime)
     [MemberOrder(260), Mask("d")]
-        public virtual System.DateTime  SellStartDate {get; set;}
+        public virtual DateTime  SellStartDate {get; set;}
 
         #endregion
 
         #region SellEndDate (DateTime)
     [MemberOrder(270), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  SellEndDate {get; set;}
+        public virtual Nullable<DateTime>  SellEndDate {get; set;}
 
         #endregion
 
         #region DiscontinuedDate (DateTime)
     [MemberOrder(280), Optionally, Mask("d")]
-        public virtual Nullable<System.DateTime>  DiscontinuedDate {get; set;}
+        public virtual Nullable<DateTime>  DiscontinuedDate {get; set;}
 
         #endregion
 
         #region rowguid (Guid)
     [MemberOrder(290)]
-        public virtual System.Guid  rowguid {get; set;}
+        public virtual Guid  rowguid {get; set;}
 
         #endregion
 
         #region ModifiedDate (DateTime)
     [MemberOrder(300), Mask("d")]
-        public virtual System.DateTime  ModifiedDate {get; set;}
+        public virtual DateTime  ModifiedDate {get; set;}
 
         #endregion
 

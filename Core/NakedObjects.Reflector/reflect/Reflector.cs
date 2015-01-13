@@ -21,7 +21,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 using NakedObjects.Menu;
-using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.

@@ -24,7 +24,7 @@ namespace NakedObjects.Xat {
 
         public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager) {
             this.metamodelManager = metamodelManager;
-            this.Session = session;
+            Session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.manager = manager;
