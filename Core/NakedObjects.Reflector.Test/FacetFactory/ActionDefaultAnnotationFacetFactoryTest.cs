@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([DefaultValue(1)] int foo) {}
+            public void SomeAction([DefaultValue(1)] int foo) {}
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IActionDefaultsFacet));
             Assert.IsNotNull(facet);

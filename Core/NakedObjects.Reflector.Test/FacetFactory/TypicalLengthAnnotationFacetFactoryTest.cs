@@ -55,7 +55,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([TypicalLength(20)] int foo) {}
+            public void SomeAction([TypicalLength(20)] int foo) {}
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
             Assert.IsNotNull(facet);

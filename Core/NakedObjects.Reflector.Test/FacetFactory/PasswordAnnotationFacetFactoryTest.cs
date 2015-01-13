@@ -53,7 +53,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([DataType(DataType.Password)] string foo) {}
+            public void SomeAction([DataType(DataType.Password)] string foo) {}
         }
 
         private class Customer3 {
@@ -64,7 +64,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
-            public void someAction([DataType(DataType.PhoneNumber)] string foo) {}
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
         }
 
 
@@ -80,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
@@ -96,7 +96,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);

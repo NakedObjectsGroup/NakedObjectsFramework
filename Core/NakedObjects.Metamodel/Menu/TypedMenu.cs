@@ -56,7 +56,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
-            var sub = new TypedMenu<TObject>(metamodel, false, subMenuName);
+            var sub = new TypedMenu<TObject>(Metamodel, false, subMenuName);
             sub.Id += "-" + subMenuName + ":";
             AddMenuItem(sub);
             return sub;

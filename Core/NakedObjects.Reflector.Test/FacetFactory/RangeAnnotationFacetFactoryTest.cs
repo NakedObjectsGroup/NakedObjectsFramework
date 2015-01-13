@@ -51,7 +51,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([Range(1, 10)] int foo) {}
+            public void SomeAction([Range(1, 10)] int foo) {}
         }
 
         [TestMethod]
@@ -66,14 +66,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRangeAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
-            var RangeFacetAnnotation = (RangeFacet) facet;
-            Assert.AreEqual(1, RangeFacetAnnotation.Min);
-            Assert.AreEqual(10, RangeFacetAnnotation.Max);
+            var rangeFacetAnnotation = (RangeFacet) facet;
+            Assert.AreEqual(1, rangeFacetAnnotation.Min);
+            Assert.AreEqual(10, rangeFacetAnnotation.Max);
         }
 
         [TestMethod]
@@ -83,9 +83,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
-            var RangeFacetAnnotation = (RangeFacet) facet;
-            Assert.AreEqual(1, RangeFacetAnnotation.Min);
-            Assert.AreEqual(10, RangeFacetAnnotation.Max);
+            var rangeFacetAnnotation = (RangeFacet) facet;
+            Assert.AreEqual(1, rangeFacetAnnotation.Min);
+            Assert.AreEqual(10, rangeFacetAnnotation.Max);
         }
     }
 

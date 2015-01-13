@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Menu {
     public class MenuImpl : IMenu, IMenuImmutable {
         #region Injected Services
 
-        protected readonly IMetamodel metamodel;
+        private readonly IMetamodel metamodel;
 
         #endregion
 
@@ -51,6 +51,10 @@ namespace NakedObjects.Meta.Menu {
         //Includes both actions and sub-menus
         public IList<IMenuItemImmutable> MenuItems {
             get { return items; }
+        }
+
+        protected IMetamodel Metamodel {
+            get { return metamodel; }
         }
 
         protected void AddMenuItem(IMenuItemImmutable item) {
@@ -129,7 +133,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         protected IObjectSpecImmutable GetObjectSpec<TObject>() {
-            return metamodel.GetSpecification(typeof (TObject));
+            return Metamodel.GetSpecification(typeof (TObject));
         }
 
         public void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
@@ -143,7 +147,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id) {
-            var subMenu = new MenuImpl(metamodel, subMenuName);
+            var subMenu = new MenuImpl(Metamodel, subMenuName);
             subMenu.Id = id;
             AddAsSubMenu(subMenu);
             return subMenu;

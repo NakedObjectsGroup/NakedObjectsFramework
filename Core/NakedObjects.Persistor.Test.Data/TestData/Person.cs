@@ -16,7 +16,7 @@ namespace TestData {
         private Address address = new Address();
         private string name;
         private ICollection<Person> relatives = new List<Person>();
-        public bool updateInPersisting;
+        private bool updateInPersisting;
 
         [Key]
         public virtual int PersonId { get; set; }

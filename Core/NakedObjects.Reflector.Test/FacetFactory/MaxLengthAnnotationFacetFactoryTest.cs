@@ -56,7 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) {}
         }
 
         private class Customer4 {
@@ -67,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer5 {
-            public void someAction([StringLength(20)] string foo) {}
+            public void SomeAction([StringLength(20)] string foo) {}
         }
 
         private class Customer7 {
@@ -78,12 +78,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer8 {
-            public void someAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) {}
         }
 
         [TestMethod]
         public void TestCMMaxLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer8), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer8), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
@@ -115,7 +115,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNOFMaxLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);
@@ -147,7 +147,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestStringLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer5), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer5), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
             Assert.IsNotNull(facet);

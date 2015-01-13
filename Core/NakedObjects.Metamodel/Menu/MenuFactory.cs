@@ -13,7 +13,7 @@ namespace NakedObjects.Meta.Menu {
     public class MenuFactory : IMenuFactory {
         #region Injected Services
 
-        protected readonly IMetamodelBuilder metamodel;
+        private readonly IMetamodelBuilder metamodel;
 
         #endregion
 

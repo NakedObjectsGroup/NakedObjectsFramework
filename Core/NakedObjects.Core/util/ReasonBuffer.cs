@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Util {
     /// </summary>
     [Obsolete("remove if unused")]
     public class ReasonBuffer {
-        internal StringBuilder reasonBuffer = new StringBuilder();
+        private readonly StringBuilder reasonBuffer = new StringBuilder();
 
         /// <summary>
         ///     Return the combined set of reasons, or <c>null</c> if there are none

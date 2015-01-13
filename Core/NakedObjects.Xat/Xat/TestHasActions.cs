@@ -20,7 +20,7 @@ using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
-        protected readonly ITestObjectFactory factory;
+        private readonly ITestObjectFactory factory;
         private readonly ILifecycleManager lifecycleManager;
 
         protected TestHasActions(ITestObjectFactory factory, ILifecycleManager lifecycleManager) {
@@ -36,7 +36,7 @@ namespace NakedObjects.Xat {
             get {
                 List<ITestAction> actions = NakedObject.Spec.GetObjectActions().
                     OfType<ActionSpec>().
-                    Select(x => factory.CreateTestAction(x, this)).ToList();
+                    Select(x => Factory.CreateTestAction(x, this)).ToList();
                 return actions.ToArray();
             }
         }
@@ -80,9 +80,13 @@ namespace NakedObjects.Xat {
 
         public abstract string Title { get; }
 
+        protected ITestObjectFactory Factory {
+            get { return factory; }
+        }
+
         public ITestMenu GetMenu() {
             IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
-            return new TestMenu(menu, factory, this);
+            return new TestMenu(menu, Factory, this);
         }
 
         #endregion

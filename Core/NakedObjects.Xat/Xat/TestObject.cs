@@ -20,13 +20,13 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
-        private static readonly ILog LOG;
+        private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
 
         static TestObject() {
-            LOG = LogManager.GetLogger(typeof (TestObject));
+            Log = LogManager.GetLogger(typeof (TestObject));
         }
 
         public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, ITransactionManager transactionManager)
@@ -34,14 +34,14 @@ namespace NakedObjects.Xat {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.transactionManager = transactionManager;
-            LOG.DebugFormat("Created test object for {0}", nakedObject);
+            Log.DebugFormat("Created test object for {0}", nakedObject);
             NakedObject = nakedObject;
         }
 
         #region ITestObject Members
 
         public ITestProperty[] Properties {
-            get { return NakedObject.Spec.Properties.Select(x => factory.CreateTestProperty(x, this)).ToArray(); }
+            get { return NakedObject.Spec.Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
         }
 
         public object GetDomainObject() {
