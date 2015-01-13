@@ -10,7 +10,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         bool IsImmutable { get; }
 
         /// <summary>
-        ///     Whether the value has <see cref="EqualByContentAttribute" /> semantics
+        ///     Whether the value has equal by content semantics
         /// </summary>
         /// <remarks>
         ///     <para>

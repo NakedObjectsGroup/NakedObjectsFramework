@@ -36,10 +36,10 @@ namespace NakedObjects.Core.Util {
         ///     contributions from fields. Using a non-zero value decreases collisons of
         ///     <c>HashCode</c> values.
         /// </summary>
-        private const int seed = 23;
+        private const int SeedConst = 23;
 
         public static int Seed {
-            get { return seed; }
+            get { return SeedConst; }
         }
 
         /// <summary>

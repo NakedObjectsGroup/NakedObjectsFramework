@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Text;
 
 namespace NakedObjects.Core.Util {
@@ -14,6 +15,7 @@ namespace NakedObjects.Core.Util {
     ///     it will return a <c>string</c> with all the valid reasons concatenated with a semi-colon separating
     ///     each one.
     /// </summary>
+    [Obsolete("remove if unused")]
     public class ReasonBuffer {
         internal StringBuilder reasonBuffer = new StringBuilder();
 

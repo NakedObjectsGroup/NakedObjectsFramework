@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureServices {
@@ -60,7 +61,7 @@ namespace NakedObjects.Core.Fixture {
             private DateTime time;
 
             /// <summary>
-            ///     Access via <see cref="Clock.GetTicks" />
+            ///     Access via <see cref="IClock.Ticks" />
             /// </summary>
             protected long Ticks {
                 get { return time.Ticks; }

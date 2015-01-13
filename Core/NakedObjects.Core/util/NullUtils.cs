@@ -5,9 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Util {
+    [Obsolete("remove if unused")]
     public static class NullUtils {
         public static bool NullSafeEquals(object previousValue, object newValue) {
             if (previousValue == null && newValue == null)

@@ -16,12 +16,6 @@ namespace NakedObjects.Meta.Facet {
     ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />
     /// </summary>
     /// <para>
-    ///     Used by <see cref="Specification.GetMember" /> in order to
-    ///     reverse lookup <see cref="IMemberSpec" />s from underlying <see cref="MethodInfo" />s.
-    ///     So, for example, the facets that represent an action Xxx, or a ValidateXxx method, or
-    ///     an AddToXxx collection, can all be used to lookup the member.
-    /// </para>
-    /// <para>
     ///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="IObjectSpec" />
     ///     should not implement this interface.
     /// </para>

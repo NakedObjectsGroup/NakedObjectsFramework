@@ -279,7 +279,7 @@ namespace NakedObjects.Core.Resolve {
         #region Nested type: ResolveState
 
         internal abstract class ResolveState {
-            protected readonly IDictionary<IResolveEvent, EventHandler> eventMap;
+            private readonly IDictionary<IResolveEvent, EventHandler> eventMap;
 
             protected ResolveState() {
                 eventMap = new Dictionary<IResolveEvent, EventHandler>();

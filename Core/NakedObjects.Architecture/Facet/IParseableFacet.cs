@@ -12,24 +12,16 @@ namespace NakedObjects.Architecture.Facet {
     /// <summary>
     ///     Indicates that this class can parse an entry string
     /// </summary>
-    public interface IParseableFacet : IFacet{
+    public interface IParseableFacet : IFacet {
         /// <summary>
         ///     Parses a text entry made by a user and sets the domain object's value.
         /// </summary>
-        /// <para>
-        ///     Equivalent to <see cref="IParser{T}.ParseTextEntry" />, though may
-        ///     be implemented through some other mechanism.
-        /// </para>
         /// <exception cref="InvalidEntryException" />
         INakedObject ParseTextEntry(string text, INakedObjectManager manager);
 
         /// <summary>
         ///     Parses an invariant value and sets the domain objects value
         /// </summary>
-        /// <para>
-        ///     Equivalent to <see cref="IParser{T}.ParseTextEntry" />, though may
-        ///     be implemented through some other mechanism.
-        /// </para>
         /// <exception cref="InvalidEntryException" />
         INakedObject ParseInvariant(string text, INakedObjectManager manager);
 

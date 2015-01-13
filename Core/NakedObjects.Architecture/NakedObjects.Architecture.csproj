@@ -118,6 +118,7 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-beta2\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
