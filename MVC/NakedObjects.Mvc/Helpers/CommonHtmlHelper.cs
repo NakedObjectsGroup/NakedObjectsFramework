@@ -297,12 +297,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObject collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            //Original
             string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";       
-            //New ?
-            //IObjectSpecImmutable elementType = collectionNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel);
-            //string menu = collectionNakedObject.Spec.IsQueryable ? html.CollectionMenu(collectionNakedObject, elementType).ToString() : "";
-           
+
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
@@ -835,25 +831,10 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string FinderActions(this HtmlHelper html, IObjectSpec spec, ActionContext actionContext, string propertyName) {
-            if (spec.IsCollection) {
-                // no finder menu on collection parameters 
-                return string.Empty;
-            }
-            //TODO: Test
-
-            IEnumerable<ElementDescriptor> actions = html.GetServices().Select(service => new ElementDescriptor {
-                TagType = "div",
-                Value = WrapInDiv(service.TitleString(), IdHelper.MenuNameLabel).ToString(),
-                Children = html.ObjectActionsThatReturn(service, actionContext, spec, propertyName),
-                Attributes = new RouteValueDictionary(new {
-                    @class = IdHelper.SubMenuName,
-                    id = IdHelper.GetSubMenuId(actionContext.Target, service)
-                })
-            }).Where(ed => ed.Children.Any());
-
-            List<ElementDescriptor> allActions = RemoveAction(propertyName).InList();
+            List<ElementDescriptor> allActions = new List<ElementDescriptor>();
+            allActions.Add(RemoveAction(propertyName));
             allActions.Add(html.RecentlyViewedAction(spec, actionContext, propertyName));
-            allActions.AddRange(actions);
+            allActions.AddRange(html.FinderActionsForField(actionContext, spec, propertyName));
 
             if (allActions.Any()) {
                 return BuildMenuContainer(allActions,
@@ -1759,7 +1740,7 @@ namespace NakedObjects.Web.Mvc.Html {
             AddInsertedElements(childElements, addToThis, tag);
             return tag.ToString();
         }
-
+        
         private static string GetReferenceField(this HtmlHelper html,
                                                 PropertyContext propertyContext,
                                                 string id,
@@ -2458,12 +2439,13 @@ namespace NakedObjects.Web.Mvc.Html {
                                                   INakedObject subEditNakedObject,
                                                   string propertyName) {
             var data = new RouteValueDictionary(new {
-                targetActionId = targetActionContext.Action.Id,
-                targetObjectId = html.Framework().GetObjectId(targetActionContext.Target),
-                contextObjectId = html.Framework().GetObjectId(actionContext.Target),
-                contextActionId = FrameworkHelper.GetActionId(actionContext.Action),
+                targetActionId = targetActionContext.Action.Id, //e.g.  FindEmployeeByName
+                targetObjectId = html.Framework().GetObjectId(targetActionContext.Target), //e.g. Expenses.ExpenseEmployees.EmployeeRepository;1;System.Int32;0;False;;0
+                contextObjectId = html.Framework().GetObjectId(actionContext.Target), //e.g. Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0
+                contextActionId = FrameworkHelper.GetActionId(actionContext.Action), //e.g. Approver
                 propertyName
             });
+
 
             if (subEditNakedObject != null) {
                 data.Add("subEditObjectId", html.Framework().GetObjectId(subEditNakedObject));
@@ -2530,18 +2512,21 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
         }
 
-        private static IList<ElementDescriptor> ObjectActionsThatReturn(this HtmlHelper html,
-                                                                              INakedObject targetNakedObject,
-                                                                              ActionContext actionContext,
-                                                                              IObjectSpec spec,
-                                                                              string propertyName) {
-            var finderActions = html.Framework().GetTopLevelActionsByReturnType(targetNakedObject, spec).
-                                                                            Where(action => action.Parameters.All(parm => parm.Spec.IsParseable || parm.IsChoicesEnabled || parm.Spec.IsOfType(actionContext.Target.Spec))).ToList();
+        private static IList<ElementDescriptor> FinderActionsForField(this HtmlHelper html,
+                                                                      ActionContext actionContext,
+                                                                      IObjectSpec fieldSpec,
+                                                                      string propertyName) {
 
-            return finderActions.Select(targetAction => html.GetActionElementDescriptor(new ActionContext(targetNakedObject, targetAction), actionContext, spec, propertyName, html.IsDuplicate(finderActions, targetAction))).
-                                 WrapInCollection("div", new {@class = IdHelper.SubMenuItemsName});
+            IEnumerable<IActionSpec> finderActions = fieldSpec.GetFinderActions();
+            var descriptors = new List<ElementDescriptor>();
+            foreach (var finderAction in finderActions) {
+                INakedObject service = html.Framework().Services.GetService(finderAction.OnSpec);
+                ActionContext targetActionContext = new ActionContext(service, finderAction);
+                var ed = html.GetActionElementDescriptor(new ActionContext(service, finderAction), actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
+                descriptors.Add(ed);
+            }
+            return descriptors;
         }
-
         #endregion
 
         #region private
