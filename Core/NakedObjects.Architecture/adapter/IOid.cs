@@ -12,6 +12,8 @@ namespace NakedObjects.Architecture.Adapter {
     /// A unique Object Identifier associated with an INakedObject (adaptor), and hence, effectively
     /// with a domain object instance.
     /// </summary>
+    /// 
+    /// TODO investigate making OIds immutable - at the moment they change which seems wrong (cf CopyFrom usages)
     public interface IOid {
         /// <summary>
         ///     Returns the previous OID if there is one (<see cref="HasPrevious" /> returns true). Returns

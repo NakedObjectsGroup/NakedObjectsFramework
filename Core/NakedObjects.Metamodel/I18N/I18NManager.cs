@@ -51,14 +51,12 @@ namespace NakedObjects.Meta.I18N {
         #endregion
 
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
-            string original = (facet).Value;
             var spec = holder as ActionParameterSpec;
             string i18NDescription = spec == null ? GetDescription(identifier, keyCache) : GetParameterDescription(identifier, spec.Number, keyCache);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
         }
 
         private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
-            string original = (facet).Value ?? NameUtils.NaturalName(identifier.MemberName);
             var spec = holder as ActionParameterSpec;
             string i18NName = spec == null ? GetName(identifier, keyCache) : GetParameterName(identifier, spec.Number, keyCache);
             return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);

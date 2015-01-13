@@ -139,7 +139,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestDefault() {
-            INakedObject nakedObject = MockNakedObject(null);
             object def = value.DefaultValue;
             Assert.AreEqual(TestEnum.London, def);
         }

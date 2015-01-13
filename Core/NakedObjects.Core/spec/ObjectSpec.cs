@@ -206,17 +206,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IActionSpec[] GetCollectionContributedActions() {
-            if (collectionContributedActions == null) {
-                collectionContributedActions = memberFactory.OrderActions(innerSpec.CollectionContributedActions);
-            }
-            return collectionContributedActions;
+            return collectionContributedActions ?? (collectionContributedActions = memberFactory.OrderActions(innerSpec.CollectionContributedActions));
         }
 
         public IActionSpec[] GetFinderActions() {
-                if (finderActions == null) {
-                    finderActions = memberFactory.OrderActions(innerSpec.FinderActions);
-                }
-                return finderActions;
+            return finderActions ?? (finderActions = memberFactory.OrderActions(innerSpec.FinderActions));
         }
 
         public IMenuImmutable ObjectMenu {

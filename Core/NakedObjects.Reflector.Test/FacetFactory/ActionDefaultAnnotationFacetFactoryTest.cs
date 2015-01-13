@@ -47,6 +47,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void SomeAction([DefaultValue(1)] int foo) {}
         }
 

@@ -29,11 +29,9 @@ namespace NakedObjects.Meta.SpecImmutable {
     public class ObjectSpecImmutable : Specification, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
         private readonly IIdentifier identifier;
-        private readonly IMetamodel metamodel;
         private ImmutableList<IObjectSpecImmutable> subclasses;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
-            this.metamodel = metamodel;
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;

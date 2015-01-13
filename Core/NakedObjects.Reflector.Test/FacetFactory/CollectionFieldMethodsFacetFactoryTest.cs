@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -55,12 +54,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
 
         private class Customer {
+            // ReSharper disable once UnusedMember.Local
             public IList Orders {
                 get { return null; }
             }
         }
 
         private class Customer1 {
+            // ReSharper disable once UnusedMember.Local
             public ArrayList Orders {
                 get { return null; }
             }

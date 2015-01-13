@@ -12,7 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace NakedObjects.Core.Util {
-    [Obsolete("remove if unused")]
     public class QueryableList<T> : IList, IList<T>, IQueryable<T> {
         private readonly IList<T> wrappedList;
         private readonly IQueryable<T> wrappedListAsQueryable;

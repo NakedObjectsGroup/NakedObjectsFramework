@@ -28,17 +28,15 @@ namespace NakedObjects.Core.Component {
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly ISession session;
 
-        public LifeCycleManager(ISession session,
-                                IMetamodelManager metamodel,
+        public LifeCycleManager(
+            IMetamodelManager metamodel,
                                 IPersistAlgorithm persistAlgorithm,
                                 IOidGenerator oidGenerator,
                                 IContainerInjector injector,
                                 IObjectPersistor objectPersistor,
                                 INakedObjectManager nakedObjectManager
             ) {
-            Assert.AssertNotNull(session);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
@@ -46,7 +44,6 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull(objectPersistor);
             Assert.AssertNotNull(nakedObjectManager);
 
-            this.session = session;
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
             this.oidGenerator = oidGenerator;

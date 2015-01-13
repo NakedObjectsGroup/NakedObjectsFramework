@@ -89,7 +89,10 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
-            return  Parameters.Any(parm => IsContributedToCollectionOf(parm.Specification, objectSpecImmutable));   
+            return  Parameters.Any(parm => {
+                var facet = GetFacet<IContributedActionFacet>();
+                return facet != null && facet.IsContributedToCollectionOf(objectSpecImmutable);
+            });   
         }
 
         #endregion
@@ -106,16 +109,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
 
             return contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
-        }
-
-        private bool IsContributedToCollectionOf(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
-
-            var facet = GetFacet<IContributedActionFacet>();
-
-            if (facet == null) {
-                return false;
-            }
-            return facet.IsContributedToCollectionOf(contributeeSpec);      
         }
 
         #region ISerializable

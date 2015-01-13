@@ -121,6 +121,7 @@ namespace NakedObjects.Persistor.TestSuite {
             TransactionManager.StartTransaction();
             Person person1 = GetPerson(1);
             Product product = person1.FavouriteProduct;
+            // ReSharper disable once UnusedVariable
             var name = product.Name; // to ensure product is resolved
             TransactionManager.EndTransaction();
             return product;

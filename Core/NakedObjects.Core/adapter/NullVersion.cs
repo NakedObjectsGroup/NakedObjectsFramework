@@ -10,10 +10,6 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter {
     public class NullVersion : IVersion, IEncodedToStrings {
-        public NullVersion() {}
-
-        public NullVersion(string[] strings) : this() {}
-
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -63,10 +59,8 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public override bool Equals(object other) {
-            if (other is IVersion) {
-                return Equals((IVersion) other);
-            }
-            return false;
+            var a = other as IVersion;
+            return a != null && Equals(a);
         }
 
         public override int GetHashCode() {

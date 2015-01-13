@@ -22,13 +22,13 @@ namespace NakedObjects.Core.Component {
 
         public TransactionManager(IObjectStore objectStore) {
             Assert.AssertNotNull(objectStore);
-
             this.objectStore = objectStore;
         }
 
         private ITransaction Transaction {
             get {
                 if (transaction == null) {
+                    Log.Info("Creating new transaction");
                     return new NestedTransaction(objectStore);
                 }
                 return transaction;
@@ -78,6 +78,7 @@ namespace NakedObjects.Core.Component {
             else if (transactionLevel < 0) {
                 transactionLevel = 0;
                 if (!userAborted) {
+                    Log.ErrorFormat("End transaction with level {0}", transactionLevel);
                     throw new TransactionException("No transaction running to end");
                 }
             }
