@@ -142,7 +142,6 @@ namespace NakedObjects.Xat {
                     InvokeUtils.InvocationException("Exception executing " + property, e);
                 }
             }
-            else { }
         }
 
 
@@ -211,7 +210,7 @@ namespace NakedObjects.Xat {
 
         protected ITestService GetTestService(Type type) {
             return NakedObjectsFramework.Services.GetServices().
-                Where(no => type.IsAssignableFrom(no.Object.GetType())).
+                Where(no => type.IsInstanceOfType(no.Object)).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
         }

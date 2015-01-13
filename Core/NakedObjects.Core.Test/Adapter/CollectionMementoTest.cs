@@ -90,7 +90,6 @@ namespace NakedObjects.Core.Test.Adapter {
             tdo.Id = id;
 
             Container.Persist(ref tdo);
-            return;
         }
     }
 

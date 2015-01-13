@@ -711,7 +711,7 @@ namespace NakedObjects.Persistor.Entity {
 
         private static void InjectParentIntoChild(object parent, object child) {
             PropertyInfo property = child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
-                                                                                         p.PropertyType.IsAssignableFrom(parent.GetType()) &&
+                                                                                         p.PropertyType.IsInstanceOfType(parent) &&
                                                                                          p.GetCustomAttribute<RootAttribute>() != null);
             if (property != null) {
                 property.SetValue(child, parent, null);

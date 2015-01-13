@@ -89,10 +89,10 @@ namespace NakedObjects.Xat {
 
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
             if (!actions.Any()) {
-                Assert.Fail(string.Format("No Action named '{0}'{1}", actionName, condition));
+                Assert.Fail("No Action named '{0}'{1}", actionName, condition);
             }
             if (actions.Count() > 1) {
-                Assert.Fail(string.Format("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition));
+                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition);
             }
         }
 

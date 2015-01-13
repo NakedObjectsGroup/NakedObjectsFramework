@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestInitialize]
         public void SetUp() {
-            ISpecification holder = null;
+            ISpecification holder = new Mock<ISpecification>().Object;
             var customer = new Customer17();
 
             var mock = new Mock<INakedObject>();

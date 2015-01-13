@@ -85,13 +85,13 @@ namespace NakedObjects.Xat {
         public ITestObject AssertIsType(Type expected) {
             Type actualType = NakedObject.GetDomainObject().GetType();
             actualType = TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
-            Assert.IsTrue(actualType.Equals(expected), "Expected type " + expected + " but got " + actualType);
+            Assert.IsTrue(actualType == expected, "Expected type " + expected + " but got " + actualType);
             return this;
         }
 
         public ITestProperty GetPropertyByName(string name) {
             var q = Properties.Where(x => x.Name == name);
-            if (q.Count() < 1) Assert.Fail("No Property named '" + name + "'");
+            if (!q.Any()) Assert.Fail("No Property named '" + name + "'");
             if (q.Count() > 1) Assert.Fail("More than one Property named '" + name + "'");
             return q.Single();
         }

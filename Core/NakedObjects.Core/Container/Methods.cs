@@ -21,7 +21,7 @@ namespace NakedObjects.Core.Container {
 
         public static void InjectRoot(object root, object inlineObject) {
             PropertyInfo property = inlineObject.GetType().GetProperties().SingleOrDefault(p => p.GetCustomAttribute<RootAttribute>() != null &&
-                                                                                                p.PropertyType.IsAssignableFrom(root.GetType()) &&
+                                                                                                p.PropertyType.IsInstanceOfType(root) &&
                                                                                                 p.CanWrite);
             if (property != null) {
                 property.SetValue(inlineObject, root, null);
@@ -35,7 +35,7 @@ namespace NakedObjects.Core.Container {
 
         private static void InjectContainer(object target, object container, string[] name) {
             IEnumerable<PropertyInfo> properties = target.GetType().GetProperties().Where(p => name.Contains(p.Name) &&
-                                                                                               p.PropertyType.IsAssignableFrom(container.GetType()) &&
+                                                                                               p.PropertyType.IsInstanceOfType(container) &&
                                                                                                p.CanWrite);
             foreach (PropertyInfo pi in properties) {
                 pi.SetValue(target, container, null);
@@ -45,7 +45,7 @@ namespace NakedObjects.Core.Container {
 
         private static void InjectService(object target, object service) {
             IEnumerable<PropertyInfo> properties = target.GetType().GetProperties().Where(p => p.PropertyType != typeof (object) &&
-                                                                                               p.PropertyType.IsAssignableFrom(service.GetType()) &&
+                                                                                               p.PropertyType.IsInstanceOfType(service) &&
                                                                                                p.CanWrite);
             foreach (PropertyInfo pi in properties) {
                 pi.SetValue(target, service, null);

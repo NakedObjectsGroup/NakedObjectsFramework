@@ -200,8 +200,8 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectQueryableTypes() {
             var container = GetContainer();
-            var qo = new List<object>() {}.AsQueryable();
-            var qi = new List<int>() {}.AsQueryable();
+            var qo = new List<object>().AsQueryable();
+            var qi = new List<int>().AsQueryable();
             var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
