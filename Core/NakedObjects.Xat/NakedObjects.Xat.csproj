@@ -128,7 +128,6 @@
     <Compile Include="Xat\TestCollection.cs" />
     <Compile Include="Interface\ITestNaked.cs" />
     <Compile Include="Interface\ITestObject.cs" />
-    <Compile Include="Decorators\TestObjectDecorator.cs" />
     <Compile Include="Interface\ITestObjectFactory.cs" />
     <Compile Include="Xat\TestObject.cs" />
     <Compile Include="Interface\ITestService.cs" />

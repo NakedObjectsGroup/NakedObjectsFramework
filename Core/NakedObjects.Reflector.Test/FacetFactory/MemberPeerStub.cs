@@ -16,12 +16,8 @@ using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable {
-        private readonly ILifecycleManager lifecycleManager;
-
-        public MemberPeerStub(string name, ILifecycleManager lifecycleManager)
-            : base(name) {
-            this.lifecycleManager = lifecycleManager;
-        }
+        public MemberPeerStub(string name)
+            : base(name) {}
 
         #region IMemberSpecImmutable Members
 

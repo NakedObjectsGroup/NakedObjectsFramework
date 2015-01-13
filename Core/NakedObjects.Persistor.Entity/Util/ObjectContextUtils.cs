@@ -201,7 +201,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static dynamic GetQueryableOfDerivedType(this EntityObjectStore.LocalContext context, Type type) {
             Type mostBaseType = context.GetMostBaseType(type);
             MethodInfo mi = typeof (ObjectContextUtils).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
-            return InvokeUtils.InvokeStatic(mi, new[] {context});
+            return InvokeUtils.InvokeStatic(mi, new object[] {context});
         }
 
         public static dynamic CreateObject(this EntityObjectStore.LocalContext context, Type type) {

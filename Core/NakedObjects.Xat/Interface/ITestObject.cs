@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Xat {
-    public interface ITestObject : ITestNaked, ITestHasActions, ITestHasProperties {
+    public interface ITestObject : ITestHasActions, ITestHasProperties {
         string IconName { get; }
 
         ITestObject AssertIsImmutable();

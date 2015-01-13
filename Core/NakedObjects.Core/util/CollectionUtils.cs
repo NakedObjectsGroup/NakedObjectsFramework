@@ -67,10 +67,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static List<T> InList<T>(this T item) {
-            if (item != null) {
-                return new List<T> {item};
-            }
-            return new List<T>();
+            return item != null ? new List<T> {item} : new List<T>();
         }
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {

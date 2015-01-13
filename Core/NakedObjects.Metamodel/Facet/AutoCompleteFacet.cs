@@ -44,8 +44,9 @@ namespace NakedObjects.Meta.Facet {
         public object[] GetCompletions(INakedObject inObject, string autoCompleteParm) {
             try {
                 object autoComplete = InvokeUtils.Invoke(method, inObject.GetDomainObject(), new object[] {autoCompleteParm});
-                if (autoComplete is IQueryable) {
-                    return ((IQueryable) autoComplete).Take(PageSize).ToArray();
+                var complete = autoComplete as IQueryable;
+                if (complete != null) {
+                    return complete.Take(PageSize).ToArray();
                 }
                 throw new NakedObjectDomainException("Must return IQueryable from autoComplete method: " + method.Name);
             }

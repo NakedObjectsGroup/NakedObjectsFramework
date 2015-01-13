@@ -15,7 +15,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo actionMethod;
         private readonly MethodInfo method;
 
         public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
@@ -24,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
             var actionInvocationFacet = holder.GetFacet<IActionInvocationFacet>();
             if (actionInvocationFacet is ActionInvocationFacetViaMethod) {
                 var facetViaMethod = (ActionInvocationFacetViaMethod) actionInvocationFacet;
-                actionMethod = facetViaMethod.GetMethod();
+                facetViaMethod.GetMethod();
             }
         }
 

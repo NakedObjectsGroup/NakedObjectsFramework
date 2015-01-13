@@ -15,7 +15,9 @@ namespace NakedObjects.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
 
+// ReSharper disable once ParameterHidesMember
         public void Initialize(INakedObjectsFramework framework) {
+            Assert.AssertNotNull(framework);
             this.framework = framework;
         }
 

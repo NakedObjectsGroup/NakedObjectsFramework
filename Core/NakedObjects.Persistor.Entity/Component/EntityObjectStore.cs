@@ -186,7 +186,7 @@ namespace NakedObjects.Persistor.Entity {
         public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
-                return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject), session));
+                return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -270,8 +270,9 @@ namespace NakedObjects.Persistor.Entity {
 
         public INakedObject GetObject(IOid oid, IObjectSpec hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-            if (oid is EntityOid) {
-                INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
+            var eoid = oid as EntityOid;
+            if (eoid != null) {
+                INakedObject adapter = createAdapter(eoid, GetObjectByKey(eoid, hint));
                 adapter.UpdateVersion(session, nakedObjectManager);
                 return adapter;
             }
@@ -686,17 +687,13 @@ namespace NakedObjects.Persistor.Entity {
                     return FindContext(type) != null;
                 }
             }
-            catch {
+            catch (Exception e) {
                 // ignore all 
+                Log.InfoFormat("Ignoring exception {0}", e.Message);
             }
 
             return false;
         }
-
-        //public INakedObject CreateAdapterForKnownObject(object domainObject) {
-        //    var oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-        //    return Manager.NewAdapterForKnownObject(domainObject, oid, this);
-        //}
 
         private static string ConcatenateMessages(Exception e) {
             bool isConcurrency = e is OptimisticConcurrencyException;
@@ -871,11 +868,9 @@ namespace NakedObjects.Persistor.Entity {
 
             private readonly INakedObject nakedObject;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
-            private readonly ISession session;
 
-            public EntityCreateObjectCommand(INakedObject nakedObject, LocalContext context, ISession session) {
+            public EntityCreateObjectCommand(INakedObject nakedObject, LocalContext context) {
                 this.context = context;
-                this.session = session;
 
                 this.nakedObject = nakedObject;
             }

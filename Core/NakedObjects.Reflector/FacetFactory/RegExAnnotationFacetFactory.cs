@@ -58,11 +58,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (attribute == null) {
                 return null;
             }
-            if (attribute is RegularExpressionAttribute) {
-                return Create((RegularExpressionAttribute) attribute, holder);
+            var expressionAttribute = attribute as RegularExpressionAttribute;
+            if (expressionAttribute != null) {
+                return Create(expressionAttribute, holder);
             }
-            if (attribute is RegExAttribute) {
-                return Create((RegExAttribute) attribute, holder);
+            var exAttribute = attribute as RegExAttribute;
+            if (exAttribute != null) {
+                return Create(exAttribute, holder);
             }
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }

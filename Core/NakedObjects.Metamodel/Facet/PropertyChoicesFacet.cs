@@ -52,8 +52,9 @@ namespace NakedObjects.Meta.Facet {
             INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
             try {
                 object options = InvokeUtils.Invoke(method, inObject, parms);
-                if (options is IEnumerable) {
-                    return ((IEnumerable) options).Cast<object>().ToArray();
+                var enumerable = options as IEnumerable;
+                if (enumerable != null) {
+                    return enumerable.Cast<object>().ToArray();
                 }
                 throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
             }

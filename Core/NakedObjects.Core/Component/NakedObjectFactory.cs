@@ -13,20 +13,21 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Component {
     public class NakedObjectFactory {
         private ILifecycleManager lifecycleManager;
-        private IMetamodelManager metamodel;
+        private IMetamodelManager metamodelManager;
         private INakedObjectManager nakedObjectManager;
         private IObjectPersistor persistor;
         private ISession session;
         private bool isInitialized;
 
-        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
-            Assert.AssertNotNull(metamodel);
+        // ReSharper disable once ParameterHidesMember
+        public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
+            Assert.AssertNotNull(metamodelManager);
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(nakedObjectManager);
          
-            this.metamodel = metamodel;
+            this.metamodelManager = metamodelManager;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
@@ -37,7 +38,7 @@ namespace NakedObjects.Core.Component {
         public INakedObject CreateAdapter(object obj, IOid oid) {
             Assert.AssertTrue(isInitialized);
           
-            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
+            return new PocoAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }
 }

@@ -61,11 +61,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (attribute == null) {
                 return null;
             }
-            if (attribute is NamedAttribute) {
-                return new NamedFacetAnnotation(((NamedAttribute) attribute).Value, holder);
+            var namedAttribute = attribute as NamedAttribute;
+            if (namedAttribute != null) {
+                return new NamedFacetAnnotation(namedAttribute.Value, holder);
             }
-            if (attribute is DisplayNameAttribute) {
-                return new NamedFacetAnnotation(((DisplayNameAttribute) attribute).DisplayName, holder);
+            var nameAttribute = attribute as DisplayNameAttribute;
+            if (nameAttribute != null) {
+                return new NamedFacetAnnotation(nameAttribute.DisplayName, holder);
             }
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }
@@ -74,11 +76,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (attribute == null) {
                 return SaveDefaultName(holder);
             }
-            if (attribute is NamedAttribute) {
-                return Create((NamedAttribute) attribute, holder);
+            var namedAttribute = attribute as NamedAttribute;
+            if (namedAttribute != null) {
+                return Create(namedAttribute, holder);
             }
-            if (attribute is DisplayNameAttribute) {
-                return Create((DisplayNameAttribute) attribute, holder);
+            var nameAttribute = attribute as DisplayNameAttribute;
+            if (nameAttribute != null) {
+                return Create(nameAttribute, holder);
             }
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }

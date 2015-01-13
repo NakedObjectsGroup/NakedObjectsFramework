@@ -54,10 +54,11 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new PropertyValidateFacetNone(holder));
             }
 
-            if (holder is OneToOneAssociationSpecImmutable) {
-                var association = (OneToOneAssociationSpecImmutable) holder;
+            var immutable = holder as OneToOneAssociationSpecImmutable;
+            if (immutable != null) {
+                var association = immutable;
                 facets.Add(new MaxLengthFacetZero(holder));
-                DefaultTypicalLength(facets, association.ReturnSpec, holder);
+                DefaultTypicalLength(facets, association.ReturnSpec, immutable);
                 facets.Add(new MultiLineFacetNone(holder));
             }
 
@@ -83,8 +84,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             var facets = new List<IFacet>();
 
-            if (holder is ActionParameterSpecImmutable) {
-                var param = (ActionParameterSpecImmutable) holder;
+            var param = holder as ActionParameterSpecImmutable;
+            if (param != null) {
                 string name = method.GetParameters()[paramNum].Name;
                 INamedFacet namedFacet = name == null ? (INamedFacet) new NamedFacetNone(holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
                 facets.Add(namedFacet);
@@ -92,7 +93,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new MultiLineFacetNone(holder));
                 facets.Add(new MaxLengthFacetZero(holder));
                 facets.Add(new TypicalLengthFacetZero(holder));
-                DefaultTypicalLength(facets, param.Specification, holder);
+                DefaultTypicalLength(facets, param.Specification, param);
             }
 
             FacetUtils.AddFacets(facets);

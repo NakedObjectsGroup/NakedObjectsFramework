@@ -24,12 +24,11 @@ namespace NakedObjects.Xat {
         private readonly IMetamodelManager metamodelManager;
         private readonly ITestHasActions owningObject;
         private readonly ISession session;
-        private readonly ITransactionManager transactionManager;
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, ITransactionManager transactionManager)
-            : this(metamodelManager, session, lifecycleManager, string.Empty, actionSpec, owningObject, factory, manager, transactionManager) {}
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager)
+            : this(metamodelManager, session, lifecycleManager, string.Empty, actionSpec, owningObject, factory, manager) {}
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, ITransactionManager transactionManager) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
             SubMenu = contributor;
             this.metamodelManager = metamodelManager;
             this.session = session;
@@ -37,7 +36,6 @@ namespace NakedObjects.Xat {
             this.owningObject = owningObject;
             this.factory = factory;
             this.manager = manager;
-            this.transactionManager = transactionManager;
             this.actionSpec = actionSpec;
         }
 

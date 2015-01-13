@@ -19,6 +19,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
+    // ReSharper disable UnusedMember.Local
     public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
@@ -224,4 +225,5 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         // Copyright (c) Naked Objects Group Ltd.
     }
+    // ReSharper restore UnusedMember.Local
 }

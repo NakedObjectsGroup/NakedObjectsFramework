@@ -66,10 +66,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Class2 {
+            // ReSharper disable once UnusedMember.Local
             public string[] DeriveKeys() {
                 throw new NotImplementedException();
             }
 
+            // ReSharper disable once UnusedMember.Local
             public void PopulateUsingKeys(string[] instanceId) {
                 throw new NotImplementedException();
             }

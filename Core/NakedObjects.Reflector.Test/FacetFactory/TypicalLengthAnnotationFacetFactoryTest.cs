@@ -49,12 +49,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [TypicalLength(30)]
+            // ReSharper disable once UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void SomeAction([TypicalLength(20)] int foo) {}
         }
 

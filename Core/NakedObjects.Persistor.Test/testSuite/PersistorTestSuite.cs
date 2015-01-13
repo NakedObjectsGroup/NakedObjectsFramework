@@ -484,6 +484,7 @@ namespace NakedObjects.Persistor.TestSuite {
                 Save(person);
                 Assert.Fail();
             }
+// ReSharper disable once EmptyGeneralCatchClause
             catch (Exception /*expected*/) {}
         }
 
@@ -729,6 +730,7 @@ namespace NakedObjects.Persistor.TestSuite {
                 Save(order);
                 Assert.Fail("Expect exception");
             }
+// ReSharper disable once EmptyGeneralCatchClause
             catch (Exception) {
                 // expected
             }

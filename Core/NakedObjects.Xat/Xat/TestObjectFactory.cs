@@ -80,7 +80,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager, transactionManager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager);
         }
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject) {
@@ -102,11 +102,11 @@ namespace NakedObjects.Xat {
 
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager, transactionManager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager);
         }
 
         public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) {
-            return new TestProperty(lifecycleManager, Session, persistor, field, owningObject, this, manager);
+            return new TestProperty(persistor, field, owningObject, this, manager);
         }
 
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) {

@@ -30,7 +30,7 @@ namespace NakedObjects.Xat {
         }
 
         public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, ITransactionManager transactionManager)
-            : base(factory, lifecycleManager) {
+            : base(factory) {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.transactionManager = transactionManager;
@@ -158,11 +158,8 @@ namespace NakedObjects.Xat {
         #endregion
 
         public override bool Equals(Object obj) {
-            if (obj is TestObject) {
-                var testObject = (TestObject) obj;
-                return testObject.NakedObject == NakedObject;
-            }
-            return false;
+            var testObject = obj as TestObject;
+            return testObject != null && testObject.NakedObject == NakedObject;
         }
 
         public override string ToString() {

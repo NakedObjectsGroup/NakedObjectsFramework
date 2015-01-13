@@ -45,6 +45,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable once UnusedMember.Local
             public string Title() {
                 return "Some title";
             }

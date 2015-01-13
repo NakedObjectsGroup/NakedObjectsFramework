@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ILifecycleManager lifecycleManager, ITestObjectFactory factory) : base(factory, lifecycleManager) {
+        public TestService(INakedObject service, ILifecycleManager lifecycleManager, ITestObjectFactory factory) : base(factory) {
             NakedObject = service;
         }
 

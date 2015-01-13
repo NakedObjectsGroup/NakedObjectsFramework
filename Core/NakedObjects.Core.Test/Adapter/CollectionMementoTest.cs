@@ -154,7 +154,7 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         private void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
-            IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(memento.RecoverCollection(), manager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
+            IEnumerable<TestDomainObject> recoveredCollection = memento.RecoverCollection().GetAsEnumerable(manager).Select(no => no.GetDomainObject<TestDomainObject>());
             var oc = originalCollection.ToList();
             var rc = recoveredCollection.ToList();
 
@@ -180,7 +180,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
             var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {});
             RoundTrip(memento);
-            RecoverCollection(AdapterUtils.GetDomainObject<TestDomainObject>(targetNo).Action1(), memento, NakedObjectsFramework.Manager);
+            RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedObjectsFramework.Manager);
         }
 
         [Test]
@@ -191,10 +191,10 @@ namespace NakedObjects.Core.Test.Adapter {
 
             var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, targetNo, actionSpec, new INakedObject[] {});
 
-            var selectedMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, memento, new[] {target});
+            var selectedMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, memento, new object[] {target});
 
             RoundTrip(selectedMemento);
-            IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(selectedMemento.RecoverCollection(), NakedObjectsFramework.Manager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
+            IEnumerable<TestDomainObject> recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable(NakedObjectsFramework.Manager).Select(no => no.GetDomainObject<TestDomainObject>());
             Assert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
 
             IEnumerable<TestDomainObject> selectedCollection = target.Action1().Where(tdo => tdo.Id == target.Id);

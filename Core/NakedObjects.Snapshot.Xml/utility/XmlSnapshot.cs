@@ -24,7 +24,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
-        private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
 
@@ -33,11 +32,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private bool topLevelElementWritten;
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager, metamodelManager) {}
+        public XmlSnapshot(object obj, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), nakedObjectManager, metamodelManager) {}
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
-            this.lifecycleManager = lifecycleManager;
+        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodelManager = metamodelManager;
 
@@ -309,10 +307,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 Log.Debug("includeField(Pl, Vec, Str): field is value; done");
                 return false;
             }
-            if (field is IOneToOneAssociationSpec) {
+            var oneToOneAssociation = field as IOneToOneAssociationSpec;
+            if (oneToOneAssociation != null) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->1");
 
-                var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
                 INakedObject referencedObject = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObject);
 
                 if (referencedObject == null) {
@@ -325,10 +323,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                 return appendedXml;
             }
-            if (field is IOneToManyAssociationSpec) {
+            var oneToManyAssociation = field as IOneToManyAssociationSpec;
+            if (oneToManyAssociation != null) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->M");
 
-                var oneToManyAssociation = (IOneToManyAssociationSpec) field;
                 INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
 
                 INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();

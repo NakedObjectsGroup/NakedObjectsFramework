@@ -19,6 +19,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
+    // ReSharper disable UnusedMember.Local
     public class UnsupportedParameterTypesMethodFilteringFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
@@ -143,4 +144,5 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
     }
+    // ReSharper restore UnusedMember.Local
 }

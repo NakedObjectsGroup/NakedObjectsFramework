@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
@@ -21,11 +20,9 @@ using NakedObjects.Architecture.Menu;
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
         private readonly ITestObjectFactory factory;
-        private readonly ILifecycleManager lifecycleManager;
 
-        protected TestHasActions(ITestObjectFactory factory, ILifecycleManager lifecycleManager) {
+        protected TestHasActions(ITestObjectFactory factory) {
             this.factory = factory;
-            this.lifecycleManager = lifecycleManager;
         }
 
         #region ITestHasActions Members
@@ -91,6 +88,7 @@ namespace NakedObjects.Xat {
 
         #endregion
 
+        // ReSharper disable once UnusedParameter.Local
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
             if (!actions.Any()) {
                 Assert.Fail("No Action named '{0}'{1}", actionName, condition);

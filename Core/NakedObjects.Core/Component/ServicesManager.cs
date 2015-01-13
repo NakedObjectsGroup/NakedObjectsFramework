@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObject GetService(IObjectSpec spec) {
-            return GetServices().FirstOrDefault(s => s.Spec == spec);
+            return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
         }
 
         public virtual INakedObject[] GetServices() {

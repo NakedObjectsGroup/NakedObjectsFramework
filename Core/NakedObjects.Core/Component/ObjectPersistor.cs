@@ -27,21 +27,17 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
-        private readonly ISession session;
         private readonly ITransactionManager transactionManager;
 
         public ObjectPersistor(IObjectStore objectStore,
                                ITransactionManager transactionManager,
-                               ISession session,
                                INakedObjectManager nakedObjectManager) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(transactionManager);
-            Assert.AssertNotNull(session);
             Assert.AssertNotNull(nakedObjectManager);
 
             this.objectStore = objectStore;
             this.transactionManager = transactionManager;
-            this.session = session;
             this.nakedObjectManager = nakedObjectManager;
         }
 

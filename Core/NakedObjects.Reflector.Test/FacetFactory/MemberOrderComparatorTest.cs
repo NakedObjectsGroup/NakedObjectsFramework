@@ -19,13 +19,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public virtual void SetUp() {
             comparator = new MemberOrderComparator<MemberPeerStub>();
-            laxComparator = new MemberOrderComparator<MemberPeerStub>();
         }
 
         #endregion
 
         private MemberOrderComparator<MemberPeerStub> comparator;
-        private MemberOrderComparator<MemberPeerStub> laxComparator;
 
         private MemberPeerStub m1;
         private MemberPeerStub m2;
@@ -36,8 +34,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private void Reset() {
             var p = new Mock<ILifecycleManager>().Object;
-            m1 = new MemberPeerStub("abc", p);
-            m2 = new MemberPeerStub("abc", p);
+            m1 = new MemberPeerStub("abc");
+            m2 = new MemberPeerStub("abc");
         }
 
 

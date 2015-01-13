@@ -12,43 +12,43 @@ using System.Reflection;
 namespace NakedObjects.Core.Util.Query {
     public static class QueryableUtils {
         public static int Count(this IQueryable q) {
-            MethodInfo countMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Count" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo countMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Count() == 1);
             MethodInfo gm = countMethod.MakeGenericMethod(q.ElementType);
             return (int) gm.Invoke(null, new object[] {q});
         }
 
         public static object First(this IQueryable q) {
-            MethodInfo firstMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "First" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo firstMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "First" && m.GetParameters().Count() == 1);
             MethodInfo gm = firstMethod.MakeGenericMethod(q.ElementType);
             return gm.Invoke(null, new object[] {q});
         }
 
         public static IQueryable Take(this IQueryable q, int count) {
-            MethodInfo takeMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Take" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo takeMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Take" && m.GetParameters().Count() == 2);
             MethodInfo gm = takeMethod.MakeGenericMethod(q.ElementType);
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
 
         public static IQueryable Skip(this IQueryable q, int count) {
-            MethodInfo takeMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Skip" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo takeMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Skip" && m.GetParameters().Count() == 2);
             MethodInfo gm = takeMethod.MakeGenericMethod(q.ElementType);
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
 
         public static bool Contains(this IQueryable q, object item) {
-            MethodInfo containsMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Contains" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo containsMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Contains" && m.GetParameters().Count() == 2);
             MethodInfo gm = containsMethod.MakeGenericMethod(q.ElementType);
             return (bool) gm.Invoke(null, new[] {q, item});
         }
 
         public static object[] ToArray(this IQueryable q) {
-            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToArray" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Count() == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (object[]) gm.Invoke(null, new object[] {q});
         }
 
         public static IList ToList(this IQueryable q) {
-            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToList" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Count() == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (IList) gm.Invoke(null, new object[] {q});
         }

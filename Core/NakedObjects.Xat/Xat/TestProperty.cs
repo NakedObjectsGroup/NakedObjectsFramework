@@ -24,15 +24,11 @@ namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
         private readonly IAssociationSpec field;
-        private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager manager;
         private readonly ITestHasActions owningObject;
         private readonly IObjectPersistor persistor;
-        private readonly ISession session;
 
-        public TestProperty(ILifecycleManager lifecycleManager, ISession session, IObjectPersistor persistor, IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
-            this.lifecycleManager = lifecycleManager;
-            this.session = session;
+        public TestProperty(IObjectPersistor persistor, IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
             this.persistor = persistor;
             this.field = field;
             this.owningObject = owningObject;
@@ -115,8 +111,9 @@ namespace NakedObjects.Xat {
             LastMessage = valid.Reason;
             Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
 
-            if (field is IOneToOneAssociationSpec) {
-                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, testNakedObject);
+            var spec = field as IOneToOneAssociationSpec;
+            if (spec != null) {
+                spec.SetAssociation(nakedObject, testNakedObject);
             }
 
             return this;
@@ -161,8 +158,9 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
             if (nakedObject != null) {
-                if (field is IOneToOneAssociationSpec) {
-                    ((IOneToOneAssociationSpec) field).SetAssociation(owningObject.NakedObject, null);
+                var spec = field as IOneToOneAssociationSpec;
+                if (spec != null) {
+                    spec.SetAssociation(owningObject.NakedObject, null);
                 }
                 else {
                     Assert.Fail("Clear(..) not allowed on collection target field");
@@ -178,7 +176,7 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             try {
-                INakedObject existingValue = field.GetNakedObject(nakedObject);
+                field.GetNakedObject(nakedObject);
 
                 var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
 
@@ -415,7 +413,7 @@ namespace NakedObjects.Xat {
             ResetLastMessage();
 
             INakedObject nakedObject = owningObject.NakedObject;
-            INakedObject existingValue = field.GetNakedObject(nakedObject);
+            field.GetNakedObject(nakedObject);
             var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
             try {
                 INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
@@ -435,7 +433,7 @@ namespace NakedObjects.Xat {
             ResetLastMessage();
 
             INakedObject nakedObject = owningObject.NakedObject;
-            INakedObject existingValue = field.GetNakedObject(nakedObject);
+            field.GetNakedObject(nakedObject);
             var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
             INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
             IConsent isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);

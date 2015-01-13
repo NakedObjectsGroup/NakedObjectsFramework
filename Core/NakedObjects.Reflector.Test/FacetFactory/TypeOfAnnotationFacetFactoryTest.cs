@@ -45,14 +45,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        //[TestMethod]
-        //public void TestTypeOfAnnotationIgnoredForActionIfReturnTypeIsntACollectionType() {
-        //    MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction");
-        //    facetFactory.Process(actionMethod, methodRemover, specification);
-        //    IFacet facet = specification.GetFacet(typeof (ITypeOfFacet));
-        //    Assert.IsNull(facet);
-        //    AssertNoMethodsRemoved();
-        //}
+     
 
         private class Customer10 {
             public Order[] Orders {
@@ -61,18 +54,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer3 {
+// ReSharper disable once UnusedMember.Local
             public IList<Order> SomeAction() {
                 return null;
             }
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedMember.Local
             public IList<Order> Orders {
                 get { return null; }
             }
         }
 
         private class Customer9 {
+// ReSharper disable once UnusedMember.Local
             public Order[] SomeAction() {
                 return null;
             }
