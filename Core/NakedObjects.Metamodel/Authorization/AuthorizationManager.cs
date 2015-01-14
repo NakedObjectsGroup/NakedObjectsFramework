@@ -95,18 +95,14 @@ namespace NakedObjects.Meta.Authorization {
             Type authorizer = typeAuthorizers.
                 Where(ta => ta.Key == fullyQualifiedOfTarget).
                 Select(ta => ta.Value).
-                FirstOrDefault();
+                FirstOrDefault() ??
+                              namespaceAuthorizers.
+                                  Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
+                                  OrderByDescending(x => x.Key.Length).
+                                  Select(x => x.Value).
+                                  FirstOrDefault() ??
+                              defaultAuthorizer;
 
-            if (authorizer == null) {
-                //If not find best namespace authorizer
-
-
-                authorizer = namespaceAuthorizers.
-                    Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
-                    OrderByDescending(x => x.Key.Length).
-                    Select(x => x.Value).
-                    FirstOrDefault() ?? defaultAuthorizer; //Last resort: use the default
-            }
             return lifecycleManager.CreateInstance(manager.GetSpecification(authorizer)).GetDomainObject();
         }
     }

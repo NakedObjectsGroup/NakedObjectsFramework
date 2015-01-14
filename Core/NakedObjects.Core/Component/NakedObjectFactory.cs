@@ -19,8 +19,9 @@ namespace NakedObjects.Core.Component {
         private ISession session;
         private bool isInitialized;
 
-        // ReSharper disable once ParameterHidesMember
+        // ReSharper disable ParameterHidesMember
         public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
+            // ReSharper restore ParameterHidesMember
             Assert.AssertNotNull(metamodelManager);
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(lifecycleManager);

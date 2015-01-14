@@ -196,14 +196,8 @@ namespace NakedObjects.Reflect {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
-                var matchingActions = new List<IActionSpecImmutable>();
+                var matchingActions = serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod).Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
-                foreach (IActionSpecImmutable serviceAction in 
-                            serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod)) {
-                   if (serviceAction.IsFinderMethodFor(spec)) {
-                        matchingActions.Add(serviceAction);
-                    }
-                }
                 if (matchingActions.Any()) {
                     matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
                     foreach (var action in matchingActions) {

@@ -236,6 +236,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class BaseActionClass {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
             public void AnAction(string parm) {}
 
             public virtual string ValidateAnAction() {

@@ -219,7 +219,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            Fields.ForEach(field => decorator.DecorateAllHoldersFacets(field));
+            Fields.ForEach(decorator.DecorateAllHoldersFacets);
             ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 

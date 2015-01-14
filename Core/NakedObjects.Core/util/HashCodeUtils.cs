@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedObjects.Core.Util {
     /// <summary>
@@ -109,10 +110,7 @@ namespace NakedObjects.Core.Util {
                 result = Hash(result, aObject.GetHashCode());
             }
             else {
-                foreach (object item in (Array) aObject) {
-                    // recursive call!
-                    result = Hash(result, item);
-                }
+                result = ((Array) aObject).Cast<object>().Aggregate(result, Hash);
             }
             return result;
         }

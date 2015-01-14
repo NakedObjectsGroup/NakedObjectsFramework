@@ -9,8 +9,9 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
+    // ReSharper disable once PartialTypeWithSinglePart
+
     public partial class CustomerAddress {
-        // ReSharper disable once PartialTypeWithSinglePart
 
         #region Primitive Properties
 

@@ -72,21 +72,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         private IActionSpec[] ObjectActions {
-            get {
-                if (objectActions == null) {
-                    objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
-                }
-                return objectActions;
-            }
+            get { return objectActions ?? (objectActions = memberFactory.OrderActions(innerSpec.ObjectActions)); }
         }
 
         private IActionSpec[] ContributedActions {
-            get {
-                if (contributedActions == null) {
-                    contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
-                }
-                return contributedActions;
-            }
+            get { return contributedActions ?? (contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions)); }
         }
 
         #region IObjectSpec Members
@@ -187,12 +177,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IAssociationSpec[] Properties {
-            get {
-                if (objectFields == null) {
-                    objectFields = innerSpec.Fields.Select(element => memberFactory.CreateAssociationSpec(element)).ToArray();
-                }
-                return objectFields;
-            }
+            get { return objectFields ?? (objectFields = innerSpec.Fields.Select(element => memberFactory.CreateAssociationSpec(element)).ToArray()); }
         }
 
         public virtual IActionSpec[] GetObjectActions() {
@@ -238,21 +223,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IObjectSpec[] Interfaces {
-            get {
-                if (interfaces == null) {
-                    interfaces = innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray();
-                }
-                return interfaces;
-            }
+            get { return interfaces ?? (interfaces = innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
         }
 
         public IObjectSpec[] Subclasses {
-            get {
-                if (subclasses == null) {
-                    subclasses = innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray();
-                }
-                return subclasses;
-            }
+            get { return subclasses ?? (subclasses = innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
         }
 
         public bool IsAbstract {
@@ -293,39 +268,19 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string SingularName {
-            get {
-                if (singularName == null) {
-                    singularName = innerSpec.GetFacet<INamedFacet>().Value;
-                }
-                return singularName;
-            }
+            get { return singularName ?? (singularName = innerSpec.GetFacet<INamedFacet>().Value); }
         }
 
         public string UntitledName {
-            get {
-                if (untitledName == null) {
-                    untitledName = Resources.NakedObjects.Untitled + SingularName;
-                }
-                return untitledName;
-            }
+            get { return untitledName ?? (untitledName = Resources.NakedObjects.Untitled + SingularName); }
         }
 
         public string PluralName {
-            get {
-                if (pluralName == null) {
-                    pluralName = innerSpec.GetFacet<IPluralFacet>().Value;
-                }
-                return pluralName;
-            }
+            get { return pluralName ?? (pluralName = innerSpec.GetFacet<IPluralFacet>().Value); }
         }
 
         public string Description {
-            get {
-                if (description == null) {
-                    description = innerSpec.GetFacet<IDescribedAsFacet>().Value ?? "";
-                }
-                return description;
-            }
+            get { return description ?? (description = innerSpec.GetFacet<IDescribedAsFacet>().Value ?? ""); }
         }
 
         public bool HasNoIdentity {
@@ -420,8 +375,7 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {
             InteractionContext ic = InteractionContext.PersistingObject(session, false, target);
-            IConsent cons = InteractionUtils.IsValid(target.Spec, ic);
-            return cons;
+            return InteractionUtils.IsValid(target.Spec, ic);
         }
 
         #endregion

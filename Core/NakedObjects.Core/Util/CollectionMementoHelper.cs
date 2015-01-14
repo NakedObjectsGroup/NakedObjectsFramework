@@ -21,8 +21,9 @@ namespace NakedObjects.Core.Util {
         }
 
         public static void SetNotQueryable(this INakedObject nakedObject, bool isNotQueryable) {
-            if (nakedObject.Oid is CollectionMemento) {
-                ((CollectionMemento) nakedObject.Oid).IsNotQueryable = isNotQueryable;
+            var oid = nakedObject.Oid as CollectionMemento;
+            if (oid != null) {
+                oid.IsNotQueryable = isNotQueryable;
             }
         }
     }

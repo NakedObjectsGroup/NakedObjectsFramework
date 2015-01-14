@@ -9,16 +9,13 @@ using System.Collections.Generic;
 
 namespace TestCodeOnly {
     public class Category {
-        private ICollection<Product> _products;
+        private ICollection<Product> products;
         public virtual int ID { get; set; }
         public virtual string Name { get; set; }
 
         public virtual ICollection<Product> Products {
-            get {
-                if (_products == null) _products = new List<Product>();
-                return _products;
-            }
-            set { _products = value; }
+            get { return products ?? (products = new List<Product>()); }
+            set { products = value; }
         }
     }
 }

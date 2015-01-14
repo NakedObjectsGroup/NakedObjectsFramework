@@ -49,8 +49,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName, string id) {
-            var menu = new TypedMenu<T>(metamodel, false, menuName);
-            menu.Id = id;
+            var menu = new TypedMenu<T>(metamodel, false, menuName) {Id = id};
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
             Menu = menu;

@@ -62,21 +62,11 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public virtual IObjectSpec ReturnSpec {
-            get {
-                if (returnSpec == null) {
-                    returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType);
-                }
-                return returnSpec;
-            }
+            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType)); }
         }
 
         public override IObjectSpec ElementSpec {
-            get {
-                if (elementSpec == null) {
-                    elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementType);
-                }
-                return elementSpec;
-            }
+            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementType)); }
         }
 
         public virtual IObjectSpec OnSpec {

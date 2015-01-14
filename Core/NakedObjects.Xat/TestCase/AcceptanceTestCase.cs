@@ -65,32 +65,16 @@ namespace NakedObjects.Xat {
         protected string Name { set; get; }
 
         protected virtual ITestObjectFactory TestObjectFactoryClass {
-            get {
-                
-                if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager);
-                }
-                return testObjectFactory;
-            }
+            get { return testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager)); }
         }
 
         protected virtual ISession TestSession {
-            get {
-                if (testSession == null) {
-                    testSession = new TestSession(TestPrincipal);
-                }
-                return testSession;
-            }
+            get { return testSession ?? (testSession = new TestSession(TestPrincipal)); }
             set { testSession = value; }
         }
 
         protected virtual IPrincipal TestPrincipal {
-            get {
-                if (testPrincipal == null) {
-                    testPrincipal = CreatePrincipal("Test", new string[] {});
-                }
-                return testPrincipal;
-            }
+            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {})); }
             set { testPrincipal = value; }
         }
 

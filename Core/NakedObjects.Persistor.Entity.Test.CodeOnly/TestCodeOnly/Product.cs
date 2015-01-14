@@ -79,7 +79,7 @@ namespace TestCodeOnly {
 
 
     public class Product : AbstractTestCode {
-        protected Category forTest;
+        private Category forTest;
         public IDomainObjectContainer Container { protected get; set; }
 
         public virtual int ID { get; set; }

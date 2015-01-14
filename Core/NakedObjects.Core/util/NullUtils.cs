@@ -19,9 +19,9 @@ namespace NakedObjects.Core.Util {
             if (previousValue.Equals(newValue))
                 return true;
             if (previousValue is INakedObject && newValue is INakedObject) {
-                var previousNV = (INakedObject) previousValue;
-                var newNV = (INakedObject) newValue;
-                return NullSafeEquals(previousNV.Object, newNV.Object);
+                var previousNO = (INakedObject) previousValue;
+                var newNO = (INakedObject) newValue;
+                return NullSafeEquals(previousNO.Object, newNO.Object);
             }
             return false;
         }

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -51,12 +52,7 @@ namespace NakedObjects.Core.Spec {
         //TODO: rename to CreateActionSpecs?
         public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
-            var actions = new List<IActionSpec>();
-            foreach (var element in order) {
-                    actions.Add(CreateActionSpec(element));
-            }
-
-            return actions.ToArray();
+            return order.Select(CreateActionSpec).Cast<IActionSpec>().ToArray();
         }
 
         public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {

@@ -8,7 +8,6 @@
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
@@ -20,11 +19,6 @@ namespace NakedObjects.Meta.Facet {
         public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            var actionInvocationFacet = holder.GetFacet<IActionInvocationFacet>();
-            if (actionInvocationFacet is ActionInvocationFacetViaMethod) {
-                var facetViaMethod = (ActionInvocationFacetViaMethod) actionInvocationFacet;
-                facetViaMethod.GetMethod();
-            }
         }
 
         #region IImperativeFacet Members

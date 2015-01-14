@@ -28,8 +28,9 @@ namespace NakedObjects.Core.Util {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
-                if (advisor is IHiddenFacet) {
-                    if (((IHiddenFacet) advisor).Value == WhenTo.OncePersisted) {
+                var facet = advisor as IHiddenFacet;
+                if (facet != null) {
+                    if (facet.Value == WhenTo.OncePersisted) {
                         continue;
                     }
                 }

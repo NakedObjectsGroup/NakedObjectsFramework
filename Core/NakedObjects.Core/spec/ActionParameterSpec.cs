@@ -113,12 +113,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec Spec {
-            get {
-                if (spec == null) {
-                    spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification);
-                }
-                return spec;
-            }
+            get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
         }
 
         public virtual IObjectSpec ElementSpec {
@@ -146,12 +141,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual string Description {
-            get {
-                if (description == null) {
-                    description = GetFacet<IDescribedAsFacet>().Value ?? "";
-                }
-                return description;
-            }
+            get { return description ?? (description = GetFacet<IDescribedAsFacet>().Value ?? ""); }
         }
 
         public virtual bool IsMandatory {

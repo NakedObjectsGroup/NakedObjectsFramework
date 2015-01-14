@@ -147,8 +147,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         protected MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id) {
-            var subMenu = new MenuImpl(Metamodel, subMenuName);
-            subMenu.Id = id;
+            var subMenu = new MenuImpl(Metamodel, subMenuName) {Id = id};
             AddAsSubMenu(subMenu);
             return subMenu;
         }

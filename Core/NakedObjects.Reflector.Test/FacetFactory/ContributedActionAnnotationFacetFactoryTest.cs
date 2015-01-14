@@ -75,6 +75,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([ContributedAction] Customer1 cust1) {}
         }
 
@@ -83,26 +85,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
+// ReSharper disable once UnusedMember.Local
             public void SomeAction() {}
         }
 
         #endregion
 
-        #region Nested type: Customer2
-
-        private class Customer2 {
-            public void SomeAction() {}
-        }
-
-        #endregion
-
-        #region Nested type: Customer3
-
-        private class Customer3 {
-            public void SomeAction() {}
-        }
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

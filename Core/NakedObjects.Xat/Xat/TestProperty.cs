@@ -187,12 +187,7 @@ namespace NakedObjects.Xat {
 
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
 
-                if (textEntry.Trim().Equals("")) {
-                    ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, null);
-                }
-                else {
-                    ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, newValue);
-                }
+                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, textEntry.Trim().Equals("") ? null : newValue);
             }
             catch (InvalidEntryException) {
                 Assert.Fail("Entry not recognised " + textEntry);
