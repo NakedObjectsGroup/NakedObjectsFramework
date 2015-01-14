@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.FacetFactory;
 
@@ -24,57 +25,45 @@ namespace NakedObjects.Reflect {
             Type returnType,
             Type[] paramTypes) {
             for (int i = 0; i < methods.Length; i++) {
-                if (methods[i] == null) {
-                    continue;
-                }
+                if (methods[i] != null) {
+                    MethodInfo method = methods[i];
 
-                MethodInfo method = methods[i];
+                    // check for public modifier
+                    if (method.IsPublic) {
+                        if (!method.IsStatic || methodType != MethodType.Object) {
+                            if (method.Name.Equals(name)) {
+                                if (returnType == null || returnType == method.ReturnType) {
+                                    if (paramTypes != null) {
+                                        ParameterInfo[] parameters = method.GetParameters();
+                                        var parameterTypes = new Type[parameters.Length];
+                                        int j = 0;
+                                        foreach (ParameterInfo parameter in parameters) {
+                                            parameterTypes[j++] = parameter.ParameterType;
+                                        }
 
-                // check for public modifier
-                if (!method.IsPublic) {
-                    continue;
+                                        if (paramTypes.Length != parameterTypes.Length) {
+                                            continue;
+                                        }
+                                        if (paramTypes.Where((t, c) => (t != null) && (t != parameterTypes[c])).Any()) {
+                                            continue;
+                                        }
+                                    }
+                                    methods[i] = null;
+
+                                    return method;
+                                }
+
+                                // check parms (if required)
+                            }
+
+                            // check for return Type
+                        }
+
+                        // check for name
+                    }
                 }
 
                 // check for static modifier
-                if (method.IsStatic && methodType == MethodType.Object) {
-                    continue;
-                }
-
-                // check for name
-                if (!method.Name.Equals(name)) {
-                    continue;
-                }
-
-                // check for return Type
-                if (returnType != null && returnType != method.ReturnType) {
-                    continue;
-                }
-
-                // check parms (if required)
-                if (paramTypes != null) {
-                    ParameterInfo[] parameters = method.GetParameters();
-                    var parameterTypes = new Type[parameters.Length];
-                    int j = 0;
-                    foreach (ParameterInfo parameter in parameters) {
-                        parameterTypes[j++] = parameter.ParameterType;
-                    }
-
-                    if (paramTypes.Length != parameterTypes.Length) {
-                        continue;
-                    }
-
-                    bool possible = true;
-                    for (int c = 0; c < paramTypes.Length; c++) {
-                        if ((paramTypes[c] != null) && (paramTypes[c] != parameterTypes[c])) {
-                            possible = false;
-                            break;
-                        }
-                    }
-                    if (!possible) continue;
-                }
-                methods[i] = null;
-
-                return method;
             }
 
             return null;

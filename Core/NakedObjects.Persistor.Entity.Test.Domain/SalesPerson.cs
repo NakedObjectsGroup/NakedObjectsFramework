@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
         #region SalesQuota (Decimal)
 
         [MemberOrder(110), Optionally]
-        public virtual Nullable<decimal> SalesQuota { get; set; }
+        public virtual decimal? SalesQuota { get; set; }
 
         #endregion
 

@@ -23,7 +23,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
         private readonly IObjectSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;

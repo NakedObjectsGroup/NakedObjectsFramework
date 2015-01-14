@@ -46,7 +46,7 @@ namespace AdventureWorksModel {
         #region ShipDate (DateTime)
 
         [MemberOrder(140), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> ShipDate { get; set; }
+        public virtual DateTime? ShipDate { get; set; }
 
         #endregion
 

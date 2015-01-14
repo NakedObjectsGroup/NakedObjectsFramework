@@ -328,6 +328,8 @@ namespace NakedObjects.Persistor.Entity {
                 IEnumerable<string> propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
                 dynamic objectSet = currentContext.GetObjectSet(entityType);
 
+                // can't use LINQ with dynamic
+                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (string name in propertynames) {
                     objectSet = objectSet.Include(name);
                 }
@@ -672,13 +674,15 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         private static object First(IEnumerable enumerable) {
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            // unfortunately this cast doesn't work with entity linq
+            // return queryable.Cast<object>().FirstOrDefault();
             foreach (object o in enumerable) {
                 return o;
             }
             return null;
 
-            // unfortunately this cast doesn't work with entity linq
-            // return queryable.Cast<object>().FirstOrDefault();
+            
         }
 
         public bool EntityFrameworkKnowsType(Type type) {

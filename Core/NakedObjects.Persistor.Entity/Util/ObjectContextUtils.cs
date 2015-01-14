@@ -90,7 +90,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
             EntityType et = GetEntityType(context, type);
             if (et != null) {
-                IEnumerable<MetadataProperty> mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern"));
+                var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
                 return mp.Any() && mp.All(p => p.Value.Equals("Identity"));
             }
             return false;

@@ -187,17 +187,18 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
 
                 Type returnType = typeof (IEnumerable<>).MakeGenericType(paramType);
+                var methodName = PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName;
 
                 MethodInfo[] methods = FindMethods(
                     reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                    methodName,
                     returnType);
 
                 if (methods.Length > 1) {
                     methods.Skip(1).ForEach(m => Log.WarnFormat("Found multiple action choices methods: {0} in type: {1} ignoring method(s) with params: {2}",
-                        PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                        methodName,
                         type,
                         m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
                 }

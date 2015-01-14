@@ -46,14 +46,14 @@ namespace AdventureWorksModel {
         #region ErrorSeverity (Int32)
 
         [MemberOrder(140), Optionally]
-        public virtual Nullable<int> ErrorSeverity { get; set; }
+        public virtual int? ErrorSeverity { get; set; }
 
         #endregion
 
         #region ErrorState (Int32)
 
         [MemberOrder(150), Optionally]
-        public virtual Nullable<int> ErrorState { get; set; }
+        public virtual int? ErrorState { get; set; }
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace AdventureWorksModel {
         #region ErrorLine (Int32)
 
         [MemberOrder(170), Optionally]
-        public virtual Nullable<int> ErrorLine { get; set; }
+        public virtual int? ErrorLine { get; set; }
 
         #endregion
 

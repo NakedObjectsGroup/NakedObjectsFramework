@@ -193,6 +193,9 @@ namespace NakedObjects.Core.Component {
             if (spec.IsBoundedSet()) {
                 if (spec.IsInterface) {
                     IList<object> instances = new List<object>();
+
+                    // ReSharper disable once LoopCanBeConvertedToQuery
+                    // LINQ needs cast - need to be careful with EF - safest to leave as loop
                     foreach (IObjectSpec subSpec in GetLeafNodes(spec)) {
                         foreach (object instance in Instances(subSpec)) {
                             instances.Add(instance);

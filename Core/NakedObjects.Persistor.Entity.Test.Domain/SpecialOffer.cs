@@ -75,7 +75,7 @@ namespace AdventureWorksModel {
         #region MaxQty (Int32)
 
         [MemberOrder(180), Optionally]
-        public virtual Nullable<int> MaxQty { get; set; }
+        public virtual int? MaxQty { get; set; }
 
         #endregion
 

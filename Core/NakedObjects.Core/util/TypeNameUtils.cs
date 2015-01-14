@@ -45,9 +45,9 @@ namespace NakedObjects.Core.Util {
         public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
             string rootType = type.GetGenericTypeDefinition().FullName;
 
-            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName);
+            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
 
-            args = args.Any() ? args : elements.Select(e => e.FullName);
+            args = args.Any() ? args : elements.Select(e => e.FullName).ToArray();
 
             return args.Aggregate(rootType, (s, t) => s + separator + t);
         }

@@ -198,9 +198,9 @@ namespace NakedObjects.Meta.Test {
                     .Distinct();
 
 
-            foreach (var f in f1) {
-                //Console.WriteLine(" field facet  {0}", f);
-            }
+            // ReSharper disable once UnusedVariable
+            var ss = f1.Aggregate("", (s, t) =>  s + "field facet" + t + "\r\n");
+            //Console.WriteLine(ss);
 
             cache.Serialize(file);
 

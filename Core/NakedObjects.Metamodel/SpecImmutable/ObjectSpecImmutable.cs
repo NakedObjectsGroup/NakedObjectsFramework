@@ -27,7 +27,6 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ObjectSpecImmutable : Specification, IObjectSpecBuilder {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
         private readonly IIdentifier identifier;
         private ImmutableList<IObjectSpecImmutable> subclasses;
 

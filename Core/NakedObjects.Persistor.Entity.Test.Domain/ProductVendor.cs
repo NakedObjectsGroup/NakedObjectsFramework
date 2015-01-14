@@ -45,14 +45,14 @@ namespace AdventureWorksModel {
         #region LastReceiptCost (Decimal)
 
         [MemberOrder(140), Optionally]
-        public virtual Nullable<decimal> LastReceiptCost { get; set; }
+        public virtual decimal? LastReceiptCost { get; set; }
 
         #endregion
 
         #region LastReceiptDate (DateTime)
 
         [MemberOrder(150), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> LastReceiptDate { get; set; }
+        public virtual DateTime? LastReceiptDate { get; set; }
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace AdventureWorksModel {
         #region OnOrderQty (Int32)
 
         [MemberOrder(180), Optionally]
-        public virtual Nullable<int> OnOrderQty { get; set; }
+        public virtual int? OnOrderQty { get; set; }
 
         #endregion
 

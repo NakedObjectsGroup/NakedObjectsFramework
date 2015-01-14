@@ -70,12 +70,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec OnSpec {
-            get {
-                if (onSpec == null) {
-                    onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
-                }
-                return onSpec;
-            }
+            get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
         }
 
         public virtual IActionSpec[] Actions {

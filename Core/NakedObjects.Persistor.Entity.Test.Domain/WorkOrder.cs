@@ -53,7 +53,7 @@ namespace AdventureWorksModel {
         #region EndDate (DateTime)
 
         [MemberOrder(150), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> EndDate { get; set; }
+        public virtual DateTime? EndDate { get; set; }
 
         #endregion
 

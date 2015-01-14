@@ -52,21 +52,21 @@ namespace AdventureWorksModel {
         #region ActualStartDate (DateTime)
 
         [MemberOrder(150), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> ActualStartDate { get; set; }
+        public virtual DateTime? ActualStartDate { get; set; }
 
         #endregion
 
         #region ActualEndDate (DateTime)
 
         [MemberOrder(160), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> ActualEndDate { get; set; }
+        public virtual DateTime? ActualEndDate { get; set; }
 
         #endregion
 
         #region ActualResourceHrs (Decimal)
 
         [MemberOrder(170), Optionally]
-        public virtual Nullable<decimal> ActualResourceHrs { get; set; }
+        public virtual decimal? ActualResourceHrs { get; set; }
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace AdventureWorksModel {
         #region ActualCost (Decimal)
 
         [MemberOrder(190), Optionally]
-        public virtual Nullable<decimal> ActualCost { get; set; }
+        public virtual decimal? ActualCost { get; set; }
 
         #endregion
 

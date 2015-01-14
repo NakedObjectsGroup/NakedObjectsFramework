@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Action) {}
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
-            var paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
+            var paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) return; //Nothing to do
             var facet = new ContributedActionFacet(holder);
             foreach (var p in paramsWithAttribute) {

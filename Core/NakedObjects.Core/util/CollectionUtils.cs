@@ -80,6 +80,13 @@ namespace NakedObjects.Core.Util {
             }
         }
 
+        public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T, int> action) {
+            var i = 0;
+            foreach (T item in toIterate) {
+                action(item, i++);
+            }
+        }
+
         public static string ListOut(this IEnumerable<string> toIterate) {
             return toIterate.Aggregate("", (s, t) => s + (string.IsNullOrWhiteSpace(s) ? "" : ", ") + t);
         }

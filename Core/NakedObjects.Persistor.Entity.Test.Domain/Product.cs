@@ -96,7 +96,7 @@ namespace AdventureWorksModel {
         #region Weight (Decimal)
 
         [MemberOrder(210), Optionally]
-        public virtual Nullable<decimal> Weight { get; set; }
+        public virtual decimal? Weight { get; set; }
 
         #endregion
 
@@ -138,14 +138,14 @@ namespace AdventureWorksModel {
         #region SellEndDate (DateTime)
 
         [MemberOrder(270), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> SellEndDate { get; set; }
+        public virtual DateTime? SellEndDate { get; set; }
 
         #endregion
 
         #region DiscontinuedDate (DateTime)
 
         [MemberOrder(280), Optionally, Mask("d")]
-        public virtual Nullable<DateTime> DiscontinuedDate { get; set; }
+        public virtual DateTime? DiscontinuedDate { get; set; }
 
         #endregion
 
