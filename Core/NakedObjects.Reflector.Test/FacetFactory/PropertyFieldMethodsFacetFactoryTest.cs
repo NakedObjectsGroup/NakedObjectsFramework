@@ -61,6 +61,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
@@ -69,6 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer1 {
             public string FirstName {
                 get { return null; }
+// ReSharper disable ValueParameterNotUsed
                 set { }
             }
         }
@@ -83,6 +85,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+// ReSharper disable InconsistentNaming
         private class Customer10r {
             public string FirstName {
                 get { return null; }
@@ -142,6 +145,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
+// ReSharper disable UnusedParameter.Local
             public string ValidateFirstName(string firstName) {
                 return null;
             }
@@ -627,7 +631,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetx);
-            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             AssertMethodRemoved(propertyChoicesMethod);
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
@@ -859,7 +862,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestModifyMethodWithNoSetterStillInstallsDisabledAndDerivedFacets() {
             PropertyInfo property = FindProperty(typeof (Customer6), "FirstName");
-            MethodInfo propertyModifyMethod = FindMethod(typeof (Customer6), "ModifyFirstName", new[] {typeof (string)});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
@@ -927,4 +929,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore ValueParameterNotUsed
+    // ReSharper restore InconsistentNaming
+    // ReSharper restore UnusedParameter.Local
+
 }

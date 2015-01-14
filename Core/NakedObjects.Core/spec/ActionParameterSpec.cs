@@ -269,7 +269,7 @@ namespace NakedObjects.Core.Spec {
 
         private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
             if (parentAction.IsContributedMethod && nakedObject != null) {
-                IEnumerable<IActionParameterSpec> matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec));
+                var matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec)).ToArray();
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
                     return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);

@@ -47,6 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [NotPersisted]
+// ReSharper disable once UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
@@ -54,6 +55,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [NotPersisted]
+// ReSharper disable once UnusedMember.Local
             public IList Orders {
                 get { return null; }
             }

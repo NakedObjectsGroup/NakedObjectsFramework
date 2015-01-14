@@ -47,6 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [DefaultValue(1)]
+// ReSharper disable once UnusedMember.Local
             public int Prop { get; set; }
         }
 

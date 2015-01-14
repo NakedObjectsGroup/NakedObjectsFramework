@@ -50,6 +50,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [PresentationHint("ahint")]
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
@@ -60,6 +61,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer2 {
             [PresentationHint("ahint")]
+// ReSharper disable UnusedParameter.Local
             public void SomeAction([PresentationHint("ahint")] string foo) {}
         }
 
@@ -154,4 +156,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore UnusedParameter.Local
+
 }

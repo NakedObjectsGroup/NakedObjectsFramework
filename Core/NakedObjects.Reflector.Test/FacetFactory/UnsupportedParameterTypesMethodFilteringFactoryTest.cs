@@ -16,7 +16,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     // ReSharper disable UnusedMember.Local
@@ -34,8 +33,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(0);
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[]{facetFactory});
-
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]
@@ -67,7 +65,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-
+        // ReSharper disable UnusedParameter.Local
         private class Customer {
             public void ActionWithNoParameters() {}
             public void ActionWithOneGoodParameter(int i) {}
@@ -82,6 +80,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void ActionWithNullableParameter(int? i) {}
             public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
         }
+
+        // ReSharper restore UnusedParameter.Local
+
 
         [TestMethod]
         public void TestActionWithDictionaryParameter() {
@@ -144,5 +145,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
     }
+
     // ReSharper restore UnusedMember.Local
 }

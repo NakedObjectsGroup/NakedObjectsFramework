@@ -72,6 +72,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
 
             // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void PopulateUsingKeys(string[] instanceId) {
                 throw new NotImplementedException();
             }

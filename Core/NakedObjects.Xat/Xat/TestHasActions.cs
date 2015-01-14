@@ -88,8 +88,10 @@ namespace NakedObjects.Xat {
 
         #endregion
 
-        // ReSharper disable once UnusedParameter.Local
+     
+        // ReSharper disable UnusedParameter.Local
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
+            // ReSharper restore UnusedParameter.Local
             if (!actions.Any()) {
                 Assert.Fail("No Action named '{0}'{1}", actionName, condition);
             }

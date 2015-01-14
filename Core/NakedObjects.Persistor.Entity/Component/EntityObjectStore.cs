@@ -555,8 +555,9 @@ namespace NakedObjects.Persistor.Entity {
             // Rollback after extracting info from context - rollback clears it all
             RollBackContext();
 
-            if (exception is ConcurrencyException) {
-                throw new ConcurrencyException(newMessage, exception) {SourceNakedObject = ((ConcurrencyException) exception).SourceNakedObject};
+            var concurrencyException = exception as ConcurrencyException;
+            if (concurrencyException != null) {
+                throw new ConcurrencyException(newMessage, exception) {SourceNakedObject = concurrencyException.SourceNakedObject};
             }
             if (exception is DataUpdateException) {
                 throw new DataUpdateException(newMessage, exception);

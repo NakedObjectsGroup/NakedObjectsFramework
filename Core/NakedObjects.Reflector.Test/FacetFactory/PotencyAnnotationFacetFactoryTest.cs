@@ -46,6 +46,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [QueryOnly]
+// ReSharper disable UnusedMember.Local
             public void SomeAction() {}
         }
 
@@ -119,4 +120,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+
 }

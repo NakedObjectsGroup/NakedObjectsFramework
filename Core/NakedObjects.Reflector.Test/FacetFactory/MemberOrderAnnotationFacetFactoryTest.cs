@@ -47,6 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [MemberOrder(Sequence = "1")]
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
@@ -116,4 +117,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+
 }

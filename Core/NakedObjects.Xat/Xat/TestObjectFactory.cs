@@ -116,7 +116,7 @@ namespace NakedObjects.Xat {
         #endregion
 
         public ITestService CreateTestService(INakedObject service) {
-            return new TestService(service, lifecycleManager, this);
+            return new TestService(service, this);
         }
 
         private static ITestValue CreateTestValue(INakedObject nakedObject) {

@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ILifecycleManager lifecycleManager, ITestObjectFactory factory) : base(factory) {
+        public TestService(INakedObject service, ITestObjectFactory factory) : base(factory) {
             NakedObject = service;
         }
 

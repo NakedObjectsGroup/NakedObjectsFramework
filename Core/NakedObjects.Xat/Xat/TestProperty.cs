@@ -98,8 +98,9 @@ namespace NakedObjects.Xat {
             INakedObject nakedObject = owningObject.NakedObject;
 
             IConsent valid;
-            if (field is IOneToOneAssociationSpec) {
-                valid = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObject, testNakedObject);
+            var associationSpec = field as IOneToOneAssociationSpec;
+            if (associationSpec != null) {
+                valid = associationSpec.IsAssociationValid(nakedObject, testNakedObject);
             }
             else if (field is IOneToManyAssociationSpec) {
                 valid = new Veto("Always disabled");
@@ -285,8 +286,9 @@ namespace NakedObjects.Xat {
             Assert.IsTrue(testNakedObject.Spec.IsOfType(field.Spec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.Spec));
             INakedObject nakedObject = owningObject.NakedObject;
             IConsent valid;
-            if (field is IOneToOneAssociationSpec) {
-                valid = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObject, testNakedObject);
+            var spec = field as IOneToOneAssociationSpec;
+            if (spec != null) {
+                valid = spec.IsAssociationValid(nakedObject, testNakedObject);
             }
             else if (field is IOneToManyAssociationSpec) {
                 valid = new Veto("Always disabled");

@@ -48,12 +48,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [PageSize(7)]
+// ReSharper disable once UnusedMember.Local
             public IQueryable<Customer> SomeAction() {
                 return null;
             }
         }
 
         private class Customer1 {
+// ReSharper disable once UnusedMember.Local
             public IQueryable<Customer1> SomeAction() {
                 return null;
             }

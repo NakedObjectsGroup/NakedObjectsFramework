@@ -33,7 +33,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private void Reset() {
-            var p = new Mock<ILifecycleManager>().Object;
             m1 = new MemberPeerStub("abc");
             m2 = new MemberPeerStub("abc");
         }

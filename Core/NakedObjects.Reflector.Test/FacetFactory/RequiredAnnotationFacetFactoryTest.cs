@@ -47,23 +47,29 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [Required]
+// ReSharper disable once UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([Required] string foo) {}
         }
 
         private class Customer3 {
             [Required]
+// ReSharper disable once UnusedMember.Local
             public int NumberOfOrders {
                 get { return 0; }
             }
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([Required] int foo) {}
         }
 
