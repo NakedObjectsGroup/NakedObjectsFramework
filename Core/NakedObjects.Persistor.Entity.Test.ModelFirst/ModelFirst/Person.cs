@@ -90,6 +90,7 @@ namespace ModelFirst {
 
         #region Complex Properties
 
+// ReSharper disable InconsistentNaming
         private NameType _complexProperty = new NameType();
 
 
@@ -122,3 +123,4 @@ namespace ModelFirst {
         }
     }
 }
+// ReSharper restore InconsistentNaming
