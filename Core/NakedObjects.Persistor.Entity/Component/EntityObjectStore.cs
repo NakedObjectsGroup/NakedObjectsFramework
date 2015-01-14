@@ -161,9 +161,10 @@ namespace NakedObjects.Persistor.Entity {
         public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
             if (EntityFrameworkKnowsType(nakedObject.Object.GetEntityProxiedType())) {
                 foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetEntityProxiedType())) {
-                    IObjectSpec spec = loadSpecification(pi.PropertyType);
+                
 
                     // TODO Work out WTH to do here !!
+                    // IObjectSpec spec = loadSpecification(pi.PropertyType);
                     //if (!spec.ContainsFacet<IComplexTypeFacet>()) {
                     //    Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
                     //    spec.AddFacet(new ComplexTypeFacetConvention(spec));

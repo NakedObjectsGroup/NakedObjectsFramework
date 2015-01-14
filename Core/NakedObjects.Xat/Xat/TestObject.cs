@@ -90,14 +90,14 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty GetPropertyByName(string name) {
-            var q = Properties.Where(x => x.Name == name);
+            var q = Properties.Where(x => x.Name == name).ToArray();
             if (!q.Any()) Assert.Fail("No Property named '" + name + "'");
             if (q.Count() > 1) Assert.Fail("More than one Property named '" + name + "'");
             return q.Single();
         }
 
         public ITestProperty GetPropertyById(string id) {
-            var q = Properties.Where(x => x.Id == id);
+            var q = Properties.Where(x => x.Id == id).ToArray();
             if (q.Count() != 1) Assert.Fail("No Property with Id '" + id + "'");
             return q.Single();
         }

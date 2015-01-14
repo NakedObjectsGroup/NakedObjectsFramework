@@ -90,6 +90,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
 
+// ReSharper disable once ClassNeverInstantiated.Local
         private class Order {}
 
         [TestMethod]

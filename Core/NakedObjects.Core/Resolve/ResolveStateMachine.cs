@@ -619,7 +619,7 @@ namespace NakedObjects.Core.Resolve {
                 TimeStamp = DateTime.Now;
                 Notes = new List<string>();
                 if (fullTrace) {
-                    Trace = new StackTrace(2, true);
+                    trace = new StackTrace(2, true);
                 }
             }
 
@@ -629,7 +629,9 @@ namespace NakedObjects.Core.Resolve {
             private IResolveState EndState { get; set; }
             private IResolveEvent Event { get; set; }
             private DateTime TimeStamp { get; set; }
-            private StackTrace Trace { get; set; }
+            // ReSharper disable once NotAccessedField.Local
+            // for viewing via debugger
+            private StackTrace trace;
 
             public void AddNote(string note) {
                 Notes.Add(note);

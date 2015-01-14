@@ -390,12 +390,15 @@ namespace NakedObjects.Reflect.Test {
 
 
         public class WithScalars {
-            private char c;
             private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
             private ICollection<WithScalars> list = new List<WithScalars>();
             private ICollection<WithScalars> set = new HashSet<WithScalars>();
 
             public WithScalars() {
+                Init();
+            }
+
+            private void Init() {
                 SByte = 10;
                 UInt = 14;
                 ULong = 15;
@@ -427,7 +430,8 @@ namespace NakedObjects.Reflect.Test {
 
             public virtual char Char {
                 get { return '3'; }
-                set { c = value; }
+// ReSharper disable once ValueParameterNotUsed
+                set {  }
             }
 
             public virtual bool Bool { get; set; }

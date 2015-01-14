@@ -66,6 +66,7 @@ namespace NakedObjects.Core.Util {
             return type.GetGenericArguments().Count() == 1 && type.GetGenericArguments().All(t => t.IsEnum);
         }
 
+        // ReSharper disable once CompareNonConstrainedGenericWithNull
         public static List<T> InList<T>(this T item) {
             return item != null ? new List<T> {item} : new List<T>();
         }

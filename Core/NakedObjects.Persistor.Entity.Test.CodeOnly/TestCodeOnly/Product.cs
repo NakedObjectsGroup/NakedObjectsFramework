@@ -79,6 +79,7 @@ namespace TestCodeOnly {
 
 
     public class Product : AbstractTestCode {
+// ReSharper disable once NotAccessedField.Local
         private Category forTest;
         public IDomainObjectContainer Container { protected get; set; }
 

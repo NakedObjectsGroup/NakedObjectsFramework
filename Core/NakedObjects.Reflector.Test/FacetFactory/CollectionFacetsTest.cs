@@ -51,6 +51,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, manager).Count());
         }
+        // ReSharper disable PossibleMultipleEnumeration
 
         private void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
             var collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager).ToArray();
@@ -58,6 +59,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
             zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
         }
+        // ReSharper restore PossibleMultipleEnumeration
+
 
         private void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
             Assert.AreSame(first, collectionFacet.AsEnumerable(collection, manager).First().Object);
@@ -68,12 +71,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(collectionFacet.Contains(collection, AdapterFor(second)));
         }
 
+        // ReSharper disable PossibleMultipleEnumeration
+
         private void Init(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> data1, IEnumerable<object> data2) {
             collectionFacet.Init(collection, data1.Select(AdapterFor).ToArray());
             ValidateCollection(collectionFacet, collection, data1);
             collectionFacet.Init(collection, data2.Select(AdapterFor).ToArray());
             ValidateCollection(collectionFacet, collection, data2);
         }
+        // ReSharper restore PossibleMultipleEnumeration
+
 
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
             INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, manager, false);

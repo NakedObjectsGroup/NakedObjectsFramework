@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
@@ -421,6 +422,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             // xsi:schemaLocation="http://www.nakedobjects.org/ns/app/<fully qualified class name> sdm.common.fixture.schemes.ao.communications sdm.common.fixture.schemes.ao.communications.AO11ConfirmAnimalRegistration.xsd"
 
+            Trace.Assert(rootElement != null, "rootElement != null");
             rootElement.SetAttributeValue(XsMetaModel.Xsi + "schemaLocation", xsiSchemaLocationAttrValue);
         }
 

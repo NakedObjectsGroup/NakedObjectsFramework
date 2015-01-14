@@ -35,7 +35,7 @@ namespace NakedObjects.Xat {
 
         public ITestAction AsAction() {
             AssertIsAction();
-            IActionSpecImmutable actionSpecIm = (item as IMenuActionImmutable).Action;
+            IActionSpecImmutable actionSpecIm = ((IMenuActionImmutable) item).Action;
             if (owningObject == null) {
                 return factory.CreateTestActionOnService(actionSpecIm);
             }

@@ -25,6 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new IdentifierNull(this); }
         }
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IObjectSpecImmutable ReturnSpec { get; private set; }
 
         #endregion

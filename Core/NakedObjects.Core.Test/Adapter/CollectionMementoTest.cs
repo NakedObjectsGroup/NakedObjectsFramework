@@ -47,12 +47,16 @@ namespace NakedObjects.Core.Test.Adapter {
             return new TestDomainObject[] {};
         }
 
+        // ReSharper disable PossibleMultipleEnumeration
+
         public IQueryable<TestDomainObject> Action4(IEnumerable<int> filter) {
             return from tdo in Container.Instances<TestDomainObject>()
                 from ids in filter
                 where tdo.Id != ids
                 select tdo;
         }
+        // ReSharper restore PossibleMultipleEnumeration
+
 
         public IQueryable<TestDomainObject> Action5(IEnumerable<TestDomainObject> filter) {
             IEnumerable<int> idsToFilter = filter.Select(tdo => tdo.Id);
@@ -183,6 +187,8 @@ namespace NakedObjects.Core.Test.Adapter {
             RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
+        // ReSharper disable PossibleMultipleEnumeration
+
         [Test]
         public void TestActionNoParmsWithSelected() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
@@ -201,6 +207,8 @@ namespace NakedObjects.Core.Test.Adapter {
 
             Assert.IsTrue(selectedCollection.SequenceEqual(recoveredCollection), "recovered selected collection not same as original selected collection");
         }
+        // ReSharper restore PossibleMultipleEnumeration
+
 
 
         [Test]

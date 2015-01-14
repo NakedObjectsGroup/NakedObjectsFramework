@@ -49,6 +49,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private static void CheckChoices(IFacet facet) {
             var facetAsEnumFacet = facet as IEnumFacet;
+            Assert.IsNotNull(facetAsEnumFacet);
             Assert.AreEqual(3, facetAsEnumFacet.GetChoices(null).Length);
             Assert.AreEqual(Cities.London, facetAsEnumFacet.GetChoices(null)[0]);
             Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null)[1]);

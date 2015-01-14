@@ -289,9 +289,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             // (the corresponding XSD element will later be attached to xmlElement
             // as its userData)
             Log.Debug("includeField(Pl, Vec, Str): locating corresponding XML element");
-            IEnumerable<XElement> xmlFieldElements = ElementsUnder(xmlElement, field.Id);
-            if (xmlFieldElements.Count() != 1) {
-                Log.Info("includeField(Pl, Vec, Str): could not locate " + DoLog("field", field.Id) + AndLog("xmlFieldElements.size", "" + xmlFieldElements.Count()));
+            var xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
+            var fieldCount = xmlFieldElements.Count();
+            if (fieldCount != 1) {
+                Log.Info("includeField(Pl, Vec, Str): could not locate " + DoLog("field", field.Id) + AndLog("xmlFieldElements.size", "" + fieldCount));
                 return false;
             }
             XElement xmlFieldElement = xmlFieldElements.First();
@@ -456,8 +457,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 var xmlFieldElement = new XElement(ns + fieldName);
 
                 XElement xsdFieldElement;
+                var oneToOneAssociation = field as IOneToOneAssociationSpec;
+                var oneToManyAssociation = field as IOneToManyAssociationSpec;
 
-                if (field.Spec.IsParseable) {
+                if (field.Spec.IsParseable && oneToOneAssociation != null) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is value");
 
                     IObjectSpec fieldNos = field.Spec;
@@ -468,7 +471,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         continue;
                     }
 
-                    var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
                     XElement xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
@@ -501,10 +503,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     // XSD
                     xsdFieldElement = Schema.CreateXsElementForNofValue(xsElement, xmlValueElement);
                 }
-                else if (field is IOneToOneAssociationSpec) {
+                else if (oneToOneAssociation != null) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToOneAssociation");
-
-                    var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
 
                     XElement xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
 
@@ -529,10 +529,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     // XSD
                     xsdFieldElement = Schema.CreateXsElementForNofReference(xsElement, xmlReferenceElement, oneToOneAssociation.Spec.FullName);
                 }
-                else if (field is IOneToManyAssociationSpec) {
+                else if (oneToManyAssociation != null) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToManyAssociation");
 
-                    var oneToManyAssociation = (IOneToManyAssociationSpec) field;
+                    
                     XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
