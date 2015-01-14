@@ -831,6 +831,9 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string FinderActions(this HtmlHelper html, IObjectSpec spec, ActionContext actionContext, string propertyName) {
+            if (spec.IsCollection) {
+                return string.Empty;  // We don't want Finder menu rendered on any collection field
+            } 
             List<ElementDescriptor> allActions = new List<ElementDescriptor>();
             allActions.Add(RemoveAction(propertyName));
             allActions.Add(html.RecentlyViewedAction(spec, actionContext, propertyName));
@@ -1791,7 +1794,6 @@ namespace NakedObjects.Web.Mvc.Html {
                         }));
                         tag.MergeAttribute("data-validate", url);
                     }
-
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                      html.GetFieldValue(propertyContext, suggestedItem) +
                                      (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.Spec, new ActionContext(propertyContext.Target, null), propertyContext.Property.Id)) +

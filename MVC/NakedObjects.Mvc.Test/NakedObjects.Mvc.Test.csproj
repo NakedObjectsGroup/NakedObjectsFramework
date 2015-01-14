@@ -178,6 +178,7 @@
     <Content Include="Custom Html reference files\FourRefParametersFunctionWithParameters.htm" />
     <Content Include="Custom Html reference files\FourValueParametersActionWithParameters.htm" />
     <Content Include="Custom Html reference files\FourValueParametersFunctionWithParameters.htm" />
+    <Content Include="Generated Html reference files\MainMenus.htm" />
     <Content Include="Custom Html reference files\NoValueParameterFunctionAsDialog.htm" />
     <Content Include="Custom Html reference files\OneCollectionParameterActionAsDialog.htm" />
     <Content Include="Custom Html reference files\OneCollectionParameterFunction.htm" />

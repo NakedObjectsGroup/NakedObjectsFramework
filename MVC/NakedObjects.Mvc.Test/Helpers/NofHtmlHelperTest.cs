@@ -1506,7 +1506,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test] 
-        [Ignore] // temp ignore 
         public void ParameterEditWithActionAsFind() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1988,7 +1987,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.IsFalse(mocks.HtmlHelper.ObjectHasVisibleFields(service.Object));
         }
 
-        [Test, Ignore] //Pending completion of Menus work
+        [Test]
         public void MainMenus() {
             string s = mocks.HtmlHelper.MainMenus().ToString();
 
