@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -55,7 +56,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 foreach (MethodInfo method in methods) {
                     ParameterInfo[] parameters = method.GetParameters();
                     if (parameters.Length >= 2) {
-                        bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString().ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
+                        bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
                         if (parametersMatch) {
                             methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method));
                             methodRemover.RemoveMethod(method);

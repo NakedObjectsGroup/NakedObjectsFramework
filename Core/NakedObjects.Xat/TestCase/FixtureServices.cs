@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Threading;
 using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Fixture {
@@ -118,7 +119,7 @@ namespace NakedObjects.Core.Fixture {
             }
 
             public override string ToString() {
-                return time.ToString();
+                return time.ToString(Thread.CurrentThread.CurrentCulture);
             }
         }
 

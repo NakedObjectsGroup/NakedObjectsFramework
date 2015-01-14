@@ -7,6 +7,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -73,7 +74,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string TitleStringWithMask(string mask, char value) {
-            return value.ToString();
+            return value.ToString(Thread.CurrentThread.CurrentCulture);
         }
 
         protected override string DoEncode(char obj) {

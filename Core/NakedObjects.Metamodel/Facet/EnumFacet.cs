@@ -55,7 +55,7 @@ namespace NakedObjects.Meta.Facet {
             #region IComparer<string> Members
 
             public int Compare(string x, string y) {
-                return string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y));
+                return string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y), StringComparison.CurrentCulture);
             }
 
             #endregion

@@ -121,11 +121,8 @@ namespace NakedObjects.Meta.Adapter {
             if (this == obj) {
                 return true;
             }
-            if (obj is IdentifierImpl) {
-                var other = (IdentifierImpl) obj;
-                return string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes);
-            }
-            return false;
+            var other = obj as IdentifierImpl;
+            return other != null && (string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes));
         }
 
         private static bool Equals(string[] a, string[] b) {
@@ -142,13 +139,7 @@ namespace NakedObjects.Meta.Adapter {
                 return false;
             }
 
-            for (int i = 0; i < b.Length; i++) {
-                if (!string.Equals(a[i], b[i])) {
-                    return false;
-                }
-            }
-
-            return true;
+            return !b.Where((t, i) => !string.Equals(a[i], t)).Any();
         }
 
         public override string ToString() {
@@ -211,9 +202,9 @@ namespace NakedObjects.Meta.Adapter {
 
         public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string asString) {
             Assert.AssertNotNull(asString);
-            int indexOfHash = asString.IndexOf("#");
-            int indexOfOpenBracket = asString.IndexOf("(");
-            int indexOfCloseBracket = asString.IndexOf(")");
+            int indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
+            int indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
+            int indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
             string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - (0));
             if (indexOfHash == -1 || indexOfHash == (asString.Length - 1)) {
                 return new IdentifierImpl(metamodel, className);

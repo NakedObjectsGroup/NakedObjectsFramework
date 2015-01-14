@@ -7,6 +7,7 @@
 
 using System;
 using System.Text;
+using System.Threading;
 
 namespace NakedObjects.Core.Util {
     public sealed class AsString {
@@ -85,17 +86,17 @@ namespace NakedObjects.Core.Util {
         }
 
         public AsString Append(string name, sbyte number) {
-            Append(name, number.ToString());
+            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
             return this;
         }
 
         public AsString Append(string name, double number) {
-            Append(name, number.ToString());
+            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
             return this;
         }
 
         public AsString Append(string name, float number) {
-            Append(name, number.ToString());
+            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
             return this;
         }
 
@@ -115,7 +116,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public AsString Append(string name, short number) {
-            Append(name, number.ToString());
+            Append(name, number.ToString(Thread.CurrentThread.CurrentCulture));
             return this;
         }
 

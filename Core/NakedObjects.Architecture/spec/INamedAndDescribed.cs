@@ -13,7 +13,6 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns a description of how the member is used - this complements the help text.
         /// </summary>
-        /// <seealso cref="IMemberSpec.Help" />
         string Description { get; }
 
         /// <summary>
