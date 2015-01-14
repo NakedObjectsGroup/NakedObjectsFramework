@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
+// ReSharper disable InconsistentNaming
+
 namespace AdventureWorksModel {
 // ReSharper disable once PartialTypeWithSinglePart
     public partial class Address {

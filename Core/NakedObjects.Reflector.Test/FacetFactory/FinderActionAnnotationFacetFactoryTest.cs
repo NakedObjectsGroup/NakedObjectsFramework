@@ -45,11 +45,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable once UnusedMember.Local
             public void SomeAction() {}
         }
 
         private class Customer1 {
             [FinderAction]
+// ReSharper disable once UnusedMember.Local
             public void SomeAction() {}
         }
 

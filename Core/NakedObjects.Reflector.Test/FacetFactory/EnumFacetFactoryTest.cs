@@ -73,10 +73,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [EnumDataType(typeof (Cities))]
+// ReSharper disable UnusedMember.Local
             public int City { get; set; }
         }
 
         private class Customer2 {
+// ReSharper disable UnusedParameter.Local
             public void SomeAction([EnumDataType(typeof (Cities))] int city) {}
         }
 
@@ -170,4 +172,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore UnusedParameter.Local
+
 }

@@ -99,13 +99,6 @@ namespace NakedObjects.Persistor.TestData {
             return pet;
         }
 
-        private Order NewOrder(int id, string name) {
-            var order = Container.NewTransientInstance<Order>();
-            order.OrderId = id;
-            order.Name = name;
-
-            Container.Persist(ref order);
-            return order;
-        }
+      
     }
 }

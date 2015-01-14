@@ -228,7 +228,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisplayNameAnnotationPickedUpOnClass() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer5), "someAction");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
@@ -322,7 +321,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNamedAnnotationPickedUpOnClass() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "someAction");
             facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);

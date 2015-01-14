@@ -12,6 +12,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     // ReSharper disable once PartialTypeWithSinglePart
+    // ReSharper disable InconsistentNaming
 
     public partial class StateProvince {
         #region Primitive Properties

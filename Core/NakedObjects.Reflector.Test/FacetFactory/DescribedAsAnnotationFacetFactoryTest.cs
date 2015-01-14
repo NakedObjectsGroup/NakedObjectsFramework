@@ -50,6 +50,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [DescribedAs("some description")]
+// ReSharper disable UnusedMember.Local
             public int NumberOfOrders {
                 get { return 0; }
             }
@@ -68,6 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([DescribedAs("some description")] int x) {}
         }
 
@@ -94,6 +96,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer9 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([System.ComponentModel.Description("some description")] int x) {}
         }
 
@@ -225,4 +228,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+
 }

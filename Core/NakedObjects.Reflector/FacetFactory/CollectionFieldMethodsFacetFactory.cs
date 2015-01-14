@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -21,7 +20,6 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (CollectionFieldMethodsFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.ClearPrefix,

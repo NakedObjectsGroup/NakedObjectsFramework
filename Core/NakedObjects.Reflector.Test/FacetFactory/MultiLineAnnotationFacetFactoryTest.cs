@@ -56,6 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] string foo) {}
         }
 
@@ -70,6 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer6 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
         }
 

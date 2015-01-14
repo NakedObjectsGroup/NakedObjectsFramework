@@ -59,6 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
+// ReSharper disable once UnusedParameter.Local
             public void AddToOrders(Order o) {}
         }
 

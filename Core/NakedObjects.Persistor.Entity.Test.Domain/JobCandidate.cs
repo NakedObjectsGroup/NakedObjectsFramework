@@ -10,6 +10,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     // ReSharper disable once PartialTypeWithSinglePart
+    // ReSharper disable InconsistentNaming
 
     public partial class JobCandidate {
         #region Primitive Properties

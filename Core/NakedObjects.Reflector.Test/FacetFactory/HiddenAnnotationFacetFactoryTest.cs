@@ -48,6 +48,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [Hidden]
+// ReSharper disable UnusedMember.Local
             public int NumberOfOrders {
                 get { return 0; }
             }
@@ -230,4 +231,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+
 }

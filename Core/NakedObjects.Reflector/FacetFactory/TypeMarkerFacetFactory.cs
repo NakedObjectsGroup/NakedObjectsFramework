@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -18,7 +17,6 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
         public TypeMarkerFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}

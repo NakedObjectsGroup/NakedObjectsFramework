@@ -45,12 +45,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer1 {
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction(string foo) {}
         }
 
@@ -61,6 +63,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction(int foo) {}
         }
 
@@ -112,4 +115,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+
 }

@@ -56,6 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable once UnusedMember.Local
             public string IconName() {
                 return "TestName";
             }
@@ -66,6 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [IconName("AttributeName")]
         private class Customer2 {
+// ReSharper disable once UnusedMember.Local
             public string IconName() {
                 return "TestName";
             }

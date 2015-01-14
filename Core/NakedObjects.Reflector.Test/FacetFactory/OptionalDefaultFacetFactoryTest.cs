@@ -52,6 +52,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction(string foo) {}
         }
 
@@ -62,6 +63,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction(int foo) {}
         }
 

@@ -11,7 +11,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     // ReSharper disable once PartialTypeWithSinglePart
-
+    // ReSharper disable InconsistentNaming
     public partial class AWBuildVersion {
         #region Primitive Properties
 
@@ -46,3 +46,5 @@ namespace AdventureWorksModel {
         #endregion
     }
 }
+
+// ReSharper restore InconsistentNaming
