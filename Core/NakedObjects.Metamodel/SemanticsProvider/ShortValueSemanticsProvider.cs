@@ -22,14 +22,12 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 6;
 
-
         public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (IShortValueFacet); }
         }
-
 
         public static Type AdaptedType {
             get { return typeof (short); }
@@ -46,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (short);
         }
-
 
         protected override short DoParse(string entry) {
             try {
@@ -72,7 +69,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return value.ToString(mask);
         }
 
-
         protected override string DoEncode(short obj) {
             return obj.ToString("G", CultureInfo.InvariantCulture);
         }
@@ -80,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override short DoRestore(string data) {
             return short.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "ShortAdapter: ";

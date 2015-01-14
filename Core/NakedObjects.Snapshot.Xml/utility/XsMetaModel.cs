@@ -218,8 +218,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             }
             return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
         }
-        // ReSharper restore PossibleMultipleEnumeration
 
+        // ReSharper restore PossibleMultipleEnumeration
 
         // returns child <code>xs:simpleContent</code> element for supplied parent XSD
         // element, creating and appending if necessary.
@@ -244,8 +244,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             return childXsElement;
         }
-        // ReSharper restore PossibleMultipleEnumeration
 
+        // ReSharper restore PossibleMultipleEnumeration
 
         // return the <code>xs:schema</code> element (the root element of the owning XSD Doc).
 

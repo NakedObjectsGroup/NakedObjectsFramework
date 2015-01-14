@@ -25,7 +25,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <exception cref="InvalidEntryException" />
         INakedObject ParseInvariant(string text, INakedObjectManager manager);
 
-
         /// <summary>
         ///     A title for the object that is valid but which may be easier to
         ///     edit than the title provided by a <see cref="ITitleFacet" />
@@ -38,7 +37,6 @@ namespace NakedObjects.Architecture.Facet {
         ///     form might be <b>20070502</b>.
         /// </para>
         string ParseableTitle(INakedObject nakedObject);
-
 
         string InvariantString(INakedObject nakedObject);
     }

@@ -83,6 +83,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
             FinderActions = finderActions.ToImmutableList();
         }
+
         #endregion
 
         #region IObjectSpecImmutable Members
@@ -100,9 +101,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public string ShortName { get; private set; }
 
         public IMenuImmutable ObjectMenu {
-            get {
-                return GetFacet<IMenuFacet>().GetMenu();
-            }
+            get { return GetFacet<IMenuFacet>().GetMenu(); }
         }
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
@@ -141,7 +140,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 }
             }
 
-            foreach (var interfaceSpec in Interfaces) {
+            foreach (IObjectSpecImmutable interfaceSpec in Interfaces) {
                 IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
                 if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
                     return interfaceFacet;
@@ -212,8 +211,8 @@ namespace NakedObjects.Meta.SpecImmutable {
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
-        #endregion
 
+        #endregion
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
@@ -243,7 +242,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IList<IObjectSpecImmutable> tempInterfaces;
         private readonly IList<IActionSpecImmutable> tempObjectActions;
         private readonly IList<IObjectSpecImmutable> tempSubclasses;
-
 
         // The special constructor is used to deserialize values. 
         public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
@@ -278,7 +276,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<IList<IActionSpecImmutable>>("FinderActions", FinderActions.ToList());
             base.GetObjectData(info, context);
         }
-
 
         public override void OnDeserialization(object sender) {
             Fields = tempFields.ToImmutableList();

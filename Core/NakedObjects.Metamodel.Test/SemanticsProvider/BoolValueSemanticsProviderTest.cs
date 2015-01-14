@@ -13,9 +13,8 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.SemanticsProvider;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
@@ -28,7 +27,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
             specification = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
         }
 
@@ -106,7 +105,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseInvariant() {
-            new[] {true, false}.ForEach(b => {
+            CollectionUtils.ForEach(new[] {true, false}, b => {
                 string b1 = b.ToString(CultureInfo.InvariantCulture);
                 object b2 = value.ParseInvariant(b1);
                 Assert.AreEqual(b, b2);
@@ -133,7 +132,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestParseNull() {
             base.TestParseNull();
         }
-
 
         [TestMethod]
         public override void TestDecodeNull() {

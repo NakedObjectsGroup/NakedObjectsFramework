@@ -97,7 +97,6 @@ namespace NakedObjects.Xat {
             return factory.CreateTestObject(result);
         }
 
-
         private ITestNaked DoInvoke(params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
@@ -145,7 +144,6 @@ namespace NakedObjects.Xat {
             return this;
         }
 
-
         public ITestAction AssertIsInvalidWithParms(params object[] parameters) {
             ResetLastMessage();
 
@@ -170,7 +168,6 @@ namespace NakedObjects.Xat {
             AssertIsEnabled();
 
             object[] parsedParameters = ParsedParameters(parameters);
-
 
             INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
             IConsent canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjects);

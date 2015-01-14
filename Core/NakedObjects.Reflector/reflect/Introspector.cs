@@ -288,15 +288,11 @@ namespace NakedObjects.Reflect {
             return actionSpecs.ToArray();
         }
 
-       
-
-        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T :  IMemberSpecImmutable {
+        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
             var list = new List<T>(members);
             list.Sort(new MemberOrderComparator<T>());
             return list;
         }
-
-    
 
         #region Nested Type: DotnetIntrospectorMethodRemover
 

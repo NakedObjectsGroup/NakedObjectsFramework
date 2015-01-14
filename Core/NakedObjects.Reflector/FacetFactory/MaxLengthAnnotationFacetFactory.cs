@@ -67,7 +67,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
         }
 
-
         private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);
         }

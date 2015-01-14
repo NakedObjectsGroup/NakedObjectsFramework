@@ -24,18 +24,18 @@ namespace NakedObjects.Service {
         private readonly IFrameworkResolver frameworkResolver;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
-                                     ISession session,
-                                     ILifecycleManager lifecycleManager,
-                                     IServicesManager servicesManager,
-                                     INakedObjectManager nakedObjectManager,
-                                     IObjectPersistor persistor,
-                                     IReflector reflector,
-                                     IMetamodelManager metamodelManagerManager,
-                                     IContainerInjector containerInjector,
-                                     NakedObjectFactory nakedObjectFactory,
-                                     SpecFactory memberFactory,
-                                     ITransactionManager transactionManager,
-                                     IFrameworkResolver frameworkResolver) {
+            ISession session,
+            ILifecycleManager lifecycleManager,
+            IServicesManager servicesManager,
+            INakedObjectManager nakedObjectManager,
+            IObjectPersistor persistor,
+            IReflector reflector,
+            IMetamodelManager metamodelManagerManager,
+            IContainerInjector containerInjector,
+            NakedObjectFactory nakedObjectFactory,
+            SpecFactory memberFactory,
+            ITransactionManager transactionManager,
+            IFrameworkResolver frameworkResolver) {
             this.messageBroker = messageBroker;
             this.session = session;
             this.lifecycleManager = lifecycleManager;

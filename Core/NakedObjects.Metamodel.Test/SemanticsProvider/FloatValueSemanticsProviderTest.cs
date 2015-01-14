@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
 
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 
             floatObj = 32.5F;
@@ -109,7 +109,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestParseNull() {
             base.TestParseNull();
         }
-
 
         [TestMethod]
         public override void TestDecodeNull() {

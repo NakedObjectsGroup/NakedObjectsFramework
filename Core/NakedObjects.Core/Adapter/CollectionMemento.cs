@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -41,7 +42,6 @@ namespace NakedObjects.Core.Adapter {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodel = metamodel;
         }
-
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
@@ -142,7 +142,7 @@ namespace NakedObjects.Core.Adapter {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Spec.IsCollection) {
-                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
+                    IObjectSpecImmutable instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {

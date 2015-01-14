@@ -18,7 +18,7 @@ namespace NakedObjects.Core.Component {
         private IDomainObjectContainer container;
         private bool initialized;
         private List<object> services;
-        private readonly List<Type> serviceTypes; 
+        private readonly List<Type> serviceTypes;
 
         public DomainObjectContainerInjector(IReflectorConfiguration config) {
             Assert.AssertNotNull(config);

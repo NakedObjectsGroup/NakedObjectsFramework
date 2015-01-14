@@ -139,7 +139,6 @@ namespace NakedObjects.Xat {
             }
             IConsent valid = new Veto("Always disabled");
 
-
             Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
             return this;
         }

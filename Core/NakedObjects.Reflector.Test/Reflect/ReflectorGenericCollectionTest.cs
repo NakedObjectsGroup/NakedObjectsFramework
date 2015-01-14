@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-
 namespace NakedObjects.Reflect.Test {
     [TestClass]
     public class ReflectorGenericCollectionTest : AbstractReflectorTest {
@@ -55,7 +54,6 @@ namespace NakedObjects.Reflect.Test {
         public void TestName() {
             Assert.AreEqual("System.Collections.Generic.List`1", Specification.FullName);
         }
-
 
         [TestMethod]
         public void TestNamedFaced() {

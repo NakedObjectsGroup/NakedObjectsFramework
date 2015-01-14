@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class HiddenAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -232,5 +231,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
     // Copyright (c) Naked Objects Group Ltd.
     // ReSharper restore UnusedMember.Local
-
 }

@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     // Reflector place holder for type marker facet factory tests !!!
     [TestClass]
@@ -42,7 +41,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
 
         [TestMethod]
         public override void TestFeatureTypes() {

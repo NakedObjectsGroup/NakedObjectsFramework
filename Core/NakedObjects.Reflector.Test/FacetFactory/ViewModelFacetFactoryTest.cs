@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
@@ -99,7 +98,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
-
             string[] key = facet.Derive(value);
 
             Assert.AreEqual(2, key.Length);
@@ -140,7 +138,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             mock.Setup(no => no.Object).Returns(testClass);
 
             facet.Populate(keys, value);
-
 
             Assert.AreEqual(keys[0], testClass.Value1);
             Assert.AreEqual(keys[1], testClass.Value2);

@@ -19,6 +19,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
@@ -38,7 +39,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodelManager = metamodelManager;
-
 
             INakedObject rootObject = nakedObjectManager.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
@@ -97,7 +97,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 return sb.ToString();
             }
         }
-
 
         //  The name of the <code>xsi:schemaLocation</code> in the XML document.
         //  
@@ -225,7 +224,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         private bool AppendXmlThenIncludeRemaining(Place parentPlace, INakedObject referencedObject, IList<string> fieldNames,
-                                                   string annotation) {
+            string annotation) {
             Log.Debug("appendXmlThenIncludeRemaining(: " + DoLog("parentPlace", parentPlace)
                       + AndLog("referencedObj", referencedObject) + AndLog("fieldNames", fieldNames) + AndLog("annotation", annotation)
                       + ")");
@@ -289,8 +288,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             // (the corresponding XSD element will later be attached to xmlElement
             // as its userData)
             Log.Debug("includeField(Pl, Vec, Str): locating corresponding XML element");
-            var xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
-            var fieldCount = xmlFieldElements.Count();
+            XElement[] xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
+            int fieldCount = xmlFieldElements.Count();
             if (fieldCount != 1) {
                 Log.Info("includeField(Pl, Vec, Str): could not locate " + DoLog("field", field.Id) + AndLog("xmlFieldElements.size", "" + fieldCount));
                 return false;
@@ -532,14 +531,13 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 else if (oneToManyAssociation != null) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToManyAssociation");
 
-                    
                     XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
                         INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
-                        var referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
+                        IObjectSpecImmutable referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML

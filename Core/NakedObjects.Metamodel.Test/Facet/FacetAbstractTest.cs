@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Test.Facet {
     public class FacetAbstractTest {
         #region Setup/Teardown
 
-       [TestInitialize]
+        [TestInitialize]
         public void SetUp() {
             specification = new Mock<ISpecificationBuilder>().Object;
             facetHolder2 = new Mock<ISpecification>().Object;

@@ -93,7 +93,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenu AddAllRemainingActionsFrom<TObject>() {
-            var actions = GetObjectSpec<TObject>().ObjectActions;
+            IList<IActionSpecImmutable> actions = GetObjectSpec<TObject>().ObjectActions;
             AddOrderableElementsToMenu(actions, this);
             return this;
         }
@@ -107,7 +107,7 @@ namespace NakedObjects.Meta.Menu {
         #region IMenuImmutable Members
 
         public IMenuActionImmutable GetAction(string actionName) {
-            var action = MenuItems.OfType<MenuAction>().FirstOrDefault(a => a.Name == actionName);
+            MenuAction action = MenuItems.OfType<MenuAction>().FirstOrDefault(a => a.Name == actionName);
             if (action == null) {
                 throw new Exception("No action named " + actionName);
             }
@@ -115,7 +115,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenuImmutable GetSubMenu(string menuName) {
-            var menu = GetSubMenuIfExists(menuName);
+            MenuImpl menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
                 throw new Exception("No sub-menu named " + menuName);
             }
@@ -137,7 +137,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
-            foreach (var action in ordeableElements) {
+            foreach (IActionSpecImmutable action in ordeableElements) {
                 if (action != null) {
                     if (!toMenu.HasAction(action)) {
                         toMenu.AddMenuItem(new MenuAction(action));

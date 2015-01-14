@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Core.Util {
-
     // TODO not sure it is a good idea to have our own implementation of assert
     public static class Assert {
         public static void AssertEquals(object expected, object actual) {

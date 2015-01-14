@@ -81,7 +81,6 @@ namespace NakedObjects.Architecture.Adapter {
         /// </summary>
         string InvariantString();
 
-
         /// <summary>
         ///     Checks the version of this adapter to make sure that it does not differ from the specified
         ///     version

@@ -101,7 +101,6 @@ namespace NakedObjects.Core.Adapter {
             return list;
         }
 
-
         public object GetNextObject() {
             string type = GetNextString();
             string value = GetNextString();

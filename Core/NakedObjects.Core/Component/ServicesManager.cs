@@ -32,9 +32,9 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.manager = manager;
 
-            var ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
-            var cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
-            var ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
 
             services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
         }
@@ -88,6 +88,5 @@ namespace NakedObjects.Core.Component {
                 return services;
             }
         }
-
     }
 }

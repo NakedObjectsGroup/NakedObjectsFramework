@@ -70,8 +70,8 @@ namespace NakedObjects.Persistor.TestData {
             persons.ForEach(x => x.ResetEvents());
             persons.ForEach(x => x.Address.ResetEvents());
         }
-        // ReSharper restore UnusedVariable
 
+        // ReSharper restore UnusedVariable
 
         private Person NewPerson(int id, string name, Product product) {
             var person = Container.NewTransientInstance<Person>();
@@ -98,7 +98,5 @@ namespace NakedObjects.Persistor.TestData {
             Container.Persist(ref pet);
             return pet;
         }
-
-      
     }
 }

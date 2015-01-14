@@ -113,4 +113,5 @@ namespace AdventureWorksModel {
         #endregion
     }
 }
+
 // ReSharper restore InconsistentNaming

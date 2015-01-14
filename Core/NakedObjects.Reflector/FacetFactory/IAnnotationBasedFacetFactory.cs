@@ -16,6 +16,5 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <seealso cref="IMethodPrefixBasedFacetFactory" />
     public interface IAnnotationBasedFacetFactory {}
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

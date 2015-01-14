@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -47,7 +46,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [ComplexType]
         private class Customer {}
-
 
         [TestMethod]
         public override void TestFeatureTypes() {

@@ -16,10 +16,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
+using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -36,7 +34,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager manager;
 
-
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;
             persistor = mockPersistor.Object;
@@ -51,16 +48,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, manager).Count());
         }
+
         // ReSharper disable PossibleMultipleEnumeration
 
         private void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
-            var collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager).ToArray();
+            INakedObject[] collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager).ToArray();
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
-            zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
+            CollectionUtils.ForEach(zippedCollections, t => Assert.AreSame(t.Item1, t.Item2));
         }
-        // ReSharper restore PossibleMultipleEnumeration
 
+        // ReSharper restore PossibleMultipleEnumeration
 
         private void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
             Assert.AreSame(first, collectionFacet.AsEnumerable(collection, manager).First().Object);
@@ -79,8 +77,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             collectionFacet.Init(collection, data2.Select(AdapterFor).ToArray());
             ValidateCollection(collectionFacet, collection, data2);
         }
-        // ReSharper restore PossibleMultipleEnumeration
 
+        // ReSharper restore PossibleMultipleEnumeration
 
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
             INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, manager, false);
@@ -96,7 +94,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Contains(testArrayFacet, testAdaptedArray, "element1", "element3");
         }
-
 
         [TestMethod]
         public void ArrayFirstElement() {

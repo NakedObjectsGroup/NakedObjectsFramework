@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     // ReSharper disable UnusedMember.Local
@@ -88,7 +87,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
-
 
 // ReSharper disable once ClassNeverInstantiated.Local
         private class Order {}
@@ -223,8 +221,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-
         // Copyright (c) Naked Objects Group Ltd.
     }
+
     // ReSharper restore UnusedMember.Local
 }

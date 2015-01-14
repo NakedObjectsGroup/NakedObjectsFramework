@@ -108,7 +108,7 @@ namespace NakedObjects.Core.Transaction {
         #endregion
 
         private void RecursivelyCommitCommands() {
-            var commandsArray = commands.ToArray();
+            IPersistenceCommand[] commandsArray = commands.ToArray();
             commands.Clear();
             if (commandsArray.Any()) {
                 objectStore.Execute(commandsArray);
@@ -123,7 +123,6 @@ namespace NakedObjects.Core.Transaction {
                 RecursivelyCommitCommands();
             }
         }
-
 
         internal virtual void AddNotify(INakedObject nakedObject) {
             Log.DebugFormat("Add notification for {0}", nakedObject);

@@ -117,6 +117,5 @@ namespace NakedObjects.Core.Adapter {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

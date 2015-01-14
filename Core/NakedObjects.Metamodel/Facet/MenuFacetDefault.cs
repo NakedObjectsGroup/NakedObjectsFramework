@@ -30,8 +30,8 @@ namespace NakedObjects.Meta.Facet {
                 id = UniqueShortName(Spec());
             }
             if (!Spec().Service) {
-                id =Spec().ShortName+ "-Actions";
-            }           
+                id = Spec().ShortName + "-Actions";
+            }
             MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec().Type);
             // possible spec type is generic in which case invoke would fail without this check
             if (!m.ContainsGenericParameters) {
@@ -44,7 +44,7 @@ namespace NakedObjects.Meta.Facet {
             Type type = spec.Type;
             if (type.IsGenericType) {
                 usn += "-" + type.GetGenericArguments().First().Name;
-                }
+            }
             return usn;
         }
 
@@ -55,5 +55,6 @@ namespace NakedObjects.Meta.Facet {
             Menu = menu;
         }
     }
+
     // Copyright (c) Naked Objects Group Ltd.
 }

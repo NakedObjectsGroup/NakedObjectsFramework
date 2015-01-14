@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 3;
 
-
         public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -45,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (byte);
         }
-
 
         protected override byte DoParse(string entry) {
             try {

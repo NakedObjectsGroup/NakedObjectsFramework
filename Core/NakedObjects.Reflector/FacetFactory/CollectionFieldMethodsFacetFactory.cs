@@ -20,12 +20,10 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
-
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.ClearPrefix,
             PrefixesAndRecognisedMethods.ModifyPrefix
         };
-
 
         public CollectionFieldMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Collections) {}
@@ -38,7 +36,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 
-
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
 
             AddSetFacet(facets, property, collection);
@@ -49,7 +46,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
             FacetUtils.AddFacets(facets);
         }
-
 
         private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
             if (CollectionUtils.IsSet(property.PropertyType)) {

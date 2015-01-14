@@ -17,7 +17,6 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -281,7 +280,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistedCallbackFacetNull);
-          
         }
 
         [TestMethod]
@@ -290,7 +288,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistingCallbackFacetNull);
-        
         }
 
         [TestMethod]

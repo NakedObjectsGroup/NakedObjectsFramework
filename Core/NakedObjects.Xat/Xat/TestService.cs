@@ -18,6 +18,7 @@ namespace NakedObjects.Xat {
         public override string Title {
             get { return NakedObject.TitleString(); }
         }
+
         #endregion
     }
 

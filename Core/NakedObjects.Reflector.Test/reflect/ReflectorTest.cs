@@ -17,11 +17,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Menu;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-
-using NakedObjects.Menu;
 
 namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {
@@ -135,7 +134,6 @@ namespace NakedObjects.Reflect.Test {
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-
             RegisterFacetFactories(container);
 
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
@@ -148,7 +146,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectNoTypes() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -160,7 +158,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectObjectType() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -173,7 +171,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectListTypes() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -186,7 +184,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectSetTypes() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<object>)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -199,9 +197,9 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectQueryableTypes() {
-            var container = GetContainer();
-            var qo = new List<object>().AsQueryable();
-            var qi = new List<int>().AsQueryable();
+            IUnityContainer container = GetContainer();
+            IQueryable<object> qo = new List<object>().AsQueryable();
+            IQueryable<int> qi = new List<int>().AsQueryable();
             var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -214,10 +212,10 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectWhereIterator() {
-            var container = GetContainer();
-            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+            IUnityContainer container = GetContainer();
+            IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
 
-            var rc = new ReflectorConfiguration(new[] { it.GetType()  }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] {it.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -227,10 +225,9 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-
         [TestMethod]
         public void ReflectByteArray() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
 
             var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
 
@@ -244,9 +241,9 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectStringArray() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithStringArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -258,9 +255,9 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectWithScalars() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
 
-            var rc = new ReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -388,7 +385,6 @@ namespace NakedObjects.Reflect.Test {
             Value2
         }
 
-
         public class WithScalars {
             private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
             private ICollection<WithScalars> list = new List<WithScalars>();
@@ -427,11 +423,10 @@ namespace NakedObjects.Reflect.Test {
             [NotMapped]
             public virtual ulong ULong { get; set; }
 
-
             public virtual char Char {
                 get { return '3'; }
 // ReSharper disable once ValueParameterNotUsed
-                set {  }
+                set { }
             }
 
             public virtual bool Bool { get; set; }
@@ -459,7 +454,7 @@ namespace NakedObjects.Reflect.Test {
                 set { set = value; }
             }
 
-            [EnumDataType(typeof(TestEnum))]
+            [EnumDataType(typeof (TestEnum))]
             public virtual int EnumByAttributeChoices { get; set; }
         }
     }

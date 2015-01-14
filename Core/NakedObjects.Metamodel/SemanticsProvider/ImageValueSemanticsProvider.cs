@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (ImageValueSemanticsProvider));
 
-
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 

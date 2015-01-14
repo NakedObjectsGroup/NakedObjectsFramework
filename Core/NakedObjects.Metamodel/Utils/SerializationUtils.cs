@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Utils {
         }
 
         public static void AddValue<TKey, TValue>(this SerializationInfo info, string id, IImmutableDictionary<TKey, TValue> immutableDict) {
-            var dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            Dictionary<TKey, TValue> dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             info.AddValue(id, dict, typeof (Dictionary<TKey, TValue>));
         }
 

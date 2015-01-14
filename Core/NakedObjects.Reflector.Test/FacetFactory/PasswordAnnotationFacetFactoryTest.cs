@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PasswordAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -70,7 +69,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
         }
 
-
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -118,5 +116,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
     // Copyright (c) Naked Objects Group Ltd.
     // ReSharper restore UnusedMember.Local
-
 }

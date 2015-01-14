@@ -24,7 +24,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public RangeAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
-
         private static void Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();
             FacetUtils.AddFacet(Create(attribute, isDate, specification));

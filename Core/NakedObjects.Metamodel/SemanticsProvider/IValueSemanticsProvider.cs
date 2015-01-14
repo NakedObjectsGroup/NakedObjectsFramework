@@ -27,7 +27,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         T DefaultValue { get; }
 
-
         /// <summary>
         ///     Returns the provided object as an encoded string.
         /// </summary>

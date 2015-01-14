@@ -14,7 +14,6 @@ namespace AdventureWorksModel {
     // ReSharper disable once PartialTypeWithSinglePart
     // ReSharper disable InconsistentNaming
 
-
     public partial class AddressType {
         #region Primitive Properties
 

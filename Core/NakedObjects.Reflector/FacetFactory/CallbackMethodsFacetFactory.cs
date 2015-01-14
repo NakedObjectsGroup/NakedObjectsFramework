@@ -18,7 +18,6 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CallbackMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.DeletedMethod,
             PrefixesAndRecognisedMethods.DeletingMethod,
@@ -32,7 +31,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             PrefixesAndRecognisedMethods.OnPersistingErrorMethod,
             PrefixesAndRecognisedMethods.OnUpdatingErrorMethod
         };
-
 
         public CallbackMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
@@ -145,7 +143,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             else {
                 facets.Add(new OnPersistingErrorCallbackFacetNull(specification));
             }
-
 
             remover.RemoveMethods(methods);
             FacetUtils.AddFacets(facets);

@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 11;
 
-
         public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) {}
 
@@ -77,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override int DoRestore(string data) {
             return int.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "IntAdapter: ";

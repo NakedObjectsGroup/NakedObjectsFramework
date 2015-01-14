@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -140,13 +139,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private readonly ISpecificationBuilder facetHolder1 = new TestSpecification();
 
-
         [TestMethod]
         public void ATestDisplayNameAnnotationOnActionIgnoresDuplicate() {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer18), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer18), "SomeAction1");
-
 
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
@@ -171,7 +168,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer13), "SomeAction1");
 
-
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
@@ -193,7 +189,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDisplayNameAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer16), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer16), "NumberOfOrders1");
-
 
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             facetFactory.Process(Reflector, property1, MethodRemover, facetHolder1);
@@ -276,7 +271,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             PropertyInfo property = FindProperty(typeof (Customer11), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer11), "NumberOfOrders1");
 
-
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             facetFactory.Process(Reflector, property1, MethodRemover, facetHolder1);
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
@@ -358,5 +352,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // Copyright (c) Naked Objects Group Ltd.
     // ReSharper restore UnusedMember.Local
     // ReSharper restore UnusedParameter.Local
-
 }

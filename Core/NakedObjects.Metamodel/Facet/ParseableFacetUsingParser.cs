@@ -25,7 +25,6 @@ namespace NakedObjects.Meta.Facet {
 
         #region IParseableFacet Members
 
-
         public INakedObject ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
                 throw new ArgumentException(Resources.NakedObjects.MissingEntryError);

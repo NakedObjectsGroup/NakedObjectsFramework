@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
-
         /// <summary>
         /// To order the factory
         /// </summary>
@@ -37,7 +36,6 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="type">class being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-      
         void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
@@ -47,7 +45,6 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="method">MethodInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-    
         void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
@@ -57,7 +54,6 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="property">PropertyInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-      
         void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
@@ -67,7 +63,6 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="method">MethodInfo representing the feature being processed</param>
         /// <param name="paramNum">zero-based index to the parameter to be processed</param>
         /// <param name="holder">to attach the facets to</param>
-      
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);

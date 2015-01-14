@@ -22,7 +22,6 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -179,7 +178,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-
         private class Customer13 {
             public void SomeAction(int x, long y, long z) {}
 
@@ -205,11 +203,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return new string[0].AsQueryable();
             }
 
-
             public IQueryable<Customer26> AutoComplete1SomeAction(string name) {
                 return new Customer26[0].AsQueryable();
             }
-
 
             public IQueryable<long> AutoComplete2SomeAction(string name) {
                 return new long[0].AsQueryable();
@@ -223,11 +219,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return new string[0].AsQueryable();
             }
 
-
             public IQueryable<string> AutoComplete1SomeAction() {
                 return new string[0].AsQueryable();
             }
-
 
             public IQueryable<string> AutoComplete2SomeAction(int name) {
                 return new string[0].AsQueryable();
@@ -247,7 +241,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return new Customer26[0].AsQueryable();
             }
         }
-
 
         private class Customer30 {
             public void SomeAction(int x, long y, long z) {}
@@ -285,7 +278,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-
         private class Customer21 {
             public void SomeAction(int x, long y, long z) {}
 
@@ -303,7 +295,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return new long[0];
             }
         }
-
 
         private class Customer14 {
             public void SomeAction() {}
@@ -428,7 +419,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public class CustomerStatic {
             public void SomeAction(int x, long y) {}
 
-
             public static bool HideSomeAction(IPrincipal principal) {
                 return true;
             }
@@ -439,7 +429,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public static void OtherAction(int x, long y) {}
         }
-
 
         private class Customer17 {
             public void SomeAction(int x, long y, long z) {}
@@ -504,11 +493,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return new string[0].AsQueryable();
             }
 
-
             public IQueryable<ICustomer> AutoComplete1SomeAction(string name) {
                 return new ICustomer[0].AsQueryable();
             }
-
 
             public IQueryable<long> AutoComplete2SomeAction(string name) {
                 return new long[0].AsQueryable();
@@ -519,13 +506,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public IQueryable<Customer33> SomeQueryableAction1() {
                 return null;
             }
+
             [QueryOnly]
             public IEnumerable<Customer33> SomeQueryableAction2() {
                 return null;
             }
-
-
-
         }
 
         // ReSharper restore UnusedMember.Local
@@ -547,27 +532,26 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestActionInvocationFacetQueryableByType() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
+            MethodInfo actionMethod = FindMethod(typeof (Customer33), "SomeQueryableAction1");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IActionInvocationFacet));
+            IFacet facet = Specification.GetFacet(typeof (IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
-            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
+            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
             Assert.IsTrue(actionInvocationFacetViaMethod.IsQueryOnly);
 
             AssertMethodRemoved(actionMethod);
         }
 
-
         [TestMethod]
         public void TestActionInvocationFacetQueryableByAnnotation() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
+            MethodInfo actionMethod = FindMethod(typeof (Customer33), "SomeQueryableAction2");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IActionInvocationFacet));
+            IFacet facet = Specification.GetFacet(typeof (IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
-            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod)facet;
+            var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
             Assert.IsTrue(actionInvocationFacetViaMethod.IsQueryOnly);
 
@@ -633,7 +617,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
 
-
             AssertMethodRemoved(propertyValidateMethod);
         }
 
@@ -669,7 +652,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
         }
 
-
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -695,7 +677,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             CheckAutoCompleteFacetIsNull(autoComplete2Method, facetHolderWithParms.Parameters[2]);
         }
 
-
         [TestMethod]
         public void TestInstallsDisabledForSessionFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (CustomerStatic), "SomeAction", new[] {typeof (int), typeof (long)});
@@ -704,7 +685,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForSessionFacetNone);
         }
-
 
         [TestMethod]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
@@ -727,7 +707,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 33, 2);
             CheckAutoCompleteFacet(autoComplete1Method, facetHolderWithParms.Parameters[1], 66, 3);
         }
-
 
         [TestMethod]
         public void TestInstallsParameterAutoCompleteMethodByIndexNoArgsFacetAndRemovesMethod() {
@@ -790,7 +769,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
-
         [TestMethod]
         public void TestInstallsParameterChoicesMethodByIndexNoArgsFacetAndRemovesMethodDuplicate() {
             MethodInfo actionMethod = FindMethod(typeof (Customer30), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
@@ -841,7 +819,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
-
         [TestMethod]
         public void TestInstallsParameterChoicesMethodByNameNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer21), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
@@ -873,7 +850,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
-
         [TestMethod]
         public void TestInstallsParameterDefaultsMethodByIndexNoArgsFacetAndRemovesMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction", new[] {typeof (int), typeof (long), typeof (long)});
@@ -898,7 +874,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
             Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
 
-
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
@@ -906,7 +881,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
             Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
         }
-
 
         [TestMethod]
         public void TestInstallsParameterDefaultsMethodByNameNoArgsFacetAndRemovesMethod() {
@@ -932,7 +906,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
             Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
 
-
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
@@ -940,7 +913,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
             Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
         }
-
 
         [TestMethod]
         public void TestInstallsParameterValidationMethodByIndexNoArgsFacetAndRemovesMethod() {
@@ -983,7 +955,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNull(facetExecuted1);
         }
-
 
         [TestMethod]
         public void TestInstallsValidateMethodNoArgsFacetAndRemovesMethod() {
@@ -1036,7 +1007,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
             AssertMethodNotRemoved(disableMethod);
         }
-
 
         [TestMethod]
         public void TestPickUpDisableMethodDifferentSignature() {

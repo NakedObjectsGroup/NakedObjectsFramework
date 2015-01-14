@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
@@ -83,7 +82,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(enumeratorMethod);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

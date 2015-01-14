@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class IdentityMapImpl : IIdentityMap {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(IdentityMapImpl));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (IdentityMapImpl));
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly IOidGenerator oidGenerator;
         private readonly IPocoAdapterMap pocoAdapterMap;
@@ -37,7 +37,6 @@ namespace NakedObjects.Core.Component {
         public virtual IEnumerator<INakedObject> GetEnumerator() {
             return pocoAdapterMap.GetEnumerator();
         }
-
 
         public virtual void Reset() {
             identityAdapterMap.Reset();
@@ -103,7 +102,6 @@ namespace NakedObjects.Core.Component {
             identityAdapterMap.Add(oid, adapter);
             Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
         }
-
 
         public virtual void Unloaded(INakedObject nakedObject) {
             Log.DebugFormat("Unload: {0}", nakedObject);

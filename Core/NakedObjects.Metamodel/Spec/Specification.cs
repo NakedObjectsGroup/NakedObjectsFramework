@@ -72,7 +72,6 @@ namespace NakedObjects.Meta.Spec {
             AddFacet(facet.FacetType, facet);
         }
 
-
         #endregion
 
         #region ISerializable

@@ -23,6 +23,5 @@ namespace NakedObjects.Architecture.Facet {
         string DisabledReason(INakedObject nakedObject);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

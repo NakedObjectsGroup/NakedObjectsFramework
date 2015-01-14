@@ -43,7 +43,7 @@ namespace NakedObjects.Meta {
             }
             catch (Exception e) {
                 Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
-                var spec = cache.GetSpecification(name);
+                IObjectSpecImmutable spec = cache.GetSpecification(name);
                 if (spec != null) {
                     Log.InfoFormat("Found {0} in cache", name);
                     return spec;

@@ -23,7 +23,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class ActionSpec : MemberSpecAbstract, IActionSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionSpec));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
 
         private readonly SpecFactory memberFactory;
@@ -41,7 +41,6 @@ namespace NakedObjects.Core.Spec {
 
         public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
-
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(servicesManager);
             Assert.AssertNotNull(nakedObjectManager);

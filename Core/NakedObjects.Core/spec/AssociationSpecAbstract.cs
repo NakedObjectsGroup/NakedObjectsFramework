@@ -38,7 +38,6 @@ namespace NakedObjects.Core.Spec {
             get { return ContainsFacet(typeof (IAutoCompleteFacet)); }
         }
 
-
         public INakedObjectManager Manager {
             get { return manager; }
         }

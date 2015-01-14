@@ -15,10 +15,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     member methods with the <see cref="MemberOrderAttribute" />. 
     /// </para>
     /// <seealso cref="IMemberOrderFacet" />
-
-
     public interface IMemberOrderFacet : IFacet {
-
         /// <summary>
         ///     The sequence, in dewey-decimal notation
         /// </summary>

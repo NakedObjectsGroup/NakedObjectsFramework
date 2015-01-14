@@ -16,7 +16,6 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PageSizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -41,13 +42,12 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         protected object Call(string name, INakedObject collection, params object[] pp) {
-            var m = GetType().GetMethod(name);
-            var t = collection.Object.GetType().GenericTypeArguments.First();
+            MethodInfo m = GetType().GetMethod(name);
+            Type t = collection.Object.GetType().GenericTypeArguments.First();
 
             return m.MakeGenericMethod(t).Invoke(this, pp);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

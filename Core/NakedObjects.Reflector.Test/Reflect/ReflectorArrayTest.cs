@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-
 namespace NakedObjects.Reflect.Test {
     public class TestPoco {}
 
@@ -50,13 +49,11 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreEqual(typeof (TestPoco[]).FullName, Specification.FullName);
         }
 
-
         [TestMethod]
         public void TestNamedFaced() {
             IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<NamedFacetInferred>(facet);
-
         }
 
         [TestMethod]
@@ -64,7 +61,6 @@ namespace NakedObjects.Reflect.Test {
             IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<PluralFacetInferred>(facet);
-
         }
 
         [TestMethod]
@@ -77,7 +73,6 @@ namespace NakedObjects.Reflect.Test {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<TypeOfFacetInferredFromArray>(facet);
-
         }
     }
 

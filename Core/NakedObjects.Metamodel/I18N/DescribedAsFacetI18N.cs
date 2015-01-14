@@ -16,6 +16,5 @@ namespace NakedObjects.Meta.I18N {
             : base(valueString, holder) {}
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

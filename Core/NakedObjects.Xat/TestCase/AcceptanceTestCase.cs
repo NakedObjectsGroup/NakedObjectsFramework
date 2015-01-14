@@ -104,7 +104,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual Type[] Types {
-            get { return new Type[] { }; }
+            get { return new Type[] {}; }
         }
 
         protected void StartTest() {
@@ -128,11 +128,9 @@ namespace NakedObjects.Xat {
             }
         }
 
-
         protected void PreInstallFixtures(ITransactionManager transactionManager) {
             fixtureServices = new FixtureServices();
         }
-
 
         private static MethodInfo GetInstallMethod(object fixture) {
             return fixture.GetType().GetMethod("Install", new Type[0]) ??
@@ -212,23 +210,22 @@ namespace NakedObjects.Xat {
                     }
                 }
                 Assert.Fail("No such service: " + serviceName);
-
             }
             return servicesCache[serviceName.ToLower()];
         }
 
         protected ITestMenu GetMainMenu(string menuName) {
-            var mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
+            IMenuImmutable[] mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
                 IMenuImmutable menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
                 if (menu == null) {
                     Assert.Fail("No such main menu " + menuName);
                 }
                 return TestObjectFactoryClass.CreateTestMenuMain(menu);
-            } 
-            
+            }
+
             //Use the MenuServices to derive the menus
-            var service = GetTestService(menuName);
+            ITestService service = GetTestService(menuName);
             if (service == null) {
                 Assert.Fail("No such main menu, or Service, " + menuName);
             }
@@ -240,7 +237,7 @@ namespace NakedObjects.Xat {
         }
 
         protected void AssertMainMenuCountIs(int expected) {
-            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
+            int actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
             Assert.AreEqual(expected, actual);
         }
 
@@ -385,11 +382,10 @@ namespace NakedObjects.Xat {
             container.RegisterType<IFacetFactory, ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++));
             container.RegisterType<IFacetFactory, ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++));
             container.RegisterType<IFacetFactory, CollectionFacetFactory>("CollectionFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++)); // written to not trample over TypeOf if already installed
-            container.RegisterType<IFacetFactory, MenuFacetFactory>("MenuFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order)); 
+            container.RegisterType<IFacetFactory, MenuFacetFactory>("MenuFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-
             RegisterFacetFactories(container);
             container.RegisterType<IMenuFactory, MenuFactory>();
 
@@ -411,7 +407,7 @@ namespace NakedObjects.Xat {
 
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
-                Types ?? new Type[]{},
+                Types ?? new Type[] {},
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
                 SystemServices.Select(s => s.GetType()).ToArray());

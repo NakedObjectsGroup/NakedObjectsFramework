@@ -68,7 +68,6 @@ namespace NakedObjects.Meta.Facet {
             get { return failureMessage; }
         }
 
-
         public virtual string Invalidates(InteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (proposedArgument == null) {
@@ -81,7 +80,6 @@ namespace NakedObjects.Meta.Facet {
 
             return failureMessage ?? Resources.NakedObjects.InvalidEntry;
         }
-
 
         public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));

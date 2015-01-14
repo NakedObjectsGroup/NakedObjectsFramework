@@ -17,7 +17,6 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class IconMethodFacetFactoryTest : AbstractFacetFactoryTest {

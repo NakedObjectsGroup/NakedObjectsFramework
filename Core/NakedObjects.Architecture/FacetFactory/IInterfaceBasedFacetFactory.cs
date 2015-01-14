@@ -14,6 +14,5 @@ namespace NakedObjects.Architecture.FacetFactory {
     /// </summary>
     public interface IInterfaceBasedFacetFactory : IFacetFactory {}
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

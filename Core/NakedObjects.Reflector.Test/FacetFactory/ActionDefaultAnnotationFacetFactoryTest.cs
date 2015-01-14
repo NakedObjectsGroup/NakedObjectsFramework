@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -61,7 +60,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Action));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
-
 
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {

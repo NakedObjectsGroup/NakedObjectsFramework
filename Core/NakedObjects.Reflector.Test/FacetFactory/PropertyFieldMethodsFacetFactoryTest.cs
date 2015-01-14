@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PropertyFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -276,7 +275,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
-
 
         private class Customer2 {
             public string FirstName {
@@ -557,7 +555,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(Specification.GetFacet(typeof (IAutoCompleteFacet)));
         }
 
-
         [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer10), "FirstName");
@@ -589,7 +586,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
         }
-
 
         [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedLocal() {
@@ -933,5 +929,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // ReSharper restore ValueParameterNotUsed
     // ReSharper restore InconsistentNaming
     // ReSharper restore UnusedParameter.Local
-
 }

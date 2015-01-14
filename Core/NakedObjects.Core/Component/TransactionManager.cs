@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class TransactionManager : ITransactionManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TransactionManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (TransactionManager));
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private int transactionLevel;
@@ -68,7 +68,6 @@ namespace NakedObjects.Core.Component {
             userAborted = true;
         }
 
-
         public virtual void EndTransaction() {
             transactionLevel--;
             if (transactionLevel == 0) {
@@ -90,7 +89,6 @@ namespace NakedObjects.Core.Component {
 
         #endregion
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

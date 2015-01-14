@@ -46,7 +46,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public T GetService<T>() {
-           return framework.ServicesManager.GetServices().Select(no => no.Object).OfType<T>().SingleOrDefault();
+            return framework.ServicesManager.GetServices().Select(no => no.Object).OfType<T>().SingleOrDefault();
         }
 
         public IPrincipal Principal {

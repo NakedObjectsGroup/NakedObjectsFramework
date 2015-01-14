@@ -81,7 +81,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return uint.Parse(data, CultureInfo.InvariantCulture);
         }
 
-
         public override string ToString() {
             return "UIntAdapter: ";
         }

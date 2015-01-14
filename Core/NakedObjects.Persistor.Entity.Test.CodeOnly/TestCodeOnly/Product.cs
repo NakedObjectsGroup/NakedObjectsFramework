@@ -77,7 +77,6 @@ namespace TestCodeOnly {
         #endregion
     }
 
-
     public class Product : AbstractTestCode {
 // ReSharper disable once NotAccessedField.Local
         private Category forTest;

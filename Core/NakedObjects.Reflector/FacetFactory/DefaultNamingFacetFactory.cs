@@ -25,7 +25,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public DefaultNamingFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
-
         private string ShortName(Type type) {
             return TypeNameUtils.GetShortName(type.Name);
         }

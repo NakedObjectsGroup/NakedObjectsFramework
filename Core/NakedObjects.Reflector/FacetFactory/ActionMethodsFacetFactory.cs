@@ -40,7 +40,6 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionMethodsFacetFactory));
 
-
         public ActionMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ActionsAndParameters) {}
 
@@ -120,7 +119,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacets(facets);
         }
 
-
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
         /// </summary>
@@ -140,7 +138,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             for (int i = 0; i < paramTypes.Length; i++) {
                 Type paramType = paramTypes[i];
                 string paramName = paramNames[i];
-
 
                 MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
                     type,
@@ -187,7 +184,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
 
                 Type returnType = typeof (IEnumerable<>).MakeGenericType(paramType);
-                var methodName = PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName;
+                string methodName = PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName;
 
                 MethodInfo[] methods = FindMethods(
                     reflector,
@@ -263,7 +260,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
         }
-
 
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {

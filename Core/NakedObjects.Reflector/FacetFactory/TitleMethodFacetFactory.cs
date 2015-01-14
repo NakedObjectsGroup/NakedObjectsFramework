@@ -27,7 +27,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             PrefixesAndRecognisedMethods.TitleMethod
         };
 
-
         public TitleMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

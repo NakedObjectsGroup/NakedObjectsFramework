@@ -90,7 +90,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

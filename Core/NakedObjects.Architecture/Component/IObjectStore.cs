@@ -70,7 +70,6 @@ namespace NakedObjects.Architecture.Component {
 
         object CreateInstance(Type type);
 
-
         /// <summary>
         ///     Retrieves the object identified by the specified OID from the object store. The cache should be checked
         ///     first and, if the object is cached, the cached version should be returned. It is important that if this

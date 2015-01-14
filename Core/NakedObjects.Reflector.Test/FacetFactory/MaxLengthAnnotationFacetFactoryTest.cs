@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class MaxLengthAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -44,8 +43,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-
 
         private class Customer1 {
             [MaxLength(30)]
@@ -125,8 +122,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(20, maxLengthFacetAnnotation.Value);
         }
 
-     
-
         [TestMethod]
         public void TestNofMaxLengthAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
@@ -164,5 +159,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // Copyright (c) Naked Objects Group Ltd.
     // ReSharper restore UnusedMember.Local
     // ReSharper restore UnusedParameter.Local
-
 }

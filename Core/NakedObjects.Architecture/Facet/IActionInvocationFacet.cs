@@ -32,6 +32,5 @@ namespace NakedObjects.Architecture.Facet {
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

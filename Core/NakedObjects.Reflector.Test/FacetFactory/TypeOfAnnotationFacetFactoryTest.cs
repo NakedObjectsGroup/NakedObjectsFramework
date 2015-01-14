@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class TypeOfAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -44,8 +43,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-     
 
         private class Customer10 {
 // ReSharper disable once UnusedMember.Local
@@ -144,7 +141,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

@@ -38,7 +38,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-
         private static IIconFacet Create(IconNameAttribute attribute, ISpecification holder) {
             return attribute != null ? new IconFacetAnnotation(attribute.Value, holder) : null;
         }

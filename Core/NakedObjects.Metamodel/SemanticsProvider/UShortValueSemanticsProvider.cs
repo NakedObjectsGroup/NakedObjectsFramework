@@ -29,7 +29,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typeof (IUnsignedShortValueFacet); }
         }
 
-
         public static Type AdaptedType {
             get { return typeof (ushort); }
         }
@@ -45,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (ushort);
         }
-
 
         protected override ushort DoParse(string entry) {
             try {
@@ -71,7 +69,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return value.ToString(mask);
         }
 
-
         protected override string DoEncode(ushort obj) {
             return obj.ToString(CultureInfo.InvariantCulture);
         }
@@ -79,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override ushort DoRestore(string data) {
             return ushort.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "UShortAdapter: ";

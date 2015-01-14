@@ -55,11 +55,9 @@ namespace NakedObjects.Meta.Facet {
             return manager.CreateAdapter(newCollection, null, null);
         }
 
-
         public IEnumerable<INakedObject> AsEnumerableInternal<T>(INakedObject collection, INakedObjectManager manager) {
             return AsGenericIQueryable<T>(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
         }
-
 
         public IQueryable AsQueryableInternal<T>(INakedObject collection) {
             return AsGenericIQueryable<T>(collection);

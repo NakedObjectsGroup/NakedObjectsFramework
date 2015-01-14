@@ -47,7 +47,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Reflector = null;
         }
 
-
         protected static bool Contains<T>(T[] array, T val) {
             return array.Contains(val);
         }
@@ -81,7 +80,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
-
 
         protected static PropertyInfo FindProperty(Type type, string propertyName) {
             try {

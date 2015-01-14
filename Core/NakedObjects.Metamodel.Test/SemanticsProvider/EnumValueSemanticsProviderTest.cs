@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         NewYork
     };
 
-
     [TestClass]
     public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TestEnum> {
         #region Setup/Teardown
@@ -31,7 +30,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void SetUp() {
             base.SetUp();
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 
@@ -137,7 +136,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(TestEnum.Paris, decoded);
         }
 
-
         [TestMethod]
         public void TestDefault() {
             object def = value.DefaultValue;
@@ -149,7 +147,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             string encoded = GetValue().ToEncodedString(TestEnum.Paris);
             Assert.AreEqual("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris", encoded);
         }
-
 
         [TestMethod]
         public void TestIntegralValue() {
@@ -180,14 +177,14 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             Assert.AreEqual(ulong.MinValue.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject(ulong.MinValue)));
             Assert.AreEqual(long.MinValue.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject(long.MinValue)));
 
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject((sbyte)2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject((byte)2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject((ushort)2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject((short)2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject((uint)2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumSb>(null, null).IntegralValue(MockNakedObject((sbyte) 2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumB>(null, null).IntegralValue(MockNakedObject((byte) 2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUs>(null, null).IntegralValue(MockNakedObject((ushort) 2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumS>(null, null).IntegralValue(MockNakedObject((short) 2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUi>(null, null).IntegralValue(MockNakedObject((uint) 2)));
             Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumI>(null, null).IntegralValue(MockNakedObject(2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject((ulong)2)));
-            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long)2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumUl>(null, null).IntegralValue(MockNakedObject((ulong) 2)));
+            Assert.AreEqual(2.ToString(CultureInfo.InvariantCulture), new EnumValueSemanticsProvider<TestEnumL>(null, null).IntegralValue(MockNakedObject((long) 2)));
         }
 
         [TestMethod]
@@ -217,7 +214,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.Fail();
             }
         }
-
 
         [TestMethod]
         public void TestParseInvariant() {
@@ -249,7 +245,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.TestParseNull();
         }
 
-
         [TestMethod]
         public override void TestDecodeNull() {
             base.TestDecodeNull();
@@ -260,7 +255,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.TestEmptyEncoding();
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

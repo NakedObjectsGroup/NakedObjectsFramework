@@ -8,7 +8,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Meta.Facet;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class MemberOrderComparatorTest {
@@ -35,7 +34,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             m2 = new MemberPeerStub("abc");
         }
 
-
         [TestMethod]
         public virtual void TestDefaultGroupOneComponent() {
             Reset();
@@ -48,7 +46,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultGroupOneComponentOtherWay() {
             Reset();
             m1.AddFacet(new MemberOrderFacet("2", m1));
-            m2.AddFacet(new MemberOrderFacet( "1", m2));
+            m2.AddFacet(new MemberOrderFacet("1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
@@ -103,8 +101,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDefaultGroupOneSideRunsTwoComponents() {
             Reset();
-            m1.AddFacet(new MemberOrderFacet( "1.1", m1));
-            m2.AddFacet(new MemberOrderFacet( "1.2", m2));
+            m1.AddFacet(new MemberOrderFacet("1.1", m1));
+            m2.AddFacet(new MemberOrderFacet("1.2", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
@@ -112,7 +110,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultGroupOneSideRunsTwoComponentsOtherWay() {
             Reset();
             m1.AddFacet(new MemberOrderFacet("1.2", m1));
-            m2.AddFacet(new MemberOrderFacet( "1.1", m2));
+            m2.AddFacet(new MemberOrderFacet("1.1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
     }

@@ -110,7 +110,6 @@ namespace NakedObjects.Meta.Adapter {
             return type.FullName;
         }
 
-
         private static string[] ToParameterStringArray(Type[] fromArray) {
             var parameters = new List<string>();
             fromArray.ForEach(x => parameters.Add(FullName(x)));

@@ -22,7 +22,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public RegExAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
-
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
@@ -44,7 +43,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Process(property, specification);
             }
         }
-
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
@@ -68,7 +66,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }
-
 
         private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) {
             return new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);

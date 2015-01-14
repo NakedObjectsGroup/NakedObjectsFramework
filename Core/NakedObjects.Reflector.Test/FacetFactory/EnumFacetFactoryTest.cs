@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
@@ -65,7 +64,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObject));
         }
 
-
         private enum Cities {
             London,
             Paris,
@@ -87,7 +85,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public Cities City { get; set; }
         }
 
-
         private class Customer4 {
             public void SomeAction(Cities city) {}
         }
@@ -95,7 +92,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer5 {
             public Cities? City { get; set; }
         }
-
 
         private class Customer6 {
             public void SomeAction(Cities? city) {}
@@ -175,5 +171,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // Copyright (c) Naked Objects Group Ltd.
     // ReSharper restore UnusedMember.Local
     // ReSharper restore UnusedParameter.Local
-
 }

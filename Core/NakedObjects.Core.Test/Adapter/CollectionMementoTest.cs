@@ -18,12 +18,11 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
 
 namespace NakedObjects.Core.Test.Adapter {
     public class TestDomainObject {
@@ -55,8 +54,8 @@ namespace NakedObjects.Core.Test.Adapter {
                 where tdo.Id != ids
                 select tdo;
         }
-        // ReSharper restore PossibleMultipleEnumeration
 
+        // ReSharper restore PossibleMultipleEnumeration
 
         public IQueryable<TestDomainObject> Action5(IEnumerable<TestDomainObject> filter) {
             IEnumerable<int> idsToFilter = filter.Select(tdo => tdo.Id);
@@ -79,7 +78,6 @@ namespace NakedObjects.Core.Test.Adapter {
         public DbSet<TestDomainObject> TestDomainObjects { get; set; }
     }
 
-
     public class TestDataFixture {
         public IDomainObjectContainer Container { protected get; set; }
 
@@ -96,7 +94,6 @@ namespace NakedObjects.Core.Test.Adapter {
             Container.Persist(ref tdo);
         }
     }
-
 
     [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
@@ -158,9 +155,9 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         private void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
-            IEnumerable<TestDomainObject> recoveredCollection = memento.RecoverCollection().GetAsEnumerable(manager).Select(no => no.GetDomainObject<TestDomainObject>());
-            var oc = originalCollection.ToList();
-            var rc = recoveredCollection.ToList();
+            IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(memento.RecoverCollection(), manager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
+            List<TestDomainObject> oc = originalCollection.ToList();
+            List<TestDomainObject> rc = recoveredCollection.ToList();
 
             Assert.IsTrue(oc.SequenceEqual(rc), "recovered collection not same as original");
         }
@@ -178,13 +175,13 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestActionNoParmsTransient() {
-            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TestDomainObject)));
+            INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TestDomainObject)));
 
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action1");
 
             var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, targetNo, actionSpec, new INakedObject[] {});
             RoundTrip(memento);
-            RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento, NakedObjectsFramework.NakedObjectManager);
+            RecoverCollection(AdapterUtils.GetDomainObject<TestDomainObject>(targetNo).Action1(), memento, NakedObjectsFramework.NakedObjectManager);
         }
 
         // ReSharper disable PossibleMultipleEnumeration
@@ -200,16 +197,15 @@ namespace NakedObjects.Core.Test.Adapter {
             var selectedMemento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, memento, new object[] {target});
 
             RoundTrip(selectedMemento);
-            IEnumerable<TestDomainObject> recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable(NakedObjectsFramework.NakedObjectManager).Select(no => no.GetDomainObject<TestDomainObject>());
+            IEnumerable<TestDomainObject> recoveredCollection = AdapterUtils.GetAsEnumerable(selectedMemento.RecoverCollection(), NakedObjectsFramework.NakedObjectManager).Select(no => AdapterUtils.GetDomainObject<TestDomainObject>(no));
             Assert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
 
             IEnumerable<TestDomainObject> selectedCollection = target.Action1().Where(tdo => tdo.Id == target.Id);
 
             Assert.IsTrue(selectedCollection.SequenceEqual(recoveredCollection), "recovered selected collection not same as original selected collection");
         }
+
         // ReSharper restore PossibleMultipleEnumeration
-
-
 
         [Test]
         public void TestActionObjectCollectionParm() {
@@ -244,7 +240,6 @@ namespace NakedObjects.Core.Test.Adapter {
             RoundTrip(memento);
             RecoverCollection(target.Action5(rawParm), memento, NakedObjectsFramework.NakedObjectManager);
         }
-
 
         [Test]
         public void TestActionObjectParm() {

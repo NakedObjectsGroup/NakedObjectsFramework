@@ -183,7 +183,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                var rawValue = fromObject == null ? null : fromObject.Object.GetType().IsValueType ? (object) 0 : null;
+                object rawValue = fromObject == null ? null : fromObject.Object.GetType().IsValueType ? (object) 0 : null;
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 

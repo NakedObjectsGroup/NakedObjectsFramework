@@ -90,14 +90,14 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty GetPropertyByName(string name) {
-            var q = Properties.Where(x => x.Name == name).ToArray();
+            ITestProperty[] q = Properties.Where(x => x.Name == name).ToArray();
             if (!q.Any()) Assert.Fail("No Property named '" + name + "'");
             if (q.Count() > 1) Assert.Fail("More than one Property named '" + name + "'");
             return q.Single();
         }
 
         public ITestProperty GetPropertyById(string id) {
-            var q = Properties.Where(x => x.Id == id).ToArray();
+            ITestProperty[] q = Properties.Where(x => x.Id == id).ToArray();
             if (q.Count() != 1) Assert.Fail("No Property with Id '" + id + "'");
             return q.Single();
         }
@@ -110,7 +110,7 @@ namespace NakedObjects.Xat {
 
             var validatorFacet = NakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
-            var result = validatorFacet.Validate(NakedObject);
+            string result = validatorFacet.Validate(NakedObject);
 
             if (!string.IsNullOrEmpty(result)) {
                 Assert.Fail(result);
@@ -142,7 +142,7 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetPropertyOrder() {
-            var props = Properties;
+            ITestProperty[] props = Properties;
             var order = new StringBuilder();
             for (int i = 0; i < props.Length; i++) {
                 order.Append(props[i].Name);
@@ -155,6 +155,7 @@ namespace NakedObjects.Xat {
             Assert.AreEqual(order, GetPropertyOrder());
             return this;
         }
+
         #endregion
 
         public override bool Equals(Object obj) {

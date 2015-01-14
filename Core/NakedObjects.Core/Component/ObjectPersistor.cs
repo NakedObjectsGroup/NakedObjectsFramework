@@ -24,14 +24,14 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public class ObjectPersistor : IObjectPersistor {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
         private readonly ITransactionManager transactionManager;
 
         public ObjectPersistor(IObjectStore objectStore,
-                               ITransactionManager transactionManager,
-                               INakedObjectManager nakedObjectManager) {
+            ITransactionManager transactionManager,
+            INakedObjectManager nakedObjectManager) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(transactionManager);
             Assert.AssertNotNull(nakedObjectManager);

@@ -87,7 +87,7 @@ namespace NakedObjects.Meta.Authorization {
         }
 
         private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager,
-                                     IMetamodelManager manager) {
+            IMetamodelManager manager) {
             Assert.AssertNotNull(target);
 
             //Look for exact-fit TypeAuthorizer

@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Authorization {
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain> {
             string fullyQualifiedName = typeof (TDomain).FullName;
-            TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
+            TypeAuthorizers.Add(fullyQualifiedName, typeof (TAuth));
         }
 
         #endregion

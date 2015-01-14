@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Util {
             return EncodeTypeName(spec.FullName, "-", elements);
         }
 
-        public static string EncodeTypeName(string typeName,  string separator = "-", params IObjectSpec[] elements) {
+        public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
             Type type = TypeUtils.GetType(typeName);
 
             if (type.IsGenericType) {
@@ -45,7 +45,7 @@ namespace NakedObjects.Core.Util {
         public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
             string rootType = type.GetGenericTypeDefinition().FullName;
 
-            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
+            string[] args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
 
             args = args.Any() ? args : elements.Select(e => e.FullName).ToArray();
 

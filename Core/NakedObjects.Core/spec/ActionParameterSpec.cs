@@ -120,7 +120,7 @@ namespace NakedObjects.Core.Spec {
             get {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
-                    var es = facet != null ? facet.ValueSpec : null;
+                    IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
                     elementSpec = es == null ? null : metamodel.GetSpecification(es);
                     checkedForElementSpec = true;
                 }
@@ -183,7 +183,7 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
-                var msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName); 
+                string msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
                 return GetConsent(msg);
             }
 
@@ -228,7 +228,6 @@ namespace NakedObjects.Core.Spec {
                 return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject), options)).ToArray();
             }
 
-
             if (enumFacet != null) {
                 return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
             }
@@ -246,7 +245,6 @@ namespace NakedObjects.Core.Spec {
             return null;
         }
 
-
         public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
             return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject), autoCompleteParm)).ToArray();
@@ -260,7 +258,6 @@ namespace NakedObjects.Core.Spec {
             return GetDefaultValueAndType(nakedObject).Item2;
         }
 
-
         public string Id {
             get { return Identifier.MemberParameterNames[Number]; }
         }
@@ -269,7 +266,7 @@ namespace NakedObjects.Core.Spec {
 
         private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
             if (parentAction.IsContributedMethod && nakedObject != null) {
-                var matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec)).ToArray();
+                IActionParameterSpec[] matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec)).ToArray();
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
                     return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);
@@ -293,7 +290,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                var rawValue = nakedObject == null ? null : nakedObject.Object.GetType().IsValueType ? (object) 0 : null;
+                object rawValue = nakedObject == null ? null : nakedObject.Object.GetType().IsValueType ? (object) 0 : null;
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 

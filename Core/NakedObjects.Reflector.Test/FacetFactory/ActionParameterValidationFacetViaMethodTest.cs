@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
@@ -48,7 +47,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet.InvalidReason(target, value));
         }
 
-
         [TestMethod]
         public void Test2() {
             var mock = new Mock<INakedObject>();
@@ -57,7 +55,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
         }
     }
-
 
     internal class Customer17 {
         public void SomeAction(int x, long y, long z) {}

@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -47,7 +46,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer {}
 
         private class Customer1 {}
-
 
         [TestMethod]
         public void TestApplyValidationNotPickup() {

@@ -85,7 +85,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return char.Parse(data);
         }
 
-
         public override string ToString() {
             return "CharAdapter: ";
         }

@@ -83,7 +83,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         // ReSharper restore UnusedParameter.Local
 
-
         [TestMethod]
         public void TestActionWithDictionaryParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithDictionaryParameter");
@@ -96,7 +95,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
-
         [TestMethod]
         public void TestActionWithNoParameters() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNoParameters");
@@ -108,7 +106,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNullableParameter");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
-
 
         [TestMethod]
         public void TestActionWithOneBadParameter() {
@@ -127,7 +124,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneGoodParameter");
             Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
-
 
         [TestMethod]
         public void TestActionWithTwoGoodParameter() {

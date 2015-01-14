@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(nakedObjectManager);
-         
+
             this.metamodelManager = metamodelManager;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Component {
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
             Assert.AssertTrue(isInitialized);
-          
+
             return new PocoAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }

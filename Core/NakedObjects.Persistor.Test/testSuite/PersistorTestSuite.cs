@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -15,9 +16,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
-using NUnit.Framework;
+using NakedObjects.Core.Util;
 using TestData;
-using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
@@ -44,7 +45,6 @@ namespace NakedObjects.Persistor.TestSuite {
             get { return framework.TransactionManager; }
         }
 
-
         private IMetamodelManager Metamodel {
             get { return framework.MetamodelManager; }
         }
@@ -53,11 +53,9 @@ namespace NakedObjects.Persistor.TestSuite {
             return framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
         }
 
-
         private Person GetPerson(int id) {
             return framework.Persistor.Instances<Person>().Single(p => p.PersonId == id);
         }
-
 
         private void AssertIsPerson(Person person, int id) {
             Assert.IsNotNull(person, "Failed to get instance");
@@ -122,7 +120,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person1 = GetPerson(1);
             Product product = person1.FavouriteProduct;
             // ReSharper disable once UnusedVariable
-            var name = product.Name; // to ensure product is resolved
+            string name = product.Name; // to ensure product is resolved
             TransactionManager.EndTransaction();
             return product;
         }
@@ -159,7 +157,6 @@ namespace NakedObjects.Persistor.TestSuite {
             return order;
         }
 
-
         private Product CreateNewTransientProduct() {
             int nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
             IObjectSpec spec = Metamodel.GetSpecification(typeof (Product));
@@ -192,7 +189,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Persistor.DestroyObject(adapterForToDelete);
             TransactionManager.EndTransaction();
         }
-
 
         private Address ChangeScalarOnAddress() {
             INakedObject adaptedAddress = GetAdaptedAddress(GetPerson(1));
@@ -260,13 +256,11 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-
         public void ChangeScalarOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeScalarOnPerson(1);
             Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
-
 
         public void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeReferenceOnPerson(7);
@@ -281,7 +275,6 @@ namespace NakedObjects.Persistor.TestSuite {
             AddToCollectionOnPersonOne(person4);
             Assert.AreEqual(countbefore + 1, person1.Relatives.Count());
         }
-
 
         public void AddToCollectionOnPersistentCallsUpdatingUpdated() {
             Person person6 = GetPerson(6);
@@ -298,7 +291,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore - 1, person1.Relatives.Count());
         }
 
-
         public void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
             Person person8 = GetPerson(8);
             Person person1 = RemoveFromCollectionOnPersonOne(person8);
@@ -310,7 +302,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person = ClearCollectionOnPerson(6);
             Assert.AreEqual(0, person.Relatives.Count);
         }
-
 
         public void ClearCollectionOnPersistentCallsUpdatingUpdated() {
             Person person = ClearCollectionOnPerson(8);
@@ -422,7 +413,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void CollectionPropertyObjectHasContributedServiceInjected() {
             Person person = GetPersonFromPersonOneCollection();
-            
+
             Assert.IsTrue(person.HasContributedActions, "no contributed service injected");
         }
 
@@ -501,7 +492,6 @@ namespace NakedObjects.Persistor.TestSuite {
             }
             catch (PersistFailedException /*expected*/) {}
         }
-
 
         public void SaveNewObjectWithTransientReference() {
             Person person = CreateNewTransientPerson();
@@ -738,7 +728,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
         }
 
-
         public void SaveNewObjectTransientReferenceCallsPersistingPersisted() {
             Person person = CreateNewTransientPerson();
             Product product = CreateNewTransientProduct();
@@ -858,7 +847,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, address.GetEvents()["Updated"], "updated");
         }
 
-
         public void RefreshResetsObject() {
             Person person1 = GetPerson(1);
             string name = person1.Name;
@@ -871,7 +859,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void GetKeysReturnsKeys() {
             Person person1 = GetPerson(1);
-            var key = Persistor.GetKeys(person1.GetType());
+            PropertyInfo[] key = Persistor.GetKeys(person1.GetType());
 
             Assert.AreEqual(1, key.Count());
             Assert.AreEqual(person1.GetType().GetProperty("PersonId").Name, key[0].Name);
@@ -879,7 +867,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void FindByKey() {
             Person person1 = GetPerson(1);
-            var person = Persistor.FindByKeys(typeof (Person), new object[] {1}).Object;
+            object person = Persistor.FindByKeys(typeof (Person), new object[] {1}).Object;
 
             Assert.AreEqual(person1, person);
         }
@@ -889,7 +877,7 @@ namespace NakedObjects.Persistor.TestSuite {
             string name = Guid.NewGuid().ToString();
             person.Name = name;
 
-            var adapter = Save(person);
+            INakedObject adapter = Save(person);
 
             Person person1 = Persistor.Instances<Person>().SingleOrDefault(p => p.Name == name);
             Assert.IsNotNull(person1);
@@ -906,7 +894,7 @@ namespace NakedObjects.Persistor.TestSuite {
             string name = Guid.NewGuid().ToString();
             person.Name = name;
 
-            var adapter = Save(person);
+            INakedObject adapter = Save(person);
             person = AdapterUtils.GetDomainObject<Person>(adapter);
 
             Delete(person);
@@ -918,25 +906,24 @@ namespace NakedObjects.Persistor.TestSuite {
         public void CountCollectionOnPersistent() {
             Person person1 = GetPerson(1);
             int count1 = person1.Relatives.Count();
-            var adapter = AdapterFor(person1);
-            var count2 = Persistor.CountField(adapter, "Relatives");
+            INakedObject adapter = AdapterFor(person1);
+            int count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);
         }
 
         public void CountUnResolvedCollectionOnPersistent() {
             Person person1 = GetPerson(1);
-            var adapter = AdapterFor(person1);
-            var count1 = Persistor.CountField(adapter, "Relatives");
+            INakedObject adapter = AdapterFor(person1);
+            int count1 = Persistor.CountField(adapter, "Relatives");
             int count2 = person1.Relatives.Count();
             Assert.AreEqual(count1, count2);
         }
 
-
         public void CountEmptyCollectionOnTransient() {
             Person person1 = CreateNewTransientPerson();
             int count1 = person1.Relatives.Count();
-            var adapter = AdapterFor(person1);
-            var count2 = Persistor.CountField(adapter, "Relatives");
+            INakedObject adapter = AdapterFor(person1);
+            int count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);
         }
 
@@ -945,8 +932,8 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person4 = GetPerson(4);
             AddToCollectionOnPersonOne(person4);
             int count1 = person1.Relatives.Count();
-            var adapter = AdapterFor(person1);
-            var count2 = Persistor.CountField(adapter, "Relatives");
+            INakedObject adapter = AdapterFor(person1);
+            int count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);
         }
 

@@ -51,7 +51,6 @@ namespace NakedObjects.Core.Fixture {
         //    IIdentity identity = new GenericIdentity(username);
         //    IPrincipal principal = new GenericPrincipal(identity, roles);
 
-
         //    ISession session = new SimpleSession(principal);
         //    staticContext.SetSession(session);
         //}

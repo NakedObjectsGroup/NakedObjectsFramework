@@ -31,7 +31,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public HiddenDefaultMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
-
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }

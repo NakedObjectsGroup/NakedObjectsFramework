@@ -18,7 +18,6 @@ namespace NakedObjects.Meta.Facet {
     public class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
         private readonly IFromStream fromStream;
 
-
         public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
             : base(typeof (IFromStreamFacet), holder) {
             this.fromStream = fromStream;

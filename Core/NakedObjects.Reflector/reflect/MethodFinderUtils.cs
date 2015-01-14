@@ -70,6 +70,5 @@ namespace NakedObjects.Reflect {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

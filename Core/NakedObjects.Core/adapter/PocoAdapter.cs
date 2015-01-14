@@ -128,11 +128,9 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-
         public virtual string InvariantString() {
             return Spec.GetInvariantString(this);
         }
-
 
         /// <summary>
         ///     Sometimes it is necessary to manage the replacement of the underlying domain object (by another
@@ -204,7 +202,6 @@ namespace NakedObjects.Core.Adapter {
             persistor.LoadComplexTypes(this, ResolveState.IsGhost());
         }
 
-
         public void Created() {
             CallCallback<ICreatedCallbackFacet>();
         }
@@ -245,7 +242,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
+            IObjectSpec elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

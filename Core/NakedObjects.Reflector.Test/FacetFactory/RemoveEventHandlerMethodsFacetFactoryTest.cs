@@ -15,7 +15,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -31,8 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
             var menuFactory = new NullMenuFactory();
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] { facetFactory });
-
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]

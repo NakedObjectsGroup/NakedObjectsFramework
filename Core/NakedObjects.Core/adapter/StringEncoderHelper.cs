@@ -65,7 +65,7 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                var itemsAsArray = items.Cast<object>().ToArray();
+                object[] itemsAsArray = items.Cast<object>().ToArray();
                 Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
                 itemsAsArray.ForEach(Add);
@@ -78,7 +78,7 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                var itemsAsArray = items.ToArray();
+                IEncodedToStrings[] itemsAsArray = items.ToArray();
                 Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
                 itemsAsArray.ForEach(Add);
@@ -104,7 +104,6 @@ namespace NakedObjects.Core.Adapter {
                 items.ForEach(Add);
             }
         }
-
 
         public void Add(IEncodedToStrings item) {
             if (item == null) {

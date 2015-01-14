@@ -90,7 +90,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
             EntityType et = GetEntityType(context, type);
             if (et != null) {
-                var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
+                MetadataProperty[] mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
                 return mp.Any() && mp.All(p => p.Value.Equals("Identity"));
             }
             return false;
@@ -125,7 +125,6 @@ namespace NakedObjects.Persistor.Entity.Util {
             return new PropertyInfo[] {};
         }
 
-
         public static PropertyInfo[] GetReferenceMembers(this EntityObjectStore.LocalContext context, Type type) {
             return context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
         }
@@ -145,7 +144,6 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) {
             return context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
         }
-
 
         public static dynamic CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             Type mostBaseType = context.GetMostBaseType(type);
@@ -172,7 +170,7 @@ namespace NakedObjects.Persistor.Entity.Util {
                 // expected (but ugly)
                 Log.DebugFormat("Context {0} did not recognise type {1} and threw {2}", context.Name, type.FullName, e.Message);
                 if (EntityObjectStore.RequireExplicitAssociationOfTypes) {
-                    var msg = string.Format("{0} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller", type);
+                    string msg = string.Format("{0} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller", type);
                     throw new InitialisationException(msg);
                 }
             }

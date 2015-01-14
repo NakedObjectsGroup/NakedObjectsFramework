@@ -55,7 +55,6 @@ namespace NakedObjects.Persistor.Entity {
         private static CreateAdapterDelegate createAdapter;
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
 
-
         private static RemoveAdapterDelegate removeAdapter;
         private static ReplacePocoDelegate replacePoco;
 
@@ -91,12 +90,10 @@ namespace NakedObjects.Persistor.Entity {
             removeAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
             createAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
 
-
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
             loadSpecification = metamodelManager.GetSpecification;
         }
-
 
         public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
             : this(metamodel, session, injector, nakedObjectManager) {
@@ -114,13 +111,13 @@ namespace NakedObjects.Persistor.Entity {
         #region for testing only
 
         public void SetupForTesting(IContainerInjector containerInjector,
-                                    CreateAdapterDelegate createAdapterDelegate,
-                                    ReplacePocoDelegate replacePocoDelegate,
-                                    RemoveAdapterDelegate removeAdapterDelegate,
-                                    CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
-                                    Action<INakedObject> handleLoadedTest,
-                                    EventHandler savingChangeshandler,
-                                    Func<Type, IObjectSpec> loadSpecificationHandler) {
+            CreateAdapterDelegate createAdapterDelegate,
+            ReplacePocoDelegate replacePocoDelegate,
+            RemoveAdapterDelegate removeAdapterDelegate,
+            CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
+            Action<INakedObject> handleLoadedTest,
+            EventHandler savingChangeshandler,
+            Func<Type, IObjectSpec> loadSpecificationHandler) {
             injector = containerInjector;
             createAdapter = createAdapterDelegate;
             replacePoco = replacePocoDelegate;
@@ -161,8 +158,6 @@ namespace NakedObjects.Persistor.Entity {
         public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
             if (EntityFrameworkKnowsType(nakedObject.Object.GetEntityProxiedType())) {
                 foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetEntityProxiedType())) {
-                
-
                     // TODO Work out WTH to do here !!
                     // IObjectSpec spec = loadSpecification(pi.PropertyType);
                     //if (!spec.ContainsFacet<IComplexTypeFacet>()) {
@@ -182,7 +177,6 @@ namespace NakedObjects.Persistor.Entity {
             Log.Debug("AbortTransaction");
             RollBackContext();
         }
-
 
         public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
@@ -298,7 +292,6 @@ namespace NakedObjects.Persistor.Entity {
             get { return "Entity Object Store"; }
         }
 
-
         public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
             field.GetNakedObject(nakedObject);
@@ -311,7 +304,7 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
-            var eoid = oidGenerator.CreateOid(type.FullName, keys);
+            IOid eoid = oidGenerator.CreateOid(type.FullName, keys);
             IObjectSpec hint = loadSpecification(type);
             return GetObject(eoid, hint);
         }
@@ -353,12 +346,10 @@ namespace NakedObjects.Persistor.Entity {
             ResolveChildCollections(nakedObject);
         }
 
-
         public void StartTransaction() {
             Log.Debug("StartTransaction");
             // do nothing 
         }
-
 
         public IQueryable<T> GetInstances<T>() where T : class {
             Log.Debug("GetInstances<T> of: " + typeof (T));
@@ -369,7 +360,6 @@ namespace NakedObjects.Persistor.Entity {
             Log.Debug("GetInstances of: " + type);
             return GetContext(type).GetQueryableOfDerivedType(type);
         }
-
 
         public object CreateInstance(Type type) {
             Log.Debug("CreateInstance of: " + type);
@@ -434,7 +424,6 @@ namespace NakedObjects.Persistor.Entity {
         private LocalContext GetContext(object domainObject) {
             return GetContext(GetTypeToUse(domainObject));
         }
-
 
         private static Type GetTypeToUse(object domainObject) {
             if (domainObject == null) {
@@ -525,11 +514,9 @@ namespace NakedObjects.Persistor.Entity {
             nakedObject.ResolveState.Handle(nakedObject.ResolveState.IsPartResolving() ? Events.EndPartResolvingEvent : Events.EndResolvingEvent);
         }
 
-
         private static void HandleLoadedDefault(INakedObject nakedObject) {
             EndResolving(nakedObject);
         }
-
 
         private void InvokeErrorFacet(Exception exception) {
             string newMessage = exception.Message;
@@ -648,7 +635,7 @@ namespace NakedObjects.Persistor.Entity {
 
             dynamic oq = context.CreateQuery(type, entitySetName);
 
-            foreach (var kvp in memberValueMap) {
+            foreach (KeyValuePair<string, object> kvp in memberValueMap) {
                 string query = string.Format("it.{0}=@{0}", kvp.Key);
                 oq = oq.Where(query, new ObjectParameter(kvp.Key, kvp.Value));
             }
@@ -683,8 +670,6 @@ namespace NakedObjects.Persistor.Entity {
                 return o;
             }
             return null;
-
-            
         }
 
         public bool EntityFrameworkKnowsType(Type type) {
@@ -722,7 +707,7 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         private static void CheckProxies(object objectToCheck) {
-            var objectType = objectToCheck.GetType();
+            Type objectType = objectToCheck.GetType();
             if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
                 // may be using types provided by System or Microsoft (eg Authentication User). 
                 // No point enforcing proxying on them. 
@@ -734,7 +719,7 @@ namespace NakedObjects.Persistor.Entity {
 
         private void LoadObject(object domainObject, LocalContext context) {
             CheckProxies(domainObject);
-            var oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
+            IOid oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
             INakedObject nakedObject = createAdapter(oid, domainObject);
             injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
@@ -1266,7 +1251,6 @@ namespace NakedObjects.Persistor.Entity {
                 WrappedObjectContext.DetectChanges();
                 return WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified).Any();
             }
-
 
             public void PostSave(EntityObjectStore store) {
                 try {

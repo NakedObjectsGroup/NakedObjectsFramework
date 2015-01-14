@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Security;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -113,7 +112,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return 0; }
             }
 
-
             [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
             public int Property8 {
                 get { return 0; }
@@ -142,7 +140,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public int Action4() {
                 return 0;
             }
-
 
             [AuthorizeAction(Roles = "aRole", Users = "aUser")]
             public int Action5() {
@@ -428,7 +425,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
 
-
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
@@ -589,7 +585,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
 
-
         [TestMethod]
         public void TestAuthorizeAnnotationEditRoleAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
@@ -677,7 +672,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var testSession = new TestSession("", "anotherUser");
             Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, lifecycleManager, Metamodel));
         }
-
 
         [TestMethod]
         public void TestAuthorizeAnnotationPickedUpOnAction() {
@@ -844,7 +838,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-
         [TestMethod]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property4");
@@ -900,7 +893,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
 
-
         [TestMethod]
         public void TestAuthorizeAnnotationViewUserAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
@@ -911,7 +903,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var testSession = new TestSession("", "aUser");
             Assert.IsNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
-
 
         [TestMethod]
         public void TestAuthorizeAnnotationViewUserAuthorizedClass() {
@@ -938,7 +929,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
 
-
         [TestMethod]
         public void TestAuthorizeAnnotationViewUserNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
@@ -961,7 +951,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, lifecycleManager, Metamodel));
         }
 
-
         [TestMethod]
         public void TestAuthorizeEmptyAnnotationOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action2");
@@ -983,7 +972,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
-
 
         [TestMethod]
         public void TestAuthorizeEmptyAnnotationOnClassForProperty() {
@@ -1050,7 +1038,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
-
 
         [TestMethod]
         public override void TestFeatureTypes() {

@@ -20,7 +20,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PropertyDefaultAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Property) {}
 
-
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));

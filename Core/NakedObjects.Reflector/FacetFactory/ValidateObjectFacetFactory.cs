@@ -28,7 +28,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             PrefixesAndRecognisedMethods.ValidatePrefix
         };
 
-
         public ValidateObjectFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

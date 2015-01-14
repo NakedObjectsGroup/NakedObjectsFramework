@@ -17,7 +17,6 @@ namespace Snapshot.Xml.Test {
         public DbSet<TestObject> TestObjects { get; set; }
     }
 
-
     public class TestObject {
         #region Injected Services
 

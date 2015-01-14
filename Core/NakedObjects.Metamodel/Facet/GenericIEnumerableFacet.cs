@@ -47,7 +47,6 @@ namespace NakedObjects.Meta.Facet {
             return AsGenericIEnumerable<T>(collection).Contains((T) element.Object);
         }
 
-
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
             return (IEnumerable<INakedObject>) Call("AsEnumerableInternal", collection, collection, manager);
         }

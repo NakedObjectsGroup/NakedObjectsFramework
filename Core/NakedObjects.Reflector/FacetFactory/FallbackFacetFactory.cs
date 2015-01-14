@@ -26,7 +26,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public FallbackFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) {}
 
-
         public bool Recognizes(MethodInfo method) {
             return false;
         }
@@ -56,7 +55,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             var immutable = holder as OneToOneAssociationSpecImmutable;
             if (immutable != null) {
-                var association = immutable;
+                OneToOneAssociationSpecImmutable association = immutable;
                 facets.Add(new MaxLengthFacetZero(holder));
                 DefaultTypicalLength(facets, association.ReturnSpec, immutable);
                 facets.Add(new MultiLineFacetNone(holder));
@@ -71,7 +70,6 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             FacetUtils.AddFacets(facets);
         }
-
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Process(specification);

@@ -13,7 +13,6 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class CustomerAddress {
-
         #region Primitive Properties
 
         #region CustomerID (Int32)

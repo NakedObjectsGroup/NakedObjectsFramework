@@ -13,16 +13,15 @@ using System.Reflection;
 namespace NakedObjects.Core.Util.Enumer {
     public static class EnumerableUtils {
         private static Type ElementType(this IEnumerable e) {
-            var t = e.GetType();
+            Type t = e.GetType();
             Assert.AssertTrue("Must be generic enumerable in order to use these helpers", t.IsGenericType);
 
-            var args = t.GenericTypeArguments;
+            Type[] args = t.GenericTypeArguments;
 
             Assert.AssertTrue("Must be only one generic arg in order to use these helpers", Enumerable.Count(args) == 1);
 
             return Enumerable.First(args);
         }
-
 
         public static int Count(this IEnumerable e) {
             MethodInfo countMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Count" && Enumerable.Count(m.GetParameters()) == 1);

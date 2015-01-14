@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             l = 32;
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new LongValueSemanticsProvider(spec, holder));
         }
 
@@ -79,7 +79,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
-
         [TestMethod]
         public void TestParseInvariant() {
             const long c1 = 123456L;
@@ -103,7 +102,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestParseNull() {
             base.TestParseNull();
         }
-
 
         [TestMethod]
         public override void TestDecodeNull() {

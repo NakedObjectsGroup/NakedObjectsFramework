@@ -15,7 +15,6 @@ namespace NakedObjects.Architecture.Facet {
     public interface IEncodeableFacet {
         INakedObject FromEncodedString(string encodedData, INakedObjectManager manager);
 
-
         string ToEncodedString(INakedObject nakedObject);
     }
 }

@@ -37,7 +37,7 @@ namespace NakedObjects.Xat {
         public ISession Session { get; set; }
 
         public ITestService CreateTestService(Object service) {
-            var no = manager.GetServiceAdapter(service);
+            INakedObject no = manager.GetServiceAdapter(service);
             Assert.IsNotNull(no);
             return CreateTestService(no);
         }
@@ -99,7 +99,6 @@ namespace NakedObjects.Xat {
             IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
             return CreateTestAction(actionSpec, testService);
         }
-
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
             return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager);

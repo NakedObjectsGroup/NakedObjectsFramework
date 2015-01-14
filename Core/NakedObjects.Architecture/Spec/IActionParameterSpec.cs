@@ -64,7 +64,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsAutoCompleteEnabled { get; }
 
-
         /// <summary>
         ///     Whether proposed value for this parameter is valid
         /// </summary>
@@ -84,7 +83,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Get set of autocompletions for the parameter
         /// </summary>
         INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
-
 
         /// <summary>
         ///     GetDefault value for parameter

@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }
 
@@ -46,7 +46,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             object d2 = adapter.ParseInvariant(s1);
             Assert.AreEqual(d1, d2);
         }
-
 
         [TestMethod]
         public void TestRestoreOfInvalidDatal() {

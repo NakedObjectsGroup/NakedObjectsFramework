@@ -177,7 +177,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public XElement CreateXsElementForNofValue(XElement parentXsElementElement, XElement xmlValueElement) {
             // gather details from XML element
 
-            var datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
+            XAttribute datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
             string fieldName = xmlValueElement.Name.LocalName;
 
             // <xs:element name="%owning object%">
@@ -446,7 +446,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private static void AddNamespace(XElement element, string prefix, string nsUri) {
             XElement rootElement = Helper.RootElementFor(element);
             // see if we have the NS prefix there already
-            var existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
+            XAttribute existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
             // if there is none (or it is different from what we want), then set the attribute
             if (existingNsUri == null || !existingNsUri.Value.Equals(nsUri)) {
                 rootElement.SetAttributeValue(XNamespace.Xmlns + prefix, nsUri);

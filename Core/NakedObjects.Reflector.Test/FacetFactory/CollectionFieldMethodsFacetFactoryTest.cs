@@ -22,7 +22,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // ReSharper disable UnusedMember.Local
     // ReSharper disable UnusedParameter.Local
     // ReSharper disable ClassNeverInstantiated.Local
-
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
@@ -55,7 +54,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
 
         private class Customer {
             public IList Orders {
@@ -151,7 +149,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void RemoveFromOrders(Customer c) {}
         }
 
-
         private class Customer2 {
             public ArrayList Orders {
                 get { return null; }
@@ -245,7 +242,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Order {}
-
 
         [TestMethod]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
@@ -361,5 +357,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // ReSharper restore UnusedMember.Local
     // ReSharper restore UnusedParameter.Local
     // ReSharper restore ClassNeverInstantiated.Local
-
 }

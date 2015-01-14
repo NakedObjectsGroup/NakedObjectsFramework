@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }
 
@@ -58,7 +58,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             string encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
             Assert.AreEqual("2003-08-17T21:30:25", encoded);
         }
-
 
         [TestMethod]
         public void TestEntryWithLongISOFormat() {

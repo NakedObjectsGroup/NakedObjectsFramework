@@ -50,12 +50,8 @@ namespace NakedObjects.Reflect {
                    (type.IsGenericType && !(TypeUtils.IsNullableType(type) || CollectionUtils.IsGenericEnumerable(type)));
         }
 
-
         public string GetKeyForType(Type type) {
-           
-   
             if (IsGenericCollection(type)) {
-
                 //if (!type.IsPublic) {
                 //    var interfaces = type.GetInterfaces();
                 //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
@@ -67,7 +63,6 @@ namespace NakedObjects.Reflect {
                 //                         publicInterfaces.FirstOrDefault() ??
                 //                         type.BaseType);
                 //}
-
 
                 return type.Namespace + "." + type.Name;
             }

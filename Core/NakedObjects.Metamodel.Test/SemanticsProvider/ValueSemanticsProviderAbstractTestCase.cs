@@ -44,9 +44,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             return parseableFacet;
         }
 
-
         public virtual void SetUp() {}
-
 
         public virtual void TearDown() {
             value = null;
@@ -65,7 +63,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             return new PocoAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
         }
 
-
         public virtual void TestParseNull() {
             try {
                 value.ParseTextEntry(null);
@@ -74,18 +71,15 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (ArgumentException /*expected*/) {}
         }
 
-
         public virtual void TestParseEmptyString() {
             object newValue = value.ParseTextEntry("");
             Assert.IsNull(newValue);
         }
 
-
         public virtual void TestDecodeNull() {
             object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
             Assert.IsNull(newValue);
         }
-
 
         public virtual void TestEmptyEncoding() {
             Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));

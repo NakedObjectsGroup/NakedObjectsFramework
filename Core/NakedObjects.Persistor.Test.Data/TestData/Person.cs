@@ -60,7 +60,6 @@ namespace TestData {
             name = newName;
         }
 
-
 // ReSharper disable once ParameterHidesMember
         public string Validate(string name, Product favouriteProduct) {
             if (name == "fail") {

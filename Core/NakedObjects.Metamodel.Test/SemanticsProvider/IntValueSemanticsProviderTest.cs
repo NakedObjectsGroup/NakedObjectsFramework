@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             integer = 32;
             holder = new Mock<ISpecification>().Object;
-            var spec = new Mock<IObjectSpecImmutable>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new IntValueSemanticsProvider(spec, holder));
         }
 
@@ -103,7 +103,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.TestParseNull();
         }
 
-
         [TestMethod]
         public override void TestDecodeNull() {
             base.TestDecodeNull();
@@ -114,7 +113,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.TestEmptyEncoding();
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

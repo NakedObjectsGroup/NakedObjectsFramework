@@ -12,10 +12,10 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
@@ -88,7 +88,6 @@ namespace NakedObjects.Xat {
 
         #endregion
 
-     
         // ReSharper disable UnusedParameter.Local
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
             // ReSharper restore UnusedParameter.Local
@@ -128,8 +127,8 @@ namespace NakedObjects.Xat {
             for (int i = 0; i < actionsSpec.Length; i++) {
                 IActionSpec actionSpec = actionsSpec[i];
                 string name = actionSpec.Name;
-                    order.Append(name);
-                 order.Append(i < actionsSpec.Length - 1 ? ", " : "");
+                order.Append(name);
+                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
             }
             return order.ToString();
         }

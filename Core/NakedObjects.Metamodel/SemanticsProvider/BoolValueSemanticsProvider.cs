@@ -43,7 +43,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return nakedObject.GetDomainObject<bool>();
         }
 
-
         public void Reset(INakedObject nakedObject) {
             nakedObject.ReplacePoco(false);
         }
@@ -62,7 +61,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == AdaptedType;
         }
-
 
         protected override bool DoParse(string entry) {
             if ("true".StartsWith(entry.ToLower())) {

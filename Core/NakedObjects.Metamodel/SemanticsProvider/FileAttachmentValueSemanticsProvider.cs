@@ -21,7 +21,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthDefault = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (FileAttachmentValueSemanticsProvider));
 
-
         public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) {}
 
@@ -44,7 +43,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == AdaptedType;
         }
-
 
         protected override FileAttachment DoParse(string entry) {
             throw new NotImplementedException();
