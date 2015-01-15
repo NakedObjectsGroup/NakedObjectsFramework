@@ -482,7 +482,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void ChangeObjectWithValidate() {
             Person person = CreateNewTransientPerson();
             person.Name = Guid.NewGuid().ToString();
-            person = AdapterUtils.GetDomainObject<Person>(Save(person));
+            person = Save(person).GetDomainObject<Person>();
 
             try {
                 TransactionManager.StartTransaction();
@@ -501,7 +501,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person.FavouriteProduct = product;
             INakedObject personAdapter = Save(person);
             // use new person to avoid EF quirk 
-            person = AdapterUtils.GetDomainObject<Person>(personAdapter);
+            person = personAdapter.GetDomainObject<Person>();
 
             Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
@@ -613,7 +613,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person1.Relatives.Add(person2);
             INakedObject person1Adapter = Save(person1);
             // use new person to avoid EF quirk 
-            person1 = AdapterUtils.GetDomainObject<Person>(person1Adapter);
+            person1 = person1Adapter.GetDomainObject<Person>();
             person2 = person1.Relatives.Single();
             Assert.IsTrue(person1Adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(person1Adapter.Oid.IsTransient, "is transient");
@@ -790,7 +790,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void InlineObjectHasLoadingLoadedCalled() {
             TransactionManager.StartTransaction();
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
-            var address = AdapterUtils.GetDomainObject<Address>(addressAdapter);
+            var address = addressAdapter.GetDomainObject<Address>();
             TransactionManager.EndTransaction();
             Assert.AreEqual(1, address.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
@@ -895,7 +895,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person.Name = name;
 
             INakedObject adapter = Save(person);
-            person = AdapterUtils.GetDomainObject<Person>(adapter);
+            person = adapter.GetDomainObject<Person>();
 
             Delete(person);
 
