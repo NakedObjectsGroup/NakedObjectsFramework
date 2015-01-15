@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Audit;
 using NakedObjects.Meta.Audit;
 
@@ -24,14 +27,12 @@ namespace NakedObjects.Meta.Test.Audit {
 
         [TestMethod]
         public void TestCreateOk() {
-            var config = new Mock<IAuditConfiguration>();
-            var auditor = new Mock<IAuditor>();
+            var config = new AuditConfiguration<IAuditor>();
 
-            config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type>() {{"", auditor.Object.GetType()}});
+            config.AddNamespaceAuditor<IAuditor>("namespace");
 
             // ReSharper disable once UnusedVariable
-            var sink = new AuditManager(config.Object);
+            var sink = new AuditManager(config);
         }
 
         [TestMethod]
@@ -69,6 +70,90 @@ namespace NakedObjects.Meta.Test.Audit {
                 // pass test
                 Assert.AreEqual("System.Object is not an IAuditor", expected.Message);
             }
+        }
+
+        [TestMethod]
+        public void TestDecorateActionInvocationFacet() {
+            var config = new Mock<IAuditConfiguration>();
+            var auditor = new Mock<IAuditor>();
+
+            config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
+            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+
+            var manager = new AuditManager(config.Object);
+
+            var testSpec = new Mock<ISpecification>();
+            var testHolder = new Mock<ISpecification>();
+            var identifier = new Mock<IIdentifier>();
+            var testFacet = new Mock<IActionInvocationFacet>();
+
+            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+
+            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+
+            testFacet.Setup(n => n.FacetType).Returns(typeof (IActionInvocationFacet));
+
+            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+
+            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+
+            Assert.IsInstanceOfType(facet, typeof (AuditActionInvocationFacet));
+        }
+
+        [TestMethod]
+        public void TestDecorateUpdatedFacet() {
+            var config = new Mock<IAuditConfiguration>();
+            var auditor = new Mock<IAuditor>();
+
+            config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
+            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+
+            var manager = new AuditManager(config.Object);
+
+            var testSpec = new Mock<ISpecification>();
+            var testHolder = new Mock<ISpecification>();
+            var identifier = new Mock<IIdentifier>();
+            var testFacet = new Mock<IUpdatedCallbackFacet>();
+
+            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+
+            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+
+            testFacet.Setup(n => n.FacetType).Returns(typeof (IUpdatedCallbackFacet));
+
+            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+
+            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+
+            Assert.IsInstanceOfType(facet, typeof (AuditUpdatedFacet));
+        }
+
+        [TestMethod]
+        public void TestDecoratePersistedFacet() {
+            var config = new Mock<IAuditConfiguration>();
+            var auditor = new Mock<IAuditor>();
+
+            config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
+            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+
+            var manager = new AuditManager(config.Object);
+
+            var testSpec = new Mock<ISpecification>();
+            var testHolder = new Mock<ISpecification>();
+            var identifier = new Mock<IIdentifier>();
+            var testFacet = new Mock<IPersistedCallbackFacet>();
+
+            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+
+            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+
+            testFacet.Setup(n => n.FacetType).Returns(typeof (IPersistedCallbackFacet));
+
+            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+
+            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+
+            Assert.IsInstanceOfType(facet, typeof (AuditPersistedFacet));
         }
     }
 }
