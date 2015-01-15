@@ -140,6 +140,7 @@
     <Compile Include="FacetFactory\ImmutableAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ProgramPersistableOnlyAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ValidateProgrammaticUpdatesAnnotationFacetFactoryTest.cs" />
+    <Compile Include="FacetFactory\MenuFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ViewModelFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\MemberOrderAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\MemberOrderComparatorTest.cs" />

@@ -78,8 +78,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Class3 : IViewModelEdit {
-            public string Value1 { get; set; }
-            public string Value2 { get; set; }
+            private string Value1 { get; set; }
+            private string Value2 { get; set; }
 
             #region IViewModel Members
 
@@ -96,8 +96,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Class4 : IViewModelSwitchable {
-            public string Value1 { get; set; }
-            public string Value2 { get; set; }
+            private string Value1 { get; set; }
+            private string Value2 { get; set; }
 
             #region IViewModel Members
 
