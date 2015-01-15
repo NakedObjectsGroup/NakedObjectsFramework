@@ -72,7 +72,6 @@ namespace NakedObjects.Core.Spec {
             get { return false; }
         }
 
-
         public override INakedObject GetDefault(INakedObject nakedObject) {
             return null;
         }

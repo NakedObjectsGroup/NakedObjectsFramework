@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 20;
         private const long DefaultValueConst = 0;
 
-
         public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -45,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (long);
         }
-
 
         protected override long DoParse(string entry) {
             try {
@@ -71,7 +69,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return value.ToString(mask);
         }
 
-
         protected override string DoEncode(long obj) {
             return obj.ToString("G", CultureInfo.InvariantCulture);
         }
@@ -79,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override long DoRestore(string data) {
             return long.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "LongAdapter: ";

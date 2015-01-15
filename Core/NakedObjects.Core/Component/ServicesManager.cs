@@ -32,9 +32,9 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.manager = manager;
 
-            var ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
-            var cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
-            var ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
 
             services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
         }
@@ -42,7 +42,7 @@ namespace NakedObjects.Core.Component {
         #region IServicesManager Members
 
         public virtual ServiceType GetServiceType(IObjectSpec spec) {
-            return Services.Where(sw => manager.GetServiceAdapter(sw.Service).Spec == spec).Select(sw => sw.ServiceType).FirstOrDefault();
+            return Services.Where(sw => Equals(manager.GetServiceAdapter(sw.Service).Spec, spec)).Select(sw => sw.ServiceType).FirstOrDefault();
         }
 
         public virtual INakedObject GetService(string id) {
@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObject GetService(IObjectSpec spec) {
-            return GetServices().FirstOrDefault(s => s.Spec == spec);
+            return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
         }
 
         public virtual INakedObject[] GetServices() {
@@ -88,6 +88,5 @@ namespace NakedObjects.Core.Component {
                 return services;
             }
         }
-
     }
 }

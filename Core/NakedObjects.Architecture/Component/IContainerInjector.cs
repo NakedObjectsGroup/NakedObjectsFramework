@@ -21,6 +21,5 @@ namespace NakedObjects.Architecture.Component {
         void InitInlineObject(object root, object inlineObject);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

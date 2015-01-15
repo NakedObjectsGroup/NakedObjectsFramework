@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             var sb = new StringBuilder();
-            foreach (var pair in methodToWhere) {
+            foreach (KeyValuePair<MethodInfo, Where> pair in methodToWhere) {
                 sb.Append(pair.Key + " Executed = " + pair.Value).Append(Environment.NewLine);
             }
             return sb.ToString();

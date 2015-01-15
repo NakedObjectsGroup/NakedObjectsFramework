@@ -18,6 +18,5 @@ namespace NakedObjects.Core.Util {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

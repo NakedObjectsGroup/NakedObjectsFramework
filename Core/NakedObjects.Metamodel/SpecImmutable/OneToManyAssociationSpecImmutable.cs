@@ -19,9 +19,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly Type defaultElementType;
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
+        public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnSpec) {
-            this.defaultElementType = defaultElementSpec.Type;
+            defaultElementType = defaultElementSpec.Type;
             this.defaultElementSpec = defaultElementSpec;
         }
 

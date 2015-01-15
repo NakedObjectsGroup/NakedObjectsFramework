@@ -24,7 +24,8 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
                 MethodInfo method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
-                method.Invoke(null, new object[] {semanticsProvider, specification});
+                method.Invoke(null, new
+                    [] {semanticsProvider, specification});
             }
         }
     }

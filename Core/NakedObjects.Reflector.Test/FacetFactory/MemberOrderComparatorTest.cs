@@ -5,12 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Meta.Facet;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -20,13 +16,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public virtual void SetUp() {
             comparator = new MemberOrderComparator<MemberPeerStub>();
-            laxComparator = new MemberOrderComparator<MemberPeerStub>();
         }
 
         #endregion
 
         private MemberOrderComparator<MemberPeerStub> comparator;
-        private MemberOrderComparator<MemberPeerStub> laxComparator;
 
         private MemberPeerStub m1;
         private MemberPeerStub m2;
@@ -36,11 +30,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private void Reset() {
-            var p = new Mock<ILifecycleManager>().Object;
-            m1 = new MemberPeerStub("abc", p);
-            m2 = new MemberPeerStub("abc", p);
+            m1 = new MemberPeerStub("abc");
+            m2 = new MemberPeerStub("abc");
         }
-
 
         [TestMethod]
         public virtual void TestDefaultGroupOneComponent() {
@@ -54,7 +46,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultGroupOneComponentOtherWay() {
             Reset();
             m1.AddFacet(new MemberOrderFacet("2", m1));
-            m2.AddFacet(new MemberOrderFacet( "1", m2));
+            m2.AddFacet(new MemberOrderFacet("1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
@@ -109,8 +101,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDefaultGroupOneSideRunsTwoComponents() {
             Reset();
-            m1.AddFacet(new MemberOrderFacet( "1.1", m1));
-            m2.AddFacet(new MemberOrderFacet( "1.2", m2));
+            m1.AddFacet(new MemberOrderFacet("1.1", m1));
+            m2.AddFacet(new MemberOrderFacet("1.2", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
@@ -118,7 +110,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultGroupOneSideRunsTwoComponentsOtherWay() {
             Reset();
             m1.AddFacet(new MemberOrderFacet("1.2", m1));
-            m2.AddFacet(new MemberOrderFacet( "1.1", m2));
+            m2.AddFacet(new MemberOrderFacet("1.1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
     }

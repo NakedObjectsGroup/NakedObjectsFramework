@@ -23,6 +23,5 @@ namespace NakedObjects.Architecture.Facet {
         string DisabledReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

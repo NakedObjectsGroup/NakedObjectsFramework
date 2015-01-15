@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
@@ -20,7 +19,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestInitialize]
         public void SetUp() {
-            ISpecification holder = null;
+            ISpecification holder = new Mock<ISpecification>().Object;
             var customer = new Customer17();
 
             var mock = new Mock<INakedObject>();
@@ -29,7 +28,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             mock.Setup(no => no.Object).Returns(customer);
 
             MethodInfo method = typeof (Customer17).GetMethod("Validate0SomeAction");
-            facet = new ActionParameterValidation(method, 0, holder);
+            facet = new ActionParameterValidation(method, holder);
         }
 
         [TestCleanup]
@@ -48,7 +47,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(facet.InvalidReason(target, value));
         }
 
-
         [TestMethod]
         public void Test2() {
             var mock = new Mock<INakedObject>();
@@ -57,7 +55,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
         }
     }
-
 
     internal class Customer17 {
         public void SomeAction(int x, long y, long z) {}

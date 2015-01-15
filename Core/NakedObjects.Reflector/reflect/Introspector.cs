@@ -198,7 +198,7 @@ namespace NakedObjects.Reflect {
                 IObjectSpecBuilder returnSpec = reflector.LoadSpecification(returnType);
                 Type defaultType = typeof (object);
                 IObjectSpecBuilder defaultSpec = reflector.LoadSpecification(defaultType);
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultSpec);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);
@@ -288,15 +288,11 @@ namespace NakedObjects.Reflect {
             return actionSpecs.ToArray();
         }
 
-       
-
-        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T :  IMemberSpecImmutable {
+        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
             var list = new List<T>(members);
             list.Sort(new MemberOrderComparator<T>());
             return list;
         }
-
-    
 
         #region Nested Type: DotnetIntrospectorMethodRemover
 

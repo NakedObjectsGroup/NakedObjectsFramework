@@ -11,12 +11,10 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -48,7 +46,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer2 {
-            public void someAction([DefaultValue(1)] int foo) {}
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DefaultValue(1)] int foo) {}
         }
 
         [TestMethod]
@@ -61,10 +61,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IActionDefaultsFacet));
             Assert.IsNotNull(facet);

@@ -12,12 +12,10 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -278,22 +276,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestSavedLifecycleMethodNotPickedUpOn() {
-            MethodInfo method = FindMethod(typeof (Customer10), "Saved");
             facetFactory.Process(Reflector, typeof (Customer10), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistedCallbackFacetNull);
-          
         }
 
         [TestMethod]
         public void TestSavingLifecycleMethodNotPickedUpOn() {
-            MethodInfo method = FindMethod(typeof (Customer9), "Saving");
             facetFactory.Process(Reflector, typeof (Customer9), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistingCallbackFacetNull);
-        
         }
 
         [TestMethod]

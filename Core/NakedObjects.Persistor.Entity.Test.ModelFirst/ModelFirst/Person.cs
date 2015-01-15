@@ -75,7 +75,6 @@ namespace ModelFirst {
         #endregion
     }
 
-
     public class Person : AbstractTestCode {
         [Root]
         public object Parent { get; set; }
@@ -90,8 +89,8 @@ namespace ModelFirst {
 
         #region Complex Properties
 
+// ReSharper disable InconsistentNaming
         private NameType _complexProperty = new NameType();
-
 
         private ComplexType1 _complexProperty_1 = new ComplexType1();
 
@@ -122,3 +121,5 @@ namespace ModelFirst {
         }
     }
 }
+
+// ReSharper restore InconsistentNaming

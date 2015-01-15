@@ -40,7 +40,6 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionMethodsFacetFactory));
 
-
         public ActionMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ActionsAndParameters) {}
 
@@ -120,7 +119,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacets(facets);
         }
 
-
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
         /// </summary>
@@ -140,7 +138,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             for (int i = 0; i < paramTypes.Length; i++) {
                 Type paramType = paramTypes[i];
                 string paramName = paramNames[i];
-
 
                 MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
                     type,
@@ -187,17 +184,18 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
 
                 Type returnType = typeof (IEnumerable<>).MakeGenericType(paramType);
+                string methodName = PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName;
 
                 MethodInfo[] methods = FindMethods(
                     reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                    methodName,
                     returnType);
 
                 if (methods.Length > 1) {
                     methods.Skip(1).ForEach(m => Log.WarnFormat("Found multiple action choices methods: {0} in type: {1} ignoring method(s) with params: {2}",
-                        PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                        methodName,
                         type,
                         m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
                 }
@@ -263,7 +261,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 MethodInfo methodUsingIndex = FindMethod(reflector,
@@ -292,7 +289,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, i, parameters[i]));
+                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i]));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                     AddAjaxFacet(methodToUse, parameters[i]);
                 }

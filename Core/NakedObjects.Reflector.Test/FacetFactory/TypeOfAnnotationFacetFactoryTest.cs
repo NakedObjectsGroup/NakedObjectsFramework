@@ -11,11 +11,9 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -46,34 +44,29 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        //[TestMethod]
-        //public void TestTypeOfAnnotationIgnoredForActionIfReturnTypeIsntACollectionType() {
-        //    MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction");
-        //    facetFactory.Process(actionMethod, methodRemover, specification);
-        //    IFacet facet = specification.GetFacet(typeof (ITypeOfFacet));
-        //    Assert.IsNull(facet);
-        //    AssertNoMethodsRemoved();
-        //}
-
         private class Customer10 {
+// ReSharper disable once UnusedMember.Local
             public Order[] Orders {
                 get { return null; }
             }
         }
 
         private class Customer3 {
+// ReSharper disable once UnusedMember.Local
             public IList<Order> SomeAction() {
                 return null;
             }
         }
 
         private class Customer4 {
+// ReSharper disable once UnusedMember.Local
             public IList<Order> Orders {
                 get { return null; }
             }
         }
 
         private class Customer9 {
+// ReSharper disable once UnusedMember.Local
             public Order[] SomeAction() {
                 return null;
             }
@@ -148,7 +141,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

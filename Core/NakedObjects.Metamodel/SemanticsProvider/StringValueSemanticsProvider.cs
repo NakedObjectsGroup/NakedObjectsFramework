@@ -21,7 +21,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 25;
 
-
         public StringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -44,7 +43,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (string);
         }
-
 
         protected override string DoParse(string entry) {
             if (entry.Trim().Equals("")) {

@@ -28,6 +28,5 @@ namespace NakedObjects.Meta.Facet {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

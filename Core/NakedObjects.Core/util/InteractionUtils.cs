@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,7 +18,7 @@ namespace NakedObjects.Core.Util {
     public static class InteractionUtils {
         public static bool IsVisible(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
-            var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
+            IEnumerable<IHidingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Hides(ic, lifecycleManager, manager));
             }
@@ -26,10 +27,11 @@ namespace NakedObjects.Core.Util {
 
         public static bool IsVisibleWhenPersistent(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
-            var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
+            IEnumerable<IHidingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
-                if (advisor is IHiddenFacet) {
-                    if (((IHiddenFacet) advisor).Value == WhenTo.OncePersisted) {
+                var facet = advisor as IHiddenFacet;
+                if (facet != null) {
+                    if (facet.Value == WhenTo.OncePersisted) {
                         continue;
                     }
                 }
@@ -48,7 +50,7 @@ namespace NakedObjects.Core.Util {
         }
 
         private static InteractionBuffer IsUsable(ISpecification specification, InteractionContext ic, InteractionBuffer buf) {
-            var facets = specification.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
+            IEnumerable<IDisablingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
             foreach (IDisablingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Disables(ic));
             }
@@ -70,7 +72,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static InteractionBuffer IsValid(ISpecification specification, InteractionContext ic, InteractionBuffer buf) {
-            var facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
+            IEnumerable<IValidatingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
             foreach (IValidatingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Invalidates(ic));
             }
@@ -86,7 +88,6 @@ namespace NakedObjects.Core.Util {
             return GetConsent(buf.ToString());
         }
 
-
         private static IConsent GetConsent(string message) {
             if (string.IsNullOrEmpty(message)) {
                 return Allow.Default;
@@ -94,7 +95,6 @@ namespace NakedObjects.Core.Util {
             return new Veto(message);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

@@ -16,17 +16,17 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MenuFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private static readonly string[] prefixes;
+        private static readonly string[] FixedPrefixes;
 
         static MenuFacetFactory() {
-            prefixes = new[] {PrefixesAndRecognisedMethods.MenuMethod};
+            FixedPrefixes = new[] {PrefixesAndRecognisedMethods.MenuMethod};
         }
 
         public MenuFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
-            get { return prefixes; }
+            get { return FixedPrefixes; }
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {

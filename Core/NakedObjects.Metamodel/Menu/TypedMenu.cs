@@ -38,8 +38,8 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> AddContributedActions() {
-            var spec = GetObjectSpec<TObject>();
-            foreach (var ca in spec.ContributedActions) {
+            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
+            foreach (IActionSpecImmutable ca in spec.ContributedActions) {
                 var facet = ca.GetFacet<IContributedActionFacet>();
                 string subMenuName = facet.SubMenuWhenContributedTo(spec);
                 if (subMenuName != null) {
@@ -56,7 +56,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
-            var sub = new TypedMenu<TObject>(metamodel, false, subMenuName);
+            var sub = new TypedMenu<TObject>(Metamodel, false, subMenuName);
             sub.Id += "-" + subMenuName + ":";
             AddMenuItem(sub);
             return sub;
@@ -65,7 +65,7 @@ namespace NakedObjects.Meta.Menu {
         #endregion
 
         private string GetFriendlyNameForObject() {
-            var spec = GetObjectSpec<TObject>();
+            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
             return spec.GetFacet<INamedFacet>().Value ?? spec.ShortName;
         }
     }

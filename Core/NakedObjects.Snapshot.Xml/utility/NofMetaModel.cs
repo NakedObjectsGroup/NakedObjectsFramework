@@ -137,10 +137,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // <code>nof:size=&quote;...&quot;</code> for the supplied element.
 
         public static void SetNofCollection(XElement element,
-                                            string prefix,
-                                            string fullyQualifiedClassName,
-                                            INakedObject collection,
-                                            INakedObjectManager manager
+            string prefix,
+            string fullyQualifiedClassName,
+            INakedObject collection,
+            INakedObjectManager manager
             ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
             SetAttribute(element, "type", prefix + ":" + fullyQualifiedClassName);

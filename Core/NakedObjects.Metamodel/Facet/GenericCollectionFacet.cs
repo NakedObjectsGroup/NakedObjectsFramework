@@ -57,7 +57,6 @@ namespace NakedObjects.Meta.Facet {
             toRemove.ForEach(obj => wrappedCollection.Remove(obj));
         }
 
-
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
             return (IEnumerable<INakedObject>) Call("AsEnumerableInternal", collection, collection, manager);
         }

@@ -48,14 +48,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-
         private void ProcessCollection(IReflector reflector, ISpecification holder) {
             Type collectionElementType = typeof (object);
             IObjectSpecBuilder spec = reflector.LoadSpecification(collectionElementType);
             FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
         }
-
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {

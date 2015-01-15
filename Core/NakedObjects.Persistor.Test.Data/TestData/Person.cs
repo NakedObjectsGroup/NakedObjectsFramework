@@ -16,7 +16,7 @@ namespace TestData {
         private Address address = new Address();
         private string name;
         private ICollection<Person> relatives = new List<Person>();
-        public bool updateInPersisting;
+        private bool updateInPersisting;
 
         [Key]
         public virtual int PersonId { get; set; }
@@ -60,7 +60,7 @@ namespace TestData {
             name = newName;
         }
 
-
+// ReSharper disable once ParameterHidesMember
         public string Validate(string name, Product favouriteProduct) {
             if (name == "fail") {
                 return name;
@@ -68,14 +68,14 @@ namespace TestData {
             return null;
         }
 
-        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string name) {
+        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) {
             return (from r in persons
-                where r.Name == name
+                where r.Name == newName
                 select r).AsQueryable();
         }
 
         [Executed(Where.Remotely)]
-        public string DisableFindRelativesByName(IQueryable<Person> persons, string name) {
+        public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) {
             return "disabled";
         }
 

@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class TransactionManager : ITransactionManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TransactionManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (TransactionManager));
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private int transactionLevel;
@@ -22,13 +22,13 @@ namespace NakedObjects.Core.Component {
 
         public TransactionManager(IObjectStore objectStore) {
             Assert.AssertNotNull(objectStore);
-
             this.objectStore = objectStore;
         }
 
         private ITransaction Transaction {
             get {
                 if (transaction == null) {
+                    Log.Info("Creating new transaction");
                     return new NestedTransaction(objectStore);
                 }
                 return transaction;
@@ -68,7 +68,6 @@ namespace NakedObjects.Core.Component {
             userAborted = true;
         }
 
-
         public virtual void EndTransaction() {
             transactionLevel--;
             if (transactionLevel == 0) {
@@ -78,6 +77,7 @@ namespace NakedObjects.Core.Component {
             else if (transactionLevel < 0) {
                 transactionLevel = 0;
                 if (!userAborted) {
+                    Log.ErrorFormat("End transaction with level {0}", transactionLevel);
                     throw new TransactionException("No transaction running to end");
                 }
             }
@@ -89,7 +89,6 @@ namespace NakedObjects.Core.Component {
 
         #endregion
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

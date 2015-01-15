@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 18;
 
-
         public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -45,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (decimal);
         }
-
 
         protected override decimal DoParse(string entry) {
             try {
@@ -71,7 +69,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return value.ToString(mask);
         }
 
-
         protected override string DoEncode(decimal obj) {
             return obj.ToString(CultureInfo.InvariantCulture);
         }
@@ -79,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override decimal DoRestore(string data) {
             return decimal.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "DecimalAdapter: ";

@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class DefaultPersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultPersistAlgorithm));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultPersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 

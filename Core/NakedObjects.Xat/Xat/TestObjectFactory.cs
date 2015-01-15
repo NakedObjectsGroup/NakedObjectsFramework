@@ -24,7 +24,7 @@ namespace NakedObjects.Xat {
 
         public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager) {
             this.metamodelManager = metamodelManager;
-            this.Session = session;
+            Session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.manager = manager;
@@ -37,7 +37,7 @@ namespace NakedObjects.Xat {
         public ISession Session { get; set; }
 
         public ITestService CreateTestService(Object service) {
-            var no = manager.GetServiceAdapter(service);
+            INakedObject no = manager.GetServiceAdapter(service);
             Assert.IsNotNull(no);
             return CreateTestService(no);
         }
@@ -80,7 +80,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager, transactionManager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager);
         }
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject) {
@@ -100,13 +100,12 @@ namespace NakedObjects.Xat {
             return CreateTestAction(actionSpec, testService);
         }
 
-
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager, transactionManager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager);
         }
 
         public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) {
-            return new TestProperty(lifecycleManager, Session, persistor, field, owningObject, this, manager);
+            return new TestProperty(persistor, field, owningObject, this, manager);
         }
 
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) {
@@ -116,7 +115,7 @@ namespace NakedObjects.Xat {
         #endregion
 
         public ITestService CreateTestService(INakedObject service) {
-            return new TestService(service, lifecycleManager, this);
+            return new TestService(service, this);
         }
 
         private static ITestValue CreateTestValue(INakedObject nakedObject) {

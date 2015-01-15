@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Facet {
     public class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public ActionParameterValidation(MethodInfo method, int param, ISpecification holder)
+        public ActionParameterValidation(MethodInfo method, ISpecification holder)
             : base(typeof (IActionParameterValidationFacet), holder) {
             this.method = method;
         }

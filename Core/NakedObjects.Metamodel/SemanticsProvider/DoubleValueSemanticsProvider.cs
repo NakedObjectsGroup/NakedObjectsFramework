@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 22;
 
-
         public DoubleValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -45,7 +44,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (double);
         }
-
 
         protected override double DoParse(string entry) {
             try {
@@ -78,7 +76,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override double DoRestore(string data) {
             return double.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "DoubleAdapter: ";

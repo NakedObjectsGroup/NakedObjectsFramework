@@ -24,6 +24,5 @@ namespace NakedObjects.Architecture.Component {
         IObjectSpecImmutable GetSpecification(string name);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

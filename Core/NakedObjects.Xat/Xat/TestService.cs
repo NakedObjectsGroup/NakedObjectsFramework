@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ILifecycleManager lifecycleManager, ITestObjectFactory factory) : base(factory, lifecycleManager) {
+        public TestService(INakedObject service, ITestObjectFactory factory) : base(factory) {
             NakedObject = service;
         }
 
@@ -20,6 +18,7 @@ namespace NakedObjects.Xat {
         public override string Title {
             get { return NakedObject.TitleString(); }
         }
+
         #endregion
     }
 

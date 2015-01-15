@@ -10,11 +10,9 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -50,13 +48,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [TypicalLength(30)]
+            // ReSharper disable once UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
-            public void someAction([TypicalLength(20)] int foo) {}
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void SomeAction([TypicalLength(20)] int foo) {}
         }
 
         [TestMethod]
@@ -71,7 +72,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
             Assert.IsNotNull(facet);

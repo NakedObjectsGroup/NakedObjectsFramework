@@ -16,7 +16,6 @@ namespace NakedObjects.Meta.Facet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}
 
-
         public override void Init(INakedObject collection, INakedObject[] initData) {
             Array newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
             collection.ReplacePoco(newCollection);

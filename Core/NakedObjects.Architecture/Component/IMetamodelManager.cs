@@ -13,7 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Provides access to the run-time object specifications (implementations of IObjectSpec).
-    /// The Manager takes responsibility to inject these specifications with the necessary framework services.
+    /// The NakedObjectManager takes responsibility to inject these specifications with the necessary framework services.
     /// </summary>
     public interface IMetamodelManager {
         IObjectSpec[] AllSpecs { get; }

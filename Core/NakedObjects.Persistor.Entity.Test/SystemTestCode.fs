@@ -16,7 +16,7 @@ open NakedObjects.Persistor.Entity.Configuration
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with
     | :? INakedObject as no -> no
-    | _ -> ctx.Manager.CreateAdapter(obj, null, null)
+    | _ -> ctx.NakedObjectManager.CreateAdapter(obj, null, null)
 
 let IsPersistentObject obj ctx = 
     let no = getNo obj ctx
@@ -73,7 +73,7 @@ let IsNotNullAndTransientAggregate obj ctx =
     IsTransientAggregateOid obj ctx
 
 let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
-    let spec = ctx.Metamodel.GetSpecification(typeof<'t>)
+    let spec = ctx.MetamodelManager.GetSpecification(typeof<'t>)
     ctx.LifecycleManager.CreateInstance(spec)
 
 let CreateAndSetup<'t when 't : not struct> setter ctx = 

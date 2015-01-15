@@ -27,7 +27,6 @@ namespace NakedObjects.Architecture.Component {
         /// </summary>
         void Reset();
 
-
         void AddAdapter(INakedObject nakedObject);
 
         /// <summary>

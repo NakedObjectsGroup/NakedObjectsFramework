@@ -15,7 +15,6 @@ using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 
-
 namespace NakedObjects.Reflect.Test {
     public abstract class AbstractReflectorTest {
         protected IMetamodel Metamodel;
@@ -107,7 +106,6 @@ namespace NakedObjects.Reflect.Test {
             new ArrayValueTypeFacetFactory<byte>(81),
             new CollectionFacetFactory(82)
         };
-
 
         [TestInitialize]
         public virtual void SetUp() {

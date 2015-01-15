@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Container {
             if (persistentObject == null) {
                 throw new ArgumentException(Resources.NakedObjects.DisposeReferenceError);
             }
-            INakedObject adapter = framework.Manager.GetAdapterFor(persistentObject);
+            INakedObject adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
@@ -46,7 +46,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public T GetService<T>() {
-           return framework.Services.GetServices().Select(no => no.Object).OfType<T>().SingleOrDefault();
+            return framework.ServicesManager.GetServices().Select(no => no.Object).OfType<T>().SingleOrDefault();
         }
 
         public IPrincipal Principal {
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public void Persist<T>(ref T transientObject) {
-            INakedObject adapter = framework.Manager.GetAdapterFor(transientObject);
+            INakedObject adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
                 throw new PersistFailedException(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter));
             }
@@ -80,7 +80,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public IViewModel NewViewModel(Type type) {
-            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
             if (spec.IsViewModel) {
                 return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
@@ -88,7 +88,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public object NewTransientInstance(Type type) {
-            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
             return framework.LifecycleManager.CreateInstance(spec).Object;
         }
 
@@ -96,7 +96,7 @@ namespace NakedObjects.Core.Container {
             if (obj != null) {
                 INakedObject adapter = AdapterFor(obj);
                 Validate(adapter);
-                framework.Persistor.ObjectChanged(adapter, framework.LifecycleManager, framework.Metamodel);
+                framework.Persistor.ObjectChanged(adapter, framework.LifecycleManager, framework.MetamodelManager);
             }
         }
 
@@ -155,7 +155,7 @@ namespace NakedObjects.Core.Container {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return framework.Manager.CreateAdapter(obj, null, null);
+            return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
     }
 

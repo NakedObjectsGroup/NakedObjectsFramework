@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IObjectSpecImmutable specification;
 
         public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification,
-                                   IActionParameterSpecImmutable[] parameters)
+            IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
@@ -71,7 +71,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
             if (!IsFinderMethod) return false;
             if (ReturnType.IsCollection && ElementType.IsOfType(spec)) {
-                    return true;
+                return true;
             }
             return ReturnType.IsOfType(spec);
         }
@@ -80,26 +80,25 @@ namespace NakedObjects.Meta.SpecImmutable {
             get {
                 //TODO: Note that ReturnSpec is pending a rename (it is actually the spec of the owning object)
                 return ReturnSpec.Service && parameters.Any() &&
-                    ContainsFacet(typeof(IContributedActionFacet));
+                       ContainsFacet(typeof (IContributedActionFacet));
             }
         }
 
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
-            return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));               
+            return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
         }
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
-            return  Parameters.Any(parm => IsContributedToCollectionOf(parm.Specification, objectSpecImmutable));   
+            return Parameters.Any(parm => {
+                var facet = GetFacet<IContributedActionFacet>();
+                return facet != null && facet.IsContributedToCollectionOf(objectSpecImmutable);
+            });
         }
 
         #endregion
 
         private bool HasReturn() {
             return ReturnType != null;
-        }
-
-        private bool IsCollection(IObjectSpecImmutable spec) {
-            return spec.IsCollection && !spec.IsParseable;
         }
 
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
@@ -110,16 +109,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
 
             return contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
-        }
-
-        private bool IsContributedToCollectionOf(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
-
-            var facet = GetFacet<IContributedActionFacet>();
-
-            if (facet == null) {
-                return false;
-            }
-            return facet.IsContributedToCollectionOf(contributeeSpec);      
         }
 
         #region ISerializable

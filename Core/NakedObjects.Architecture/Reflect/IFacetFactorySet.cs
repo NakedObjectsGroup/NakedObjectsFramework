@@ -71,6 +71,5 @@ namespace NakedObjects.Architecture.Reflect {
         /// <param name="paramNum">zero-based</param>
         /// <param name="specification"> holder to attach facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification);
-
     }
 }

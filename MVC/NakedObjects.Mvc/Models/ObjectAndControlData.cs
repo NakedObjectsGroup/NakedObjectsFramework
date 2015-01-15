@@ -134,9 +134,9 @@ namespace NakedObjects.Web.Mvc.Models {
                 var nakedObject = GetNakedObject(framework);
                 IActionSpec[] actions = null;
                 if (nakedObject.Spec.IsCollection) {
-                    var metamodel = framework.Metamodel.Metamodel;
+                    var metamodel = framework.MetamodelManager.Metamodel;
                     IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                    var elementSpec = framework.Metamodel.GetSpecification(elementSpecImmut);
+                    var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
                     actions = elementSpec.GetCollectionContributedActions();
                 } else {
                     actions = nakedObject.Spec.GetObjectActions();

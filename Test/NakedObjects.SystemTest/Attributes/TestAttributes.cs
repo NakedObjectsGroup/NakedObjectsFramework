@@ -97,7 +97,7 @@ namespace SystemTest.Attributes {
         public virtual void Contributed() {
             var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetObjectActions();
 
             Assert.AreEqual(1, actions.Count());
@@ -344,7 +344,7 @@ namespace SystemTest.Attributes {
 
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
             FinderAction1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
+            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var finderActions = adapter.Spec.GetFinderActions();
 
             Assert.AreEqual(2, finderActions.Count());

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
@@ -176,7 +177,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public XElement CreateXsElementForNofValue(XElement parentXsElementElement, XElement xmlValueElement) {
             // gather details from XML element
 
-            var datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
+            XAttribute datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
             string fieldName = xmlValueElement.Name.LocalName;
 
             // <xs:element name="%owning object%">
@@ -421,6 +422,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             // xsi:schemaLocation="http://www.nakedobjects.org/ns/app/<fully qualified class name> sdm.common.fixture.schemes.ao.communications sdm.common.fixture.schemes.ao.communications.AO11ConfirmAnimalRegistration.xsd"
 
+            Trace.Assert(rootElement != null, "rootElement != null");
             rootElement.SetAttributeValue(XsMetaModel.Xsi + "schemaLocation", xsiSchemaLocationAttrValue);
         }
 
@@ -444,7 +446,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private static void AddNamespace(XElement element, string prefix, string nsUri) {
             XElement rootElement = Helper.RootElementFor(element);
             // see if we have the NS prefix there already
-            var existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
+            XAttribute existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
             // if there is none (or it is different from what we want), then set the attribute
             if (existingNsUri == null || !existingNsUri.Value.Equals(nsUri)) {
                 rootElement.SetAttributeValue(XNamespace.Xmlns + prefix, nsUri);

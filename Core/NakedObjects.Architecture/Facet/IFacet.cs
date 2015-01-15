@@ -42,7 +42,6 @@ namespace NakedObjects.Architecture.Facet {
         /// </para>
         Type FacetType { get; }
 
-
         /// <summary>
         ///     Whether this facet implementation should replace existing(none-noop) implementations.
         /// </summary>

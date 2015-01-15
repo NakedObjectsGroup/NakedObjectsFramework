@@ -49,11 +49,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (attribute == null) {
                 return null;
             }
-            if (attribute is DescribedAsAttribute) {
-                return Create((DescribedAsAttribute) attribute, holder);
+            var asAttribute = attribute as DescribedAsAttribute;
+            if (asAttribute != null) {
+                return Create(asAttribute, holder);
             }
-            if (attribute is DescriptionAttribute) {
-                return Create((DescriptionAttribute) attribute, holder);
+            var descriptionAttribute = attribute as DescriptionAttribute;
+            if (descriptionAttribute != null) {
+                return Create(descriptionAttribute, holder);
             }
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }

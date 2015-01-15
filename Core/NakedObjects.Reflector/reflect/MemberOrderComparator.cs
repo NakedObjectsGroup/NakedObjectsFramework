@@ -71,7 +71,7 @@ namespace NakedObjects.Reflect {
                     componentCompare = c1.CompareTo(c2);
                 }
                 else {
-                    componentCompare = components1[n].CompareTo(components2[n]);
+                    componentCompare = string.Compare(components1[n], components2[n], System.StringComparison.InvariantCulture);
                 }
                 if (componentCompare != 0) {
                     return componentCompare;

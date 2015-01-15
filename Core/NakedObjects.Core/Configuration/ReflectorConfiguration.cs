@@ -34,6 +34,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] ContributedActions { get; private set; }
         public Type[] SystemServices { get; private set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
+
         #endregion
     }
 }

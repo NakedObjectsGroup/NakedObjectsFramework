@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class NakedObjectManager : INakedObjectManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectManager));
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
         private readonly IMetamodelManager metamodel;

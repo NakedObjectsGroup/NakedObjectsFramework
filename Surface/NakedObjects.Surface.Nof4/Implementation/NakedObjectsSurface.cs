@@ -61,7 +61,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
-            return MapErrors(() => framework.Metamodel.AllSpecs.
+            return MapErrors(() => framework.MetamodelManager.AllSpecs.
                 Where(s => !IsGenericType(s)).
                 Select(GetSpecificationWrapper).ToArray());
         }
@@ -209,8 +209,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetServicesInternal() {
-            INakedObject[] services = framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager);
-            IObjectSpec elementType = framework.Metamodel.GetSpecification(typeof (object));
+            INakedObject[] services = framework.ServicesManager.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager);
+            IObjectSpec elementType = framework.MetamodelManager.GetSpecification(typeof (object));
 
             return new ListContext {
                 ElementType = elementType,
@@ -409,7 +409,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             framework.LifecycleManager.MakePersistent(nakedObject);
                         }
                         else {
-                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.Metamodel);
+                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
                         }
                         propertiesToDisplay = nakedObject.Spec.Properties.
                             Where(p => p.IsVisible(nakedObject)).
@@ -548,21 +548,21 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             if (specification.IsParseable) {
-                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.Manager);
+                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.NakedObjectManager);
             }
 
-            var no = framework.Manager.CreateAdapter(rawValue, null, null);
+            var no = framework.NakedObjectManager.CreateAdapter(rawValue, null, null);
 
             // the rawValue is not necessarily a collection so need extra check here to avoid 
             // a potential error getting the element spec. 
             if (specification.IsCollection && (no.Spec.IsCollection && !no.Spec.IsParseable)) {
-                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no, framework.Metamodel.Metamodel);
+                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no, framework.MetamodelManager.Metamodel);
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
+                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.NakedObjectManager)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof (List<>).MakeGenericType(elementType);
-                    var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    var collection = framework.NakedObjectManager.CreateAdapter(Activator.CreateInstance(collType), null, null);
                     collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
                     return collection;
                 }
@@ -596,13 +596,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private INakedObject GetObjectAsNakedObject(LinkObjectId objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return framework.Manager.CreateAdapter(obj, null, null);
+            return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 
 
         private INakedObject GetServiceAsNakedObject(LinkObjectId serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
-            return framework.Manager.CreateAdapter(obj, null, null);
+            return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 
         private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, IObjectSpec targetSpec, string uid) {
@@ -879,7 +879,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
                     value = getValue(ep),
-                    actualType = getValue(ep) == null ? null : framework.Metamodel.GetSpecification(getValue(ep).GetType())
+                    actualType = getValue(ep) == null ? null : framework.MetamodelManager.GetSpecification(getValue(ep).GetType())
                 });
 
                 var errors = new List<ContextSurface>();
@@ -897,7 +897,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         string rawValue = value.ToString();
 
                         try {
-                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.Manager);
+                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.NakedObjectManager);
 
                             errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                                 ProposedValue = rawValue
@@ -917,7 +917,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         });
                     }
                     else {
-                        mappedArguments[key] = framework.Manager.CreateAdapter(value, null, null);
+                        mappedArguments[key] = framework.NakedObjectManager.CreateAdapter(value, null, null);
 
                         errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                             ProposedValue = getValue(ep)

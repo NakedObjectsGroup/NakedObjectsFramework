@@ -41,7 +41,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification specification;
         private ArrayValueSemanticsProvider<byte> value;
 
-
         public void TestEncodeDecode(byte[] toTest) {
             byte[] originalValue = toTest;
             string encodedValue = value.ToEncodedString(originalValue);
@@ -54,7 +53,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
                 Assert.IsTrue(decodedValue.SequenceEqual(originalValue));
             }
         }
-
 
         [TestMethod]
         public void TestEncodeDecode() {
@@ -133,7 +131,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestParseNull() {
             base.TestParseNull();
         }
-
 
         [TestMethod]
         public override void TestDecodeNull() {

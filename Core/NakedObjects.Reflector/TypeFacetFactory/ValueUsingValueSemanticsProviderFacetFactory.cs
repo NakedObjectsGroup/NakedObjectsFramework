@@ -46,6 +46,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
                     FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
                 }
 
+// ReSharper disable once CompareNonConstrainedGenericWithNull
                 if (semanticsProvider.DefaultValue != null) {
                     FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
                 }

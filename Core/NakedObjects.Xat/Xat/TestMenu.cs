@@ -42,7 +42,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestMenuItem GetItem(string name) {
-            var item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
+            IMenuItemImmutable item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
             Assert.IsNotNull(item, "No menu item with name: " + name);
             return factory.CreateTestMenuItem(item, owningObject);
         }

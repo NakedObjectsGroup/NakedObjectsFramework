@@ -123,7 +123,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static ElementDescriptor MenuActionAsElementDescriptor(this HtmlHelper html, IMenuActionImmutable menuAction, INakedObject nakedObject, bool isEdit) {
             IActionSpecImmutable actionIm = menuAction.Action;
-            IActionSpec actionSpec = html.Framework().Metamodel.GetActionSpec(actionIm);
+            IActionSpec actionSpec = html.Framework().MetamodelManager.GetActionSpec(actionIm);
             if (nakedObject == null) {
 
                 IObjectSpecImmutable objectIm = actionIm.ReturnSpec; //This is the spec for the service
@@ -132,8 +132,8 @@ namespace NakedObjects.Web.Mvc.Html {
                     throw new Exception("Action is not on a known object or service");
                 }
                 //TODO: Add method to IServicesManager to get a service by its IObjectSpec (or IObjectSpecImmutable)
-                IObjectSpec objectSpec = html.Framework().Metamodel.GetSpecification(objectIm);
-                nakedObject = html.Framework().Services.GetServices().Single(s => s.Spec == objectSpec);
+                IObjectSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(objectIm);
+                nakedObject = html.Framework().ServicesManager.GetServices().Single(s => s.Spec == objectSpec);
 
             }
 

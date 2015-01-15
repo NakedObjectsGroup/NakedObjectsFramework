@@ -39,15 +39,16 @@ namespace NakedObjects.Reflect.FacetFactory {
         ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
         ///     Type is ignored.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="type"></param>
         /// <param name="methodType"></param>
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         protected MethodInfo[] FindMethods(IReflector reflector,
-                                           Type type,
-                                           MethodType methodType,
-                                           string name,
-                                           Type returnType = null) {
+            Type type,
+            MethodType methodType,
+            string name,
+            Type returnType = null) {
             return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).
                 Where(m => m.Name == name).
                 Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).
@@ -55,12 +56,12 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
         }
 
-
         /// <summary>
         ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
         ///     void, and has the specified number of parameters. If the returnType is specified as null then the return
         ///     Type is ignored.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="type"></param>
         /// <param name="methodType"></param>
         /// <param name="name"></param>
@@ -68,12 +69,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="paramTypes">the set of parameters the method should have, if null then is ignored</param>
         /// <param name="paramNames">the names of the parameters the method should have, if null then is ignored</param>
         protected MethodInfo FindMethod(IReflector reflector,
-                                        Type type,
-                                        MethodType methodType,
-                                        string name,
-                                        Type returnType,
-                                        Type[] paramTypes,
-                                        string[] paramNames = null) {
+            Type type,
+            MethodType methodType,
+            string name,
+            Type returnType,
+            Type[] paramTypes,
+            string[] paramNames = null) {
             try {
                 MethodInfo method = paramTypes == null
                     ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))

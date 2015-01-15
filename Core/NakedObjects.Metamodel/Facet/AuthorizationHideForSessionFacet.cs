@@ -18,8 +18,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly string[] users;
 
         public AuthorizationHideForSessionFacet(string roles,
-                                                string users,
-                                                ISpecification holder)
+            string users,
+            ISpecification holder)
             : base(holder) {
             this.roles = FacetUtils.SplitOnComma(roles);
             this.users = FacetUtils.SplitOnComma(users);

@@ -10,7 +10,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         bool IsImmutable { get; }
 
         /// <summary>
-        ///     Whether the value has <see cref="EqualByContentAttribute" /> semantics
+        ///     Whether the value has equal by content semantics
         /// </summary>
         /// <remarks>
         ///     <para>
@@ -26,7 +26,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         int TypicalLength { get; }
 
         T DefaultValue { get; }
-
 
         /// <summary>
         ///     Returns the provided object as an encoded string.

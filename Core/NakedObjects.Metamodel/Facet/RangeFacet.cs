@@ -37,7 +37,6 @@ namespace NakedObjects.Meta.Facet {
             holder = info.GetValue<ISpecification>("holder");
         }
 
-
         public static Type Type {
             get { return typeof (IRangeFacet); }
         }
@@ -146,7 +145,6 @@ namespace NakedObjects.Meta.Facet {
 
             return 0;
         }
-
 
         protected int DateCompare(DateTime date, double min, double max) {
             DateTime earliest = (DateTime.Today).AddDays(min);

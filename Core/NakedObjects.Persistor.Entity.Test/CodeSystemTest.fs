@@ -76,7 +76,7 @@ type CodeSystemTests() =
     
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsFramework.Services.GetService("repository#TestCodeOnly.Person")
+        let service = x.NakedObjectsFramework.ServicesManager.GetService("repository#TestCodeOnly.Person")
         Assert.IsNotNull(service.Object)
     
     [<Test>]

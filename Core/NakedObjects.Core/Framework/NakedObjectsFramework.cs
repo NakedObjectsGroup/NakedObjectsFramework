@@ -11,51 +11,51 @@ using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
-        private readonly IContainerInjector injector;
+        private readonly IContainerInjector containerInjector;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager manager;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMessageBroker messageBroker;
-        private readonly IMetamodelManager metamodelManager;
+        private readonly IMetamodelManager metamodelManagerManager;
         private readonly IObjectPersistor persistor;
         private readonly IReflector reflector;
-        private readonly IServicesManager services;
+        private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
         private readonly IFrameworkResolver frameworkResolver;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
-                                     ISession session,
-                                     ILifecycleManager lifecycleManager,
-                                     IServicesManager services,
-                                     INakedObjectManager manager,
-                                     IObjectPersistor persistor,
-                                     IReflector reflector,
-                                     IMetamodelManager metamodelManager,
-                                     IContainerInjector injector,
-                                     NakedObjectFactory nakedObjectFactory,
-                                     SpecFactory memberFactory,
-                                     ITransactionManager transactionManager,
-                                     IFrameworkResolver frameworkResolver) {
+            ISession session,
+            ILifecycleManager lifecycleManager,
+            IServicesManager servicesManager,
+            INakedObjectManager nakedObjectManager,
+            IObjectPersistor persistor,
+            IReflector reflector,
+            IMetamodelManager metamodelManagerManager,
+            IContainerInjector containerInjector,
+            NakedObjectFactory nakedObjectFactory,
+            SpecFactory memberFactory,
+            ITransactionManager transactionManager,
+            IFrameworkResolver frameworkResolver) {
             this.messageBroker = messageBroker;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
-            this.services = services;
-            this.manager = manager;
+            this.servicesManager = servicesManager;
+            this.nakedObjectManager = nakedObjectManager;
             this.persistor = persistor;
             this.reflector = reflector;
-            this.metamodelManager = metamodelManager;
-            this.injector = injector;
+            this.metamodelManagerManager = metamodelManagerManager;
+            this.containerInjector = containerInjector;
             this.transactionManager = transactionManager;
             this.frameworkResolver = frameworkResolver;
-            injector.Framework = this;
+            containerInjector.Framework = this;
             memberFactory.Initialize(this);
-            nakedObjectFactory.Initialize(metamodelManager, session, lifecycleManager, persistor, manager);
+            nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager);
         }
 
         #region INakedObjectsFramework Members
 
-        public IContainerInjector Injector {
-            get { return injector; }
+        public IContainerInjector ContainerInjector {
+            get { return containerInjector; }
         }
 
         public ITransactionManager TransactionManager {
@@ -78,12 +78,12 @@ namespace NakedObjects.Service {
             get { return lifecycleManager; }
         }
 
-        public INakedObjectManager Manager {
-            get { return manager; }
+        public INakedObjectManager NakedObjectManager {
+            get { return nakedObjectManager; }
         }
 
-        public IServicesManager Services {
-            get { return services; }
+        public IServicesManager ServicesManager {
+            get { return servicesManager; }
         }
 
         public IObjectPersistor Persistor {
@@ -94,8 +94,8 @@ namespace NakedObjects.Service {
             get { return reflector; }
         }
 
-        public IMetamodelManager Metamodel {
-            get { return metamodelManager; }
+        public IMetamodelManager MetamodelManager {
+            get { return metamodelManagerManager; }
         }
 
         #endregion

@@ -21,7 +21,6 @@ namespace NakedObjects.Meta.Facet {
             get { return typeof (IViewModelFacet); }
         }
 
-
         public override bool IsEditView(INakedObject nakedObject) {
             var target = nakedObject.GetDomainObject<IViewModelSwitchable>();
 

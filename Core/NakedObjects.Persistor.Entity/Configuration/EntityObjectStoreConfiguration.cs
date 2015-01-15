@@ -81,7 +81,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// </summary>
         public MergeOption DefaultMergeOption { get; set; }
 
-
         /// <summary>
         ///     Persistor will loop over contexts commit changes a maximum of this number of times. If exceeded an exception will
         ///     be thrown.
@@ -101,7 +100,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         public void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types) {
             NotPersistedTypes = types;
         }
-
 
         /// <summary>
         ///     Call for each code first context in solution.
@@ -160,7 +158,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             configuredButNotUsed.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch1, s));
             usedButNotConfigured.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch2, s));
         }
-
 
         public string[] GetConnectionStringNamesFromConfig() {
             ConnectionStringSettings[] connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();

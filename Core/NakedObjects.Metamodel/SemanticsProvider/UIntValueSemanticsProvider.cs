@@ -22,13 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 10;
 
-
-        /// <summary>
-        ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
-        /// </summary>
-        public UIntValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
-
         public UIntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -87,7 +80,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override uint DoRestore(string data) {
             return uint.Parse(data, CultureInfo.InvariantCulture);
         }
-
 
         public override string ToString() {
             return "UIntAdapter: ";

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -23,7 +22,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
         private readonly IObjectSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
@@ -72,21 +70,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         private IActionSpec[] ObjectActions {
-            get {
-                if (objectActions == null) {
-                    objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
-                }
-                return objectActions;
-            }
+            get { return objectActions ?? (objectActions = memberFactory.OrderActions(innerSpec.ObjectActions)); }
         }
 
         private IActionSpec[] ContributedActions {
-            get {
-                if (contributedActions == null) {
-                    contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
-                }
-                return contributedActions;
-            }
+            get { return contributedActions ?? (contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions)); }
         }
 
         #region IObjectSpec Members
@@ -127,11 +115,10 @@ namespace NakedObjects.Core.Spec {
             return innerSpec.GetFacets();
         }
 
-
         public virtual bool IsParseable {
             get {
                 if (!isParseable.HasValue) {
-                    isParseable = innerSpec.ContainsFacet(typeof(IParseableFacet));
+                    isParseable = innerSpec.ContainsFacet(typeof (IParseableFacet));
                 }
                 return isParseable.Value;
             }
@@ -140,7 +127,7 @@ namespace NakedObjects.Core.Spec {
         public virtual bool IsEncodeable {
             get {
                 if (!isEncodeable.HasValue) {
-                    isEncodeable = innerSpec.ContainsFacet(typeof(IEncodeableFacet));
+                    isEncodeable = innerSpec.ContainsFacet(typeof (IEncodeableFacet));
                 }
                 return isEncodeable.Value;
             }
@@ -149,7 +136,7 @@ namespace NakedObjects.Core.Spec {
         public virtual bool IsAggregated {
             get {
                 if (!isAggregated.HasValue) {
-                    isAggregated = innerSpec.ContainsFacet(typeof(IAggregatedFacet));
+                    isAggregated = innerSpec.ContainsFacet(typeof (IAggregatedFacet));
                 }
                 return isAggregated.Value;
             }
@@ -158,7 +145,7 @@ namespace NakedObjects.Core.Spec {
         public virtual bool IsCollection {
             get {
                 if (!isCollection.HasValue) {
-                    isCollection = innerSpec.ContainsFacet(typeof(ICollectionFacet));
+                    isCollection = innerSpec.ContainsFacet(typeof (ICollectionFacet));
                 }
                 return isCollection.Value;
             }
@@ -167,7 +154,7 @@ namespace NakedObjects.Core.Spec {
         public virtual bool IsViewModel {
             get {
                 if (!isViewModel.HasValue) {
-                    isViewModel = innerSpec.ContainsFacet(typeof(IViewModelFacet));
+                    isViewModel = innerSpec.ContainsFacet(typeof (IViewModelFacet));
                 }
                 return isViewModel.Value;
             }
@@ -187,12 +174,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IAssociationSpec[] Properties {
-            get {
-                if (objectFields == null) {
-                    objectFields = innerSpec.Fields.Select(element => memberFactory.CreateAssociationSpec(element)).ToArray();
-                }
-                return objectFields;
-            }
+            get { return objectFields ?? (objectFields = innerSpec.Fields.Select(element => memberFactory.CreateAssociationSpec(element)).ToArray()); }
         }
 
         public virtual IActionSpec[] GetObjectActions() {
@@ -206,17 +188,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IActionSpec[] GetCollectionContributedActions() {
-            if (collectionContributedActions == null) {
-                collectionContributedActions = memberFactory.OrderActions(innerSpec.CollectionContributedActions);
-            }
-            return collectionContributedActions;
+            return collectionContributedActions ?? (collectionContributedActions = memberFactory.OrderActions(innerSpec.CollectionContributedActions));
         }
 
         public IActionSpec[] GetFinderActions() {
-                if (finderActions == null) {
-                    finderActions = memberFactory.OrderActions(innerSpec.FinderActions);
-                }
-                return finderActions;
+            return finderActions ?? (finderActions = memberFactory.OrderActions(innerSpec.FinderActions));
         }
 
         public IMenuImmutable ObjectMenu {
@@ -244,27 +220,17 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IObjectSpec[] Interfaces {
-            get {
-                if (interfaces == null) {
-                    interfaces = innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray();
-                }
-                return interfaces;
-            }
+            get { return interfaces ?? (interfaces = innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
         }
 
         public IObjectSpec[] Subclasses {
-            get {
-                if (subclasses == null) {
-                    subclasses = innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray();
-                }
-                return subclasses;
-            }
+            get { return subclasses ?? (subclasses = innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
         }
 
         public bool IsAbstract {
             get {
                 if (!isAbstract.HasValue) {
-                    isAbstract = innerSpec.ContainsFacet(typeof(IAbstractFacet));
+                    isAbstract = innerSpec.ContainsFacet(typeof (IAbstractFacet));
                 }
                 return isAbstract.Value;
             }
@@ -273,7 +239,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsInterface {
             get {
                 if (!isInterface.HasValue) {
-                    isInterface = innerSpec.ContainsFacet(typeof(IInterfaceFacet));
+                    isInterface = innerSpec.ContainsFacet(typeof (IInterfaceFacet));
                 }
                 return isInterface.Value;
             }
@@ -299,39 +265,19 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string SingularName {
-            get {
-                if (singularName == null) {
-                    singularName = innerSpec.GetFacet<INamedFacet>().Value;
-                }
-                return singularName;
-            }
+            get { return singularName ?? (singularName = innerSpec.GetFacet<INamedFacet>().Value); }
         }
 
         public string UntitledName {
-            get {
-                if (untitledName == null) {
-                    untitledName = Resources.NakedObjects.Untitled + SingularName;
-                }
-                return untitledName;
-            }
+            get { return untitledName ?? (untitledName = Resources.NakedObjects.Untitled + SingularName); }
         }
 
         public string PluralName {
-            get {
-                if (pluralName == null) {
-                    pluralName = innerSpec.GetFacet<IPluralFacet>().Value;
-                }
-                return pluralName;
-            }
+            get { return pluralName ?? (pluralName = innerSpec.GetFacet<IPluralFacet>().Value); }
         }
 
         public string Description {
-            get {
-                if (description == null) {
-                    description = innerSpec.GetFacet<IDescribedAsFacet>().Value ?? "";
-                }
-                return description;
-            }
+            get { return description ?? (description = innerSpec.GetFacet<IDescribedAsFacet>().Value ?? ""); }
         }
 
         public bool HasNoIdentity {
@@ -356,7 +302,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsVoid {
             get {
                 if (!isVoid.HasValue) {
-                    isVoid = innerSpec.ContainsFacet(typeof(IVoidFacet));
+                    isVoid = innerSpec.ContainsFacet(typeof (IVoidFacet));
                 }
                 return isVoid.Value;
             }
@@ -384,9 +330,9 @@ namespace NakedObjects.Core.Spec {
 
             // match covariant generic types 
             if (Type.IsGenericType && IsCollection) {
-                Type otherType = ((ObjectSpec)spec).Type;
+                Type otherType = ((ObjectSpec) spec).Type;
                 if (otherType.IsGenericType && Type.GetGenericArguments().Count() == 1 && otherType.GetGenericArguments().Count() == 1) {
-                    if (Type.GetGenericTypeDefinition() == (typeof(IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
+                    if (Type.GetGenericTypeDefinition() == (typeof (IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
                         Type genericArgument = Type.GetGenericArguments().Single();
                         Type otherGenericArgument = otherType.GetGenericArguments().Single();
                         Type otherGenericParameter = otherType.GetGenericTypeDefinition().GetGenericArguments().Single();
@@ -402,11 +348,11 @@ namespace NakedObjects.Core.Spec {
             return Superclass != null && Superclass.IsOfType(spec);
         }
 
-
         public IAssociationSpec GetProperty(string id) {
             try {
                 return Properties.First(f => f.Id.Equals(id));
-            } catch (InvalidOperationException) {
+            }
+            catch (InvalidOperationException) {
                 throw new ReflectionException(string.Format("No field called '{0}' in '{1}'", id, SingularName));
             }
         }
@@ -426,8 +372,7 @@ namespace NakedObjects.Core.Spec {
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {
             InteractionContext ic = InteractionContext.PersistingObject(session, false, target);
-            IConsent cons = InteractionUtils.IsValid(target.Spec, ic);
-            return cons;
+            return InteractionUtils.IsValid(target.Spec, ic);
         }
 
         #endregion
@@ -466,7 +411,7 @@ namespace NakedObjects.Core.Spec {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ObjectSpec)obj);
+            return Equals((ObjectSpec) obj);
         }
 
         public override int GetHashCode() {

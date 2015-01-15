@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -35,10 +36,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static object Invoke(MethodInfo method, INakedObject nakedObject, INakedObject[] parameters) {
-            object[] parameterPocos = parameters == null ? new object[0] : new object[parameters.Length];
-            for (int i = 0; i < parameterPocos.Length; i++) {
-                parameterPocos[i] = parameters[i] == null ? null : parameters[i].Object;
-            }
+            object[] parameterPocos = parameters == null ? new object[] {} : parameters.Select(p => p == null ? null : p.Object).ToArray();
             return Invoke(method, nakedObject.Object, parameterPocos);
         }
 

@@ -66,11 +66,9 @@ namespace NakedObjects.Core.Util {
             return type.GetGenericArguments().Count() == 1 && type.GetGenericArguments().All(t => t.IsEnum);
         }
 
+        // ReSharper disable once CompareNonConstrainedGenericWithNull
         public static List<T> InList<T>(this T item) {
-            if (item != null) {
-                return new List<T> {item};
-            }
-            return new List<T>();
+            return item != null ? new List<T> {item} : new List<T>();
         }
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
@@ -83,10 +81,16 @@ namespace NakedObjects.Core.Util {
             }
         }
 
+        public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T, int> action) {
+            int i = 0;
+            foreach (T item in toIterate) {
+                action(item, i++);
+            }
+        }
+
         public static string ListOut(this IEnumerable<string> toIterate) {
             return toIterate.Aggregate("", (s, t) => s + (string.IsNullOrWhiteSpace(s) ? "" : ", ") + t);
         }
-
 
         public static IList CloneCollection(object toClone) {
             Type collectionType = MakeCollectionType(toClone, typeof (List<>));
@@ -133,7 +137,6 @@ namespace NakedObjects.Core.Util {
             return type.GetGenericArguments().Any(t => t != null && IsGenericType(t, typeof (KeyValuePair<,>)));
         }
 
-
         private static bool IsGenericOfRefType(Type type) {
             return type.GetGenericArguments().Count() == 1 && type.GetGenericArguments().All(t => !t.IsValueType);
         }
@@ -142,12 +145,10 @@ namespace NakedObjects.Core.Util {
             return typeof (ICollection).IsAssignableFrom(type);
         }
 
-
         private static Type MakeCollectionType(object toClone, Type genericCollectionType) {
             Type itemType = toClone.GetType().IsGenericType ? toClone.GetType().GetGenericArguments().Single() : typeof (object);
             return genericCollectionType.MakeGenericType(itemType);
         }
-
 
         public static bool IsGenericType(Type type, Type toMatch) {
             return type.IsGenericType && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
@@ -230,7 +231,5 @@ namespace NakedObjects.Core.Util {
         }
 
         #endregion
-
-        
     }
 }

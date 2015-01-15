@@ -12,11 +12,9 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -67,10 +65,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Class2 {
+            // ReSharper disable once UnusedMember.Local
             public string[] DeriveKeys() {
                 throw new NotImplementedException();
             }
 
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void PopulateUsingKeys(string[] instanceId) {
                 throw new NotImplementedException();
             }
@@ -96,7 +97,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var mock = new Mock<INakedObject>();
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
-
 
             string[] key = facet.Derive(value);
 
@@ -138,7 +138,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             mock.Setup(no => no.Object).Returns(testClass);
 
             facet.Populate(keys, value);
-
 
             Assert.AreEqual(keys[0], testClass.Value1);
             Assert.AreEqual(keys[1], testClass.Value2);

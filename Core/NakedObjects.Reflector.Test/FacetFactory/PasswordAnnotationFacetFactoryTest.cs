@@ -11,11 +11,9 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -48,13 +46,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [DataType(DataType.Password)]
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
-            public void someAction([DataType(DataType.Password)] string foo) {}
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DataType(DataType.Password)] string foo) {}
         }
 
         private class Customer3 {
@@ -65,9 +65,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
-            public void someAction([DataType(DataType.PhoneNumber)] string foo) {}
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
         }
-
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
@@ -97,7 +97,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
@@ -115,4 +115,5 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
 }

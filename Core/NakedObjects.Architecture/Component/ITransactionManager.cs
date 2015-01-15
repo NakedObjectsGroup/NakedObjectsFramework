@@ -22,6 +22,5 @@ namespace NakedObjects.Architecture.Component {
         void AddCommand(IPersistenceCommand command);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

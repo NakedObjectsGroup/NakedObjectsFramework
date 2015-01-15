@@ -41,6 +41,5 @@ namespace NakedObjects.Architecture.Component {
         INakedObject AdapterForExistingObject(object domainObject, IOid oid);
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

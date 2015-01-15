@@ -6,9 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -52,12 +50,8 @@ namespace NakedObjects.Reflect {
                    (type.IsGenericType && !(TypeUtils.IsNullableType(type) || CollectionUtils.IsGenericEnumerable(type)));
         }
 
-
         public string GetKeyForType(Type type) {
-           
-   
             if (IsGenericCollection(type)) {
-
                 //if (!type.IsPublic) {
                 //    var interfaces = type.GetInterfaces();
                 //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
@@ -69,7 +63,6 @@ namespace NakedObjects.Reflect {
                 //                         publicInterfaces.FirstOrDefault() ??
                 //                         type.BaseType);
                 //}
-
 
                 return type.Namespace + "." + type.Name;
             }

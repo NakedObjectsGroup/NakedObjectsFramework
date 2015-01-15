@@ -27,7 +27,6 @@ namespace NakedObjects.Architecture.Interactions {
         /// </para>
         string Hides(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager);
 
-
         /// <summary>
         ///     Create (not throw) an exception to indicate that this
         ///     interaction cannot be performed because the target object or member is hidden.

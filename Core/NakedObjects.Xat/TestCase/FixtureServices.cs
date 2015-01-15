@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Threading;
+using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureServices {
@@ -49,7 +51,6 @@ namespace NakedObjects.Core.Fixture {
         //    IIdentity identity = new GenericIdentity(username);
         //    IPrincipal principal = new GenericPrincipal(identity, roles);
 
-
         //    ISession session = new SimpleSession(principal);
         //    staticContext.SetSession(session);
         //}
@@ -60,7 +61,7 @@ namespace NakedObjects.Core.Fixture {
             private DateTime time;
 
             /// <summary>
-            ///     Access via <see cref="Clock.GetTicks" />
+            ///     Access via <see cref="IClock.Ticks" />
             /// </summary>
             protected long Ticks {
                 get { return time.Ticks; }
@@ -117,7 +118,7 @@ namespace NakedObjects.Core.Fixture {
             }
 
             public override string ToString() {
-                return time.ToString();
+                return time.ToString(Thread.CurrentThread.CurrentCulture);
             }
         }
 

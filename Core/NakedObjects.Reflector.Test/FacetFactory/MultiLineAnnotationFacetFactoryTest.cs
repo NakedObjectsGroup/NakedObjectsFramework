@@ -10,11 +10,9 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -50,12 +48,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [MultiLine(NumberOfLines = 12, Width = 36)]
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
         }
 
         private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] string foo) {}
         }
 
@@ -70,6 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer6 {
+// ReSharper disable once UnusedParameter.Local
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
         }
 
@@ -144,4 +145,5 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
 }

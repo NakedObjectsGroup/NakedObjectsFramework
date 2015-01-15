@@ -69,7 +69,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return value.ToString(mask);
         }
 
-
         protected override string DoEncode(ulong obj) {
             return obj.ToString(CultureInfo.InvariantCulture);
         }

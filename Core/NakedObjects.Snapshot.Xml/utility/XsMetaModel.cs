@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -208,6 +209,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
         // the supplied XSD element, or null if neither can be found.
+        // ReSharper disable PossibleMultipleEnumeration
 
         public static XElement ChoiceOrSequenceFor(XElement parentXsElement) {
             IEnumerable<XElement> choiceNodeList = parentXsElement.Descendants(Xs + "choice");
@@ -216,6 +218,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             }
             return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
         }
+
+        // ReSharper restore PossibleMultipleEnumeration
 
         // returns child <code>xs:simpleContent</code> element for supplied parent XSD
         // element, creating and appending if necessary.
@@ -226,6 +230,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public static XElement SimpleContentFor(XElement parentXsElement) {
             return ChildXsElement(parentXsElement, "simpleContent");
         }
+
+        // ReSharper disable PossibleMultipleEnumeration
 
         public static XElement ChildXsElement(XElement parentXsElement, string localName) {
             IEnumerable<XElement> nodeList = parentXsElement.Descendants(Xs + localName);
@@ -239,9 +245,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return childXsElement;
         }
 
+        // ReSharper restore PossibleMultipleEnumeration
+
         // return the <code>xs:schema</code> element (the root element of the owning XSD Doc).
 
         public static XElement SchemaFor(XElement xsElement) {
+            Debug.Assert(xsElement.Document != null, "xsElement.Document != null");
             return xsElement.Document.Root;
         }
 

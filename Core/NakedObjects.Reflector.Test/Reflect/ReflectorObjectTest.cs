@@ -58,7 +58,6 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsNull(facet);
         }
 
-
         [TestMethod]
         public void TestPluralFaced() {
             IFacet facet = Specification.GetFacet(typeof (IPluralFacet));

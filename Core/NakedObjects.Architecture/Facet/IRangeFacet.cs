@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
 
@@ -15,7 +16,7 @@ namespace NakedObjects.Architecture.Facet {
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to
-    ///     the <see cref="System.ComponentModel.DataAnnotations.RangeAttribute" /> annotation
+    ///     the <see cref="RangeAttribute" /> annotation
     /// </para>
     public interface IRangeFacet : IValidatingInteractionAdvisor, IFacet {
         IConvertible Min { get; }

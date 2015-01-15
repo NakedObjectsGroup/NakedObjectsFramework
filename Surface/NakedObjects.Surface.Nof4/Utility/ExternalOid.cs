@@ -51,7 +51,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             Type type = ValidateServiceId(oid);
             IObjectSpec spec;
             try {
-                spec = framework.Metamodel.GetSpecification(type);
+                spec = framework.MetamodelManager.GetSpecification(type);
             }
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
@@ -59,7 +59,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+            INakedObject service = framework.ServicesManager.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -74,7 +74,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
-            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
             return new NakedObjectSpecificationWrapper(spec, Surface, framework);
         }
 
@@ -131,7 +131,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         protected object GetObject(string[] keys, Type type) {
-            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
             return spec.IsViewModel ? GetViewModel(keys, spec) : GetDomainObject(keys, type);
         }
 
@@ -166,12 +166,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) framework.Services.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
         private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper) framework.Services.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 

@@ -11,7 +11,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -26,14 +25,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
+    public class ObjectSpecImmutable : Specification, IObjectSpecBuilder {
         private readonly IIdentifier identifier;
-        private readonly IMetamodel metamodel;
         private ImmutableList<IObjectSpecImmutable> subclasses;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
-            this.metamodel = metamodel;
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
@@ -87,6 +83,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
             FinderActions = finderActions.ToImmutableList();
         }
+
         #endregion
 
         #region IObjectSpecImmutable Members
@@ -104,9 +101,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public string ShortName { get; private set; }
 
         public IMenuImmutable ObjectMenu {
-            get {
-                return this.GetFacet<IMenuFacet>().GetMenu();
-            }
+            get { return GetFacet<IMenuFacet>().GetMenu(); }
         }
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
@@ -145,7 +140,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 }
             }
 
-            foreach (var interfaceSpec in Interfaces) {
+            foreach (IObjectSpecImmutable interfaceSpec in Interfaces) {
                 IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
                 if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
                     return interfaceFacet;
@@ -216,12 +211,12 @@ namespace NakedObjects.Meta.SpecImmutable {
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
-        #endregion
 
+        #endregion
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            Fields.ForEach(field => decorator.DecorateAllHoldersFacets(field));
+            Fields.ForEach(decorator.DecorateAllHoldersFacets);
             ObjectActions.Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 
@@ -247,7 +242,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IList<IObjectSpecImmutable> tempInterfaces;
         private readonly IList<IActionSpecImmutable> tempObjectActions;
         private readonly IList<IObjectSpecImmutable> tempSubclasses;
-
 
         // The special constructor is used to deserialize values. 
         public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
@@ -282,7 +276,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<IList<IActionSpecImmutable>>("FinderActions", FinderActions.ToList());
             base.GetObjectData(info, context);
         }
-
 
         public override void OnDeserialization(object sender) {
             Fields = tempFields.ToImmutableList();

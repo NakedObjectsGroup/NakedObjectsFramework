@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -15,22 +16,24 @@ namespace NakedObjects.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
 
+// ReSharper disable once ParameterHidesMember
         public void Initialize(INakedObjectsFramework framework) {
+            Assert.AssertNotNull(framework);
             this.framework = framework;
         }
 
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
             Assert.AssertNotNull(framework);
-            var specification = parameterSpecImmutable.Specification;
+            IObjectSpecImmutable specification = parameterSpecImmutable.Specification;
 
             if (specification.IsParseable) {
-                return new ActionParseableParameterSpec(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
+                return new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
             }
             if (specification.IsObject) {
-                return new OneToOneActionParameter(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToOneActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
             }
             if (specification.IsCollection) {
-                return new OneToManyActionParameter(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
             }
             throw new UnknownTypeException(specification);
         }
@@ -38,10 +41,10 @@ namespace NakedObjects.Core.Spec {
         public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             if (specImmutable.IsOneToOne) {
-                return new OneToOneAssociationSpec(framework.Metamodel, specImmutable, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor, framework.TransactionManager);
+                return new OneToOneAssociationSpec(framework.MetamodelManager, specImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager);
             }
             if (specImmutable.IsOneToMany) {
-                return new OneToManyAssociationSpec(framework.Metamodel, specImmutable, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor);
+                return new OneToManyAssociationSpec(framework.MetamodelManager, specImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
             }
             throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
@@ -49,16 +52,11 @@ namespace NakedObjects.Core.Spec {
         //TODO: rename to CreateActionSpecs?
         public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
-            var actions = new List<IActionSpec>();
-            foreach (var element in order) {
-                    actions.Add(CreateActionSpec(element));
-            }
-
-            return actions.ToArray();
+            return order.Select(CreateActionSpec).Cast<IActionSpec>().ToArray();
         }
 
         public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
-            return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.Manager, specImmutable);
+            return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable);
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {

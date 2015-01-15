@@ -79,12 +79,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveModifyMethod(IReflector reflector,
-                                               ICollection<IFacet> propertyFacets,
-                                               IMethodRemover methodRemover,
-                                               Type type,
-                                               string capitalizedName,
-                                               Type[] parms,
-                                               ISpecification property) {
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type[] parms,
+            ISpecification property) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ModifyPrefix + capitalizedName, typeof (void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -101,7 +101,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-
         private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             RemoveMethod(methodRemover, method);
@@ -115,12 +114,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveDefaultMethod(IReflector reflector,
-                                                ICollection<IFacet> propertyFacets,
-                                                IMethodRemover methodRemover,
-                                                Type type,
-                                                string capitalizedName,
-                                                Type returnType,
-                                                ISpecification property) {
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -130,12 +129,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveChoicesMethod(IReflector reflector,
-                                                ICollection<IFacet> propertyFacets,
-                                                IMethodRemover methodRemover,
-                                                Type type,
-                                                string capitalizedName,
-                                                Type returnType,
-                                                ISpecification property) {
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
             MethodInfo[] methods = FindMethods(reflector,
                 type,
                 MethodType.Object,
@@ -159,12 +158,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveAutoCompleteMethod(IReflector reflector,
-                                                     ICollection<IFacet> propertyFacets,
-                                                     IMethodRemover methodRemover,
-                                                     Type type,
-                                                     string capitalizedName,
-                                                     Type returnType,
-                                                     ISpecification property) {
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
                 MethodInfo method = FindMethod(reflector,
@@ -187,7 +186,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
         }
-
 
         public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             return candidates.Where(property => property.GetGetMethod() != null &&

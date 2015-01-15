@@ -12,7 +12,7 @@ namespace NakedObjects.Core.Util {
     public static class MimeUtils {
         #region extensionToMimeType
 
-        private static readonly IDictionary<string, string> extensionToMimeType = new Dictionary<string, string> {
+        private static readonly IDictionary<string, string> ExtensionToMimeType = new Dictionary<string, string> {
             {"323", "text/h323"},
             {"acx", "application/internet-property-stream"},
             {"ai", "application/postscript"},
@@ -210,15 +210,15 @@ namespace NakedObjects.Core.Util {
         public const string DefaultFileExtension = "txt";
 
         public static string GetMimeTypeFromExtension(string extension) {
-            if (!string.IsNullOrEmpty(extension) && extensionToMimeType.ContainsKey(extension)) {
-                return extensionToMimeType[extension];
+            if (!string.IsNullOrEmpty(extension) && ExtensionToMimeType.ContainsKey(extension)) {
+                return ExtensionToMimeType[extension];
             }
             return DefaultMimeType;
         }
 
         public static string GetExtensionFromMimeType(string mimeType) {
-            if (!string.IsNullOrEmpty(mimeType) && extensionToMimeType.Values.Contains(mimeType)) {
-                return extensionToMimeType.Where(kvp => kvp.Value == mimeType).Select(kvp => kvp.Key).First();
+            if (!string.IsNullOrEmpty(mimeType) && ExtensionToMimeType.Values.Contains(mimeType)) {
+                return ExtensionToMimeType.Where(kvp => kvp.Value == mimeType).Select(kvp => kvp.Key).First();
             }
             return DefaultFileExtension;
         }

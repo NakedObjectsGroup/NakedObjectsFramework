@@ -38,16 +38,15 @@ namespace NakedObjects.Core.Test.Resolve {
 
         public interface ITestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {}
 
-
         private static IResolveStateMachine NewSm() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpecification = new Mock<IObjectSpec>();
-            var testSpecification = mockSpecification.Object;
+            IObjectSpec testSpecification = mockSpecification.Object;
 
             var mockFacet = new Mock<ITestCallbackFacet>();
-            var testFacet = mockFacet.Object;
+            ITestCallbackFacet testFacet = mockFacet.Object;
 
             mockFacet.Setup(f => f.Invoke(null, null, null, null));
 

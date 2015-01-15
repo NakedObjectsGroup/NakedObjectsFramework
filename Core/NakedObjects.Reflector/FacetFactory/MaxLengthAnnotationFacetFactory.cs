@@ -51,11 +51,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (attribute == null) {
                 return null;
             }
-            if (attribute is StringLengthAttribute) {
-                return Create((StringLengthAttribute) attribute, holder);
+            var lengthAttribute = attribute as StringLengthAttribute;
+            if (lengthAttribute != null) {
+                return Create(lengthAttribute, holder);
             }
-            if (attribute is MaxLengthAttribute) {
-                return Create((MaxLengthAttribute) attribute, holder);
+            var maxLengthAttribute = attribute as MaxLengthAttribute;
+            if (maxLengthAttribute != null) {
+                return Create(maxLengthAttribute, holder);
             }
 
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
@@ -64,7 +66,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
         }
-
 
         private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);

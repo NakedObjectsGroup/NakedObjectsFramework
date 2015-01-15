@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 4;
         private static readonly Color DefaultValueConst = Color.Black;
 
-
         public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
@@ -53,7 +52,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (Color);
         }
-
 
         protected override Color DoParse(string entry) {
             try {
@@ -94,7 +92,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override Color DoRestore(string data) {
             return Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
         }
-
 
         public override string ToString() {
             return "ColorAdapter: ";

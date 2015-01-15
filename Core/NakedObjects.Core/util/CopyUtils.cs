@@ -12,14 +12,15 @@ using System.Reflection;
 
 namespace NakedObjects.Core.Util {
     public static class CopyUtils {
-
         // used by reflection 
+        // ReSharper disable once UnusedMember.Local
         private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             Assert.AssertFalse(toCollection.Any());
             fromCollection.ForEach(toCollection.Add);
         }
 
         // used by reflection 
+        // ReSharper disable once UnusedMember.Local
         private static void ShallowUpdateCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
             var toRemove = new List<T>();
             toCollection.Where(i => !fromCollection.Contains(i)).ForEach(toRemove.Add);
@@ -40,7 +41,6 @@ namespace NakedObjects.Core.Util {
             MethodInfo gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
             gcm.Invoke(null, new[] {fromCollection, toCollection});
         }
-
 
         public static object CloneObjectTest(object domainObject) {
             object clone = Activator.CreateInstance(domainObject.GetType());

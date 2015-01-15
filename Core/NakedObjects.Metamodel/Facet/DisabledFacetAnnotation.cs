@@ -16,7 +16,6 @@ namespace NakedObjects.Meta.Facet {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}
 
-
         public override string DisabledReason(INakedObject target) {
             if (Value == WhenTo.Always) {
                 return Resources.NakedObjects.AlwaysDisabled;
@@ -38,7 +37,6 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

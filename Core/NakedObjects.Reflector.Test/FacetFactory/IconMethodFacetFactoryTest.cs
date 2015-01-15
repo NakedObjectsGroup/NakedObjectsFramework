@@ -12,12 +12,10 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -57,6 +55,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable once UnusedMember.Local
             public string IconName() {
                 return "TestName";
             }
@@ -67,6 +66,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [IconName("AttributeName")]
         private class Customer2 {
+// ReSharper disable once UnusedMember.Local
             public string IconName() {
                 return "TestName";
             }

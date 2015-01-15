@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (ImageValueSemanticsProvider));
 
-
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 
@@ -91,10 +90,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             Log.Debug("decode " + data.Length + " bytes of image data, type " + mime);
             byte[] buffer = Convert.FromBase64String(data.Substring(offset));
             var stream = new MemoryStream(buffer);
-            return new Image(stream);
-        }
-
-        private object ParseFromStream(Stream stream) {
             return new Image(stream);
         }
 

@@ -14,11 +14,9 @@ using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -62,6 +60,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer {
+// ReSharper disable UnusedMember.Local
             public string FirstName {
                 get { return null; }
             }
@@ -70,6 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer1 {
             public string FirstName {
                 get { return null; }
+// ReSharper disable ValueParameterNotUsed
                 set { }
             }
         }
@@ -84,6 +84,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+// ReSharper disable InconsistentNaming
         private class Customer10r {
             public string FirstName {
                 get { return null; }
@@ -143,6 +144,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
+// ReSharper disable UnusedParameter.Local
             public string ValidateFirstName(string firstName) {
                 return null;
             }
@@ -273,7 +275,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
-
 
         private class Customer2 {
             public string FirstName {
@@ -554,7 +555,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNull(Specification.GetFacet(typeof (IAutoCompleteFacet)));
         }
 
-
         [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer10), "FirstName");
@@ -586,7 +586,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
         }
-
 
         [TestMethod]
         public void TestChoicesFacetFoundAndMethodRemovedLocal() {
@@ -628,7 +627,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetx);
-            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             AssertMethodRemoved(propertyChoicesMethod);
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
@@ -860,7 +858,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestModifyMethodWithNoSetterStillInstallsDisabledAndDerivedFacets() {
             PropertyInfo property = FindProperty(typeof (Customer6), "FirstName");
-            MethodInfo propertyModifyMethod = FindMethod(typeof (Customer6), "ModifyFirstName", new[] {typeof (string)});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
@@ -928,4 +925,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore ValueParameterNotUsed
+    // ReSharper restore InconsistentNaming
+    // ReSharper restore UnusedParameter.Local
 }

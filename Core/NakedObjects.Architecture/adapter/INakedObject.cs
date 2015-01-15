@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
     ///     An INakedObject is an adapter to domain objects. The NOF alsways deals with domain objects via these
-    ///     adapters. The adapter gives access to the Metamodel (INakedObjectSpecification) for the domain object type,
+    ///     adapters. The adapter gives access to the MetamodelManager (INakedObjectSpecification) for the domain object type,
     ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>
     public interface INakedObject {
@@ -80,7 +80,6 @@ namespace NakedObjects.Architecture.Adapter {
         ///     Returns a local independent string for this object 
         /// </summary>
         string InvariantString();
-
 
         /// <summary>
         ///     Checks the version of this adapter to make sure that it does not differ from the specified

@@ -15,17 +15,16 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
-
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 
-
         public ContributedActionFacet(ISpecification holder)
-            : base(typeof (IContributedActionFacet), holder) { }
+            : base(typeof (IContributedActionFacet), holder) {}
 
         public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) {
             objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
         }
+
         //Here the type is the ElementType of the collection, not the type of collection.
         public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
             collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
@@ -34,11 +33,11 @@ namespace NakedObjects.Meta.Facet {
         #region IContributedActionFacet Members
 
         public bool IsContributedTo(IObjectSpecImmutable spec) {
-            return objectContributees.Select(t => t.Item1).Any(spec.IsOfType); 
+            return objectContributees.Select(t => t.Item1).Any(spec.IsOfType);
         }
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) {
-                    return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType); 
+            return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
@@ -53,10 +52,10 @@ namespace NakedObjects.Meta.Facet {
             if (!IsContributedTo(spec)) {
                 throw new Exception("Action is not contributed to " + spec.Type);
             }
-            var tuple = objectContributees.First(t => spec.IsOfType(t.Item1));
+            Tuple<IObjectSpecImmutable, string, string> tuple = objectContributees.First(t => spec.IsOfType(t.Item1));
             return tuple;
         }
-        #endregion
 
+        #endregion
     }
 }

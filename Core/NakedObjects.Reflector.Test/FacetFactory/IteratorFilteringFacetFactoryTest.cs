@@ -10,10 +10,8 @@ using System.Collections;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -84,7 +82,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(enumeratorMethod);
         }
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

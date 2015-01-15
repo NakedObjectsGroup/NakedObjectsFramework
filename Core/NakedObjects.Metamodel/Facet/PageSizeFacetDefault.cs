@@ -17,6 +17,5 @@ namespace NakedObjects.Meta.Facet {
             : base(DefaultPageSize, holder) {}
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

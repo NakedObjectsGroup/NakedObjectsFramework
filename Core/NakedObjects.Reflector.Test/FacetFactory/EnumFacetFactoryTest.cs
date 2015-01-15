@@ -13,11 +13,9 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -50,6 +48,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private static void CheckChoices(IFacet facet) {
             var facetAsEnumFacet = facet as IEnumFacet;
+            Assert.IsNotNull(facetAsEnumFacet);
             Assert.AreEqual(3, facetAsEnumFacet.GetChoices(null).Length);
             Assert.AreEqual(Cities.London, facetAsEnumFacet.GetChoices(null)[0]);
             Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null)[1]);
@@ -65,7 +64,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObject));
         }
 
-
         private enum Cities {
             London,
             Paris,
@@ -74,17 +72,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [EnumDataType(typeof (Cities))]
+// ReSharper disable UnusedMember.Local
             public int City { get; set; }
         }
 
         private class Customer2 {
+// ReSharper disable UnusedParameter.Local
             public void SomeAction([EnumDataType(typeof (Cities))] int city) {}
         }
 
         private class Customer3 {
             public Cities City { get; set; }
         }
-
 
         private class Customer4 {
             public void SomeAction(Cities city) {}
@@ -93,7 +92,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer5 {
             public Cities? City { get; set; }
         }
-
 
         private class Customer6 {
             public void SomeAction(Cities? city) {}
@@ -171,4 +169,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
+    // ReSharper restore UnusedMember.Local
+    // ReSharper restore UnusedParameter.Local
 }

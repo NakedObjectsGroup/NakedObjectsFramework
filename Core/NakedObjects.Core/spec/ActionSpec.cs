@@ -23,7 +23,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class ActionSpec : MemberSpecAbstract, IActionSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionSpec));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
 
         private readonly SpecFactory memberFactory;
@@ -41,7 +41,6 @@ namespace NakedObjects.Core.Spec {
 
         public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
-
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(servicesManager);
             Assert.AssertNotNull(nakedObjectManager);
@@ -62,30 +61,15 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public virtual IObjectSpec ReturnSpec {
-            get {
-                if (returnSpec == null) {
-                    returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType);
-                }
-                return returnSpec;
-            }
+            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType)); }
         }
 
         public override IObjectSpec ElementSpec {
-            get {
-                if (elementSpec == null) {
-                    elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementType);
-                }
-                return elementSpec;
-            }
+            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementType)); }
         }
 
         public virtual IObjectSpec OnSpec {
-            get {
-                if (onSpec == null) {
-                    onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
-                }
-                return onSpec;
-            }
+            get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
         }
 
         public virtual IActionSpec[] Actions {

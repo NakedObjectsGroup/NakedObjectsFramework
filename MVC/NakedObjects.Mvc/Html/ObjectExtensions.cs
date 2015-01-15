@@ -114,7 +114,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object
         /// </summary>
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
             return html.ObjectTitle(nakedObject);
         }
 
@@ -128,14 +128,14 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object with icon
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
-            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
             string title = nakedObject.Spec.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdHelper.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
-            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model.Result, null, null);
+            INakedObject nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
             title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionTitle(INakedObject nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;
-            int count = nakedObject.GetAsEnumerable(html.Framework().Manager).Count();
+            int count = nakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Count();
             if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
                 total = count;
             }
@@ -151,7 +151,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string queryInd = nakedObject.Spec.IsQueryable ? MvcUi.QueryResult + ": " : "";
             int viewSize = count;
 
-            IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().GetValueSpec(nakedObject, html.Framework().Metamodel.Metamodel));
+            IObjectSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().GetValueSpec(nakedObject, html.Framework().MetamodelManager.Metamodel));
             string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
 
             return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);

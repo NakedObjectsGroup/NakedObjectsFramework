@@ -23,14 +23,13 @@ namespace NakedObjects.Reflect {
 
             Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
 
-            foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+            foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
                 factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
             }
 
             methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
             propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
         }
-
 
         private readonly IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
 
@@ -42,7 +41,6 @@ namespace NakedObjects.Reflect {
         ///     Used within <see cref="IFacetFactorySet.Filters" />
         /// </para>
         private readonly IList<IMethodFilteringFacetFactory> methodFilteringFactories;
-
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -116,7 +114,7 @@ namespace NakedObjects.Reflect {
         public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
                 facetFactory.ProcessParams(reflector, method, paramNum, specification);
-        }
+            }
         }
 
         #endregion

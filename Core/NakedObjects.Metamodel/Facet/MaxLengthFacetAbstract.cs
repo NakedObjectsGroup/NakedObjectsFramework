@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Threading;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -52,7 +53,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         protected override string ToStringValues() {
-            return Value == 0 ? "unlimited" : Value.ToString();
+            return Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
         }
     }
 }

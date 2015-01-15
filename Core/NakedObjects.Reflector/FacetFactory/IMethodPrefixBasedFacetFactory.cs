@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>

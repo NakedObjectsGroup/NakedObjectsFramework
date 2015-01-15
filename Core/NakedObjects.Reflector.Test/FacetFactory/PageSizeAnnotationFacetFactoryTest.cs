@@ -11,12 +11,10 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -49,12 +47,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [PageSize(7)]
+// ReSharper disable once UnusedMember.Local
             public IQueryable<Customer> SomeAction() {
                 return null;
             }
         }
 
         private class Customer1 {
+// ReSharper disable once UnusedMember.Local
             public IQueryable<Customer1> SomeAction() {
                 return null;
             }

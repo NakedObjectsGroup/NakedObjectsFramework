@@ -11,22 +11,19 @@ using NakedObjects.Core.Adapter;
 namespace NakedObjects.Core.Util {
     public static class CollectionMementoHelper {
         public static bool IsPaged(this INakedObject nakedObject) {
-            if (nakedObject.Oid is CollectionMemento) {
-                return ((CollectionMemento) nakedObject.Oid).IsPaged;
-            }
-            return false;
+            var oid = nakedObject.Oid as CollectionMemento;
+            return oid != null && oid.IsPaged;
         }
 
         public static bool IsNotQueryable(this INakedObject nakedObject) {
-            if (nakedObject.Oid is CollectionMemento) {
-                return ((CollectionMemento) nakedObject.Oid).IsNotQueryable;
-            }
-            return false;
+            var oid = nakedObject.Oid as CollectionMemento;
+            return oid != null && oid.IsNotQueryable;
         }
 
         public static void SetNotQueryable(this INakedObject nakedObject, bool isNotQueryable) {
-            if (nakedObject.Oid is CollectionMemento) {
-                ((CollectionMemento) nakedObject.Oid).IsNotQueryable = isNotQueryable;
+            var oid = nakedObject.Oid as CollectionMemento;
+            if (oid != null) {
+                oid.IsNotQueryable = isNotQueryable;
             }
         }
     }

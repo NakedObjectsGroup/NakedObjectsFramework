@@ -65,32 +65,16 @@ namespace NakedObjects.Xat {
         protected string Name { set; get; }
 
         protected virtual ITestObjectFactory TestObjectFactoryClass {
-            get {
-                
-                if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Manager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Services);
-                }
-                return testObjectFactory;
-            }
+            get { return testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager)); }
         }
 
         protected virtual ISession TestSession {
-            get {
-                if (testSession == null) {
-                    testSession = new TestSession(TestPrincipal);
-                }
-                return testSession;
-            }
+            get { return testSession ?? (testSession = new TestSession(TestPrincipal)); }
             set { testSession = value; }
         }
 
         protected virtual IPrincipal TestPrincipal {
-            get {
-                if (testPrincipal == null) {
-                    testPrincipal = CreatePrincipal("Test", new string[] {});
-                }
-                return testPrincipal;
-            }
+            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {})); }
             set { testPrincipal = value; }
         }
 
@@ -120,7 +104,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual Type[] Types {
-            get { return new Type[] { }; }
+            get { return new Type[] {}; }
         }
 
         protected void StartTest() {
@@ -142,14 +126,11 @@ namespace NakedObjects.Xat {
                     InvokeUtils.InvocationException("Exception executing " + property, e);
                 }
             }
-            else { }
         }
-
 
         protected void PreInstallFixtures(ITransactionManager transactionManager) {
             fixtureServices = new FixtureServices();
         }
-
 
         private static MethodInfo GetInstallMethod(object fixture) {
             return fixture.GetType().GetMethod("Install", new Type[0]) ??
@@ -206,19 +187,19 @@ namespace NakedObjects.Xat {
             if (nakedObjectsFramework == null) {
                 nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Injector, Fixtures);
+            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ContainerInjector, Fixtures);
         }
 
         protected ITestService GetTestService(Type type) {
-            return NakedObjectsFramework.Services.GetServices().
-                Where(no => type.IsAssignableFrom(no.Object.GetType())).
+            return NakedObjectsFramework.ServicesManager.GetServices().
+                Where(no => type.IsInstanceOfType(no.Object)).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
         }
 
         protected ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (INakedObject service in NakedObjectsFramework.Services.GetServices()) {
+                foreach (INakedObject service in NakedObjectsFramework.ServicesManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
                         ITestService testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
@@ -229,23 +210,22 @@ namespace NakedObjects.Xat {
                     }
                 }
                 Assert.Fail("No such service: " + serviceName);
-
             }
             return servicesCache[serviceName.ToLower()];
         }
 
         protected ITestMenu GetMainMenu(string menuName) {
-            var mainMenus = NakedObjectsFramework.Metamodel.MainMenus();
+            IMenuImmutable[] mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
                 IMenuImmutable menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
                 if (menu == null) {
                     Assert.Fail("No such main menu " + menuName);
                 }
                 return TestObjectFactoryClass.CreateTestMenuMain(menu);
-            } 
-            
+            }
+
             //Use the MenuServices to derive the menus
-            var service = GetTestService(menuName);
+            ITestService service = GetTestService(menuName);
             if (service == null) {
                 Assert.Fail("No such main menu, or Service, " + menuName);
             }
@@ -253,11 +233,11 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestMenu[] AllMainMenus() {
-            return NakedObjectsFramework.Metamodel.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
+            return NakedObjectsFramework.MetamodelManager.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
         }
 
         protected void AssertMainMenuCountIs(int expected) {
-            var actual = NakedObjectsFramework.Metamodel.MainMenus().Count();
+            int actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
             Assert.AreEqual(expected, actual);
         }
 
@@ -266,12 +246,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(classname);
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
@@ -280,8 +260,8 @@ namespace NakedObjects.Xat {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
             IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null).TitleString() == title);
-            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.Manager.CreateAdapter(inst, null, null));
+            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
+            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
         }
 
         private static IPrincipal CreatePrincipal(string name, string[] roles) {
@@ -402,11 +382,10 @@ namespace NakedObjects.Xat {
             container.RegisterType<IFacetFactory, ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++));
             container.RegisterType<IFacetFactory, ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++));
             container.RegisterType<IFacetFactory, CollectionFacetFactory>("CollectionFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++)); // written to not trample over TypeOf if already installed
-            container.RegisterType<IFacetFactory, MenuFacetFactory>("MenuFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order++)); 
+            container.RegisterType<IFacetFactory, MenuFacetFactory>("MenuFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-
             RegisterFacetFactories(container);
             container.RegisterType<IMenuFactory, MenuFactory>();
 
@@ -428,7 +407,7 @@ namespace NakedObjects.Xat {
 
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
-                Types ?? new Type[]{},
+                Types ?? new Type[] {},
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
                 SystemServices.Select(s => s.GetType()).ToArray());

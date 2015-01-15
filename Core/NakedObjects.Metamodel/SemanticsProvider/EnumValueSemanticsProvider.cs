@@ -83,7 +83,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return (T) Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
         }
 
-
         public override string ToString() {
             return "EnumAdapter: ";
         }

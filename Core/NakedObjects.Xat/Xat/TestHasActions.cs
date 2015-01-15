@@ -11,21 +11,18 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
-        protected readonly ITestObjectFactory factory;
-        private readonly ILifecycleManager lifecycleManager;
+        private readonly ITestObjectFactory factory;
 
-        protected TestHasActions(ITestObjectFactory factory, ILifecycleManager lifecycleManager) {
+        protected TestHasActions(ITestObjectFactory factory) {
             this.factory = factory;
-            this.lifecycleManager = lifecycleManager;
         }
 
         #region ITestHasActions Members
@@ -36,7 +33,7 @@ namespace NakedObjects.Xat {
             get {
                 List<ITestAction> actions = NakedObject.Spec.GetObjectActions().
                     OfType<ActionSpec>().
-                    Select(x => factory.CreateTestAction(x, this)).ToList();
+                    Select(x => Factory.CreateTestAction(x, this)).ToList();
                 return actions.ToArray();
             }
         }
@@ -80,19 +77,25 @@ namespace NakedObjects.Xat {
 
         public abstract string Title { get; }
 
+        protected ITestObjectFactory Factory {
+            get { return factory; }
+        }
+
         public ITestMenu GetMenu() {
             IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
-            return new TestMenu(menu, factory, this);
+            return new TestMenu(menu, Factory, this);
         }
 
         #endregion
 
+        // ReSharper disable UnusedParameter.Local
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
+            // ReSharper restore UnusedParameter.Local
             if (!actions.Any()) {
-                Assert.Fail(string.Format("No Action named '{0}'{1}", actionName, condition));
+                Assert.Fail("No Action named '{0}'{1}", actionName, condition);
             }
             if (actions.Count() > 1) {
-                Assert.Fail(string.Format("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition));
+                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition);
             }
         }
 
@@ -124,8 +127,8 @@ namespace NakedObjects.Xat {
             for (int i = 0; i < actionsSpec.Length; i++) {
                 IActionSpec actionSpec = actionsSpec[i];
                 string name = actionSpec.Name;
-                    order.Append(name);
-                 order.Append(i < actionsSpec.Length - 1 ? ", " : "");
+                order.Append(name);
+                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
             }
             return order.ToString();
         }

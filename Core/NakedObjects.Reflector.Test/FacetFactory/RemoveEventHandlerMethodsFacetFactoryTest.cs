@@ -10,12 +10,10 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
-
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -32,8 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
             var menuFactory = new NullMenuFactory();
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] { facetFactory });
-
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]

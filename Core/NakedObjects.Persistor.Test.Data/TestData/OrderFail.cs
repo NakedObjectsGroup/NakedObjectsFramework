@@ -20,7 +20,6 @@ namespace TestData {
 
         public virtual bool PersistingCalled { get; set; }
 
-
         public override void Persisting() {
             base.Persisting();
             PersistingCalled = true;

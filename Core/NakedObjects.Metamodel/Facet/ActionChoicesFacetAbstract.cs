@@ -31,6 +31,5 @@ namespace NakedObjects.Meta.Facet {
         #endregion
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

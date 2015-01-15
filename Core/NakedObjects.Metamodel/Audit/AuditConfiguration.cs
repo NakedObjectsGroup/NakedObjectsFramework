@@ -12,9 +12,9 @@ using NakedObjects.Audit;
 namespace NakedObjects.Meta.Audit {
     //Add namespace auditors individually via AddNamespaceAuditor, or create the whole dictionary
     //and set the NamespaceAuditors property.
-    public class AuditConfiguration<Tdefault> : IAuditConfiguration where Tdefault : IAuditor {
+    public class AuditConfiguration<TDefault> : IAuditConfiguration where TDefault : IAuditor {
         public AuditConfiguration() {
-            DefaultAuditor = typeof (Tdefault);
+            DefaultAuditor = typeof (TDefault);
             NamespaceAuditors = new Dictionary<string, Type>();
         }
 

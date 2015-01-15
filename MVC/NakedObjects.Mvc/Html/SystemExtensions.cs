@@ -270,11 +270,11 @@ namespace NakedObjects.Web.Mvc.Html {
             if (fvm != null) {
                 // if dialog return to target - unless it's a service 
                 object target = fvm.ContextObject;
-                domainObject = !html.Framework().Manager.CreateAdapter(target, null, null).Spec.IsService ? target : null;
+                domainObject = !html.Framework().NakedObjectManager.CreateAdapter(target, null, null).Spec.IsService ? target : null;
             }
 
             // if target is transient  cancel back to history
-            if (domainObject != null && html.Framework().Manager.CreateAdapter(domainObject, null, null).ResolveState.IsTransient()) {
+            if (domainObject != null && html.Framework().NakedObjectManager.CreateAdapter(domainObject, null, null).ResolveState.IsTransient()) {
                 domainObject = null;
             }    
 

@@ -24,13 +24,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         static HiddenDefaultMethodFacetFactory() {
             FixedPrefixes = new[] {
                 PrefixesAndRecognisedMethods.HidePrefix + "Action" + PrefixesAndRecognisedMethods.DefaultPrefix,
-                PrefixesAndRecognisedMethods.HidePrefix + "Property" + PrefixesAndRecognisedMethods.DefaultPrefix,
+                PrefixesAndRecognisedMethods.HidePrefix + "Property" + PrefixesAndRecognisedMethods.DefaultPrefix
             };
         }
 
         public HiddenDefaultMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
-
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

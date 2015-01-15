@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -28,7 +27,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Naked Objects Group 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 
 // Version information for an assembly consists of the following four values:
 //

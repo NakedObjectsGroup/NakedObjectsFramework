@@ -26,7 +26,7 @@ namespace TestData {
         }
 
         public bool ParentIsType(Type type) {
-            return type.IsAssignableFrom(Parent.GetType());
+            return type.IsInstanceOfType(Parent);
         }
 
         #endregion

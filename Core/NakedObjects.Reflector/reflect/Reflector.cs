@@ -18,10 +18,9 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
-using NakedObjects.Menu;
-using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -40,11 +39,11 @@ namespace NakedObjects.Reflect {
         }
 
         public Reflector(IClassStrategy classStrategy,
-                         IMetamodelBuilder metamodel,
-                         IReflectorConfiguration config,
-                         IMenuFactory menuFactory,
-                         IFacetDecorator[] facetDecorators,
-                         IFacetFactory[] facetFactories) {
+            IMetamodelBuilder metamodel,
+            IReflectorConfiguration config,
+            IMenuFactory menuFactory,
+            IFacetDecorator[] facetDecorators,
+            IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
@@ -107,7 +106,7 @@ namespace NakedObjects.Reflect {
         }
 
         public virtual IObjectSpecBuilder LoadSpecification(Type type) {
-            Assert.AssertNotNull(type);         
+            Assert.AssertNotNull(type);
             return (IObjectSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
         }
 
@@ -159,7 +158,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void InstallMainMenus(IMenu[] menus) {
-          foreach (IMenuImmutable menu in menus) {
+            foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
                 metamodel.AddMainMenu(menu);
             }
         }
@@ -176,16 +175,16 @@ namespace NakedObjects.Reflect {
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
-                        var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null);
-                            var matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
-                            foreach (var action in matchingActionsForObject) {
-                                contributedActions.Add(action);
+                        IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                        List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                        foreach (IActionSpecImmutable action in matchingActionsForObject) {
+                            contributedActions.Add(action);
                         }
 
-                            var matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
-                            foreach (var action in matchingActionsForCollection) {
-                                collectionContribActions.Add(action);
-                            }
+                        List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                        foreach (IActionSpecImmutable action in matchingActionsForCollection) {
+                            collectionContribActions.Add(action);
+                        }
                     }
                 }
                 spec.AddContributedActions(contributedActions);
@@ -197,17 +196,11 @@ namespace NakedObjects.Reflect {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
-                var matchingActions = new List<IActionSpecImmutable>();
+                List<IActionSpecImmutable> matchingActions = serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod).Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
-                foreach (IActionSpecImmutable serviceAction in 
-                            serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod)) {
-                   if (serviceAction.IsFinderMethodFor(spec)) {
-                        matchingActions.Add(serviceAction);
-                    }
-                }
                 if (matchingActions.Any()) {
                     matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
-                    foreach (var action in matchingActions) {
+                    foreach (IActionSpecImmutable action in matchingActions) {
                         finderActions.Add(action);
                     }
                 }
@@ -226,7 +219,7 @@ namespace NakedObjects.Reflect {
         }
 
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
-            var actualType = classStrategy.GetType(type);
+            Type actualType = classStrategy.GetType(type);
 
             IObjectSpecBuilder specification = CreateSpecification(actualType);
 

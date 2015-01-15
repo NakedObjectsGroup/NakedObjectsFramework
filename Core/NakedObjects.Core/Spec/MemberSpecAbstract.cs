@@ -25,7 +25,6 @@ namespace NakedObjects.Architecture.Reflect {
         private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
 
-
         protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
             AssertArgNotNull(memberSpec);
@@ -81,7 +80,6 @@ namespace NakedObjects.Architecture.Reflect {
         public abstract IObjectSpec Spec { get; }
         public abstract IObjectSpec ElementSpec { get; }
 
-
         public virtual bool ContainsFacet(Type facetType) {
             return memberSpecImmutable.ContainsFacet(facetType);
         }
@@ -101,7 +99,6 @@ namespace NakedObjects.Architecture.Reflect {
         public virtual IEnumerable<IFacet> GetFacets() {
             return memberSpecImmutable.GetFacets();
         }
-
 
         /// <summary>
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and

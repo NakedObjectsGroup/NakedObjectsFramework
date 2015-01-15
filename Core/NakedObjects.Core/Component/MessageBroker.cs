@@ -24,7 +24,6 @@ namespace NakedObjects.Core.Component {
             get { return warnings.ToArray(); }
         }
 
-
         public virtual string[] Messages {
             get {
                 string[] messageArray = messages.ToArray();

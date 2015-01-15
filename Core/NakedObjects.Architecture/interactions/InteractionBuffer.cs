@@ -34,6 +34,5 @@ namespace NakedObjects.Architecture.Interactions {
         }
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

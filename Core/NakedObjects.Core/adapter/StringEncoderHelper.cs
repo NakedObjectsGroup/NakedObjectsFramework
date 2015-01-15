@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     /// <summary>
@@ -64,11 +65,10 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                Add(items.Cast<object>().Count());
+                object[] itemsAsArray = items.Cast<object>().ToArray();
+                Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
-                foreach (object item in items) {
-                    Add(item);
-                }
+                itemsAsArray.ForEach(Add);
             }
         }
 
@@ -78,11 +78,10 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                Add(items.Count());
+                IEncodedToStrings[] itemsAsArray = items.ToArray();
+                Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
-                foreach (IEncodedToStrings item in items) {
-                    Add(item);
-                }
+                itemsAsArray.ForEach(Add);
             }
         }
 
@@ -92,9 +91,7 @@ namespace NakedObjects.Core.Adapter {
             }
             else {
                 Add(items.Length);
-                foreach (object item in items) {
-                    Add(item);
-                }
+                items.ForEach(Add);
             }
         }
 
@@ -104,12 +101,9 @@ namespace NakedObjects.Core.Adapter {
             }
             else {
                 Add(items.Length);
-                foreach (string item in items) {
-                    Add(item);
-                }
+                items.ForEach(Add);
             }
         }
-
 
         public void Add(IEncodedToStrings item) {
             if (item == null) {

@@ -26,13 +26,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
         ///     Lazily looked up per <see cref="SpecImmutable" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                                 ISpecification holder,
-                                                 Type adaptedType,
-                                                 int typicalLength,
-                                                 bool immutable,
-                                                 bool equalByContent,
-                                                 T defaultValue,
-                                                 IObjectSpecImmutable specImmutable)
+            ISpecification holder,
+            Type adaptedType,
+            int typicalLength,
+            bool immutable,
+            bool equalByContent,
+            T defaultValue,
+            IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -66,7 +66,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return typicalLength; }
         }
 
-
         public bool IsEqualByContent {
             get { return equalByContent; }
         }
@@ -75,7 +74,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return immutable; }
         }
 
-
         public string ToEncodedString(T obj) {
             return DoEncode(obj);
         }
@@ -83,7 +81,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public T FromEncodedString(string data) {
             return DoRestore(data);
         }
-
 
         public virtual object ParseTextEntry(string entry) {
             if (entry == null) {
@@ -135,12 +132,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return obj.ToString();
         }
 
-
         protected abstract string DoEncode(T obj);
 
-
         protected abstract T DoRestore(string data);
-
 
         protected string OutOfRangeMessage(string entry, T minValue, T maxValue) {
             return string.Format(Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);

@@ -188,14 +188,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
             if (targetNakedObject.Spec.IsCollection) {
                 INakedObject filteredNakedObject = FilterCollection(targetNakedObject, controlData);
-                var metamodel = NakedObjectsContext.Metamodel.Metamodel;
+                var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut =
                     filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
 
-                var elementSpec = NakedObjectsContext.Metamodel.GetSpecification(elementSpecImmut);
+                var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut);
                  var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
 
-                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Any()) {
+                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
@@ -211,7 +211,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {
             var result = action.Execute(target, parameterSet);
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Metamodel,  target, action, parameterSet));
+                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager, NakedObjectsContext.MetamodelManager,  target, action, parameterSet));
             }
             return result;
         }    
@@ -281,7 +281,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.Metamodel.GetSpecification(spec)).ToList();
+            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.MetamodelManager.GetSpecification(spec)).ToList();
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);

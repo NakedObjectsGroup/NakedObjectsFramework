@@ -70,7 +70,6 @@ namespace NakedObjects.Architecture.Component {
 
         object CreateInstance(Type type);
 
-
         /// <summary>
         ///     Retrieves the object identified by the specified OID from the object store. The cache should be checked
         ///     first and, if the object is cached, the cached version should be returned. It is important that if this
@@ -88,7 +87,7 @@ namespace NakedObjects.Architecture.Component {
         /// </para>
         /// <para>
         ///     The OID could be for an internal collection, and is therefore related to the parent
-        ///     object (using a <see cref="AggregateOid" />. The elements for an internal collection are commonly
+        ///     object (using an "AggregateOid"). The elements for an internal collection are commonly
         ///     stored as part of the parent object, so to get element the parent object needs to be retrieved first,
         ///     and the internal collection can be got from that
         /// </para>

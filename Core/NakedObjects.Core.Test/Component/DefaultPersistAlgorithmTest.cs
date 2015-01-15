@@ -43,11 +43,10 @@ namespace NakedObjects.Core.Test.Component {
         private Mock<IObjectPersistor> mockPersistor;
         private Mock<INakedObjectManager> mockManager;
 
-
         [Test]
         public void TestMakePersistent() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -65,7 +64,6 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-
             algorithm.MakePersistent(testAdapter);
 
             mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
@@ -75,7 +73,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentFailsIfObjectAlreadyPersistent() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -84,7 +82,6 @@ namespace NakedObjects.Core.Test.Component {
 
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
-
 
             try {
                 algorithm.MakePersistent(testAdapter);
@@ -96,7 +93,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentFailsIfObjectMustBeTransient() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -107,7 +104,6 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-
             try {
                 algorithm.MakePersistent(testAdapter);
                 Assert.Fail("Expect exception");
@@ -115,11 +111,10 @@ namespace NakedObjects.Core.Test.Component {
             catch (NotPersistableException /*expected*/) {}
         }
 
-
         [Test]
         public void TestMakePersistentSkipsAggregatedObjects() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -137,7 +132,6 @@ namespace NakedObjects.Core.Test.Component {
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
 
-
             algorithm.MakePersistent(testAdapter);
 
             mockPersistor.Verify(p => p.AddPersistedObject(testAdapter));
@@ -147,7 +141,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentSkipsAlreadyPersistedObjects() {
             var mockAdapter = new Mock<INakedObject>();
-            var testAdapter = mockAdapter.Object;
+            INakedObject testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -164,7 +158,6 @@ namespace NakedObjects.Core.Test.Component {
 
             mockAdapter.Setup(a => a.Spec).Returns(mockSpec.Object);
             mockAdapter.Setup(a => a.ResolveState).Returns(mockState.Object);
-
 
             algorithm.MakePersistent(testAdapter);
 

@@ -6,16 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract, ITypicalLengthFacet {
+    public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract {
         public TypicalLengthFacetInferred(int intValue, ISpecification holder)
             : base(intValue, holder) {}
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

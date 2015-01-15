@@ -12,6 +12,7 @@ namespace NakedObjects.Persistor.TestData {
     public class TestDataFixture {
         public IDomainObjectContainer Container { protected get; set; }
 
+        // ReSharper disable UnusedVariable
 
         public void Install() {
             Product product1 = NewProduct(1, "ProductOne");
@@ -70,6 +71,8 @@ namespace NakedObjects.Persistor.TestData {
             persons.ForEach(x => x.Address.ResetEvents());
         }
 
+        // ReSharper restore UnusedVariable
+
         private Person NewPerson(int id, string name, Product product) {
             var person = Container.NewTransientInstance<Person>();
             person.PersonId = id;
@@ -94,15 +97,6 @@ namespace NakedObjects.Persistor.TestData {
             pet.Owner = person;
             Container.Persist(ref pet);
             return pet;
-        }
-
-        private Order NewOrder(int id, string name) {
-            var order = Container.NewTransientInstance<Order>();
-            order.OrderId = id;
-            order.Name = name;
-
-            Container.Persist(ref order);
-            return order;
         }
     }
 }

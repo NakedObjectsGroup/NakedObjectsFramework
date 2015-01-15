@@ -28,17 +28,15 @@ namespace NakedObjects.Core.Component {
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly ISession session;
 
-        public LifeCycleManager(ISession session,
-                                IMetamodelManager metamodel,
-                                IPersistAlgorithm persistAlgorithm,
-                                IOidGenerator oidGenerator,
-                                IContainerInjector injector,
-                                IObjectPersistor objectPersistor,
-                                INakedObjectManager nakedObjectManager
+        public LifeCycleManager(
+            IMetamodelManager metamodel,
+            IPersistAlgorithm persistAlgorithm,
+            IOidGenerator oidGenerator,
+            IContainerInjector injector,
+            IObjectPersistor objectPersistor,
+            INakedObjectManager nakedObjectManager
             ) {
-            Assert.AssertNotNull(session);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
@@ -46,14 +44,13 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull(objectPersistor);
             Assert.AssertNotNull(nakedObjectManager);
 
-            this.session = session;
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
             this.oidGenerator = oidGenerator;
             this.injector = injector;
             this.objectPersistor = objectPersistor;
             this.nakedObjectManager = nakedObjectManager;
-            
+
             Log.DebugFormat("Creating {0}", this);
         }
 
@@ -75,7 +72,7 @@ namespace NakedObjects.Core.Component {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
             object obj = CreateObject(spec);
-            var adapter = nakedObjectManager.CreateInstanceAdapter(obj);
+            INakedObject adapter = nakedObjectManager.CreateInstanceAdapter(obj);
             InitializeNewObject(adapter);
             return adapter;
         }
@@ -83,11 +80,10 @@ namespace NakedObjects.Core.Component {
         public INakedObject CreateViewModel(IObjectSpec spec) {
             Log.DebugFormat("CreateViewModel of: {0}", spec);
             object viewModel = CreateObject(spec);
-            var adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
+            INakedObject adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
             InitializeNewObject(adapter);
             return adapter;
         }
-
 
         public virtual INakedObject RecreateInstance(IOid oid, IObjectSpec spec) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
@@ -106,7 +102,6 @@ namespace NakedObjects.Core.Component {
         public virtual INakedObject GetViewModel(IOid oid) {
             return nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
-
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's

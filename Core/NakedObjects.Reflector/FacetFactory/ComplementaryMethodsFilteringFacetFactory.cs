@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -70,8 +71,13 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
             string propertyName;
             if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
-                if (InheritsProperty(actionMethod.DeclaringType.BaseType, propertyName)) {
-                    Log.InfoFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, actionMethod.DeclaringType.BaseType.FullName);
+                Type declaringType = actionMethod.DeclaringType;
+                Trace.Assert(declaringType != null, "declaringType != null");
+                Type baseType = declaringType.BaseType;
+                Trace.Assert(baseType != null, "baseType != null");
+
+                if (InheritsProperty(baseType, propertyName)) {
+                    Log.InfoFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType.FullName);
                     return true;
                 }
             }
@@ -81,8 +87,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static bool IsComplementaryActionMethod(MethodInfo actionMethod, string prefix) {
             string propertyName;
             if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
-                if (InheritsMethod(actionMethod.DeclaringType.BaseType, propertyName)) {
-                    Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, actionMethod.DeclaringType.BaseType.FullName);
+                Type declaringType = actionMethod.DeclaringType;
+                Debug.Assert(declaringType != null, "declaringType != null");
+                if (InheritsMethod(declaringType.BaseType, propertyName)) {
+                    string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                    Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
                 }
             }
@@ -93,8 +102,11 @@ namespace NakedObjects.Reflect.FacetFactory {
             string propertyName;
             if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
                 propertyName = TrimDigits(propertyName);
-                if (InheritsMethod(actionMethod.DeclaringType.BaseType, propertyName)) {
-                    Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, actionMethod.DeclaringType.BaseType.FullName);
+                Type declaringType = actionMethod.DeclaringType;
+                Debug.Assert(declaringType != null, "declaringType != null");
+                if (InheritsMethod(declaringType.BaseType, propertyName)) {
+                    string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                    Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
                 }
             }
@@ -108,7 +120,6 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             return toTrim;
         }
-
 
         private static bool MatchesPrefix(MethodInfo actionMethod, string prefix, out string propertyName) {
             if (actionMethod.Name.StartsWith(prefix)) {

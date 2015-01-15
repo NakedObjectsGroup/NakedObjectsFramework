@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -21,7 +20,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const bool Immutable = true;
         private const int TypicalLengthConst = 36;
         private static readonly Guid DefaultValueConst = Guid.Empty;
-
 
         public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
@@ -45,7 +43,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public static bool IsAdaptedType(Type type) {
             return type == typeof (Guid);
         }
-
 
         protected override Guid DoParse(string entry) {
             try {
@@ -78,7 +75,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override Guid DoRestore(string data) {
             return new Guid(data);
         }
-
 
         public override string ToString() {
             return "GuidAdapter: ";

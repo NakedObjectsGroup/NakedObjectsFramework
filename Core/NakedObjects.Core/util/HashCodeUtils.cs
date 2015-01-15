@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedObjects.Core.Util {
     /// <summary>
@@ -36,10 +37,10 @@ namespace NakedObjects.Core.Util {
         ///     contributions from fields. Using a non-zero value decreases collisons of
         ///     <c>HashCode</c> values.
         /// </summary>
-        private const int seed = 23;
+        private const int SeedConst = 23;
 
         public static int Seed {
-            get { return seed; }
+            get { return SeedConst; }
         }
 
         /// <summary>
@@ -109,10 +110,7 @@ namespace NakedObjects.Core.Util {
                 result = Hash(result, aObject.GetHashCode());
             }
             else {
-                foreach (object item in (Array) aObject) {
-                    // recursive call!
-                    result = Hash(result, item);
-                }
+                result = ((Array) aObject).Cast<object>().Aggregate(result, Hash);
             }
             return result;
         }

@@ -119,7 +119,7 @@ namespace MvcTestApp.Tests.Helpers {
             var claimAdapter = NakedObjectsFramework.GetNakedObject(claim);
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
 
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager,  NakedObjectsFramework.Metamodel,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             claimsAdapter.SetATransientOid(mockOid);
 
@@ -147,7 +147,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AddTransient() {
-            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
 
@@ -187,7 +187,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item1);
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item2);
 
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(typeof (AbstractExpenseItem));
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (AbstractExpenseItem));
 
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item1));
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item2));
@@ -202,7 +202,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item1);
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item2);
 
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim));
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim));
 
             Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item1));
             Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item2));
@@ -217,7 +217,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim1);
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim2);
 
-            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim));
+            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim));
 
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(claim1));
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(claim2));

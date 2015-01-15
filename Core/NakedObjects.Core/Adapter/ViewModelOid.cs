@@ -113,6 +113,8 @@ namespace NakedObjects.Core.Adapter {
             return false;
         }
 
+        // ReSharper disable once NonReadonlyFieldInGetHashCode
+        // investigate making Oid immutable
         public override int GetHashCode() {
             return cachedHashCode;
         }

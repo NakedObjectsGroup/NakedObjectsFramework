@@ -12,7 +12,6 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
-        
         // cached values 
         private int? maximumLength;
         private int? noLines;
@@ -20,7 +19,6 @@ namespace NakedObjects.Core.Spec {
 
         public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) {}
-
 
         public virtual int NoLines {
             get {

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -42,7 +43,6 @@ namespace NakedObjects.Core.Adapter {
             this.metamodel = metamodel;
         }
 
-
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
             Assert.AssertNotNull(otherMemento);
@@ -69,6 +69,7 @@ namespace NakedObjects.Core.Adapter {
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
             var helper = new StringDecoderHelper(metamodel, strings, true);
+            // ReSharper disable once UnusedVariable
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();
@@ -141,7 +142,7 @@ namespace NakedObjects.Core.Adapter {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Spec.IsCollection) {
-                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
+                    IObjectSpecImmutable instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {

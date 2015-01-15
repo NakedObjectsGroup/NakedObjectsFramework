@@ -11,7 +11,6 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
@@ -47,7 +46,6 @@ namespace NakedObjects.Core.Util {
             return objectRepresentingCollection.GetCollectionFacetFromSpec().AsQueryable(objectRepresentingCollection);
         }
 
-
         public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObject objectRepresentingCollection) {
             IObjectSpec collectionSpec = objectRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ITypeOfFacet>();
@@ -68,7 +66,6 @@ namespace NakedObjects.Core.Util {
         public static IActionSpec GetActionLeafNode(this INakedObject nakedObject, string actionName) {
             return nakedObject.GetActionLeafNodes().Single(x => x.Id == actionName);
         }
-
 
         public static IAssociationSpec GetVersionProperty(this INakedObject nakedObject) {
             if (nakedObject.Spec == null) {

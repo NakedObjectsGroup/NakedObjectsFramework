@@ -16,6 +16,5 @@ namespace NakedObjects.Meta.Facet {
             : base(typeof (IEqualByContentFacet), holder) {}
     }
 
-
     // Copyright (c) Naked Objects Group Ltd.
 }

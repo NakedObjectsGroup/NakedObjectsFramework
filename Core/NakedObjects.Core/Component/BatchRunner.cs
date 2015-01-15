@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public virtual void Run(IBatchStartPoint batchStartPoint) {
-            framework.Injector.InitDomainObject(batchStartPoint);
+            framework.ContainerInjector.InitDomainObject(batchStartPoint);
             StartTransaction();
             batchStartPoint.Execute();
             EndTransaction();

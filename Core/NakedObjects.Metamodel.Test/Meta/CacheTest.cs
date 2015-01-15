@@ -19,10 +19,10 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
+using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect;
 using NakedObjects.Value;
-using NakedObjects.Menu;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Meta.Test {
@@ -35,7 +35,6 @@ namespace NakedObjects.Meta.Test {
     }
 
     public class TestWithByteArray : AbstractTestWithByteArray {}
-
 
     public class TestService {
         //public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
@@ -66,7 +65,6 @@ namespace NakedObjects.Meta.Test {
     public class TestAnnotatedDomainObject {
         private IList<TestAnnotatedDomainObject> testCollection = new List<TestAnnotatedDomainObject>();
 
-
         [Title]
         public virtual TestSimpleDomainObject TestProperty { get; set; }
 
@@ -85,7 +83,6 @@ namespace NakedObjects.Meta.Test {
 
         [Hidden]
         public virtual decimal TestHidden { get; set; }
-
 
         [Optionally]
         [TypicalLength(20)]
@@ -146,21 +143,15 @@ namespace NakedObjects.Meta.Test {
 
     [TestClass]
     public class CacheTest {
+        private string testDir;
 
-        private string testDir; 
-
-
-       [TestInitialize]
+        [TestInitialize]
         public void Setup() {
-
-      
-            var curDir = Directory.GetCurrentDirectory();
-            testDir =  Path.Combine(curDir, "testmetadata");    
-            Directory.CreateDirectory(testDir); 
+            string curDir = Directory.GetCurrentDirectory();
+            testDir = Path.Combine(curDir, "testmetadata");
+            Directory.CreateDirectory(testDir);
             Directory.GetFiles(testDir).ForEach(File.Delete);
         }
-
-
 
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
@@ -178,7 +169,6 @@ namespace NakedObjects.Meta.Test {
             container.RegisterType<IMetamodelBuilder, Metamodel>();
         }
 
-
         public void BinarySerialize(ReflectorConfiguration rc, string file) {
             IUnityContainer container = GetContainer();
 
@@ -188,8 +178,7 @@ namespace NakedObjects.Meta.Test {
             reflector.Reflect();
             var cache = container.Resolve<ISpecificationCache>();
 
-
-            var f1 =
+            IEnumerable<string> f1 =
                 cache.AllSpecifications().SelectMany(s => s.Fields)
                     .Where(s => s != null)
                     .OfType<OneToOneAssociationSpecImmutable>()
@@ -197,10 +186,9 @@ namespace NakedObjects.Meta.Test {
                     .Select(f => f.GetType().FullName)
                     .Distinct();
 
-
-            foreach (var f in f1) {
-                //Console.WriteLine(" field facet  {0}", f);
-            }
+            // ReSharper disable once UnusedVariable
+            string ss = f1.Aggregate("", (s, t) => s + "field facet" + t + "\r\n");
+            //Console.WriteLine(ss);
 
             cache.Serialize(file);
 
@@ -221,7 +209,6 @@ namespace NakedObjects.Meta.Test {
         //    reflector.Reflect();
         //    var cache = container.Resolve<ISpecificationCache>();
 
-
         //    var f1 =
         //       cache.AllSpecifications().SelectMany(s => s.Fields)
         //           .Select(s => s.Spec)
@@ -230,7 +217,6 @@ namespace NakedObjects.Meta.Test {
         //           .SelectMany(s => s.GetFacets())
         //           .Select(f => f.GetType().FullName)
         //           .Distinct();
-
 
         //    foreach (var f in f1) {
         //        //Console.WriteLine(" field facet  {0}", f);
@@ -246,14 +232,12 @@ namespace NakedObjects.Meta.Test {
         //    CompareCaches(cache, newCache);
         //}
 
-
         [TestMethod]
         public void BinarySerializeIntTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
-            string file =  Path.Combine(testDir, "metadataint.bin");
+            string file = Path.Combine(testDir, "metadataint.bin");
             BinarySerialize(rc, file);
         }
-
 
         [TestMethod]
         public void BinarySerializeImageTypes() {
@@ -277,7 +261,6 @@ namespace NakedObjects.Meta.Test {
         //    XmlSerialize(rc, file);
         //}
 
-
         [TestMethod]
         public void BinarySerializeEnumTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestEnum)}, new Type[] {}, new Type[] {}, new Type[] {});
@@ -293,12 +276,11 @@ namespace NakedObjects.Meta.Test {
             BinarySerialize(rc, file);
         }
 
-
         [TestMethod]
         public void BinarySerializeAnnotatedDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
                 new Type[] {}, new Type[] {});
-            
+
             string file = Path.Combine(testDir, "metadatatado.bin");
             BinarySerialize(rc, file);
         }
@@ -308,7 +290,7 @@ namespace NakedObjects.Meta.Test {
 
             // checks for fields and Objects actions 
 
-            var error = newCache.AllSpecifications().Where(s => s.Fields.Any() && s.Fields.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
+            string error = newCache.AllSpecifications().Where(s => s.Fields.Any() && s.Fields.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
 
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
@@ -317,7 +299,6 @@ namespace NakedObjects.Meta.Test {
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
-
 
             foreach (var item in zipped) {
                 Assert.AreEqual(item.a.FullName, item.b.FullName);

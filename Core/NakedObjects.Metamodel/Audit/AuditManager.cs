@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -34,10 +35,10 @@ namespace NakedObjects.Meta.Audit {
         #region IAuditManager Members
 
         public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            var auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
 
-            var byPrincipal = session.Principal;
-            var memberName = identifier.MemberName;
+            IPrincipal byPrincipal = session.Principal;
+            string memberName = identifier.MemberName;
             if (nakedObject.Spec.IsService) {
                 string serviceName = nakedObject.Spec.GetTitle(nakedObject);
                 auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
@@ -48,12 +49,12 @@ namespace NakedObjects.Meta.Audit {
         }
 
         public void Updated(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            var auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
             auditor.ObjectUpdated(session.Principal, nakedObject.GetDomainObject());
         }
 
         public void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            var auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
             auditor.ObjectPersisted(session.Principal, nakedObject.GetDomainObject());
         }
 
@@ -97,7 +98,7 @@ namespace NakedObjects.Meta.Audit {
         private IAuditor GetNamespaceAuditorFor(INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Spec.FullName;
-            var auditor = namespaceAuditors.
+            Type auditor = namespaceAuditors.
                 Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
                 OrderByDescending(x => x.Key.Length).
                 Select(x => x.Value).
