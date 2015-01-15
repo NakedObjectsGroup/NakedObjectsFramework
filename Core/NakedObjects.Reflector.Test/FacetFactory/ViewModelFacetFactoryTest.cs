@@ -77,6 +77,47 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+        private class Class3 : IViewModelEdit {
+            public string Value1 { get; set; }
+            public string Value2 { get; set; }
+
+            #region IViewModel Members
+
+            public string[] DeriveKeys() {
+                return new[] { Value1, Value2 };
+            }
+
+            public void PopulateUsingKeys(string[] instanceId) {
+                Value1 = instanceId[0];
+                Value2 = instanceId[1];
+            }
+
+            #endregion
+        }
+
+        private class Class4 : IViewModelSwitchable {
+            public string Value1 { get; set; }
+            public string Value2 { get; set; }
+
+            #region IViewModel Members
+
+            public string[] DeriveKeys() {
+                return new[] { Value1, Value2 };
+            }
+
+            public void PopulateUsingKeys(string[] instanceId) {
+                Value1 = instanceId[0];
+                Value2 = instanceId[1];
+            }
+
+            public bool IsEditView() {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
+
+
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -114,16 +155,47 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestViewModelPickedUp() {
-            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
+            var class1Type = typeof (Class1);
+            facetFactory.Process(Reflector, class1Type, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
 
-            MethodInfo m1 = typeof (Class1).GetMethod("DeriveKeys");
-            MethodInfo m2 = typeof (Class1).GetMethod("PopulateUsingKeys");
+            MethodInfo m1 = class1Type.GetMethod("DeriveKeys");
+            MethodInfo m2 = class1Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
         }
+
+        [TestMethod]
+        public void TestViewModelEditPickedUp() {
+            var class3Type = typeof(Class3);
+            facetFactory.Process(Reflector, class3Type, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ViewModelEditFacetConvention);
+
+            MethodInfo m1 = class3Type.GetMethod("DeriveKeys");
+            MethodInfo m2 = class3Type.GetMethod("PopulateUsingKeys");
+
+            AssertMethodsRemoved(new[] { m1, m2 });
+        }
+
+        [TestMethod]
+        public void TestViewModelSwitchablePickedUp() {
+            var class4Type = typeof(Class4);
+            facetFactory.Process(Reflector, class4Type, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ViewModelSwitchableFacetConvention);
+
+            MethodInfo m1 = class4Type.GetMethod("DeriveKeys");
+            MethodInfo m2 = class4Type.GetMethod("PopulateUsingKeys");
+            MethodInfo m3 = class4Type.GetMethod("IsEditView");
+
+            AssertMethodsRemoved(new[] { m1, m2, m3 });
+        }
+
 
         [TestMethod]
         public void TestViewModelPopulate() {
