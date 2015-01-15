@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
-    [Obsolete("remove is unused")]
     public static class FeatureSpecUtils {
         public static string PropertyTitle(this IFeatureSpec featureSpec, INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null) {
