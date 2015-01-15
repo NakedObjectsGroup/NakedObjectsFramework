@@ -339,7 +339,7 @@ namespace SystemTest.Attributes {
 
         #region FinderAction
 
-        [TestMethod, Ignore] //Pending completion of implementation
+        [TestMethod]
         public virtual void ActionsIncludedInFinderMenu() {
 
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
@@ -350,8 +350,8 @@ namespace SystemTest.Attributes {
             Assert.AreEqual(2, finderActions.Count());
             var item0 = finderActions[0];
             var item1 = finderActions[1];
-            Assert.AreEqual("Finder Action1", item0.Description);
-            Assert.AreEqual("Finder Action2", item1.Description);
+            Assert.AreEqual("Finder Action1", item0.Name);
+            Assert.AreEqual("Finder Action2", item1.Name);
         }
 
         #endregion
@@ -859,7 +859,7 @@ namespace SystemTest.Attributes {
             obj.AssertTitleEquals("Foo");
         }
 
-        [TestMethod, Ignore] // fix 
+        [TestMethod]
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute() {
             var obj1 = NewTestObject<Title1>();
             obj1.GetPropertyByName("Prop1").SetValue("Foo");
@@ -873,7 +873,7 @@ namespace SystemTest.Attributes {
             obj8.AssertTitleEquals("Foo");
         }
 
-        [TestMethod, Ignore] // fix & note also that Title7 does not in fact have a Title method!
+        [TestMethod] // fix & note also that Title7 does not in fact have a Title method!
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod() {
             var obj4 = NewTestObject<Title4>();
             obj4.GetPropertyByName("Prop1").SetValue("Foo");
