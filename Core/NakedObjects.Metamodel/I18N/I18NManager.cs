@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Spec;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.I18N {
@@ -25,6 +24,13 @@ namespace NakedObjects.Meta.I18N {
         private const string Parameter = "parameter";
         private const string Property = "property";
         private static readonly ILog Log = LogManager.GetLogger(typeof (I18NManager));
+        private ResourceManager resources;
+
+        // make resources testable 
+        public ResourceManager Resources {
+            private get { return resources ?? Model.ResourceManager; }
+            set { resources = value; }
+        }
 
         #region IFacetDecorator Members
 
@@ -50,13 +56,13 @@ namespace NakedObjects.Meta.I18N {
         #endregion
 
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
-            var spec = holder as ActionParameterSpec;
+            var spec = holder as IActionParameterSpec;
             string i18NDescription = spec == null ? GetDescription(identifier, keyCache) : GetParameterDescription(identifier, spec.Number, keyCache);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
         }
 
         private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
-            var spec = holder as ActionParameterSpec;
+            var spec = holder as IActionParameterSpec;
             string i18NName = spec == null ? GetName(identifier, keyCache) : GetParameterName(identifier, spec.Number, keyCache);
             return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
         }
@@ -75,7 +81,7 @@ namespace NakedObjects.Meta.I18N {
             string keyWithUnderscore = CreateKey(key, keyCache);
 
             try {
-                return Model.ResourceManager.GetString(keyWithUnderscore);
+                return Resources.GetString(keyWithUnderscore);
             }
             catch (MissingManifestResourceException e) {
                 Log.WarnFormat("Missing manifest resource (culture {0}) for the key {1} ({2}) ->  {3}", Thread.CurrentThread.CurrentUICulture, key, keyWithUnderscore, e.Message);
