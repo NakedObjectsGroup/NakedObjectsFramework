@@ -25,6 +25,7 @@ namespace NakedObjects.Meta.I18N {
         private const string Property = "property";
         private static readonly ILog Log = LogManager.GetLogger(typeof (I18NManager));
         private ResourceManager resources;
+        private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
 
         // make resources testable 
         public ResourceManager Resources {
@@ -35,15 +36,15 @@ namespace NakedObjects.Meta.I18N {
         #region IFacetDecorator Members
 
         public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
-            IDictionary<string, string> keyCache = new Dictionary<string, string>();
+            
             IIdentifier identifier = holder.Identifier;
             Type facetType = facet.FacetType;
 
             if (facetType == typeof (INamedFacet)) {
-                return GetNamedFacet(holder, facet as INamedFacet, identifier, keyCache);
+                return GetNamedFacet(holder, facet as INamedFacet, identifier);
             }
             if (facetType == typeof (IDescribedAsFacet)) {
-                return GetDescriptionFacet(holder, facet as IDescribedAsFacet, identifier, keyCache);
+                return GetDescriptionFacet(holder, facet as IDescribedAsFacet, identifier);
             }
 
             return facet;
@@ -55,30 +56,30 @@ namespace NakedObjects.Meta.I18N {
 
         #endregion
 
-        private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
+        private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
             var spec = holder as IActionParameterSpec;
-            string i18NDescription = spec == null ? GetDescription(identifier, keyCache) : GetParameterDescription(identifier, spec.Number, keyCache);
+            string i18NDescription = spec == null ? GetDescription(identifier) : GetParameterDescription(identifier, spec.Number);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
         }
 
-        private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier, IDictionary<string, string> keyCache) {
+        private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
             var spec = holder as IActionParameterSpec;
-            string i18NName = spec == null ? GetName(identifier, keyCache) : GetParameterName(identifier, spec.Number, keyCache);
+            string i18NName = spec == null ? GetName(identifier) : GetParameterName(identifier, spec.Number);
             return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
         }
 
-        private string GetText(IIdentifier identifier, string type, IDictionary<string, string> keyCache) {
+        private string GetText(IIdentifier identifier, string type) {
             string form = identifier.IsField ? Property : Action;
             string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + ":" + form + "/" + type;
-            return GetText(key, keyCache);
+            return GetText(key);
         }
 
-        private string GetText(string key, IDictionary<string, string> keyCache) {
+        private string GetText(string key) {
             if (key.StartsWith("System.") || key.StartsWith("NakedObjects.")) {
                 return null;
             }
 
-            string keyWithUnderscore = CreateKey(key, keyCache);
+            string keyWithUnderscore = CreateKey(key);
 
             try {
                 return Resources.GetString(keyWithUnderscore);
@@ -89,7 +90,7 @@ namespace NakedObjects.Meta.I18N {
             }
         }
 
-        private static string CreateKey(string key, IDictionary<string, string> keyCache) {
+        private string CreateKey(string key) {
             if (keyCache.ContainsKey(key)) {
                 return keyCache[key];
             }
@@ -101,22 +102,22 @@ namespace NakedObjects.Meta.I18N {
             return newKey;
         }
 
-        private string GetName(IIdentifier identifier, IDictionary<string, string> keyCache) {
-            return GetText(identifier, Name, keyCache);
+        private string GetName(IIdentifier identifier) {
+            return GetText(identifier, Name);
         }
 
-        private string GetDescription(IIdentifier identifier, IDictionary<string, string> keyCache) {
-            return GetText(identifier, Description, keyCache);
+        private string GetDescription(IIdentifier identifier) {
+            return GetText(identifier, Description);
         }
 
-        private string GetParameterName(IIdentifier identifier, int index, IDictionary<string, string> keyCache) {
+        private string GetParameterName(IIdentifier identifier, int index) {
             string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Name;
-            return GetText(key, keyCache);
+            return GetText(key);
         }
 
-        private string GetParameterDescription(IIdentifier identifier, int index, IDictionary<string, string> keyCache) {
+        private string GetParameterDescription(IIdentifier identifier, int index) {
             string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Description;
-            return GetText(key, keyCache);
+            return GetText(key);
         }
     }
 }
