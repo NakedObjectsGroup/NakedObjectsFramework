@@ -84,10 +84,14 @@ namespace NakedObjects.Meta.Audit {
 
         #endregion
 
+        private void ValidateType(Type toValidate) {
+            Assert.AssertTrue(toValidate.FullName + " is not an IAuditor", typeof (IAuditor).IsAssignableFrom(toValidate));
+        }
+
         private void Validate() {
-            Assert.AssertTrue(defaultAuditor.FullName + "is not an IAuditor", typeof (IAuditor).IsAssignableFrom(defaultAuditor));
+            ValidateType(defaultAuditor);
             if (namespaceAuditors.Any()) {
-                namespaceAuditors.ForEach(kvp => Assert.AssertTrue(kvp.Value.FullName + "is not an IAuditor", typeof (IAuditor).IsAssignableFrom(kvp.Value)));
+                namespaceAuditors.ForEach(kvp => ValidateType(kvp.Value));
             }
         }
 

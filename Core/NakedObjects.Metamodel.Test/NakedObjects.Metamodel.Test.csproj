@@ -65,6 +65,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audit\AuditManagerTest.cs" />
     <Compile Include="Facet\FacetAbstractTest.cs" />
     <Compile Include="Meta\CacheTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
