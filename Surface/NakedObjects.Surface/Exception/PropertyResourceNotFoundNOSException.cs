@@ -12,7 +12,7 @@ namespace NakedObjects.Surface {
         public PropertyResourceNotFoundNOSException(string resourceId) : base(resourceId) {}
 
         public override string Message {
-            get { return String.Format(String.Format("No such property {0}", ResourceId)); }
+            get { return String.Format("No such property {0}", ResourceId); }
         }
     }
 }

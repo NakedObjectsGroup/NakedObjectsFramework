@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectAssociationSurface : INakedObjectMemberSurface, ISurfaceHolder {
+    public interface INakedObjectAssociationSurface : INakedObjectMemberSurface {
         INakedObjectSpecificationSurface Specification { get; }
         INakedObjectSpecificationSurface ElementSpecification { get; }
         bool IsChoicesEnabled { get; }

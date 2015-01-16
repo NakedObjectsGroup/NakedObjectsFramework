@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectActionSurface : INakedObjectMemberSurface, ISurfaceHolder {
+    public interface INakedObjectActionSurface : INakedObjectMemberSurface {
         INakedObjectSpecificationSurface ReturnType { get; }
         INakedObjectSpecificationSurface ElementType { get; }
         int ParameterCount { get; }

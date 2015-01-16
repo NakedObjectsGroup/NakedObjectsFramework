@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
@@ -48,7 +49,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 int index = 0;
                 var orderedActions = actionAndParms.OrderBy(ap => ap.Item2).Select(ap => ap.Item1).ToDictionary(a => a, a => index++);
 
-                var suffix = orderedActions[action].ToString();
+                var suffix = orderedActions[action].ToString(Thread.CurrentThread.CurrentCulture);
 
                 while (actions.Select(a => a.Id).Contains(action.Id + suffix)) {
                     suffix = "0" + suffix;

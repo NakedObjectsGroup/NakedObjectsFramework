@@ -23,7 +23,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Surface.Nof4.Utility {
     // to do generalise this 
     public class ExternalOid : IOidStrategy {
-        private static readonly ILog log = LogManager.GetLogger(typeof (ExternalOid));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ExternalOid));
 
         private readonly INakedObjectsFramework framework;
 
@@ -142,8 +142,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
             }
             catch (Exception e) {
-                log.Warn("Domain Object not found with exception", e);
-                log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), type == null ? "null" : type.ToString());
+                Log.Warn("Domain Object not found with exception", e);
+                Log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), type == null ? "null" : type.ToString());
                 return null;
             }
         }
@@ -155,8 +155,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 return viewModel.Object;
             }
             catch (Exception e) {
-                log.Warn("View Model not found with exception", e);
-                log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), spec == null ? "null" : spec.FullName);
+                Log.Warn("View Model not found with exception", e);
+                Log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), spec == null ? "null" : spec.FullName);
                 return null;
             }
         }

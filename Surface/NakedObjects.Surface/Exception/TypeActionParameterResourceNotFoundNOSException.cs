@@ -19,7 +19,7 @@ namespace NakedObjects.Surface {
         public string ParmId { get; private set; }
 
         public override string Message {
-            get { return String.Format("No such parameter name", ResourceId, DomainId); }
+            get { return String.Format("No such parameter name RId:{0} DId {1} ", ResourceId, DomainId); }
         }
     }
 }
