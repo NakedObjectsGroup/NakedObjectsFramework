@@ -16,10 +16,9 @@ namespace NakedObjects.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
 
-// ReSharper disable once ParameterHidesMember
-        public void Initialize(INakedObjectsFramework framework) {
-            Assert.AssertNotNull(framework);
-            this.framework = framework;
+        public void Initialize(INakedObjectsFramework newFramework) {
+            Assert.AssertNotNull(newFramework);
+            framework = newFramework;
         }
 
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
@@ -49,13 +48,12 @@ namespace NakedObjects.Core.Spec {
             throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
 
-        //TODO: rename to CreateActionSpecs?
-        public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
-            Assert.AssertNotNull(framework);
-            return order.Select(CreateActionSpec).ToArray();
+        public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) {
+            return specImmutables.Select(CreateActionSpec).ToArray();
         }
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
+            Assert.AssertNotNull(framework);
             return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable);
         }
 

@@ -71,11 +71,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         private IActionSpec[] ObjectActions {
-            get { return objectActions ?? (objectActions = memberFactory.OrderActions(innerSpec.ObjectActions)); }
+            get { return objectActions ?? (objectActions = memberFactory.CreateActionSpecs(innerSpec.ObjectActions)); }
         }
 
         private IActionSpec[] ContributedActions {
-            get { return contributedActions ?? (contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions)); }
+            get { return contributedActions ?? (contributedActions = memberFactory.CreateActionSpecs(innerSpec.ContributedActions)); }
         }
 
         #region IObjectSpec Members
@@ -189,11 +189,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IActionSpec[] GetCollectionContributedActions() {
-            return collectionContributedActions ?? (collectionContributedActions = memberFactory.OrderActions(innerSpec.CollectionContributedActions));
+            return collectionContributedActions ?? (collectionContributedActions = memberFactory.CreateActionSpecs(innerSpec.CollectionContributedActions));
         }
 
         public IActionSpec[] GetFinderActions() {
-            return finderActions ?? (finderActions = memberFactory.OrderActions(innerSpec.FinderActions));
+            return finderActions ?? (finderActions = memberFactory.CreateActionSpecs(innerSpec.FinderActions));
         }
 
         public IMenuImmutable ObjectMenu {
