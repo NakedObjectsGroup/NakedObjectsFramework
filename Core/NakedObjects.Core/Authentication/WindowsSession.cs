@@ -20,7 +20,6 @@ namespace NakedObjects.Core.Authentication {
         public IPrincipal Principal { get; protected set; }
 
         public string UserName {
-            // todo - might be better to concatenate domain and account - what does windows do ?
             get { return Path.GetFileName(Principal.Identity.Name); }
         }
 

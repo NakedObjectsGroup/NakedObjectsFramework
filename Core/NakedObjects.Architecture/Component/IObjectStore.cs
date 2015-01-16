@@ -107,14 +107,14 @@ namespace NakedObjects.Architecture.Component {
 
         void StartTransaction();
 
-        // TODO this should be done by the execute method
-        bool Flush(IPersistenceCommand[] commands);
-
         PropertyInfo[] GetKeys(Type type);
 
         void Refresh(INakedObject nakedObject);
+
         int CountField(INakedObject nakedObject, IAssociationSpec associationSpec);
+
         INakedObject FindByKeys(Type type, object[] keys);
+
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }
 

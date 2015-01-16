@@ -248,15 +248,6 @@ namespace NakedObjects.Persistor.Entity {
             ExecuteCommands(commands);
         }
 
-        public bool Flush(IPersistenceCommand[] commands) {
-            Log.DebugFormat("Flush {0} commands", commands.Length);
-            if (commands.Length > 0) {
-                ExecuteCommands(commands);
-                return true;
-            }
-            return false;
-        }
-
         public IQueryable GetInstances(IObjectSpec spec) {
             Log.DebugFormat("GetInstances for: {0}", spec);
             Type type = TypeUtils.GetType(spec.FullName);
