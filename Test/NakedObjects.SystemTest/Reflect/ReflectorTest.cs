@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using AdventureWorksModel;
@@ -134,7 +135,7 @@ namespace NakedObjects.SystemTest.Reflect {
         // this still fails - looks to be one of the facets on the OneToOneSpecImmutable causing a BinaryHeader error
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -174,6 +175,8 @@ namespace NakedObjects.SystemTest.Reflect {
             //    Console.WriteLine(" field facet  {0}", f);
             //}
 
+            Directory.CreateDirectory(@"c:\testmetadata");
+
             const string file = @"c:\testmetadata\metadataAW.bin";
 
             SerializeDeserialize(cache, file);
@@ -209,7 +212,7 @@ namespace NakedObjects.SystemTest.Reflect {
                 deserializeInterval);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SerializeAdventureworksByType() {
             // load adventurework
 
@@ -237,6 +240,8 @@ namespace NakedObjects.SystemTest.Reflect {
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
 
             var cache = container.Resolve<ISpecificationCache>();
+
+            Directory.CreateDirectory(@"c:\testmetadata");
 
             const string file = @"c:\testmetadata\metadataAWT.bin";
 
