@@ -73,8 +73,4 @@ namespace NakedObjects.Core.Util {
             throw new ReflectionException(e.Message, e);
         }
     }
-
-    public class InvokeException : NakedObjectApplicationException {
-        public InvokeException(string message, Exception exception) : base(message, exception) {}
-    }
 }

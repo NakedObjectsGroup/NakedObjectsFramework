@@ -15,7 +15,6 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
@@ -27,17 +26,13 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
-        private readonly ITransactionManager transactionManager;
 
         public ObjectPersistor(IObjectStore objectStore,
-            ITransactionManager transactionManager,
             INakedObjectManager nakedObjectManager) {
             Assert.AssertNotNull(objectStore);
-            Assert.AssertNotNull(transactionManager);
             Assert.AssertNotNull(nakedObjectManager);
 
             this.objectStore = objectStore;
-            this.transactionManager = transactionManager;
             this.nakedObjectManager = nakedObjectManager;
         }
 
@@ -68,11 +63,9 @@ namespace NakedObjects.Core.Component {
         }
 
         public void AddPersistedObject(INakedObject nakedObject) {
-            if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return;
+            if (!nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                objectStore.ExecuteCreateObjectCommand(nakedObject);
             }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject);
-            transactionManager.AddCommand(createObjectCommand);
         }
 
         public void Reload(INakedObject nakedObject) {
@@ -162,8 +155,7 @@ namespace NakedObjects.Core.Component {
                         throw new NotPersistableException("cannot change immutable object");
                     }
                     nakedObject.Updating();
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject);
-                    transactionManager.AddCommand(saveObjectCommand);
+                    objectStore.ExecuteSaveObjectCommand(nakedObject);
                     nakedObject.Updated();
                 }
             }
@@ -176,8 +168,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("DestroyObject nakedObject: {0}", nakedObject);
 
             nakedObject.Deleting();
-            IDestroyObjectCommand command = objectStore.CreateDestroyObjectCommand(nakedObject);
-            transactionManager.AddCommand(command);
+            objectStore.ExecuteDestroyObjectCommand(nakedObject);
             nakedObject.ResolveState.Handle(Events.DestroyEvent);
             nakedObject.Deleted();
         }

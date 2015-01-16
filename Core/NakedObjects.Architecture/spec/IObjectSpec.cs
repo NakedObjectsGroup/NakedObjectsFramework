@@ -6,10 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
@@ -125,11 +123,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Returns the title string for the specified object
         /// </summary>
         string GetTitle(INakedObject nakedObject);
-
-        /// <summary>
-        ///     Determines whether the specified object can be persisted, that is, it is in a valid state to be saved
-        /// </summary>
-        IConsent ValidToPersist(INakedObject transientObject, ISession session);
 
         string GetInvariantString(INakedObject nakedObject);
 

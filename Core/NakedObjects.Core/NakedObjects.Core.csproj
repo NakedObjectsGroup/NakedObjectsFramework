@@ -185,6 +185,7 @@
     <Compile Include="Exception\TransientReferenceException.cs" />
     <Compile Include="Authentication\SimpleSession.cs" />
     <Compile Include="Util\FeatureSpecUtils.cs" />
+    <Compile Include="Exception\InvokeException.cs" />
     <Compile Include="Util\ServiceUtils.cs" />
     <Compile Include="Configuration\ServiceWrapper.cs" />
     <Compile Include="Spec\SpecFactory.cs" />

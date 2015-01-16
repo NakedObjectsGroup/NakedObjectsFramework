@@ -178,10 +178,10 @@ namespace NakedObjects.Persistor.Entity {
             RollBackContext();
         }
 
-        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject) {
+        public void ExecuteCreateObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
-                return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
+                 ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -191,10 +191,10 @@ namespace NakedObjects.Persistor.Entity {
             }
         }
 
-        public IDestroyObjectCommand CreateDestroyObjectCommand(INakedObject nakedObject) {
+        public void ExecuteDestroyObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateDestroyObjectCommand : {0}", nakedObject);
             try {
-                return ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
+                 ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -204,10 +204,10 @@ namespace NakedObjects.Persistor.Entity {
             }
         }
 
-        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject) {
+        public void ExecuteSaveObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
             try {
-                return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
+                 ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -801,9 +801,8 @@ namespace NakedObjects.Persistor.Entity {
             adaptedObjects.ForEach(ValidateIfRequired);
         }
 
-        private static T ExecuteCommand<T>(T command) where T : IPersistenceCommand {
+        private static void ExecuteCommand(IPersistenceCommand command) {
             command.Execute();
-            return default(T);
         }
 
         protected static void ExecuteCommands(IPersistenceCommand[] commands) {

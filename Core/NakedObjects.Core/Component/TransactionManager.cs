@@ -7,7 +7,6 @@
 
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Transaction;
 using NakedObjects.Core.Util;
@@ -81,10 +80,6 @@ namespace NakedObjects.Core.Component {
                     throw new TransactionException("No transaction running to end");
                 }
             }
-        }
-
-        public virtual void AddCommand(IPersistenceCommand command) {
-            Transaction.AddCommand(command);
         }
 
         #endregion

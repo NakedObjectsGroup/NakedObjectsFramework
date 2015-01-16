@@ -5,14 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.Transaction {
-    public interface ITransaction {
-        void Abort();
+using System;
+using NakedObjects.Architecture;
 
-        void Commit();
-
-        bool Flush();
+namespace NakedObjects.Core {
+    public class InvokeException : NakedObjectApplicationException {
+        public InvokeException(string message, Exception exception) : base(message, exception) {}
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

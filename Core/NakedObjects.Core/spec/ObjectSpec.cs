@@ -13,9 +13,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
@@ -368,11 +366,6 @@ namespace NakedObjects.Core.Spec {
 
         public string GetIconName(INakedObject forObject) {
             return innerSpec.GetIconName(forObject, metamodelManager.Metamodel);
-        }
-
-        public IConsent ValidToPersist(INakedObject target, ISession session) {
-            InteractionContext ic = InteractionContext.PersistingObject(session, false, target);
-            return InteractionUtils.IsValid(target.Spec, ic);
         }
 
         #endregion
