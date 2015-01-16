@@ -34,13 +34,13 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
             return nakedObject.Object.ToString();
         }
 
-        public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
+        public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
             if (maskMethod == null) {
-                return GetTitle(nakedObject);
+                return GetTitle(nakedObject, nakedObjectManager);
             }
             return (string) maskMethod.Invoke(nakedObject.Object, new object[] {mask});
         }

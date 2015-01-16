@@ -7,14 +7,11 @@
 
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Services;
-using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
-using System;
 using Microsoft.Practices.Unity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Reflect.Test;
+using NakedObjects.SystemTest.Reflect;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]

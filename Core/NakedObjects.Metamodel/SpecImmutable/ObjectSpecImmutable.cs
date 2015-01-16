@@ -153,12 +153,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             return noopFacet;
         }
 
-        public string GetTitle(INakedObject nakedObject) {
-            var titleFacet = GetFacet<ITitleFacet>();
-            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObject);
-            return title ?? DefaultTitle();
-        }
-
         public virtual bool IsCollection {
             get { return ContainsFacet(typeof (ICollectionFacet)); }
         }
@@ -225,9 +219,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
         }
 
-        private string DefaultTitle() {
-            return Service ? SingularName : UntitledName;
-        }
+        
 
         public override string ToString() {
             return string.Format("{0} for {1}", GetType().Name, Type.Name);

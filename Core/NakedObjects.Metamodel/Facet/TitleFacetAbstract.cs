@@ -23,11 +23,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region ITitleFacet Members
 
-        public virtual string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
-            return GetTitle(nakedObject);
+        public virtual string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
+            return GetTitle(nakedObject, nakedObjectManager);
         }
 
-        public abstract string GetTitle(INakedObject nakedObject);
+        public abstract string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager);
 
         #endregion
     }

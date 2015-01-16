@@ -36,10 +36,9 @@ namespace NakedObjects.Architecture.SpecImmutable {
         bool IsCollection { get; }
         bool IsParseable { get; }
 
-        //Will return true is this is a sub-type of the passed-in spec
+        //Will return true if this is a sub-type of the passed-in spec
         bool IsOfType(IObjectSpecImmutable specification);
         string GetIconName(INakedObject forObject, IMetamodel metamodel);
-        string GetTitle(INakedObject nakedObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
@@ -29,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
             return InvokeUtils.Invoke(method, nakedObject) as string;
         }
     }

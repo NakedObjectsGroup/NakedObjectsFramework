@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -19,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
             return null;
         }
     }

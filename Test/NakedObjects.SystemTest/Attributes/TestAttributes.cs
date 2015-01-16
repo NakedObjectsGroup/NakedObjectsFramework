@@ -11,16 +11,17 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using NakedObjects.SystemTest;
-using NakedObjects;
-using NakedObjects.Architecture.Menu;
 
-namespace SystemTest.Attributes {
+
+
+namespace NakedObjects.SystemTest.Attributes {
     [TestClass]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
         #region Setup/Teardown
@@ -859,7 +860,7 @@ namespace SystemTest.Attributes {
             obj.AssertTitleEquals("Foo");
         }
 
-        [TestMethod, Ignore] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
+        [TestMethod] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute() {
             var obj1 = NewTestObject<Title1>();
             obj1.GetPropertyByName("Prop1").SetValue("Foo");
@@ -873,7 +874,7 @@ namespace SystemTest.Attributes {
             obj8.AssertTitleEquals("Foo");
         }
 
-        [TestMethod, Ignore] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
+        [TestMethod] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod() {
             var obj4 = NewTestObject<Title4>();
             obj4.GetPropertyByName("Prop1").SetValue("Foo");
@@ -1039,15 +1040,7 @@ namespace SystemTest.Attributes {
 
     #region ContributedAction
 
-    public class TestServiceContributedAction {
-        public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) { }
-
-        public void NotContributedAction(Contributee obj) { }
-    }
-
-    public class Contributee {
-        public virtual int Id { get; set; }
-    }
+   
 
     #endregion
 
@@ -1663,6 +1656,26 @@ namespace SystemTest.Attributes {
 
     #region FinderAction
 
+    
+
+    #endregion
+
+    #endregion
+}
+
+
+// Change the namespace of these test classes as if they start wuith 'NakedObjects' we will not introspect them
+namespace SystemTest.Attributes {
+    public class TestServiceContributedAction {
+        public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) { }
+
+        public void NotContributedAction(Contributee obj) { }
+    }
+
+    public class Contributee {
+        public virtual int Id { get; set; }
+    }
+
     public class TestServiceFinderAction {
 
         [FinderAction()]
@@ -1691,8 +1704,4 @@ namespace SystemTest.Attributes {
     public class FinderAction1 {
         public virtual int Id { get; set; }
     }
-
-    #endregion
-
-    #endregion
 }

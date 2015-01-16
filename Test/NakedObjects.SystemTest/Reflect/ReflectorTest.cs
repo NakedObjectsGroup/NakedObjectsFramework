@@ -13,7 +13,6 @@ using System.Security.Principal;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -25,10 +24,11 @@ using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.I18N;
+using NakedObjects.Reflect;
 using NakedObjects.Security;
 using NakedObjects.Menu;
 
-namespace NakedObjects.Reflect.Test {
+namespace NakedObjects.SystemTest.Reflect {
     [TestClass]
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {

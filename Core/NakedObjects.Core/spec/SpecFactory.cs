@@ -52,16 +52,21 @@ namespace NakedObjects.Core.Spec {
         //TODO: rename to CreateActionSpecs?
         public IActionSpec[] OrderActions(IList<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
-            return order.Select(CreateActionSpec).Cast<IActionSpec>().ToArray();
+            return order.Select(CreateActionSpec).ToArray();
         }
 
-        public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
+        public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable);
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             return CreateAssociation(specImmutable);
+        }
+
+        public IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
+            Assert.AssertNotNull(framework);
+            return new ObjectSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
         }
     }
 }

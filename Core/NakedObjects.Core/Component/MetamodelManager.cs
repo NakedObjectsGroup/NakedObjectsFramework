@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Component {
         #region IMetamodelManager Members
 
         public virtual IObjectSpec[] AllSpecs {
-            get { return Metamodel.AllSpecifications.Select(s => new ObjectSpec(specFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
+            get { return Metamodel.AllSpecifications.Select(s => specFactory.CreateObjectSpec(s)).ToArray(); }
         }
 
         public IMetamodel Metamodel {
@@ -63,7 +63,7 @@ namespace NakedObjects.Core.Component {
 
         private IObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
             if (!localCache.ContainsKey(spec)) {
-                localCache[spec] = new ObjectSpec(specFactory, this, spec);
+                localCache[spec] = specFactory.CreateObjectSpec(spec);
             }
 
             return localCache[spec];

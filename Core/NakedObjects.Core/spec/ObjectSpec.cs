@@ -23,6 +23,7 @@ namespace NakedObjects.Core.Spec {
         private readonly IObjectSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
+        private readonly INakedObjectManager nakedObjectManager;
 
         // cached values 
         private IActionSpec[] combinedActions;
@@ -53,13 +54,15 @@ namespace NakedObjects.Core.Spec {
         private IObjectSpec superclass;
         private string untitledName;
 
-        public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
+        public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) {
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(metamodelManager);
+            Assert.AssertNotNull(nakedObjectManager);
             Assert.AssertNotNull(innerSpec);
 
             this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
+            this.nakedObjectManager = nakedObjectManager;
             this.innerSpec = innerSpec;
         }
 
@@ -356,7 +359,13 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string GetTitle(INakedObject nakedObject) {
-            return innerSpec.GetTitle(nakedObject);
+            var titleFacet = GetFacet<ITitleFacet>();
+            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObject, nakedObjectManager);
+            return title ?? DefaultTitle();
+        }
+
+        private string DefaultTitle() {
+            return IsService ? SingularName : UntitledName;
         }
 
         public string GetInvariantString(INakedObject nakedObject) {
