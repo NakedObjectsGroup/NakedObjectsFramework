@@ -21,6 +21,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
                     new SimpleRepository<CustomerOne>(),
                     new SimpleRepository<CustomerTwo>(),
                     new SimpleRepository<CustomerThree>(),
+                    new SimpleRepository<CustomerFour>(),
                     new SimpleRepository<Supplier>(),
                     new SimpleRepository<Employee>()
                 });
@@ -54,6 +55,18 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
             payee1.AssertIsNotEmpty();
             payee1.AssertObjectIsEqual(customer1);
+        }
+
+        [TestMethod]
+        public virtual void WorksWithADateTimeKey() {
+            payee1.SetObject(customer4);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|16/01/2015 00:00:00");
+            payee1.AssertObjectIsEqual(customer4);
+            payee1.ClearObject();
+
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|17/01/2015 00:00:00");
+            payee1.AssertIsNotEmpty();
+            payee1.AssertObjectIsEqual(customer4a);
         }
 
         [TestMethod]

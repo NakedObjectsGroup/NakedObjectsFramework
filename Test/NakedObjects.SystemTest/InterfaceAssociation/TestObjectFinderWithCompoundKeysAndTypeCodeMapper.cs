@@ -22,6 +22,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
                     new SimpleRepository<CustomerOne>(),
                     new SimpleRepository<CustomerTwo>(),
                     new SimpleRepository<CustomerThree>(),
+                    new SimpleRepository<CustomerFour>(),
                     new SimpleRepository<Supplier>(),
                     new SimpleRepository<Employee>(),
                     new SimpleTypeCodeMapper()

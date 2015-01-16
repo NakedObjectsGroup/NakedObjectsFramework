@@ -16,6 +16,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         protected ITestObject customer2a;
         protected ITestObject customer2b;
         protected ITestObject customer3;
+        protected ITestObject customer4;
+        protected ITestObject customer4a;
         protected ITestObject emp1;
         protected ITestProperty key1;
         protected ITestProperty payee1;
@@ -35,6 +37,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             customer2a = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 0);
             customer2b = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 1);
             customer3 = GetAllInstances(typeof(SimpleRepository<CustomerThree>), 0);
+            customer4 = GetAllInstances(typeof(SimpleRepository<CustomerFour>), 0);
+            customer4a = GetAllInstances(typeof(SimpleRepository<CustomerFour>), 1);
             supplier1 = GetAllInstances(typeof(SimpleRepository<Supplier>), 0);
             emp1 = GetAllInstances(typeof(SimpleRepository<Employee>), 0);
         }

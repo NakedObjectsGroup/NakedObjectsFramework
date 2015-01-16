@@ -23,6 +23,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public DbSet<CustomerOne> CustomerOnes { get; set; }
         public DbSet<CustomerTwo> CustomerTwos { get; set; }
         public DbSet<CustomerThree> CustomerThrees { get; set; }
+        public DbSet<CustomerFour> CustomerFours { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
@@ -38,6 +39,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             context.CustomerTwos.Add(new CustomerTwo() {Id = 1, Id2 = "1001"});
             context.CustomerTwos.Add(new CustomerTwo() {Id = 2, Id2 = "1002"});
             context.CustomerThrees.Add(new CustomerThree() {Id = 1, Id2 = "1001", Number = 2001});
+            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 16) });
+            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 17) });
             context.Suppliers.Add(new Supplier() {Id = 1, Id2 = 2001});
             context.Employees.Add(new Employee() {Id = 1, Id2 = "foo"});
             context.SaveChanges();
@@ -107,6 +110,16 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         [Key]
         [Column(Order = 3)]
         public virtual int Number { get; set; }
+    }
+
+    public class CustomerFour : IPayee {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public virtual DateTime Id2 { get; set; }
     }
 
     public class Supplier : IPayee {

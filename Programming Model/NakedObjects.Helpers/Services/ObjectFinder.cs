@@ -45,7 +45,8 @@ namespace NakedObjects.Services {
         public virtual string GetCompoundKey<T>(T obj) {
             var compoundKey = new StringBuilder();
             //In all cases, the key starts with the fully-qualified type name
-            compoundKey.Append((obj == null) ? null : obj.GetType().GetProxiedType());
+            string typeAsString = CodeFromType(obj);
+            compoundKey.Append((obj == null) ? null : typeAsString);
 
             if (typeof (IHasGuid).IsAssignableFrom(typeof (T))) {
                 compoundKey.Append("|");
@@ -114,12 +115,12 @@ namespace NakedObjects.Services {
             return default(T);
         }
 
-        private Type GetAssociatedObjectType(string compoundKey) {
+        protected Type GetAssociatedObjectType(string compoundKey) {
             string typeAsString = compoundKey.Split('|').ElementAt(0);
             if (string.IsNullOrEmpty(typeAsString)) {
                 throw new DomainException(string.Format(ProgrammingModel.CompoundKeyDoesNotContainType, compoundKey));
             }
-            Type type = TypeUtils.GetType(typeAsString);
+            Type type = TypeFromCode(typeAsString);
             if (type == null) {
                 throw new DomainException(string.Format(ProgrammingModel.TypeCannotBeFound, typeAsString));
             }
@@ -155,6 +156,9 @@ namespace NakedObjects.Services {
                     }
                     else if (propType == typeof (char)) {
                         value = char.Parse(stringValue);
+                    } 
+                    else if (propType == typeof(DateTime)) {
+                        value = DateTime.Parse(stringValue);
                     }
                     else {
                         throw new DomainException(string.Format(ProgrammingModel.InvalidKeyType, propType));
@@ -180,5 +184,17 @@ namespace NakedObjects.Services {
             }
             return keyValues.ToArray();
         }
+
+        #region Convert between Type and string representation (code) for Type
+
+        protected virtual Type TypeFromCode(string code) {
+            return TypeUtils.GetType(code);
+        }
+
+        protected virtual string CodeFromType(object obj) {
+            Type type = obj.GetType().GetProxiedType();
+            return type.FullName;
+        }
+        #endregion
     }
 }
