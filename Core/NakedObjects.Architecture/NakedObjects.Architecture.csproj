@@ -182,11 +182,11 @@
     <Compile Include="Component\IObjectStore.cs" />
     <Compile Include="Component\IPersistAlgorithm.cs" />
     <Compile Include="Component\IPocoAdapterMap.cs" />
-    <Compile Include="Facet\IAbstractFacet.cs" />
-    <Compile Include="Facet\IInterfaceFacet.cs" />
-    <Compile Include="Facet\ISealedFacet.cs" />
+    <Compile Include="Facet\ITypeIsAbstractFacet.cs" />
+    <Compile Include="Facet\ITypeIsInterfaceFacet.cs" />
+    <Compile Include="Facet\ITypeIsSealedFacet.cs" />
     <Compile Include="Facet\IValidateObjectFacet.cs" />
-    <Compile Include="Facet\IVoidFacet.cs" />
+    <Compile Include="Facet\ITypeIsVoidFacet.cs" />
     <Compile Include="Framework\INakedObjectsFramework.cs" />
     <Compile Include="Exception\InvalidEntryException.cs" />
     <Compile Include="Exception\NakedObjectApplicationException.cs" />

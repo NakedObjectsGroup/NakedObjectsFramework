@@ -91,7 +91,7 @@
     <Compile Include="Facet\AuthorizationHideForSessionFacet.cs" />
     <Compile Include="I18N\I18NManager.cs" />
     <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
-    <Compile Include="Facet\AbstractFacet.cs" />
+    <Compile Include="Facet\TypeIsAbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
     <Compile Include="Facet\ActionDefaultsFacetViaMethod.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Facet\IconFacetViaMethod.cs" />
     <Compile Include="Facet\IImperativeFacet.cs" />
     <Compile Include="Facet\ImmutableFacetAnnotation.cs" />
-    <Compile Include="Facet\InterfaceFacet.cs" />
+    <Compile Include="Facet\TypeIsInterfaceFacet.cs" />
     <Compile Include="Facet\LoadedCallbackFacetNull.cs" />
     <Compile Include="Facet\LoadedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\LoadingCallbackFacetNull.cs" />
@@ -210,7 +210,7 @@
     <Compile Include="Facet\PropertyValidateFacetViaMethod.cs" />
     <Compile Include="Facet\QueryOnlyFacet.cs" />
     <Compile Include="Facet\RegExFacet.cs" />
-    <Compile Include="Facet\SealedFacet.cs" />
+    <Compile Include="Facet\TypeIsSealedFacet.cs" />
     <Compile Include="Facet\TableViewFacet.cs" />
     <Compile Include="Facet\TitleFacetUsingParser.cs" />
     <Compile Include="Facet\TitleFacetViaProperty.cs" />
@@ -311,7 +311,7 @@
     <Compile Include="Facet\SingleWhenValueFacetAbstract.cs" />
     <Compile Include="Facet\ViewModelFacetConvention.cs" />
     <Compile Include="Facet\ViewModelSwitchableFacetConvention.cs" />
-    <Compile Include="Facet\VoidFacet.cs" />
+    <Compile Include="Facet\TypeIsVoidFacet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecImmutable\ActionParameterSpecImmutable.cs" />
     <Compile Include="SpecImmutable\ActionSpecImmutable.cs" />

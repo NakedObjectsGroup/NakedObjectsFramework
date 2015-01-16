@@ -24,19 +24,19 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facets = new List<IFacet>();
 
             if (IsAbstract(type)) {
-                facets.Add(new AbstractFacet(specification));
+                facets.Add(new TypeIsAbstractFacet(specification));
             }
 
             if (IsInterface(type)) {
-                facets.Add(new InterfaceFacet(specification));
+                facets.Add(new TypeIsInterfaceFacet(specification));
             }
 
             if (IsSealed(type)) {
-                facets.Add(new SealedFacet(specification));
+                facets.Add(new TypeIsSealedFacet(specification));
             }
 
             if (IsVoid(type)) {
-                facets.Add(new VoidFacet(specification));
+                facets.Add(new TypeIsVoidFacet(specification));
             }
 
             FacetUtils.AddFacets(facets);

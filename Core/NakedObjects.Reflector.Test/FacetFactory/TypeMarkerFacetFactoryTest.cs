@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private TypeMarkerFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IAbstractFacet), typeof (IVoidFacet), typeof (IInterfaceFacet), typeof (ISealedFacet)}; }
+            get { return new[] {typeof (ITypeIsAbstractFacet), typeof (ITypeIsVoidFacet), typeof (ITypeIsInterfaceFacet), typeof (ITypeIsSealedFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {

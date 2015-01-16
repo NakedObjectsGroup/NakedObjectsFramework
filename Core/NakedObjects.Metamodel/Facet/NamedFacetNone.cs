@@ -12,7 +12,6 @@ namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     Has a name of <c>null</c>
     /// </summary>
-    // TODO: should this instead be the empty string?  
     [Serializable]
     public class NamedFacetNone : NamedFacetAbstract {
         public NamedFacetNone(ISpecification holder)

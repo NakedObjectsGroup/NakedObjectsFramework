@@ -231,7 +231,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsAbstract {
             get {
                 if (!isAbstract.HasValue) {
-                    isAbstract = innerSpec.ContainsFacet(typeof (IAbstractFacet));
+                    isAbstract = innerSpec.ContainsFacet(typeof (ITypeIsAbstractFacet));
                 }
                 return isAbstract.Value;
             }
@@ -240,7 +240,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsInterface {
             get {
                 if (!isInterface.HasValue) {
-                    isInterface = innerSpec.ContainsFacet(typeof (IInterfaceFacet));
+                    isInterface = innerSpec.ContainsFacet(typeof (ITypeIsInterfaceFacet));
                 }
                 return isInterface.Value;
             }
@@ -303,7 +303,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsVoid {
             get {
                 if (!isVoid.HasValue) {
-                    isVoid = innerSpec.ContainsFacet(typeof (IVoidFacet));
+                    isVoid = innerSpec.ContainsFacet(typeof (ITypeIsVoidFacet));
                 }
                 return isVoid.Value;
             }

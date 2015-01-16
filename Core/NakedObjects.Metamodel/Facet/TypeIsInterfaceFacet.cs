@@ -11,12 +11,12 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class SealedFacet : MarkerFacetAbstract, ISealedFacet {
-        public SealedFacet(ISpecification holder)
+    public class TypeIsInterfaceFacet : MarkerFacetAbstract, ITypeIsInterfaceFacet {
+        public TypeIsInterfaceFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {
-            get { return typeof (ISealedFacet); }
+            get { return typeof (ITypeIsInterfaceFacet); }
         }
     }
 }

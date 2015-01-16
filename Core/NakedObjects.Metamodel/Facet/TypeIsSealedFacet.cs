@@ -11,12 +11,12 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class VoidFacet : MarkerFacetAbstract, IVoidFacet {
-        public VoidFacet(ISpecification holder)
+    public class TypeIsSealedFacet : MarkerFacetAbstract, ITypeIsSealedFacet {
+        public TypeIsSealedFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {
-            get { return typeof (IVoidFacet); }
+            get { return typeof (ITypeIsSealedFacet); }
         }
     }
 }

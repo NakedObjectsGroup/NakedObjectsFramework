@@ -251,7 +251,7 @@ let NotFoundParm(api : RestfulObjectsControllerBase) =
     let result = api.GetActionParameterType(oType, pid, pmid, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
-    Assert.AreEqual("199 RestfulObjects \"No such parameter name\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("199 RestfulObjects \"No such parameter name RId:noSuchParm DId AnActionReturnsCollectionWithScalarParameters \"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 let NotAcceptableActionParameterType(api : RestfulObjectsControllerBase) = 

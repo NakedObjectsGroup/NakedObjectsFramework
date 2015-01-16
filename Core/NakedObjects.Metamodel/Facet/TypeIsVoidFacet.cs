@@ -10,14 +10,13 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-    //TODO: rename to AbstractMarkerFacet to avoid confusion with FacetAbstract!
     [Serializable]
-    public class AbstractFacet : MarkerFacetAbstract, IAbstractFacet {
-        public AbstractFacet(ISpecification holder)
+    public class TypeIsVoidFacet : MarkerFacetAbstract, ITypeIsVoidFacet {
+        public TypeIsVoidFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {
-            get { return typeof (IAbstractFacet); }
+            get { return typeof (ITypeIsVoidFacet); }
         }
     }
 }
