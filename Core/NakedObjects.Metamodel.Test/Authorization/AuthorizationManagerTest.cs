@@ -9,7 +9,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Test.Authorization {
     [TestClass]
@@ -23,14 +27,13 @@ namespace NakedObjects.Meta.Test.Authorization {
 
         [TestMethod]
         public void TestCreateOk() {
-            var config = new Mock<IAuthorizationConfiguration>();
+            var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (object));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (object)}});
-            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+            config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
+            config.AddTypeAuthorizer<object, ITypeAuthorizer<object>>();
 
             // ReSharper disable once UnusedVariable
-            var sink = new AuthorizationManager(config.Object);
+            var sink = new AuthorizationManager(config);
         }
 
         [TestMethod]
@@ -49,6 +52,62 @@ namespace NakedObjects.Meta.Test.Authorization {
                 // pass test
                 Assert.AreEqual("Default Authorizer cannot be null", expected.Message);
             }
+        }
+
+        [TestMethod]
+        public void TestDecorateHideForSessionFacet() {
+            var config = new Mock<IAuthorizationConfiguration>();
+
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (object));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (object)}});
+            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+
+            var manager = new AuthorizationManager(config.Object);
+
+            var testSpec = new Mock<ISpecification>();
+            var testHolder = new Mock<ISpecification>();
+            var identifier = new Mock<IIdentifier>();
+            var testFacet = new Mock<IHideForSessionFacet>();
+
+            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+
+            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+
+            testFacet.Setup(n => n.FacetType).Returns(typeof (IHideForSessionFacet));
+
+            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+
+            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+
+            Assert.IsInstanceOfType(facet, typeof (AuthorizationHideForSessionFacet));
+        }
+
+        [TestMethod]
+        public void TestDecorateDisableForSessionFacet() {
+            var config = new Mock<IAuthorizationConfiguration>();
+
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (object));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (object)}});
+            config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
+
+            var manager = new AuthorizationManager(config.Object);
+
+            var testSpec = new Mock<ISpecification>();
+            var testHolder = new Mock<ISpecification>();
+            var identifier = new Mock<IIdentifier>();
+            var testFacet = new Mock<IDisableForSessionFacet>();
+
+            testHolder.Setup(h => h.Identifier).Returns(identifier.Object);
+
+            testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
+
+            testFacet.Setup(n => n.FacetType).Returns(typeof (IDisableForSessionFacet));
+
+            testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
+
+            var facet = manager.Decorate(testFacet.Object, testHolder.Object);
+
+            Assert.IsInstanceOfType(facet, typeof (AuthorizationDisableForSessionFacet));
         }
     }
 }
