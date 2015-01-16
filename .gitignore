@@ -3,6 +3,7 @@
 *.nupkg
 /packages
 /test-results
+/TestResults
 /build
 /coverage
 **/bin
