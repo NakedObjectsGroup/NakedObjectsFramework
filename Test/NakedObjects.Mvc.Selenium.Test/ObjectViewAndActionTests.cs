@@ -760,25 +760,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelPopup() {
             DoInvokeActionOnViewModelPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelReturnCollectionPopup() {
             DoInvokeActionOnViewModelReturnCollectionPopup();
         }
@@ -804,7 +800,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
@@ -860,13 +855,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
@@ -877,13 +870,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }
@@ -900,13 +891,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialogPopup() {
             DoActionFindOnActionDialogPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogPopup() {
             DoNewObjectOnActionDialogPopup();
         }
@@ -917,13 +906,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailMandatoryPopup() {
             DoNewObjectOnActionDialogFailMandatoryPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailInvalidPopup() {
             DoNewObjectOnActionDialogFailInvalidPopup();
         }
@@ -984,25 +971,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelPopup() {
             DoInvokeActionOnViewModelPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelReturnCollectionPopup() {
             DoInvokeActionOnViewModelReturnCollectionPopup();
         }
@@ -1029,7 +1012,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
@@ -1085,13 +1067,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
@@ -1102,13 +1082,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }
@@ -1124,13 +1102,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialogPopup() {
             DoActionFindOnActionDialogPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogPopup() {
             DoNewObjectOnActionDialogPopup();
         }
@@ -1141,13 +1117,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailMandatoryPopup() {
             DoNewObjectOnActionDialogFailMandatoryPopup();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailInvalidPopup() {
             DoNewObjectOnActionDialogFailInvalidPopup();
         }
@@ -1212,13 +1186,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeActionOnViewModelPopup() {
             DoInvokeActionOnViewModelPopup();
         }
@@ -1256,7 +1228,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
@@ -1315,7 +1286,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
@@ -1331,13 +1301,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }
@@ -1354,7 +1322,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
         public override void ActionFindOnActionDialogPopup() {
             DoActionFindOnActionDialogPopup();
         }

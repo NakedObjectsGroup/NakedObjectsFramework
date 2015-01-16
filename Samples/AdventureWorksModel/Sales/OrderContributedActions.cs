@@ -192,7 +192,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [QueryOnly]
+        [QueryOnly][FinderAction]
         [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
         public CurrencyRate FindRate(string currency, string currency1) {
             return Container.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == currency && cr.Currency1.Name == currency1);
