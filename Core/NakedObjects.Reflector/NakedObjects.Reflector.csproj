@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="FacetFactoryTypes.cs" />
     <Compile Include="FacetFactory\MenuFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactory.cs" />
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
