@@ -11,30 +11,55 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
+using NakedObjects.Xat;
+using Microsoft.Practices.Unity;
+using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Reflect.Test;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
+        #region
 
-        #region Run configuration
-        protected override object[] MenuServices {
+        private const string databaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
+        }
+
+        [ClassCleanup]
+        public static void DeleteDatabase() {
+            Database.Delete(databaseName);
+        }
+
+        private static bool fixturesRun;
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            if (!fixturesRun) {
+                RunFixtures();
+                fixturesRun = true;
+            }
+            StartTest();
+        }
+
+        protected override object[] Fixtures {
             get {
-                return (new object[] {
-                    new SimpleRepository<PolymorphicPayment>(),
-                    new SimpleRepository<CustomerAsPayee>(),
-                    new SimpleRepository<SupplierAsPayee>(),
-                    new SimpleRepository<InvoiceAsPayableItem>(),
-                    new SimpleRepository<ExpenseClaimAsPayableItem>()
-                });
+                return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeCode() };
             }
         }
 
         protected override object[] SystemServices {
-            get { return new object[] {new Services.PolymorphicNavigator(), new SimpleTypeCodeMapper()}; }
+            get { return new object[] { new Services.PolymorphicNavigator(), new SimpleTypeCodeMapper() }; }
         }
 
-        #endregion
-
+#endregion
         [TestMethod]
         public void SetPolymorphicPropertyOnTransientObject() {
             base.SetPolymorphicPropertyOnTransientObject("CUS");
@@ -45,17 +70,17 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SetPolymorphicPropertyOnPersistentObject() {
             base.SetPolymorphicPropertyOnPersistentObject("CUS");
         }
 
-        [TestMethod, Ignore] //Test is wrong: object is being set up without a type code
-        public override void ChangePolymorphicPropertyOnPersistentObject() {
-            base.ChangePolymorphicPropertyOnPersistentObject();
+        [TestMethod]
+        public void ChangePolymorphicPropertyOnPersistentObject() {
+            ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
         }
 
-        [TestMethod, Ignore]//Test is wrong: object is being set up without a type code
+        [TestMethod]
         public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }
@@ -71,12 +96,12 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void RemoveItem() {
             base.RemoveItem();
         }
@@ -88,7 +113,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }

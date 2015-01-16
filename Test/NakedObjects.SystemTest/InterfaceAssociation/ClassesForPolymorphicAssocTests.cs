@@ -143,8 +143,9 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
     #region Code First DBContext 
 
     public class PolymorphicNavigationContext : DbContext {
+
         public PolymorphicNavigationContext(string name) : base(name) {}
-        public PolymorphicNavigationContext() {}
+        public PolymorphicNavigationContext()  : base() {}
         public DbSet<PolymorphicPayment> Payments { get; set; }
         public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
         public DbSet<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; }
@@ -154,39 +155,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
         public DbSet<ExpenseClaimAsPayableItem> ExpenseClaims { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new MyDbInitialiser());
-        }
-    }
-
-    public class MyDbInitialiser : DropCreateDatabaseIfModelChanges<PolymorphicNavigationContext> {
-        protected override void Seed(PolymorphicNavigationContext context) {
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            //3
-            var payment3 = new PolymorphicPayment();
-            context.Payments.Add(payment3);
-            var payeeLink = new PolymorphicPaymentPayeeLink() {
-                AssociatedRoleObjectType = "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee",
-                AssociatedRoleObjectId = 1
-            };
-            context.PayeeLinks.Add(payeeLink);
-            payment3.PayeeLink = payeeLink;
-
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-            context.Payments.Add(new PolymorphicPayment());
-
-            context.Customers.Add(new CustomerAsPayee());
-
-            context.Invoices.Add(new InvoiceAsPayableItem());
-            context.Invoices.Add(new InvoiceAsPayableItem());
-
-            context.SaveChanges();
+            Database.SetInitializer(new DropCreateDatabaseAlways<PolymorphicNavigationContext>());
         }
     }
 

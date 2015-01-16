@@ -12,7 +12,7 @@ using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
-        [TestClass, Ignore]
+        [TestClass]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
             #region Setup/Teardown
 
@@ -61,7 +61,6 @@ namespace NakedObjects.SystemTest.ParentChild {
                 child.AssertCannotBeSaved();
                 child0.SetValue("Bar");
                 child.AssertCanBeSaved();
-                child.Save();
 
                 parent.AssertCanBeSaved();
                 parent.Save();
@@ -80,8 +79,11 @@ namespace NakedObjects.SystemTest.ParentChild {
         }
 
         public class Parent {
-            public Parent() {
-                Child = new Child();
+
+            public IDomainObjectContainer Container { set; protected get; }
+
+            public void Created() {
+                Child = Container.NewTransientInstance<Child>();
             }
 
             [NakedObjectsIgnore]

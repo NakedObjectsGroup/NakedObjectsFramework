@@ -10,27 +10,49 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
+using System;
+using Microsoft.Practices.Unity;
+using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Reflect.Test;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
 
+        private const string databaseName = "TestPolymorphicNavigator";
 
-        #region Run configuration
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<PolymorphicPayment>(),
-                    new SimpleRepository<CustomerAsPayee>(),
-                    new SimpleRepository<SupplierAsPayee>(),
-                    new SimpleRepository<InvoiceAsPayableItem>(),
-                    new SimpleRepository<ExpenseClaimAsPayableItem>(),
-                    new Services.PolymorphicNavigator()
-                };
-            }
+        #region SetUp
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 
+        [ClassCleanup]
+        public static void DeleteDatabase() {
+            Database.Delete(databaseName);
+        }
+
+        private static bool fixturesRun;
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            if (!fixturesRun) {
+                RunFixtures();
+                fixturesRun = true;
+            }
+            StartTest();
+        }
+
+        protected override object[] Fixtures {
+            get {
+                return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeName() };
+            }
+        }
         #endregion
 
         [TestMethod]
@@ -43,17 +65,17 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SetPolymorphicPropertyOnPersistentObject() {
             SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
         }
 
         [TestMethod]
-        public override void ChangePolymorphicPropertyOnPersistentObject() {
-            base.ChangePolymorphicPropertyOnPersistentObject();
+        public void ChangePolymorphicPropertyOnPersistentObject() {
+            ChangePolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", "NakedObjects.SystemTest.PolymorphicAssociations.SupplierAsPayee");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }
@@ -69,12 +91,12 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void RemoveItem() {
             base.RemoveItem();
         }
@@ -86,7 +108,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }

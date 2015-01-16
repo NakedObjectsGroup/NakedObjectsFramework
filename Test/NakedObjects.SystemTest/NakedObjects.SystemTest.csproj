@@ -151,6 +151,8 @@
     <Compile Include="Authorization\TestNamespaceAuthorization.cs" />
     <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
     <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
+    <Compile Include="InterfaceAssociation\FixtureLinks.cs" />
+    <Compile Include="InterfaceAssociation\FixtureEntities.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeys.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAndTypeCodeMapper.cs" />
