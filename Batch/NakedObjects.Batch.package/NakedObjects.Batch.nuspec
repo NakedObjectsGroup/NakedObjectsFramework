@@ -13,7 +13,6 @@
     <tags>naked objects nakedobjects batch</tags>
     <dependencies>
       <dependency id="NakedObjects.Core" version="7.0.0-beta2" />
-      <dependency id="Unity" version="[3.5.1404.0, 4.0)" />
     </dependencies>
   </metadata>
 </package>

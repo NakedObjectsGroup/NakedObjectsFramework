@@ -18,7 +18,6 @@
       <dependency id="RestfulObjects.Mvc" version="7.0.0-beta2" />
       <dependency id="NakedObjects.Surface.Nof4" version="7.0.0-beta2" />
       <dependency id="WebActivatorEx" version="[2.0.6, 3.0)" />
-      <dependency id="Unity" version="[3.5.1404.0, 4.0)" />
       <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)" />
     </dependencies>
   </metadata>
