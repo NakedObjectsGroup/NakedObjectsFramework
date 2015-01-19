@@ -8,7 +8,7 @@
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Core.Component {
+namespace NakedObjects.Xat.Component {
     public class UnityFrameworkResolver : IFrameworkResolver {
         private readonly IUnityContainer unityContainer;
 

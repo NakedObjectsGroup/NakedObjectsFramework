@@ -85,7 +85,7 @@ namespace NakedObjects.Mvc.App {
             container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
-            container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
+            container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager()); //********
             container.RegisterType<IMessageBroker, MessageBroker>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
 
@@ -96,6 +96,37 @@ namespace NakedObjects.Mvc.App {
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
             container.RegisterType<SpecFactory, SpecFactory>(new PerRequestLifetimeManager());
+
+            //Externals
+            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+
+            //DI
+            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerRequestLifetimeManager());
+
+            // Facet decorators 
+            if (NakedObjectsRunSettings.AuditConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuditManager), "AuditManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuditConfiguration), NakedObjectsRunSettings.AuditConfig(), new ContainerControlledLifetimeManager());
+            }
+
+            if (NakedObjectsRunSettings.AuthorizationConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuthorizationManager), "AuthorizationManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuthorizationConfiguration), NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
+            }
+        }
+
+        
+        public static void NewApproach(IUnityContainer container) {
+            //RegisterContainerControlledTypes(container);
+            //RegisterPerTransactionTypes<>(container);
+            // surface
+            // surface
+            container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
+
+            // config
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));

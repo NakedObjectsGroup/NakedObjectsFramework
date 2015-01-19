@@ -182,6 +182,10 @@
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
       <Name>NakedObjects.Reflector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Unity\NakedObjects.Unity.csproj">
+      <Project>{81f04edb-4913-4ec8-b4d5-f9cc118ff216}</Project>
+      <Name>NakedObjects.Unity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
