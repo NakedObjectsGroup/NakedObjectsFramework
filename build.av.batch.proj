@@ -50,8 +50,7 @@
       <BatchSrc Include="$(BATPath)\$(NOBAT)\NakedObjectsRunSettings.cs.pp"/>
       <BatchSrc Include="$(BATPath)\$(NOBAT)\Program.cs"/>
       <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityActivator.cs"/>
-      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityConfig.cs"/>
-      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityFrameworkResolver.cs"/>      
+      <BatchSrc Include="$(BATPath)\$(NOBAT)\UnityConfig.cs"/>   
     </ItemGroup>
     
     <Copy SourceFiles="@(BatchSrc)" DestinationFolder="$(BATPath)\$(NOBAT).package\content"/>

@@ -112,7 +112,6 @@
     <Compile Include="Interface\ITestMenuItem.cs" />
     <Compile Include="Interface\ITestProperty.cs" />
     <Compile Include="Interface\ITestParameter.cs" />
-    <Compile Include="TestCase\UnityFrameworkResolver.cs" />
     <Compile Include="Xat\TestMenu.cs" />
     <Compile Include="Xat\TestAction.cs" />
     <Compile Include="Xat\TestMenuItem.cs" />
@@ -181,6 +180,10 @@
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
       <Name>NakedObjects.Reflector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Unity\NakedObjects.Unity.csproj">
+      <Project>{81f04edb-4913-4ec8-b4d5-f9cc118ff216}</Project>
+      <Name>NakedObjects.Unity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

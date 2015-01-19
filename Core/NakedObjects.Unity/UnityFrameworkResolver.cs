@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Practices.Unity;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Mvc.App {
+namespace NakedObjects.Unity {
     public class UnityFrameworkResolver : IFrameworkResolver {
         private readonly IUnityContainer unityContainer;
 
@@ -17,12 +16,8 @@ namespace NakedObjects.Mvc.App {
             this.unityContainer = unityContainer;
         }
 
-        #region IFrameworkResolver Members
-
         public INakedObjectsFramework GetFramework() {
             return unityContainer.Resolve<INakedObjectsFramework>();
         }
-
-        #endregion
     }
 }

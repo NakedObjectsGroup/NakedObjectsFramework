@@ -33,6 +33,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Unity;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -40,68 +41,26 @@ namespace NakedObjects.Mvc.App {
     /// </summary>
     public class UnityConfig {
         #region Framework Configuration
-
-        protected static void RegisterFacetFactories(IUnityContainer container) {
-            var factoryTypes = FacetFactories.StandardFacetFactories();
-            for (int i = 0; i < factoryTypes.Count(); i++) {
-                RegisterFacetFactory(factoryTypes[i], container, i);
-            }
-        }
-
-        private static int RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-            container.RegisterType(typeof(IFacetFactory), factory,factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
-            return order;
-        }
-
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container) {
-            RegisterFacetFactories(container);
+            //Standard configuration
+            StandardUnityConfig.RegisterStandardFacetFactories(container);
+            StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
+            StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
             // config
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
-           
-            // in architecture
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
-            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMenuFactory, MenuFactory>(new ContainerControlledLifetimeManager());
-
-            container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-            container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-            container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new PerRequestLifetimeManager());
-            container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
-            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
-            container.RegisterType<IObjectStore, EntityObjectStore>(new PerRequestLifetimeManager());
-            container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerRequestLifetimeManager());
-            container.RegisterType<ITransactionManager, TransactionManager>(new PerRequestLifetimeManager());
-            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
-            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
-            container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
-            container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
-            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
-            container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
-            container.RegisterType<IMessageBroker, MessageBroker>(new PerRequestLifetimeManager());
-            container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
 
             // surface
             container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
 
-            //Temporary scaffolding
-            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
-            container.RegisterType<SpecFactory, SpecFactory>(new PerRequestLifetimeManager());
-
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
-
-            //DI
-            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerRequestLifetimeManager());
 
             // Facet decorators 
             if (NakedObjectsRunSettings.AuditConfig() != null) {
@@ -114,7 +73,6 @@ namespace NakedObjects.Mvc.App {
                 container.RegisterInstance(typeof(IAuthorizationConfiguration), NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
             }
         }
-
         #endregion
 
         #region Unity Container
