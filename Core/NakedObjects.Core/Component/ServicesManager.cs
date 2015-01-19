@@ -39,6 +39,17 @@ namespace NakedObjects.Core.Component {
             services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
         }
 
+        private IList<IServiceWrapper> Services {
+            get {
+                if (!servicesInit) {
+                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
+                    servicesInit = true;
+                }
+
+                return services;
+            }
+        }
+
         #region IServicesManager Members
 
         public virtual ServiceType GetServiceType(IObjectSpec spec) {
@@ -72,21 +83,6 @@ namespace NakedObjects.Core.Component {
                 Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
         }
 
-        public virtual INakedObject[] ServiceAdapters {
-            get { return Services.Select(x => manager.CreateAdapter(x.Service, null, null)).ToArray(); }
-        }
-
         #endregion
-
-        private IList<IServiceWrapper> Services {
-            get {
-                if (!servicesInit) {
-                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
-                    servicesInit = true;
-                }
-
-                return services;
-            }
-        }
     }
 }

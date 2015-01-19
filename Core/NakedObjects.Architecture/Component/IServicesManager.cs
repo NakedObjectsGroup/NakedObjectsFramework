@@ -14,9 +14,7 @@ namespace NakedObjects.Architecture.Component {
     /// Provides access to the domain services that have been registered as part of the application. 
     /// </summary>
     public interface IServicesManager {
-        //TODO: How does this differ from GetServices -  same return type?
-        INakedObject[] ServiceAdapters { get; }
-
+      
         INakedObject GetService(string id);
 
         INakedObject GetService(IObjectSpec spec);
