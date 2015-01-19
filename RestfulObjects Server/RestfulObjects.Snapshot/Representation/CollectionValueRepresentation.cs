@@ -59,7 +59,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (Flags.FormalDomainModel) {
                 tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property)), Flags));
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.Specification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification)), Flags));
             }
 
             Links = tempLinks.ToArray();

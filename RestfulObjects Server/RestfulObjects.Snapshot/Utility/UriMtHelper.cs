@@ -507,7 +507,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public void AddObjectCollectionRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             if (assoc != null && assoc.IsCollection()) {
-                string parameterValue = GetParameterValue(flags, assoc.Specification);
+                string parameterValue = GetParameterValue(flags, assoc.ElementSpecification);
                 if (parameterValue != null) {
                     mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
                 }

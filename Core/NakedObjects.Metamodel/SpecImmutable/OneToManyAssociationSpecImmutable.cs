@@ -27,17 +27,10 @@ namespace NakedObjects.Meta.SpecImmutable {
             this.defaultElementSpec = defaultElementSpec;
         }
 
-        public Type ElementType {
-            get {
-                var typeOfFacet = GetFacet<IElementTypeFacet>();
-                return typeOfFacet != null ? typeOfFacet.Value : defaultElementType;
-            }
-        }
-
         /// <summary>
         ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
         /// </summary>
-        public override IObjectSpecImmutable ReturnSpec {
+        public override IObjectSpecImmutable ElementSpec {
             get {
                 var typeOfFacet = GetFacet<IElementTypeFacet>();
                 return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;

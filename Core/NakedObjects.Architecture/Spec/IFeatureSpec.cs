@@ -13,16 +13,7 @@ namespace NakedObjects.Architecture.Spec {
     ///     Base interface for specifications covering properties, collections, actions and action parameters.
     /// </summary>
     public interface IFeatureSpec : ISpecification, INamedAndDescribed {
-        /// <summary>
-        ///     Returns the specifications for the feature.
-        /// </summary>
-        /// <para>
-        ///     Will be non-<c>null</c> value for everything <i>except</i> an  action.
-        /// </para>
-        
-
-        IObjectSpec ElementSpec { get; }
-
+      
         bool IsNullable { get; }
 
         IConsent IsUsable(INakedObject target);

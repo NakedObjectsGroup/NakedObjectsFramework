@@ -52,10 +52,9 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return ""; }
         }
 
-        public IObjectSpecImmutable ElementSpec {
+        public override IObjectSpecImmutable ElementSpec {
             get { return GetFacet<IActionInvocationFacet>().ElementType; }
         }
-
 
         public bool IsFinderMethod {
             get { return HasReturn() && ContainsFacet(typeof (IFinderActionFacet)); }

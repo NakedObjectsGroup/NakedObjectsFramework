@@ -16,6 +16,8 @@ namespace NakedObjects.Architecture.Spec {
 
         IObjectSpec Spec { get; }
 
+        IObjectSpec ElementSpec { get; }
+
         /// <summary>
         /// </summary>
         /// <para>

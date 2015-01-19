@@ -28,6 +28,10 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return true; }
         }
 
+        public override IObjectSpecImmutable ElementSpec {
+            get { return null; }
+        }
+
         public override IObjectSpecImmutable OwnerSpec {
             get { return ownerSpec; }
         }

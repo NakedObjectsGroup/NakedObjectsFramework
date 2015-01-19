@@ -20,11 +20,14 @@ namespace NakedObjects.Core.Spec {
     public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
         private readonly bool isASet;
         private readonly IObjectPersistor persistor;
+        private readonly IObjectSpec elementSpec;
 
         public OneToManyAssociationSpec(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
             isASet = association.ContainsFacet<IIsASetFacet>();
+
+            elementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
         public override bool IsChoicesEnabled {
@@ -42,10 +45,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override IObjectSpec ElementSpec {
-            get {
-                // TODO make all this more obvious return collection spec in Spec and element spec here
-                return ReturnSpec;
-            }
+            get { return elementSpec; }
         }
 
         public override bool IsCollection {

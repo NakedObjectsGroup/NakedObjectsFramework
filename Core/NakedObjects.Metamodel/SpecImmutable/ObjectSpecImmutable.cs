@@ -43,10 +43,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return GetFacet<INamedFacet>().Value; }
         }
 
-        private string UntitledName {
-            get { return Resources.NakedObjects.Untitled + SingularName; }
-        }
-
         #region IObjectSpecBuilder Members
 
         public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {

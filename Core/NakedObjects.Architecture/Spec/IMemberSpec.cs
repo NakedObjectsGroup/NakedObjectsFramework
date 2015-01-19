@@ -28,5 +28,7 @@ namespace NakedObjects.Architecture.Spec {
 
 
         IObjectSpec ReturnSpec { get; }
+
+        IObjectSpec ElementSpec { get; }
     }
 }

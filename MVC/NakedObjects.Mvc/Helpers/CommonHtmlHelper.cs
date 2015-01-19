@@ -1918,7 +1918,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ObjectName);
             tag.MergeAttribute("title", "");
-            tag.InnerHtml += CollectionUtils.CollectionTitleString(propertyContext.Property.ReturnSpec, count);
+            tag.InnerHtml += CollectionUtils.CollectionTitleString(propertyContext.Property.ElementSpec, count);
             return tag.ToString();
         }
 

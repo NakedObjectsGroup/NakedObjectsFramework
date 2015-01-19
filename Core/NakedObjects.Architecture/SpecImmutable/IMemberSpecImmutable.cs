@@ -13,6 +13,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// </summary>
     public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribed {
         IObjectSpecImmutable ReturnSpec { get; }
+        IObjectSpecImmutable ElementSpec { get; }
         IObjectSpecImmutable OwnerSpec { get; }
     }
 

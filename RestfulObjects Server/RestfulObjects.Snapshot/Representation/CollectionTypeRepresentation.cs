@@ -26,13 +26,13 @@ namespace RestfulObjects.Snapshot.Representations {
         public string PluralName { get; set; }
 
         private void SetScalars(PropertyTypeContextSurface propertyContext) {
-            PluralName = propertyContext.Property.Specification.PluralName();
+            PluralName = propertyContext.Property.ElementSpecification.PluralName();
         }
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
             tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property)), Flags));
-            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.Specification)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification)), Flags));
             Links = tempLinks.ToArray();
         }
 
