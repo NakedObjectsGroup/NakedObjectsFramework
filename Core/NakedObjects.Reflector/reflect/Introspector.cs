@@ -140,7 +140,7 @@ namespace NakedObjects.Reflect {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
 
             // find the properties and collections (fields) ...
-            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
+            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs(spec);
             orderedFields = CreateSortedListOfMembers(findFieldMethods);
         }
 
@@ -165,7 +165,7 @@ namespace NakedObjects.Reflect {
             return reflector.LoadSpecification(returnType);
         }
 
-        private IAssociationSpecImmutable[] FindAndCreateFieldSpecs() {
+        private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
             if (ClassStrategy.IsSystemClass(introspectedType)) {
                 Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
                 return new IAssociationSpecImmutable[0];
@@ -175,17 +175,17 @@ namespace NakedObjects.Reflect {
 
             // now create fieldSpecs for value properties, for collections and for reference properties        
             IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties);
-            IEnumerable<IAssociationSpecImmutable> collectionSpecs = CreateCollectionSpecs(collectionProperties);
+            IEnumerable<IAssociationSpecImmutable> collectionSpecs = CreateCollectionSpecs(collectionProperties, spec);
 
             // every other accessor is assumed to be a reference property.
             IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, reflector.ClassStrategy);
             IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
-            IEnumerable<IAssociationSpecImmutable> refSpecs = CreateRefPropertySpecs(refProperties);
+            IEnumerable<IAssociationSpecImmutable> refSpecs = CreateRefPropertySpecs(refProperties, spec);
 
             return collectionSpecs.Union(refSpecs).ToArray();
         }
 
-        private IEnumerable<IAssociationSpecImmutable> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties) {
+        private IEnumerable<IAssociationSpecImmutable> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in collectionProperties) {
@@ -198,7 +198,7 @@ namespace NakedObjects.Reflect {
                 IObjectSpecBuilder returnSpec = reflector.LoadSpecification(returnType);
                 Type defaultType = typeof (object);
                 IObjectSpecBuilder defaultSpec = reflector.LoadSpecification(defaultType);
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnSpec, defaultSpec);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);
@@ -209,7 +209,7 @@ namespace NakedObjects.Reflect {
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private IEnumerable<IAssociationSpecImmutable> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties) {
+        private IEnumerable<IAssociationSpecImmutable> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in foundProperties) {
@@ -220,7 +220,7 @@ namespace NakedObjects.Reflect {
                 var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 Type propertyType = property.PropertyType;
                 IObjectSpecBuilder propertySpec = reflector.LoadSpecification(propertyType);
-                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertySpec);
+                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);

@@ -16,12 +16,14 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
+        private readonly IObjectSpecImmutable ownerSpec;
         private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly Type defaultElementType;
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
+        public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnSpec) {
             defaultElementType = defaultElementSpec.Type;
+            this.ownerSpec = ownerSpec;
             this.defaultElementSpec = defaultElementSpec;
         }
 
@@ -40,6 +42,10 @@ namespace NakedObjects.Meta.SpecImmutable {
                 var typeOfFacet = GetFacet<IElementTypeFacet>();
                 return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
             }
+        }
+
+        public override IObjectSpecImmutable OwnerSpec {
+            get { return ownerSpec; }
         }
 
         public override bool IsOneToMany {

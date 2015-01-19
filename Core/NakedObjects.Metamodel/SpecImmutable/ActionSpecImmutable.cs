@@ -25,31 +25,27 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;
-        private readonly IObjectSpecImmutable specification;
+        private readonly IObjectSpecImmutable ownerSpec;
 
-        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification,
+        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec,
             IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
-            this.specification = specification;
+            this.ownerSpec = ownerSpec;
             this.parameters = parameters;
         }
 
         #region IActionSpecImmutable Members
 
         public override IObjectSpecImmutable ReturnSpec {
-            get { return specification; }
+            get { return GetFacet<IActionInvocationFacet>().ReturnType; }
+        }
+
+        public override IObjectSpecImmutable OwnerSpec {
+            get { return ownerSpec; }
         }
 
         public IActionParameterSpecImmutable[] Parameters {
             get { return parameters; }
-        }
-
-        public IActionSpecImmutable Spec {
-            get { return this; }
-        }
-
-        public IList<IActionSpecImmutable> Set {
-            get { return null; }
         }
 
         public string GroupFullName {
@@ -60,9 +56,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return GetFacet<IActionInvocationFacet>().ElementType; }
         }
 
-        public virtual IObjectSpecImmutable ReturnType {
-            get { return GetFacet<IActionInvocationFacet>().ReturnType; }
-        }
 
         public bool IsFinderMethod {
             get { return HasReturn() && ContainsFacet(typeof (IFinderActionFacet)); }
@@ -70,16 +63,15 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
             if (!IsFinderMethod) return false;
-            if (ReturnType.IsCollection && ElementType.IsOfType(spec)) {
+            if (ReturnSpec.IsCollection && ElementType.IsOfType(spec)) {
                 return true;
             }
-            return ReturnType.IsOfType(spec);
+            return ReturnSpec.IsOfType(spec);
         }
 
         public bool IsContributedMethod {
             get {
-                //TODO: Note that ReturnSpec is pending a rename (it is actually the spec of the owning object)
-                return ReturnSpec.Service && parameters.Any() &&
+                return OwnerSpec.Service && parameters.Any() &&
                        ContainsFacet(typeof (IContributedActionFacet));
             }
         }
@@ -98,7 +90,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         #endregion
 
         private bool HasReturn() {
-            return ReturnType != null;
+            return ReturnSpec != null;
         }
 
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
@@ -115,12 +107,12 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         // The special constructor is used to deserialize values. 
         public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            specification = info.GetValue<IObjectSpecImmutable>("specification");
+            ownerSpec = info.GetValue<IObjectSpecImmutable>("specification");
             parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<ISpecification>("specification", specification);
+            info.AddValue<ISpecification>("specification", ownerSpec);
             info.AddValue<IActionParameterSpecImmutable[]>("parameters", parameters);
 
             base.GetObjectData(info, context);

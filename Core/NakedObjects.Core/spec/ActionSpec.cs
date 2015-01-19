@@ -61,7 +61,7 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public virtual IObjectSpec ReturnSpec {
-            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType)); }
+            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
         }
 
         public override IObjectSpec ElementSpec {

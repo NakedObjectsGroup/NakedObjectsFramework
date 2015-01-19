@@ -235,7 +235,6 @@
     <Compile Include="Facet\DisableForSessionFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetNone.cs" />
     <Compile Include="Facet\FacetAbstract.cs" />
-    <Compile Include="SpecImmutable\ValueSpecImmutable.cs" />
     <Compile Include="Spec\Specification.cs" />
     <Compile Include="Utils\FacetUtils.cs" />
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />

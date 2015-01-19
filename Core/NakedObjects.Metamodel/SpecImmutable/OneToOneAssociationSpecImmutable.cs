@@ -13,8 +13,12 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
-        public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
-            : base(identifier, returnSpec) {}
+        private readonly IObjectSpecImmutable ownerSpec;
+
+        public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
+            : base(identifier, returnSpec) {
+            this.ownerSpec = ownerSpec;
+        }
 
         public override bool IsOneToMany {
             get { return false; }
@@ -22,6 +26,10 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public override bool IsOneToOne {
             get { return true; }
+        }
+
+        public override IObjectSpecImmutable OwnerSpec {
+            get { return ownerSpec; }
         }
 
         public override string ToString() {

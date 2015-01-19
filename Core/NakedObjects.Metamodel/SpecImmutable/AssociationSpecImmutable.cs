@@ -31,14 +31,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         public abstract bool IsOneToMany { get; }
         public abstract bool IsOneToOne { get; }
 
-        public IAssociationSpecImmutable Spec {
-            get { return this; }
-        }
-
-        public IList<IAssociationSpecImmutable> Set {
-            get { return null; }
-        }
-
         public string GroupFullName {
             get { return ""; }
         }
