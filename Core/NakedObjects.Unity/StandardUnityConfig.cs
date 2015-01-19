@@ -45,6 +45,8 @@ namespace NakedObjects.Unity {
             container.RegisterType<IMetamodelManager, MetamodelManager>(new T());
             container.RegisterType<IMessageBroker, MessageBroker>(new T());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new T());
+            container.RegisterType<ISession, WindowsSession>(new T());
+            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new T());
 
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new T());

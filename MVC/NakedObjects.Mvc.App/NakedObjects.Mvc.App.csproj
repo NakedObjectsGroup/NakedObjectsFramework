@@ -172,15 +172,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Surface">
-      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-beta1\lib\net451\NakedObjects.Surface.dll</HintPath>
+    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-beta2\lib\net451\NakedObjects.Surface.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Surface.Nof4">
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0-beta1\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+    <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0-beta2\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-beta2\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Unity">
+      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -451,7 +456,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="App_Start\UnityFrameworkResolver.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />

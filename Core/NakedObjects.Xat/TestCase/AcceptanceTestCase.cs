@@ -33,9 +33,8 @@ using NakedObjects.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 using NakedObjects.Service;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using NakedObjects.Unity;
-using NakedObjects.Xat.Component;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -321,7 +320,6 @@ namespace NakedObjects.Xat {
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
-            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
         }
 
         /// <summary>

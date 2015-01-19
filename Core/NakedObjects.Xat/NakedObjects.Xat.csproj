@@ -112,7 +112,6 @@
     <Compile Include="Interface\ITestMenuItem.cs" />
     <Compile Include="Interface\ITestProperty.cs" />
     <Compile Include="Interface\ITestParameter.cs" />
-    <Compile Include="TestCase\UnityFrameworkResolver.cs" />
     <Compile Include="Xat\TestMenu.cs" />
     <Compile Include="Xat\TestAction.cs" />
     <Compile Include="Xat\TestMenuItem.cs" />
