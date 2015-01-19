@@ -20,14 +20,14 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         private readonly INakedObjectManager manager;
-        private readonly IObjectSpec spec;
+        private readonly IObjectSpec returnSpec;
 
         protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
             : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(manager);
 
             this.manager = manager;
-            spec = MetamodelManager.GetSpecification(association.ReturnSpec);
+            returnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
         public virtual bool IsChoicesEnabled {
@@ -49,8 +49,8 @@ namespace NakedObjects.Core.Spec {
         ///     reference this will be type that the accessor returns. For a collection it will be the type of element,
         ///     not the type of collection.
         /// </summary>
-        public override IObjectSpec Spec {
-            get { return spec; }
+        public override IObjectSpec ReturnSpec {
+            get { return returnSpec; }
         }
 
         /// <summary>

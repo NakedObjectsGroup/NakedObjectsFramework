@@ -118,7 +118,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #region INakedObjectAssociationSurface Members
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(assoc.Spec, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(assoc.ReturnSpec, Surface, framework); }
         }
 
         public INakedObjectSpecificationSurface ElementSpecification {

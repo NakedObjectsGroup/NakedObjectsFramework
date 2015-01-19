@@ -115,8 +115,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec) {
-            var spec = featureSpec.Spec;
+        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec, IObjectSpec spec) {
             if (!values.Any()) {
                 return null;
             }
@@ -150,7 +149,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IActionParameterSpec parm in action.Parameters) {
                 string[] values =  GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
-                results[parm.Id.ToLower()] = GetValue(values, parm);
+                results[parm.Id.ToLower()] = GetValue(values, parm, parm.Spec);
             }
 
             return results;
@@ -164,7 +163,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsObject)) {
                 string[] values = GetRawValues(parms, GetFieldInputId(nakedObject, assoc));
-                results[assoc.Id.ToLower()] = GetValue(values, assoc);
+                results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.ReturnSpec);
             }
 
             return results;
@@ -201,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (assoc.IsChoicesEnabled) {
                     INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = assoc.Spec.IsParseable ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
+                    string[] value = assoc.ReturnSpec.IsParseable ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
                     choices[GetFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
@@ -235,7 +234,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (assoc.IsAutoCompleteEnabled) {
                 INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);
-                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Spec)).ToList();
+                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.ReturnSpec)).ToList();
             }
 
             return Jsonp(completions);

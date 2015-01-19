@@ -40,7 +40,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override bool IsChoicesEnabled {
-            get { return Spec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
+            get { return ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
         }
 
         public override bool IsMandatory {
@@ -77,8 +77,8 @@ namespace NakedObjects.Core.Spec {
                 return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
-            if (Spec.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(Spec)).ToArray();
+            if (ReturnSpec.IsBoundedSet()) {
+                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(ReturnSpec)).ToArray();
             }
             return null;
         }
@@ -96,8 +96,8 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
-            if (reference != null && !reference.Spec.IsOfType(Spec)) {
-                return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName));
+            if (reference != null && !reference.Spec.IsOfType(ReturnSpec)) {
+                return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
             }
 
             if (!inObject.ResolveState.IsNotPersistent()) {
@@ -117,7 +117,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override bool IsInline {
-            get { return Spec.ContainsFacet(typeof (IComplexTypeFacet)); }
+            get { return ReturnSpec.ContainsFacet(typeof(IComplexTypeFacet)); }
         }
 
         public override INakedObject GetDefault(INakedObject fromObject) {
@@ -176,7 +176,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                var defaultFacet = Spec.GetFacet<IDefaultedFacet>();
+                var defaultFacet = ReturnSpec.GetFacet<IDefaultedFacet>();
                 if (defaultFacet != null && !defaultFacet.IsNoOp) {
                     defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
                 }
@@ -195,7 +195,7 @@ namespace NakedObjects.Core.Spec {
             str.Append(base.ToString());
             str.AddComma();
             str.Append("persisted", IsPersisted);
-            str.Append("type", Spec.ShortName);
+            str.Append("type", ReturnSpec.ShortName);
             return str.ToString();
         }
     }

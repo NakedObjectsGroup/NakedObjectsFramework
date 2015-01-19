@@ -75,7 +75,7 @@ namespace NakedObjects.Core.Component {
 
         public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
             Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
-            if (field.Spec.HasNoIdentity) {
+            if (field.ReturnSpec.HasNoIdentity) {
                 return;
             }
             INakedObject reference = field.GetNakedObject(nakedObject);

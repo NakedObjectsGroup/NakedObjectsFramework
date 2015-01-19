@@ -1054,7 +1054,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (valueNakedObject != null) {
                 string link = "{0}";
 
-                if (!context.Property.Spec.IsParseable && context.Property.IsObject) {
+                if (!context.Property.ReturnSpec.IsParseable && context.Property.IsObject) {
                     link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
                 value += string.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
@@ -1096,7 +1096,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetFileFieldValue(propertyContext);
             }
 
-            if (propertyContext.Property.Spec.ContainsFacet<IBooleanValueFacet>()) {
+            if (propertyContext.Property.ReturnSpec.ContainsFacet<IBooleanValueFacet>()) {
                 return html.GetBooleanFieldValue(valueNakedObject);
             }
 
@@ -1121,7 +1121,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string link = "{0}";
 
-            if (!propertyContext.Property.Spec.IsParseable && propertyContext.Property.IsObject) {
+            if (!propertyContext.Property.ReturnSpec.IsParseable && propertyContext.Property.IsObject) {
                 string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : string.Empty;
                 bool renderEagerly = RenderEagerly(propertyContext.Property);
 
@@ -1205,7 +1205,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
-            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Spec.IsImage(html.Framework()) ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
+            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.ReturnSpec.IsImage(html.Framework()) ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
 
             string imageUrl = html.GenerateUrl(IdHelper.GetFileAction + "/" + title.Replace(' ', '_'),
                                                html.Framework().GetObjectTypeName(propertyContext.Target.Object),
@@ -1217,7 +1217,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var linktag = new TagBuilder("a");
             linktag.MergeAttribute("href", imageUrl);
 
-            if (propertyContext.Property.Spec.IsImage(html.Framework())) {
+            if (propertyContext.Property.ReturnSpec.IsImage(html.Framework())) {
                 var imageTag = new TagBuilder("img");
                 imageTag.MergeAttribute("src", imageUrl);
                 imageTag.MergeAttribute("alt", title);
@@ -1343,7 +1343,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 existingValue = propertyContext.GetValue(html.Framework());
             }
             else {
-                existingValue = propertyContext.Property.Spec.IsParseable ? html.Framework().GetNakedObject(rawExistingValue) :
+                existingValue = propertyContext.Property.ReturnSpec.IsParseable ? html.Framework().GetNakedObject(rawExistingValue) :
                                     html.Framework().GetNakedObjectFromId((string) modelState.Value.RawValue);
             }
             return existingValue;
@@ -1795,7 +1795,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     }
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                      html.GetFieldValue(propertyContext, suggestedItem) +
-                                     (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.Spec, new ActionContext(propertyContext.Target, null), propertyContext.Property.Id)) +
+                                     (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.ReturnSpec, new ActionContext(propertyContext.Target, null), propertyContext.Property.Id)) +
                                      html.GetMandatoryIndicator(propertyContext) +
                                      html.ValidationMessage(((IOneToOneAssociationSpec) propertyContext.Property).IsAutoCompleteEnabled ? propertyContext.GetAutoCompleteFieldId() : id) +
                                      html.CustomEncrypted(id, valueId);
@@ -1918,7 +1918,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ObjectName);
             tag.MergeAttribute("title", "");
-            tag.InnerHtml += CollectionUtils.CollectionTitleString(propertyContext.Property.Spec, count);
+            tag.InnerHtml += CollectionUtils.CollectionTitleString(propertyContext.Property.ReturnSpec, count);
             return tag.ToString();
         }
 
@@ -1927,7 +1927,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (propertyContext.Property.IsVisible( propertyContext.Target)) {
                 string value = html.GetFieldValue(propertyContext, inTable);
-                string cls = propertyContext.Property.Spec.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName;
+                string cls = propertyContext.Property.ReturnSpec.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName;
                 var multiLineFacet = propertyContext.Property.GetFacet<IMultiLineFacet>();
 
                 if (multiLineFacet != null && multiLineFacet.NumberOfLines > 1) {
@@ -1936,7 +1936,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 tag.AddCssClass(cls);
                 tag.MergeAttribute("title", tooltip);
-                if (!propertyContext.Property.Spec.IsParseable && addIcon) {
+                if (!propertyContext.Property.ReturnSpec.IsParseable && addIcon) {
                     tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target));
                 }
                 tag.InnerHtml += value;
@@ -2143,7 +2143,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tag.InnerHtml += html.Encrypted(id, html.GetRawValue(propertyContext)).ToString();
                 propertyContext.IsPropertyEdit = false;
             }
-            else if (propertyContext.Property.Spec.ContainsFacet<IBooleanValueFacet>() && !readOnly) {
+            else if (propertyContext.Property.ReturnSpec.ContainsFacet<IBooleanValueFacet>() && !readOnly) {
                 var state = propertyContext.Property.GetNakedObject(propertyContext.Target).GetDomainObject<bool?>();
               
                 if (propertyContext.Property.ContainsFacet<INullableFacet>()) {
@@ -2153,7 +2153,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     html.AddCheckBox(tag, htmlAttributes, id, state);
                 }
             }
-            else if (propertyContext.Property.Spec.ContainsFacet<IDateValueFacet>() && !readOnly) {
+            else if (propertyContext.Property.ReturnSpec.ContainsFacet<IDateValueFacet>() && !readOnly) {
                 html.AddDateTimeControl(tag, htmlAttributes, propertyContext, id, html.GetPropertyValue(propertyContext));
             }
             else if (propertyContext.Property.ContainsFacet<IPasswordFacet>() && !readOnly) {
@@ -2357,12 +2357,12 @@ namespace NakedObjects.Web.Mvc.Html {
             bool readOnly = consent.IsVetoed && propertyContext.Target.Oid.IsTransient;
 
             // for the moment do not allow file properties to be edited 
-            if (propertyContext.Property.Spec.IsFile(html.Framework())) {
+            if (propertyContext.Property.ReturnSpec.IsFile(html.Framework())) {
                 // return html.GetFileProperty(propertyContext, id, tooltip);
                 readOnly = true;
             }
 
-            if (propertyContext.Property.Spec.IsParseable) {
+            if (propertyContext.Property.ReturnSpec.IsParseable) {
                 return html.GetTextField(propertyContext, id, tooltip, readOnly);
             }
 
@@ -2381,7 +2381,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             string value;
 
-            if (propertyContext.Property.Spec.IsParseable) {
+            if (propertyContext.Property.ReturnSpec.IsParseable) {
                 tag.AddCssClass(IdHelper.ValueName);
                 value = invariant ? html.GetInvariantValue(propertyContext) : html.GetRawValue(propertyContext);
             }

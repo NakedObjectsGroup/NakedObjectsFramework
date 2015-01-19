@@ -25,5 +25,8 @@ namespace NakedObjects.Architecture.Spec {
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
         bool IsVisible(INakedObject target);
+
+
+        IObjectSpec ReturnSpec { get; }
     }
 }

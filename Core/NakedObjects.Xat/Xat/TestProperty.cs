@@ -89,11 +89,11 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            Assert.IsFalse(field.Spec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
+            Assert.IsFalse(field.ReturnSpec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
 
             INakedObject testNakedObject = testObject.NakedObject;
 
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.Spec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.Spec));
+            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
 
             INakedObject nakedObject = owningObject.NakedObject;
 
@@ -129,8 +129,8 @@ namespace NakedObjects.Xat {
 
             INakedObject testNakedObject = testObject.NakedObject;
 
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.Spec),
-                string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.Spec));
+            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec),
+                string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
 
             INakedObject nakedObject = owningObject.NakedObject;
 
@@ -154,7 +154,7 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            Assert.IsFalse(field.Spec.IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
+            Assert.IsFalse(field.ReturnSpec.IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
 
             INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
             if (nakedObject != null) {
@@ -178,7 +178,7 @@ namespace NakedObjects.Xat {
             try {
                 field.GetNakedObject(nakedObject);
 
-                var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
+                var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
 
                 INakedObject newValue = parseableFacet.ParseTextEntry(textEntry, manager);
 
@@ -232,7 +232,7 @@ namespace NakedObjects.Xat {
         }
 
         private bool IsNotParseable() {
-            return field.Spec.GetFacet<IParseableFacet>() == null;
+            return field.ReturnSpec.GetFacet<IParseableFacet>() == null;
         }
 
         #region Asserts
@@ -245,7 +245,7 @@ namespace NakedObjects.Xat {
 
             Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
             try {
-                var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
+                var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
                 parseableFacet.ParseTextEntry(text, manager);
                 Assert.Fail("Content was unexpectedly parsed");
             }
@@ -280,9 +280,9 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            Assert.IsFalse(field.Spec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
+            Assert.IsFalse(field.ReturnSpec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
             INakedObject testNakedObject = testObject.NakedObject;
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.Spec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.Spec));
+            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
             INakedObject nakedObject = owningObject.NakedObject;
             IConsent valid;
             var spec = field as IOneToOneAssociationSpec;
@@ -410,7 +410,7 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             field.GetNakedObject(nakedObject);
-            var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
+            var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
             try {
                 INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
                 IConsent isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
@@ -430,7 +430,7 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             field.GetNakedObject(nakedObject);
-            var parseableFacet = field.Spec.GetFacet<IParseableFacet>();
+            var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
             INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
             IConsent isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;

@@ -38,10 +38,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsFinderMethod { get; }
 
-        /// <summary>
-        ///     Returns the specifications for the return type
-        /// </summary>
-        IObjectSpec ReturnSpec { get; }
 
         /// <summary>
         ///     Returns the number of parameters used by this method

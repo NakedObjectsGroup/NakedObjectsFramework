@@ -385,7 +385,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedReferences(INakedObject nakedObject, IDictionary<string, string> dict) {
-            var refItems = nakedObject.Spec.Properties.Where(p => p.IsObject && !p.Spec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
+            var refItems = nakedObject.Spec.Properties.Where(p => p.IsObject && !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(a => ValidateAssociation(nakedObject, a as IOneToOneAssociationSpec, dict[a.Id]));
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => NakedObjectsContext.GetNakedObjectFromId(dict[a.Id]));
@@ -416,15 +416,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (value == null) {
                 return null;
             }
-            var fromStreamFacet = assoc.Spec.GetFacet<IFromStreamFacet>();
+            var fromStreamFacet = assoc.ReturnSpec.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase)value;
                 return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
             }
             var stringValue = value as string;
-            if (assoc.Spec.IsParseable) {
+            if (assoc.ReturnSpec.IsParseable) {
 
-                return assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
+                return assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
             }
        
             if (assoc.IsObject) {
@@ -441,9 +441,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IEnumerable<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
 
                 foreach (var pair in fieldsAndMatchingValues) {
-                    if (pair.Item1.Spec.IsParseable) {
+                    if (pair.Item1.ReturnSpec.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
-                        INakedObject concurrencyValue = pair.Item1.Spec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
+                        INakedObject concurrencyValue = pair.Item1.ReturnSpec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -593,7 +593,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void AddErrorAndAttemptedValue(INakedObject nakedObject, string newValue, IAssociationSpec assoc, string errorText, IAssociationSpec parent = null) {
             string key = GetFieldInputId(parent, nakedObject, assoc);
             ModelState.AddModelError(key, errorText);
-            AddAttemptedValue(key, assoc.Spec.IsParseable ? (object)newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
+            AddAttemptedValue(key, assoc.ReturnSpec.IsParseable ? (object)newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
         }
 
         internal void AddAttemptedValues(INakedObject nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
@@ -642,11 +642,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         if (name == item) {
                             object newValue = ((string[]) form.GetValue(item).RawValue).First();
 
-                            if (assoc.Spec.IsParseable) {
+                            if (assoc.ReturnSpec.IsParseable) {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
-                                    INakedObject value = assoc.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.NakedObjectManager);
+                                    INakedObject value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.NakedObjectManager);
                                     oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {

@@ -77,7 +77,7 @@ namespace NakedObjects.Architecture.Reflect {
             get { return memberSpecImmutable.Description; }
         }
 
-        public abstract IObjectSpec Spec { get; }
+        public abstract IObjectSpec ReturnSpec { get; }
         public abstract IObjectSpec ElementSpec { get; }
 
         public virtual bool ContainsFacet(Type facetType) {

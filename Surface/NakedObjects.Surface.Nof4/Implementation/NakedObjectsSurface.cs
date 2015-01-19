@@ -230,7 +230,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetPropertyCompletions(INakedObject nakedObject, string propertyName, ArgumentsContext arguments) {
-            var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneFeatureSpec;
+            var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneAssociationSpec;
             return GetCompletions(new PropParmAdapter(property, this, framework), nakedObject, arguments);
         }
 
@@ -796,7 +796,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private class PropParmAdapter {
             private readonly INakedObjectsFramework framework;
             private readonly IActionParameterSpec parm;
-            private readonly IOneToOneFeatureSpec prop;
+            private readonly IOneToOneAssociationSpec prop;
             private readonly INakedObjectsSurface surface;
 
             private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
@@ -807,7 +807,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
             }
 
-            public PropParmAdapter(IOneToOneFeatureSpec prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
+            public PropParmAdapter(IOneToOneAssociationSpec prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
                 : this((object) prop, surface, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
@@ -824,7 +824,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             public IObjectSpec Specification {
-                get { return prop == null ? parm.Spec : prop.Spec; }
+                get { return prop == null ? parm.Spec : prop.ReturnSpec; }
             }
 
             private Func<Tuple<string, IObjectSpec>[]> GetChoicesParameters {

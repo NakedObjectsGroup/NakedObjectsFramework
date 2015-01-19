@@ -60,12 +60,12 @@ namespace NakedObjects.Core.Spec {
 
         #region IActionSpec Members
 
-        public virtual IObjectSpec ReturnSpec {
+        public override IObjectSpec ReturnSpec {
             get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
         }
 
         public override IObjectSpec ElementSpec {
-            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementType)); }
+            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
         }
 
         public virtual IObjectSpec OnSpec {
@@ -110,12 +110,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        /// <summary>
-        ///     Always returns <c>null</c>
-        /// </summary>
-        public override IObjectSpec Spec {
-            get { return null; }
-        }
 
         public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);

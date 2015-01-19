@@ -8,7 +8,7 @@
 namespace NakedObjects.Architecture.SpecImmutable {
     public interface IActionSpecImmutable : IMemberSpecImmutable {
         IActionParameterSpecImmutable[] Parameters { get; }
-        IObjectSpecImmutable ElementType { get; }
+        IObjectSpecImmutable ElementSpec { get; }
         bool IsContributedMethod { get; }
         bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
         bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);

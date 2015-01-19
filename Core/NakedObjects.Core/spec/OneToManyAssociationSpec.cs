@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Spec {
         public override IObjectSpec ElementSpec {
             get {
                 // TODO make all this more obvious return collection spec in Spec and element spec here
-                return Spec;
+                return ReturnSpec;
             }
         }
 
@@ -122,7 +122,7 @@ namespace NakedObjects.Core.Spec {
             str.Append(base.ToString());
             str.Append(",");
             str.Append("persisted", IsPersisted);
-            str.Append("type", Spec == null ? "unknown" : Spec.ShortName);
+            str.Append("type", ReturnSpec == null ? "unknown" : ReturnSpec.ShortName);
             return str.ToString();
         }
     }

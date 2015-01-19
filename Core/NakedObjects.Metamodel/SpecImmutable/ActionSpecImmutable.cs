@@ -52,7 +52,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return ""; }
         }
 
-        public IObjectSpecImmutable ElementType {
+        public IObjectSpecImmutable ElementSpec {
             get { return GetFacet<IActionInvocationFacet>().ElementType; }
         }
 
@@ -63,7 +63,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
             if (!IsFinderMethod) return false;
-            if (ReturnSpec.IsCollection && ElementType.IsOfType(spec)) {
+            if (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)) {
                 return true;
             }
             return ReturnSpec.IsOfType(spec);

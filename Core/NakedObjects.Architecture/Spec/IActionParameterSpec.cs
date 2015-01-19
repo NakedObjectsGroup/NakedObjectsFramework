@@ -12,6 +12,10 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     public interface IActionParameterSpec : IFeatureSpec {
+
+
+        IObjectSpec Spec { get; }
+
         /// <summary>
         /// </summary>
         /// <para>

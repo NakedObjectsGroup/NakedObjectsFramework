@@ -199,7 +199,7 @@ namespace NakedObjects.Core.Component {
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
             foreach (IOneToOneAssociationSpec assoc in parentObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
-                object inlineObject = CreateObject(assoc.Spec);
+                object inlineObject = CreateObject(assoc.ReturnSpec);
 
                 InitInlineObject(rootObject, inlineObject);
                 INakedObject inlineNakedObject = nakedObjectManager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);

@@ -231,7 +231,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsFile(this IAssociationSpec assoc, INakedObjectsFramework framework) {
-            return assoc.Spec.IsFile(framework);
+            return assoc.ReturnSpec.IsFile(framework);
         }
 
         public static bool IsFile(this IObjectSpec spec, INakedObjectsFramework framework) {
@@ -260,7 +260,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
         }
 
-        public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, IFeatureSpec featureSpec, IEnumerable collectionValue) {
+        public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
 
             IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();

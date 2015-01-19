@@ -12,18 +12,18 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class FeatureSpecUtils {
-        public static string PropertyTitle(this IFeatureSpec featureSpec, INakedObject nakedObject, INakedObjectManager manager) {
+        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null) {
                 return "";
             }
             string text = null;
-            var regex = featureSpec.GetFacet<IRegExFacet>();
+            var regex = memberSpec.GetFacet<IRegExFacet>();
             if (regex != null) {
                 text = regex.Format(nakedObject.TitleString());
             }
-            var mask = featureSpec.GetFacet<IMaskFacet>();
+            var mask = memberSpec.GetFacet<IMaskFacet>();
             if (mask != null) {
-                var title = featureSpec.Spec.GetFacet<ITitleFacet>();
+                var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
                 text = title.GetTitleWithMask(mask.Value, nakedObject, manager);
             }
             return text ?? (nakedObject.TitleString());

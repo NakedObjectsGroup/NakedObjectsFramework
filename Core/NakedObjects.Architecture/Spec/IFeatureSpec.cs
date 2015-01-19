@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <para>
         ///     Will be non-<c>null</c> value for everything <i>except</i> an  action.
         /// </para>
-        IObjectSpec Spec { get; }
+        
 
         IObjectSpec ElementSpec { get; }
 

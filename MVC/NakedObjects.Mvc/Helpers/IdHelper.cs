@@ -201,15 +201,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetFieldInputId(INakedObject owner, IAssociationSpec assoc) {
-            return GetFieldId(owner, assoc) + sep + InputOrSelect(assoc.Spec);
+            return GetFieldId(owner, assoc) + sep + InputOrSelect(assoc.ReturnSpec);
         }
 
         public static string GetFieldAutoCompleteId(string id, INakedObject owner, IAssociationSpec assoc) {
-            return assoc.Spec.IsParseable ? id : id + sep + autoCompleteName;
+            return assoc.ReturnSpec.IsParseable ? id : id + sep + autoCompleteName;
         }
 
         public static string GetInlineFieldInputId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
-            return GetInlineFieldId(parent, owner, assoc) + sep + InputOrSelect(assoc.Spec);
+            return GetInlineFieldId(parent, owner, assoc) + sep + InputOrSelect(assoc.ReturnSpec);
         }
 
         public static string GetConcurrencyFieldInputId(INakedObject owner, IAssociationSpec assoc) {

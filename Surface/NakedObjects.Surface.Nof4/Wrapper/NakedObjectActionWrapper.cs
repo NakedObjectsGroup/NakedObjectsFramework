@@ -33,7 +33,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(action.Spec, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
         }
 
         public bool IsContributed {
