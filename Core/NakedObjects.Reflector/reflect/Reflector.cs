@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
@@ -82,27 +81,6 @@ namespace NakedObjects.Reflect {
 
         public virtual IObjectSpecBuilder[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.Cast<IObjectSpecBuilder>().ToArray(); }
-        }
-
-        public IObjectSpecBuilder LoadSpecification(string className) {
-            Assert.AssertNotNull("specification class must be specified", className);
-
-            try {
-                Type type = TypeFactory.GetTypeFromLoadedAssembly(className);
-                return LoadSpecification(type);
-            }
-            catch (Exception e) {
-                Log.FatalFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-                throw;
-            }
-        }
-
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
-            foreach (PropertyInfo property in properties) {
-                if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
-                    LoadSpecification(property.PropertyType);
-                }
-            }
         }
 
         public virtual IObjectSpecBuilder LoadSpecification(Type type) {
