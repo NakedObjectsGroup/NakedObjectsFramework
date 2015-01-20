@@ -935,7 +935,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod, Ignore] // strange failure perhaps to do with formatting a decimal value?
+        [TestMethod] 
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }

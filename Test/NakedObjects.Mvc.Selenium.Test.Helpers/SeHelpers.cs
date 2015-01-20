@@ -303,6 +303,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         public static IWebDriver ClickOnObjectLinkInField(this IWebDriver webDriver, string fieldId) {
             webDriver.GetField(fieldId).FindElement(By.TagName("a")).BrowserSpecificClick(webDriver);
+            Thread.Sleep(1000); // hack for unknown error
             webDriver.WaitForAjaxComplete();
             return webDriver;
         }

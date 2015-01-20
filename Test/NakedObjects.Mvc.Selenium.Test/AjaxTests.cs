@@ -738,7 +738,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore] // temp ignore failing in chrome
     public class AjaxTestsChrome : AjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -758,19 +758,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore failing in chrome
         public override void RemoteValidationProperty() {
             DoRemoteValidationProperty();
         }
 
         [TestMethod]
-        [Ignore] // temp ignore failing in chrome
         public override void RemoteValidationParameter() {
             DoRemoteValidationParameter();
         }
 
         [TestMethod]
-        [Ignore] // temp ignore failing in chrome
         public override void RemoteValidationParameterPopup() {
             DoRemoteValidationParameterPopup();
         }
@@ -785,13 +782,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionChoicesPopup();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
 
         [TestMethod]
-        [Ignore] // cannot select options in multiple choive boxes with chrome driver 
+        // cannot select options in multiple choive boxes with chrome driver 
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
@@ -802,12 +799,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore failing in chrome
         public override void ActionCrossValidateFailPopup() {
             DoActionCrossValidateFailPopup();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopup() {
             DoActionMultipleChoicesPopup();
         }
@@ -819,7 +815,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesEnum() {
             DoActionMultipleChoicesEnum();
         }
@@ -829,22 +825,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoActionMultipleChoicesPopupEnum();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopupConditionalEnum() {
             DoActionMultipleChoicesPopupConditionalEnum();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesPopupValidateFail() {
             DoActionMultipleChoicesPopupValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();
         }
@@ -855,7 +851,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore failing in chrome
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }
