@@ -70,12 +70,16 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual ISession TestSession {
-            get { return testSession ?? (testSession = new TestSession(TestPrincipal)); }
+            get {
+                return testSession ?? (testSession = new TestSession(TestPrincipal));
+            }
             set { testSession = value; }
         }
 
         protected virtual IPrincipal TestPrincipal {
-            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {})); }
+            get {
+                return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {}));
+            }
             set { testPrincipal = value; }
         }
 

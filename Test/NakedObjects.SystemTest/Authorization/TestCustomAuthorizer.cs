@@ -156,8 +156,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         [TestInitialize]
         public void TestInitialize() {
             InitializeNakedObjectsFrameworkOnce();
-            StartTest();
             SetUser("Fred");
+
+            StartTest();
         }
 
         #endregion
@@ -216,8 +217,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         [TestInitialize]
         public void TestInitialize() {
             InitializeNakedObjectsFrameworkOnce();
-            StartTest();
             SetUser("Anon", "sysAdmin");
+
+            StartTest();
         }
 
         #endregion
@@ -246,8 +248,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         [TestInitialize]
         public void TestInitialize() {
             InitializeNakedObjectsFrameworkOnce();
-            StartTest();
             SetUser("Anon", "service", "sysAdmin");
+
+            StartTest();
         }
 
         #endregion

@@ -49,10 +49,11 @@ namespace MvcTestApp.Tests.Helpers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
+            SetUser("sven");
+
             StartTest();
             controller = new DummyController();
             mocks = new ContextMocks(controller);
-            SetUser("sven");
         }
 
         #endregion

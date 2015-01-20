@@ -68,8 +68,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         [TestInitialize()]
         public void TestInitialize() {
             InitializeNakedObjectsFrameworkOnce();
-            StartTest();
             SetUser("sven");
+            StartTest();
         }
 
         [TestCleanup()]

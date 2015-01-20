@@ -48,8 +48,8 @@ namespace MvcTestApp.Tests.Helpers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
-            StartTest();
             SetUser("sven");
+            StartTest();
         }
 
         #endregion
