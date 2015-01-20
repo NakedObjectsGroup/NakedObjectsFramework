@@ -64,6 +64,7 @@ namespace NakedObjects.Reflect {
             typeof(OptionalAnnotationFacetFactory),
             typeof(RequiredAnnotationFacetFactory),
             typeof(PluralAnnotationFacetFactory),
+            typeof(RegExAnnotationFacetFactory),
             typeof(DefaultNamingFacetFactory),// must come after Named and Plural factories
             typeof(ConcurrencyCheckAnnotationFacetFactory),
             typeof(ContributedActionAnnotationFacetFactory),
