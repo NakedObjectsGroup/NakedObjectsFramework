@@ -68,14 +68,14 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMWithValue + "1-2-3-4-5-foo-"+ticks+"-6-7", "WithValue");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithValueInvalidKey1()
         {
             var ticks = new DateTime(2012, 1, 1).Ticks;
             Object(Urls.VMWithValue + "1-2-3-4-5-foo-" + ticks + "-6-bar", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithValueInvalidKey2()
         {
             var ticks = new DateTime(2012, 1, 1).Ticks;
@@ -95,13 +95,13 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMWithReference + "1-2-2-3" + "/properties/AReference", "WithReference-Property");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithReferenceInvalidKey1()
         {
             Object(Urls.VMWithReference + "1-2-2", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithReferenceInvalidKey2()
         {
             Object(Urls.VMWithReference + "1-2-2-foo", null, null, Methods.Get, Codes.NotFound);
@@ -128,7 +128,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMWithCollection + "1", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithCollectionInvalidKey2()
         {
             Object(Urls.VMWithCollection + "1-foo", null, null, Methods.Get, Codes.NotFound);

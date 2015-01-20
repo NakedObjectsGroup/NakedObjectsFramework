@@ -19,17 +19,17 @@ namespace RestfulObjects.Test.EndToEnd {
             return MediaTypes.List;
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void GetResource() {
             DoGetResource();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithGenericAcceptHeader() {
             DoWithGenericAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithProfileAcceptHeader() {
             DoWithProfileAcceptHeader();
         }
@@ -54,12 +54,12 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptDelete();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithFormalDomainModel() {
             DoWithFormalDomainModel();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithSimpleDomainModel() {
             DoWithSimpleDomainModel();
         }
