@@ -1,8 +1,6 @@
-﻿using NakedObjects.Architecture.Component;
-using NakedObjects.Reflect.FacetFactory;
+﻿using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 using System;
-using System.Collections.Generic;
 
 namespace NakedObjects.Reflect {
     /// <summary>
@@ -16,7 +14,7 @@ namespace NakedObjects.Reflect {
         /// </summary>
         /// <returns></returns>
         public static Type[] StandardFacetFactories() {
-            return new Type[] {
+            return new[] {
             typeof(FallbackFacetFactory),
             typeof(IteratorFilteringFacetFactory),
             typeof(UnsupportedParameterTypesMethodFilteringFactory),

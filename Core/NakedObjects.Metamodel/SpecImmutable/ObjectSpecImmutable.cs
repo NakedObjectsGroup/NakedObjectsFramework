@@ -39,10 +39,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
         }
 
-        private string SingularName {
-            get { return GetFacet<INamedFacet>().Value; }
-        }
-
         #region IObjectSpecBuilder Members
 
         public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
