@@ -374,22 +374,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DoSelectAndUnselectIndividually();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionParmsValidateFail() {
            DoInvokeContributedActionParmsValidateFail();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }

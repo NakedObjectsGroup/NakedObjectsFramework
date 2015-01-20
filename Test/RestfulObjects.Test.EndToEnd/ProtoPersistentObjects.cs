@@ -44,7 +44,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientWithValue() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post);
@@ -56,21 +56,21 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientWithCollection() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post);
         }
 
         [TestMethod]
-        [Ignore] // just need to sort ids
+         // just need to sort ids
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimple", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation);
         }
 
         [TestMethod]
-        [Ignore] // just need to sort ids
+         // just need to sort ids
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimple", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);

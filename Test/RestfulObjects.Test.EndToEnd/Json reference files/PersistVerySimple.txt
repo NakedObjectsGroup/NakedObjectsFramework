@@ -1,5 +1,5 @@
 {
-  "instanceId": "7",
+  "instanceId": "6",
   "domainType": "VerySimple",
   "title": "fred",
   "links": [
@@ -7,7 +7,7 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"VerySimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6"
     },
     {
       "rel": "describedby",
@@ -27,7 +27,7 @@
       "rel": "urn:org.restfulobjects:rels/update",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"VerySimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6"
     }
   ],
   "extensions": {
@@ -54,7 +54,7 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"MostSimple\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/MostSimple"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/MostSimple"
         },
         {
           "rel": "describedby",
@@ -69,13 +69,13 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"MostSimple\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/MostSimple"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/MostSimple"
         },
         {
           "rel": "urn:org.restfulobjects:rels/clear;property=\"MostSimple\"",
           "method": "DELETE",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/MostSimple"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/MostSimple"
         }
       ],
       "extensions": {
@@ -96,7 +96,7 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Name\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/Name"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/Name"
         },
         {
           "rel": "describedby",
@@ -111,13 +111,13 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"Name\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/Name"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/Name"
         },
         {
           "rel": "urn:org.restfulobjects:rels/clear;property=\"Name\"",
           "method": "DELETE",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/properties/Name"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/properties/Name"
         }
       ],
       "extensions": {
@@ -141,13 +141,13 @@
           "rel": "urn:org.restfulobjects:rels/collection-value;collection=\"SimpleList\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-value\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/collections/SimpleList/value"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/collections/SimpleList/value"
         },
         {
           "rel": "urn:org.restfulobjects:rels/details;collection=\"SimpleList\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/collections/SimpleList"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/collections/SimpleList"
         },
         {
           "rel": "describedby",
@@ -175,13 +175,13 @@
           "rel": "urn:org.restfulobjects:rels/collection-value;collection=\"SimpleSet\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-value\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/collections/SimpleSet/value"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/collections/SimpleSet/value"
         },
         {
           "rel": "urn:org.restfulobjects:rels/details;collection=\"SimpleSet\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/collections/SimpleSet"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/collections/SimpleSet"
         },
         {
           "rel": "describedby",
@@ -208,7 +208,7 @@
           "rel": "urn:org.restfulobjects:rels/details;action=\"EmptyTheList\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/actions/EmptyTheList"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/actions/EmptyTheList"
         },
         {
           "rel": "describedby",
@@ -233,7 +233,7 @@
           "rel": "urn:org.restfulobjects:rels/details;action=\"EmptyTheSet\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/7/actions/EmptyTheSet"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/6/actions/EmptyTheSet"
         },
         {
           "rel": "describedby",

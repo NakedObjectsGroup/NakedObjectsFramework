@@ -48,17 +48,17 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(refProp, FilePrefix + "Before", newRef, Methods.Put, Codes.Succeeded);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void DeleteValueProperty() {
             Helpers.TestResponse(valueProp, FilePrefix + "After-ValueProperty", null, Methods.Delete);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void DeleteReferenceProperty() {
             Helpers.TestResponse(refProp, FilePrefix + "After-ReferenceProperty", null, Methods.Delete);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptDeleteNonExistentProperty() {
             Helpers.TestResponse(vs1 + Urls.Properties + "NonExistentProp", null, null, Methods.Delete, Codes.NotFound);
         }

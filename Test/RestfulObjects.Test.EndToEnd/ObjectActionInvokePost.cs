@@ -105,7 +105,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAnActionReturnsScalar();
         }
 
-        [TestMethod, Ignore]  // Must FIX !!
+        [TestMethod]  // Must FIX !!
         public void AnActionReturnsScalarEmpty() {
             DoAnActionReturnsScalarEmpty();
         }

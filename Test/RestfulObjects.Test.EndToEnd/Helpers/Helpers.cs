@@ -19,7 +19,7 @@ namespace RestfulObjects.Test.EndToEnd {
         private const string SourceFiles = @"..\..\Json reference files";
         private const string Txt = ".txt";
         private static bool WriteFileIfNoneExists = true;
-        private static bool WriteFileIfResponseDiffersFromExisting = false;
+        private static bool WriteFileIfResponseDiffersFromExisting = true;
 
         public static bool UrlExistsForGet(string url) {
             WebRequest httpRequest = WebRequest.Create(url);

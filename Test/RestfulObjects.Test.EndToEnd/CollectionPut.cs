@@ -15,7 +15,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptPutItemIntoSet() {
             Helpers.TestResponse(simpleSet, FilePrefix + "PostItemIntoSet", simple1AsArgument.ToString(), Methods.Put, Codes.MethodNotValid);
         }

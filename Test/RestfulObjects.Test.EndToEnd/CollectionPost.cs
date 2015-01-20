@@ -16,7 +16,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void PostItemIntoList() {
             Helpers.TestResponse(simpleList, FilePrefix + "PostItemIntoList", simple1AsArgument.ToString(), Methods.Post, Codes.Forbidden);
         }

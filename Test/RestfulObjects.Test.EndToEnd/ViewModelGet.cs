@@ -122,7 +122,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithCollectionInvalidKey1()
         {
             Object(Urls.VMWithCollection + "1", null, null, Methods.Get, Codes.NotFound);
@@ -137,7 +137,7 @@ namespace RestfulObjects.Test.EndToEnd {
         //TODO:  Need tests for accessing the collections on the returned VM
 
         [TestMethod]
-        [Ignore] // fails after contributed action change
+         // fails after contributed action change
         public void WithAction()
         {
             Object(Urls.VMWithAction+1, "WithAction");
@@ -151,7 +151,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         //AnActionReturnsNull
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithActionInvalidKey1()
         {
             Object(Urls.VMWithAction + "foo", null, null, Methods.Get, Codes.NotFound);

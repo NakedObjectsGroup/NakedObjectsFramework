@@ -1168,19 +1168,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        //[Ignore]
         public override void InvokeActionParmsReturn() {
             DoInvokeActionParmsReturn();
         }
 
         [TestMethod]
-        //[Ignore]
         public override void InvokeActionParmsReturnPopup() {
             DoInvokeActionParmsReturnPopup();
         }
 
         [TestMethod]
-        //[Ignore]
         public override void ShowActionParmsReturnPopup() {
             DoShowActionParmsReturnPopup();
         }
@@ -1211,7 +1208,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        //[Ignore]
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
         }
@@ -1238,7 +1234,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        //[Ignore]
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }

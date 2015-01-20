@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
     public class ZZDomainTypesTests { // make run last so all types are in memory
-        [TestMethod, Ignore]
+        [TestMethod]
         public void DomainTypes() {
             Helpers.TestResponse(Urls.DomainTypes, "DomainTypes");
         }
