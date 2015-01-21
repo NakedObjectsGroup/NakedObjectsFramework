@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -23,13 +25,14 @@ namespace NakedObjects.Architecture.Component {
         IFacetFactorySet FacetFactorySet { get; }
 
         IObjectSpecBuilder[] AllObjectSpecImmutables { get; }
-       
         bool IgnoreCase { get; }
-       
         IMetamodel Metamodel { get; }
 
         IObjectSpecBuilder LoadSpecification(Type type);
 
+        IObjectSpecBuilder LoadSpecification(string name);
+
+        void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();
     }
 

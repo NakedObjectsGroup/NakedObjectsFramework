@@ -48,8 +48,8 @@ namespace NakedObjects.Reflect {
             get { return reflector.FacetFactorySet; }
         }
 
-        public Type[] InterfaceTypes {
-            get { return introspectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
+        public string[] InterfacesNames {
+            get { return introspectedType.GetInterfaces().Where(i => i.IsPublic).Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray(); }
         }
 
         public Type SuperclassType {
@@ -117,8 +117,8 @@ namespace NakedObjects.Reflect {
             AddAsSubclass(spec);
 
             var interfaces = new List<IObjectSpecBuilder>();
-            foreach (Type interfaceType in InterfaceTypes) {
-                IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceType);
+            foreach (string interfaceName in InterfacesNames) {
+                IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceName);
                 interfaceSpec.AddSubclass(spec);
                 interfaces.Add(interfaceSpec);
             }
