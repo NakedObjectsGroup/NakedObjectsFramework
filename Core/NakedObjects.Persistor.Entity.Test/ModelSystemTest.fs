@@ -39,6 +39,8 @@ type ModelSystemTests() =
         let ss = [|  |]
         let reflectorConfig = new ReflectorConfiguration(types,  ms, ca, ss)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
+        let csc = new ClassStrategyConfiguration([| "ModelFirst"   |])
+        container.RegisterInstance(typeof<IClassStrategyConfiguration>, null, csc, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     [<TestFixtureSetUpAttribute>]

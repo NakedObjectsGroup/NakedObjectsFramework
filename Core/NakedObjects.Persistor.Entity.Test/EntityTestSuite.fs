@@ -144,6 +144,9 @@ type EntityTestSuite() =
         let ss = [| typeof<SimpleRepository<Address>> |]
         let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
+
+        let csc = new ClassStrategyConfiguration([| "TestData"   |])
+        container.RegisterInstance(typeof<IClassStrategyConfiguration>, null, csc, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     member x.ClearOldTestData() = ()

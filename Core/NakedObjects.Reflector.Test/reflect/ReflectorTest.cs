@@ -142,6 +142,10 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IMenuFactory, NullMenuFactory>();
+
+            var csc = new ClassStrategyConfiguration(new string[] { });
+            container.RegisterInstance<IClassStrategyConfiguration>(csc);
+
         }
 
         [TestMethod]
@@ -178,7 +182,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -191,7 +195,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(16, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(5, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -206,7 +210,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(4, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -221,7 +225,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(7, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(4, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 

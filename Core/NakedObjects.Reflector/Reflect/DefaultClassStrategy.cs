@@ -7,8 +7,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -18,22 +21,58 @@ namespace NakedObjects.Reflect {
     /// </summary>
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
+        private readonly IClassStrategyConfiguration classStrategyConfig;
+        private readonly IReflectorConfiguration reflectorConfig;
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
+
+        public DefaultClassStrategy(IClassStrategyConfiguration classStrategyConfig, IReflectorConfiguration reflectorConfig) {
+            this.classStrategyConfig = classStrategyConfig;
+            this.reflectorConfig = reflectorConfig;
+        }
+
+        private bool IsTypeIgnored(Type type) {
+            return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+        }
+
+        private bool IsTypeWhiteListed(Type type) {
+            return IsTypeSupportedSystemType(type) || classStrategyConfig.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicityRequested(type);
+        }
+
+        private bool IsTypeExplicityRequested(Type type) {
+            var services = reflectorConfig.MenuServices.Union(reflectorConfig.ContributedActions);
+            return reflectorConfig.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type);
+        }
+
+        private Type ToMatch(Type type) {
+            return type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+        }
+
+        private bool IsTypeSupportedSystemType(Type type) {
+            return classStrategyConfig.SupportedSystemTypes.Any(t => t == ToMatch(type));
+        }
 
         #region IClassStrategy Members
 
+        public virtual bool IsTypeToBeIntrospected(Type type) {
+            var returnType = FilterNullableAndProxies(type);
+            return !IsTypeIgnored(returnType) && !IsTypeUnsupportedByReflector(returnType) && IsTypeWhiteListed(returnType);
+        }
+
         public virtual Type GetType(Type type) {
+            Type returnType = FilterNullableAndProxies(type);
+            return IsTypeToBeIntrospected(returnType) ? returnType : typeof (object);
+        }
+
+        private static Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
                 // use type inside nullable wrapper
                 Log.DebugFormat("Using wrapped type instead of {0}", type);
                 return type.GetGenericArguments()[0];
             }
-
             if (TypeUtils.IsProxy(type)) {
                 Log.DebugFormat("Using proxied type instead of {0}", type);
                 return type.BaseType;
             }
-
             return type;
         }
 
@@ -41,13 +80,12 @@ namespace NakedObjects.Reflect {
             return TypeUtils.IsSystem(type);
         }
 
-        public virtual bool IsTypeUnsupportedByReflector(Type type) {
+        private  bool IsTypeUnsupportedByReflector(Type type) {
             return type.IsPointer ||
                    type.IsByRef ||
                    CollectionUtils.IsDictionary(type) ||
                    type.IsGenericParameter ||
-                   type.ContainsGenericParameters ||
-                   (type.IsGenericType && !(TypeUtils.IsNullableType(type) || CollectionUtils.IsGenericEnumerable(type)));
+                   type.ContainsGenericParameters;
         }
 
         public string GetKeyForType(Type type) {

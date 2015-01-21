@@ -167,6 +167,10 @@ namespace NakedObjects.Meta.Test {
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
+
+            var csc = new ClassStrategyConfiguration(new string[] {});
+            container.RegisterInstance<IClassStrategyConfiguration>(csc, new ContainerControlledLifetimeManager());
+
         }
 
         public void BinarySerialize(ReflectorConfiguration rc, string file) {

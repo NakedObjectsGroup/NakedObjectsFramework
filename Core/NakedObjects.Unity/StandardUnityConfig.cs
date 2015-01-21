@@ -11,10 +11,7 @@ using NakedObjects.Persistor.Entity;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NakedObjects.Unity {
     public static class StandardUnityConfig {

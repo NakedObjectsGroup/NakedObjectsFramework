@@ -53,6 +53,7 @@ type DomainTests() =
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
+            
             ()
         
         [<TestFixtureSetUp>]
@@ -65,7 +66,7 @@ type DomainTests() =
             x.StartTest()
             
         override x.Types = 
-            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>  |]
+            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>;typeof<One.TransformFull>;typeof<Two.TransformFull>;typeof<IXmlSnapshotService>  |]
         
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()

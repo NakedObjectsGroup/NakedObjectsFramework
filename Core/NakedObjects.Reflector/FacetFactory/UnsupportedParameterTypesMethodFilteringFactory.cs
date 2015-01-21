@@ -29,13 +29,13 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return true;
             }
 
-            if (classStrategy.IsTypeUnsupportedByReflector(method.ReturnType)) {
+            if (!classStrategy.IsTypeToBeIntrospected(method.ReturnType)) {
                 Log.InfoFormat("Ignoring method: {0}.{1} because return type is of type {3}", typeName, method.Name, method.ReturnType);
                 return true;
             }
 
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
-                if (classStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
+                if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
                     Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", typeName, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
                     return true;
                 }

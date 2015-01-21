@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -109,12 +110,15 @@ namespace NakedObjects.Reflect.Test {
 
         [TestInitialize]
         public virtual void SetUp() {
-            var classStrategy = new DefaultClassStrategy();
+            var classStrategyConfig = new ClassStrategyConfiguration(new string[] { typeof(TestPoco).Namespace });
+            classStrategyConfig.SupportedSystemTypes.Add(typeof(ArrayList));
+
             var cache = new ImmutableInMemorySpecCache();
-            var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
             var menuFactory = new NullMenuFactory();
-            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, facetFactories);
+            var classStrategy = new DefaultClassStrategy(classStrategyConfig, config);
+            var metamodel = new Metamodel(classStrategy, cache);
+            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 
             Specification = LoadSpecification(reflector);
             Metamodel = metamodel;

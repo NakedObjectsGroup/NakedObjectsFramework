@@ -119,6 +119,13 @@ namespace NakedObjects.Core.Test.Adapter {
             var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
+
+            var ns = new string[] {typeof (TestDomainObject).Namespace};
+
+            var csc = new ClassStrategyConfiguration(ns);
+
+            container.RegisterInstance<IClassStrategyConfiguration>(csc, (new ContainerControlledLifetimeManager()));
+
         }
 
         [TestFixtureSetUp]

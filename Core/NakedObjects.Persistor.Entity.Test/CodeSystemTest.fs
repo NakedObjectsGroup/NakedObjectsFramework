@@ -38,6 +38,12 @@ type CodeSystemTests() =
         let ms = [| typeof<SimpleRepository<Person>> |]
         let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
+
+        let csc = new ClassStrategyConfiguration([| "TestCodeOnly"   |])
+        container.RegisterInstance(typeof<IClassStrategyConfiguration>, null, csc, (new ContainerControlledLifetimeManager())) |> ignore
+
+
+
         ()
     
     [<TestFixtureSetUpAttribute>]

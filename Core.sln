@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{36C4978D-F8E0-48B2-8267-AF8D45978EB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +189,12 @@ Global
 		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|x86.ActiveCfg = Release|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
