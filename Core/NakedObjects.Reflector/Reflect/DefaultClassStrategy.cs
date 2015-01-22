@@ -21,13 +21,11 @@ namespace NakedObjects.Reflect {
     /// </summary>
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
-        private readonly IClassStrategyConfiguration classStrategyConfig;
-        private readonly IReflectorConfiguration reflectorConfig;
+        private readonly IReflectorConfiguration config;
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
 
-        public DefaultClassStrategy(IClassStrategyConfiguration classStrategyConfig, IReflectorConfiguration reflectorConfig) {
-            this.classStrategyConfig = classStrategyConfig;
-            this.reflectorConfig = reflectorConfig;
+        public DefaultClassStrategy(IReflectorConfiguration config) {
+            this.config = config;
         }
 
         private bool IsTypeIgnored(Type type) {
@@ -35,12 +33,12 @@ namespace NakedObjects.Reflect {
         }
 
         private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || classStrategyConfig.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicityRequested(type);
+            return IsTypeSupportedSystemType(type) || config.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicityRequested(type);
         }
 
         private bool IsTypeExplicityRequested(Type type) {
-            var services = reflectorConfig.MenuServices.Union(reflectorConfig.ContributedActions);
-            return reflectorConfig.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type);
+            IEnumerable<Type> services = config.MenuServices.Union(config.ContributedActions);
+            return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type);
         }
 
         private Type ToMatch(Type type) {
@@ -48,13 +46,13 @@ namespace NakedObjects.Reflect {
         }
 
         private bool IsTypeSupportedSystemType(Type type) {
-            return classStrategyConfig.SupportedSystemTypes.Any(t => t == ToMatch(type));
+            return config.SupportedSystemTypes.Any(t => t == ToMatch(type));
         }
 
         #region IClassStrategy Members
 
         public virtual bool IsTypeToBeIntrospected(Type type) {
-            var returnType = FilterNullableAndProxies(type);
+            Type returnType = FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) && !IsTypeUnsupportedByReflector(returnType) && IsTypeWhiteListed(returnType);
         }
 
@@ -80,7 +78,7 @@ namespace NakedObjects.Reflect {
             return TypeUtils.IsSystem(type);
         }
 
-        private  bool IsTypeUnsupportedByReflector(Type type) {
+        private bool IsTypeUnsupportedByReflector(Type type) {
             return type.IsPointer ||
                    type.IsByRef ||
                    CollectionUtils.IsDictionary(type) ||

@@ -142,11 +142,9 @@ type EntityTestSuite() =
         let ms = [| typeof<SimpleRepository<Person>> |]
         let ca = [| typeof<SimpleRepository<Product>> |]
         let ss = [| typeof<SimpleRepository<Address>> |]
-        let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss)
+        let ns = [| "TestData"   |]
+        let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss, ns)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
-
-        let csc = new ClassStrategyConfiguration([| "TestData"   |])
-        container.RegisterInstance(typeof<IClassStrategyConfiguration>, null, csc, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     member x.ClearOldTestData() = ()

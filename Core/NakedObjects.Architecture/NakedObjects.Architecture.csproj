@@ -136,7 +136,6 @@
     <Compile Include="Component\IBatchRunner.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
-    <Compile Include="Configuration\IClassStrategyConfiguration.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />

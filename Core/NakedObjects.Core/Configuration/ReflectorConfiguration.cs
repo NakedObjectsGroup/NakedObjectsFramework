@@ -6,18 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Drawing;
+using System.Linq;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Value;
 
 namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {
-        public ReflectorConfiguration(
-            Type[] typesToIntrospect,
+        public ReflectorConfiguration(Type[] typesToIntrospect,
             Type[] menuServices,
             Type[] contributedActions,
             Type[] systemServices,
+            string[] supportedNamespaces,
             Func<IMenuFactory, IMenu[]> mainMenus = null) {
+            SupportedNamespaces = supportedNamespaces;
+            SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             MenuServices = menuServices;
             ContributedActions = contributedActions;
@@ -25,6 +33,59 @@ namespace NakedObjects.Core.Configuration {
             IgnoreCase = false;
             MainMenus = mainMenus;
         }
+
+        private readonly Type[] defaultSystemTypes = {
+            typeof (bool),
+            typeof (byte),
+            typeof (char),
+            typeof (Color),
+            typeof (DateTime),
+            typeof (decimal),
+            typeof (double),
+            typeof (FileAttachment),
+            typeof (float),
+            typeof (Guid),
+            typeof (Value.Image),
+            typeof (int),
+            typeof (long),
+            typeof (sbyte),
+            typeof (short),
+            typeof (string),
+            typeof (TimeSpan),
+            typeof (uint),
+            typeof (ulong),
+            typeof (ushort),
+            typeof (bool[]),
+            typeof (byte[]),
+            typeof (char[]),
+            typeof (Color[]),
+            typeof (DateTime[]),
+            typeof (decimal[]),
+            typeof (double[]),
+            typeof (FileAttachment[]),
+            typeof (float[]),
+            typeof (Guid[]),
+            typeof (Value.Image[]),
+            typeof (int[]),
+            typeof (long[]),
+            typeof (sbyte[]),
+            typeof (short[]),
+            typeof (string[]),
+            typeof (TimeSpan[]),
+            typeof (uint[]),
+            typeof (ulong[]),
+            typeof (ushort[]),
+            typeof (object),
+            typeof (void),
+            typeof (List<>),
+            typeof (ObjectQuery<>),
+            typeof (IList<>),
+            typeof (ICollection<>),
+            typeof (IEnumerable<>),
+            typeof (IQueryable<>),
+            typeof (HashSet<>),
+            typeof (EntityCollection<>)
+        };
 
         #region IReflectorConfiguration Members
 
@@ -34,6 +95,8 @@ namespace NakedObjects.Core.Configuration {
         public Type[] ContributedActions { get; private set; }
         public Type[] SystemServices { get; private set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
+        public string[] SupportedNamespaces { get; private set; }
+        public List<Type> SupportedSystemTypes { get; private set; }
 
         #endregion
     }

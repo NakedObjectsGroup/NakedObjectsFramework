@@ -29,7 +29,7 @@ let ModelConfig =
     pc
 
 
-let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |],[||],[||]  )
+let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |],[||],[||], [||]  )
 let injector = new DomainObjectContainerInjector(config)
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object

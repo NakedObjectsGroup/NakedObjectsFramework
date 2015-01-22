@@ -23,6 +23,7 @@ open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open System.Data.Entity.Core.Objects
 
 [<TestFixture>]
 type Nof4TestsTypes() = 
@@ -37,7 +38,32 @@ type Nof4TestsTypes() =
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
-            let types = [| typeof<NakedObjects.Value.FileAttachment>;typeof<NakedObjects.Value.Image>   |]
+            let types = 
+                [| typeof<Immutable>
+                   typeof<WithActionViewModel>
+                   typeof<WithCollectionViewModel>
+                   typeof<WithValueViewModel>
+                   typeof<WithNestedViewModel>
+                   typeof<RedirectedObject>
+                   typeof<WithScalars>
+                   typeof<VerySimple>
+                   typeof<VerySimpleEager>
+                   typeof<WithAction>
+                   typeof<WithActionObject>
+                   typeof<WithAttachments>
+                   typeof<WithCollection>
+                   typeof<WithDateTimeKey>
+                   typeof<WithError>
+                   typeof<WithGetError>
+                   typeof<WithNestedViewModel>
+                   typeof<WithReference>
+                   typeof<WithReferenceViewModel>
+                   typeof<MostSimple>
+                   typeof<MostSimpleViewModel>
+                   typeof<WithValue>
+                   typeof<TestEnum>                   
+                   typeof<MostSimple[]>                 
+                   typeof<SetWrapper<MostSimple>> |]
             let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
             let ca = [| typeof<ContributorService> |]
             let reflectorConfig = new ReflectorConfiguration(types, ms, ca, [||])

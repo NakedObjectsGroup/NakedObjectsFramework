@@ -310,14 +310,10 @@ namespace NakedObjects.Xat {
                 Types ?? new Type[] {},
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
-                SystemServices.Select(s => s.GetType()).ToArray());
+                SystemServices.Select(s => s.GetType()).ToArray(),
+                Types == null ? new string[] { } : Types.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
-
-            var classStrategyConfig = new ClassStrategyConfiguration( Types == null ? new string[]{} : Types.Select(t => t.Namespace).Distinct().ToArray()  );
-
-            container.RegisterInstance<IClassStrategyConfiguration>(classStrategyConfig, (new ContainerControlledLifetimeManager()));
-
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
         }
 

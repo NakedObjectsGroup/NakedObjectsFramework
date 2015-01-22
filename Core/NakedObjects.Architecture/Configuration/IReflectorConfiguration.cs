@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
@@ -15,6 +16,10 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] MenuServices { get; }
         Type[] ContributedActions { get; }
         Type[] SystemServices { get; }
+
+        string[] SupportedNamespaces { get; }
+        List<Type> SupportedSystemTypes { get; }
+
         Func<IMenuFactory, IMenu[]> MainMenus { get; }
         bool IgnoreCase { get; }
     }

@@ -48,7 +48,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
-            return spec == null ? null : NewObjectSpec(GetInnerSpec(spec.Type));
+            return spec == null ? null : NewObjectSpec(spec);
         }
 
         public IMenuImmutable[] MainMenus() {

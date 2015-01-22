@@ -150,7 +150,6 @@
     <Compile Include="Adapter\StringDecoderHelper.cs" />
     <Compile Include="Adapter\StringEncoderHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Configuration\ClassStrategyConfiguration.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="Exception\DisposeFailedException.cs" />
     <Compile Include="Container\DomainObjectContainer.cs" />

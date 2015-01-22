@@ -28,11 +28,10 @@ type DomainSystemTests() =
         let types = [| typeof<Product>; typeof<ProductSubcategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
         
         let ms = [| typeof<SimpleRepository<ScrapReason>> |]
-        let reflectorConfig = new ReflectorConfiguration(types,  ms, [||], [||])
+        let ns = [| "AdventureWorksModel"   |]
+        let reflectorConfig = new ReflectorConfiguration(types,  ms, [||], [||], ns)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
 
-        let csc = new ClassStrategyConfiguration([| "AdventureWorksModel"   |])
-        container.RegisterInstance(typeof<IClassStrategyConfiguration>, null, csc, (new ContainerControlledLifetimeManager())) |> ignore
         ()
 
     

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,15 +23,20 @@ namespace NakedObjects.Reflect.FacetFactory {
         public CollectionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
-        private void ProcessArray(ISpecification holder) {
+        private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
+
+            var elementType = type.GetElementType();
+            reflector.LoadSpecification(elementType);
         }
 
-        private void ProcessGenericEnumerable(Type type, ISpecification holder) {
+        private void ProcessGenericEnumerable(IReflector reflector, Type type, ISpecification holder) {
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
             bool isSet = CollectionUtils.IsSet(type);
+
+
 
             FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
 
@@ -46,6 +52,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             FacetUtils.AddFacet(facet);
+
+            var elementType = type.GetGenericArguments().First();
+            reflector.LoadSpecification(elementType);
         }
 
         private void ProcessCollection(IReflector reflector, ISpecification holder) {
@@ -57,10 +66,10 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
-                ProcessGenericEnumerable(type, specification);
+                ProcessGenericEnumerable(reflector, type, specification);
             }
             else if (type.IsArray) {
-                ProcessArray(specification);
+                ProcessArray(reflector, type, specification);
             }
             else if (CollectionUtils.IsCollectionButNotArray(type)) {
                 ProcessCollection(reflector, specification);

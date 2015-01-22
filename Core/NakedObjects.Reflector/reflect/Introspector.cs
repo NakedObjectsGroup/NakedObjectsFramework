@@ -105,22 +105,20 @@ namespace NakedObjects.Reflect {
             var methodRemover = new IntrospectorMethodRemover(methods);
             FacetFactorySet.Process(reflector, introspectedType, methodRemover, spec);
 
-            Type typeOfObj = typeof (object);
-            if (SuperclassType != null && !TypeUtils.IsSystem(SuperclassType)) {
+            if (SuperclassType != null) {
                 Superclass = reflector.LoadSpecification(SuperclassType);
             }
-            else if (spec.Type != typeOfObj) {
-                // always root in object (unless this is object!)            
-                Superclass = reflector.LoadSpecification(typeOfObj);
-            }
-
+       
             AddAsSubclass(spec);
 
             var interfaces = new List<IObjectSpecBuilder>();
             foreach (string interfaceName in InterfacesNames) {
                 IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceName);
-                interfaceSpec.AddSubclass(spec);
-                interfaces.Add(interfaceSpec);
+                // if interface is not introspected will just get object spec - so ignore
+                if (interfaceSpec.Type.IsInterface) {
+                    interfaceSpec.AddSubclass(spec);
+                    interfaces.Add(interfaceSpec);
+                }
             }
             Interfaces = interfaces.ToArray();
             IntrospectPropertiesAndCollections(spec);

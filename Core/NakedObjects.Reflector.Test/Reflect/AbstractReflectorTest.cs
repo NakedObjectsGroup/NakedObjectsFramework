@@ -110,13 +110,11 @@ namespace NakedObjects.Reflect.Test {
 
         [TestInitialize]
         public virtual void SetUp() {
-            var classStrategyConfig = new ClassStrategyConfiguration(new string[] { typeof(TestPoco).Namespace });
-            classStrategyConfig.SupportedSystemTypes.Add(typeof(ArrayList));
 
             var cache = new ImmutableInMemorySpecCache();
-            var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
+            var config = new ReflectorConfiguration(new[] { typeof(List<TestPoco>), typeof(ArrayList) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { typeof(TestPoco).Namespace });
             var menuFactory = new NullMenuFactory();
-            var classStrategy = new DefaultClassStrategy(classStrategyConfig, config);
+            var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache);
             var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 

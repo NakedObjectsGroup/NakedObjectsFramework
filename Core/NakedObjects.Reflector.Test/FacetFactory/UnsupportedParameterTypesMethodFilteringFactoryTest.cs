@@ -25,14 +25,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            var classStrategyConfig = new ClassStrategyConfiguration(new string[] { typeof(Customer).Namespace });
 
             var cache = new ImmutableInMemorySpecCache();
-            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
+            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { typeof(Customer).Namespace });
             var menuFactory = new NullMenuFactory();
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(0);
-            var classStrategy = new DefaultClassStrategy(classStrategyConfig, config);
+            var classStrategy = new DefaultClassStrategy( config);
             var metamodel = new Metamodel(classStrategy, cache);
 
             Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});

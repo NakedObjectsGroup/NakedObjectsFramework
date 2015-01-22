@@ -41,12 +41,12 @@ type Nof4TestsDomainType() =
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
             let types = 
-                [| typeof<NakedObjects.Value.FileAttachment>
-                   typeof<NakedObjects.Value.Image>
-                   typeof<Immutable>
+                [| typeof<Immutable>
                    typeof<WithActionViewModel>
                    typeof<WithCollectionViewModel>
                    typeof<WithValueViewModel>
+                   typeof<WithNestedViewModel>
+                   typeof<RedirectedObject>
                    typeof<WithScalars>
                    typeof<VerySimple>
                    typeof<VerySimpleEager>
@@ -58,13 +58,14 @@ type Nof4TestsDomainType() =
                    typeof<WithError>
                    typeof<WithGetError>
                    typeof<WithNestedViewModel>
-                   typeof<TestEnum>
-                   typeof<MostSimple[]>
-                   typeof<ObjectQuery<MostSimple>>
-                   typeof<List<MostSimple>>
-                   typeof<HashSet<MostSimple>>
-                   typeof<SetWrapper<MostSimple>>
-                   typeof<EntityCollection<MostSimple>> |]
+                   typeof<WithReference>
+                   typeof<WithReferenceViewModel>
+                   typeof<MostSimple>
+                   typeof<MostSimpleViewModel>
+                   typeof<WithValue>
+                   typeof<TestEnum>                   
+                   typeof<MostSimple[]>                 
+                   typeof<SetWrapper<MostSimple>> |]
             let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
             let ca = [| typeof<ContributorService> |]
             let ss = [| typeof<TestTypeCodeMapper>; typeof<TestKeyCodeMapper> |]
