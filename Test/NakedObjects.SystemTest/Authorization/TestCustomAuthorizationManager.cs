@@ -51,7 +51,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                     typeof (QuxService)
                 },
                 new Type[] {},
-                new Type[] {});
+                new Type[] {}, 
+                new string[]{});
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

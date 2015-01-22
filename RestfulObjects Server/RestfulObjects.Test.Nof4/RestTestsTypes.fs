@@ -66,7 +66,7 @@ type Nof4TestsTypes() =
                    typeof<SetWrapper<MostSimple>> |]
             let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
             let ca = [| typeof<ContributorService> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, [||])
+            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, [||], [|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         

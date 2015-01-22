@@ -57,6 +57,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
                 SystemServices.Select(s => s.GetType()).ToArray(),
+                Types.Select(t => t.Namespace).Distinct().ToArray(),
                 LocalMainMenus.MainMenus);
         }
 

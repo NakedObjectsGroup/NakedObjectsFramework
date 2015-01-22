@@ -33,7 +33,7 @@ namespace NakedObjects.SystemTest.Persistence {
                     typeof (SimpleRepository<Qux1>)
                 },
                 new Type[] { },
-                new Type[] { });
+                new Type[] { }, new string[]{});
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

@@ -49,7 +49,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                     typeof (SimpleRepository<Foo2>),
                 },
                 new Type[] {},
-                new Type[] {});
+                new Type[] {}, new string[]{});
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

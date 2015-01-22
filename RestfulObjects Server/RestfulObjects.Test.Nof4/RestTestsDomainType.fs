@@ -69,7 +69,7 @@ type Nof4TestsDomainType() =
             let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
             let ca = [| typeof<ContributorService> |]
             let ss = [| typeof<TestTypeCodeMapper>; typeof<TestKeyCodeMapper> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss)
+            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss, [|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         

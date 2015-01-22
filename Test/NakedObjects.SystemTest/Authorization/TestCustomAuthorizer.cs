@@ -37,7 +37,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
                 new Type[] {typeof(TDefault)},
                 new Type[] {typeof (SimpleRepository<Foo>)},
                 new Type[] {},
-                new Type[] {});
+                new Type[] {}, new string[]{});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }

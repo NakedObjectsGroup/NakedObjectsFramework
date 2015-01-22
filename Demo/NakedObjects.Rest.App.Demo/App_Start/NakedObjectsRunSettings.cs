@@ -70,7 +70,7 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
+            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
