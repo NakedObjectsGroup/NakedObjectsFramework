@@ -43,6 +43,10 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
+        protected override string[] Namespaces {
+            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
+        }
+
 
         [SetUp]
         public void SetupTest() {

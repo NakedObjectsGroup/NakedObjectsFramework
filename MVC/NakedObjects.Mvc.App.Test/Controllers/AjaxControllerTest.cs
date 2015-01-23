@@ -100,6 +100,13 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
+        protected override string[] Namespaces {
+            get {
+                return new[] {
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"                };
+            }
+        }
+
 
         public void TestGetActionChoicesOtherParms(string value) {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");

@@ -66,6 +66,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return null; }
+        }
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
@@ -100,9 +104,12 @@ namespace MvcTestApp.Tests.Helpers {
                 var types3 = new Type[] {
                     typeof (EnumerableQuery<string>),
                     typeof (ObjectQuery<Claim>),
+                    typeof(Claim),
+                    typeof(Employee),
+                    typeof(Employee[]),
                     typeof(Claim[]),
+                    typeof(ProjectCode[]),
                     typeof(Object[]),
-
                 };
 
                 return types1.Union(types2).Union(types3).ToArray();

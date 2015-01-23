@@ -49,6 +49,10 @@ namespace MvcTestApp.Tests.Helpers {
         #endregion
 
 
+        protected override string[] Namespaces {
+            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
+        }
+
         [TestFixtureSetUp]
         public void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());

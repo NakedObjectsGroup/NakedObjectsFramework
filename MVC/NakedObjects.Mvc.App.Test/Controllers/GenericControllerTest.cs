@@ -7,8 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
@@ -16,7 +14,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -29,10 +26,9 @@ using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
-using NakedObjects.Core.Util;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
-
+using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
+using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
@@ -56,25 +52,38 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
+        protected override string[] Namespaces {
+            get { return null; }
+        }
+
         [TestFixtureSetUp]
-        public  void SetupTestFixture() {
+        public void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
-
-     
 
         private GenericController controller;
         private ContextMocks mocks;
 
         protected override Type[] Types {
             get {
-                return new Type[] {
-                    typeof (ObjectQuery<string>),
-                    typeof (EnumerableQuery<string>),
-                    typeof (ActionResultModelQ<string>),
-                    typeof (EntityCollection<string>),
-                };
+                List<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes().Where(t => t.IsPublic && t.Namespace == "AdventureWorksModel").ToList();
+
+                allTypes.AddRange(new Type[] {
+                    typeof (NotPersistedObject),
+                    typeof (CustomerDashboard),
+                    typeof (Customer[]),
+                    typeof (Employee[]),
+                    typeof (Store[]),
+                    typeof (Individual[]),
+                    typeof (SalesOrderHeader.SalesReasonCategories),
+                    typeof (ActionResultModelQ<SalesOrderHeader>),
+                    typeof (ActionResultModel<Store>),
+                    typeof (ActionResultModelQ<Store>),
+                    typeof (ActionResultModelQ<Employee>)
+                });
+
+                return allTypes.ToArray();
             }
         }
 
@@ -104,7 +113,6 @@ namespace MvcTestApp.Tests.Controllers {
                 };
             }
         }
-
 
         private static void AssertPagingData(ViewResult result, int currentPage, int pageSize, int pageTotal) {
             Assert.AreEqual(currentPage, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingCurrentPage]);
@@ -152,7 +160,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name);
         }
 
-
         private static void AssertStateInViewDataDictionary(ViewResult result, string id, string state) {
             Assert.IsTrue(((string) result.ViewData[id]) == state);
         }
@@ -163,7 +170,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
+            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
 
@@ -216,7 +223,6 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-
         private static FormCollection GetFormForBestSpecialOffer(INakedObject productRepo, string quantity) {
             IActionSpec action = productRepo.Spec.GetObjectActions().Single(a => a.Id == "BestSpecialOffer");
             IActionParameterSpec parmQuantity = action.Parameters[0];
@@ -243,7 +249,6 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-
         private static FormCollection GetFormForListProductsBySubCategory(INakedObject productRepo, string pscId) {
             IActionSpec action = productRepo.Spec.GetObjectActions().Single(a => a.Id == "ListProductsBySubCategory");
             IActionParameterSpec parmPsc = action.Parameters[0];
@@ -260,7 +265,7 @@ namespace MvcTestApp.Tests.Controllers {
             string t2,
             out IDictionary<string, string> idToRawValue) {
             IObjectSpec shiftSpec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift));
-            IObjectSpec timePeriodSpec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(TimePeriod));
+            IObjectSpec timePeriodSpec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TimePeriod));
 
             IAssociationSpec assocN = shiftSpec.GetProperty("Name");
             IAssociationSpec assocTp = shiftSpec.GetProperty("Times");
@@ -272,7 +277,6 @@ namespace MvcTestApp.Tests.Controllers {
             string idT1 = IdHelper.GetInlineFieldInputId(assocTp, timePeriod, assocT1);
             string idT2 = IdHelper.GetInlineFieldInputId(assocTp, timePeriod, assocT2);
 
-
             idToRawValue = new Dictionary<string, string> {
                 {idN, Guid.NewGuid().ToString()},
                 {idT1, t1},
@@ -281,7 +285,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             return GetForm(idToRawValue);
         }
-
 
         private FormCollection GetFormForVendorEdit(INakedObject vendor,
             string accountNumber,
@@ -323,7 +326,7 @@ namespace MvcTestApp.Tests.Controllers {
             string salesPerson,
             string modifiedDate,
             out IDictionary<string, string> idToRawValue) {
-                IObjectSpec nakedObjectSpecification = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Store));
+            IObjectSpec nakedObjectSpecification = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store));
             IAssociationSpec assocSN = nakedObjectSpecification.GetProperty("Name");
             IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
@@ -347,7 +350,7 @@ namespace MvcTestApp.Tests.Controllers {
             string expiryMonth,
             string expiryYear,
             out IDictionary<string, string> idToRawValue) {
-                IObjectSpec nakedObjectSpecification = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(CreditCard));
+            IObjectSpec nakedObjectSpecification = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (CreditCard));
             IAssociationSpec assocCT = nakedObjectSpecification.GetProperty("CardType");
             IAssociationSpec assocCN = nakedObjectSpecification.GetProperty("CardNumber");
             IAssociationSpec assocEM = nakedObjectSpecification.GetProperty("ExpMonth");
@@ -367,7 +370,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             return GetForm(idToRawValue);
         }
-
 
         private static FormCollection GetFormForCreateNewEmployeeFromContact(IActionSpec action, string contact, out IDictionary<string, string> idToRawValue) {
             IActionParameterSpec parmContact = action.Parameters[0];
@@ -392,7 +394,6 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-
         private Employee Employee {
             get { return NakedObjectsFramework.Persistor.Instances<Employee>().First(); }
         }
@@ -402,19 +403,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Employee TransientEmployee {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Employee))).GetDomainObject<Employee>(); }
+            get { return AdapterUtils.GetDomainObject<Employee>(NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Employee)))); }
         }
 
         private Vendor TransientVendor {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Vendor))).GetDomainObject<Vendor>(); }
+            get { return AdapterUtils.GetDomainObject<Vendor>(NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor)))); }
         }
 
         private Shift TransientShift {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Shift))).GetDomainObject<Shift>(); }
+            get { return AdapterUtils.GetDomainObject<Shift>(NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift)))); }
         }
 
         private Individual TransientIndividual {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Individual))).GetDomainObject<Individual>(); }
+            get { return AdapterUtils.GetDomainObject<Individual>(NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Individual)))); }
         }
 
         private NotPersistedObject NotPersistedObject {
@@ -451,7 +452,6 @@ namespace MvcTestApp.Tests.Controllers {
         private string ProductId {
             get { return NakedObjectsFramework.GetObjectId(Product); }
         }
-
 
         private INakedObject EmployeeRepo {
             get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
@@ -514,9 +514,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Store TransientStore {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Store))).GetDomainObject<Store>(); }
+            get { return AdapterUtils.GetDomainObject<Store>(NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store)))); }
         }
-
 
         private static IActionSpec GetAction(INakedObject owner, string id) {
             return owner.Spec.GetObjectActions().Single(a => a.Id == id);
@@ -543,7 +542,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(pName, fvm.PropertyName);
         }
 
-
         public void EditRedisplay(Employee employee) {
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string redisplay = "DepartmentHistory=table&editMode=True";
@@ -557,7 +555,6 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInViewDataDictionary(result, "DepartmentHistory", "table");
         }
 
-
         public void EditSaveValidationOk(Vendor vendor) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
             INakedObject adaptedVendor = NakedObjectsFramework.NakedObjectManager.CreateAdapter(vendor, null, null);
@@ -569,7 +566,7 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
-                foreach (var kvp in idToRawvalue) {
+                foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
                     Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                     Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
                 }
@@ -592,7 +589,7 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
-                foreach (var kvp in idToRawvalue) {
+                foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
                     Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                     Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
                 }
@@ -603,7 +600,6 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-
         public void EditSaveValidationFail(Vendor vendor) {
             INakedObject adaptedVendor = NakedObjectsFramework.NakedObjectManager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
@@ -612,14 +608,13 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
-            foreach (var kvp in idToRawvalue) {
+            foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
             Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(adaptedVendor, adaptedVendor.Spec.GetProperty("PreferredVendorStatus"))].Errors.Any());
             AssertIsEditViewOf<Vendor>(result);
         }
-
 
         public void EditInlineSaveValidationFail(Shift shift) {
             INakedObject adaptedShift = NakedObjectsFramework.NakedObjectManager.CreateAdapter(shift, null, null);
@@ -631,14 +626,13 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
-            foreach (var kvp in idToRawvalue) {
+            foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
             Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(adaptedShift.Spec.GetProperty("Times"), adaptedTimePeriod, adaptedTimePeriod.Spec.GetProperty("EndTime"))].Errors.Any());
             AssertIsEditViewOf<Shift>(result);
         }
-
 
         public void EditSaveValidationFailEmptyForm(Individual individual) {
             INakedObject nakedObject = NakedObjectsFramework.NakedObjectManager.CreateAdapter(individual, null, null);
@@ -655,7 +649,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsEditViewOf<Individual>(result);
         }
-
 
         public void EditFindForObjectMultiCached(Store store) {
             SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().OrderBy(sp => "").First();
@@ -744,7 +737,6 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Store>(result);
         }
 
-
         public void EditActionAsFindParmsForObject(Store store) {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
@@ -763,7 +755,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertNameAndParms(result, "FormWithFinderDialog", null, store, null, salesRepo.Object, spAction, "SalesPerson");
         }
-
 
         public void InvokeEditActionAsFindParmsForObject(Store store) {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
@@ -802,7 +793,6 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Store>(result);
         }
 
-       
         private void FindForActionUpdatesViewState(bool testValue) {
             IActionSpec action = GetAction(OrderContrib, "CreateNewOrder");
             IDictionary<string, string> idToRawvalue;
@@ -819,7 +809,6 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInModelStateDictionary(result, "OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input", testValue.ToString());
         }
 
-
         public void SelectForActionUpdatesViewState(bool testValue) {
             IActionSpec action = GetAction(OrderContrib, "CreateNewOrder");
             Store customer = NakedObjectsFramework.Persistor.Instances<Store>().First();
@@ -834,11 +823,10 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInModelStateDictionary(result, "OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input", testValue.ToString());
         }
 
-       
         public void ActionAsFindParmsForActionUpdatesViewState(bool testValue) {
             IActionSpec action = GetAction(OrderContrib, "CreateNewOrder");
 
-            IActionSpec findByName = CustomerRepo.GetActionLeafNode("FindStoreByName");
+            IActionSpec findByName = AdapterUtils.GetActionLeafNode(CustomerRepo, "FindStoreByName");
             string data = "contextObjectId=" + OrderContribId +
                           "&spec=AdventureWorksModel.Store" +
                           "&propertyName=cust" +
@@ -883,11 +871,11 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
 
             AssertIsQueryableViewOf<SalesOrderHeader>(result);
-            var warnings = NakedObjectsFramework.MessageBroker.Warnings.ToArray();
+            string[] warnings = NakedObjectsFramework.MessageBroker.Warnings.ToArray();
             Assert.AreEqual("No objects selected", warnings.First());
         }
 
-        [Test] 
+        [Test]
         public void ActionAsFindNoParmsForActionReturnMulti() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -906,7 +894,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 2, EmployeeRepo.Object, action, contactRepo.Object, randomContact, "contactDetails");
         }
 
-        [Test] 
+        [Test]
         public void ActionAsFindNoParmsForActionReturnOne() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -925,7 +913,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "ActionDialog", null, EmployeeRepo.Object, action, null, null, null);
         }
 
-        [Test] 
+        [Test]
         public void ActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -944,13 +932,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test] 
+        [Test]
         public void ActionAsFindParmsForActionUpdatesViewState() {
             ActionAsFindParmsForActionUpdatesViewState(true);
             ActionAsFindParmsForActionUpdatesViewState(false);
         }
 
-        [Test] 
+        [Test]
         public void ActionAsFindParmsForActionWithDefaults() {
             IActionSpec action = GetAction(OrderContributedActions, "FindRate");
             INakedObject orderContribAction = NakedObjectsFramework.GetAdaptedService("OrderContributedActions");
@@ -1052,7 +1040,7 @@ namespace MvcTestApp.Tests.Controllers {
             IDictionary<string, string> idToRawvalue;
             IObjectSpec ccSpec = NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (CreditCard));
             INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
-            cc.GetDomainObject<CreditCard>().Creator = new TestCreator();
+            AdapterUtils.GetDomainObject<CreditCard>(cc).Creator = new TestCreator();
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2020", out idToRawvalue);
 
@@ -1305,7 +1293,7 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
-                foreach (var kvp in idToRawvalue) {
+                foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
                     Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                     Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
                 }
@@ -1360,7 +1348,7 @@ namespace MvcTestApp.Tests.Controllers {
             EditSelectForObject(store);
         }
 
-        [Test] 
+        [Test]
         public void FindForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             IDictionary<string, string> idToRawvalue;
@@ -1376,7 +1364,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 0, EmployeeRepo.Object, action, null, null, "ContactDetails");
         }
 
-        [Test] 
+        [Test]
         public void FindForActionUpdatesViewState() {
             FindForActionUpdatesViewState(true);
             FindForActionUpdatesViewState(false);
@@ -1441,8 +1429,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDialogViewOfAction(result, "Show Customers With Address In Region");
         }
 
-
-        [Test] 
+        [Test]
         public void InvokeActionAsFindParmsForAction() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1461,7 +1448,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test] 
+        [Test]
         public void InvokeActionAsFindParmsForActionWithParms() {
             IActionSpec action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
@@ -1480,7 +1467,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithSelections", 11, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test] 
+        [Test]
         public void InvokeActionAsSaveForActionFailValidation() {
             Store store = Store;
             Store transientStore = TransientStore;
@@ -1505,7 +1492,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsFalse(result.ViewData.ModelState.IsValid);
         }
 
-        [Test] 
+        [Test]
         public void InvokeActionAsSaveForActionPassValidation() {
             Store store = Store;
             Vendor transientVendor = TransientVendor;
@@ -1537,7 +1524,6 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionWithMultiSelectObjects() {
             string id = NakedObjectsFramework.GetObjectId(Order);
 
-
             var objectModel = new ObjectAndControlData {
                 ActionId = "AddNewSalesReasons",
                 Id = id
@@ -1550,8 +1536,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
             IAssociationSpec assocMD = order.Spec.GetProperty("ModifiedDate");
-            IActionSpec action = order.GetActionLeafNode("AddNewSalesReasons");
-
+            IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasons");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
@@ -1566,7 +1551,6 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionWithMultiSelectParseable() {
             string id = NakedObjectsFramework.GetObjectId(Order);
 
-
             var objectModel = new ObjectAndControlData {
                 ActionId = "AddNewSalesReasonsByCategories",
                 Id = id
@@ -1579,8 +1563,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
             IAssociationSpec assocMD = order.Spec.GetProperty("ModifiedDate");
-            IActionSpec action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
-
+            IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasonsByCategories");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
@@ -1607,7 +1590,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsQueryableViewOf<SalesOrderHeader>(result);
         }
-
 
         [Test]
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
@@ -1688,7 +1670,6 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.AreSame(store, expected.SourceNakedObject.Object);
             }
         }
-
 
         [Test]
         public void InvokeContributedActionOnTargetPopulatesTargetParm() {
@@ -1814,7 +1795,6 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDetailsViewOf<NotPersistedObject>(result);
             Assert.AreEqual("aName", ((NotPersistedObject) result.ViewData.Model).Name);
         }
-
 
         [Test]
         public void InvokeObjectActionDefaultSet() {
@@ -2100,7 +2080,6 @@ namespace MvcTestApp.Tests.Controllers {
     public class ConcurrencyTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-
         [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
@@ -2118,17 +2097,22 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
+        protected override string[] Namespaces {
+            get {
+                return new[] {
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"
+                };
+            }
+        }
+
         [TestFixtureSetUp]
-        public  void SetupTestFixture() {
+        public void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
 
-      
-
         private GenericController controller;
         private ContextMocks mocks;
-
 
         public Store Store {
             get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
@@ -2179,17 +2163,15 @@ namespace MvcTestApp.Tests.Controllers {
             get { return (new object[] {new OrderContributedActions()}); }
         }
 
-
         private SalesOrderHeader Order {
             get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
         }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
+            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
-
 
         [Test]
         // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
@@ -2208,7 +2190,6 @@ namespace MvcTestApp.Tests.Controllers {
             var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
             conn.Open();
-
 
             try {
                 controller.Edit(objectModel, form);

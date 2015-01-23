@@ -34,7 +34,9 @@ namespace MvcTestApp.Tests.Helpers {
             SetUser("sven");
         }
 
-        
+         protected override string[] Namespaces {
+             get { return new[] { "MvcTestApp.Tests.Helpers", "Expenses.ExpenseClaims" }; }
+         }
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);

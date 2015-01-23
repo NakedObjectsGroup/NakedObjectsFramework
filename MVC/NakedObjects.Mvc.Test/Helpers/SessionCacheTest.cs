@@ -56,6 +56,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
+        }
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};

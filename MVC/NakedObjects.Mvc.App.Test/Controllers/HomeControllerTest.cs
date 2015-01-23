@@ -44,6 +44,14 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
+        protected override string[] Namespaces {
+            get {
+                return new[] {
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"                };
+            }
+        }
+
+
         [TestFixtureSetUp]
         public  void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
