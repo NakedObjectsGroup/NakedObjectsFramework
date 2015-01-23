@@ -110,12 +110,26 @@ namespace NakedObjects.Reflect {
             return (IObjectSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
         }
 
+        private Type EnsureGenericTypeIsComplete(Type type) {
+            if (type.IsGenericType &&  !type.IsConstructedGenericType) {
+                return type.GetGenericTypeDefinition().MakeGenericType(typeof (object));
+            }
+            return type;
+        }
+
+        private Type[] GetTypesToIntrospect() {
+            var types = config.TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
+            var systemTypes = config.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+            return types.Union(systemTypes).ToArray();
+        }
+
+
         public void Reflect() {
             Type[] s1 = config.MenuServices;
             Type[] s2 = config.ContributedActions;
             Type[] s3 = config.SystemServices;
             Type[] services = s1.Union(s2).Union(s3).ToArray();
-            Type[] nonServices = config.TypesToIntrospect;
+            Type[] nonServices = GetTypesToIntrospect();
 
             InstallSpecifications(services, true);
             InstallSpecifications(nonServices, false);

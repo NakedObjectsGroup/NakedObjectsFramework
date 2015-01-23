@@ -12,12 +12,35 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IReflectorConfiguration {
+        /// <summary>
+        /// This is expected to contain any domain types that are not directly accessible by navigating the actions on the services. Eg an implementation 
+        /// of an interface. Generic collection types can be specified and should be passed in without type parameters.
+        /// </summary>
+        /// <remarks>
+        /// These types will always be introspected and so are implicitly 'whitelisted'
+        /// </remarks>
         Type[] TypesToIntrospect { get; }
+
         Type[] MenuServices { get; }
         Type[] ContributedActions { get; }
         Type[] SystemServices { get; }
 
+        /// <summary>
+        ///  A whitelist of namespaces of the types that will be introspected. 
+        /// </summary>
+        /// <remarks>
+        /// These require an exact match so 'MyDomain' will not match 'MyDomain.SomeTypes'  
+        /// </remarks>
         string[] SupportedNamespaces { get; }
+
+        /// <summary>
+        /// Standard implementation of this contains system value and collection types recognised by the Framework. 
+        /// The list is exposed so that types can be added or removed before reflection. Generic collection types should be specified 
+        /// without type parameters.
+        /// </summary>
+        /// <remarks>
+        /// These types will always be introspected and so are implicitly 'whitelisted'
+        /// </remarks>
         List<Type> SupportedSystemTypes { get; }
 
         Func<IMenuFactory, IMenu[]> MainMenus { get; }

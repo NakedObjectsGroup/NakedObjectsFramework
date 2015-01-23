@@ -148,6 +148,7 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectNoTypes() {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[]{});
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -160,6 +161,7 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectObjectType() {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new[] { typeof(object) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -173,25 +175,27 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectListTypes() {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
         [TestMethod]
         public void ReflectSetTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new[] { typeof(SetWrapper<object>) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(SetWrapper<>) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(5, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -201,12 +205,13 @@ namespace NakedObjects.Reflect.Test {
             IQueryable<object> qo = new List<object>().AsQueryable();
             IQueryable<int> qi = new List<int>().AsQueryable();
             var rc = new ReflectorConfiguration(new[] { qo.GetType(), qi.GetType() }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(4, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -216,12 +221,13 @@ namespace NakedObjects.Reflect.Test {
             IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
 
             var rc = new ReflectorConfiguration(new[] { it.GetType() }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(4, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
