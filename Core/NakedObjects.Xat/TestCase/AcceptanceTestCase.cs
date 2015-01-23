@@ -102,6 +102,10 @@ namespace NakedObjects.Xat {
             get { return new Type[] {}; }
         }
 
+        protected virtual string[] Namespaces {
+            get { return new string[] { }; }
+        }
+
         protected void StartTest() {
             nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
         }
@@ -311,7 +315,7 @@ namespace NakedObjects.Xat {
                 MenuServices.Select(s => s.GetType()).ToArray(),
                 ContributedActions.Select(s => s.GetType()).ToArray(),
                 SystemServices.Select(s => s.GetType()).ToArray(),
-                Types == null ? new string[] { } : Types.Select(t => t.Namespace).Distinct().ToArray());
+                Namespaces ?? new string[] { });
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));

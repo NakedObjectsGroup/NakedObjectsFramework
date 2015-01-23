@@ -68,6 +68,9 @@ type DomainTests() =
         override x.Types = 
             [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>;typeof<One.TransformFull>;typeof<Two.TransformFull>;typeof<IXmlSnapshotService>  |]
         
+        override x.Namespaces = 
+            [| "Snapshot.Xml.Test"; "Snapshot.Xml.Test.Two" ; "Snapshot.Xml.Test.One" ; "NakedObjects.XmlSnapshotService.DomainTests" ; "NakedObjects.Snapshot" |]
+
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()
             let xmlService = new XmlSnapshotService()
