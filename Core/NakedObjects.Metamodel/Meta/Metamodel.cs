@@ -33,12 +33,12 @@ namespace NakedObjects.Meta {
         }
 
         public IObjectSpecImmutable GetSpecification(Type type) {
-            return GetSpecificationFromCache(classStrategy.GetType(type));
+            return GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
         }
 
         public IObjectSpecImmutable GetSpecification(string name) {
             try {
-                Type type = TypeFactory.GetTypeFromLoadedAssembly(name);
+                Type type = TypeUtils.GetType(name);
                 return GetSpecification(type);
             }
             catch (Exception e) {

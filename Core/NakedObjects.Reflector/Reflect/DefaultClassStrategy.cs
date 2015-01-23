@@ -33,12 +33,12 @@ namespace NakedObjects.Reflect {
         }
 
         private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || config.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicityRequested(type);
+            return IsTypeSupportedSystemType(type) || config.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicitlyRequested(type);
         }
 
-        private bool IsTypeExplicityRequested(Type type) {
-            IEnumerable<Type> services = config.MenuServices.Union(config.ContributedActions);
-            return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type);
+        private bool IsTypeExplicitlyRequested(Type type) {
+            IEnumerable<Type> services = config.MenuServices.Union(config.ContributedActions).Union(config.SystemServices);
+            return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 
         private Type ToMatch(Type type) {
@@ -49,8 +49,6 @@ namespace NakedObjects.Reflect {
             return config.SupportedSystemTypes.Any(t => t == ToMatch(type));
         }
 
-        #region IClassStrategy Members
-
         public virtual bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) && !IsTypeUnsupportedByReflector(returnType) && IsTypeWhiteListed(returnType);
@@ -58,10 +56,10 @@ namespace NakedObjects.Reflect {
 
         public virtual Type GetType(Type type) {
             Type returnType = FilterNullableAndProxies(type);
-            return IsTypeToBeIntrospected(returnType) ? returnType : typeof (object);
+            return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
-        private static Type FilterNullableAndProxies(Type type) {
+        public  Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
                 // use type inside nullable wrapper
                 Log.DebugFormat("Using wrapped type instead of {0}", type);
@@ -74,10 +72,6 @@ namespace NakedObjects.Reflect {
             return type;
         }
 
-        public virtual bool IsSystemClass(Type type) {
-            return TypeUtils.IsSystem(type);
-        }
-
         private bool IsTypeUnsupportedByReflector(Type type) {
             return type.IsPointer ||
                    type.IsByRef ||
@@ -88,18 +82,6 @@ namespace NakedObjects.Reflect {
 
         public string GetKeyForType(Type type) {
             if (IsGenericCollection(type)) {
-                //if (!type.IsPublic) {
-                //    var interfaces = type.GetInterfaces();
-                //    var publicInterfaces = interfaces.Where(t => t.IsPublic).ToArray();
-                //    var publicEnumerables = publicInterfaces.Where(t => typeof(IEnumerable).IsAssignableFrom(t));
-                //    var publicGenericEnumerables = publicInterfaces.Where(IsGenericCollection);
-
-                //    return GetKeyForType(publicGenericEnumerables.FirstOrDefault() ??
-                //                         publicEnumerables.FirstOrDefault() ??
-                //                         publicInterfaces.FirstOrDefault() ??
-                //                         type.BaseType);
-                //}
-
                 return type.Namespace + "." + type.Name;
             }
 
@@ -115,8 +97,6 @@ namespace NakedObjects.Reflect {
             return CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) ||
                    CollectionUtils.IsGenericType(type, typeof (ISet<>));
         }
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

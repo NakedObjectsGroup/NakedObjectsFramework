@@ -201,7 +201,6 @@
     <Compile Include="Spec\OneToOneAssociationSpec.cs" />
     <Compile Include="Exception\InitialisationException.cs" />
     <Compile Include="Util\SpecificationFacets.cs" />
-    <Compile Include="Util\TypeFactory.cs" />
     <Compile Include="Util\AdapterUtils.cs" />
     <Compile Include="Util\Assert.cs" />
     <Compile Include="Util\AsString.cs" />

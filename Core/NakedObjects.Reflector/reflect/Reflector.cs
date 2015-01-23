@@ -88,7 +88,7 @@ namespace NakedObjects.Reflect {
             Assert.AssertNotNull("specification class must be specified", className);
 
             try {
-                Type type = TypeFactory.GetTypeFromLoadedAssembly(className);
+                Type type = TypeUtils.GetType(className);
                 return LoadSpecification(type);
             }
             catch (Exception e) {
@@ -235,6 +235,10 @@ namespace NakedObjects.Reflect {
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
             Type actualType = classStrategy.GetType(type);
 
+            if (actualType == null) {
+                throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName +  " ");
+            }
+
             IObjectSpecBuilder specification = CreateSpecification(actualType);
 
             if (specification == null) {
@@ -245,6 +249,11 @@ namespace NakedObjects.Reflect {
             metamodel.Add(actualType, specification);
 
             specification.Introspect(facetDecoratorSet, new Introspector(this, metamodel));
+
+            //if (actualType.IsGenericType && actualType.IsConstructedGenericType) {
+            //    // introspect any generic type parameters
+            //    actualType.GetGenericArguments().ForEach(t => LoadSpecificationAndCache(t));
+            //}
 
             return specification;
         }

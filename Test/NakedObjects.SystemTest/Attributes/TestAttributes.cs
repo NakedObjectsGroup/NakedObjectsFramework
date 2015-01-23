@@ -43,6 +43,10 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"}; }
+        }
+
         protected override object[] MenuServices {
             get {
                 return new object[] {

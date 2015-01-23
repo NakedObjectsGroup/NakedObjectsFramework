@@ -29,6 +29,7 @@ namespace NakedObjects.Architecture.Component {
         string GetKeyForType(Type type);
 
         bool IsTypeToBeIntrospected(Type type);
+        Type FilterNullableAndProxies(Type type);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

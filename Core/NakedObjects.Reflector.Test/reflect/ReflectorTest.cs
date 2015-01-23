@@ -181,7 +181,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -211,7 +211,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -227,7 +227,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 

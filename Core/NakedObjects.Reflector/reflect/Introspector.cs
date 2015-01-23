@@ -105,7 +105,7 @@ namespace NakedObjects.Reflect {
             var methodRemover = new IntrospectorMethodRemover(methods);
             FacetFactorySet.Process(reflector, introspectedType, methodRemover, spec);
 
-            if (SuperclassType != null) {
+            if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
                 Superclass = reflector.LoadSpecification(SuperclassType);
             }
        
@@ -113,9 +113,9 @@ namespace NakedObjects.Reflect {
 
             var interfaces = new List<IObjectSpecBuilder>();
             foreach (string interfaceName in InterfacesNames) {
-                IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceName);
-                // if interface is not introspected will just get object spec - so ignore
-                if (interfaceSpec.Type.IsInterface) {
+                Type interfaceType = TypeUtils.GetType(interfaceName);
+                if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
+                    IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceName);
                     interfaceSpec.AddSubclass(spec);
                     interfaces.Add(interfaceSpec);
                 }
@@ -229,11 +229,6 @@ namespace NakedObjects.Reflect {
         }
 
         private IActionSpecImmutable[] FindActionMethods(MethodType methodType, IObjectSpecImmutable spec) {
-            //if (ClassStrategy.IsSystemClass(introspectedType)) {
-            //    Log.DebugFormat("Skipping fields in {0}(system class according to ClassStrategy)", introspectedType.Name);
-            //    return new IActionSpecImmutable[0];
-            //}
-
             Log.Debug("Looking for action methods");
 
             var actionSpecs = new List<IActionSpecImmutable>();

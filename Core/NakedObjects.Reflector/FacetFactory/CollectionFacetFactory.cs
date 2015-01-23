@@ -36,8 +36,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
             bool isSet = CollectionUtils.IsSet(type);
 
-
-
             FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
 
             IFacet facet;
@@ -52,9 +50,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             FacetUtils.AddFacet(facet);
-
-            var elementType = type.GetGenericArguments().First();
-            reflector.LoadSpecification(elementType);
         }
 
         private void ProcessCollection(IReflector reflector, ISpecification holder) {
