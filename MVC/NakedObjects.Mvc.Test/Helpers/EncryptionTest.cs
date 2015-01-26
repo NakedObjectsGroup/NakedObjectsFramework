@@ -10,11 +10,12 @@ using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Expenses.ExpenseClaims.Items;
+using Expenses.ExpenseEmployees;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-
 using MvcTestApp.Tests.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -34,8 +35,12 @@ namespace MvcTestApp.Tests.Helpers {
             SetUser("sven");
         }
 
-         protected override string[] Namespaces {
-             get { return new[] { "MvcTestApp.Tests.Helpers", "Expenses.ExpenseClaims" }; }
+        protected override Type[] Types {
+            get { return new Type[] {typeof (Employee), typeof (AbstractExpenseItem)}; }
+        }
+
+        protected override string[] Namespaces {
+             get { return new[] { "MvcTestApp.Tests.Helpers", "Expenses.ExpenseClaims", "Expenses.ExpenseEmployee" }; }
          }
 
         protected override void RegisterTypes(IUnityContainer container) {

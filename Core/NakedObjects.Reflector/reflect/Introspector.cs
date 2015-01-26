@@ -257,12 +257,10 @@ namespace NakedObjects.Reflect {
 
                 Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-
                 // build action & its parameters          
 
                 IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(GetSpecification(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
-
+                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
                 var action = new ActionSpecImmutable(identifier, spec, actionParams);
 
                 // Process facets on the action & parameters

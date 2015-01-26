@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using NakedObjects.Services;
 
 namespace NakedObjects.Util {
     /// <summary>
@@ -61,7 +62,20 @@ namespace NakedObjects.Util {
             }
         }
 
+        private static string MapNullable(string name) {
+            if (name.EndsWith("?")) {
+                string typeName = name.Remove(name.LastIndexOf('?'));
+                Type type = GetTypeFromLoadedAssembliesInternal(typeName);
+                if (type != null) {
+                    return typeof (Nullable<>).GetGenericTypeDefinition().MakeGenericType(type).FullName;
+                }
+            }
+            return name;
+        }
+
         internal static Type GetTypeFromLoadedAssembliesInternal(string typeName) {
+            typeName = MapNullable(typeName);
+
             lock (TypeCache) {
                 if (TypeCache.ContainsKey(typeName)) {
                     return TypeCache[typeName];
