@@ -80,6 +80,7 @@ namespace NakedObjects.Core.Configuration {
             typeof (List<>),
             typeof (ObjectQuery<>),
             typeof (EnumerableQuery<>),
+            typeof (ISet<>),
             typeof (IList<>),
             typeof (ICollection<>),
             typeof (IEnumerable<>),
