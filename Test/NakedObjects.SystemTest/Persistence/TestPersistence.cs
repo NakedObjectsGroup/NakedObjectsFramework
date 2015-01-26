@@ -20,12 +20,15 @@ namespace NakedObjects.SystemTest.Persistence {
     [TestClass]
     public class TestPersistence :    AbstractSystemTest<PersistenceDbContext> {
 
+     
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
         
 
             var reflectorConfig = new ReflectorConfiguration(new[] {
-                typeof (ObjectQuery<Qux1>)
+                typeof (ObjectQuery<Qux1>),
+                typeof(Foo1)
             },
                 new[] {
                     typeof (SimpleRepository<Foo1>),
@@ -33,7 +36,8 @@ namespace NakedObjects.SystemTest.Persistence {
                     typeof (SimpleRepository<Qux1>)
                 },
                 new Type[] { },
-                new Type[] { }, new string[]{});
+                new Type[] { },
+                new string[] { typeof(Foo1).Namespace });
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

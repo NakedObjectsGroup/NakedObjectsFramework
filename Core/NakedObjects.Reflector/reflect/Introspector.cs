@@ -164,10 +164,11 @@ namespace NakedObjects.Reflect {
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
-            //if (ClassStrategy.IsSystemClass(introspectedType)) {
-            //    Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
-            //    return new IAssociationSpecImmutable[0];
-            //}
+            //todo rework this so that factories filter properties eg - string type factory filters string properties
+            if (ClassStrategy.IsSystemClass(introspectedType)) {
+                Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
+                return new IAssociationSpecImmutable[0];
+            }
 
             Log.DebugFormat("Looking for fields for {0}", introspectedType);
 
@@ -229,6 +230,12 @@ namespace NakedObjects.Reflect {
         }
 
         private IActionSpecImmutable[] FindActionMethods(MethodType methodType, IObjectSpecImmutable spec) {
+            //todo rework this so that factories filter actions appropraitely
+            if (ClassStrategy.IsSystemClass(introspectedType)) {
+                Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
+                return new IActionSpecImmutable[0];
+            }
+
             Log.Debug("Looking for action methods");
 
             var actionSpecs = new List<IActionSpecImmutable>();

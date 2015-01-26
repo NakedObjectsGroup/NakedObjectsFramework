@@ -33,6 +33,10 @@ namespace NakedObjects.SystemTest.Method {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return new[] {typeof (Auto1).Namespace}; }
+        }
+
         protected override object[] MenuServices {
             get {
                 return new object[] {

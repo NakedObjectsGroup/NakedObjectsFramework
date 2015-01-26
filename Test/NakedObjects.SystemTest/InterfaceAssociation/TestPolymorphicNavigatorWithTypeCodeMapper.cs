@@ -58,6 +58,10 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
 #endregion
+
+        protected override string[] Namespaces {
+            get { return new[] { typeof(PolymorphicPayment).Namespace }; }
+        }
         [TestMethod]
         public void SetPolymorphicPropertyOnTransientObject() {
             base.SetPolymorphicPropertyOnTransientObject("CUS");

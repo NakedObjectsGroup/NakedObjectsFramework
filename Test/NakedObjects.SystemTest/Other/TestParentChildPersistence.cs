@@ -35,6 +35,10 @@ namespace NakedObjects.SystemTest.ParentChild {
 
             #endregion
 
+            protected override string[] Namespaces {
+                get { return new[] { typeof(Parent).Namespace }; }
+            }
+
             protected override object[] MenuServices {
                 get {
                     return new object[] {

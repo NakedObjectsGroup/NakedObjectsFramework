@@ -33,6 +33,10 @@ namespace NakedObjects.SystemTest.Injection {
 
         #endregion
 
+        protected override Type[] Types {
+            get { return new Type[] { typeof(Object1), typeof(Object2), typeof(Service1), typeof(Service2) ,typeof(Service3)}; }
+        }
+
         protected override object[] MenuServices {
             get {
                 return (new object[] {

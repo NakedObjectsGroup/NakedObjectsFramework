@@ -51,6 +51,10 @@ namespace NakedObjects.SystemTest.Menus {
         #endregion
 
 
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Foo).Namespace }; }
+        }
+
         [TestMethod]
         public void TestDefaultMenu() {
             var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();

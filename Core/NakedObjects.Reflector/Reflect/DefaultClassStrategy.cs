@@ -72,6 +72,10 @@ namespace NakedObjects.Reflect {
             return type;
         }
 
+        public bool IsSystemClass(Type introspectedType) {
+            return introspectedType.FullName.StartsWith("System.");
+        }
+
         private bool IsTypeUnsupportedByReflector(Type type) {
             return type.IsPointer ||
                    type.IsByRef ||

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -28,6 +29,7 @@ using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
 using NakedObjects.Security;
 using NakedObjects.Menu;
+using NakedObjects.Value;
 
 namespace NakedObjects.SystemTest.Reflect {
     [TestClass]
@@ -53,6 +55,8 @@ namespace NakedObjects.SystemTest.Reflect {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[]{});
 
+            rc.SupportedSystemTypes.Clear();
+
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
@@ -64,6 +68,8 @@ namespace NakedObjects.SystemTest.Reflect {
         public void ReflectWithDecorators() {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -108,6 +114,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+    [Ignore]
         public void ReflectAdventureworks() {
             // load adventurework
 
@@ -116,6 +123,20 @@ namespace NakedObjects.SystemTest.Reflect {
             Type[] types = AdventureWorksTypes();
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+
+            rc.SupportedSystemTypes.Add(typeof(FileAttachment));
+            rc.SupportedSystemTypes.Add(typeof(TypeCode));
+            rc.SupportedSystemTypes.Add(typeof(IEnumerator));
+            rc.SupportedSystemTypes.Add(typeof(IEnumerator<char>));
+            rc.SupportedSystemTypes.Add(typeof(Type));
+            rc.SupportedSystemTypes.Add(typeof(Stream));
+            rc.SupportedSystemTypes.Add(typeof(IFormatProvider));
+            rc.SupportedSystemTypes.Add(typeof(System.Enum));
+
+
+
+
+
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -136,6 +157,8 @@ namespace NakedObjects.SystemTest.Reflect {
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -213,6 +236,8 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworksByType() {
             // load adventurework
 
@@ -249,6 +274,8 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworksFacets() {
             // load adventurework
 

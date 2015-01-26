@@ -14,6 +14,10 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestClass]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
+
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Payment).Namespace }; }
+        }
         protected override object[] MenuServices {
             get {
                 return (new object[] {

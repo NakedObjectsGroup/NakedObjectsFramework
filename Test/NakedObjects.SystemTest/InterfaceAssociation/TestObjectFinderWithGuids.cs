@@ -24,6 +24,10 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         private ITestObject payment1;
         private ITestObject supplier1;
 
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Payment).Namespace }; }
+        }
+
         protected override object[] MenuServices {
             get {
                 return new object[] {

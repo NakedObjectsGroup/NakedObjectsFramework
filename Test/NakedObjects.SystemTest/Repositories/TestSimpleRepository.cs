@@ -39,6 +39,10 @@ namespace NakedObjects.SystemTest.Repositories {
             cust2To.Save();
         }
 
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Customer).Namespace }; }
+        }
+
         [TestCleanup()]
         public void TestCleanup() {}
 

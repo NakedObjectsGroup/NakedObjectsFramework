@@ -13,6 +13,10 @@ using NakedObjects.Services;
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestClass]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
+
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Payment).Namespace }; }
+        }
         protected override object[] MenuServices {
             get {
                 return (new object[] {

@@ -50,6 +50,10 @@ namespace NakedObjects.SystemTest.XATs {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return new[] { typeof(Object1).Namespace }; }
+        }
+
         protected override object[] MenuServices {
             get { return (new object[] {new SimpleRepository<Object1>()}); }
         }

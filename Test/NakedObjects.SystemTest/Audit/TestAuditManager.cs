@@ -49,7 +49,7 @@ namespace NakedObjects.SystemTest.Audit {
                 },
                 new Type[] {},
                 new Type[] {},
-                new string[]{});
+                new string[]{ typeof(Foo).Namespace });
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

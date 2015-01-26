@@ -52,7 +52,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 },
                 new Type[] {},
                 new Type[] {}, 
-                new string[]{});
+                new string[]{ typeof(Foo).Namespace });
 
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());

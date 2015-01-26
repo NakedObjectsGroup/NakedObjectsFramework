@@ -30,6 +30,7 @@ namespace NakedObjects.Architecture.Component {
 
         bool IsTypeToBeIntrospected(Type type);
         Type FilterNullableAndProxies(Type type);
+        bool IsSystemClass(Type introspectedType);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

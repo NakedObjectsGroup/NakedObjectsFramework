@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace NakedObjects.SystemTest.Enum {
         public void TestCleanup() {}
 
         #endregion
+
+        protected override Type[] Types {
+            get { return new Type[] {typeof(Foo), typeof(Sexes), typeof(HairColours)}; }
+        }
 
         #region Run configuration
 
