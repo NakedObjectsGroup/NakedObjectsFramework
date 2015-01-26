@@ -80,7 +80,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
