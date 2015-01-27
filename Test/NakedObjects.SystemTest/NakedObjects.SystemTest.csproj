@@ -163,6 +163,7 @@
     <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
     <Compile Include="InterfaceAssociation\FixtureLinks.cs" />
     <Compile Include="InterfaceAssociation\FixtureEntities.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderInstances.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeys.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAndTypeCodeMapper.cs" />

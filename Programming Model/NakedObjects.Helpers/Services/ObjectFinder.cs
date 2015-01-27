@@ -196,5 +196,18 @@ namespace NakedObjects.Services {
             return type.FullName;
         }
         #endregion
+
+        #region Instances
+        protected IQueryable<T> InstancesGeneric<T>() where T : class {
+            return Container.Instances<T>();
+        }
+
+        public IQueryable<T> Instances<T>(Type type) {
+            if (!typeof(T).IsAssignableFrom(type)) throw new DomainException(type + " does not implement " + typeof(T));
+            MethodInfo m = GetType().GetMethod("InstancesGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
+            MethodInfo gm = m.MakeGenericMethod(new[] { type });
+            return gm.Invoke(this, new object[] { }) as IQueryable<T>;
+        }
+        #endregion
     }
 }
