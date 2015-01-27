@@ -10,6 +10,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
@@ -35,7 +36,10 @@ namespace NakedObjects.App.Demo {
                     typeof (EnumerableQuery<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>)
+                    typeof (ActionResultModelQ<object>),
+                     typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (QuickOrderForm),
                 };
             }
         }
@@ -76,7 +80,7 @@ namespace NakedObjects.App.Demo {
 
         private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject) || typeof(IViewModel).IsAssignableFrom(t)) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {

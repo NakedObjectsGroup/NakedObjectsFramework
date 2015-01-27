@@ -98,7 +98,7 @@ namespace NakedObjects.Reflect {
 
             introspectedType = typeToIntrospect;
             properties = typeToIntrospect.GetProperties();
-            methods = GetFilteredMethods();
+            methods = GetNonPropertyMethods();
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
@@ -150,8 +150,8 @@ namespace NakedObjects.Reflect {
             orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
         }
 
-        private MethodInfo[] GetFilteredMethods() {
-            // to do is there a better way to do this - flag on methodinfo ?
+        private MethodInfo[] GetNonPropertyMethods() {
+            // no better way to do this (ie no flag that indicates getter/setter)
             var allMethods = new List<MethodInfo>(introspectedType.GetMethods());
             foreach (PropertyInfo pInfo in properties) {
                 allMethods.Remove(pInfo.GetGetMethod());
