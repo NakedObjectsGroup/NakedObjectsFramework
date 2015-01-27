@@ -96,6 +96,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+        [Ignore]
         public void ReflectAdventureworks() {
             // load adventurework
 
@@ -133,6 +134,8 @@ namespace NakedObjects.SystemTest.Reflect {
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -208,6 +211,8 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworksByType() {
             // load adventurework
 
@@ -244,6 +249,8 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
+        [Ignore]
+
         public void SerializeAdventureworksFacets() {
             // load adventurework
 
