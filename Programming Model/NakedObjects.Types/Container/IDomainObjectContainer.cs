@@ -144,5 +144,31 @@ namespace NakedObjects {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         T GetService<T>();
+
+        #region Titles
+        /// <summary>
+        /// Convenience method to get hold of the title of any domain object,
+        /// without needing to know whether that is defined by a Title() method,
+        /// ToString() method, or a [Title] attribute on a property.
+        /// </summary>
+        string TitleOf(object obj, string format = null);
+
+        /// <summary>
+        /// Returns a framework-generated implementation of ITitleBuilder, which
+        /// </summary>
+        ITitleBuilder NewTitleBuilder();
+
+        /// <summary>
+        /// Creates a new ITitleBuilder object, 
+        /// containing the Title of the specified object with an optional default
+        /// title if the object has no specified title.
+        /// </summary>
+        ITitleBuilder NewTitleBuilder(object obj, string defaultTitle = null);
+
+        /// <summary>
+        ///     Creates a new ITitleBuilder object, containing the specified text
+        /// </summary>
+        ITitleBuilder NewTitleBuilder(string text);
+        #endregion
     }
 }
