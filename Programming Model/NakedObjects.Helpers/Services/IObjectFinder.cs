@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedObjects.Services {
     /// <summary>
@@ -55,5 +56,13 @@ namespace NakedObjects.Services {
         /// <param name="key"></param>
         /// <returns></returns>
         T FindBySingleIntegerKey<T>(int key) where T : class;
+
+        /// <summary>
+        /// Generic mechanism to obtain a generic queryable of a given type.
+        /// </summary>
+        /// <typeparam name="T">A type (commonly an interface that is known to be implemented by the parameter type</typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        IQueryable<T> Instances<T>(Type type);
     }
 }

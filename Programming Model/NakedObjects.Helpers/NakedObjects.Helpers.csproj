@@ -56,7 +56,6 @@
     <Compile Include="RecognisedMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AbstractFactoryAndRepository.cs" />
-    <Compile Include="Services\ObjectFinderWithTypeCodeMapper2.cs" />
     <Compile Include="Services\IKeyCodeMapper.cs" />
     <Compile Include="Services\IObjectFinder.cs" />
     <Compile Include="Services\ITypeCodeMapper.cs" />
