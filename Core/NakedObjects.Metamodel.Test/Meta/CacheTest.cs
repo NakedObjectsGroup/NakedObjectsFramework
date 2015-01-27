@@ -161,7 +161,7 @@ namespace NakedObjects.Meta.Test {
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<IFacetFactory, UnsupportedParameterTypesMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
+            container.RegisterType<IFacetFactory, UnsupportedMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
 
             container.RegisterType<IMenuFactory, NullMenuFactory>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());

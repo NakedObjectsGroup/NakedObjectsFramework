@@ -11,13 +11,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.FacetFactory {
     /// <summary>
-    ///     A <see cref="IFacetFactory" /> which filters out arbitrary <see cref="MethodInfo" /> methods.
+    ///     A <see cref="IFacetFactory" /> which filters out arbitrary <see cref="PropertyInfo" /> properties.
     /// </summary>
     /// <para>
-    ///     Used by <see cref="IFacetFactorySet.Filters(MethodInfo, IClassStrategy)" />
+    ///     Used by <see cref="IFacetFactorySet.Filters(PropertyInfo, IClassStrategy)" />
     /// </para>
-    public interface IMethodFilteringFacetFactory : IFacetFactory {
-        bool Filters(MethodInfo method, IClassStrategy classStrategy);
+    public interface IPropertyFilteringFacetFactory : IFacetFactory {
+        bool Filters(PropertyInfo property, IClassStrategy classStrategy);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

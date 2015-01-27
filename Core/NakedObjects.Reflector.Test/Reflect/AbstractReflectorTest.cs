@@ -28,7 +28,7 @@ namespace NakedObjects.Reflect.Test {
         private readonly IFacetFactory[] facetFactories = {
             new FallbackFacetFactory(0),
             new IteratorFilteringFacetFactory(1),
-            new UnsupportedParameterTypesMethodFilteringFactory(2),
+            new UnsupportedMethodFilteringFactory(2),
             new RemoveSuperclassMethodsFacetFactory(3),
             new RemoveInitMethodFacetFactory(4),
             new RemoveDynamicProxyMethodsFacetFactory(5),

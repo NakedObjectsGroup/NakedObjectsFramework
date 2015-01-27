@@ -18,7 +18,7 @@ namespace NakedObjects.Architecture.Reflect {
     /// must be set up to know about all the FacetFactories.
     /// </summary>
     public interface IFacetFactorySet {
-        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
+        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
         IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
 
         /// <summary>
@@ -33,6 +33,11 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Whether this <see cref="MethodInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
         /// </summary>
         bool Filters(MethodInfo method, IClassStrategy classStrategy);
+
+        /// <summary>
+        ///     Whether this <see cref="PropertyInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
+        /// </summary>
+        bool Filters(PropertyInfo property, IClassStrategy classStrategy);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" /> for each appropriate factory.

@@ -17,7 +17,8 @@ namespace NakedObjects.Reflect {
             return new[] {
             typeof(FallbackFacetFactory),
             typeof(IteratorFilteringFacetFactory),
-            typeof(UnsupportedParameterTypesMethodFilteringFactory),
+            typeof(UnsupportedMethodFilteringFactory),
+            typeof(UnsupportedPropertyFilteringFactory),
             typeof(RemoveSuperclassMethodsFacetFactory),
             typeof(RemoveInitMethodFacetFactory),
             typeof(RemoveDynamicProxyMethodsFacetFactory),

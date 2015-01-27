@@ -10,6 +10,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Models;
@@ -25,7 +26,10 @@ namespace NakedObjects.Test.App {
                     typeof (EnumerableQuery<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>)
+                    typeof (ActionResultModelQ<object>),
+                    typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (QuickOrderForm),
                 };
             }
         }
@@ -66,8 +70,8 @@ namespace NakedObjects.Test.App {
         }
 
         private static Type[] AssociatedTypes() {
-        var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
+            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
+            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
