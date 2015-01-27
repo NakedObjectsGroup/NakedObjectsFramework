@@ -84,18 +84,18 @@ namespace NakedObjects.Reflect {
             get { return metamodel.AllSpecifications.Cast<IObjectSpecBuilder>().ToArray(); }
         }
 
-        public IObjectSpecBuilder LoadSpecification(string className) {
-            Assert.AssertNotNull("specification class must be specified", className);
+        //public IObjectSpecBuilder LoadSpecification(string className) {
+        //    Assert.AssertNotNull("specification class must be specified", className);
 
-            try {
-                Type type = TypeUtils.GetType(className);
-                return LoadSpecification(type);
-            }
-            catch (Exception e) {
-                Log.FatalFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-                throw;
-            }
-        }
+        //    try {
+        //        Type type = TypeUtils.GetType(className);
+        //        return LoadSpecification(type);
+        //    }
+        //    catch (Exception e) {
+        //        Log.FatalFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
+        //        throw;
+        //    }
+        //}
 
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
             foreach (PropertyInfo property in properties) {

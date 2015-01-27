@@ -22,13 +22,13 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Audit;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Menu;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
 using NakedObjects.Security;
-using NakedObjects.Menu;
 using NakedObjects.Value;
 
 namespace NakedObjects.SystemTest.Reflect {
@@ -53,7 +53,7 @@ namespace NakedObjects.SystemTest.Reflect {
         [TestMethod]
         public void ReflectNoTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[]{});
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[] {});
 
             rc.SupportedSystemTypes.Clear();
 
@@ -67,7 +67,7 @@ namespace NakedObjects.SystemTest.Reflect {
         [TestMethod]
         public void ReflectWithDecorators() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[] {});
 
             rc.SupportedSystemTypes.Clear();
 
@@ -87,24 +87,6 @@ namespace NakedObjects.SystemTest.Reflect {
             //Assert.AreEqual(7, set.FacetDecorators.Count());
         }
 
-        public class TestAuthorizer : ITypeAuthorizer<object> {
-            public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
-            }
-
-            public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
-            }
-
-            public void Init() {
-                throw new NotImplementedException();
-            }
-
-            public void Shutdown() {
-                throw new NotImplementedException();
-            }
-        }
-
         private static Type[] AdventureWorksTypes() {
             Type[] allTypes =
                 AppDomain.CurrentDomain.GetAssemblies()
@@ -114,7 +96,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-    [Ignore]
         public void ReflectAdventureworks() {
             // load adventurework
 
@@ -124,19 +105,14 @@ namespace NakedObjects.SystemTest.Reflect {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
-            rc.SupportedSystemTypes.Add(typeof(FileAttachment));
-            rc.SupportedSystemTypes.Add(typeof(TypeCode));
-            rc.SupportedSystemTypes.Add(typeof(IEnumerator));
-            rc.SupportedSystemTypes.Add(typeof(IEnumerator<char>));
-            rc.SupportedSystemTypes.Add(typeof(Type));
-            rc.SupportedSystemTypes.Add(typeof(Stream));
-            rc.SupportedSystemTypes.Add(typeof(IFormatProvider));
-            rc.SupportedSystemTypes.Add(typeof(System.Enum));
-
-
-
-
-
+            rc.SupportedSystemTypes.Add(typeof (FileAttachment));
+            rc.SupportedSystemTypes.Add(typeof (TypeCode));
+            rc.SupportedSystemTypes.Add(typeof (IEnumerator));
+            rc.SupportedSystemTypes.Add(typeof (IEnumerator<char>));
+            rc.SupportedSystemTypes.Add(typeof (Type));
+            rc.SupportedSystemTypes.Add(typeof (Stream));
+            rc.SupportedSystemTypes.Add(typeof (IFormatProvider));
+            rc.SupportedSystemTypes.Add(typeof (System.Enum));
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -157,8 +133,6 @@ namespace NakedObjects.SystemTest.Reflect {
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
         [TestMethod]
-        [Ignore]
-
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -166,7 +140,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Type[] types = AdventureWorksTypes();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] { }, new Type[] { }, new Type[] { }, types.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -192,7 +166,6 @@ namespace NakedObjects.SystemTest.Reflect {
             //        .SelectMany(s => s.GetFacets())
             //        .Select(f => f.GetType().FullName)
             //        .Distinct();
-
 
             //foreach (var f in f1) {
             //    Console.WriteLine(" field facet  {0}", f);
@@ -228,7 +201,6 @@ namespace NakedObjects.SystemTest.Reflect {
             TimeSpan deserializeInterval = stopwatch.Elapsed;
             stopwatch.Reset();
 
-
             CompareCaches(cache, newCache);
 
             Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval,
@@ -236,8 +208,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore]
-
         public void SerializeAdventureworksByType() {
             // load adventurework
 
@@ -248,7 +218,7 @@ namespace NakedObjects.SystemTest.Reflect {
             Type[] spec51 = AdventureWorksTypes().Skip(50).Take(1).ToArray();
             Type[] types = AdventureWorksTypes().Take(20).ToArray();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] { }, new Type[] { }, new Type[] { }, types.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -274,8 +244,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore]
-
         public void SerializeAdventureworksFacets() {
             // load adventurework
 
@@ -283,23 +251,20 @@ namespace NakedObjects.SystemTest.Reflect {
 
             int count = AdventureWorksTypes().Count();
 
-
             Type[] types50 = AdventureWorksTypes().Take(50).ToArray();
             Type[] types51 = AdventureWorksTypes().Take(51).ToArray();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types50, new Type[] { }, new Type[] { }, new Type[] { }, types50.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types50, new Type[] {}, new Type[] {}, new Type[] {}, types50.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
 
-
             reflector.Reflect();
 
             IObjectSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
 
-
-            rc = new ReflectorConfiguration(types51, new Type[] { }, new Type[] { }, new Type[] { }, types51.Select(t => t.Namespace).Distinct().ToArray());
+            rc = new ReflectorConfiguration(types51, new Type[] {}, new Type[] {}, new Type[] {}, types51.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -340,7 +305,6 @@ namespace NakedObjects.SystemTest.Reflect {
                     .Distinct();
             f2 =
                 cache2.SelectMany(s => s.ObjectActions)
-  
                     .Where(s => s != null)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
@@ -397,7 +361,6 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
-
         private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
             Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
@@ -416,7 +379,7 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
-        #region Nested type: NullMenuBuilder
+        #region Nested type: NullMenuFactory
 
         public class NullMenuFactory : IMenuFactory {
             #region IMenuFactory Members
@@ -446,6 +409,32 @@ namespace NakedObjects.SystemTest.Reflect {
             public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {}
 
             public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {}
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Nested type: TestAuthorizer
+
+        public class TestAuthorizer : ITypeAuthorizer<object> {
+            #region ITypeAuthorizer<object> Members
+
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public void Init() {
+                throw new NotImplementedException();
+            }
+
+            public void Shutdown() {
+                throw new NotImplementedException();
+            }
 
             #endregion
         }

@@ -39,7 +39,7 @@ namespace NakedObjects.Reflect {
         ///     <see cref="IMethodFilteringFacetFactory" />
         /// </summary>
         /// <para>
-        ///     Used within <see cref="IFacetFactorySet.Filters" />
+        ///     Used within <see cref="IFacetFactorySet.Filters(MethodInfo, IClassStrategy)" />
         /// </para>
         private readonly IList<IMethodFilteringFacetFactory> methodFilteringFactories;
 
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflect {
         ///     <see cref="IPropertyFilteringFacetFactory" />
         /// </summary>
         /// <para>
-        ///     Used within <see cref="IFacetFactorySet.Filters" />
+        ///     Used within <see cref="IFacetFactorySet.Filters(PropertyInfo, IClassStrategy)" />
         /// </para>
         private readonly IList<IPropertyFilteringFacetFactory> propertyFilteringFactories;
 
