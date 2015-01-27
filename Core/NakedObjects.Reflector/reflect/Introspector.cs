@@ -146,16 +146,18 @@ namespace NakedObjects.Reflect {
             Log.InfoFormat("introspecting {0}: actions", ClassName);
 
             // find the actions ...
-            IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object, spec);
+            IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(spec);
             orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
         }
 
         private MethodInfo[] GetFilteredMethods() {
+            // to do is there a better way to do this - flag on methodinfo ?
             var allMethods = new List<MethodInfo>(introspectedType.GetMethods());
             foreach (PropertyInfo pInfo in properties) {
                 allMethods.Remove(pInfo.GetGetMethod());
                 allMethods.Remove(pInfo.GetSetMethod());
             }
+            allMethods.Sort(new SortActionsFirst(FacetFactorySet));
             return allMethods.ToArray();
         }
 
@@ -164,20 +166,15 @@ namespace NakedObjects.Reflect {
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
-            //todo rework this so that factories filter properties eg - string type factory filters string properties
-            if (ClassStrategy.IsSystemClass(introspectedType)) {
-                Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
-                return new IAssociationSpecImmutable[0];
-            }
-
+          
             Log.DebugFormat("Looking for fields for {0}", introspectedType);
 
             // now create fieldSpecs for value properties, for collections and for reference properties        
-            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties);
+            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
             IEnumerable<IAssociationSpecImmutable> collectionSpecs = CreateCollectionSpecs(collectionProperties, spec);
 
             // every other accessor is assumed to be a reference property.
-            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, reflector.ClassStrategy);
+            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
             IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
             IEnumerable<IAssociationSpecImmutable> refSpecs = CreateRefPropertySpecs(refProperties, spec);
 
@@ -229,58 +226,43 @@ namespace NakedObjects.Reflect {
             return specs;
         }
 
-        private IActionSpecImmutable[] FindActionMethods(MethodType methodType, IObjectSpecImmutable spec) {
-            //todo rework this so that factories filter actions appropraitely
-            if (ClassStrategy.IsSystemClass(introspectedType)) {
-                Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
-                return new IActionSpecImmutable[0];
-            }
-
+        private IActionSpecImmutable[] FindActionMethods(IObjectSpecImmutable spec) {
+ 
             Log.Debug("Looking for action methods");
 
             var actionSpecs = new List<IActionSpecImmutable>();
-            // TOdo why isn't this on th factoryset cf Fields ?
-            Array.Sort(methods, new SortActionsFirst(FacetFactorySet));
+         
             for (int i = 0; i < methods.Length; i++) {
-                if (methods[i] == null) {
-                    continue;
+                // careful in here - methods are being nulled out within the methods array as we iterate. 
+                if (methods[i] != null) {
+                    MethodInfo actionMethod = methods[i];
+
+                    string fullMethodName = actionMethod.Name;
+                    if (!FacetFactorySet.Filters(actionMethod, reflector.ClassStrategy)) {
+                        Log.DebugFormat("Identified action {0}", actionMethod);
+                        methods[i] = null;
+
+                        Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
+
+                        // build action & its parameters          
+
+                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(GetSpecification(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
+                        IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                        var action = new ActionSpecImmutable(identifier, spec, actionParams);
+
+                        // Process facets on the action & parameters
+                        FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
+                        for (int l = 0; l < actionParams.Length; l++) {
+                            FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
+                        }
+
+                        if (actionMethod.ReturnType != typeof (void)) {
+                            reflector.LoadSpecification(actionMethod.ReturnType);
+                        }
+
+                        actionSpecs.Add(action);
+                    }
                 }
-                MethodInfo actionMethod = methods[i];
-                if (actionMethod.IsStatic && methodType == MethodType.Object) {
-                    continue;
-                }
-
-                string fullMethodName = actionMethod.Name;
-                if (FacetFactorySet.Filters(actionMethod, reflector.ClassStrategy)) {
-                    continue;
-                }
-
-                if (actionMethod.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) {
-                    continue;
-                }
-
-                Log.DebugFormat("Identified action {0}", actionMethod);
-                methods[i] = null;
-
-                Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
-
-                // build action & its parameters          
-
-                IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(GetSpecification(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
-                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-                var action = new ActionSpecImmutable(identifier, spec, actionParams);
-
-                // Process facets on the action & parameters
-                FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
-                for (int l = 0; l < actionParams.Length; l++) {
-                    FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
-                }
-
-                if (actionMethod.ReturnType != typeof (void)) {
-                    reflector.LoadSpecification(actionMethod.ReturnType);
-                }
-
-                actionSpecs.Add(action);
             }
 
             return actionSpecs.ToArray();

@@ -28,6 +28,7 @@ namespace NakedObjects.Reflect {
             }
 
             methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
+            propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToList();
             propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
         }
 
@@ -44,6 +45,15 @@ namespace NakedObjects.Reflect {
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
+        ///     <see cref="IPropertyFilteringFacetFactory" />
+        /// </summary>
+        /// <para>
+        ///     Used within <see cref="IFacetFactorySet.Filters" />
+        /// </para>
+        private readonly IList<IPropertyFilteringFacetFactory> propertyFilteringFactories;
+
+        /// <summary>
+        ///     All registered <see cref="IFacetFactory" />s that implement
         ///     <see
         ///         cref="IPropertyOrCollectionIdentifyingFacetFactory" />
         /// </summary>
@@ -56,8 +66,8 @@ namespace NakedObjects.Reflect {
 
         #region IFacetFactorySet Members
 
-        public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
+        public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToList();
         }
 
         public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
@@ -87,6 +97,10 @@ namespace NakedObjects.Reflect {
         /// </para>
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             return methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
+        }
+
+        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) {
+            return propertyFilteringFactories.Any(factory => factory.Filters(property, classStrategy));
         }
 
         public bool Recognizes(MethodInfo method) {

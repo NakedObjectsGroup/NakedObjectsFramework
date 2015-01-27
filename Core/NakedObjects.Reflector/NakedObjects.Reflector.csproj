@@ -136,6 +136,7 @@
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\DefaultNamingFacetFactory.cs" />
+    <Compile Include="FacetFactory\UnsupportedPropertyFilteringFactory.cs" />
     <Compile Include="FacetFactory\ValidateObjectFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />
@@ -147,7 +148,7 @@
     <Compile Include="FacetFactory\IteratorFilteringFacetFactory.cs" />
     <Compile Include="FacetFactory\PageSizeAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\PotencyAnnotationFacetFactory.cs" />
-    <Compile Include="FacetFactory\UnsupportedParameterTypesMethodFilteringFactory.cs" />
+    <Compile Include="FacetFactory\UnsupportedMethodFilteringFactory.cs" />
     <Compile Include="FacetFactory\AnnotationBasedFacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\AuthorizeAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\CollectionFacetFactory.cs" />

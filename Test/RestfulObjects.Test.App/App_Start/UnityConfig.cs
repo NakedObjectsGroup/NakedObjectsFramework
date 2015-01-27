@@ -56,7 +56,7 @@ namespace RestfulObjects.Test.App {
 
         protected static void RegisterFacetFactories(IUnityContainer container) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
-            for (int i = 0; i < factoryTypes.Count(); i++) {
+            for (int i = 0; i < factoryTypes.Length; i++) {
                 RegisterFacetFactory(factoryTypes[i], container, i);
             }
         }

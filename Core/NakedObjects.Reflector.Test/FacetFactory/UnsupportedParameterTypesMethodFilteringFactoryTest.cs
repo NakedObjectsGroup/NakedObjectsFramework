@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { typeof(Customer).Namespace });
             var menuFactory = new NullMenuFactory();
 
-            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(0);
+            facetFactory = new UnsupportedMethodFilteringFactory(0);
             var classStrategy = new DefaultClassStrategy( config);
             var metamodel = new Metamodel(classStrategy, cache);
 
@@ -45,7 +45,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private UnsupportedParameterTypesMethodFilteringFactory facetFactory;
+        private UnsupportedMethodFilteringFactory facetFactory;
 
         protected override Type[] SupportedTypes {
             get {

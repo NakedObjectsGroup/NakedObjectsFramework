@@ -38,7 +38,7 @@ namespace NakedObjects.Meta.Facet {
 
         public virtual void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {}
 
-        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
+        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             return new PropertyInfo[] {};
         }
 

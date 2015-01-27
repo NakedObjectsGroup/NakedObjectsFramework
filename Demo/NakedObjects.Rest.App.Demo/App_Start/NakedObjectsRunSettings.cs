@@ -66,7 +66,7 @@ namespace NakedObjects.Rest.App.Demo {
 
         private static Type[] AssociatedTypes() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject) || typeof(IViewModel).IsAssignableFrom(t)) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {

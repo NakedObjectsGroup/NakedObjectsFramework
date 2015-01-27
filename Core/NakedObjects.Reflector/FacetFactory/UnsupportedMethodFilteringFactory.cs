@@ -13,16 +13,32 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
+    public class UnsupportedMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedMethodFilteringFactory));
 
-        public UnsupportedParameterTypesMethodFilteringFactory(int numericOrder)
+        public UnsupportedMethodFilteringFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
+
+            //todo rework this so that factories filter actions appropraitely
+            if (classStrategy.IsSystemClass(method.DeclaringType)) {
+                Log.InfoFormat("Skipping fields in {0} (system class according to ClassStrategy)", typeName);
+                return true;
+            }
+
+            if (method.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) {
+                Log.InfoFormat("Ignoring method: {0}.{1} because it is ignored", typeName, method.Name);
+                return true;
+            }
+
+            if (method.IsStatic) {
+                Log.InfoFormat("Ignoring method: {0}.{1} because it is static", typeName, method.Name);
+                return true;
+            }
 
             if (method.IsGenericMethod) {
                 Log.InfoFormat("Ignoring method: {0}.{1} because it is generic", typeName, method.Name);

@@ -65,7 +65,7 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="holder">to attach the facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
-        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
+        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
 
         IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
     }
