@@ -70,7 +70,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return new Tuple<IActionSpec, string>[] {};
         }
 
-        public static IActionSpec GetOverloadedAction(string actionName, IObjectSpec spec) {
+        public static IActionSpec GetOverloadedAction(string actionName, ITypeSpec spec) {
             IActionSpec action = null;
             IActionSpec[] actions = spec.GetActionLeafNodes();
             Tuple<IActionSpec, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
@@ -84,13 +84,13 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return action;
         }
 
-        public static string GetOverloadedUId(IActionSpec action, IObjectSpec spec) {
+        public static string GetOverloadedUId(IActionSpec action, ITypeSpec spec) {
             IActionSpec[] actions = spec.GetActionLeafNodes();
             Tuple<IActionSpec, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
             return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
         }
 
-        public static Tuple<IActionSpec, string> GetActionandUidFromSpec(IObjectSpec spec, string actionName, string typeName) {
+        public static Tuple<IActionSpec, string> GetActionandUidFromSpec(ITypeSpec spec, string actionName, string typeName) {
             IActionSpec[] actions = spec.GetActionLeafNodes();
             IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? GetOverloadedAction(actionName, spec);
 
@@ -102,7 +102,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return new Tuple<IActionSpec, string>(action, uid);
         }
 
-        public static Tuple<IActionSpec, string>[] GetActionsandUidFromSpec(IObjectSpec spec) {
+        public static Tuple<IActionSpec, string>[] GetActionsandUidFromSpec(ITypeSpec spec) {
             IActionSpec[] actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<IActionSpec, string>(action, GetOverloadedUId(action, spec))).ToArray();
         }

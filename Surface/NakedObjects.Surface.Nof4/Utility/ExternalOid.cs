@@ -49,9 +49,9 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public object GetServiceByServiceName(LinkObjectId oid) {
             Type type = ValidateServiceId(oid);
-            IObjectSpec spec;
+            IServiceSpec spec;
             try {
-                spec = framework.MetamodelManager.GetSpecification(type);
+                spec = (IServiceSpec) framework.MetamodelManager.GetSpecification(type);
             }
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
@@ -74,7 +74,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
-            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
+            ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
             return new NakedObjectSpecificationWrapper(spec, Surface, framework);
         }
 
@@ -131,8 +131,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         protected object GetObject(string[] keys, Type type) {
-            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
-            return spec.IsViewModel ? GetViewModel(keys, spec) : GetDomainObject(keys, type);
+            ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
+            return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec) spec) : GetDomainObject(keys, type);
         }
 
 

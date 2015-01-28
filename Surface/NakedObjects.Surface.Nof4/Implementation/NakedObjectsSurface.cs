@@ -210,7 +210,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ListContext GetServicesInternal() {
             INakedObject[] services = framework.ServicesManager.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager);
-            IObjectSpec elementType = framework.MetamodelManager.GetSpecification(typeof (object));
+            IObjectSpec elementType = (IObjectSpec) framework.MetamodelManager.GetSpecification(typeof (object));
 
             return new ListContext {
                 ElementType = elementType,
@@ -244,7 +244,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IObjectSpec spec = GetDomainTypeInternal(typeName);
+            ITypeSpec spec = GetDomainTypeInternal(typeName);
 
             IAssociationSpec property = spec.Properties.SingleOrDefault(p => p.Id == propertyName);
 
@@ -252,7 +252,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new TypePropertyResourceNotFoundNOSException(propertyName, typeName);
             }
 
-            return new Tuple<IAssociationSpec, IObjectSpec>(property, spec);
+            return new Tuple<IAssociationSpec, IObjectSpec>(property, (IObjectSpec) spec);
         }
 
         private PropertyContext CanChangeProperty(INakedObject nakedObject, string propertyName, object toPut = null) {
@@ -465,7 +465,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (isValid) {
                 foreach (IActionParameterSpec parm in actionContext.Action.Parameters) {
                     try {
-                        INakedObject valueNakedObject = GetValue(parm.Spec, rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null);
+                        INakedObject valueNakedObject = GetValue((IObjectSpec) parm.Spec, rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null);
 
                         orderedParms[parm.Id].ProposedNakedObject = valueNakedObject;
 
@@ -533,7 +533,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 if (when == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
-                IObjectSpec tgtSpec = target.Spec;
+                ITypeSpec tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
@@ -574,7 +574,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private IConsent CanSetPropertyValue(PropertyContext context) {
             try {
-                context.ProposedNakedObject = GetValue(context.Specification, context.ProposedValue);
+                context.ProposedNakedObject = GetValue((IObjectSpec) context.Specification, context.ProposedValue);
                 return new Allow();
             }
             catch (InvalidEntryException e) {
@@ -605,7 +605,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 
-        private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, IObjectSpec targetSpec, string uid) {
+        private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
             IActionParameterSpec[] parms;
             if (action.IsContributedMethod && !action.OnSpec.Equals(targetSpec)) {
                 var tempParms = new List<IActionParameterSpec>();
@@ -682,13 +682,14 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IObjectSpec spec = GetDomainTypeInternal(typeName);
+            ITypeSpec spec = GetDomainTypeInternal(typeName);
             var actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
 
             var actionContext = new ActionContext {
                 Action = actionAndUid.Item1,
                 VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, spec, actionAndUid.Item2),
                 OverloadedUniqueId = actionAndUid.Item2
+
             };
 
             return new Tuple<ActionContext, IObjectSpec>(actionContext, spec);
@@ -699,7 +700,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IObjectSpec spec = GetDomainTypeInternal(typeName);
+            ITypeSpec spec = GetDomainTypeInternal(typeName);
             Tuple<IActionSpec, string> actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
 
             IActionParameterSpec parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
@@ -756,7 +757,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return GetObjectContext(nakedObject);
         }
 
-        private IObjectSpec GetDomainTypeInternal(string domainTypeId) {
+        private ITypeSpec GetDomainTypeInternal(string domainTypeId) {
             try {
                 var spec = (NakedObjectSpecificationWrapper) oidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
                 return spec.WrappedValue;
@@ -772,18 +773,18 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IObjectSpec spec = GetDomainTypeInternal(typeName);
+            IObjectSpec spec = (IObjectSpec) GetDomainTypeInternal(typeName);
             INakedObject nakedObject = framework.LifecycleManager.CreateInstance(spec);
 
             return SetObject(nakedObject, arguments);
         }
 
 
-        private INakedObjectSpecificationSurface GetSpecificationWrapper(IObjectSpec spec) {
+        private INakedObjectSpecificationSurface GetSpecificationWrapper(ITypeSpec spec) {
             return new NakedObjectSpecificationWrapper(spec, this, framework);
         }
 
-        private static bool IsGenericType(IObjectSpec spec) {
+        private static bool IsGenericType(ITypeSpec spec) {
             Type type = TypeUtils.GetType(spec.FullName);
 
             if (type != null) {
@@ -824,7 +825,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             public IObjectSpec Specification {
-                get { return prop == null ? parm.Spec : prop.ReturnSpec; }
+                get { return (IObjectSpec) (prop == null ? parm.Spec : prop.ReturnSpec); }
             }
 
             private Func<Tuple<string, IObjectSpec>[]> GetChoicesParameters {
@@ -891,7 +892,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     var mp = matchedParms[key];
                     object value = mp.value;
                     IObjectSpec expectedType = mp.expectedType;
-                    IObjectSpec actualType = mp.actualType;
+                    ITypeSpec actualType = mp.actualType;
 
                     if (expectedType.IsParseable && actualType.IsParseable) {
                         string rawValue = value.ToString();
