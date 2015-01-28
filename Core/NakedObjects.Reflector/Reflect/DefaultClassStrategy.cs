@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -32,8 +33,22 @@ namespace NakedObjects.Reflect {
             return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
         }
 
+        // only intended for use during initial reflection
+        private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
+
+        private bool IsNamespaceMatch(Type type) {
+
+            if (!namespaceScratchPad.ContainsKey(type)) {
+                var ns = type.Namespace ?? "";
+                var match = config.SupportedNamespaces.Any(ns.StartsWith);
+                namespaceScratchPad = namespaceScratchPad.Add(type, match);
+            }
+
+            return namespaceScratchPad[type];
+        }
+
         private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || config.SupportedNamespaces.Any(n => type.Namespace == n) || IsTypeExplicitlyRequested(type);
+            return IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
         }
 
         private bool IsTypeExplicitlyRequested(Type type) {
