@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Spec {
             this.persistor = persistor;
             isASet = association.ContainsFacet<IIsASetFacet>();
 
-            elementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
+            elementSpec = (IObjectSpec) MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
         public override bool IsChoicesEnabled {

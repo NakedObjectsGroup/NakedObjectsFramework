@@ -30,7 +30,7 @@ namespace NakedObjects.Core.Adapter {
         private string defaultTitle;
         private IOid oid;
         private object poco;
-        private IObjectSpec spec;
+        private ITypeSpec spec;
         private ITypeOfFacet typeOfFacet;
         private IVersion version;
 
@@ -87,7 +87,7 @@ namespace NakedObjects.Core.Adapter {
 
         public IResolveStateMachine ResolveState { get; private set; }
 
-        public virtual IObjectSpec Spec {
+        public virtual ITypeSpec Spec {
             get {
                 if (spec == null) {
                     spec = metamodel.GetSpecification(Object.GetType());
@@ -242,7 +242,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            IObjectSpec elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
+            IObjectSpec elementSpecification = (IObjectSpec) (TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel)));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

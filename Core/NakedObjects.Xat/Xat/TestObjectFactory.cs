@@ -93,7 +93,7 @@ namespace NakedObjects.Xat {
             if (!objectIm.Service) {
                 throw new Exception("Action is not on a known object or service");
             }
-            IObjectSpec objectSpec = metamodelManager.GetSpecification(objectIm);
+            IServiceSpec objectSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
             INakedObject service = servicesManager.GetService(objectSpec);
             ITestService testService = CreateTestService(service);
             IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);

@@ -35,7 +35,7 @@ namespace NakedObjects.Architecture.Component {
         void Refresh(INakedObject nakedObject);
         void ResolveImmediately(INakedObject nakedObject);
         void DestroyObject(INakedObject nakedObject);
-        object CreateObject(IObjectSpec spec);
+        object CreateObject(ITypeSpec spec);
         IEnumerable GetBoundedSet(IObjectSpec spec);
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
         void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);

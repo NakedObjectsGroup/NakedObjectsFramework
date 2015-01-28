@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Component {
 
         INakedObject CreateViewModel(IObjectSpec spec);
 
-        INakedObject RecreateInstance(IOid oid, IObjectSpec spec);
+        INakedObject RecreateInstance(IOid oid, ITypeSpec spec);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -43,7 +43,7 @@ namespace NakedObjects.Architecture.Component {
 
         IOid RestoreOid(string[] encodedData);
 
-        INakedObject LoadObject(IOid oid, IObjectSpec spec);
+        INakedObject LoadObject(IOid oid, ITypeSpec spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

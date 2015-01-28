@@ -77,7 +77,7 @@ namespace NakedObjects.Core.Adapter {
             get { return previous != null; }
         }
 
-        public IObjectSpec Spec {
+        public ITypeSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
@@ -94,7 +94,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void UpdateKeys(string[] newKeys, bool final) {
-            previous = new ViewModelOid(metamodel, Spec) {Keys = Keys};
+            previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
             Keys = newKeys; // after old key is saved ! 
             IsFinal = final;
             CacheState();

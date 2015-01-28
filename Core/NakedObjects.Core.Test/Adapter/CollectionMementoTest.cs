@@ -175,7 +175,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestActionNoParmsTransient() {
-            INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TestDomainObject)));
+            INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TestDomainObject)));
 
             IActionSpec actionSpec = targetNo.Spec.GetObjectActions().Single(a => a.Id == "Action1");
 

@@ -40,11 +40,11 @@ namespace NakedObjects.Core.Spec {
         public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             var oneToOneAssociationSpecImmutable = specImmutable as IOneToOneAssociationSpecImmutable;
-            if (oneToOneAssociationSpecImmutable != null    ) {
+            if (oneToOneAssociationSpecImmutable != null) {
                 return new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager);
             }
             var oneToManyAssociationSpecImmutable = specImmutable as IOneToManyAssociationSpecImmutable;
-            if (oneToManyAssociationSpecImmutable != null   ) {
+            if (oneToManyAssociationSpecImmutable != null) {
                 return new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
             }
             throw new ReflectionException("Unknown spec type: " + specImmutable);
@@ -64,7 +64,16 @@ namespace NakedObjects.Core.Spec {
             return CreateAssociation(specImmutable);
         }
 
-        public IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
+        public ITypeSpec CreateTypeSpec(IObjectSpecImmutable specImmutable) {
+            return specImmutable.Service ? (ITypeSpec) CreateServiceSpec(specImmutable) : CreateObjectSpec(specImmutable);
+        }
+
+        private IServiceSpec CreateServiceSpec(IObjectSpecImmutable specImmutable) {
+            Assert.AssertNotNull(framework);
+            return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
+        }
+
+        private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             return new ObjectSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
         }

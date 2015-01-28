@@ -63,7 +63,7 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetObjectActionOrder() {
-            IObjectSpec spec = NakedObject.Spec;
+            ITypeSpec spec = NakedObject.Spec;
             IActionSpec[] actionsSpec = spec.GetObjectActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actionsSpec));
@@ -106,7 +106,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject AssertIsImmutable() {
-            IObjectSpec spec = NakedObject.Spec;
+            ITypeSpec spec = NakedObject.Spec;
             var facet = spec.GetFacet<IImmutableFacet>();
 
             bool immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();

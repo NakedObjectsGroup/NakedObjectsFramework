@@ -81,7 +81,7 @@ namespace NakedObjects.Core.Adapter {
             throw new NotImplementedException();
         }
 
-        public IObjectSpec Spec {
+        public ITypeSpec Spec {
             get { return metamodel.GetSpecification(typeName); }
         }
 

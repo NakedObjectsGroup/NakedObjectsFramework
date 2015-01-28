@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public virtual ServiceType GetServiceType(IObjectSpec spec) {
+        public virtual ServiceType GetServiceType(IServiceSpec spec) {
             return Services.Where(sw => Equals(manager.GetServiceAdapter(sw.Service).Spec, spec)).Select(sw => sw.ServiceType).FirstOrDefault();
         }
 
@@ -61,7 +61,7 @@ namespace NakedObjects.Core.Component {
             return Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service)).FirstOrDefault();
         }
 
-        public INakedObject GetService(IObjectSpec spec) {
+        public INakedObject GetService(IServiceSpec spec) {
             return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
         }
 
