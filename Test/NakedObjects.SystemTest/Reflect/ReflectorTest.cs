@@ -40,7 +40,22 @@ namespace NakedObjects.SystemTest.Reflect {
             return c;
         }
 
+        protected static void RegisterFacetFactories(IUnityContainer container) {
+            var factoryTypes = FacetFactories.StandardFacetFactories();
+            for (int i = 0; i < factoryTypes.Length; i++) {
+                RegisterFacetFactory(factoryTypes[i], container, i);
+            }
+        }
+
+        private static int RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
+            container.RegisterType(typeof(IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
+            return order;
+        }
+
         protected virtual void RegisterTypes(IUnityContainer container) {
+
+            RegisterFacetFactories(container);
+
             container.RegisterType<IMenuFactory, NullMenuFactory>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
                 new ContainerControlledLifetimeManager(), new InjectionConstructor());
@@ -96,7 +111,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore]
         public void ReflectAdventureworks() {
             // load adventurework
 
@@ -106,14 +120,7 @@ namespace NakedObjects.SystemTest.Reflect {
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
-            rc.SupportedSystemTypes.Add(typeof (FileAttachment));
-            rc.SupportedSystemTypes.Add(typeof (TypeCode));
-            rc.SupportedSystemTypes.Add(typeof (IEnumerator));
-            rc.SupportedSystemTypes.Add(typeof (IEnumerator<char>));
-            rc.SupportedSystemTypes.Add(typeof (Type));
-            rc.SupportedSystemTypes.Add(typeof (Stream));
-            rc.SupportedSystemTypes.Add(typeof (IFormatProvider));
-            rc.SupportedSystemTypes.Add(typeof (System.Enum));
+          
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -134,8 +141,7 @@ namespace NakedObjects.SystemTest.Reflect {
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
         [TestMethod]
-        [Ignore]
-
+        [Ignore] // #8225
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -211,7 +217,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore] // #8225
 
         public void SerializeAdventureworksByType() {
             // load adventurework
@@ -249,7 +255,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore]
 
         public void SerializeAdventureworksFacets() {
             // load adventurework

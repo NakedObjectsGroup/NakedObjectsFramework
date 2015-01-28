@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
+    [Serializable]
     public class MenuImpl : IMenu, IMenuImmutable {
         #region Injected ServicesManager
 

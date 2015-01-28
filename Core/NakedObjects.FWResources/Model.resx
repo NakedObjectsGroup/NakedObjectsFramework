@@ -104,4 +104,7 @@
   <data name="ContextNameMismatch2" xml:space="preserve">
     <value>Context name: {0} is being used in the web.config file but is not marked as used by the installer</value>
   </data>
+  <data name="ActionsMenuName" xml:space="preserve">
+    <value>Actions</value>
+  </data>
 </root>

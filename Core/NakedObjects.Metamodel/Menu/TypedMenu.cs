@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -12,6 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
+    [Serializable]
     public class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
