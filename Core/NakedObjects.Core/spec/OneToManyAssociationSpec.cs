@@ -22,7 +22,7 @@ namespace NakedObjects.Core.Spec {
         private readonly IObjectPersistor persistor;
         private readonly IObjectSpec elementSpec;
 
-        public OneToManyAssociationSpec(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
+        public OneToManyAssociationSpec(IMetamodelManager metamodel, IOneToManyAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
             isASet = association.ContainsFacet<IIsASetFacet>();

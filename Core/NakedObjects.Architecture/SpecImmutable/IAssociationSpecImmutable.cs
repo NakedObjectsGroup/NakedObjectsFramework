@@ -9,24 +9,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable {
-        /// <summary>
-        ///     If this is a scalar association, representing (in old terminology)
-        ///     a reference to another entity or a value.
-        /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToMany" />
-        /// </para>
-        bool IsOneToOne { get; }
-
-        /// <summary>
-        ///     If this is a collection
-        /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToOne" />
-        /// </para>
-        bool IsOneToMany { get; }
-    }
+    public interface IAssociationSpecImmutable : IMemberSpecImmutable {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

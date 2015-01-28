@@ -23,7 +23,7 @@ namespace NakedObjects.Core.Spec {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
 
-        public OneToOneAssociationSpec(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, ITransactionManager transactionManager)
+        public OneToOneAssociationSpec(IMetamodelManager metamodel, IOneToOneAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, ITransactionManager transactionManager)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
             this.transactionManager = transactionManager;

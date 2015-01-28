@@ -218,6 +218,8 @@
     <Compile Include="Menu\IMenuImmutable.cs" />
     <Compile Include="Menu\IMenuItemImmutable.cs" />
     <Compile Include="Reflect\IIntrospector.cs" />
+    <Compile Include="SpecImmutable\IOneToManyAssociationSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\IOneToOneAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />
     <Compile Include="Spec\ISpecification.cs" />
     <Compile Include="Facet\IHiddenFacet.cs" />
