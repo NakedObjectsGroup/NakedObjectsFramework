@@ -39,13 +39,15 @@ namespace NakedObjects.Core.Spec {
 
         public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            if (specImmutable.IsOneToOne) {
-                return new OneToOneAssociationSpec(framework.MetamodelManager, specImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager);
+            var oneToOneAssociationSpecImmutable = specImmutable as IOneToOneAssociationSpecImmutable;
+            if (oneToOneAssociationSpecImmutable != null    ) {
+                return new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager);
             }
-            if (specImmutable.IsOneToMany) {
-                return new OneToManyAssociationSpec(framework.MetamodelManager, specImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
+            var oneToManyAssociationSpecImmutable = specImmutable as IOneToManyAssociationSpecImmutable;
+            if (oneToManyAssociationSpecImmutable != null   ) {
+                return new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
             }
-            throw new ReflectionException("Unknown peer type: " + specImmutable);
+            throw new ReflectionException("Unknown spec type: " + specImmutable);
         }
 
         public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) {

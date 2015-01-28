@@ -30,7 +30,7 @@ namespace NakedObjects.Architecture.Component {
 
         IObjectSpecBuilder LoadSpecification(Type type);
 
-        IObjectSpecBuilder LoadSpecification(string name);
+        //IObjectSpecBuilder LoadSpecification(string name);
 
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();

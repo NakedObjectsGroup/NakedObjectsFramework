@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -33,7 +34,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-            DatabaseUtils.RestoreDatabase(database, backup, server);
+            try {
+                DatabaseUtils.RestoreDatabase(database, backup, server);
+            }
+            catch (Exception e) {
+                // just carry on - tests may fail
+                var m = e.Message;
+                Console.WriteLine(m);
+            }
             KillAllProcesses("iexplore");
             KillAllProcesses("firefox");
         }

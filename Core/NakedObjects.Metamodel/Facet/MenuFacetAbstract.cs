@@ -5,15 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Resources;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         protected ObjectSpecImmutable Spec() {
             return (ObjectSpecImmutable) Specification;
@@ -23,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
             if (spec.Service) {
                 return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
             }
-            return "Actions";
+            return Model.ActionsMenuName;
         }
 
         protected MenuImpl Menu { get; set; }

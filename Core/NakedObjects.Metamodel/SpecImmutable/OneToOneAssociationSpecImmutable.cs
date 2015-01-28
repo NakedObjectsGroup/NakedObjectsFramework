@@ -12,20 +12,12 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
+    public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
         private readonly IObjectSpecImmutable ownerSpec;
 
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
             : base(identifier, returnSpec) {
             this.ownerSpec = ownerSpec;
-        }
-
-        public override bool IsOneToMany {
-            get { return false; }
-        }
-
-        public override bool IsOneToOne {
-            get { return true; }
         }
 
         public override IObjectSpecImmutable ElementSpec {

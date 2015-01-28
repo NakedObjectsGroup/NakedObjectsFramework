@@ -32,16 +32,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facet = new ContributedActionFacet(holder);
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
-                IObjectSpecBuilder type = reflector.LoadSpecification(p.ParameterType.FullName);
+                IObjectSpecBuilder type = reflector.LoadSpecification(p.ParameterType);
                 if (type != null) {
                     //TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
                     if (type.IsCollection) {
                         //TODO:  Will the return type Spec always exist by this point?
-                        IObjectSpecBuilder returnType = reflector.LoadSpecification(member.ReturnType.FullName);
+                        IObjectSpecBuilder returnType = reflector.LoadSpecification(member.ReturnType);
                         if (!returnType.IsCollection) {
                             //Don't allow collection-contributed actions that return collections
                             Type elementType = p.ParameterType.GetGenericArguments()[0];
-                            type = reflector.LoadSpecification(elementType.FullName);
+                            type = reflector.LoadSpecification(elementType);
                             facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
                         }
                     }

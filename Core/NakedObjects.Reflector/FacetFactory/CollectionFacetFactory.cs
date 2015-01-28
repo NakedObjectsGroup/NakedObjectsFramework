@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -31,7 +30,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             reflector.LoadSpecification(elementType);
         }
 
-        private void ProcessGenericEnumerable(IReflector reflector, Type type, ISpecification holder) {
+        private void ProcessGenericEnumerable(Type type, ISpecification holder) {
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
             bool isSet = CollectionUtils.IsSet(type);
@@ -61,7 +60,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
-                ProcessGenericEnumerable(reflector, type, specification);
+                ProcessGenericEnumerable(type, specification);
             }
             else if (type.IsArray) {
                 ProcessArray(reflector, type, specification);

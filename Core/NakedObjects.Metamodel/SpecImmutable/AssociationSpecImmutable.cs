@@ -27,9 +27,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return returnSpec; }
         }
 
-        public abstract bool IsOneToMany { get; }
-        public abstract bool IsOneToOne { get; }
-
         public string GroupFullName {
             get { return ""; }
         }

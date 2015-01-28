@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace NakedObjects.Resources {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -54,6 +57,15 @@ namespace NakedObjects.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string ActionsMenuName {
+            get {
+                return ResourceManager.GetString("ActionsMenuName", resourceCulture);
             }
         }
         

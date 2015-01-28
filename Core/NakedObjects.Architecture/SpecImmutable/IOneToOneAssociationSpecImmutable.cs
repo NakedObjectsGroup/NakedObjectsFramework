@@ -5,15 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
-
 namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
-    ///     Details about action and field members gained via reflection.
+    ///     Additional reflective details about field members
     /// </summary>
-    public interface IMemberSpecImmutable : ISpecificationBuilder, INamedAndDescribed {
-        IObjectSpecImmutable ReturnSpec { get; }
-        IObjectSpecImmutable OwnerSpec { get; }
+    public interface IOneToOneAssociationSpecImmutable : IAssociationSpecImmutable {
+        
     }
 
     // Copyright (c) Naked Objects Group Ltd.
