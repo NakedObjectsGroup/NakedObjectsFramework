@@ -1731,9 +1731,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 tag.MergeAttribute("data-validate", url);
 
+                bool noFinder = context.EmbeddedInObject || !context.IsFindMenuEnabled();
+
                 tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                  html.GetFieldValue(context, suggestedItem) +
-                                 (context.EmbeddedInObject ? string.Empty : html.FinderActions(context.Parameter.Spec, context, context.Parameter.Id)) +
+                                 (noFinder ? string.Empty : html.FinderActions(context.Parameter.Spec, context, context.Parameter.Id)) +
                                  html.GetMandatoryIndicator(context) +
                                  html.ValidationMessage(context.Parameter.IsAutoCompleteEnabled ? context.GetParameterAutoCompleteId() : id) +
                                  html.CustomEncrypted(id, valueId);
@@ -1793,6 +1795,10 @@ namespace NakedObjects.Web.Mvc.Html {
                         }));
                         tag.MergeAttribute("data-validate", url);
                     }
+                    if (propertyContext.IsFindMenuEnabled()) {
+                        noFinder = true; //irrespective of what was passed in
+                    }
+
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                      html.GetFieldValue(propertyContext, suggestedItem) +
                                      (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.ReturnSpec, new ActionContext(propertyContext.Target, null), propertyContext.Property.Id)) +
