@@ -221,6 +221,8 @@
     <Compile Include="SpecImmutable\IOneToManyAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IOneToOneAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />
+    <Compile Include="Spec\ITypeSpec.cs" />
+    <Compile Include="Spec\IServiceSpec.cs" />
     <Compile Include="Spec\ISpecification.cs" />
     <Compile Include="Facet\IHiddenFacet.cs" />
     <Compile Include="Facet\IHideForContextFacet.cs" />

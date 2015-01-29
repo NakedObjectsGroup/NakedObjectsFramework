@@ -16,14 +16,14 @@ namespace NakedObjects.Architecture.Component {
     /// The NakedObjectManager takes responsibility to inject these specifications with the necessary framework services.
     /// </summary>
     public interface IMetamodelManager {
-        IObjectSpec[] AllSpecs { get; }
+        ITypeSpec[] AllSpecs { get; }
         IMetamodel Metamodel { get; }
 
-        IObjectSpec GetSpecification(Type type);
+        ITypeSpec GetSpecification(Type type);
 
-        IObjectSpec GetSpecification(string name);
+        ITypeSpec GetSpecification(string name);
 
-        IObjectSpec GetSpecification(IObjectSpecImmutable spec);
+        ITypeSpec GetSpecification(IObjectSpecImmutable spec);
 
         IMenuImmutable[] MainMenus();
 

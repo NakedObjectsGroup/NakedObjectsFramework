@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Spec {
     /// services in relation to a specific object; where possible its responsibilities are delegated 
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
-    public interface IObjectSpec : ITypeSpec {}
+    public interface IServiceSpec : ITypeSpec {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

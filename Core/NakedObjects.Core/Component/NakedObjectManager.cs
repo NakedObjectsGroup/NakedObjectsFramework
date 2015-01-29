@@ -71,7 +71,7 @@ namespace NakedObjects.Core.Component {
                 return null;
             }
             if (oid == null) {
-                IObjectSpec objectSpec = metamodel.GetSpecification(domainObject.GetType());
+                ITypeSpec objectSpec = metamodel.GetSpecification(domainObject.GetType());
                 if (objectSpec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
                 }
@@ -171,8 +171,8 @@ namespace NakedObjects.Core.Component {
             return pocoAdapter;
         }
 
-        private INakedObject AdapterForExistingObject(object domainObject, IObjectSpec spec) {
-            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
+        private INakedObject AdapterForExistingObject(object domainObject, ITypeSpec spec) {
+            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, (IObjectSpec) spec) ?? NewAdapterForTransient(domainObject);
         }
 
         private static void NewTransientsResolvedState(INakedObject pocoAdapter) {

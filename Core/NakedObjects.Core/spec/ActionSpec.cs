@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Spec {
         // cached values     
         private IObjectSpec returnSpec;
         private IObjectSpec elementSpec;
-        private IObjectSpec onSpec;
+        private ITypeSpec onSpec;
         private Where? executedWhere;
         private bool? isFinderMethod;
         private bool? hasReturn;
@@ -61,14 +61,14 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public override IObjectSpec ReturnSpec {
-            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
+            get { return returnSpec ?? (returnSpec = (IObjectSpec) MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
         }
 
         public override IObjectSpec ElementSpec {
-            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
+            get { return elementSpec ?? (elementSpec = (IObjectSpec) MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
         }
 
-        public virtual IObjectSpec OnSpec {
+        public virtual ITypeSpec OnSpec {
             get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
         }
 
@@ -109,7 +109,6 @@ namespace NakedObjects.Core.Spec {
                 return isFinderMethod.Value;
             }
         }
-
 
         public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
@@ -194,7 +193,7 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private bool FindServiceOnSpecOrSpecSuperclass(IObjectSpec spec) {
+        private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) {
             return spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
         }
 

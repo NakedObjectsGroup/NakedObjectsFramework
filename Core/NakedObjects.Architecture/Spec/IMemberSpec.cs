@@ -26,7 +26,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </param>
         bool IsVisible(INakedObject target);
 
-
         IObjectSpec ReturnSpec { get; }
 
         IObjectSpec ElementSpec { get; }

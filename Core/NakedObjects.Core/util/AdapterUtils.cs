@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            IObjectSpec collectionSpec = objectRepresentingCollection.Spec;
+            ITypeSpec collectionSpec = objectRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ICollectionFacet>();
         }
 
@@ -47,7 +47,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            IObjectSpec collectionSpec = objectRepresentingCollection.Spec;
+            ITypeSpec collectionSpec = objectRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ITypeOfFacet>();
         }
 
@@ -59,7 +59,7 @@ namespace NakedObjects.Core.Util {
             return nakedObject.Spec.GetActionLeafNodes();
         }
 
-        public static IActionSpec[] GetActionLeafNodes(this IObjectSpec spec) {
+        public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) {
             return spec.GetObjectActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 

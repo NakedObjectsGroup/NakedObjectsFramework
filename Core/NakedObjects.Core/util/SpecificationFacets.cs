@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Util {
     public static class SpecificationFacets {
-        public static bool IsAlwaysImmutable(this IObjectSpec spec) {
+        public static bool IsAlwaysImmutable(this ITypeSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();
             if (immutableFacet == null) {
                 return false;
@@ -19,7 +19,7 @@ namespace NakedObjects.Core.Util {
             return immutableFacet.Value == WhenTo.Always;
         }
 
-        public static bool IsImmutableOncePersisted(this IObjectSpec spec) {
+        public static bool IsImmutableOncePersisted(this ITypeSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();
             if (immutableFacet == null) {
                 return false;
@@ -27,15 +27,15 @@ namespace NakedObjects.Core.Util {
             return immutableFacet.Value == WhenTo.OncePersisted;
         }
 
-        public static bool IsBoundedSet(this IObjectSpec spec) {
+        public static bool IsBoundedSet(this ITypeSpec spec) {
             return spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
         }
 
-        public static bool IsCollectionOfBoundedSet(this IObjectSpec spec, IObjectSpec elementSpec) {
+        public static bool IsCollectionOfBoundedSet(this ITypeSpec spec, IObjectSpec elementSpec) {
             return spec.IsCollection && elementSpec.IsBoundedSet();
         }
 
-        public static bool IsCollectionOfEnum(this IObjectSpec spec, IObjectSpec elementSpec) {
+        public static bool IsCollectionOfEnum(this ITypeSpec spec, IObjectSpec elementSpec) {
             return spec.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
         }
 

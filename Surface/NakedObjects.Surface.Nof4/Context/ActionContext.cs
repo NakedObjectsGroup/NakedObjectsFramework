@@ -19,7 +19,7 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Action.Id; }
         }
 
-        public override IObjectSpec Specification {
+        public override ITypeSpec Specification {
             get { return Action.ReturnSpec; }
         }
 

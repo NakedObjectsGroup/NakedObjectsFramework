@@ -150,7 +150,7 @@ namespace NakedObjects.Core.Component {
                     nakedObject.Updated();
                 }
                 else {
-                    IObjectSpec spec = nakedObject.Spec;
+                    ITypeSpec spec = nakedObject.Spec;
                     if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
@@ -173,7 +173,7 @@ namespace NakedObjects.Core.Component {
             nakedObject.Deleted();
         }
 
-        public object CreateObject(IObjectSpec spec) {
+        public object CreateObject(ITypeSpec spec) {
             Log.DebugFormat("CreateObject: " + spec);
 
             Type type = TypeUtils.GetType(spec.FullName);
@@ -187,8 +187,8 @@ namespace NakedObjects.Core.Component {
 
                     // ReSharper disable once LoopCanBeConvertedToQuery
                     // LINQ needs cast - need to be careful with EF - safest to leave as loop
-                    foreach (IObjectSpec subSpec in GetLeafNodes(spec)) {
-                        foreach (object instance in Instances(subSpec)) {
+                    foreach (ITypeSpec subSpec in GetLeafNodes(spec)) {
+                        foreach (object instance in Instances((IObjectSpec) subSpec)) {
                             instances.Add(instance);
                         }
                     }
@@ -220,7 +220,7 @@ namespace NakedObjects.Core.Component {
             return objectStore.GetInstances(spec);
         }
 
-        private static IEnumerable<IObjectSpec> GetLeafNodes(IObjectSpec spec) {
+        private static IEnumerable<ITypeSpec> GetLeafNodes(ITypeSpec spec) {
             if ((spec.IsInterface || spec.IsAbstract)) {
                 return spec.Subclasses.SelectMany(GetLeafNodes);
             }

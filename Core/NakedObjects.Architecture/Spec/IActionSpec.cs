@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon
         /// </summary>
-        IObjectSpec OnSpec { get; }
+        ITypeSpec OnSpec { get; }
 
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
@@ -37,7 +37,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Return true if the action is run on a service object and can be used as a finder
         /// </summary>
         bool IsFinderMethod { get; }
-
 
         /// <summary>
         ///     Returns the number of parameters used by this method

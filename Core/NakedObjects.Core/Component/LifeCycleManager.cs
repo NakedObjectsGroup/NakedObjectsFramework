@@ -56,11 +56,11 @@ namespace NakedObjects.Core.Component {
 
         #region ILifecycleManager Members
 
-        public INakedObject LoadObject(IOid oid, IObjectSpec spec) {
+        public INakedObject LoadObject(IOid oid, ITypeSpec spec) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", spec);
-            return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, spec);
+            return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        public virtual INakedObject RecreateInstance(IOid oid, IObjectSpec spec) {
+        public virtual INakedObject RecreateInstance(IOid oid, ITypeSpec spec) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
             INakedObject adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
@@ -124,7 +124,7 @@ namespace NakedObjects.Core.Component {
             if (nakedObject.Spec.Persistable == PersistableType.Transient) {
                 throw new NotPersistableException("Object must be kept transient: " + nakedObject);
             }
-            IObjectSpec spec = nakedObject.Spec;
+            ITypeSpec spec = nakedObject.Spec;
             if (spec.IsService) {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
@@ -150,7 +150,7 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private object CreateObject(IObjectSpec spec) {
+        private object CreateObject(ITypeSpec spec) {
             Log.DebugFormat("CreateObject: " + spec);
             Type type = TypeUtils.GetType(spec.FullName);
 
@@ -165,7 +165,7 @@ namespace NakedObjects.Core.Component {
 
         private IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            IObjectSpec spec = metamodel.GetSpecification(typeName);
+            IObjectSpec spec = (IObjectSpec) metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
                 return new CollectionMemento(this, nakedObjectManager, metamodel, encodedData);
@@ -190,7 +190,7 @@ namespace NakedObjects.Core.Component {
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
-            IObjectSpec spec = oid.Spec;
+            IObjectSpec spec = (IObjectSpec) oid.Spec;
             INakedObject vm = CreateViewModel(spec);
             vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm);
             nakedObjectManager.UpdateViewModel(vm, keys);

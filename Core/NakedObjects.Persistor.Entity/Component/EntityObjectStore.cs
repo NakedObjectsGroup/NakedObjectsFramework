@@ -61,7 +61,7 @@ namespace NakedObjects.Persistor.Entity {
         private static EventHandler savingChangesHandlerDelegate;
 
         private static Action<INakedObject> handleLoaded;
-        private static Func<Type, IObjectSpec> loadSpecification;
+        private static Func<Type, ITypeSpec> loadSpecification;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodelManager;
 
@@ -266,8 +266,8 @@ namespace NakedObjects.Persistor.Entity {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                IObjectSpec parentSpec = metamodelManager.GetSpecification(parentType);
-                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
+                ITypeSpec parentSpec = metamodelManager.GetSpecification(parentType);
+                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, (IObjectSpec) parentSpec));
 
                 return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
             }
@@ -296,7 +296,7 @@ namespace NakedObjects.Persistor.Entity {
 
         public INakedObject FindByKeys(Type type, object[] keys) {
             IOid eoid = oidGenerator.CreateOid(type.FullName, keys);
-            IObjectSpec hint = loadSpecification(type);
+            IObjectSpec hint = (IObjectSpec) loadSpecification(type);
             return GetObject(eoid, hint);
         }
 

@@ -245,12 +245,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(type);
+            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            IObjectSpec spec = NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
+            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 

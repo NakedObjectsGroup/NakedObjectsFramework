@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(manager);
 
             this.manager = manager;
-            returnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
+            returnSpec = (IObjectSpec) MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
         public virtual bool IsChoicesEnabled {
@@ -108,7 +108,7 @@ namespace NakedObjects.Core.Spec {
                 if (when == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
-                IObjectSpec tgtSpec = target.Spec;
+                ITypeSpec tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }

@@ -23,7 +23,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public object ProposedValue { get; set; }
 
-        public abstract IObjectSpec Specification { get; }
+        public abstract ITypeSpec Specification { get; }
 
         protected T ToContextSurface<T>(T context, INakedObjectsSurface surface, INakedObjectsFramework framework) where T : ContextSurface {
             context.Target = NakedObjectWrapper.Wrap(Target, surface, framework);

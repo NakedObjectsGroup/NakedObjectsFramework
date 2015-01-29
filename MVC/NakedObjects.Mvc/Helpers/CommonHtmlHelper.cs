@@ -829,14 +829,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.Framework().GetAllServices().Select(html.Framework().GetNakedObject);
         }
 
-        private static string FinderActions(this HtmlHelper html, IObjectSpec spec, ActionContext actionContext, string propertyName) {
+        private static string FinderActions(this HtmlHelper html, ITypeSpec spec, ActionContext actionContext, string propertyName) {
             if (spec.IsCollection) {
                 return string.Empty;  // We don't want Finder menu rendered on any collection field
             } 
             List<ElementDescriptor> allActions = new List<ElementDescriptor>();
             allActions.Add(RemoveAction(propertyName));
             allActions.Add(html.RecentlyViewedAction(spec, actionContext, propertyName));
-            allActions.AddRange(html.FinderActionsForField(actionContext, spec, propertyName));
+            allActions.AddRange(html.FinderActionsForField(actionContext, (IObjectSpec) spec, propertyName));
 
             if (allActions.Any()) {
                 return BuildMenuContainer(allActions,
@@ -866,7 +866,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).ToArray();
             
-            var collectionSpec =  html.Framework().MetamodelManager.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel));
+            var collectionSpec =  (IObjectSpec) html.Framework().MetamodelManager.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel));
                    
             IAssociationSpec[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -965,7 +965,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
                 
-                IObjectSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().MetamodelManager.Metamodel));
+                IObjectSpec typeSpec = (IObjectSpec) html.Framework().MetamodelManager.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().MetamodelManager.Metamodel));
 
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
@@ -1421,7 +1421,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
 
         private static INakedObject GetAndParseValueAsNakedObject(this HtmlHelper html, ParameterContext context, object value) {
-            return html.GetAndParseValueAsNakedObject(context.Parameter.Spec, value);
+            return html.GetAndParseValueAsNakedObject((IObjectSpec) context.Parameter.Spec, value);
         }
 
         private static INakedObject GetParameterExistingValue(this HtmlHelper html, string id, ParameterContext context, bool clear = false) {
@@ -1447,7 +1447,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
                 if (context.Parameter.IsCollection) {
                     var facet = context.Parameter.GetFacet<IElementTypeFacet>();
-                    IObjectSpec itemSpec = html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);
+                    IObjectSpec itemSpec = (IObjectSpec) html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
@@ -1633,7 +1633,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
 
-        private static ElementDescriptor RecentlyViewedAction(this HtmlHelper html, IObjectSpec spec, ActionContext actionContext, string propertyName) {
+        private static ElementDescriptor RecentlyViewedAction(this HtmlHelper html, ITypeSpec spec, ActionContext actionContext, string propertyName) {
             return new ElementDescriptor {
                 TagType = "button",
                 Value = MvcUi.RecentlyViewed,
@@ -2521,7 +2521,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<IActionSpec> finderActions = fieldSpec.GetFinderActions();
             var descriptors = new List<ElementDescriptor>();
             foreach (var finderAction in finderActions) {
-                INakedObject service = html.Framework().ServicesManager.GetService(finderAction.OnSpec);
+                INakedObject service = html.Framework().ServicesManager.GetService((IServiceSpec) finderAction.OnSpec);
                 ActionContext targetActionContext = new ActionContext(service, finderAction);
                 var ed = html.GetActionElementDescriptor(new ActionContext(service, finderAction), actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
                 descriptors.Add(ed);

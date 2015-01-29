@@ -80,7 +80,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public IViewModel NewViewModel(Type type) {
-            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
+            var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(type);
             if (spec.IsViewModel) {
                 return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
@@ -88,7 +88,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public object NewTransientInstance(Type type) {
-            IObjectSpec spec = framework.MetamodelManager.GetSpecification(type);
+            var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(type);
             return framework.LifecycleManager.CreateInstance(spec).Object;
         }
 

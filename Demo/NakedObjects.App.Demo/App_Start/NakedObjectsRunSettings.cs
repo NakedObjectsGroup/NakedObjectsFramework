@@ -40,6 +40,8 @@ namespace NakedObjects.App.Demo {
                      typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
+                    typeof (ActionResultModelQ<>),
+                    typeof (ActionResultModel<>)
                 };
             }
         }

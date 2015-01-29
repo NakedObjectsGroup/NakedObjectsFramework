@@ -47,10 +47,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         protected IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
-                IObjectSpec spec = WrappedNakedObject.Spec;
+                ITypeSpec spec = WrappedNakedObject.Spec;
 
                 if (spec.IsService) {
-                    ServiceType st = framework.ServicesManager.GetServiceType(spec);
+                    ServiceType st = framework.ServicesManager.GetServiceType((IServiceSpec) spec);
                     extData[ServiceType] = st.ToString();
                 }
 

@@ -57,7 +57,7 @@ namespace NakedObjects.Core.Spec {
         public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, (IObjectSpec) MetamodelManager.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
@@ -117,7 +117,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override bool IsInline {
-            get { return ReturnSpec.ContainsFacet(typeof(IComplexTypeFacet)); }
+            get { return ReturnSpec.ContainsFacet(typeof (IComplexTypeFacet)); }
         }
 
         public override INakedObject GetDefault(INakedObject fromObject) {
@@ -158,7 +158,7 @@ namespace NakedObjects.Core.Spec {
             if (obj == null) {
                 return null;
             }
-            IObjectSpec spec = MetamodelManager.GetSpecification(obj.GetType());
+            IObjectSpec spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return Manager.CreateAggregatedAdapter(fromObject, ((IAssociationSpec) this).Id, obj);
             }

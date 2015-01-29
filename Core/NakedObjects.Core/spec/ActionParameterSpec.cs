@@ -40,7 +40,7 @@ namespace NakedObjects.Core.Spec {
         private bool? isMultipleChoicesEnabled;
         private bool? isNullable;
         private string name;
-        private IObjectSpec spec;
+        private ITypeSpec spec;
 
         protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
@@ -112,7 +112,7 @@ namespace NakedObjects.Core.Spec {
             get { return parentAction; }
         }
 
-        public virtual IObjectSpec Spec {
+        public virtual ITypeSpec Spec {
             get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
         }
 
@@ -121,7 +121,7 @@ namespace NakedObjects.Core.Spec {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
                     IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
-                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
+                    elementSpec = es == null ? null : metamodel.GetSpecification(es) as IObjectSpec;
                     checkedForElementSpec = true;
                 }
 
@@ -210,7 +210,7 @@ namespace NakedObjects.Core.Spec {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
                 choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, (IObjectSpec)metamodel.GetSpecification(t.Item2))).ToArray();
             }
             return choicesParameters;
         }
@@ -233,7 +233,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (Spec.IsBoundedSet()) {
-                return manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(persistor.Instances((IObjectSpec) Spec)).ToArray();
             }
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {

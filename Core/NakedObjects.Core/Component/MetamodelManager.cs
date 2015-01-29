@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class MetamodelManager : IMetamodelManager {
-        private readonly IDictionary<IObjectSpecImmutable, IObjectSpec> localCache = new Dictionary<IObjectSpecImmutable, IObjectSpec>();
+        private readonly IDictionary<IObjectSpecImmutable, ITypeSpec> localCache = new Dictionary<IObjectSpecImmutable, ITypeSpec>();
         private readonly IMetamodel metamodel;
         private readonly SpecFactory specFactory;
 
@@ -31,23 +31,23 @@ namespace NakedObjects.Core.Component {
 
         #region IMetamodelManager Members
 
-        public virtual IObjectSpec[] AllSpecs {
-            get { return Metamodel.AllSpecifications.Select(s => specFactory.CreateObjectSpec(s)).ToArray(); }
+        public virtual ITypeSpec[] AllSpecs {
+            get { return Metamodel.AllSpecifications.Select(s => specFactory.CreateTypeSpec(s)).ToArray(); }
         }
 
         public IMetamodel Metamodel {
             get { return metamodel; }
         }
 
-        public IObjectSpec GetSpecification(Type type) {
+        public ITypeSpec GetSpecification(Type type) {
             return type == null ? null : NewObjectSpec(GetInnerSpec(type));
         }
 
-        public IObjectSpec GetSpecification(string name) {
+        public ITypeSpec GetSpecification(string name) {
             return string.IsNullOrWhiteSpace(name) ? null : NewObjectSpec(GetInnerSpec(name));
         }
 
-        public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
+        public ITypeSpec GetSpecification(IObjectSpecImmutable spec) {
             return spec == null ? null : NewObjectSpec(spec);
         }
 
@@ -61,9 +61,9 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private IObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
+        private ITypeSpec NewObjectSpec(IObjectSpecImmutable spec) {
             if (!localCache.ContainsKey(spec)) {
-                localCache[spec] = specFactory.CreateObjectSpec(spec);
+                localCache[spec] = specFactory.CreateTypeSpec(spec);
             }
 
             return localCache[spec];

@@ -187,7 +187,7 @@ namespace NakedObjects.Core.Adapter {
             // do nothing
         }
 
-        public IObjectSpec Spec {
+        public ITypeSpec Spec {
             get { return Target.Spec; }
         }
 

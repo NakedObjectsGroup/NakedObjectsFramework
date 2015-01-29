@@ -20,9 +20,9 @@ using NakedObjects.Value;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
         private readonly INakedObjectsFramework framework;
-        private readonly IObjectSpec spec;
+        private readonly ITypeSpec spec;
 
-        public NakedObjectSpecificationWrapper(IObjectSpec spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public NakedObjectSpecificationWrapper(ITypeSpec spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(spec, "Spec is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -32,7 +32,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             this.framework = framework;
         }
 
-        public IObjectSpec WrappedValue {
+        public ITypeSpec WrappedValue {
             get { return spec; }
         }
 
@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (spec.IsService) {
-                    ServiceType st = framework.ServicesManager.GetServiceType(spec);
+                    ServiceType st = framework.ServicesManager.GetServiceType((IServiceSpec) spec);
                     extData[ServiceType] = st.ToString();
                 }
 

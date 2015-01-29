@@ -108,7 +108,7 @@ namespace NakedObjects.Core.Adapter {
             CacheState();
         }
 
-        public IObjectSpec Spec {
+        public ITypeSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 

@@ -34,7 +34,7 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { throw new NotImplementedException(); }
         }
 
-        public override IObjectSpec Specification {
+        public override ITypeSpec Specification {
             get { return Target.Spec; }
         }
 

@@ -18,7 +18,7 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Property.Id; }
         }
 
-        public override IObjectSpec Specification {
+        public override ITypeSpec Specification {
             get { return Property.ReturnSpec; }
         }
 

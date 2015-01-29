@@ -132,7 +132,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     throw new Exception("Action is not on a known object or service");
                 }
                 //TODO: Add method to IServicesManager to get a service by its IObjectSpec (or IObjectSpecImmutable)
-                IObjectSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(objectIm);
+                ITypeSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(objectIm);
                 nakedObject = html.Framework().ServicesManager.GetServices().Single(s => s.Spec == objectSpec);
 
             }

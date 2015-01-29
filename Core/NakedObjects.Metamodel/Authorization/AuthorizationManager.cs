@@ -103,7 +103,7 @@ namespace NakedObjects.Meta.Authorization {
                                   FirstOrDefault() ??
                               defaultAuthorizer;
 
-            return lifecycleManager.CreateInstance(manager.GetSpecification(authorizer)).GetDomainObject();
+            return lifecycleManager.CreateInstance((IObjectSpec) manager.GetSpecification(authorizer)).GetDomainObject();
         }
     }
 }
