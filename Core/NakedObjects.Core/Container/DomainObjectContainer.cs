@@ -157,6 +157,29 @@ namespace NakedObjects.Core.Container {
         private INakedObject AdapterFor(object obj) {
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
+
+        #region Titles
+        public ITitleBuilder NewTitleBuilder() {
+            return new TitleBuilderImpl(this);
+        }
+
+        public ITitleBuilder NewTitleBuilder(object obj, string defaultTitle = null) {
+            return new TitleBuilderImpl(this, obj, defaultTitle);
+        }
+
+        public ITitleBuilder NewTitleBuilder(string text) {
+            return new TitleBuilderImpl(this, text);
+        }
+
+        public string TitleOf(object obj, string format = null) {
+            var naked = AdapterFor(obj);
+            if (format == null) {
+                return naked.TitleString();
+            } else {
+                return naked.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, naked, framework.NakedObjectManager); 
+            }
+        }
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

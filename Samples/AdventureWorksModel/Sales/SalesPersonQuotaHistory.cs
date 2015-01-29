@@ -10,7 +10,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(QuotaDate, "d", null).Append(SalesQuota, "C", null);
             return t.ToString();
         }

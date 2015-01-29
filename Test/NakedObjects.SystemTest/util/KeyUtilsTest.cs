@@ -113,6 +113,23 @@ namespace NakedObjects.SystemTest.Util {
                 throw new NotImplementedException();
             }
 
+            public ITitleBuilder NewTitleBuilder() {
+                throw new NotImplementedException();
+            }
+
+
+            public ITitleBuilder NewTitleBuilder(string text) {
+                throw new NotImplementedException();
+            }
+
+            public ITitleBuilder NewTitleBuilder(object obj, string defaultTitle = null) {
+                throw new NotImplementedException();
+            }
+
+            public string TitleOf(object obj, string format = null) {
+                throw new NotImplementedException();
+            }
+
             #endregion
 
             #region IDomainObjectContainer Members

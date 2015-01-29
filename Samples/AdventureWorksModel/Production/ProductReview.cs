@@ -36,7 +36,7 @@ namespace AdventureWorksModel {
         #endregion
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             string stars = "*****".Substring(0, Rating);
             t.Append(stars);
             return t.ToString();

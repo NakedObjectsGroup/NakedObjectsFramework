@@ -195,8 +195,10 @@ namespace NakedObjects.SystemTest.XATs {
             [Hidden]
             public string Foo { get; set; }
 
+            public IDomainObjectContainer Container { set; protected get; }
+
             public string Title() {
-                var t = new TitleBuilder();
+                var t = Container.NewTitleBuilder();
                 t.Append("FooBar");
                 return t.ToString();
             }

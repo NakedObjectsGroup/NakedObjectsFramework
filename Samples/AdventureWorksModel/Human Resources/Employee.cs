@@ -16,7 +16,7 @@ namespace AdventureWorksModel
 
         public override string ToString()
         {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(ContactDetails);
             return t.ToString();
         }

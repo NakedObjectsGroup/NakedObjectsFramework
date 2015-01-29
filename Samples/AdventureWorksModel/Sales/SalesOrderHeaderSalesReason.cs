@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
         #endregion
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(SalesReason);
             return t.ToString();
         }

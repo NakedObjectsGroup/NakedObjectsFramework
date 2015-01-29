@@ -17,7 +17,7 @@ namespace AdventureWorksModel
 
         public override string ToString()
         {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             if (NameStyle)
             {
                 t.Append(LastName).Append(FirstName);

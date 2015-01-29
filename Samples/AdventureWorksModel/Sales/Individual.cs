@@ -10,7 +10,7 @@ namespace AdventureWorksModel {
     public class Individual : Customer {
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Contact).Append(",", AccountNumber);
             return t.ToString();
         }

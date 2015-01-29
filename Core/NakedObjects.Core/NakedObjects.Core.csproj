@@ -151,6 +151,7 @@
     <Compile Include="Adapter\StringEncoderHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
+    <Compile Include="Container\TitleBuilderImpl.cs" />
     <Compile Include="Exception\DisposeFailedException.cs" />
     <Compile Include="Container\DomainObjectContainer.cs" />
     <Compile Include="Component\DomainObjectContainerInjector.cs" />
