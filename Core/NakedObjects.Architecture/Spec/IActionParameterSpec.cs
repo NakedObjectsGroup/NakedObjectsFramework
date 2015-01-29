@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     public interface IActionParameterSpec : IFeatureSpec {
-        ITypeSpec Spec { get; }
+        IObjectSpec Spec { get; }
 
         IObjectSpec ElementSpec { get; }
 
