@@ -115,7 +115,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec, IObjectSpec spec) {
+        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec, ITypeSpec spec) {
             if (!values.Any()) {
                 return null;
             }
@@ -217,7 +217,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return nakedObject.Spec.SingularName;
         }
 
-        private object GetCompletionData(INakedObject nakedObject, IObjectSpec spec) {
+        private object GetCompletionData(INakedObject nakedObject, ITypeSpec spec) {
             string label = nakedObject.TitleString();
             string value = nakedObject.TitleString();
             string link = spec.IsParseable ? label : NakedObjectsContext.GetObjectId(nakedObject);

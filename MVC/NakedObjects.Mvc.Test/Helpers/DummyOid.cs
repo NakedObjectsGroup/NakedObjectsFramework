@@ -38,7 +38,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         public void CopyFrom(IOid oid) {}
 
-        public IObjectSpec Spec {
+        public ITypeSpec Spec {
             get { return null; }
         }
 

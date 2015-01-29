@@ -18,6 +18,7 @@ using Expenses.Services;
 using Microsoft.Practices.Unity;
 
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc;
@@ -123,7 +124,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void AddTransientToSession() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
             session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
             Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }

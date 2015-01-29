@@ -167,7 +167,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public const string ActiveClass = "active";
 
-        private static string InputOrSelect(IObjectSpec spec) {
+        private static string InputOrSelect(ITypeSpec spec) {
             return (spec.IsParseable ? inputName : selectName);
         }
 

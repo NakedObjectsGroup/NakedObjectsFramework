@@ -95,7 +95,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public ActionTypeContextSurface GetActionType(string typeName, string actionName) {
             return MapErrors(() => {
-                Tuple<ActionContext, IObjectSpec> pc = GetActionTypeInternal(typeName, actionName);
+                Tuple<ActionContext, ITypeSpec> pc = GetActionTypeInternal(typeName, actionName);
                 return new ActionTypeContextSurface {
                     ActionContext = pc.Item1.ToActionContextSurface(this, framework),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2)
@@ -677,7 +677,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private Tuple<ActionContext, IObjectSpec> GetActionTypeInternal(string typeName, string actionName) {
+        private Tuple<ActionContext, ITypeSpec> GetActionTypeInternal(string typeName, string actionName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
             }
@@ -692,10 +692,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             };
 
-            return new Tuple<ActionContext, IObjectSpec>(actionContext, spec);
+            return new Tuple<ActionContext, ITypeSpec>(actionContext, spec);
         }
 
-        private Tuple<IActionSpec, IObjectSpec, IActionParameterSpec, string> GetActionParameterTypeInternal(string typeName, string actionName, string parmName) {
+        private Tuple<IActionSpec, ITypeSpec, IActionParameterSpec, string> GetActionParameterTypeInternal(string typeName, string actionName, string parmName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(actionName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
@@ -709,7 +709,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new TypeActionParameterResourceNotFoundNOSException(parmName, actionName, typeName);
             }
 
-            return new Tuple<IActionSpec, IObjectSpec, IActionParameterSpec, string>(actionAndUid.Item1, spec, parm, actionAndUid.Item2);
+            return new Tuple<IActionSpec, ITypeSpec, IActionParameterSpec, string>(actionAndUid.Item1, spec, parm, actionAndUid.Item2);
         }
 
 
