@@ -96,7 +96,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSpecificationSurface ElementType {
             get {
-                var elementSpec = nakedObjectActionParameter.ElementSpec;
+                var parm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
+                var elementSpec = parm == null ? null : parm.ElementSpec;
                 return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
             }
         }

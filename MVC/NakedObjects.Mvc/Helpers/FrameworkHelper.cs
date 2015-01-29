@@ -153,7 +153,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static INakedObject RestoreInline(this INakedObjectsFramework framework, AggregateOid aggregateOid) {
             IOid parentOid = aggregateOid.ParentOid;
             INakedObject parent = framework.RestoreObject(parentOid);
-            IAssociationSpec assoc = parent.Spec.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
+            IAssociationSpec assoc = ((IObjectSpec)parent.Spec).Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
             return assoc.GetNakedObject(parent);
         }

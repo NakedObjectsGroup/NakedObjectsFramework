@@ -27,7 +27,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdHelper.ListDisplayFormat) {
             INakedObject adapter = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<INakedObject> collections = adapter.Spec.Properties.OfType<IOneToManyAssociationSpec>().Select(a => a.GetNakedObject(adapter));
+            IEnumerable<INakedObject> collections = ((IObjectSpec)adapter.Spec).Properties.OfType<IOneToManyAssociationSpec>().Select(a => a.GetNakedObject(adapter));
             return collections.Select(c => html.Collection(c.GetAsEnumerable(html.Framework().NakedObjectManager), null, defaultTo)).ToArray();
         }
 
@@ -41,7 +41,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             INakedObject adapter = html.Framework().GetNakedObject(domainObject);
-            var collections = adapter.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(obj => obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
+            var collections = ((IObjectSpec)adapter.Spec).Properties.OfType<IOneToManyAssociationSpec>().Where(obj => obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
             return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString())).ToArray();
         }
 

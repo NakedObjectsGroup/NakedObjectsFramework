@@ -12,7 +12,25 @@ namespace NakedObjects.Architecture.Spec {
     /// services in relation to a specific object; where possible its responsibilities are delegated 
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
-    public interface IObjectSpec : ITypeSpec {}
+    public interface IObjectSpec : ITypeSpec {
+
+
+        #region Properties
+
+        /// <summary>
+        ///     Return all the properties that exist in an object of this specification,
+        ///     although they need not all be accessible or visible.
+        /// </summary>
+        IAssociationSpec[] Properties { get; }
+
+        /// <summary>
+        ///     Get the <see cref="IAssociationSpec" /> representing the field with the specified field identifier.
+        /// </summary>
+        IAssociationSpec GetProperty(string id);
+
+        #endregion
+
+    }
 
     // Copyright (c) Naked Objects Group Ltd.
 }

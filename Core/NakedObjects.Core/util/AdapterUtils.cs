@@ -68,10 +68,11 @@ namespace NakedObjects.Core.Util {
         }
 
         public static IAssociationSpec GetVersionProperty(this INakedObject nakedObject) {
-            if (nakedObject.Spec == null) {
+            var spec = nakedObject.Spec as IObjectSpec;
+            if (spec == null) {
                 return null; // only expect in testing 
             }
-            return nakedObject.Spec.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
+            return spec.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
         }
 
         private static DateTime StripMillis(this DateTime fullDateTime) {

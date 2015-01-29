@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Common.Logging;
@@ -198,7 +199,9 @@ namespace NakedObjects.Core.Component {
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
-            foreach (IOneToOneAssociationSpec assoc in parentObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
+            var spec = parentObject.Spec as IObjectSpec;
+            Trace.Assert(spec != null);
+            foreach (IOneToOneAssociationSpec assoc in spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
                 object inlineObject = CreateObject(assoc.ReturnSpec);
 
                 InitInlineObject(rootObject, inlineObject);
@@ -209,7 +212,9 @@ namespace NakedObjects.Core.Component {
         }
 
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
-            nakedObject.Spec.Properties.ForEach(field => field.ToDefault(nakedObject));
+            var spec = nakedObject.Spec as IObjectSpec;
+            Trace.Assert(spec != null);
+            spec.Properties.ForEach(field => field.ToDefault(nakedObject));
             CreateInlineObjects(nakedObject, rootObject);
             nakedObject.Created();
         }

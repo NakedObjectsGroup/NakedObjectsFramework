@@ -59,10 +59,8 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private void Persist(INakedObject nakedObject) {
-            if (nakedObject.ResolveState.IsAggregated() ||
-                (nakedObject.ResolveState.IsTransient() &&
-                 nakedObject.Spec.Persistable != PersistableType.Transient)) {
-                IAssociationSpec[] fields = nakedObject.Spec.Properties;
+            if (nakedObject.ResolveState.IsAggregated() || (nakedObject.ResolveState.IsTransient() && nakedObject.Spec.Persistable != PersistableType.Transient)) {
+                IAssociationSpec[] fields = ((IObjectSpec) nakedObject.Spec).Properties;
                 if (!nakedObject.Spec.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
                     nakedObject.Persisting();

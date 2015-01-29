@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -35,7 +36,11 @@ namespace NakedObjects.Meta.Facet {
 
         public string Validate(INakedObject nakedObject) {
             foreach (NakedObjectValidationMethod validator in ValidateMethods) {
-                IAssociationSpec[] matches = validator.ParameterNames.Select(name => nakedObject.Spec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
+                var objectSpec = nakedObject.Spec as IObjectSpec;
+                Trace.Assert(objectSpec != null);
+
+
+                IAssociationSpec[] matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 
                 if (matches.Count() == validator.ParameterNames.Count()) {
                     INakedObject[] parameters = matches.Select(s => s.GetNakedObject(nakedObject)).ToArray();
@@ -43,7 +48,7 @@ namespace NakedObjects.Meta.Facet {
                     if (result != null) return result;
                 }
                 else {
-                    string actual = nakedObject.Spec.Properties.Select(s => s.Id).Aggregate((s, t) => s + " " + t);
+                    string actual = objectSpec.Properties.Select(s => s.Id).Aggregate((s, t) => s + " " + t);
                     LogNoMatch(validator, actual);
                 }
             }

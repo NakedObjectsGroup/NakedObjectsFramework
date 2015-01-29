@@ -158,21 +158,6 @@ namespace NakedObjects.Architecture.Spec {
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        ///     Return all the properties that exist in an object of this specification,
-        ///     although they need not all be accessible or visible.
-        /// </summary>
-        IAssociationSpec[] Properties { get; }
-
-        /// <summary>
-        ///     Get the <see cref="IAssociationSpec" /> representing the field with the specified field identifier.
-        /// </summary>
-        IAssociationSpec GetProperty(string id);
-
-        #endregion
-
         #region Actions
 
         IMenuImmutable ObjectMenu { get; }
