@@ -96,13 +96,13 @@ let ModelCanGetContextForComplexType persistor =
 
 let CheckContainer(person : Person) = 
     let name = person.ComplexProperty
-    Assert.IsNotNull(name.Container)
-    Assert.IsInstanceOf(typeof<NakedObjects.IDomainObjectContainer>, name.Container)
+    Assert.IsNotNull(name.ExposeContainerForTest())
+    Assert.IsInstanceOf(typeof<NakedObjects.IDomainObjectContainer>, name.ExposeContainerForTest())
 
 let CheckService(person : Person) = 
     let name = person.ComplexProperty
-    Assert.IsNotNull(name.Service)
-    Assert.IsInstanceOf(typeof<NakedObjects.Services.SimpleRepository<Person>>, name.Service)
+    Assert.IsNotNull(name.ExposeServiceForTest())
+    Assert.IsInstanceOf(typeof<NakedObjects.Services.SimpleRepository<Person>>, name.ExposeServiceForTest())
 
 let CanInjectContainerOnNewInstance persistor = 
     let person = CreateAndSetup<Person> persistor (setter persistor)

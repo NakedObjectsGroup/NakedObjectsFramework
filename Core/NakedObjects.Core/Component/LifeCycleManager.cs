@@ -165,7 +165,7 @@ namespace NakedObjects.Core.Component {
 
         private IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            IObjectSpec spec = (IObjectSpec) metamodel.GetSpecification(typeName);
+            ITypeSpec spec =  metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
                 return new CollectionMemento(this, nakedObjectManager, metamodel, encodedData);

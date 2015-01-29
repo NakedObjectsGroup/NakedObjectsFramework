@@ -58,17 +58,17 @@ namespace NakedObjects.SystemTest.Injection {
         [TestMethod]
         public void InjectService() {
             var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
-            Assert.IsNotNull(testObject.MyService1);
-            Assert.IsInstanceOfType(testObject.MyService1, typeof (Service1));
+            Assert.IsNotNull(testObject.GetService1());
+            Assert.IsInstanceOfType(testObject.GetService1(), typeof (Service1));
         }
 
         [TestMethod]
         public void InjectServiceDefinedByInterface() {
             var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
-            Assert.IsNotNull(testObject.MyService2);
-            Assert.IsInstanceOfType(testObject.MyService2, typeof (ServiceImplementation));
-            Assert.IsNotNull(testObject.MyService3);
-            Assert.IsInstanceOfType(testObject.MyService3, typeof (ServiceImplementation));
+            Assert.IsNotNull(testObject.GetService2());
+            Assert.IsInstanceOfType(testObject.GetService2(), typeof (ServiceImplementation));
+            Assert.IsNotNull(testObject.GetService3());
+            Assert.IsInstanceOfType(testObject.GetService3(), typeof (ServiceImplementation));
         }
 
         [TestMethod]
@@ -82,7 +82,7 @@ namespace NakedObjects.SystemTest.Injection {
                 Assert.IsNotNull(e);
             }
 
-            var prop = obj.GetPropertyByName("My Service2");
+            var prop = obj.GetPropertyByName("Id");
             prop.AssertIsVisible();
         }
     }
@@ -105,16 +105,29 @@ namespace NakedObjects.SystemTest.Injection {
     }
 
     public class Object2 {
-        public Service1 MyService1 { get; set; }
-        public Service2 MyService2 { get; set; }
-        public Service3 MyService3 { get; set; }
+        public Service1 MyService1 { protected get; set; }
+        public Service2 MyService2 { protected get; set; }
+        public Service3 MyService3 { protected get; set; }
 
         public virtual int Id { get; set; }
+
+        public object GetService1() {
+            return MyService1;
+        }
+
+        public object GetService2() {
+            return MyService2;
+        }
+
+        public object GetService3() {
+            return MyService3;
+        }
+
     }
 
     public class Object3 {
-        public Service1 MyService1 { get; set; }
-        public NotRegisteredService MyService2 { get; set; }
+        public Service1 MyService1 { protected get; set; }
+        public NotRegisteredService MyService2 { protected get; set; }
 
         public virtual int Id { get; set; }
     }
