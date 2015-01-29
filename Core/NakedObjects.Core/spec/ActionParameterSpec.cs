@@ -40,7 +40,7 @@ namespace NakedObjects.Core.Spec {
         private bool? isMultipleChoicesEnabled;
         private bool? isNullable;
         private string name;
-        private ITypeSpec spec;
+        private IObjectSpec spec;
 
         protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
@@ -90,20 +90,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        /// <summary>
-        ///     Subclasses should override either <see cref="IsObject" /> or <see cref="IsCollection" />
-        /// </summary>
-        public virtual bool IsObject {
-            get { return false; }
-        }
-
-        /// <summary>
-        ///     Subclasses should override either <see cref="IsObject" /> or <see cref="IsCollection" />
-        /// </summary>
-        public virtual bool IsCollection {
-            get { return false; }
-        }
-
         public virtual int Number {
             get { return number; }
         }
@@ -112,8 +98,8 @@ namespace NakedObjects.Core.Spec {
             get { return parentAction; }
         }
 
-        public virtual ITypeSpec Spec {
-            get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
+        public virtual IObjectSpec Spec {
+            get { return spec ?? (spec = (IObjectSpec) metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
         }
 
         public virtual IObjectSpec ElementSpec {
@@ -233,7 +219,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (Spec.IsBoundedSet()) {
-                return manager.GetCollectionOfAdaptedObjects(persistor.Instances((IObjectSpec) Spec)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
             }
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {

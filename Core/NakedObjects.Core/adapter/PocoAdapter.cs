@@ -149,14 +149,15 @@ namespace NakedObjects.Core.Adapter {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.Name);
                     }
-                    if (property.IsObject) {
-                        IConsent valid = ((IOneToOneAssociationSpec) property).IsAssociationValid(this, referencedObject);
+                    var associationSpec = property as IOneToOneAssociationSpec;
+                    if (associationSpec != null) {
+                        IConsent valid = associationSpec.IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, property.Name, valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, associationSpec.Name, valid.Reason);
                         }
                     }
                 }
-                if (property.IsObject) {
+                if (property is IOneToOneAssociationSpec) {
                     if (referencedObject != null && referencedObject.ResolveState.IsTransient()) {
                         string referencedObjectMessage = referencedObject.ValidToPersist();
                         if (referencedObjectMessage != null) {
@@ -242,7 +243,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            IObjectSpec elementSpecification = (IObjectSpec) (TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel)));
+            var elementSpecification = (IObjectSpec) (TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel)));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

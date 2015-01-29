@@ -161,7 +161,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             Decrypt(parms);
 
-            foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsObject)) {
+            foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>()) {
                 string[] values = GetRawValues(parms, GetFieldInputId(nakedObject, assoc));
                 results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.ReturnSpec);
             }
@@ -196,7 +196,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObject> otherValues = GetOtherValues(nakedObject);
 
-            foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.Where(p => p.IsObject)) {
+            foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>()) {
                 if (assoc.IsChoicesEnabled) {
                     INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
@@ -230,7 +230,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
-            var assoc = (IOneToOneAssociationSpec) nakedObject.Spec.Properties.Single(p => p.IsObject && p.Id == propertyId);
+            var assoc = nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Single(p => p.Id == propertyId);
 
             if (assoc.IsAutoCompleteEnabled) {
                 INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);

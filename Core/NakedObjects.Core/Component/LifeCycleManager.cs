@@ -190,7 +190,7 @@ namespace NakedObjects.Core.Component {
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
-            IObjectSpec spec = (IObjectSpec) oid.Spec;
+            var spec = (IObjectSpec) oid.Spec;
             INakedObject vm = CreateViewModel(spec);
             vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm);
             nakedObjectManager.UpdateViewModel(vm, keys);

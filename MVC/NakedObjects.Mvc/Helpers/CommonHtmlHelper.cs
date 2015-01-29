@@ -380,7 +380,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<ElementDescriptor> visibleElements = visibleFields.Select(property => html.EditObjectField(new PropertyContext(nakedObject, property, true, parentContext), noFinder, childElements, idToAddTo));
 
             if (nakedObject.ResolveState.IsTransient()) {
-                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Spec.Properties.Where(p => !p.IsCollection && !p.IsVisible( nakedObject)).
+                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>() .Where(p => !p.IsVisible( nakedObject)).
                                                                             Select(property => new ElementDescriptor {
                                                                                 TagType = "div",
                                                                                 Value = html.GetEditValue(new PropertyContext(nakedObject, property, true, parentContext), childElements, property.Id == idToAddTo, noFinder),
@@ -388,7 +388,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 visibleElements = visibleElements.Union(hiddenElements);
 
-                IEnumerable<ElementDescriptor> collectionElements = nakedObject.Spec.Properties.Where(p => p.IsCollection).
+                IEnumerable<ElementDescriptor> collectionElements = nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().
                                                                                 SelectMany(p => p.Items(html,nakedObject)).
                                                                                 Select(t => new ElementDescriptor {
                                                                                     TagType = "div",
@@ -400,7 +400,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             // add filtered fields as hidden to preserve their values 
 
-            IEnumerable<IAssociationSpec> filteredFields = nakedObject.Spec.Properties.Where(p => !p.IsCollection && p.IsVisible( nakedObject)).Except(visibleFields);
+            IEnumerable<IAssociationSpec> filteredFields = nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p =>  p.IsVisible( nakedObject)).Except(visibleFields);
             IEnumerable<ElementDescriptor> filteredElements = filteredFields.Select(property => new PropertyContext(nakedObject, property, false, parentContext)).Select(pc => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(pc, pc.GetFieldInputId(), false)
@@ -704,7 +704,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             var visibleFields = query.ToList();
-            anyEditableFields = visibleFields.Any(p => !p.IsCollection && p.IsUsable(nakedObject).IsAllowed);
+            anyEditableFields = visibleFields.OfType<IOneToOneAssociationSpec>().Any(p => p.IsUsable(nakedObject).IsAllowed);
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(nakedObject, property, false, parentContext)));
         }
 
@@ -789,7 +789,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                           string propertyName) {
             INakedObject nakedObject = html.Framework().GetNakedObject(subEditObject);
 
-            Func<IAssociationSpec, bool> filterCollections = x => !x.IsCollection;
+            Func<IAssociationSpec, bool> filterCollections = x => x is IOneToOneAssociationSpec;
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
                                                               IdHelper.FieldContainerName,
@@ -1030,7 +1030,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (context.Parameter.Spec.IsCollection) {
                     link = html.CollectionLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
-                else if (!context.Parameter.Spec.IsParseable && context.Parameter.IsObject) {
+                else if (!context.Parameter.Spec.IsParseable && context.Parameter is OneToOneActionParameter) {
                     link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
 
@@ -1054,7 +1054,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (valueNakedObject != null) {
                 string link = "{0}";
 
-                if (!context.Property.ReturnSpec.IsParseable && context.Property.IsObject) {
+                if (!context.Property.ReturnSpec.IsParseable) {
                     link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
                 value += string.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
@@ -1121,7 +1121,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string link = "{0}";
 
-            if (!propertyContext.Property.ReturnSpec.IsParseable && propertyContext.Property.IsObject) {
+            if (!propertyContext.Property.ReturnSpec.IsParseable && propertyContext.Property is IOneToOneAssociationSpec) {
                 string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : string.Empty;
                 bool renderEagerly = RenderEagerly(propertyContext.Property);
 
@@ -1439,13 +1439,13 @@ namespace NakedObjects.Web.Mvc.Html {
                     }
                 }
 
-                if (context.Parameter.IsObject) {
+                if (context.Parameter is OneToOneActionParameter) {
                     return (INakedObject) rawvalue;
                 }
                 if (context.Parameter.Spec.IsParseable) {
                     return html.GetAndParseValueAsNakedObject(context, rawvalue);
                 }
-                if (context.Parameter.IsCollection) {
+                if (context.Parameter is OneToManyActionParameter) {
                     var facet = context.Parameter.GetFacet<IElementTypeFacet>();
                     IObjectSpec itemSpec = (IObjectSpec) html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);
 
@@ -2344,7 +2344,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                            bool noFinder) {
             string tooltip = propertyContext.Property.Description;
             string id = propertyContext.GetFieldInputId();
-            if (propertyContext.Property.IsCollection) {
+            if (propertyContext.Property is IOneToManyAssociationSpec) {
                 propertyContext.IsPropertyEdit = false;
                 return html.GetChildCollection(propertyContext);
             }
@@ -2397,7 +2397,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetViewValue(this HtmlHelper html, PropertyContext propertyContext) {
             string tooltip = propertyContext.Property.Description;
-            if (propertyContext.Property.IsCollection && !propertyContext.Property.IsFile(html.Framework())) {
+            if (propertyContext.Property is IOneToManyAssociationSpec && !propertyContext.Property.IsFile(html.Framework())) {
                 return html.GetChildCollection(propertyContext);
             }
 

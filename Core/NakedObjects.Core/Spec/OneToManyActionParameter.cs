@@ -14,8 +14,6 @@ namespace NakedObjects.Core.Spec {
         public OneToManyActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
 
-        public override bool IsCollection {
-            get { return true; }
-        }
+       
     }
 }

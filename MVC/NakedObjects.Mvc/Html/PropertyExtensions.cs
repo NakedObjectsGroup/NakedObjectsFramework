@@ -210,7 +210,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyListWithoutCollections(this HtmlHelper html, object domainObject) {
-           return html.PropertyListWithFilter(domainObject, x => !x.IsCollection, null);
+           return html.PropertyListWithFilter(domainObject, x => x is IOneToOneAssociationSpec, null);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyListOnlyCollections(this HtmlHelper html, object domainObject) {
-            return html.PropertyListWithFilter(domainObject, x => x.IsCollection, null);
+            return html.PropertyListWithFilter(domainObject, x => x is IOneToManyAssociationSpec, null);
         }
 
         /// <summary>
@@ -231,9 +231,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString PropertyListOnlyCollections(this HtmlHelper html, object domainObject, CollectionFormat format) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<string> collections = nakedObject.Spec.Properties.Where(p => p.IsCollection).Select(p => p.Id);
+            IEnumerable<string> collections = nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Select(p => p.Id);
             collections.ForEach(t => html.ViewData[t] = format);
-            return html.PropertyListWithFilter(domainObject, x => x.IsCollection, null);
+            return html.PropertyListWithFilter(domainObject, x => x is IOneToManyAssociationSpec, null);
         }
 
 
@@ -245,9 +245,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString[] PropertiesListOnlyCollections(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<string> collections = nakedObject.Spec.Properties.Where(p => p.IsCollection && p.IsVisible( nakedObject)).Select(p => p.Id);
-         
-            return  collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
+            IEnumerable<string> collections = nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(p => p.IsVisible(nakedObject)).Select(p => p.Id);
+
+            return collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
         }
 
 

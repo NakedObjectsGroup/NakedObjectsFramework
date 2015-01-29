@@ -296,7 +296,7 @@ namespace NakedObjects.Persistor.Entity {
 
         public INakedObject FindByKeys(Type type, object[] keys) {
             IOid eoid = oidGenerator.CreateOid(type.FullName, keys);
-            IObjectSpec hint = (IObjectSpec) loadSpecification(type);
+            var hint = (IObjectSpec) loadSpecification(type);
             return GetObject(eoid, hint);
         }
 
@@ -469,7 +469,7 @@ namespace NakedObjects.Persistor.Entity {
         private void ResolveChildCollections(INakedObject nakedObject) {
             if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (IAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
@@ -604,7 +604,7 @@ namespace NakedObjects.Persistor.Entity {
             }
             if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (IAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
