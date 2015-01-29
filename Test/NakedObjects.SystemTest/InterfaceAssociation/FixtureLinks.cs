@@ -1,9 +1,4 @@
-﻿using NakedObjects.SystemTest.PolymorphicAssociations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace NakedObjects.SystemTest.PolymorphicAssociations {
     public abstract class FixtureLinks {

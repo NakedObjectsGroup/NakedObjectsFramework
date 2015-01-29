@@ -1,11 +1,8 @@
 ﻿using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Menu;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Xat;
 using System.Data.Entity;
-using System.Linq;
 using TestObjectMenu;
 
 namespace NakedObjects.SystemTest.Menus {

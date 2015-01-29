@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 
 namespace NakedObjects.Core.Container {
@@ -24,7 +22,7 @@ namespace NakedObjects.Core.Container {
         /// </summary>
         public TitleBuilderImpl(IDomainObjectContainer container) {
             Title = new StringBuilder();
-            this.Container = container;
+            Container = container;
         }
 
         /// <summary>
@@ -217,11 +215,7 @@ namespace NakedObjects.Core.Container {
         ///     a reference to the called object (itself)
         /// </returns>
         public ITitleBuilder Concat(object obj, string format, string defaultValue) {
-            if (IsEmpty(obj, format)) {
-                Title.Append(defaultValue);
-            } else {
-                Title.Append(Container.TitleOf(obj, format));
-            }
+            Title.Append(IsEmpty(obj, format) ? defaultValue : Container.TitleOf(obj, format));
 
             return this;
         }

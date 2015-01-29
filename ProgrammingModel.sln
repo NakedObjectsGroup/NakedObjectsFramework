@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Helpers", "Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{8B62CB10-ECD9-4814-9211-D252E5B5D48B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Attributes", "Programming Model\NakedObjects.Attributes\NakedObjects.Attributes.csproj", "{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}"
@@ -21,12 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{39EBF7
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.SystemTest", "Test\NakedObjects.SystemTest\NakedObjects.SystemTest.csproj", "{A3921997-B0F2-4DA2-8433-E82581ACFA07}"
-EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = development.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -58,16 +55,11 @@ Global
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|x86.ActiveCfg = Release|Any CPU
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|x86.ActiveCfg = Debug|x86
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|x86.Build.0 = Debug|x86
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|x86.ActiveCfg = Release|x86
-		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = development.vsmdi
 	EndGlobalSection
 EndGlobal

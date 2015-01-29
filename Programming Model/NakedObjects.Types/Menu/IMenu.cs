@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-namespace NakedObjects.Menu {
+﻿namespace NakedObjects.Menu {
 
     /// <summary>
     /// Extension of IMenuImmutable that provides methods for building the menu

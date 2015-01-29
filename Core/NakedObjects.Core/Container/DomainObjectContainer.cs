@@ -175,9 +175,8 @@ namespace NakedObjects.Core.Container {
             var naked = AdapterFor(obj);
             if (format == null) {
                 return naked.TitleString();
-            } else {
-                return naked.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, naked, framework.NakedObjectManager); 
             }
+            return naked.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, naked, framework.NakedObjectManager);
         }
         #endregion
     }

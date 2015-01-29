@@ -28,6 +28,8 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         ITypeSpec OnSpec { get; }
 
+        IObjectSpec ElementSpec { get; }
+
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
         /// </summary>

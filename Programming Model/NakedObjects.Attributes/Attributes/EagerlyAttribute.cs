@@ -26,5 +26,9 @@ namespace NakedObjects {
         public EagerlyAttribute(Do what) {
             this.what = what;
         }
+
+        public Do What {
+            get { return what; }
+        }
     }
 }

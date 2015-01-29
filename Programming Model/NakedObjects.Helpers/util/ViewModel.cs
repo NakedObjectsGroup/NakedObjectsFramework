@@ -33,7 +33,7 @@ namespace NakedObjects {
         public void PopulateUsingKeys(string[] keys) {
             int id = int.Parse(keys.Single());
             try {
-                Root = Container.Instances<T>().Where(x => x.Id == id).Single();
+                Root = Container.Instances<T>().Single(x => x.Id == id);
             }
             catch {
                 throw new DomainException("No instance with Id: " + id);

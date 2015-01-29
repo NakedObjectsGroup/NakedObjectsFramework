@@ -14,7 +14,6 @@ namespace NakedObjects.Architecture.Spec {
     /// </summary>
     public interface IFeatureSpec : ISpecification, INamedAndDescribed {
         bool IsNullable { get; }
-
         IConsent IsUsable(INakedObject target);
     }
 }

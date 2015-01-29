@@ -13,7 +13,7 @@ namespace NakedObjects.Security {
     ///     The implementation should be registered via NakedObjects.Security.TypeAuthorizerInstaller in the Run class
     /// </summary>
     /// <typeparam name="T">T should be a concrete domain type for a type-specific authorizer; 'Object' for a default authorizer</typeparam>
-    public interface ITypeAuthorizer<T> {
+    public interface ITypeAuthorizer<in T> {
         /// <summary>
         ///     A hook method for invoking (optional) application-specific logic upon initialization. The method need not do anything.
         /// </summary>
