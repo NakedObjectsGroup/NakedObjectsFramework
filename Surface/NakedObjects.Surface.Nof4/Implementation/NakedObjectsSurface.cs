@@ -390,7 +390,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ObjectContextSurface SetObject(INakedObject nakedObject, ArgumentsContext arguments) {
-            if (nakedObject.Spec.Properties.Where(p => !p.IsCollection).Any(p => !arguments.Values.Keys.Contains(p.Id))) {
+            if (nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 

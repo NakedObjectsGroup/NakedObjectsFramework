@@ -13,11 +13,9 @@ using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
 using Microsoft.Practices.Unity;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
@@ -111,7 +109,7 @@ namespace NakedObjects.Xat {
         }
 
         private void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
-            foreach (object fixture in newFixtures) {
+            foreach (var fixture in newFixtures) {
                 InstallFixture(transactionManager, injector, fixture);
             }
         }
@@ -137,15 +135,15 @@ namespace NakedObjects.Xat {
         }
 
         protected object[] GetFixtures(object fixture) {
-            MethodInfo getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] {});
+            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] {});
             return getFixturesMethod == null ? new object[] {} : (object[]) getFixturesMethod.Invoke(fixture, new object[] {});
         }
 
         protected void InstallFixture(object fixture) {
-            PropertyInfo property = fixture.GetType().GetProperty("Service");
+            var property = fixture.GetType().GetProperty("Service");
             SetValue(property, fixture, fixtureServices);
 
-            MethodInfo installMethod = GetInstallMethod(fixture);
+            var installMethod = GetInstallMethod(fixture);
             Log.Debug("Invoking install method");
             try {
                 installMethod.Invoke(fixture, new object[0]);
@@ -159,7 +157,7 @@ namespace NakedObjects.Xat {
             injector.InitDomainObject(fixture);
 
             // first, install any child fixtures (if this is a composite.
-            object[] childFixtures = GetFixtures(fixture);
+            var childFixtures = GetFixtures(fixture);
             InstallFixtures(transactionManager, injector, childFixtures);
 
             // now, install the fixture itself
@@ -198,9 +196,9 @@ namespace NakedObjects.Xat {
 
         protected ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (INakedObject service in NakedObjectsFramework.ServicesManager.GetServices()) {
+                foreach (var service in NakedObjectsFramework.ServicesManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
-                        ITestService testService = TestObjectFactoryClass.CreateTestService(service.Object);
+                        var testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
                             Assert.Fail("Invalid service name " + serviceName);
                         }
@@ -214,9 +212,9 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestMenu GetMainMenu(string menuName) {
-            IMenuImmutable[] mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
+            var mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
-                IMenuImmutable menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
+                var menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
                 if (menu == null) {
                     Assert.Fail("No such main menu " + menuName);
                 }
@@ -224,7 +222,7 @@ namespace NakedObjects.Xat {
             }
 
             //Use the MenuServices to derive the menus
-            ITestService service = GetTestService(menuName);
+            var service = GetTestService(menuName);
             if (service == null) {
                 Assert.Fail("No such main menu, or Service, " + menuName);
             }
@@ -236,7 +234,7 @@ namespace NakedObjects.Xat {
         }
 
         protected void AssertMainMenuCountIs(int expected) {
-            int actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
+            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
             Assert.AreEqual(expected, actual);
         }
 
@@ -245,12 +243,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
+            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
+            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
@@ -259,7 +257,7 @@ namespace NakedObjects.Xat {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
             IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
+            var inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
             return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
         }
 

@@ -53,13 +53,6 @@ namespace NakedObjects.Core.Spec {
             get { return returnSpec; }
         }
 
-        /// <summary>
-        ///     Returns true if this field is for a collection
-        /// </summary>
-        public virtual bool IsCollection {
-            get { return false; }
-        }
-
         public virtual bool IsASet {
             get { return false; }
         }
@@ -73,13 +66,6 @@ namespace NakedObjects.Core.Spec {
 
         public virtual bool IsReadOnly {
             get { return !ContainsFacet<IPropertySetterFacet>(); }
-        }
-
-        /// <summary>
-        ///     Returns true if this field is for an object, not a collection
-        /// </summary>
-        public virtual bool IsObject {
-            get { return false; }
         }
 
         public abstract bool IsMandatory { get; }

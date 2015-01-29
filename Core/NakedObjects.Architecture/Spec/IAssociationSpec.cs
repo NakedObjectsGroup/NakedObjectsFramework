@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Spec {
@@ -13,32 +12,7 @@ namespace NakedObjects.Architecture.Spec {
     ///     Provides reflective access to a field on a domain object
     /// </summary>
     public interface IAssociationSpec : IMemberSpec {
-        /// <summary>
-        ///     If true then can cast to a <see cref="IOneToOneAssociationSpec" />
-        /// </summary>
-        /// <para>
-        ///     Either this or <see cref="IsCollection" /> will be true
-        /// </para>
-        bool IsObject { get; }
-
-        /// <summary>
-        ///     If true then can cast to a <see cref="IOneToManyAssociationSpec" />
-        /// </summary>
-        /// <para>
-        ///     Either this or <see cref="IsObject" /> will be true
-        /// </para>
-        bool IsCollection { get; }
-
-        /// <summary>
-        ///     If true then can cast to a <see cref="IOneToManyAssociationSpec" />
-        /// </summary>
-        /// and in addition the collection has set semantics
-        /// <see cref="ISet{T}" />
-        /// <para>
-        ///     Either this or <see cref="IsObject" /> will be true
-        /// </para>
-        bool IsASet { get; }
-
+        
         /// <summary>
         ///     Returns true if this field is persisted, and not calculated from other data in the object or
         ///     used transiently

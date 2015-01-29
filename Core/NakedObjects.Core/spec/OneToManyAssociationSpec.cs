@@ -18,9 +18,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
+        private readonly IObjectSpec elementSpec;
         private readonly bool isASet;
         private readonly IObjectPersistor persistor;
-        private readonly IObjectSpec elementSpec;
 
         public OneToManyAssociationSpec(IMetamodelManager metamodel, IOneToManyAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
@@ -46,10 +46,6 @@ namespace NakedObjects.Core.Spec {
 
         public override IObjectSpec ElementSpec {
             get { return elementSpec; }
-        }
-
-        public override bool IsCollection {
-            get { return true; }
         }
 
         public override bool IsASet {

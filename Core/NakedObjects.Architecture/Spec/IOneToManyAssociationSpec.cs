@@ -10,6 +10,11 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Spec {
     public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
         /// <summary>
+        ///   The collection has set semantics
+        /// </summary>
+        bool IsASet { get; }
+
+        /// <summary>
         ///     Return the count of elements in this collection field on the specified object
         /// </summary>
         int Count(INakedObject nakedObject);

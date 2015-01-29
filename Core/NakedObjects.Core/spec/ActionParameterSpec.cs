@@ -90,20 +90,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        /// <summary>
-        ///     Subclasses should override either <see cref="IsObject" /> or <see cref="IsCollection" />
-        /// </summary>
-        public virtual bool IsObject {
-            get { return false; }
-        }
-
-        /// <summary>
-        ///     Subclasses should override either <see cref="IsObject" /> or <see cref="IsCollection" />
-        /// </summary>
-        public virtual bool IsCollection {
-            get { return false; }
-        }
-
         public virtual int Number {
             get { return number; }
         }
@@ -233,7 +219,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (Spec.IsBoundedSet()) {
-                return manager.GetCollectionOfAdaptedObjects(persistor.Instances((IObjectSpec) Spec)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
             }
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {

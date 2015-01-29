@@ -59,11 +59,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsCollection {
-            get { return assoc.IsCollection; }
+            get { return assoc is IOneToManyAssociationSpec; }
         }
 
         public bool IsObject {
-            get { return assoc.IsObject; }
+            get { return assoc is IOneToOneAssociationSpec; }
         }
 
         public int? MaxLength {
@@ -94,7 +94,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         protected bool IsASet {
-            get { return assoc.IsASet; }
+            get {
+                var collection = assoc as IOneToManyAssociationSpec;
+                return collection != null && collection.IsASet;
+            }
         }
 
         protected bool IsInline {

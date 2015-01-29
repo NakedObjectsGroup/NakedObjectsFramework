@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
+using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Resources;
@@ -212,7 +213,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ValueProviderResult vp = form.GetValue(name);
                 string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
 
-                if (parm.IsCollection) {
+                if (parm is OneToManyActionParameter) {
                     // handle collection mementos 
 
                     if (parm.IsMultipleChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
@@ -267,7 +268,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             var collectionValue = value as IEnumerable;
-            if (parm.IsObject || collectionValue == null) {
+            if (parm is OneToOneActionParameter || collectionValue == null) {
                 return NakedObjectsContext.GetNakedObjectFromId(stringValue);
             }
 
@@ -286,7 +287,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 return null; 
             }
-            if (parm.IsCollection) {
+            if (parm is OneToManyActionParameter) {
                 return values.All(string.IsNullOrEmpty) ? null : values;
             }
             return values.First();
@@ -311,12 +312,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (Request.IsAjaxRequest()) {
                 var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
                 if (controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay) {
-                    IEnumerable<IAssociationSpec> assocs = nakedObject.Spec.Properties.Where(p => p.IsCollection);
+                    IEnumerable<IAssociationSpec> assocs = nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>();
                     IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
                 if (controlData.ActionId == null) {
-                    IEnumerable<IAssociationSpec> assocs = nakedObject.Spec.Properties.Where(p => !p.IsCollection);
+                    IEnumerable<IAssociationSpec> assocs = nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>();
                     IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
@@ -385,16 +386,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedReferences(INakedObject nakedObject, IDictionary<string, string> dict) {
-            var refItems = nakedObject.Spec.Properties.Where(p => p.IsObject && !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
+            var refItems = nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
-                refItems.ForEach(a => ValidateAssociation(nakedObject, a as IOneToOneAssociationSpec, dict[a.Id]));
+                refItems.ForEach(a => ValidateAssociation(nakedObject, a, dict[a.Id]));
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => NakedObjectsContext.GetNakedObjectFromId(dict[a.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
 
         internal void SetSelectedParameters(IActionSpec action) {
-            var refItems = action.Parameters.Where(p => p.IsObject && !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
+            var refItems = action.Parameters.OfType<OneToOneActionParameter>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
@@ -402,11 +403,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedParameters(INakedObject nakedObject, IActionSpec action, IDictionary<string, string> dict) {
-            var refItems = action.Parameters.Where(p => p.IsObject && !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
+            var refItems = action.Parameters.OfType<OneToOneActionParameter>().Where(p => !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
-
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, NakedObjectsContext.GetNakedObjectFromId(dict[p.Id])));
-
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(dict[p.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
@@ -427,7 +426,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
             }
        
-            if (assoc.IsObject) {
+            if (assoc is IOneToOneAssociationSpec) {
                 return NakedObjectsContext.GetNakedObjectFromId(stringValue);
             }
             // collection 
@@ -487,8 +486,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ModelState.IsValid) {
                 foreach (var pair in fieldsAndMatchingValues) {
-                    if (!pair.Item1.IsCollection) {
-                        ValidateAssociation(nakedObject, (IOneToOneAssociationSpec) pair.Item1, pair.Item2, parent);
+                    var spec = pair.Item1 as IOneToOneAssociationSpec;
+                    if (spec != null) {
+                        ValidateAssociation(nakedObject, spec, pair.Item2, parent);
                     }
                 }
             }
@@ -544,8 +544,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (var pair in fieldsAndMatchingValues) {
                 INakedObject value = GetNakedObjectValue(pair.Item1, nakedObject, pair.Item2);
-                if (!pair.Item1.IsCollection) {
-                    SetAssociation(nakedObject, (IOneToOneAssociationSpec)pair.Item1, value, pair.Item2);
+                var spec = pair.Item1 as IOneToOneAssociationSpec;
+                if (spec != null) {
+                    SetAssociation(nakedObject, spec, value, pair.Item2);
                 }
             }
 
@@ -653,7 +654,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                     ModelState.AddModelError(name, MvcUi.InvalidEntry);
                                 }
                             }
-                            else if (assoc.IsObject) {
+                            else if (assoc is IOneToOneAssociationSpec) {
                                 INakedObject value = NakedObjectsContext.GetNakedObjectFromId((string) newValue);
                                 var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
                                 oneToOneAssoc.SetAssociation(nakedObject, value);
@@ -662,7 +663,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     }
                 }
 
-                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.Where(p => p.IsCollection)) {
+                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>()) {
                     string name = IdHelper.GetCollectionItemId(nakedObject, assoc);
                     ValueProviderResult items = form.GetValue(name);
 

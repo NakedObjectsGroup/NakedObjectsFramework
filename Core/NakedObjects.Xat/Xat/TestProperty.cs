@@ -125,7 +125,7 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            Assert.IsTrue(field.IsCollection, "Cannot remove from non collection");
+            Assert.IsTrue(field is IOneToManyAssociationSpec, "Cannot remove from non collection");
 
             INakedObject testNakedObject = testObject.NakedObject;
 
@@ -386,7 +386,7 @@ namespace NakedObjects.Xat {
                 Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }
-            if (field.IsCollection) {
+            if (field is IOneToManyAssociationSpec) {
                 field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable(manager).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
             }
 

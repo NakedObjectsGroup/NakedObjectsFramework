@@ -16,21 +16,7 @@ namespace NakedObjects.Architecture.Spec {
 
         IObjectSpec ElementSpec { get; }
 
-        /// <summary>
-        /// </summary>
-        /// <para>
-        ///     Either this or <see cref="IsCollection" /> will be true.
-        /// </para>
-        /// <para>
-        ///     Design comment: modelled after  <see cref="IAssociationSpec.IsObject" />
-        /// </para>
-        bool IsObject { get; }
-
-        /// <summary>
-        ///     Only for symmetry with <see cref="IAssociationSpec" />, however since the NOF does not support collections as
-        ///     actions all implementations should return <c>false</c>.
-        /// </summary>
-        bool IsCollection { get; }
+       
 
         /// <summary>
         ///     The Owning <see cref="IActionSpec" />

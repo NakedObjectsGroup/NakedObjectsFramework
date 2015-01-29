@@ -35,10 +35,6 @@ namespace NakedObjects.Core.Spec {
             get { return null; }
         }
 
-        public override bool IsObject {
-            get { return true; }
-        }
-
         public override bool IsChoicesEnabled {
             get { return ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
         }
@@ -158,7 +154,7 @@ namespace NakedObjects.Core.Spec {
             if (obj == null) {
                 return null;
             }
-            IObjectSpec spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
+            var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return Manager.CreateAggregatedAdapter(fromObject, ((IAssociationSpec) this).Id, obj);
             }
