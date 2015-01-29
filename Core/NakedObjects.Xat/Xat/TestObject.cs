@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
@@ -41,7 +42,7 @@ namespace NakedObjects.Xat {
         #region ITestObject Members
 
         public ITestProperty[] Properties {
-            get { return NakedObject.Spec.Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
+            get { return ((IObjectSpec)NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
         }
 
         public object GetDomainObject() {

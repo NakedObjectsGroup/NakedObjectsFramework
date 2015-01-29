@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using NakedObjects.Architecture;
@@ -187,7 +188,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            IEnumerable<IAssociationSpec> propertyQuery = nakedObject.Spec.Properties;
+            IEnumerable<IAssociationSpec> propertyQuery = ((IObjectSpec) nakedObject.Spec).Properties;
 
             if (onlyVisible) {
                 propertyQuery = propertyQuery.Where(p => p.IsVisible(nakedObject));
@@ -244,7 +245,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            ITypeSpec spec = GetDomainTypeInternal(typeName);
+            IObjectSpec spec = (IObjectSpec) GetDomainTypeInternal(typeName);
 
             IAssociationSpec property = spec.Properties.SingleOrDefault(p => p.Id == propertyName);
 
@@ -316,7 +317,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             ValidateConcurrency(nakedObject, argument.Digest);
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
-                IEnumerable<PropertyContext> existingValues = context.Target.Spec.Properties.Where(p => p.Id != context.Id).
+                var spec = context.Target.Spec as IObjectSpec;
+                Trace.Assert(spec != null);
+
+                IEnumerable<PropertyContext> existingValues = spec.Properties.Where(p => p.Id != context.Id).
                     Select(p => new {p, no = p.GetNakedObject(context.Target)}).
                     Select(ao => new PropertyContext {
                         Property = ao.p,
@@ -376,7 +380,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
                     }
 
-                    propertiesToDisplay = nakedObject.Spec.Properties.
+                    propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
                         Where(p => p.IsVisible(nakedObject)).
                         Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                 }
@@ -390,7 +394,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ObjectContextSurface SetObject(INakedObject nakedObject, ArgumentsContext arguments) {
-            if (nakedObject.Spec.Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
+            if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 
@@ -411,7 +415,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         else {
                             framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
                         }
-                        propertiesToDisplay = nakedObject.Spec.Properties.
+                        propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
                             Where(p => p.IsVisible(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
@@ -730,7 +734,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
-            IAssociationSpec[] properties = nakedObject.Spec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
+            IAssociationSpec[] properties = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {

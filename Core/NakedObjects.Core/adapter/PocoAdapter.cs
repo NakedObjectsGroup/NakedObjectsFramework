@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture;
@@ -142,18 +143,21 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public string ValidToPersist() {
-            IAssociationSpec[] properties = Spec.Properties;
+            var objectSpec = Spec as IObjectSpec;
+            Trace.Assert(objectSpec != null);
+
+            IAssociationSpec[] properties = objectSpec.Properties;
             foreach (IAssociationSpec property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.Name);
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
                     }
                     var associationSpec = property as IOneToOneAssociationSpec;
                     if (associationSpec != null) {
                         IConsent valid = associationSpec.IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, associationSpec.Name, valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
                         }
                     }
                 }
@@ -167,7 +171,7 @@ namespace NakedObjects.Core.Adapter {
                 }
             }
 
-            var validateFacet = spec.GetFacet<IValidateObjectFacet>();
+            var validateFacet = objectSpec.GetFacet<IValidateObjectFacet>();
             return validateFacet == null ? null : validateFacet.Validate(this);
         }
 

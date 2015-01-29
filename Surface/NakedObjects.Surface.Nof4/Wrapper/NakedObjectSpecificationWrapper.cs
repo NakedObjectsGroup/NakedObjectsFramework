@@ -122,7 +122,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #region INakedObjectSpecificationSurface Members
 
         public INakedObjectAssociationSurface[] Properties {
-            get { return spec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray(); }
+            get {
+                var objectSpec = spec as IObjectSpec;
+                return objectSpec == null ? new INakedObjectAssociationSurface[] { } : objectSpec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray();
+            }
         }
 
         public bool IsImmutable(INakedObjectSurface nakedObject) {

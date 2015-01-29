@@ -5,14 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Linq;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : TypeSpec, IObjectSpec {
+        private IAssociationSpec[] objectFields;
+
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
             base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) {}
+
+        #region IObjectSpec Members
+
+        public virtual IAssociationSpec[] Properties {
+            get { return objectFields ?? (objectFields = InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray()); }
+        }
+
+        public IAssociationSpec GetProperty(string id) {
+            try {
+                return Properties.First(f => f.Id.Equals(id));
+            }
+            catch (InvalidOperationException) {
+                throw new ReflectionException(string.Format("No field called '{0}' in '{1}'", id, SingularName));
+            }
+        }
+
+        #endregion
     }
 }
 

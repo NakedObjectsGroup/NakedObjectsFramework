@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -93,15 +94,21 @@ namespace NakedObjects.Core.Component {
         }
 
         public void LoadField(INakedObject nakedObject, string field) {
+            var spec = nakedObject.Spec as IObjectSpec;
+            Trace.Assert(spec != null);
+
             Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
-            IAssociationSpec associationSpec = nakedObject.Spec.Properties.Single(x => x.Id == field);
+            IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
             ResolveField(nakedObject, associationSpec);
         }
 
         public int CountField(INakedObject nakedObject, string field) {
             Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
 
-            IAssociationSpec associationSpec = nakedObject.Spec.Properties.Single(x => x.Id == field);
+            var spec = nakedObject.Spec as IObjectSpec;
+            Trace.Assert(spec != null);
+
+            IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
 
             if (nakedObject.Spec.IsViewModel) {
                 INakedObject collection = associationSpec.GetNakedObject(nakedObject);

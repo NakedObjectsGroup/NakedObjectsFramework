@@ -126,7 +126,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
-                var elementSpec = assoc.ElementSpec;
+                var coll = assoc as IOneToManyAssociationSpec;
+                var elementSpec = coll == null ? null : coll.ElementSpec;
                 return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
             }
         }

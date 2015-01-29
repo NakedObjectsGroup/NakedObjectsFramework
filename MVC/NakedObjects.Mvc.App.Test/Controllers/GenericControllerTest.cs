@@ -612,7 +612,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(adaptedVendor, adaptedVendor.Spec.GetProperty("PreferredVendorStatus"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(adaptedVendor, ((IObjectSpec)adaptedVendor.Spec).GetProperty("PreferredVendorStatus"))].Errors.Any());
             AssertIsEditViewOf<Vendor>(result);
         }
 
@@ -630,7 +630,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(adaptedShift.Spec.GetProperty("Times"), adaptedTimePeriod, adaptedTimePeriod.Spec.GetProperty("EndTime"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(((IObjectSpec)adaptedShift.Spec).GetProperty("Times"), adaptedTimePeriod, ((IObjectSpec)adaptedTimePeriod.Spec).GetProperty("EndTime"))].Errors.Any());
             AssertIsEditViewOf<Shift>(result);
         }
 
@@ -643,9 +643,9 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.Edit(objectModel, form);
 
             //Assert.Greater(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors.Count(), 0);
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Contact"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, ((IObjectSpec)nakedObject.Spec).GetProperty("Contact"))].Errors.Any());
             //Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors[0].ErrorMessage, "Mandatory");
-            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
+            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, ((IObjectSpec)nakedObject.Spec).GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
 
             AssertIsEditViewOf<Individual>(result);
         }
@@ -1237,7 +1237,7 @@ namespace MvcTestApp.Tests.Controllers {
             Employee report1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
             Employee report2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
             INakedObject employeeNakedObject = NakedObjectsFramework.GetNakedObject(employee);
-            IAssociationSpec collectionAssoc = employeeNakedObject.Spec.Properties.Single(p => p.Id == "DirectReports");
+            IAssociationSpec collectionAssoc = ((IObjectSpec)employeeNakedObject.Spec).Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
                 {IdHelper.DisplayFormatFieldId, "Addresses=list"},
@@ -1535,7 +1535,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
-            IAssociationSpec assocMD = order.Spec.GetProperty("ModifiedDate");
+            IAssociationSpec assocMD = ((IObjectSpec)order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasons");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
@@ -1562,7 +1562,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
-            IAssociationSpec assocMD = order.Spec.GetProperty("ModifiedDate");
+            IAssociationSpec assocMD = ((IObjectSpec)order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasonsByCategories");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);

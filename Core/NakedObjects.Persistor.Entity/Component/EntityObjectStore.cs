@@ -88,7 +88,7 @@ namespace NakedObjects.Persistor.Entity {
             createAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
             replacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
             removeAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
-            createAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
+            createAggregatedAdapter = (parent, property, obj) => this.nakedObjectManager.CreateAggregatedAdapter(parent, ((IObjectSpec) parent.Spec).GetProperty(property.Name).Id, obj);
 
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
@@ -266,10 +266,10 @@ namespace NakedObjects.Persistor.Entity {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                ITypeSpec parentSpec = metamodelManager.GetSpecification(parentType);
-                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, (IObjectSpec) parentSpec));
+                var parentSpec = (IObjectSpec) metamodelManager.GetSpecification(parentType);
+                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
-                return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+                return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
             }
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
@@ -467,9 +467,10 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         private void ResolveChildCollections(INakedObject nakedObject) {
-            if (nakedObject.Spec != null) {
+            var spec = nakedObject.Spec as IObjectSpec;
+            if (spec != null) {
                 // testing check 
-                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
+                foreach (IOneToManyAssociationSpec assoc in spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
@@ -602,9 +603,10 @@ namespace NakedObjects.Persistor.Entity {
                 StartResolving(nakedObject, context);
                 EndResolving(nakedObject);
             }
-            if (nakedObject.Spec != null) {
+            var spec = nakedObject.Spec as IObjectSpec;
+            if (spec != null) {
                 // testing check 
-                foreach (IOneToManyAssociationSpec assoc in nakedObject.Spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
+                foreach (IOneToManyAssociationSpec assoc in spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
