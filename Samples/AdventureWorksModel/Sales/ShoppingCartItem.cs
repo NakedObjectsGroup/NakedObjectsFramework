@@ -10,7 +10,7 @@ namespace AdventureWorksModel {
         
         public string Title()
         {
-            TitleBuilder t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Quantity).Append(" x", Product);
             return t.ToString();
         }

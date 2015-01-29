@@ -146,7 +146,7 @@ namespace AdventureWorksModel {
         [MemberOrder(16)]
         public virtual string SizeWithUnit {
             get {
-                var t = new TitleBuilder();
+                var t = Container.NewTitleBuilder();
                 t.Append(Size).Append(SizeUnit);
                 return t.ToString();
             }
@@ -162,7 +162,7 @@ namespace AdventureWorksModel {
         [DisplayName("Weight")]
         public virtual string WeightWithUnit {
             get {
-                var t = new TitleBuilder();
+                var t = Container.NewTitleBuilder();
                 t.Append(Weight).Append(WeightUnit);
                 return t.ToString();
             }

@@ -17,7 +17,7 @@ namespace AdventureWorksModel
         
         public override string ToString()
         {
-            TitleBuilder t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Name).Append(" - Dashboard");
             return t.ToString();
         }

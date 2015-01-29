@@ -567,7 +567,7 @@ namespace AdventureWorksModel
             int stock = product.NumberInStock();
             if (stock < quantity)
             {
-                var t = new TitleBuilder();
+                var t = Container.NewTitleBuilder();
                 t.Append("Current inventory of").Append(product).Append(" is").Append(stock);
                 Container.WarnUser(t.ToString());
             }

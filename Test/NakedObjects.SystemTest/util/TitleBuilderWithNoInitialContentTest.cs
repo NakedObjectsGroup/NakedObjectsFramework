@@ -9,6 +9,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
+#pragma warning disable 618
     [TestClass]
     public class TitleBuilderWithNoIntialContentTest {
         private TitleBuilder builder;
@@ -41,9 +42,17 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [TestMethod]
-        public void TestConcatAddsTextWithoutJoiner() {
-            builder.Concat("+", "added");
-            AssertTitleIs("added");
+        public void TestConcatAddsTextWithJoiner() {
+            builder.Concat("+", "1Add");
+            builder.Concat("+", "2Add");
+            AssertTitleIs("1Add+2Add");
+        }
+
+        [TestMethod]
+        public void TestAppendAddsTextWithJoiner() {
+            builder.Append("+", "1Add");
+            builder.Append("+", "2Add");
+            AssertTitleIs("1Add+ 2Add");
         }
 
         [TestMethod]
@@ -54,6 +63,13 @@ namespace NakedObjects.SystemTest.Util {
 
         [TestMethod]
         public void TestAppendFormatWithDefault() {
+            builder.Append("x");
+            builder.Append(":", null, "d", "no date");
+            AssertTitleIs("x: no date");
+        }
+
+        [TestMethod]
+        public void TestAppendToEmptyFormatWithDefault() {
             builder.Append(":", null, "d", "no date");
             AssertTitleIs("no date");
         }

@@ -37,6 +37,12 @@ namespace NakedObjects.SystemTest.Method {
             get { return new[] {typeof (Auto1).Namespace}; }
         }
 
+        protected override Type[] Types {
+            get {
+                return new[] { typeof(Sex) };
+            }
+        }
+
         protected override object[] MenuServices {
             get {
                 return new object[] {
@@ -80,6 +86,11 @@ namespace NakedObjects.SystemTest.Method {
                     new SimpleRepository<Title3>(),
                     new SimpleRepository<Title4>(),
                     new SimpleRepository<Title5>(),
+                    new SimpleRepository<Title6>(),
+                    new SimpleRepository<Title7>(),
+                    new SimpleRepository<Title8>(),
+                    new SimpleRepository<Title9>(),
+                    new SimpleRepository<Title10>(),
                     new SimpleRepository<Updated1>(),
                     new SimpleRepository<Updated2>(),
                     new SimpleRepository<Updating1>(),
@@ -1125,6 +1136,36 @@ namespace NakedObjects.SystemTest.Method {
             obj.AssertTitleEquals("Bar");
         }
 
+        [TestMethod]
+        public virtual void UsingITitleBuilderZeroParamConstructor() {
+            var obj = NewTestObject<Title6>();
+            obj.AssertTitleEquals("TB6");
+        }
+
+        [TestMethod]
+        public virtual void UsingITitleBuilderStringConstructor() {
+            var obj = NewTestObject<Title7>();
+            obj.AssertTitleEquals("TB7");
+        }
+
+        [TestMethod]
+        public virtual void UsingITitleBuilderObjectConstructor() {
+            var obj = NewTestObject<Title8>();
+            obj.AssertTitleEquals("TB8");
+        }
+
+        [TestMethod]
+        public virtual void UsingITitleBuilderObjectConstructorWithNullAndDefault() {
+            var obj = NewTestObject<Title9>();
+            obj.AssertTitleEquals("TB9");
+        }
+
+        [TestMethod]
+        public virtual void ITitleBuilderTestAllAppendsAndConcats() {
+            var obj = NewTestObject<Title10>();
+            obj.AssertTitleEquals("x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female Not Specified");
+        }
+
         #endregion
 
         #region Updated
@@ -1480,6 +1521,11 @@ namespace NakedObjects.SystemTest.Method {
         public DbSet<Title3> Title3 { get; set; }
         public DbSet<Title4> Title4 { get; set; }
         public DbSet<Title5> Title5 { get; set; }
+        public DbSet<Title6> Title6 { get; set; }
+        public DbSet<Title7> Title7 { get; set; }
+        public DbSet<Title8> Title8 { get; set; }
+        public DbSet<Title9> Title9 { get; set; }
+        public DbSet<Title10> Title10 { get; set; }
         public DbSet<Updated1> Updated1 { get; set; }
         public DbSet<Updated2> Updated2 { get; set; }
         public DbSet<Updating1> Updating1 { get; set; }
@@ -2357,6 +2403,115 @@ namespace NakedObjects.SystemTest.Method {
         public override string ToString() {
             return Prop1;
         }
+    }
+
+    public class Title6 {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public override string ToString() {
+            var tb = Container.NewTitleBuilder();
+            tb.Append("TB6");
+            return tb.ToString();
+        }
+    }
+
+    public class Title7 {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public override string ToString() {
+            var tb = Container.NewTitleBuilder("TB7");
+            return tb.ToString();
+        }
+    }
+
+    public class Title8 {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public override string ToString() {
+            var t1 = Container.NewTransientInstance<Title1>();
+            t1.Prop1 = "TB8";
+            Container.Persist(ref t1);
+            var tb = Container.NewTitleBuilder(t1);
+            return tb.ToString();
+        }
+    }
+
+    public class Title9 {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public override string ToString() {
+            var tb = Container.NewTitleBuilder(null, "TB9");
+            return tb.ToString();
+        }
+    }
+
+    public class Title10 {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public override string ToString() {
+            //ToString()
+            var t1 = Container.NewTransientInstance<Title1>();
+            t1.Prop1 = "t1";
+            Container.Persist(ref t1);
+
+            //TitleAttribute
+            var t2 = Container.NewTransientInstance<Title1>();
+            t2.Prop1 = "t2";
+            Container.Persist(ref t2);
+
+            //TitleMethod
+            var t3 = Container.NewTransientInstance<Title1>();
+            t3.Prop1 = "t3";
+            Container.Persist(ref t3);
+
+            var tb = Container.NewTitleBuilder();
+            tb.Append("&","x"); //  "x";
+            tb.Append("&", "y"); //  "x& y";
+            tb.Append("y"); //  "x& y y";
+            //Append objects, each having different title mechanisms
+            tb.Append(t1); //"x& y y t1"
+            tb.Append(t2); //"x& y y t1 t2"
+            tb.Append(t3); //"x& y y t1 t2 t3"
+            tb.Append("%", null); //no change
+            tb.Append("$", t1);//"x& y y t1 t2 t3$ t1"
+            tb.Concat("c");//"x& y y t1 t2 t3$ t1c"
+            tb.Concat(t1);//"x& y y t1 t2 t3$ t1ct1"
+            tb.Concat(null); //unchanged
+            tb.Concat("*", t1);//"x& y y t1 t2 t3$ t1ct1*t1"
+            tb.Concat("*", null);//"x& y y t1 t2 t3$ t1ct1*t1"
+
+            tb.Append(":", null, "d", null); //unchanged
+            tb.Concat(":", null, "d", null); //unchanged
+            tb.Append(":", null, "d", "no date"); //"x& y y t1 t2 t3$ t1ct1*t1: no date"
+            tb.Concat(":", null, "d", "no date"); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date"
+
+            tb.Append(new DateTime(2007, 4, 2), "d", null); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007"
+            tb.Append(Sex.Female); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female"
+            tb.Append(Sex.NotSpecified); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female Not Specified"
+            return tb.ToString();
+        }
+    }
+
+    public enum Sex {
+        Male = 1,
+        Female = 2,
+        Unknown = 3,
+        NotSpecified = 4
     }
 
     #endregion

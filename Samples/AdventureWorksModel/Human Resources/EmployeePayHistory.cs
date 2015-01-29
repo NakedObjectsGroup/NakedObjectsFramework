@@ -11,7 +11,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Rate, "C", null).Append(" from", RateChangeDate, "d", null);
             return t.ToString();
         }

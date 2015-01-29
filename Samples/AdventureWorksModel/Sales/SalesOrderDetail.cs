@@ -11,7 +11,7 @@ namespace AdventureWorksModel {
     public class SalesOrderDetail : AWDomainObject {
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(OrderQty.ToString()).Append(" x", Product);
             return t.ToString();
         }

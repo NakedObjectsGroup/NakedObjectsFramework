@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.SystemTest.Util {
+#pragma warning disable 618
     internal class ObjectWithToString {
         public override string ToString() {
             return "from ToString";
@@ -38,4 +39,5 @@ namespace NakedObjects.SystemTest.Util {
             get { return new ObjectWithTitleMethod(); }
         }
     }
+#pragma warning restore 618
 }

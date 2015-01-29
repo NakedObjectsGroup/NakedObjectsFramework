@@ -11,7 +11,7 @@ namespace AdventureWorksModel {
         #region Title & Icon
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Contact).Append(",", ContactType);
             return t.ToString();
         }

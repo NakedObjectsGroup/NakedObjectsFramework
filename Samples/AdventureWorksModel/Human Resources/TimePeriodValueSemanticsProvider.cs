@@ -105,7 +105,7 @@ namespace AdventureWorksModel
 
     //    public string TitleWithMaskOf(string mask, TimePeriod obj)
     //    {
-    //        var t = new TitleBuilder();
+    //        var t = Container.NewTitleBuilder();
     //        t.Append(obj.StartTime, mask, null).Append(" ~").Append(obj.EndTime, mask, null);
     //        return t.ToString();
     //    }

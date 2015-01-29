@@ -9,7 +9,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = new TitleBuilder();
+            var t = Container.NewTitleBuilder();
             t.Append(Location);
             return t.ToString();
         }

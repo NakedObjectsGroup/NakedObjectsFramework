@@ -55,7 +55,7 @@ namespace AdventureWorksModel {
                                                     select sop;
 
             if (query.Count() != 0) {
-                var t = new TitleBuilder();
+                var t = Container.NewTitleBuilder();
                 t.Append(offer).Append(" is already associated with").Append(product);
                 WarnUser(t.ToString());
                 return null;

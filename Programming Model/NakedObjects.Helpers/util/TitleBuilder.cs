@@ -12,13 +12,8 @@ using System.Text;
 using NakedObjects.Util;
 
 namespace NakedObjects {
-    /// <summary>
-    ///     TitleBuilder is a utility class to help produce titles for objects without having to add lots of guard
-    ///     code. It provides two basic method: one to concatenate a title to the buffer; another to append a title
-    ///     with a joiner string, taking care adding in necessary spaces. The benefits of using this class is that <c>null</c>
-    ///     references are safely ignored (rather than appearing as 'null'), and joiners (a space by default) are only
-    ///     added when needed
-    /// </summary>
+
+     [Obsolete("Use Container.NewTitleBuilder() methods")]
     public class TitleBuilder {
         private const string Space = " ";
         private static readonly IDictionary<Type, Title> titleFrom = new Dictionary<Type, Title>();
@@ -406,7 +401,9 @@ namespace NakedObjects {
                 return "";
             }
             else {
+#pragma warning disable 618
                 return TitleBuilder.TitleOrToString(referencedObject, format);
+#pragma warning restore 618
             }
         }
     }

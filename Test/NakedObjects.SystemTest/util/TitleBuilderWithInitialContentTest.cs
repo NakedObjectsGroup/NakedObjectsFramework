@@ -9,6 +9,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
+#pragma warning disable 618
     [TestClass]
     public class TitleBuilderWithInitialContentTest {
         private TitleBuilder builder;
@@ -149,4 +150,5 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Text added");
         }
     }
+#pragma warning restore 618
 }
