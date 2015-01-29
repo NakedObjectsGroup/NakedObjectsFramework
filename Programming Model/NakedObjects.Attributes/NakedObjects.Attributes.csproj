@@ -76,6 +76,7 @@
     <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="Attributes\AuthorizePropertyAttribute.cs" />
     <Compile Include="Attributes\ContributedActionAttribute.cs" />
+    <Compile Include="Attributes\FindMenuAttribute.cs" />
     <Compile Include="Attributes\FinderActionAttribute.cs" />
     <Compile Include="Attributes\FieldOrderAttribute.cs" />
     <Compile Include="Attributes\PresentationHintAttribute.cs" />

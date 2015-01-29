@@ -81,6 +81,7 @@
     <Compile Include="Authorization\AuthorizationManager.cs" />
     <Compile Include="Authorization\IAuthorizationConfiguration.cs" />
     <Compile Include="Facet\ContributedActionFacet.cs" />
+    <Compile Include="Facet\FindMenuFacet.cs" />
     <Compile Include="Facet\MenuFacetAbstract.cs" />
     <Compile Include="Facet\MenuFacetDefault.cs" />
     <Compile Include="Facet\MenuFacetViaMethod.cs" />

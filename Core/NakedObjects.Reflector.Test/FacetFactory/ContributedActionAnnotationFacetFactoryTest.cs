@@ -16,7 +16,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass] //TODO: Write more tests
-    public class ContributedActonAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+    public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
         [TestInitialize]
@@ -53,6 +53,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
+        //Note: The [ContributedAction] annotation is applied to the parameter,
+        //but the facet is applied to the Action (if any of its params have that annotation)
         [TestMethod]
         public void TestContributedAnnotationNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");

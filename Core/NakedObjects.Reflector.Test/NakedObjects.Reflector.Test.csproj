@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacetFactory\FindMenuFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TestSpecification.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactoryTest.cs" />
