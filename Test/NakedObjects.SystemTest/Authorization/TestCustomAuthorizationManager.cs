@@ -159,8 +159,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
-        public IDomainObjectContainer Container { get; set; }
-        public SimpleRepository<Foo> Service { get; set; }
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<object> Members
 
@@ -188,8 +188,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class FooAuthorizer : ITypeAuthorizer<Foo> {
-        public IDomainObjectContainer Container { get; set; }
-        public SimpleRepository<Foo> Service { get; set; }
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Foo> Members
 
@@ -217,8 +217,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class QuxAuthorizer : ITypeAuthorizer<Qux> {
-        public IDomainObjectContainer Container { get; set; }
-        public SimpleRepository<Foo> Service { get; set; }
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Qux> Members
 

@@ -78,7 +78,7 @@ namespace NakedObjects.Core.Spec {
             get { return contributedActions ?? (contributedActions = memberFactory.CreateActionSpecs(innerSpec.ContributedActions)); }
         }
 
-        #region IObjectSpec Members
+        #region ITypeSpec Members
 
         public virtual string FullName {
             get { return innerSpec.FullName; }
@@ -405,7 +405,7 @@ namespace NakedObjects.Core.Spec {
             return str.ToString();
         }
 
-        protected bool Equals(ObjectSpec other) {
+        protected bool Equals(TypeSpec other) {
             return Equals(innerSpec, other.innerSpec);
         }
 
@@ -413,7 +413,7 @@ namespace NakedObjects.Core.Spec {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ObjectSpec) obj);
+            return Equals((TypeSpec) obj);
         }
 
         public override int GetHashCode() {

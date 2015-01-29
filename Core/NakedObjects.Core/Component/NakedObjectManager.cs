@@ -172,7 +172,7 @@ namespace NakedObjects.Core.Component {
         }
 
         private INakedObject AdapterForExistingObject(object domainObject, ITypeSpec spec) {
-            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, (IObjectSpec) spec) ?? NewAdapterForTransient(domainObject);
+            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
         }
 
         private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
@@ -193,9 +193,9 @@ namespace NakedObjects.Core.Component {
             return nakedObject;
         }
 
-        private INakedObject NewAdapterForViewModel(object domainObject, IObjectSpec spec) {
+        private INakedObject NewAdapterForViewModel(object domainObject, ITypeSpec spec) {
             if (spec.IsViewModel) {
-                INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
+                INakedObject adapter = CreateAdapterForViewModel(domainObject, (IObjectSpec) spec);
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                 return adapter;
             }

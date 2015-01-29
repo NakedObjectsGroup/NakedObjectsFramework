@@ -15,9 +15,9 @@ namespace ModelFirst {
         [Root]
         public Person Parent { get; set; }
 
-        public IDomainObjectContainer Container { get; set; }
+        public IDomainObjectContainer Container { protected get; set; }
 
-        public SimpleRepository<Person> Service { get; set; }
+        public SimpleRepository<Person> Service { protected get; set; }
 
         #region Primitive Properties
 
@@ -26,8 +26,14 @@ namespace ModelFirst {
 
         #endregion
 
+        [NakedObjectsIgnore]
         public object ExposeContainerForTest() {
             return Container;
+        }
+
+        [NakedObjectsIgnore]
+        public object ExposeServiceForTest() {
+            return Service;
         }
     }
 }
