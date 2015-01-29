@@ -24,6 +24,8 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsAutoCompleteEnabled { get; }
 
+        bool IsFindMenuEnabled { get; }
+
         /// <summary>
         ///     Returns a list of possible references/values for this field, which the user can choose from
         /// </summary>

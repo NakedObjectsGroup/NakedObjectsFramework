@@ -22,6 +22,7 @@ namespace NakedObjects.Core.Spec {
     public class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
+        private bool? isFindMenuEnabled;
 
         public OneToOneAssociationSpec(IMetamodelManager metamodel, IOneToOneAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, ITransactionManager transactionManager)
             : base(metamodel, association, session, lifecycleManager, manager) {
@@ -43,6 +44,18 @@ namespace NakedObjects.Core.Spec {
             get {
                 var mandatoryFacet = GetFacet<IMandatoryFacet>();
                 return mandatoryFacet.IsMandatory;
+            }
+        }
+
+        public bool IsFindMenuEnabled {
+            get {
+                //TODO: Temporary approach.  
+                //TODO: Does not currently disable for Contributee parameter on a ContributedAction
+                if (!isFindMenuEnabled.HasValue) {
+                    isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
+                     || ContainsFacet<IFindMenuFacet>();
+                }
+                return isFindMenuEnabled.Value;
             }
         }
 

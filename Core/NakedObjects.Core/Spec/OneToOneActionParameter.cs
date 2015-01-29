@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -14,6 +15,18 @@ namespace NakedObjects.Core.Spec {
         public OneToOneActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
 
-       
+        private bool? isFindMenuEnabled;
+
+        public bool IsFindMenuEnabled {
+            get {
+                //TODO: Temporary approach.  
+                //TODO: Does not currently disable for Contributee parameter on a ContributedAction
+                if (!isFindMenuEnabled.HasValue) {
+                    isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
+                     || ContainsFacet<IFindMenuFacet>() ;
+                }
+                return isFindMenuEnabled.Value;
+            }
+        }
     }
 }
