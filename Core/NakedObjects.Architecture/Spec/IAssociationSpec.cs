@@ -12,7 +12,6 @@ namespace NakedObjects.Architecture.Spec {
     ///     Provides reflective access to a field on a domain object
     /// </summary>
     public interface IAssociationSpec : IMemberSpec {
-        
         /// <summary>
         ///     Returns true if this field is persisted, and not calculated from other data in the object or
         ///     used transiently

@@ -18,6 +18,10 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         string Id { get; }
 
+        IObjectSpec ReturnSpec { get; }
+
+        IObjectSpec ElementSpec { get; }
+
         /// <summary>
         ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
         /// </summary>
@@ -25,9 +29,5 @@ namespace NakedObjects.Architecture.Spec {
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
         bool IsVisible(INakedObject target);
-
-        IObjectSpec ReturnSpec { get; }
-
-        IObjectSpec ElementSpec { get; }
     }
 }

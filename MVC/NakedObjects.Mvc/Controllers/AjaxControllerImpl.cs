@@ -115,7 +115,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec, ITypeSpec spec) {
+        private  INakedObject GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
             if (!values.Any()) {
                 return null;
             }

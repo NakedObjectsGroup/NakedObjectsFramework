@@ -16,8 +16,6 @@ namespace NakedObjects.Architecture.Spec {
 
         IObjectSpec ElementSpec { get; }
 
-       
-
         /// <summary>
         ///     The Owning <see cref="IActionSpec" />
         /// </summary>
@@ -83,10 +81,5 @@ namespace NakedObjects.Architecture.Spec {
         ///     GetDefault type value for parameter
         /// </summary>
         TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
-    }
-
-    public enum TypeOfDefaultValue {
-        Explicit,
-        Implicit
     }
 }
