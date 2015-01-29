@@ -28,7 +28,7 @@ namespace NakedObjects.Rest.App.Demo {
                 return new[] {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
-                     typeof (CustomerCollectionViewModel),
+                    typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
                 };

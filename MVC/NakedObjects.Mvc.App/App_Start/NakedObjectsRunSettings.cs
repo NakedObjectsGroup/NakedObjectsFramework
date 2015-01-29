@@ -37,9 +37,11 @@ namespace NakedObjects.Mvc.App {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (ActionResultModelQ<object>),
-                     typeof (CustomerCollectionViewModel),
+                    typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
+                    typeof (ActionResultModelQ<>),
+                    typeof (ActionResultModel<>)
                 };
             }
         }
