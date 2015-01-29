@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -29,7 +28,6 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
 using NakedObjects.Security;
-using NakedObjects.Value;
 
 namespace NakedObjects.SystemTest.Reflect {
     [TestClass]

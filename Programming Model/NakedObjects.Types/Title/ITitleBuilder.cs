@@ -1,5 +1,4 @@
-﻿using System;
-namespace NakedObjects {
+﻿namespace NakedObjects {
 
     /// <summary>
     ///     Interface for the utility class created by the IDomainObjectContainer#NewTitleBuilder 

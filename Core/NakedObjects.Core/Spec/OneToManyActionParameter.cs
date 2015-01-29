@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
-    public class OneToManyActionParameter : ActionParameterSpec, IOneToManyFeatureSpec {
+    public class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
         public OneToManyActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
 

@@ -11,10 +11,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.Xat;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Data.Entity;
-using NakedObjects.SystemTest.ObjectFinderGuid;
 using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {

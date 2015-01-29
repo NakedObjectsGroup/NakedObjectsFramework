@@ -1,11 +1,4 @@
-﻿using NakedObjects.SystemTest.PolymorphicAssociations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NakedObjects.SystemTest.PolymorphicAssociations {
+﻿namespace NakedObjects.SystemTest.PolymorphicAssociations {
     public class FixtureEntities {
 
         #region Injected Services

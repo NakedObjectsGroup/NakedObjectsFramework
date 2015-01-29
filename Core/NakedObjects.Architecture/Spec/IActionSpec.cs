@@ -28,6 +28,8 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         ITypeSpec OnSpec { get; }
 
+        IObjectSpec ElementSpec { get; }
+
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
         /// </summary>
@@ -52,15 +54,15 @@ namespace NakedObjects.Architecture.Spec {
         IActionParameterSpec[] Parameters { get; }
 
         /// <summary>
+        ///     Returns true if the represented action returns something, else returns false
+        /// </summary>
+        bool HasReturn { get; }
+
+        /// <summary>
         ///     Determine the real target for this action. If this action represents an object action than the target
         ///     is returned. If this action is on a service then that service will be returned.
         /// </summary>
         INakedObject RealTarget(INakedObject target);
-
-        /// <summary>
-        ///     Returns true if the represented action returns something, else returns false
-        /// </summary>
-        bool HasReturn { get; }
 
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters

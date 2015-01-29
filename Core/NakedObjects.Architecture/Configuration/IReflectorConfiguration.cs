@@ -29,7 +29,7 @@ namespace NakedObjects.Architecture.Configuration {
         ///  A whitelist of namespaces of the types that will be introspected. 
         /// </summary>
         /// <remarks>
-        /// These require an exact match so 'MyDomain' will not match 'MyDomain.SomeTypes'  
+        /// These match on the start so 'MyDomain' will  match 'MyDomain.SomeTypes'  and MyDomain.OtherTypes'
         /// </remarks>
         string[] SupportedNamespaces { get; }
 

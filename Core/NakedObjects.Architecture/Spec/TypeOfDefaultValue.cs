@@ -5,15 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
-
-namespace NakedObjects.Core.Spec {
-    public class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
-        public OneToOneActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
-
-       
+namespace NakedObjects.Architecture.Spec {
+    public enum TypeOfDefaultValue {
+        Explicit,
+        Implicit
     }
 }

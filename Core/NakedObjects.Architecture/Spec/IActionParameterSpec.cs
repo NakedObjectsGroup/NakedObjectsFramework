@@ -12,11 +12,10 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     public interface IActionParameterSpec : IFeatureSpec {
+        /// <summary>
+        ///     The parameter type spec
+        /// </summary>
         IObjectSpec Spec { get; }
-
-        IObjectSpec ElementSpec { get; }
-
-       
 
         /// <summary>
         ///     The Owning <see cref="IActionSpec" />
@@ -83,10 +82,5 @@ namespace NakedObjects.Architecture.Spec {
         ///     GetDefault type value for parameter
         /// </summary>
         TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
-    }
-
-    public enum TypeOfDefaultValue {
-        Explicit,
-        Implicit
     }
 }

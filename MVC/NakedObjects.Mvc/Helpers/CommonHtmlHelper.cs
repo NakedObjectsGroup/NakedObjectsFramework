@@ -1030,7 +1030,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (context.Parameter.Spec.IsCollection) {
                     link = html.CollectionLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
-                else if (!context.Parameter.Spec.IsParseable && context.Parameter is OneToOneActionParameter) {
+                else if (!context.Parameter.Spec.IsParseable && context.Parameter is IOneToOneActionParameterSpec) {
                     link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
                 }
 
@@ -1439,13 +1439,13 @@ namespace NakedObjects.Web.Mvc.Html {
                     }
                 }
 
-                if (context.Parameter is OneToOneActionParameter) {
+                if (context.Parameter is IOneToOneActionParameterSpec) {
                     return (INakedObject) rawvalue;
                 }
                 if (context.Parameter.Spec.IsParseable) {
                     return html.GetAndParseValueAsNakedObject(context, rawvalue);
                 }
-                if (context.Parameter is OneToManyActionParameter) {
+                if (context.Parameter is IOneToManyActionParameterSpec) {
                     var facet = context.Parameter.GetFacet<IElementTypeFacet>();
                     IObjectSpec itemSpec = (IObjectSpec) html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);
 

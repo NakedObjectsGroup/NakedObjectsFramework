@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Spec {
     /// <summary>
     ///     Equivalent to <see cref="IAssociationSpec" />, but for parameter rather than properties
     /// </summary>
-    public interface IActionParseableParameterSpec : IActionParameterSpec {
+    public interface IActionParseableParameterSpec : IOneToOneActionParameterSpec {
         int NoLines { get; }
         int MaximumLength { get; }
         int TypicalLineLength { get; }

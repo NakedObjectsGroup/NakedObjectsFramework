@@ -7,12 +7,10 @@
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
-    ///     Base interface for <see cref="IOneToManyAssociationSpec" /> only.
+    ///     Base interface for <see cref="IOneToManyAssociationSpec" />.
     /// </summary>
     /// <para>
-    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />; if we ever
-    ///     support collections as parameters then would also be the base
-    ///     interface for a <c>IOneToManyActionParameter</c>.
+    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />;
     /// </para>
     /// <para>
     ///     Is also the route upto the <see cref="IFeatureSpec" /> superinterface.

@@ -213,7 +213,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ValueProviderResult vp = form.GetValue(name);
                 string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
 
-                if (parm is OneToManyActionParameter) {
+                if (parm is IOneToManyActionParameterSpec) {
                     // handle collection mementos 
 
                     if (parm.IsMultipleChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
@@ -268,7 +268,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             var collectionValue = value as IEnumerable;
-            if (parm is OneToOneActionParameter || collectionValue == null) {
+            if (parm is IOneToOneActionParameterSpec || collectionValue == null) {
                 return NakedObjectsContext.GetNakedObjectFromId(stringValue);
             }
 
@@ -287,7 +287,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 return null; 
             }
-            if (parm is OneToManyActionParameter) {
+            if (parm is IOneToManyActionParameterSpec) {
                 return values.All(string.IsNullOrEmpty) ? null : values;
             }
             return values.First();
@@ -395,7 +395,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedParameters(IActionSpec action) {
-            var refItems = action.Parameters.OfType<OneToOneActionParameter>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
+            var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
@@ -403,7 +403,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedParameters(INakedObject nakedObject, IActionSpec action, IDictionary<string, string> dict) {
-            var refItems = action.Parameters.OfType<OneToOneActionParameter>().Where(p => !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
+            var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, NakedObjectsContext.GetNakedObjectFromId(dict[p.Id])));
                 Dictionary<string, INakedObject> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(dict[p.Id]));
