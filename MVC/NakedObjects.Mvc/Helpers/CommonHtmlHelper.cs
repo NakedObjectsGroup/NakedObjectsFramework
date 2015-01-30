@@ -152,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ObjectIcon(this HtmlHelper html, INakedObject nakedObject) {
-            if (nakedObject == null || nakedObject.Spec.IsService) {
+            if (nakedObject == null || nakedObject.Spec is IServiceSpec) {
                 // no icons for services 
                 return string.Empty;
             }

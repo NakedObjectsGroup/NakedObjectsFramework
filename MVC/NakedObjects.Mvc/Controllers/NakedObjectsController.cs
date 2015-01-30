@@ -104,7 +104,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 nakedObject = controlData.GetNakedObject(NakedObjectsContext);
 
-                if (nakedObject.Spec.IsService) {
+                if (nakedObject.Spec is IServiceSpec) {
                     object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
                     if (lastObject == null) {
                         TempData[IdHelper.NofMessages] = NakedObjectsContext.MessageBroker.Messages;

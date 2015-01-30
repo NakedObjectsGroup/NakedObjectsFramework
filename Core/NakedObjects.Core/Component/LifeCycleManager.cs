@@ -126,7 +126,7 @@ namespace NakedObjects.Core.Component {
                 throw new NotPersistableException("Object must be kept transient: " + nakedObject);
             }
             ITypeSpec spec = nakedObject.Spec;
-            if (spec.IsService) {
+            if (spec is IServiceSpec) {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
 

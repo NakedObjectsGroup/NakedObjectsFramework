@@ -49,8 +49,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
                 ITypeSpec spec = WrappedNakedObject.Spec;
 
-                if (spec.IsService) {
-                    ServiceType st = framework.ServicesManager.GetServiceType((IServiceSpec) spec);
+                var serviceSpec = spec as IServiceSpec;
+                if (serviceSpec != null) {
+                    ServiceType st = framework.ServicesManager.GetServiceType(serviceSpec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -113,7 +114,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public PropertyInfo[] GetKeys() {
-            if (nakedObject.Spec.IsService) {
+            if (nakedObject.Spec is IServiceSpec) {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }

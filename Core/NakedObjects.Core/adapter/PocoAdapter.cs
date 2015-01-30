@@ -199,7 +199,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void LoadAnyComplexTypes() {
-            if (Spec.IsService ||
+            if (Spec is IServiceSpec ||
                 Spec.IsViewModel ||
                 Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;

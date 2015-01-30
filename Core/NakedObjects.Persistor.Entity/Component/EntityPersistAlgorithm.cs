@@ -8,6 +8,7 @@
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
@@ -45,7 +46,7 @@ namespace NakedObjects.Persistor.Entity {
             if (nakedObject.ResolveState.IsAggregated() ||
                 nakedObject.ResolveState.IsPersistent() ||
                 nakedObject.Spec.Persistable == PersistableType.Transient ||
-                nakedObject.Spec.IsService) {
+                nakedObject.Spec is IServiceSpec) {
                 return;
             }
             Log.Info("persist " + nakedObject);

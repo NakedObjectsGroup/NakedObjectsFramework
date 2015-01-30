@@ -97,7 +97,6 @@ namespace NakedObjects.Architecture.Spec {
 
         bool IsAbstract { get; }
         bool IsInterface { get; }
-        bool IsService { get; }
         bool HasNoIdentity { get; }
 
         bool IsQueryable { get; }

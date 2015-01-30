@@ -240,10 +240,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public bool IsService {
-            get { return InnerSpec.Service; }
-        }
-
         public string ShortName {
             get {
                 if (shortName == null) {
@@ -360,7 +356,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         private string DefaultTitle() {
-            return IsService ? SingularName : UntitledName;
+            return InnerSpec.Service ? SingularName : UntitledName;
         }
 
         public string GetInvariantString(INakedObject nakedObject) {
@@ -375,7 +371,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         private PersistableType GetPersistable() {
-            if (IsService) {
+            if (InnerSpec.Service) {
                 return PersistableType.ProgramPersistable;
             }
             if (InnerSpec.ContainsFacet<INotPersistedFacet>()) {

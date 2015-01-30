@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.Audit {
 
             IPrincipal byPrincipal = session.Principal;
             string memberName = identifier.MemberName;
-            if (nakedObject.Spec.IsService) {
+            if (nakedObject.Spec is IServiceSpec) {
                 string serviceName = nakedObject.Spec.GetTitle(nakedObject);
                 auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
             }
