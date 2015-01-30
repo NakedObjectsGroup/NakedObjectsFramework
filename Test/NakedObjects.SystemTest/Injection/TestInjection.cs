@@ -52,7 +52,7 @@ namespace NakedObjects.SystemTest.Injection {
         public void InjectContainer() {
             var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
-            Assert.IsInstanceOfType(testObject.Container, typeof (DomainObjectContainer));
+            Assert.IsInstanceOfType(testObject.Container, typeof (IDomainObjectContainer));
         }
 
         [TestMethod]

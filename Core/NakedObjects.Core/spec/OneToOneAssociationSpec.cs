@@ -19,7 +19,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    public class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
+    internal class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
         private bool? isFindMenuEnabled;

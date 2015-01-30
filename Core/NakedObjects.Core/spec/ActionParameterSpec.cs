@@ -20,7 +20,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    public abstract class ActionParameterSpec : IActionParameterSpec {
+    internal abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;

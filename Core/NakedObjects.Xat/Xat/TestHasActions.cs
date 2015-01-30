@@ -32,7 +32,7 @@ namespace NakedObjects.Xat {
         public ITestAction[] Actions {
             get {
                 List<ITestAction> actions = NakedObject.Spec.GetObjectActions().
-                    OfType<ActionSpec>().
+                    OfType<IActionSpec>().
                     Select(x => Factory.CreateTestAction(x, this)).ToList();
                 return actions.ToArray();
             }

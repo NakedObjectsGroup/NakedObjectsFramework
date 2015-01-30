@@ -12,6 +12,7 @@ using System.Reflection;
 // associated with an assembly.
 
 // TODO: Review the values of the assembly attributes
+using System.Runtime.CompilerServices;
 
 #if DEBUG
 
@@ -19,6 +20,9 @@ using System.Reflection;
 #else
 [assembly: AssemblyTitle("Naked Objects Core (Release)")]
 #endif
+
+[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test") ]
+[assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

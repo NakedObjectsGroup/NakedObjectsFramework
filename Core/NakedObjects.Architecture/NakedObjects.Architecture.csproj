@@ -219,6 +219,10 @@
     <Compile Include="Menu\IMenuImmutable.cs" />
     <Compile Include="Menu\IMenuItemImmutable.cs" />
     <Compile Include="Reflect\IIntrospector.cs" />
+    <Compile Include="SpecImmutable\ITypeSpecBuilder.cs" />
+    <Compile Include="SpecImmutable\IServiceSpecBuilder.cs" />
+    <Compile Include="SpecImmutable\ITypeSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\IServiceSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IOneToManyAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IOneToOneAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />

@@ -75,12 +75,12 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked[] GetChoices() {
-            INakedObject[] choices = ((AssociationSpecAbstract) field).GetChoices(owningObject.NakedObject, null);
+            INakedObject[] choices = ((IOneToOneAssociationSpec) field).GetChoices(owningObject.NakedObject, null);
             return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            INakedObject[] completions = ((AssociationSpecAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
+            INakedObject[] completions = ((IOneToOneAssociationSpec) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
             return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 

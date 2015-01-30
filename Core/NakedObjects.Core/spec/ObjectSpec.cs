@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
-    public class ObjectSpec : TypeSpec, IObjectSpec {
+    internal class ObjectSpec : TypeSpec, IObjectSpec {
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;

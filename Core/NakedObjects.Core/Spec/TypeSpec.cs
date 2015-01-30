@@ -18,7 +18,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    public abstract class TypeSpec : ITypeSpec {
+    internal abstract class TypeSpec : ITypeSpec {
         private readonly IObjectSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;

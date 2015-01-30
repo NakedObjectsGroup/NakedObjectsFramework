@@ -22,7 +22,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    public class ActionSpec : MemberSpecAbstract, IActionSpec {
+    internal class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
 

@@ -17,7 +17,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
+    internal class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
         private readonly IObjectSpec elementSpec;
         private readonly bool isASet;
         private readonly IObjectPersistor persistor;

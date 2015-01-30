@@ -21,7 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public class PocoAdapter : INakedObject {
+    internal class PocoAdapter : INakedObject {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager nakedObjectManager;

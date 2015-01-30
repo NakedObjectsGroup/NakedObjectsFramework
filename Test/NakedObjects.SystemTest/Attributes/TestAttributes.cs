@@ -15,6 +15,7 @@ using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
@@ -106,7 +107,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var actions = adapter.Spec.GetObjectActions();
 
             Assert.AreEqual(1, actions.Count());
-            Assert.IsTrue(actions[0] is ActionSpec);
+            Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Contributed Action", actions[0].Name);
         }
 
@@ -350,7 +351,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
             FinderAction1 obj = service.NewObject1();
             INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var finderActions = adapter.Spec.GetFinderActions();
+            var finderActions = ((IObjectSpec) adapter.Spec).GetFinderActions();
 
             Assert.AreEqual(2, finderActions.Count());
             var item0 = finderActions[0];
