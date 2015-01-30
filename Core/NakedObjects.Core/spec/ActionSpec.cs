@@ -121,7 +121,7 @@ namespace NakedObjects.Core.Spec {
             if (target == null) {
                 return FindService();
             }
-            if (target.Spec.IsService) {
+            if (target.Spec is IServiceSpec) {
                 return target;
             }
             if (IsContributedMethod) {

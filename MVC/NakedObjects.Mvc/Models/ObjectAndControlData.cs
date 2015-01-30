@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Collections.Generic;
 using System.Data.Entity.Core;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -129,20 +130,21 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObject;
         }
 
-        public IActionSpec GetAction( INakedObjectsFramework framework) {
+        public IActionSpec GetAction(INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {
-                var nakedObject = GetNakedObject(framework);
-                IActionSpec[] actions = null;
+                GetNakedObject(framework);
+                IActionSpec[] actions;
                 if (nakedObject.Spec.IsCollection) {
                     var metamodel = framework.MetamodelManager.Metamodel;
                     IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                    var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
+                    var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                    Trace.Assert(elementSpec != null);
                     actions = elementSpec.GetCollectionContributedActions();
-                } else {
+                }
+                else {
                     actions = nakedObject.Spec.GetObjectActions();
                 }
-                nakedObjectAction = actions.Where(a => a.IsUsable( nakedObject).IsAllowed).
-                               Where(a => a.IsVisible( nakedObject)).SingleOrDefault(a => a.Id == ActionId);
+                nakedObjectAction = actions.Where(a => a.IsUsable(nakedObject).IsAllowed).Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == ActionId);
             }
             return nakedObjectAction;
         }

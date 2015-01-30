@@ -28,6 +28,17 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IAssociationSpec GetProperty(string id);
 
+        /// <summary>
+        ///     Returns an array of actions that would be contributed to a collection of this object type
+        /// </summary>
+        IActionSpec[] GetCollectionContributedActions();
+
+
+        /// <summary>
+        ///     Returns an array of actions that can find objects of this type
+        /// </summary>
+        IActionSpec[] GetFinderActions();
+
         #endregion
 
     }

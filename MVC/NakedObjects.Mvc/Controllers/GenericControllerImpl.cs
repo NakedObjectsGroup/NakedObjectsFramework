@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
@@ -192,8 +193,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IObjectSpecImmutable elementSpecImmut =
                     filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
 
-                var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut);
-                 var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
+                var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                Trace.Assert(elementSpec != null);
+                var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
 
                 if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");

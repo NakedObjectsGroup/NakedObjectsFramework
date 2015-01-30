@@ -152,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ObjectIcon(this HtmlHelper html, INakedObject nakedObject) {
-            if (nakedObject == null || nakedObject.Spec.IsService) {
+            if (nakedObject == null || nakedObject.Spec is IServiceSpec) {
                 // no icons for services 
                 return string.Empty;
             }
@@ -418,7 +418,9 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, INakedObject nakedObject, Func<IAssociationSpec, string> idFunc) {
-            IEnumerable<IAssociationSpec> concurrencyFields = ((IObjectSpec)nakedObject.Spec).Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>());
+            var objectSpec = nakedObject.Spec as IObjectSpec;
+
+            IEnumerable<IAssociationSpec> concurrencyFields = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>());
             return concurrencyFields.Select(property => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(new PropertyContext(nakedObject, property, false), idFunc(property), true)
@@ -1438,13 +1440,13 @@ namespace NakedObjects.Web.Mvc.Html {
                         errors.ForEach(e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
                     }
                 }
-
-                if (context.Parameter is IOneToOneActionParameterSpec) {
-                    return (INakedObject) rawvalue;
-                }
                 if (context.Parameter.Spec.IsParseable) {
                     return html.GetAndParseValueAsNakedObject(context, rawvalue);
                 }
+                if (context.Parameter is IOneToOneActionParameterSpec) {
+                    return (INakedObject) rawvalue;
+                }
+               
                 if (context.Parameter is IOneToManyActionParameterSpec) {
                     var facet = context.Parameter.GetFacet<IElementTypeFacet>();
                     IObjectSpec itemSpec = (IObjectSpec) html.Framework().MetamodelManager.GetSpecification(facet.ValueSpec);

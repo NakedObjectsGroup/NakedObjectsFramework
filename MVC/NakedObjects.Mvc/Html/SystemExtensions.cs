@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
@@ -270,7 +271,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (fvm != null) {
                 // if dialog return to target - unless it's a service 
                 object target = fvm.ContextObject;
-                domainObject = !html.Framework().NakedObjectManager.CreateAdapter(target, null, null).Spec.IsService ? target : null;
+                domainObject = html.Framework().NakedObjectManager.CreateAdapter(target, null, null).Spec is IObjectSpec ? target : null;
             }
 
             // if target is transient  cancel back to history

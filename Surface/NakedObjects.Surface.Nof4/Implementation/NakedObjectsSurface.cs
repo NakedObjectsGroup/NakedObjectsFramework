@@ -734,7 +734,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
-            IAssociationSpec[] properties = ((IObjectSpec) nakedObject.Spec).Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
+            var objectSpec = nakedObject.Spec as IObjectSpec;
+            IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] { } : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {

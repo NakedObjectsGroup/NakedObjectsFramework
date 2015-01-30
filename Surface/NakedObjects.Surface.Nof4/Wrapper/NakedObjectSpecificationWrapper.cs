@@ -40,8 +40,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get {
                 var extData = new Dictionary<string, object>();
 
-                if (spec.IsService) {
-                    ServiceType st = framework.ServicesManager.GetServiceType((IServiceSpec) spec);
+                var serviceSpec = spec as IServiceSpec;
+                if (serviceSpec != null) {
+                    ServiceType st = framework.ServicesManager.GetServiceType(serviceSpec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -62,7 +63,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsService {
-            get { return spec.IsService; }
+            get { return spec is IServiceSpec; }
         }
 
         public bool IsVoid {

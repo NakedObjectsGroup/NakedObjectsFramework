@@ -97,7 +97,6 @@ namespace NakedObjects.Architecture.Spec {
 
         bool IsAbstract { get; }
         bool IsInterface { get; }
-        bool IsService { get; }
         bool HasNoIdentity { get; }
 
         bool IsQueryable { get; }
@@ -167,16 +166,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         //TODO: Rename to GetObjectActions for this type
         IActionSpec[] GetObjectActions();
-
-        /// <summary>
-        ///     Returns an array of actions that would be contributed to a collection of this object type
-        /// </summary>
-        IActionSpec[] GetCollectionContributedActions();
-
-        /// <summary>
-        ///     Returns an array of actions that can find objects of this type
-        /// </summary>
-        IActionSpec[] GetFinderActions();
 
         #endregion
 
