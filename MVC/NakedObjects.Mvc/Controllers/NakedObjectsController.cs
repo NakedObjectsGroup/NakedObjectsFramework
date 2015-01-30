@@ -434,7 +434,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void CheckConcurrency(INakedObject nakedObject, IAssociationSpec parent, ObjectAndControlData controlData, Func<IAssociationSpec, INakedObject, IAssociationSpec, string> idFunc) {
-            var concurrencyFields = ((IObjectSpec)nakedObject.Spec).Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
+
+            var objectSpec = nakedObject.Spec as IObjectSpec;
+            var concurrencyFields =  objectSpec == null ? new  List<IAssociationSpec>() : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
 
             if (!nakedObject.ResolveState.IsTransient() && concurrencyFields.Any() ) {
                 IEnumerable<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);

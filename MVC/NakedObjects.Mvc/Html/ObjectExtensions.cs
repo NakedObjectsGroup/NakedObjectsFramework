@@ -82,7 +82,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            return ((IObjectSpec)nakedObject.Spec).Properties.Any(p => p.IsVisible( nakedObject));
+            var objectSpec = nakedObject.Spec as IObjectSpec;
+            return objectSpec != null && objectSpec.Properties.Any(p => p.IsVisible(nakedObject));
         }
 
 
