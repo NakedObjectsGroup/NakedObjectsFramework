@@ -11,16 +11,15 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class ObjectSpecImmutable : TypeSpecImmutable {
-        public ObjectSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
-          
+    public class ServiceSpecImmutable : TypeSpecImmutable {
+        public ServiceSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
+            Service = true;
         }
 
-        #region ISerializable
-
         // The special constructor is used to deserialize values. 
-        public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
+        public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
 
-        #endregion
+
+
     }
 }

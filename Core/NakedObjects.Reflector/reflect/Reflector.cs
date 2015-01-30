@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -33,6 +34,8 @@ namespace NakedObjects.Reflect {
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
+
+        private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
@@ -84,19 +87,6 @@ namespace NakedObjects.Reflect {
             get { return metamodel.AllSpecifications.Cast<IObjectSpecBuilder>().ToArray(); }
         }
 
-        //public IObjectSpecBuilder LoadSpecification(string className) {
-        //    Assert.AssertNotNull("specification class must be specified", className);
-
-        //    try {
-        //        Type type = TypeUtils.GetType(className);
-        //        return LoadSpecification(type);
-        //    }
-        //    catch (Exception e) {
-        //        Log.FatalFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-        //        throw;
-        //    }
-        //}
-
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
             foreach (PropertyInfo property in properties) {
                 if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
@@ -131,8 +121,12 @@ namespace NakedObjects.Reflect {
             Type[] services = s1.Union(s2).Union(s3).ToArray();
             Type[] nonServices = GetTypesToIntrospect();
 
-            InstallSpecifications(services, true);
-            InstallSpecifications(nonServices, false);
+            services.ForEach(t => serviceTypes.Add(t));
+
+            var allTypes = services.Union(nonServices).ToArray();
+
+            InstallSpecifications(allTypes);
+          
             PopulateAssociatedActions(s1.Union(s2).ToArray());
 
             //Menus installed once rest of metamodel has been built:
@@ -145,8 +139,8 @@ namespace NakedObjects.Reflect {
 
         #endregion
 
-        private void InstallSpecifications(Type[] types, bool isService) {
-            types.ForEach(type => InstallSpecification(type, isService));
+        private void InstallSpecifications(Type[] types) {
+            types.ForEach(type => LoadSpecification(type));
         }
 
         private void PopulateAssociatedActions(Type[] services) {
@@ -222,16 +216,6 @@ namespace NakedObjects.Reflect {
             spec.AddFinderActions(finderActions);
         }
 
-        private void InstallSpecification(Type type, bool isService) {
-            IObjectSpecBuilder spec = LoadSpecification(type);
-
-            // Do this here so that if the service spec was found and loaded earlier for any reason it is still marked 
-            // as a service
-            if (isService) {
-                spec.MarkAsService();
-            }
-        }
-
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
             Type actualType = classStrategy.GetType(type);
 
@@ -250,17 +234,17 @@ namespace NakedObjects.Reflect {
 
             specification.Introspect(facetDecoratorSet, new Introspector(this, metamodel));
 
-            //if (actualType.IsGenericType && actualType.IsConstructedGenericType) {
-            //    // introspect any generic type parameters
-            //    actualType.GetGenericArguments().ForEach(t => LoadSpecificationAndCache(t));
-            //}
-
             return specification;
         }
 
         private IObjectSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-            return new ObjectSpecImmutable(type, metamodel);
+
+            return IsService(type) ? (IObjectSpecBuilder) new ServiceSpecImmutable(type, metamodel) : new ObjectSpecImmutable(type, metamodel);
+        }
+
+        private bool IsService(Type type) {
+            return serviceTypes.Contains(type);
         }
     }
 

@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -22,24 +23,19 @@ namespace NakedObjects.Meta.Facet {
         //Creates a menu based on the object's actions and their specified ordering
         //For backwards compatibility of UI only, it gives the menu an Id of the type name
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            if (Spec().Type.FullName.StartsWith("System")) return; //Menu not relevant, and could cause error below
+
+            if (TypeUtils.IsSystem(Spec.Type)) return; //Menu not relevant, and could cause error below
             //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
             //It is not needed for menus to function
-            string id = null;
-            if (Spec().Service) {
-                id = UniqueShortName(Spec());
-            }
-            if (!Spec().Service) {
-                id = Spec().ShortName + "-Actions";
-            }
-            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec().Type);
+            string id = Spec.Service ? UniqueShortName(Spec) : Spec.ShortName + "-Actions";
+            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec.Type);
             // possible spec type is generic in which case invoke would fail without this check
             if (!m.ContainsGenericParameters) {
-                m.Invoke(this, new object[] {metamodel, GetMenuName(Spec()), id});
+                m.Invoke(this, new object[] {metamodel, GetMenuName(Spec), id});
             }
         }
 
-        private string UniqueShortName(ObjectSpecImmutable spec) {
+        private string UniqueShortName(TypeSpecImmutable spec) {
             string usn = spec.ShortName;
             Type type = spec.Type;
             if (type.IsGenericType) {
