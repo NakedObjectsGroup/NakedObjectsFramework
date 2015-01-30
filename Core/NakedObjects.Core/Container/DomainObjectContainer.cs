@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Core.Container {
-    public class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
+    internal class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectsFramework framework;
 
         public DomainObjectContainer(INakedObjectsFramework framework) {

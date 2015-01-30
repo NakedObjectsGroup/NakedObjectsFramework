@@ -12,7 +12,7 @@ using Common.Logging;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
-    public static class Methods {
+    internal static class Methods {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Methods));
 
         public static void InjectContainer(object target, object container) {
