@@ -11,24 +11,19 @@ using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 using NakedObjects.Value;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
-     
         public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Spec.GetObjectActions().OfType<ActionSpec>().Cast<IActionSpec>().
-                               Where(a => a.IsUsable( nakedObject).IsAllowed).
-                               Where(a => a.IsVisible( nakedObject ));
+            return nakedObject.Spec.GetObjectActions().Where(a => a.IsUsable(nakedObject).IsAllowed).
+                Where(a => a.IsVisible(nakedObject));
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework, INakedObject nakedObject) {

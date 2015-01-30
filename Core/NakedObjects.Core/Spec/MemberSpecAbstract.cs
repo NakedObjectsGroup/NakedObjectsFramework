@@ -18,7 +18,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Architecture.Reflect {
-    public abstract class MemberSpecAbstract : IMemberSpec {
+    internal abstract class MemberSpecAbstract : IMemberSpec {
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMemberSpecImmutable memberSpecImmutable;

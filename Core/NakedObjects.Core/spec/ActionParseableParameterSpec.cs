@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
-    public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
+    internal class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
         // cached values 
         private int? maximumLength;
         private int? noLines;
