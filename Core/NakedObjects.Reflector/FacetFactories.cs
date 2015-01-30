@@ -68,11 +68,11 @@ namespace NakedObjects.Reflect {
             typeof(ConcurrencyCheckAnnotationFacetFactory),
             typeof(ContributedActionAnnotationFacetFactory),
             typeof(FinderActionFacetFactory),
+            typeof(FindMenuFacetFactory),
             // must come after any facets that install titles
             typeof(MaskAnnotationFacetFactory),
             // must come after any facets that install titles, and after mask
             // if takes precedence over mask.
-            typeof(FinderActionFacetFactory),
             typeof(TypeOfAnnotationFacetFactory),
             typeof(TableViewAnnotationFacetFactory),
             typeof(TypicalLengthDerivedFromTypeFacetFactory),

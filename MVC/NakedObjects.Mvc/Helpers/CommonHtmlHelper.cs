@@ -1797,9 +1797,9 @@ namespace NakedObjects.Web.Mvc.Html {
                         }));
                         tag.MergeAttribute("data-validate", url);
                     }
-                    if (propertyContext.IsFindMenuEnabled()) {
-                        noFinder = true; //irrespective of what was passed in
-                    }
+                    //Translates to: Only render finder if the Context is FindMenu enabled AND 
+                    //calling code has not overridden it by setting noFinder to true.
+                    noFinder = noFinder || !propertyContext.IsFindMenuEnabled();
 
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                      html.GetFieldValue(propertyContext, suggestedItem) +

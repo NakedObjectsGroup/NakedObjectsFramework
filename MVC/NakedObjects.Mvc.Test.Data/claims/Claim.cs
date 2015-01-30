@@ -208,7 +208,7 @@ namespace Expenses {
 
             #region Approver
 
-            [MemberOrder(Sequence = "5"), Optionally]
+            [MemberOrder(Sequence = "5"), Optionally, FindMenu]
             public virtual Employee Approver { get; set; }
 
             public virtual void ModifyApprover(Employee newApprover) {
