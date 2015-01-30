@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -13,6 +14,18 @@ namespace NakedObjects.Core.Spec {
     public class ServiceSpec : TypeSpec, IServiceSpec {
         public ServiceSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
             base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) {}
+
+        #region IServiceSpec Members
+
+        public override IActionSpec[] GetObjectActions() {
+            return ObjectActions;
+        }
+
+        #endregion
+
+        protected override PersistableType GetPersistable() {
+            return PersistableType.ProgramPersistable;
+        }
     }
 }
 

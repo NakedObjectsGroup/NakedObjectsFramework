@@ -167,16 +167,6 @@ namespace NakedObjects.Architecture.Spec {
         //TODO: Rename to GetObjectActions for this type
         IActionSpec[] GetObjectActions();
 
-        /// <summary>
-        ///     Returns an array of actions that would be contributed to a collection of this object type
-        /// </summary>
-        IActionSpec[] GetCollectionContributedActions();
-
-        /// <summary>
-        ///     Returns an array of actions that can find objects of this type
-        /// </summary>
-        IActionSpec[] GetFinderActions();
-
         #endregion
 
         #region Default Provider

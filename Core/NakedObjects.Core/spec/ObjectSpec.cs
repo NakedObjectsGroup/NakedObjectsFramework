@@ -6,18 +6,29 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : TypeSpec, IObjectSpec {
+        private IActionSpec[] collectionContributedActions;
+        private IActionSpec[] combinedActions;
+        private IActionSpec[] contributedActions;
+        private IActionSpec[] finderActions;
         private IAssociationSpec[] objectFields;
 
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
             base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) {}
+
+        private IActionSpec[] ContributedActions {
+            get { return contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions)); }
+        }
 
         #region IObjectSpec Members
 
@@ -34,7 +45,35 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
+        public override IActionSpec[] GetObjectActions() {
+            if (combinedActions == null) {
+                var ca = new List<IActionSpec>();
+                ca.AddRange(ObjectActions);
+                ca.AddRange(ContributedActions);
+                combinedActions = ca.ToArray();
+            }
+            return combinedActions;
+        }
+
+        public IActionSpec[] GetCollectionContributedActions() {
+            return collectionContributedActions ?? (collectionContributedActions = MemberFactory.CreateActionSpecs(InnerSpec.CollectionContributedActions));
+        }
+
+        public IActionSpec[] GetFinderActions() {
+            return finderActions ?? (finderActions = MemberFactory.CreateActionSpecs(InnerSpec.FinderActions));
+        }
+
         #endregion
+
+        protected override PersistableType GetPersistable() {
+            if (InnerSpec.ContainsFacet<INotPersistedFacet>()) {
+                return PersistableType.Transient;
+            }
+            if (InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
+                return PersistableType.ProgramPersistable;
+            }
+            return PersistableType.UserPersistable;
+        }
     }
 }
 

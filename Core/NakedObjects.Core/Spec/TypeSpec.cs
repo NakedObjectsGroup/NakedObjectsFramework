@@ -25,10 +25,6 @@ namespace NakedObjects.Core.Spec {
         private readonly INakedObjectManager nakedObjectManager;
 
         // cached values 
-        private IActionSpec[] combinedActions;
-        private IActionSpec[] contributedActions;
-        private IActionSpec[] collectionContributedActions;
-        private IActionSpec[] finderActions;
         private string description;
         private bool? hasNoIdentity;
         private bool? hasSubclasses;
@@ -43,7 +39,7 @@ namespace NakedObjects.Core.Spec {
         private bool? isQueryable;
         private bool? isViewModel;
         private bool? isVoid;
-        private IActionSpec[] objectActions;     
+        private IActionSpec[] objectActions;
         private PersistableType? persistable;
         private string pluralName;
         private string shortName;
@@ -68,12 +64,16 @@ namespace NakedObjects.Core.Spec {
             get { return InnerSpec.Type; }
         }
 
-        private IActionSpec[] ObjectActions {
+        protected IActionSpec[] ObjectActions {
             get { return objectActions ?? (objectActions = MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions)); }
         }
 
-        private IActionSpec[] ContributedActions {
-            get { return contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions)); }
+        protected IObjectSpecImmutable InnerSpec {
+            get { return innerSpec; }
+        }
+
+        protected SpecFactory MemberFactory {
+            get { return memberFactory; }
         }
 
         #region ITypeSpec Members
@@ -172,23 +172,7 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public virtual IActionSpec[] GetObjectActions() {
-            if (combinedActions == null) {
-                var ca = new List<IActionSpec>();
-                ca.AddRange(ObjectActions);
-                ca.AddRange(ContributedActions);
-                combinedActions = ca.ToArray();
-            }
-            return combinedActions;
-        }
-
-        public IActionSpec[] GetCollectionContributedActions() {
-            return collectionContributedActions ?? (collectionContributedActions = MemberFactory.CreateActionSpecs(InnerSpec.CollectionContributedActions));
-        }
-
-        public IActionSpec[] GetFinderActions() {
-            return finderActions ?? (finderActions = MemberFactory.CreateActionSpecs(InnerSpec.FinderActions));
-        }
+        public abstract IActionSpec[] GetObjectActions();
 
         public IMenuImmutable ObjectMenu {
             get { return InnerSpec.ObjectMenu; }
@@ -308,14 +292,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        protected IObjectSpecImmutable InnerSpec {
-            get { return innerSpec; }
-        }
-
-        protected SpecFactory MemberFactory {
-            get { return memberFactory; }
-        }
-
         /// <summary>
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
@@ -347,16 +323,10 @@ namespace NakedObjects.Core.Spec {
             return Superclass != null && Superclass.IsOfType(spec);
         }
 
-     
-
         public string GetTitle(INakedObject nakedObject) {
             var titleFacet = GetFacet<ITitleFacet>();
             string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObject, nakedObjectManager);
             return title ?? DefaultTitle();
-        }
-
-        private string DefaultTitle() {
-            return InnerSpec.Service ? SingularName : UntitledName;
         }
 
         public string GetInvariantString(INakedObject nakedObject) {
@@ -370,18 +340,11 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private PersistableType GetPersistable() {
-            if (InnerSpec.Service) {
-                return PersistableType.ProgramPersistable;
-            }
-            if (InnerSpec.ContainsFacet<INotPersistedFacet>()) {
-                return PersistableType.Transient;
-            }
-            if (InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
-                return PersistableType.ProgramPersistable;
-            }
-            return PersistableType.UserPersistable;
+        private string DefaultTitle() {
+            return InnerSpec.Service ? SingularName : UntitledName;
         }
+
+        protected abstract PersistableType GetPersistable();
 
         private string TypeNameFor() {
             return IsCollection ? "Collection" : "Object";

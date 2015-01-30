@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
@@ -30,18 +31,15 @@ namespace NakedObjects.Web.Mvc.Html {
                                Where(a => a.IsVisible( nakedObject ));
         }
 
-        public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
- 
+        public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
             if (nakedObject.Spec.IsQueryable) {
                 var metamodel = framework.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
+                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
-            } else {
-
-                return nakedObject.Spec.GetObjectActions().
-                                   Where(a => a.IsVisible(nakedObject));
             }
+            return nakedObject.Spec.GetObjectActions().Where(a => a.IsVisible(nakedObject));
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
