@@ -11,7 +11,7 @@ namespace RestfulObjects.Mvc.Model {
     public class ReferenceValue : IValue {
         private readonly string internalValue;
 
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ReferenceValue));
 
         public ReferenceValue(object value, string name) {
             internalValue = value as string;

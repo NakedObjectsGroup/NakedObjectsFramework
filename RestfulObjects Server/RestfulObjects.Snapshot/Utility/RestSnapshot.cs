@@ -20,7 +20,7 @@ using RestfulObjects.Snapshot.Representations;
 namespace RestfulObjects.Snapshot.Utility {
     public class RestSnapshot {
         private readonly IList<string> allowHeaders = new List<string>();
-        private readonly ILog logger = LogManager.GetCurrentClassLogger();
+        private readonly ILog logger = LogManager.GetLogger(typeof(RestSnapshot));
         private readonly Action populator;
         private readonly HttpRequestMessage requestMessage;
         private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
