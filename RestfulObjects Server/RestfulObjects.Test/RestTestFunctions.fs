@@ -47,8 +47,9 @@ type partCmp (s : string) =
 type hrefType (href : string) =
     let h = href 
     member x.full with get() = sprintf "http://localhost/%s" h  
+    member x.fullWithPort with get() = sprintf "http://localhost:80/%s" h  
     override x.Equals (o : obj) =
-        x.full  = o.ToString() 
+        (x.full  = o.ToString()) || (x.fullWithPort = o.ToString()) 
     override x.GetHashCode() = 
         x.full.GetHashCode()
     override x.ToString() = 
