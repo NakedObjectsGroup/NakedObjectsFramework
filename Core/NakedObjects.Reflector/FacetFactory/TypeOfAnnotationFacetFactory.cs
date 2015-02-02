@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (methodReturnType.IsArray) {
                 Type elementType = methodReturnType.GetElementType();
-                IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
+                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
@@ -37,7 +37,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Any()) {
                     Type elementType = actualTypeArguments.First();
-                    IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
+                    var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                     FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }

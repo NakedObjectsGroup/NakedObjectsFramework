@@ -27,22 +27,23 @@ namespace NakedObjects.Meta {
 
         #region IMetamodelBuilder Members
 
-        public virtual IObjectSpecImmutable[] AllSpecifications {
+        public virtual ITypeSpecImmutable[] AllSpecifications {
             get { return cache.AllSpecifications(); }
         }
 
-        public IObjectSpecImmutable GetSpecification(Type type) {
+        public ITypeSpecImmutable GetSpecification(Type type) {
             return GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
         }
 
-        public IObjectSpecImmutable GetSpecification(string name) {
+        public ITypeSpecImmutable GetSpecification(string name) {
             try {
                 Type type = TypeUtils.GetType(name);
                 return GetSpecification(type);
             }
             catch (Exception e) {
+                //todo this looks redundant
                 Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
-                IObjectSpecImmutable spec = cache.GetSpecification(name);
+                ITypeSpecImmutable spec = cache.GetSpecification(name);
                 if (spec != null) {
                     Log.InfoFormat("Found {0} in cache", name);
                     return spec;
@@ -51,7 +52,7 @@ namespace NakedObjects.Meta {
             }
         }
 
-        public void Add(Type type, IObjectSpecBuilder spec) {
+        public void Add(Type type, ITypeSpecBuilder spec) {
             cache.Cache(classStrategy.GetKeyForType(type), spec);
         }
 
@@ -65,7 +66,7 @@ namespace NakedObjects.Meta {
 
         #endregion
 
-        private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
+        private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
             string key = classStrategy.GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 

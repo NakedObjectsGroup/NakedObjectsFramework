@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class MetamodelManager : IMetamodelManager {
-        private readonly IDictionary<IObjectSpecImmutable, ITypeSpec> localCache = new Dictionary<IObjectSpecImmutable, ITypeSpec>();
+        private readonly IDictionary<ITypeSpecImmutable, ITypeSpec> localCache = new Dictionary<ITypeSpecImmutable, ITypeSpec>();
         private readonly IMetamodel metamodel;
         private readonly SpecFactory specFactory;
 
@@ -47,7 +47,7 @@ namespace NakedObjects.Core.Component {
             return string.IsNullOrWhiteSpace(name) ? null : NewObjectSpec(GetInnerSpec(name));
         }
 
-        public ITypeSpec GetSpecification(IObjectSpecImmutable spec) {
+        public ITypeSpec GetSpecification(ITypeSpecImmutable spec) {
             return spec == null ? null : NewObjectSpec(spec);
         }
 
@@ -61,7 +61,7 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private ITypeSpec NewObjectSpec(IObjectSpecImmutable spec) {
+        private ITypeSpec NewObjectSpec(ITypeSpecImmutable spec) {
             if (!localCache.ContainsKey(spec)) {
                 localCache[spec] = specFactory.CreateTypeSpec(spec);
             }
@@ -69,14 +69,14 @@ namespace NakedObjects.Core.Component {
             return localCache[spec];
         }
 
-        private IObjectSpecImmutable GetInnerSpec(Type type) {
-            IObjectSpecImmutable innerSpec = Metamodel.GetSpecification(type);
+        private ITypeSpecImmutable GetInnerSpec(Type type) {
+            ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(type);
             Assert.AssertNotNull(string.Format("failed to find spec for {0}", type.FullName), innerSpec);
             return innerSpec;
         }
 
-        private IObjectSpecImmutable GetInnerSpec(string name) {
-            IObjectSpecImmutable innerSpec = Metamodel.GetSpecification(name);
+        private ITypeSpecImmutable GetInnerSpec(string name) {
+            ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(name);
             Assert.AssertNotNull(string.Format("failed to find spec for {0}", name), innerSpec);
             return innerSpec;
         }

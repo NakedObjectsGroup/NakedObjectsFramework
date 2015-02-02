@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel) {
-            return metamodel.GetSpecification(GetValue(collection));
+            return (IObjectSpecImmutable) metamodel.GetSpecification(GetValue(collection));
         }
 
         #endregion

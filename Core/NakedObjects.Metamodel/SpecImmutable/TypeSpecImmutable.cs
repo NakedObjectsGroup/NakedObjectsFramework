@@ -25,15 +25,15 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class TypeSpecImmutable : Specification, IObjectSpecBuilder {
+    public class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         private readonly IIdentifier identifier;
-        private ImmutableList<IObjectSpecImmutable> subclasses;
+        private ImmutableList<ITypeSpecImmutable> subclasses;
 
         public TypeSpecImmutable(Type type, IMetamodel metamodel) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
-            Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
-            subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
+            Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
+            subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             CollectionContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             FullName = introspector.FullName;
             ShortName = introspector.ShortName;
             Superclass = introspector.Superclass;
-            Interfaces = introspector.Interfaces.Cast<IObjectSpecImmutable>().ToImmutableList();
+            Interfaces = introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList();
             Fields = introspector.Fields;
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             Service = true;
         }
 
-        public void AddSubclass(IObjectSpecImmutable subclass) {
+        public void AddSubclass(ITypeSpecImmutable subclass) {
             subclasses = subclasses.Add(subclass);
         }
 
@@ -80,7 +80,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region IObjectSpecImmutable Members
 
-        public IObjectSpecImmutable Superclass { get; private set; }
+        public ITypeSpecImmutable Superclass { get; private set; }
 
         public override IIdentifier Identifier {
             get { return identifier; }
@@ -106,9 +106,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
 
-        public IList<IObjectSpecImmutable> Interfaces { get; private set; }
+        public IList<ITypeSpecImmutable> Interfaces { get; private set; }
 
-        public IList<IObjectSpecImmutable> Subclasses {
+        public IList<ITypeSpecImmutable> Subclasses {
             get { return subclasses; }
         }
 
@@ -223,9 +223,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IList<IActionSpecImmutable> tempCollectionContributedActions;
         private readonly IList<IActionSpecImmutable> tempFinderActions;
         private readonly IList<IAssociationSpecImmutable> tempFields;
-        private readonly IList<IObjectSpecImmutable> tempInterfaces;
+        private readonly IList<ITypeSpecImmutable> tempInterfaces;
         private readonly IList<IActionSpecImmutable> tempObjectActions;
-        private readonly IList<IObjectSpecImmutable> tempSubclasses;
+        private readonly IList<ITypeSpecImmutable> tempSubclasses;
 
         // The special constructor is used to deserialize values. 
         public TypeSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
@@ -233,11 +233,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             FullName = info.GetValue<string>("FullName");
             ShortName = info.GetValue<string>("ShortName");
             identifier = info.GetValue<IIdentifier>("identifier");
-            Superclass = info.GetValue<IObjectSpecImmutable>("Superclass");
+            Superclass = info.GetValue<ITypeSpecImmutable>("Superclass");
             Service = info.GetValue<bool>("Service");
             tempFields = info.GetValue<IList<IAssociationSpecImmutable>>("Fields");
-            tempInterfaces = info.GetValue<IList<IObjectSpecImmutable>>("Interfaces");
-            tempSubclasses = info.GetValue<IList<IObjectSpecImmutable>>("subclasses");
+            tempInterfaces = info.GetValue<IList<ITypeSpecImmutable>>("Interfaces");
+            tempSubclasses = info.GetValue<IList<ITypeSpecImmutable>>("subclasses");
             tempObjectActions = info.GetValue<IList<IActionSpecImmutable>>("ObjectActions");
             tempContributedActions = info.GetValue<IList<IActionSpecImmutable>>("ContributedActions");
             tempCollectionContributedActions = info.GetValue<IList<IActionSpecImmutable>>("CollectionContributedActions");
@@ -251,9 +251,9 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<IIdentifier>("identifier", identifier);
             info.AddValue<bool>("Service", Service);
             info.AddValue<IList<IAssociationSpecImmutable>>("Fields", Fields.ToList());
-            info.AddValue<IList<IObjectSpecImmutable>>("Interfaces", Interfaces.ToList());
-            info.AddValue<IObjectSpecImmutable>("Superclass", Superclass);
-            info.AddValue<IList<IObjectSpecImmutable>>("subclasses", subclasses.ToList());
+            info.AddValue<IList<ITypeSpecImmutable>>("Interfaces", Interfaces.ToList());
+            info.AddValue<ITypeSpecImmutable>("Superclass", Superclass);
+            info.AddValue<IList<ITypeSpecImmutable>>("subclasses", subclasses.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ObjectActions", ObjectActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("ContributedActions", ContributedActions.ToList());
             info.AddValue<IList<IActionSpecImmutable>>("CollectionContributedActions", CollectionContributedActions.ToList());

@@ -28,10 +28,10 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IList<IActionSpecImmutable> CollectionContributedActions { get; }
         IList<IActionSpecImmutable> FinderActions { get; }
         IList<IAssociationSpecImmutable> Fields { get; }
-        IList<IObjectSpecImmutable> Interfaces { get; }
-        IList<IObjectSpecImmutable> Subclasses { get; }
+        IList<ITypeSpecImmutable> Interfaces { get; }
+        IList<ITypeSpecImmutable> Subclasses { get; }
         bool Service { get; }
-        IObjectSpecImmutable Superclass { get; }
+        ITypeSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }
         bool IsParseable { get; }

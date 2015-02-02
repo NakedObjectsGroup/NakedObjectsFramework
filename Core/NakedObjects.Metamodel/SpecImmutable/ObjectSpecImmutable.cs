@@ -8,10 +8,11 @@
 using System;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class ObjectSpecImmutable : TypeSpecImmutable {
+    public class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
           
         }

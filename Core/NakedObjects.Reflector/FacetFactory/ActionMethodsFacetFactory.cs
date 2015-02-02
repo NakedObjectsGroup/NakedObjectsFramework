@@ -57,14 +57,14 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             Type type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            IObjectSpecBuilder onType = reflector.LoadSpecification(type);
-            IObjectSpecBuilder returnSpec = reflector.LoadSpecification(actionMethod.ReturnType);
+            ITypeSpecBuilder onType = reflector.LoadSpecification(type);
+            var returnSpec = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
             bool isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-                elementSpec = reflector.LoadSpecification(elementType);
+                elementSpec = (IObjectSpecImmutable) reflector.LoadSpecification(elementType);
             }
 
             RemoveMethod(methodRemover, actionMethod);
@@ -108,11 +108,11 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
-            IObjectSpecBuilder returnSpec = reflector.LoadSpecification(parameter.ParameterType);
+            var returnSpec = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType);
 
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
-                IObjectSpecImmutable elementSpec = reflector.LoadSpecification(elementType);
+                IObjectSpecImmutable elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
 
@@ -222,7 +222,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
+                    Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], isMultiple));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }

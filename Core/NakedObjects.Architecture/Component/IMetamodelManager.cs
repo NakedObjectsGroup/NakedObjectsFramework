@@ -23,7 +23,7 @@ namespace NakedObjects.Architecture.Component {
 
         ITypeSpec GetSpecification(string name);
 
-        ITypeSpec GetSpecification(IObjectSpecImmutable spec);
+        ITypeSpec GetSpecification(ITypeSpecImmutable spec);
 
         IMenuImmutable[] MainMenus();
 

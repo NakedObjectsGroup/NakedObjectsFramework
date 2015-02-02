@@ -40,7 +40,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> AddContributedActions() {
-            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
+            var spec = (IObjectSpecImmutable) GetObjectSpec<TObject>();
             foreach (IActionSpecImmutable ca in spec.ContributedActions) {
                 var facet = ca.GetFacet<IContributedActionFacet>();
                 string subMenuName = facet.SubMenuWhenContributedTo(spec);
@@ -67,7 +67,7 @@ namespace NakedObjects.Meta.Menu {
         #endregion
 
         private string GetFriendlyNameForObject() {
-            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
+            ITypeSpecImmutable spec = GetObjectSpec<TObject>();
             return spec.GetFacet<INamedFacet>().Value ?? spec.ShortName;
         }
     }

@@ -133,7 +133,7 @@ namespace NakedObjects.Meta.Menu {
             return GetObjectSpec<TObject>().ObjectActions.ToList();
         }
 
-        protected IObjectSpecImmutable GetObjectSpec<TObject>() {
+        protected ITypeSpecImmutable GetObjectSpec<TObject>() {
             return Metamodel.GetSpecification(typeof (TObject));
         }
 

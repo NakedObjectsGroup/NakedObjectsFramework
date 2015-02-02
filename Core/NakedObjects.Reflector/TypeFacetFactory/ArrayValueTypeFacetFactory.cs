@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
-                IObjectSpecBuilder spec = reflector.LoadSpecification(ArrayValueSemanticsProvider<T>.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(ArrayValueSemanticsProvider<T>.AdaptedType);
                 AddValueFacets(new ArrayValueSemanticsProvider<T>(spec, specification), specification);
             }
         }

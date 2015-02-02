@@ -83,8 +83,8 @@ namespace NakedObjects.Reflect {
             get { return metamodel; }
         }
 
-        public virtual IObjectSpecBuilder[] AllObjectSpecImmutables {
-            get { return metamodel.AllSpecifications.Cast<IObjectSpecBuilder>().ToArray(); }
+        public virtual ITypeSpecBuilder[] AllObjectSpecImmutables {
+            get { return metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
         }
 
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
@@ -95,10 +95,15 @@ namespace NakedObjects.Reflect {
             }
         }
 
-        public virtual IObjectSpecBuilder LoadSpecification(Type type) {
+        public virtual ITypeSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
-            return (IObjectSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
+            return (ITypeSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
         }
+
+        public virtual T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
+            return (T) LoadSpecification(type);
+        }
+
 
         private Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType &&  !type.IsConstructedGenericType) {
@@ -144,7 +149,7 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateAssociatedActions(Type[] services) {
-            IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
+            IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
             nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
@@ -182,7 +187,7 @@ namespace NakedObjects.Reflect {
                 IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
-                        IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
+                        var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
                         IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
                         List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
                         foreach (IActionSpecImmutable action in matchingActionsForObject) {
@@ -203,7 +208,7 @@ namespace NakedObjects.Reflect {
         private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
-                IObjectSpecImmutable serviceSpecification = metamodel.GetSpecification(serviceType);
+                var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
                 List<IActionSpecImmutable> matchingActions = serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod).Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
                 if (matchingActions.Any()) {
@@ -216,14 +221,14 @@ namespace NakedObjects.Reflect {
             spec.AddFinderActions(finderActions);
         }
 
-        private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
+        private ITypeSpecBuilder LoadSpecificationAndCache(Type type) {
             Type actualType = classStrategy.GetType(type);
 
             if (actualType == null) {
                 throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName +  " ");
             }
 
-            IObjectSpecBuilder specification = CreateSpecification(actualType);
+            ITypeSpecBuilder specification = CreateSpecification(actualType);
 
             if (specification == null) {
                 throw new ReflectionException("unrecognised type " + actualType.FullName);
@@ -237,10 +242,10 @@ namespace NakedObjects.Reflect {
             return specification;
         }
 
-        private IObjectSpecBuilder CreateSpecification(Type type) {
+        private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
-            return IsService(type) ? (IObjectSpecBuilder) new ServiceSpecImmutable(type, metamodel) : new ObjectSpecImmutable(type, metamodel);
+            return IsService(type) ? (ITypeSpecBuilder) new ServiceSpecImmutable(type, metamodel) : new ObjectSpecImmutable(type, metamodel);
         }
 
         private bool IsService(Type type) {

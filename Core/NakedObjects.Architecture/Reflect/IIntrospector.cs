@@ -23,8 +23,8 @@ namespace NakedObjects.Architecture.Reflect {
         string ShortName { get; }
         IList<IAssociationSpecImmutable> Fields { get; }
         IList<IActionSpecImmutable> ObjectActions { get; }
-        IObjectSpecBuilder[] Interfaces { get; set; }
-        IObjectSpecBuilder Superclass { get; set; }
-        void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable specification);
+        ITypeSpecBuilder[] Interfaces { get; set; }
+        ITypeSpecBuilder Superclass { get; set; }
+        void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification);
     }
 }

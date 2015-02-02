@@ -18,27 +18,8 @@ namespace NakedObjects.Architecture.SpecImmutable {
     ///   serialised/deserialised and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in order to 
     ///   provide various run-time behaviours required of the Spec, which depend upon the run-time framework services.
     /// </summary>
-    public interface IServiceSpecImmutable : ISpecificationBuilder {
-        Type Type { get; }
-        string FullName { get; }
-        string ShortName { get; }
-        IMenuImmutable ObjectMenu { get; }
-        IList<IActionSpecImmutable> ObjectActions { get; }
-        IList<IActionSpecImmutable> ContributedActions { get; }
-        IList<IActionSpecImmutable> CollectionContributedActions { get; }
-        IList<IActionSpecImmutable> FinderActions { get; }
-        IList<IAssociationSpecImmutable> Fields { get; }
-        IList<IObjectSpecImmutable> Interfaces { get; }
-        IList<IObjectSpecImmutable> Subclasses { get; }
-        bool Service { get; }
-        IObjectSpecImmutable Superclass { get; }
-        bool IsObject { get; }
-        bool IsCollection { get; }
-        bool IsParseable { get; }
-
-        //Will return true if this is a sub-type of the passed-in spec
-        bool IsOfType(IObjectSpecImmutable specification);
-        string GetIconName(INakedObject forObject, IMetamodel metamodel);
+    public interface IServiceSpecImmutable : ITypeSpecImmutable {
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -24,9 +24,9 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;
-        private readonly IObjectSpecImmutable ownerSpec;
+        private readonly ITypeSpecImmutable ownerSpec;
 
-        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec,
+        public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
             IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.ownerSpec = ownerSpec;
@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return GetFacet<IActionInvocationFacet>().ReturnType; }
         }
 
-        public override IObjectSpecImmutable OwnerSpec {
+        public  ITypeSpecImmutable OwnerSpec {
             get { return ownerSpec; }
         }
 

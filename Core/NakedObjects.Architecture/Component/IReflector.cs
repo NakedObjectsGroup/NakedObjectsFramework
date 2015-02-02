@@ -24,13 +24,19 @@ namespace NakedObjects.Architecture.Component {
 
         IFacetFactorySet FacetFactorySet { get; }
 
-        IObjectSpecBuilder[] AllObjectSpecImmutables { get; }
+        ITypeSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
         IMetamodel Metamodel { get; }
 
-        IObjectSpecBuilder LoadSpecification(Type type);
+        ITypeSpecBuilder LoadSpecification(Type type);
 
-        //IObjectSpecBuilder LoadSpecification(string name);
+        /// <summary>
+        /// For when you know the expected subclass of the Spec
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable;
 
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();

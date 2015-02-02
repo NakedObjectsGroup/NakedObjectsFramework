@@ -69,7 +69,7 @@ namespace NakedObjects.Meta.Adapter {
             get { return isField; }
         }
 
-        public IObjectSpecImmutable[] MemberParameterSpecifications { get; private set; }
+        public ITypeSpecImmutable[] MemberParameterSpecifications { get; private set; }
 
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);

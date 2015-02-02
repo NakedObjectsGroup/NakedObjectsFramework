@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
-                IObjectSpecBuilder spec = reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (FileAttachmentValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new FileAttachmentValueSemanticsProvider(spec, specification), specification);
             }
         }

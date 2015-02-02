@@ -20,14 +20,14 @@ namespace NakedObjects.Meta {
     [Serializable]
     internal class SerializedData {
         public IList<string> Keys { get; set; }
-        public IList<IObjectSpecImmutable> Values { get; set; }
+        public IList<ITypeSpecImmutable> Values { get; set; }
     }
 
     public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
 
-        private ImmutableDictionary<string, IObjectSpecImmutable> specs =
-            ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
+        private ImmutableDictionary<string, ITypeSpecImmutable> specs =
+            ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
 
         // constructor to use when reflecting
         public ImmutableInMemorySpecCache() {}
@@ -51,11 +51,11 @@ namespace NakedObjects.Meta {
             }
         }
 
-        public virtual IObjectSpecImmutable GetSpecification(string key) {
+        public virtual ITypeSpecImmutable GetSpecification(string key) {
             return specs.ContainsKey(key) ? specs[key] : null;
         }
 
-        public virtual void Cache(string key, IObjectSpecImmutable spec) {
+        public virtual void Cache(string key, ITypeSpecImmutable spec) {
             specs = specs.Add(key, spec);
         }
 
@@ -63,7 +63,7 @@ namespace NakedObjects.Meta {
             specs = specs.Clear();
         }
 
-        public virtual IObjectSpecImmutable[] AllSpecifications() {
+        public virtual ITypeSpecImmutable[] AllSpecifications() {
             return specs.Values.ToArray();
         }
 
