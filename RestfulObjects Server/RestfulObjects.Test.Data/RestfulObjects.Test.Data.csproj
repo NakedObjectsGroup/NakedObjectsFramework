@@ -120,6 +120,9 @@
       <HintPath>..\..\packages\NakedObjects.Surface.3.0.0\lib\net451\NakedObjects.Surface.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Surface.Nof4">
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.0.1\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
       <Private>True</Private>
