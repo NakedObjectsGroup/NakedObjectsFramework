@@ -21,6 +21,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Title]
         public string Name { get; set; }
 
+        [FindMenu]
         public DescribedCustomHelperTestClass TestAutoCompleteProperty { get; set; }
 
         public string TestAutoCompleteStringProperty { get; set; }
