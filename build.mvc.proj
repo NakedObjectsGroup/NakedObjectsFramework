@@ -23,13 +23,13 @@
     <When Condition="Exists('C:\Program Files (x86)')">
       <PropertyGroup>
         <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
-        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
+        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
         <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
-        <MSTestPath>C:\Program Files\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
+        <MSTestPath>C:\Program Files\Microsoft Visual Studio 12.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </Otherwise>
   </Choose>

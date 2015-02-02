@@ -22,12 +22,12 @@
   <Choose>
     <When Condition="Exists('C:\Program Files (x86)')">
       <PropertyGroup> 
-        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <MSTestPath>C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+        <MSTestPath>C:\Program Files\Microsoft Visual Studio 12.0\Common7\IDE</MSTestPath>
       </PropertyGroup>
     </Otherwise>
   </Choose>
