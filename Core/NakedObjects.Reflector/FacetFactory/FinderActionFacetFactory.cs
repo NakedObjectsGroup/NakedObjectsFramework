@@ -32,7 +32,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             Process(method, specification);
         }
 
-        private static IFinderActionFacet Create(FinderActionAttribute attribute, ISpecification holder) {
+        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new FinderActionFacet(holder);
         }
     }

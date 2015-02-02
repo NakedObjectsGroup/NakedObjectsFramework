@@ -21,6 +21,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Title]
         public string Name { get; set; }
 
+        [FindMenu]
         public DescribedCustomHelperTestClass TestAutoCompleteProperty { get; set; }
 
         public string TestAutoCompleteStringProperty { get; set; }
@@ -34,7 +35,7 @@ namespace MvcTestApp.Tests.Helpers {
             return new List<string> {"test1", "test2"}.AsQueryable();
         }
 
-        public void TestAutoCompleteAction(DescribedCustomHelperTestClass parm1, string parm2) {}
+        public void TestAutoCompleteAction([FindMenu] DescribedCustomHelperTestClass parm1, string parm2) {}
 
         public IQueryable<DescribedCustomHelperTestClass> AutoComplete0TestAutoCompleteAction(string name) {
             return Container.Instances<DescribedCustomHelperTestClass>();

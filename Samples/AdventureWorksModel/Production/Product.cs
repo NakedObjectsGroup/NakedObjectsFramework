@@ -249,7 +249,7 @@ namespace AdventureWorksModel {
         #region ProductModel
 
         [Optionally]
-        [MemberOrder(10)]
+        [MemberOrder(10)][FindMenu]
         public virtual ProductModel ProductModel { get; set; }
 
 

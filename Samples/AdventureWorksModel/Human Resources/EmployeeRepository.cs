@@ -51,7 +51,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] Contact contactDetails) {
+        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Contact contactDetails) {
             var _Employee = NewTransientInstance<Employee>();
             _Employee.ContactDetails = contactDetails;
             return _Employee;

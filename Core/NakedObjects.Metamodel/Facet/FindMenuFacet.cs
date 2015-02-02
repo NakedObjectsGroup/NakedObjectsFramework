@@ -6,25 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Indicates that a property or all the properties of a class are to be eagerly rendered (or in the future loaded from the database).
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public class EagerlyAttribute : Attribute {
-        #region Do enum
-
-        public enum Do {
-            Rendering
-        }
-
-        #endregion
-
-        private readonly Do what;
-
-        public EagerlyAttribute(Do what) {
-            this.what = what;
-        }
+namespace NakedObjects.Meta.Facet {
+    [Serializable]
+    public class FindMenuFacet : FacetAbstract, IFindMenuFacet {
+        public FindMenuFacet(ISpecification holder)
+            : base(typeof (IFindMenuFacet), holder) {}
     }
 }

@@ -106,7 +106,7 @@ namespace AdventureWorksModel {
 
         #region Product
 
-        [MemberOrder(10)]
+        [MemberOrder(10), FindMenu]
         public virtual Product Product { get; set; }
 
         [PageSize(20)]

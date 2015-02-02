@@ -49,7 +49,7 @@ namespace AdventureWorksModel {
         #region SalesPerson
 
         [Optionally]
-        [MemberOrder(40)]
+        [MemberOrder(40), FindMenu]
         public virtual SalesPerson SalesPerson { get; set; }
 
         [PageSize(20)]

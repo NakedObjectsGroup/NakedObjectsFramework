@@ -9,22 +9,10 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Indicates that a property or all the properties of a class are to be eagerly rendered (or in the future loaded from the database).
+    ///     Indicates that an action paramater, or an object property (in edit mode), should be rendered
+    ///     with a 'Find' menu, offering actions (see FinderActionAttribute) that will return matching types.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public class EagerlyAttribute : Attribute {
-        #region Do enum
-
-        public enum Do {
-            Rendering
-        }
-
-        #endregion
-
-        private readonly Do what;
-
-        public EagerlyAttribute(Do what) {
-            this.what = what;
-        }
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class FindMenuAttribute : Attribute {
     }
 }

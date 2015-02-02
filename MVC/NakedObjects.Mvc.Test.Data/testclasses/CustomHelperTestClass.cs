@@ -14,6 +14,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         public int TestInt { get; set; }
         public string TestString { get; set; }
+
+        [FindMenu]
         public CustomHelperTestClass TestRef { get; set; }
 
         public int TestIntDefault { get; set; }
