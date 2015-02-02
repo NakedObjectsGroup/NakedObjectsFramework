@@ -93,6 +93,10 @@
       <Project>{3bbbe57e-abd7-48ae-b4e4-b3eceb4d7a0a}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
