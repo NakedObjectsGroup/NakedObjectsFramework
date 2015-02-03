@@ -212,7 +212,8 @@ namespace NakedObjects.Web.Mvc.Html {
         //TODO:  Make a property for consistency?
         public bool IsFindMenuEnabled() {
             if (Parameter is IOneToOneActionParameterSpec) {
-                return (Parameter as IOneToOneActionParameterSpec).IsFindMenuEnabled;
+                var p = Parameter as IOneToOneActionParameterSpec;
+                return p.IsFindMenuEnabled && (!p.Action.IsContributedMethod || p.Spec != Target.Spec);
             }
             return false;
         }
