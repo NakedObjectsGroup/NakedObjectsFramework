@@ -7,7 +7,7 @@
 
 using System.Text;
 
-namespace NakedObjects.Architecture.Interactions {
+namespace NakedObjects.Core.Interactions {
     public class InteractionBuffer {
         private readonly StringBuilder buf = new StringBuilder();
 

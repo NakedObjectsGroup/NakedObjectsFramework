@@ -8,8 +8,9 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Architecture.Interactions {
+namespace NakedObjects.Core.Interactions {
     /// <summary>
     ///     Represents an interaction between the framework and (a <see cref="IFacet" /> of) the domain object.
     /// </summary>

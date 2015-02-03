@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
