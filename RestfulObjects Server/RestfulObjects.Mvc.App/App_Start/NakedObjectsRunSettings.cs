@@ -24,7 +24,7 @@ namespace MvcTestApp {
 
         private static Type[] Types {
             get { 
-                return new Type[] {
+                return new[] {
                     typeof (MostSimple[]), 
                     typeof (Image), 
                     typeof (FileAttachment), 
@@ -45,7 +45,7 @@ namespace MvcTestApp {
 
         private static Type[] ContributedActions {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (ContributorService)
                 };
             }

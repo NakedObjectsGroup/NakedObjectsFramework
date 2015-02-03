@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
+using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Html;
 
@@ -47,7 +48,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return Jsonp(true);
             }
 
-            IAssociationSpec property =  ((IObjectSpec)nakedObject.Spec).Properties.SingleOrDefault(p => p.Id == propertyName);
+            IAssociationSpec property =  (nakedObject.GetObjectSpec()).Properties.SingleOrDefault(p => p.Id == propertyName);
             string fieldId = GetFieldInputId(nakedObject, property);
 
             bool isValid = false;
@@ -74,7 +75,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (nakedObject.Oid is AggregateOid) {
                 var aoid = ((AggregateOid) nakedObject.Oid);
-                IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.Where(p => p.Id == aoid.FieldName).SingleOrDefault();
+                IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
                 fieldId = IdHelper.GetInlineFieldInputId(parent, nakedObject, property);
             }
             else {
@@ -161,7 +162,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             Decrypt(parms);
 
-            foreach (IOneToOneAssociationSpec assoc in ((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>()) {
+            foreach (IOneToOneAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>()) {
                 string[] values = GetRawValues(parms, GetFieldInputId(nakedObject, assoc));
                 results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.ReturnSpec);
             }
@@ -196,7 +197,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObject> otherValues = GetOtherValues(nakedObject);
 
-            foreach (IOneToOneAssociationSpec assoc in ((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>()) {
+            foreach (IOneToOneAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>()) {
                 if (assoc.IsChoicesEnabled) {
                     INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
@@ -230,7 +231,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
-            var assoc = ((IObjectSpec)nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Single(p => p.Id == propertyId);
+            var assoc = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>().Single(p => p.Id == propertyId);
 
             if (assoc.IsAutoCompleteEnabled) {
                 INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);

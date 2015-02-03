@@ -11,7 +11,7 @@ using NakedObjects.Value;
 
 namespace RestfulObjects.Test.Data {
     public class WithAttachments {
-        private byte[] attachment = new byte[] {};
+        private byte[] attachment = {};
 
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }

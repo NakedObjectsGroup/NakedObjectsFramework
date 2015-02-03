@@ -345,7 +345,7 @@ namespace RestfulObjects.Test.Data {
             return new[] {
                 "string1",
                 "string2",
-                "string3",
+                "string3"
             };
         }
 

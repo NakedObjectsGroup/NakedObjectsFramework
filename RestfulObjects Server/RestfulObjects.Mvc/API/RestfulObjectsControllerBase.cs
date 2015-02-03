@@ -777,10 +777,10 @@ namespace RestfulObjects.Mvc {
         private void VerifyNoError(ActionResultContextSurface result) {
             if (result.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                 if (result.ActionContext.VisibleParameters.Any(p => p.ErrorCause == Cause.WrongType)) {
-                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleParameters);
+                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleParameters.Cast<ContextSurface>().ToList());
                 }
 
-                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleParameters.ToArray());
+                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleParameters.Cast<ContextSurface>().ToList());
             }
             if (!string.IsNullOrEmpty(result.Reason)) {
                 if (result.ErrorCause == Cause.WrongType) {

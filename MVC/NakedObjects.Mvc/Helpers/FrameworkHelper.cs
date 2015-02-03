@@ -146,7 +146,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static INakedObject RestoreInline(this INakedObjectsFramework framework, AggregateOid aggregateOid) {
             IOid parentOid = aggregateOid.ParentOid;
             INakedObject parent = framework.RestoreObject(parentOid);
-            IAssociationSpec assoc = ((IObjectSpec)parent.Spec).Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
+            IAssociationSpec assoc = parent.GetObjectSpec().Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
             return assoc.GetNakedObject(parent);
         }
@@ -255,7 +255,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
 
-            IObjectSpec collectionitemSpec = (IObjectSpec) framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
+            IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 
