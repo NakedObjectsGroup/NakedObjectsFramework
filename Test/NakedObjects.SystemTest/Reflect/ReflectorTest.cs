@@ -272,7 +272,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             reflector.Reflect();
 
-            IObjectSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
+            ITypeSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
 
             rc = new ReflectorConfiguration(types51, new Type[] {}, new Type[] {}, new Type[] {}, types51.Select(t => t.Namespace).Distinct().ToArray());
 
@@ -282,7 +282,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             reflector.Reflect();
 
-            IObjectSpecImmutable[] cache2 = container.Resolve<ISpecificationCache>().AllSpecifications();
+            ITypeSpecImmutable[] cache2 = container.Resolve<ISpecificationCache>().AllSpecifications();
 
             int c1 = cache1.Count();
             int c2 = cache2.Count();
