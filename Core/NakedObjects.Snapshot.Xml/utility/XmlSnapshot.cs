@@ -276,7 +276,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             Log.Debug("includeField(Pl, Vec, Str):" + DoLog("processing field", fieldName) + AndLog("left", "" + fieldNames.Count()));
 
             // locate the field in the object's class
-            IObjectSpec nos = (IObjectSpec) nakedObject.Spec;
+            var nos = (IObjectSpec)nakedObject.Spec;
             IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
@@ -409,7 +409,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public Place ObjectToElement(INakedObject nakedObject) {
             Log.Debug("objectToElement(" + DoLog("object", nakedObject) + ")");
 
-            IObjectSpec nos = (IObjectSpec) nakedObject.Spec;
+            var nos = (IObjectSpec) nakedObject.Spec;
 
             Log.Debug("objectToElement(NO): create element and nof:title");
             XElement element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);

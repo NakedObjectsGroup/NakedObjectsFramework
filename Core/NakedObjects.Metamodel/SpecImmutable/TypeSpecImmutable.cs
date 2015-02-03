@@ -11,7 +11,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -122,7 +121,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 }
             }
 
-            foreach (IObjectSpecImmutable interfaceSpec in Interfaces) {
+            foreach (var interfaceSpec in Interfaces) {
                 IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
                 if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
                     return interfaceFacet;

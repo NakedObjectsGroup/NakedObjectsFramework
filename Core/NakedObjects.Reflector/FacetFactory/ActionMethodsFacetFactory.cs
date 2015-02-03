@@ -64,7 +64,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             bool isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-                elementSpec = (IObjectSpecImmutable) reflector.LoadSpecification(elementType);
+                elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
             }
 
             RemoveMethod(methodRemover, actionMethod);
@@ -112,7 +112,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
-                IObjectSpecImmutable elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
+                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
 

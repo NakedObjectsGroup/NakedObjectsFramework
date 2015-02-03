@@ -9,9 +9,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface IOneToOneAssociationSpecImmutable : IAssociationSpecImmutable {
-        
-    }
+    public interface IOneToOneAssociationSpecImmutable : IAssociationSpecImmutable {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

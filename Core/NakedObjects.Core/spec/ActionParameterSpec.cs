@@ -99,7 +99,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec Spec {
-            get { return spec ?? (spec = (IObjectSpec) metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
+            get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
         }
 
         public virtual IObjectSpec ElementSpec {
@@ -107,7 +107,7 @@ namespace NakedObjects.Core.Spec {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
                     IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
-                    elementSpec = es == null ? null : metamodel.GetSpecification(es) as IObjectSpec;
+                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
                     checkedForElementSpec = true;
                 }
 
@@ -196,7 +196,7 @@ namespace NakedObjects.Core.Spec {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
                 choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, (IObjectSpec)metamodel.GetSpecification(t.Item2))).ToArray();
+                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
             }
             return choicesParameters;
         }

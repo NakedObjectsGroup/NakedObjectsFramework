@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.Test {
     [TestClass]
     public class ReflectorObjectTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
-            return (IObjectSpecImmutable) reflector.LoadSpecification(typeof (TestDomainObject));
+            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof (TestDomainObject));
         }
 
         [TestMethod]

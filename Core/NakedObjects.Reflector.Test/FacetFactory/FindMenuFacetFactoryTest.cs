@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
@@ -45,22 +44,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
 
-            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable UnusedParameter.Local
+            // ReSharper disable UnusedMember.Local
             public void Action1(Foo param1, [FindMenu] Foo param2) { }
 
-            // ReSharper disable once UnusedMember.Local
             public void Action2([FindMenu] string param1) { }
 
-            // ReSharper disable once UnusedMember.Local
             public Foo Property1 { get; set; }
 
-            // ReSharper disable once UnusedMember.Local
             [FindMenu]
             public Foo Property2 { get; set; }
 
-            // ReSharper disable once UnusedMember.Local
             [FindMenu]
             public string Property3 { get; set; }
+            // ReSharper restore UnusedParameter.Local
+            // ReSharper restore UnusedMember.Local
+
+
         }
 
         private class Foo { }
