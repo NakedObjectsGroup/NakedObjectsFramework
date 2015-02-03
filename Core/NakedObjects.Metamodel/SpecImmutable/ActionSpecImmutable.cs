@@ -69,7 +69,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsContributedMethod {
             get {
-                return OwnerSpec.Service && parameters.Any() &&
+                return OwnerSpec is IServiceSpecImmutable && parameters.Any() &&
                        ContainsFacet(typeof (IContributedActionFacet));
             }
         }

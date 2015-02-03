@@ -90,8 +90,8 @@ namespace NakedObjects.Xat {
         public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
             ITypeSpecImmutable objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
 
-            if (!objectIm.Service) {
-                throw new Exception("Action is not on a known object or service");
+            if (objectIm is IObjectSpecImmutable) {
+                throw new Exception("Action is not on a known service");
             }
             var serviceSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
             INakedObject service = servicesManager.GetService(serviceSpec);

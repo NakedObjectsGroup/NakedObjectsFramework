@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
@@ -27,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             if (TypeUtils.IsSystem(Spec.Type)) return; //Menu not relevant, and could cause error below
             //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
             //It is not needed for menus to function
-            string id = Spec.Service ? UniqueShortName(Spec) : Spec.ShortName + "-Actions";
+            string id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : Spec.ShortName + "-Actions";
             MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec.Type);
             // possible spec type is generic in which case invoke would fail without this check
             if (!m.ContainsGenericParameters) {

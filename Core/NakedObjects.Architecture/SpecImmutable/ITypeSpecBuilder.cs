@@ -18,7 +18,6 @@ namespace NakedObjects.Architecture.SpecImmutable {
         /// </summary>
         void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
 
-        void MarkAsService();
         void AddSubclass(ITypeSpecImmutable subclass);
     }
 }

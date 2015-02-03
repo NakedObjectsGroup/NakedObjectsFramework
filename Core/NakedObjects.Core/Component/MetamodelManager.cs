@@ -51,6 +51,14 @@ namespace NakedObjects.Core.Component {
             return spec == null ? null : NewObjectSpec(spec);
         }
 
+        public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
+            return GetSpecification(spec as ITypeSpecImmutable) as IObjectSpec;
+        }
+
+        public IServiceSpec GetSpecification(IServiceSpecImmutable spec) {
+            return GetSpecification(spec as ITypeSpecImmutable) as IServiceSpec;
+        }
+
         public IMenuImmutable[] MainMenus() {
             return Metamodel.MainMenus;
         }

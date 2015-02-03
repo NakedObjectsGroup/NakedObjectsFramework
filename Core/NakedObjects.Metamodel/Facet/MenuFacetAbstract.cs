@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Resources;
@@ -40,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         protected static string GetMenuName(TypeSpecImmutable spec) {
-            if (spec.Service) {
+            if (spec is IServiceSpecImmutable) {
                 return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
             }
             return Model.ActionsMenuName;

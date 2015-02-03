@@ -30,7 +30,6 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IList<IAssociationSpecImmutable> Fields { get; }
         IList<ITypeSpecImmutable> Interfaces { get; }
         IList<ITypeSpecImmutable> Subclasses { get; }
-        bool Service { get; }
         ITypeSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }

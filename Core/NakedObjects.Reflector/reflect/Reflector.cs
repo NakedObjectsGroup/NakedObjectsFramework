@@ -182,27 +182,25 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
-            if (!spec.Service) {
-                IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
-                IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
-                foreach (Type serviceType in services) {
-                    if (serviceType != spec.Type) {
-                        var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                        IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
-                        List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
-                        foreach (IActionSpecImmutable action in matchingActionsForObject) {
-                            contributedActions.Add(action);
-                        }
+            IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
+            IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
+            foreach (Type serviceType in services) {
+                if (serviceType != spec.Type) {
+                    var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
+                    IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                    List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                    foreach (IActionSpecImmutable action in matchingActionsForObject) {
+                        contributedActions.Add(action);
+                    }
 
-                        List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
-                        foreach (IActionSpecImmutable action in matchingActionsForCollection) {
-                            collectionContribActions.Add(action);
-                        }
+                    List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                    foreach (IActionSpecImmutable action in matchingActionsForCollection) {
+                        collectionContribActions.Add(action);
                     }
                 }
-                spec.AddContributedActions(contributedActions);
-                spec.AddCollectionContributedActions(collectionContribActions);
             }
+            spec.AddContributedActions(contributedActions);
+            spec.AddCollectionContributedActions(collectionContribActions);
         }
 
         private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {

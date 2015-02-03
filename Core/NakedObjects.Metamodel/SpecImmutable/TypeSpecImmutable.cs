@@ -52,14 +52,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             DecorateAllFacets(decorator);
         }
 
-        public void MarkAsService() {
-            if (Fields.Any(field => field.Identifier.MemberName != "Id")) {
-                string fieldNames = Fields.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
-                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
-            }
-            Service = true;
-        }
-
         public void AddSubclass(ITypeSpecImmutable subclass) {
             subclasses = subclasses.Add(subclass);
         }
@@ -111,8 +103,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         public IList<ITypeSpecImmutable> Subclasses {
             get { return subclasses; }
         }
-
-        public bool Service { get; protected set; }
 
         public override IFacet GetFacet(Type facetType) {
             IFacet facet = base.GetFacet(facetType);
@@ -234,7 +224,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             ShortName = info.GetValue<string>("ShortName");
             identifier = info.GetValue<IIdentifier>("identifier");
             Superclass = info.GetValue<ITypeSpecImmutable>("Superclass");
-            Service = info.GetValue<bool>("Service");
             tempFields = info.GetValue<IList<IAssociationSpecImmutable>>("Fields");
             tempInterfaces = info.GetValue<IList<ITypeSpecImmutable>>("Interfaces");
             tempSubclasses = info.GetValue<IList<ITypeSpecImmutable>>("subclasses");
@@ -249,7 +238,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue<string>("FullName", FullName);
             info.AddValue<string>("ShortName", ShortName);
             info.AddValue<IIdentifier>("identifier", identifier);
-            info.AddValue<bool>("Service", Service);
             info.AddValue<IList<IAssociationSpecImmutable>>("Fields", Fields.ToList());
             info.AddValue<IList<ITypeSpecImmutable>>("Interfaces", Interfaces.ToList());
             info.AddValue<ITypeSpecImmutable>("Superclass", Superclass);

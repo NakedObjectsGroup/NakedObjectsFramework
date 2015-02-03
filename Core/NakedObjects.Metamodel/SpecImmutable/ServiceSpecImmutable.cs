@@ -14,13 +14,10 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
         public ServiceSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
-            Service = true;
         }
 
         // The special constructor is used to deserialize values. 
         public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
-
-
 
     }
 }

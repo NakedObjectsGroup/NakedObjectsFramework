@@ -341,7 +341,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         private string DefaultTitle() {
-            return InnerSpec.Service ? SingularName : UntitledName;
+            return InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
         }
 
         protected abstract PersistableType GetPersistable();
