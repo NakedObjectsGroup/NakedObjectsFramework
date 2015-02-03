@@ -16,16 +16,16 @@ namespace NakedObjects.Architecture.Interactions {
         ///     Whether the rule represented by this facet disables the member to which it applies.
         /// </summary>
         /// <para>
-        ///     Implementations should use the provided <see cref="InteractionContext" /> to
+        ///     Implementations should use the provided <see cref="IInteractionContext" /> to
         ///     determine whether they disable the member from being modified or used.  They must
-        ///     however guard against a <c>null</c> target <see cref="InteractionContext.Target" />
-        ///     and session <see cref="InteractionContext.Session" /> - neither are guaranteed to be populated.
+        ///     however guard against a <c>null</c> target <see cref="IInteractionContext.Target" />
+        ///     and session <see cref="IInteractionContext.Session" /> - neither are guaranteed to be populated.
         /// </para>
-        string Disables(InteractionContext ic);
+        string Disables(IInteractionContext ic);
 
         /// <summary>
         ///     Create (not throw) an exception of the appropriate subclass if the validation has failed.
         /// </summary>
-        DisabledException CreateExceptionFor(InteractionContext ic);
+        DisabledException CreateExceptionFor(IInteractionContext ic);
     }
 }

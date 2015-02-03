@@ -165,6 +165,8 @@
     <Compile Include="Component\ObjectPersistor.cs" />
     <Compile Include="Component\ServicesManager.cs" />
     <Compile Include="Framework\NakedObjectsFramework.cs" />
+    <Compile Include="Interactions\InteractionBuffer.cs" />
+    <Compile Include="Interactions\InteractionContext.cs" />
     <Compile Include="Spec\TypeSpec.cs" />
     <Compile Include="Spec\ServiceSpec.cs" />
     <Compile Include="Transaction\NestedTransaction.cs" />

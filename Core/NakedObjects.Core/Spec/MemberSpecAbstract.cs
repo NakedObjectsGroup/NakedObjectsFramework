@@ -105,7 +105,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
         public virtual bool IsVisible(INakedObject target) {
-            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
         }
 
@@ -114,7 +114,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
         public virtual IConsent IsUsable(INakedObject target) {
-            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }
 

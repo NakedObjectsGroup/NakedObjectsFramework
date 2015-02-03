@@ -13,10 +13,10 @@ namespace NakedObjects.Meta {
     ///     The interaction is invalid because the input value is outside the specified range.
     /// </summary>
     public class InvalidRangeException : InvalidException {
-        public InvalidRangeException(InteractionContext ic, object min, object max)
+        public InvalidRangeException(IInteractionContext ic, object min, object max)
             : this(ic, min, max, Resources.NakedObjects.OutOfRangeMessage) {}
 
-        public InvalidRangeException(InteractionContext ic, object min, object max, string message)
+        public InvalidRangeException(IInteractionContext ic, object min, object max, string message)
             : base(ic, message) {
             Min = min;
             Max = max;

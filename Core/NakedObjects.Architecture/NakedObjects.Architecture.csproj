@@ -140,6 +140,7 @@
     <Compile Include="Facet\IFindMenuFacet.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
+    <Compile Include="Interactions\IInteractionContext.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />
     <Compile Include="Component\II18nManager.cs" />
     <Compile Include="Component\IMetamodel.cs" />
@@ -303,8 +304,6 @@
     <Compile Include="Exception\HiddenException.cs" />
     <Compile Include="Interactions\IDisablingInteractionAdvisor.cs" />
     <Compile Include="Interactions\IHidingInteractionAdvisor.cs" />
-    <Compile Include="Interactions\InteractionBuffer.cs" />
-    <Compile Include="Interactions\InteractionContext.cs" />
     <Compile Include="Exception\InteractionException.cs" />
     <Compile Include="Interactions\InteractionType.cs" />
     <Compile Include="Exception\InvalidException.cs" />

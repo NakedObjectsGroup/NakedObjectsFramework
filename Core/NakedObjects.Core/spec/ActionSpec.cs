@@ -163,7 +163,7 @@ namespace NakedObjects.Core.Spec {
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
         public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
-            InteractionContext ic;
+            IInteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
                 INakedObject[] parms = RealParameters(nakedObject, parameterSet);
@@ -179,7 +179,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override IConsent IsUsable(INakedObject target) {
-            InteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
+            IInteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 

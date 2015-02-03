@@ -68,7 +68,7 @@ namespace NakedObjects.Meta.Facet {
             return 0;
         }
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (OutOfRange(proposedArgument) == 0) {
                 return null;
@@ -82,7 +82,7 @@ namespace NakedObjects.Meta.Facet {
             return string.Format(Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRangeException(ic, Min, Max, Invalidates(ic));
         }
 

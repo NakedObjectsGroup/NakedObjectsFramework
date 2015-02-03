@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IBoundedFacet Members
 
-        public virtual string Disables(InteractionContext ic) {
+        public virtual string Disables(IInteractionContext ic) {
             if (!ic.TypeEquals(InteractionType.ObjectPersist)) {
                 return null;
             }
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             return DisabledReason(target);
         }
 
-        public virtual DisabledException CreateExceptionFor(InteractionContext ic) {
+        public virtual DisabledException CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 

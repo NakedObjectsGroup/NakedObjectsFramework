@@ -16,7 +16,7 @@ using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.Util {
     public static class InteractionUtils {
-        public static bool IsVisible(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public static bool IsVisible(ISpecification specification, IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
             IEnumerable<IHidingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
@@ -25,7 +25,7 @@ namespace NakedObjects.Core.Util {
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
             IEnumerable<IHidingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
@@ -44,12 +44,12 @@ namespace NakedObjects.Core.Util {
             return buf.IsEmpty;
         }
 
-        public static IConsent IsUsable(ISpecification specification, InteractionContext ic) {
+        public static IConsent IsUsable(ISpecification specification, IInteractionContext ic) {
             InteractionBuffer buf = IsUsable(specification, ic, new InteractionBuffer());
             return IsUsable(buf);
         }
 
-        private static InteractionBuffer IsUsable(ISpecification specification, InteractionContext ic, InteractionBuffer buf) {
+        private static InteractionBuffer IsUsable(ISpecification specification, IInteractionContext ic, InteractionBuffer buf) {
             IEnumerable<IDisablingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
             foreach (IDisablingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Disables(ic));
@@ -66,12 +66,12 @@ namespace NakedObjects.Core.Util {
             return GetConsent(buf.ToString());
         }
 
-        public static IConsent IsValid(ISpecification specification, InteractionContext ic) {
+        public static IConsent IsValid(ISpecification specification, IInteractionContext ic) {
             InteractionBuffer buf = IsValid(specification, ic, new InteractionBuffer());
             return IsValid(buf);
         }
 
-        public static InteractionBuffer IsValid(ISpecification specification, InteractionContext ic, InteractionBuffer buf) {
+        public static InteractionBuffer IsValid(ISpecification specification, IInteractionContext ic, InteractionBuffer buf) {
             IEnumerable<IValidatingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
             foreach (IValidatingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Invalidates(ic));

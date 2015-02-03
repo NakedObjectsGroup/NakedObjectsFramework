@@ -116,7 +116,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }

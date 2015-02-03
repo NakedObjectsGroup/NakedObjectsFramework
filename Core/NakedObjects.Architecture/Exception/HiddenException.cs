@@ -13,10 +13,10 @@ namespace NakedObjects.Architecture {
     ///     with a class member that is in some way hidden or invisible.
     /// </summary>
     public class HiddenException : InteractionException {
-        public HiddenException(InteractionContext ic)
+        public HiddenException(IInteractionContext ic)
             : this(ic, Resources.NakedObjects.Hidden) {}
 
-        public HiddenException(InteractionContext ic, string message)
+        public HiddenException(IInteractionContext ic, string message)
             : base(ic, message) {}
     }
 }

@@ -15,10 +15,10 @@ namespace NakedObjects.Meta {
     public class InvalidMaxLengthException : InvalidException {
         private readonly int maximumLength;
 
-        public InvalidMaxLengthException(InteractionContext ic, int maximumLength)
+        public InvalidMaxLengthException(IInteractionContext ic, int maximumLength)
             : this(ic, maximumLength, Resources.NakedObjects.MaximumLengthMessage) {}
 
-        public InvalidMaxLengthException(InteractionContext ic, int maximumLength, string message)
+        public InvalidMaxLengthException(IInteractionContext ic, int maximumLength, string message)
             : base(ic, message) {
             this.maximumLength = maximumLength;
         }

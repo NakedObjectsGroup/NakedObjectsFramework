@@ -12,10 +12,10 @@ namespace NakedObjects.Architecture {
     ///     Superclass of exceptions which indicate an attempt to interact with a class member that is disabled.
     /// </summary>
     public class DisabledException : InteractionException {
-        public DisabledException(InteractionContext ic)
+        public DisabledException(IInteractionContext ic)
             : this(ic, Resources.NakedObjects.Disabled) {}
 
-        public DisabledException(InteractionContext ic, string message)
+        public DisabledException(IInteractionContext ic, string message)
             : base(ic, message) {}
     }
 }

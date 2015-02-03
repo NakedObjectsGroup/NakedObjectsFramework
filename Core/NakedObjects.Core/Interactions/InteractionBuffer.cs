@@ -5,27 +5,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Interactions;
-using NakedObjects.Architecture.Spec;
+using System.Text;
 
-namespace NakedObjects.Meta.Facet {
-    [Serializable]
-    public class MaxLengthFacetZero : MaxLengthFacetAbstract {
-        private const int NoLimit = 0;
+namespace NakedObjects.Architecture.Interactions {
+    public class InteractionBuffer {
+        private readonly StringBuilder buf = new StringBuilder();
 
-        public MaxLengthFacetZero(ISpecification holder)
-            : base(NoLimit, holder) {}
-
-        public override bool IsNoOp {
-            get { return true; }
+        public virtual bool IsNotEmpty {
+            get { return !IsEmpty; }
         }
 
-        /// <summary>
-        ///     No limit to maximum length
-        /// </summary>
-        public override string Invalidates(IInteractionContext interactionContext) {
-            return null;
+        public virtual bool IsEmpty {
+            get { return buf.Length == 0; }
+        }
+
+        public virtual void Append(string reason) {
+            if (reason == null) {
+                return;
+            }
+            if (IsNotEmpty) {
+                buf.Append("; ");
+            }
+            buf.Append(reason);
+        }
+
+        public override string ToString() {
+            return buf.ToString();
         }
     }
 

@@ -17,10 +17,10 @@ namespace NakedObjects.Meta {
         private readonly string format;
         private readonly string validation;
 
-        public InvalidRegExException(InteractionContext ic, string format, string validation, bool caseSensitive)
+        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive)
             : this(ic, format, validation, caseSensitive, Resources.NakedObjects.PatternMessage) {}
 
-        public InvalidRegExException(InteractionContext ic, string format, string validation, bool caseSensitive, string message)
+        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
             : base(ic, message) {
             this.format = format;
             this.validation = validation;

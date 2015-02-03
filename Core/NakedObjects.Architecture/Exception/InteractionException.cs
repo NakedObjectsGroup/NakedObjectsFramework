@@ -15,10 +15,10 @@ namespace NakedObjects.Architecture {
         private readonly InteractionType interactionType;
         private readonly INakedObject target;
 
-        protected InteractionException(InteractionContext ic)
+        protected InteractionException(IInteractionContext ic)
             : this(ic, null) {}
 
-        protected InteractionException(InteractionContext ic, string message)
+        protected InteractionException(IInteractionContext ic, string message)
             : base(message) {
             interactionType = ic.InteractionType;
             identifier = ic.Id;

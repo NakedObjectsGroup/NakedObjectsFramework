@@ -24,11 +24,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMandatoryFacet Members
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             return IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMandatoryException(ic, Invalidates(ic));
         }
 

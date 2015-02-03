@@ -26,11 +26,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionValidationFacet Members
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             return InvalidReason(ic.Target, ic.ProposedArguments);
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
             return new ActionArgumentsInvalidException(ic, Invalidates(ic));
         }
 
