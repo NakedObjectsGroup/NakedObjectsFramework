@@ -7,12 +7,12 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
@@ -27,11 +27,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHideForContextFacet Members
 
-        public virtual string Hides(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public virtual string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 

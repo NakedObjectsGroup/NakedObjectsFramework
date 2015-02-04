@@ -5,21 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Architecture {
-    public abstract class ObjectPersistenceException : NakedObjectApplicationException {
-        protected ObjectPersistenceException() {}
+namespace NakedObjects.Core {
+    /// <summary>
+    ///     Superclass of exceptions which indicate an attempt to interact
+    ///     with a class member that is in some way hidden or invisible.
+    /// </summary>
+    public class HiddenException : InteractionException {
+        public HiddenException(IInteractionContext ic)
+            : this(ic, Resources.NakedObjects.Hidden) {}
 
-        protected ObjectPersistenceException(string message)
-            : base(message) {}
-
-        protected ObjectPersistenceException(string message, Exception cause)
-            : base(message, cause) {}
-
-        protected ObjectPersistenceException(Exception cause)
-            : base(cause) {}
+        public HiddenException(IInteractionContext ic, string message)
+            : base(ic, message) {}
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

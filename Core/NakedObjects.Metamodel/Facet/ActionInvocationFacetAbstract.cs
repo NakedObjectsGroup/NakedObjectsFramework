@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionInvocationFacet Members
 
-        public abstract IObjectSpecImmutable OnType { get; }
+        public abstract ITypeSpecImmutable OnType { get; }
         public abstract IObjectSpecImmutable ReturnType { get; }
         public abstract IObjectSpecImmutable ElementType { get; }
 

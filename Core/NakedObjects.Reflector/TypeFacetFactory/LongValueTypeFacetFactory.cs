@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (LongValueSemanticsProvider.IsAdaptedType(type)) {
-                IObjectSpecBuilder spec = reflector.LoadSpecification(LongValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(LongValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new LongValueSemanticsProvider(spec, specification), specification);
             }
         }

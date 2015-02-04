@@ -18,15 +18,12 @@ namespace NakedObjects.Architecture.Component {
     public interface IMetamodelManager {
         ITypeSpec[] AllSpecs { get; }
         IMetamodel Metamodel { get; }
-
         ITypeSpec GetSpecification(Type type);
-
         ITypeSpec GetSpecification(string name);
-
-        ITypeSpec GetSpecification(IObjectSpecImmutable spec);
-
+        ITypeSpec GetSpecification(ITypeSpecImmutable spec);
+        IObjectSpec GetSpecification(IObjectSpecImmutable spec);
+        IServiceSpec GetSpecification(IServiceSpecImmutable spec);
         IMenuImmutable[] MainMenus();
-
         IActionSpec GetActionSpec(IActionSpecImmutable spec);
     }
 }

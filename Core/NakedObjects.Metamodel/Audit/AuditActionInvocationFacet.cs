@@ -38,7 +38,7 @@ namespace NakedObjects.Meta.Audit {
             get { return underlyingFacet.ElementType; }
         }
 
-        public override IObjectSpecImmutable OnType {
+        public override ITypeSpecImmutable OnType {
             get { return underlyingFacet.OnType; }
         }
 

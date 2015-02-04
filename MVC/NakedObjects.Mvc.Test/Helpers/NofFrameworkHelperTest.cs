@@ -121,7 +121,7 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
+            var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             no.SetATransientOid(cm);
 
             string id = NakedObjectsFramework.GetObjectId(no);

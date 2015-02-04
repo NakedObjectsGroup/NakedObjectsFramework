@@ -44,12 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ActionResultContextSurface actionResult) {
-            if (actionResult.ActionContext.Action.IsQueryOnly()) {
-                Links = new[] {LinkRepresentation.Create(SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))};
-            }
-            else {
-                Links = new LinkRepresentation[] {};
-            }
+            Links = actionResult.ActionContext.Action.IsQueryOnly() ? new[] {LinkRepresentation.Create(SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
         }
 
         private void SetResultType(ActionResultContextSurface actionResult) {

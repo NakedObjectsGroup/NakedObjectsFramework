@@ -9,7 +9,9 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable {}
+    public interface IAssociationSpecImmutable : IMemberSpecImmutable {
+        IObjectSpecImmutable OwnerSpec { get; }
+    }
 
     // Copyright (c) Naked Objects Group Ltd.
 }

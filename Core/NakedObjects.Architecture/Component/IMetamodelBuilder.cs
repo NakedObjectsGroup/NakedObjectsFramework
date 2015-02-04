@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     public interface IMetamodelBuilder : IMetamodel {
-        void Add(Type type, IObjectSpecBuilder spec);
+        void Add(Type type, ITypeSpecBuilder spec);
         void AddMainMenu(IMenuImmutable menu);
     }
 }

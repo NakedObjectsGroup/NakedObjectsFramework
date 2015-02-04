@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -350,7 +349,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
             //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-            Assert.IsInstanceOf(typeof (AggregateOid), relativesAdapter.Oid, "is not aggregate");
+            Assert.IsInstanceOf(typeof (IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
 
         public void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
@@ -358,7 +357,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
             //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-            Assert.IsInstanceOf(typeof (AggregateOid), relativesAdapter.Oid, "is not aggregate");
+            Assert.IsInstanceOf(typeof (IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
 
         public void ReferencePropertyHasLoadingLoadedCalled() {

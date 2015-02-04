@@ -18,7 +18,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public class CollectionMemento : IEncodedToStrings, IOid {
+    internal class CollectionMemento : IEncodedToStrings, ICollectionMemento {
         #region ParameterType enum
 
         public enum ParameterType {
@@ -192,6 +192,10 @@ namespace NakedObjects.Core.Adapter {
         }
 
         #endregion
+
+        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) {
+            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
+        }
 
         private INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {

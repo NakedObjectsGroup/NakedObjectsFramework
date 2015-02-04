@@ -43,13 +43,13 @@ let IsTransientOid obj ctx =
 let IsPersistentAggregateOid obj ctx = 
     let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
-    Assert.IsInstanceOf(typeof<AggregateOid>, oid)
+    Assert.IsInstanceOf(typeof<IAggregateOid>, oid)
     Assert.IsFalse(oid.IsTransient)
 
 let IsTransientAggregateOid obj ctx = 
     let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
-    Assert.IsInstanceOf(typeof<AggregateOid>, oid)
+    Assert.IsInstanceOf(typeof<IAggregateOid>, oid)
     Assert.IsTrue(oid.IsTransient)
 
 let IsNotNullAndPersistent obj ctx = 

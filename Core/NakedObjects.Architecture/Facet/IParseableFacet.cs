@@ -16,13 +16,11 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Parses a text entry made by a user and sets the domain object's value.
         /// </summary>
-        /// <exception cref="InvalidEntryException" />
         INakedObject ParseTextEntry(string text, INakedObjectManager manager);
 
         /// <summary>
         ///     Parses an invariant value and sets the domain objects value
         /// </summary>
-        /// <exception cref="InvalidEntryException" />
         INakedObject ParseInvariant(string text, INakedObjectManager manager);
 
         /// <summary>

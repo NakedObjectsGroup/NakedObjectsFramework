@@ -33,9 +33,9 @@ namespace RestfulObjects.Test.Data {
         public void PopulateUsingKeys(string[] keys) {
             Id = int.Parse(keys.First());
 
-            this.ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-            this.dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
-            this.vm1 = Container.NewViewModel<MostSimpleViewModel>();
+            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
+            vm1 = Container.NewViewModel<MostSimpleViewModel>();
             vm1.Id = 1;
         }
 

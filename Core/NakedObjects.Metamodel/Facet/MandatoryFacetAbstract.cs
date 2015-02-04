@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -24,11 +23,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMandatoryFacet Members
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             return IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMandatoryException(ic, Invalidates(ic));
         }
 

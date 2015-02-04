@@ -7,11 +7,11 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
@@ -26,12 +26,12 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public virtual string Disables(InteractionContext ic) {
+        public virtual string Disables(IInteractionContext ic) {
             INakedObject target = ic.Target;
             return DisabledReason(target);
         }
 
-        public virtual DisabledException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 

@@ -11,12 +11,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
@@ -85,11 +85,11 @@ namespace NakedObjects.Reflect {
             get { return orderedObjectActions.ToImmutableList(); }
         }
 
-        public IObjectSpecBuilder[] Interfaces { get; set; }
+        public ITypeSpecBuilder[] Interfaces { get; set; }
 
-        public IObjectSpecBuilder Superclass { get; set; }
+        public ITypeSpecBuilder Superclass { get; set; }
 
-        public void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable spec) {
+        public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec) {
             Log.InfoFormat("introspecting {0}: class-level details", typeToIntrospect.FullName);
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
@@ -111,10 +111,10 @@ namespace NakedObjects.Reflect {
        
             AddAsSubclass(spec);
 
-            var interfaces = new List<IObjectSpecBuilder>();
+            var interfaces = new List<ITypeSpecBuilder>();
             foreach (Type interfaceType in InterfacesTypes) {
                 if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
-                    IObjectSpecBuilder interfaceSpec = reflector.LoadSpecification(interfaceType);
+                    var interfaceSpec = reflector.LoadSpecification(interfaceType);
                     interfaceSpec.AddSubclass(spec);
                     interfaces.Add(interfaceSpec);
                 }
@@ -126,22 +126,20 @@ namespace NakedObjects.Reflect {
 
         #endregion
 
-        private void AddAsSubclass(IObjectSpecImmutable spec) {
+        private void AddAsSubclass(ITypeSpecImmutable spec) {
             if (Superclass != null) {
                 Log.DebugFormat("Superclass {0}", Superclass.FullName);
                 Superclass.AddSubclass(spec);
             }
         }
 
-        public void IntrospectPropertiesAndCollections(IObjectSpecImmutable spec) {
+        public void IntrospectPropertiesAndCollections(ITypeSpecImmutable spec) {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
-
-            // find the properties and collections (fields) ...
-            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs(spec);
-            orderedFields = CreateSortedListOfMembers(findFieldMethods);
+            var objectSpec = spec as IObjectSpecImmutable;
+            orderedFields = objectSpec != null ? CreateSortedListOfMembers(FindAndCreateFieldSpecs(objectSpec)) : new List<IAssociationSpecImmutable>();
         }
 
-        public void IntrospectActions(IObjectSpecImmutable spec) {
+        public void IntrospectActions(ITypeSpecImmutable spec) {
             Log.InfoFormat("introspecting {0}: actions", ClassName);
 
             // find the actions ...
@@ -158,10 +156,6 @@ namespace NakedObjects.Reflect {
             }
             allMethods.Sort(new SortActionsFirst(FacetFactorySet));
             return allMethods.ToArray();
-        }
-
-        private IObjectSpecImmutable GetSpecification(Type returnType) {
-            return reflector.LoadSpecification(returnType);
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
@@ -190,9 +184,9 @@ namespace NakedObjects.Reflect {
 
                 // create a collection property spec
                 Type returnType = property.PropertyType;
-                IObjectSpecBuilder returnSpec = reflector.LoadSpecification(returnType);
+                var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable> (returnType);
                 Type defaultType = typeof (object);
-                IObjectSpecBuilder defaultSpec = reflector.LoadSpecification(defaultType);
+                var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable> (defaultType);
                 var collection = new OneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
@@ -214,7 +208,7 @@ namespace NakedObjects.Reflect {
                 // create a reference property spec
                 var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 Type propertyType = property.PropertyType;
-                IObjectSpecBuilder propertySpec = reflector.LoadSpecification(propertyType);
+                var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable> (propertyType);
                 var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
@@ -225,7 +219,7 @@ namespace NakedObjects.Reflect {
             return specs;
         }
 
-        private IActionSpecImmutable[] FindActionMethods(IObjectSpecImmutable spec) {
+        private IActionSpecImmutable[] FindActionMethods(ITypeSpecImmutable spec) {
  
             Log.Debug("Looking for action methods");
 
@@ -245,7 +239,7 @@ namespace NakedObjects.Reflect {
 
                         // build action & its parameters          
 
-                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(GetSpecification(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
+                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
                         IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
                         var action = new ActionSpecImmutable(identifier, spec, actionParams);
 

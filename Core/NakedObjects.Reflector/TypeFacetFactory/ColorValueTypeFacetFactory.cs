@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
-                IObjectSpecBuilder spec = reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (ColorValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new ColorValueSemanticsProvider(spec, specification), specification);
             }
         }

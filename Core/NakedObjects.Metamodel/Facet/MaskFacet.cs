@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -27,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
             return false;
         }
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (DoesNotMatch(proposedArgument)) {
                 return string.Format(Resources.NakedObjects.MaskMismatch, proposedArgument.TitleString(), Value);
@@ -35,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMaskException(ic, Invalidates(ic));
         }
 

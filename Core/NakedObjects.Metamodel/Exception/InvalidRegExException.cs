@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta {
     /// <summary>
@@ -17,10 +17,10 @@ namespace NakedObjects.Meta {
         private readonly string format;
         private readonly string validation;
 
-        public InvalidRegExException(InteractionContext ic, string format, string validation, bool caseSensitive)
+        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive)
             : this(ic, format, validation, caseSensitive, Resources.NakedObjects.PatternMessage) {}
 
-        public InvalidRegExException(InteractionContext ic, string format, string validation, bool caseSensitive, string message)
+        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
             : base(ic, message) {
             this.format = format;
             this.validation = validation;

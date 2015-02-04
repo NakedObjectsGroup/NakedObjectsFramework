@@ -5,14 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture {
-    /// <summary>
-    ///     Indicates that a request to resolve an object has failed. Unresolved objects should never be used as they
-    ///     will cause further errors.
-    /// </summary>
-    public class ResolveException : NakedObjectSystemException {
-        public ResolveException(string msg)
-            : base(msg) {}
+using System;
+
+namespace NakedObjects.Core {
+    public class NotPersistableException : ObjectPersistenceException {
+        public NotPersistableException() {}
+
+        public NotPersistableException(string message)
+            : base(message) {}
+
+        public NotPersistableException(Exception cause)
+            : base(cause) {}
+
+        public NotPersistableException(string message, Exception cause)
+            : base(message, cause) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

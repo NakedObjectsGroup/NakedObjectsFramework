@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Facet {
     public interface IActionInvocationFacet : IFacet {
         IObjectSpecImmutable ReturnType { get; }
 
-        IObjectSpecImmutable OnType { get; }
+        ITypeSpecImmutable OnType { get; }
 
         IObjectSpecImmutable ElementType { get; }
         bool IsQueryOnly { get; }

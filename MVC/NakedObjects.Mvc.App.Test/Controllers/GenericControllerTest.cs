@@ -18,6 +18,7 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -643,9 +644,9 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.Edit(objectModel, form);
 
             //Assert.Greater(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors.Count(), 0);
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, ((IObjectSpec)nakedObject.Spec).GetProperty("Contact"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, AdapterUtils.GetObjectSpec(nakedObject).GetProperty("Contact"))].Errors.Any());
             //Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors[0].ErrorMessage, "Mandatory");
-            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, ((IObjectSpec)nakedObject.Spec).GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
+            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, AdapterUtils.GetObjectSpec(nakedObject).GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
 
             AssertIsEditViewOf<Individual>(result);
         }

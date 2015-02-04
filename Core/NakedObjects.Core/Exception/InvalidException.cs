@@ -7,15 +7,15 @@
 
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     Superclass of exceptions which indicate an attempt to interact with an object or member in a way that is invalid.
     /// </summary>
     public class InvalidException : InteractionException {
-        public InvalidException(InteractionContext ic)
+        public InvalidException(IInteractionContext ic)
             : this(ic, Resources.NakedObjects.Invalid) {}
 
-        public InvalidException(InteractionContext ic, string message)
+        public InvalidException(IInteractionContext ic, string message)
             : base(ic, message) {}
     }
 }

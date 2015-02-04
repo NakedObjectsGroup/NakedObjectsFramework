@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Architecture.Interactions {
@@ -23,18 +24,18 @@ namespace NakedObjects.Architecture.Interactions {
         ///     Whether the validation represented by this facet passes or fails
         /// </summary>
         /// <para>
-        ///     Implementations should use the provided <see cref="InteractionContext" /> to
+        ///     Implementations should use the provided <see cref="IInteractionContext" /> to
         ///     determine whether they declare the interaction invalid.  They must
-        ///     however guard against a <c>null</c> <see cref="InteractionContext.Target" /> target
-        ///     and <see cref="InteractionContext.Session" /> session} - neither are
+        ///     however guard against a <c>null</c> <see cref="IInteractionContext.Target" /> target
+        ///     and <see cref="IInteractionContext.Session" /> session} - neither are
         ///     guaranteed to be populated
         /// </para>
-        string Invalidates(InteractionContext ic);
+        string Invalidates(IInteractionContext ic);
 
         /// <summary>
         ///     Create (not throw) an exception of the appropriate subclass
         ///     if the validation has failed
         /// </summary>
-        InvalidException CreateExceptionFor(InteractionContext ic);
+        Exception CreateExceptionFor(IInteractionContext ic);
     }
 }

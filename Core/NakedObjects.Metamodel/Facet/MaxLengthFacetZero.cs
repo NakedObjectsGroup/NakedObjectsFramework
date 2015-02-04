@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     No limit to maximum length
         /// </summary>
-        public override string Invalidates(InteractionContext interactionContext) {
+        public override string Invalidates(IInteractionContext interactionContext) {
             return null;
         }
     }

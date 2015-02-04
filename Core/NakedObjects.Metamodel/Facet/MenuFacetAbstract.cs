@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Resources;
@@ -18,28 +19,32 @@ using NakedObjects.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
-        protected ObjectSpecImmutable Spec() {
-            return (ObjectSpecImmutable) Specification;
-        }
-
-        protected static string GetMenuName(ObjectSpecImmutable spec) {
-            if (spec.Service) {
-                return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
-            }
-            return Model.ActionsMenuName;
-        }
-
-        protected MenuImpl Menu { get; set; }
-
         protected MenuFacetAbstract(ISpecification holder)
             : base(typeof (IMenuFacet), holder) {
             Menu = null;
         }
+
+        protected TypeSpecImmutable Spec {
+            get { return (TypeSpecImmutable) Specification; }
+        }
+
+        protected MenuImpl Menu { get; set; }
+
+        #region IMenuFacet Members
 
         public IMenuImmutable GetMenu() {
             return Menu;
         }
 
         public abstract void CreateMenu(IMetamodelBuilder metamodel);
+
+        #endregion
+
+        protected static string GetMenuName(TypeSpecImmutable spec) {
+            if (spec is IServiceSpecImmutable) {
+                return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
+            }
+            return Model.ActionsMenuName;
+        }
     }
 }

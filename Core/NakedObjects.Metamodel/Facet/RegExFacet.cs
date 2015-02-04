@@ -7,7 +7,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -68,7 +67,7 @@ namespace NakedObjects.Meta.Facet {
             get { return failureMessage; }
         }
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (proposedArgument == null) {
                 return null;
@@ -81,7 +80,7 @@ namespace NakedObjects.Meta.Facet {
             return failureMessage ?? Resources.NakedObjects.InvalidEntry;
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
         }
 

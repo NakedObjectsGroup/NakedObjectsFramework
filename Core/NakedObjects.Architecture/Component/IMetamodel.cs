@@ -14,14 +14,14 @@ namespace NakedObjects.Architecture.Component {
     /// Provides access to the 'Immutable' object specifications.
     /// </summary>
     public interface IMetamodel {
-        IObjectSpecImmutable[] AllSpecifications { get; }
+        ITypeSpecImmutable[] AllSpecifications { get; }
         IMenuImmutable[] MainMenus { get; }
 
         // remove this
-        IObjectSpecImmutable GetSpecification(Type type);
+        ITypeSpecImmutable GetSpecification(Type type);
 
         // remove this
-        IObjectSpecImmutable GetSpecification(string name);
+        ITypeSpecImmutable GetSpecification(string name);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

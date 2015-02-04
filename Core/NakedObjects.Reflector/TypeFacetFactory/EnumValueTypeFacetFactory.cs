@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
-                IObjectSpecBuilder spec = reflector.LoadSpecification(type);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(type);
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
                 MethodInfo method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);

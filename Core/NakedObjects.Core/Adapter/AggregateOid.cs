@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public class AggregateOid : IOid, IEncodedToStrings {
+    internal class AggregateOid : IEncodedToStrings, IAggregateOid {
         private readonly string fieldName;
         private readonly IMetamodelManager metamodel;
         private readonly IOid parentOid;

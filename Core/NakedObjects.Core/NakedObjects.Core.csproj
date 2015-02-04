@@ -137,8 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\ConcurrencyCheckVersion.cs" />
-    <Compile Include="Adapter\IdentityAdapterHashMap.cs" />
-    <Compile Include="Adapter\IIdentityAdapterMap.cs" />
+    <Compile Include="Component\IdentityAdapterHashMap.cs" />
     <Compile Include="Async\AsyncService.cs" />
     <Compile Include="Component\BatchRunner.cs" />
     <Compile Include="Component\IdentityMapImpl.cs" />
@@ -152,10 +151,25 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="Container\TitleBuilderImpl.cs" />
+    <Compile Include="Exception\ConcurrencyException.cs" />
+    <Compile Include="Exception\DataUpdateException.cs" />
+    <Compile Include="Exception\DisabledException.cs" />
     <Compile Include="Exception\DisposeFailedException.cs" />
     <Compile Include="Container\DomainObjectContainer.cs" />
     <Compile Include="Component\DomainObjectContainerInjector.cs" />
     <Compile Include="Container\Methods.cs" />
+    <Compile Include="Exception\FindObjectException.cs" />
+    <Compile Include="Exception\HiddenException.cs" />
+    <Compile Include="Exception\InteractionException.cs" />
+    <Compile Include="Exception\InvalidEntryException.cs" />
+    <Compile Include="Exception\InvalidException.cs" />
+    <Compile Include="Exception\ModelException.cs" />
+    <Compile Include="Exception\NakedObjectApplicationException.cs" />
+    <Compile Include="Exception\NakedObjectDomainException.cs" />
+    <Compile Include="Exception\NakedObjectException.cs" />
+    <Compile Include="Exception\NakedObjectSystemException.cs" />
+    <Compile Include="Exception\NotPersistableException.cs" />
+    <Compile Include="Exception\ObjectPersistenceException.cs" />
     <Compile Include="Exception\PersistFailedException.cs" />
     <Compile Include="Component\MessageBroker.cs" />
     <Compile Include="Component\LifeCycleManager.cs" />
@@ -164,7 +178,11 @@
     <Compile Include="Component\NakedObjectManager.cs" />
     <Compile Include="Component\ObjectPersistor.cs" />
     <Compile Include="Component\ServicesManager.cs" />
+    <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="Framework\NakedObjectsFramework.cs" />
+    <Compile Include="Interactions\InteractionBuffer.cs" />
+    <Compile Include="Interactions\InteractionContext.cs" />
     <Compile Include="Spec\TypeSpec.cs" />
     <Compile Include="Spec\ServiceSpec.cs" />
     <Compile Include="Transaction\NestedTransaction.cs" />

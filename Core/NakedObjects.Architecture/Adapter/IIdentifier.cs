@@ -18,7 +18,7 @@ namespace NakedObjects.Architecture.Adapter {
 
         string[] MemberParameterNames { get; }
 
-        IObjectSpecImmutable[] MemberParameterSpecifications { get; }
+        ITypeSpecImmutable[] MemberParameterSpecifications { get; }
 
         /// <summary>
         ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action

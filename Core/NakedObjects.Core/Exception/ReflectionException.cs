@@ -5,15 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture {
-    public class FindObjectException : ObjectPersistenceException {
-        public FindObjectException() {}
+using System;
 
-        public FindObjectException(object oid)
-            : base(string.Format(Resources.NakedObjects.FindObjectMessage, oid)) {}
+namespace NakedObjects.Core {
+    public class ReflectionException : NakedObjectSystemException {
+        public ReflectionException(string message)
+            : base(message) {}
 
-        public FindObjectException(string s)
-            : base(s) {}
+        public ReflectionException(Exception cause)
+            : base(cause) {}
+
+        public ReflectionException(string message, Exception cause)
+            : base(message, cause) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

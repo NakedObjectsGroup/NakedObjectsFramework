@@ -7,7 +7,6 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

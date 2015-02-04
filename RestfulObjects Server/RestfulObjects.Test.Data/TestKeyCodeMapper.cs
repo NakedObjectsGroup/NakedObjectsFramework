@@ -17,8 +17,8 @@ namespace RestfulObjects.Test.Data {
         private static readonly RijndaelManaged Provider = new RijndaelManaged();
 
         // these are constants so that tests are reproduceable
-        private static readonly byte[] Iv = new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        private static readonly byte[] Key = new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        private static readonly byte[] Iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        private static readonly byte[] Key = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         #region IKeyCodeMapper Members
 

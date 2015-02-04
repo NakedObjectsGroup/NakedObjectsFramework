@@ -19,6 +19,7 @@ open NakedObjects.Architecture.Component
 open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects
+open NakedObjects.Core
 open NakedObjects.Core.Adapter
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration

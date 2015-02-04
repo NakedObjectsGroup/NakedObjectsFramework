@@ -17,6 +17,8 @@ open System.Data.Entity.ModelConfiguration
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Util
+open NakedObjects.Core
+
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)

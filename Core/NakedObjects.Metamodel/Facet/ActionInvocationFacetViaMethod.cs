@@ -22,11 +22,11 @@ namespace NakedObjects.Meta.Facet {
         private readonly MethodInfo actionMethod;
         private readonly IObjectSpecImmutable elementType;
         private readonly bool isQueryOnly;
-        private readonly IObjectSpecImmutable onType;
+        private readonly ITypeSpecImmutable onType;
         private readonly int paramCount;
         private readonly IObjectSpecImmutable returnType;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
+        public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;
@@ -40,7 +40,7 @@ namespace NakedObjects.Meta.Facet {
             get { return returnType; }
         }
 
-        public override IObjectSpecImmutable OnType {
+        public override ITypeSpecImmutable OnType {
             get { return onType; }
         }
 

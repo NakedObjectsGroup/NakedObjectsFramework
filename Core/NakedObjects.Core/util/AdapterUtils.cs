@@ -23,6 +23,24 @@ namespace NakedObjects.Core.Util {
         }
 
         /// <summary>
+        /// Return spec as object spec if is otherwise null
+        /// </summary>
+        /// <param name="nakedObject"></param>
+        /// <returns></returns>
+        public static IObjectSpec GetObjectSpec(this INakedObject nakedObject) {
+            return nakedObject.Spec as IObjectSpec;
+        }
+
+        /// <summary>
+        /// Return spec as service spec if is otherwise null
+        /// </summary>
+        /// <param name="nakedObject"></param>
+        /// <returns></returns>
+        public static IServiceSpec GetServiceSpec(this INakedObject nakedObject) {
+            return nakedObject.Spec as IServiceSpec;
+        }
+
+        /// <summary>
         ///     Safe (returns null if INakedObject is null) generic getter
         /// </summary>
         public static T GetDomainObject<T>(this INakedObject inObject) {

@@ -141,6 +141,8 @@
     <Compile Include="SemanticsProvider\ULongValueSemanticsProvider.cs" />
     <Compile Include="SemanticsProvider\UShortValueSemanticsProvider.cs" />
     <Compile Include="SemanticsProvider\ValueSemanticsProviderAbstract.cs" />
+    <Compile Include="SpecImmutable\ServiceSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\TypeSpecImmutable.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>

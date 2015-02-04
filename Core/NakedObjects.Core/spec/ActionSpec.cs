@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -19,6 +18,9 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Interactions;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
@@ -61,11 +63,11 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public override IObjectSpec ReturnSpec {
-            get { return returnSpec ?? (returnSpec = (IObjectSpec) MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
+            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
         }
 
         public override IObjectSpec ElementSpec {
-            get { return elementSpec ?? (elementSpec = (IObjectSpec) MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
+            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
         }
 
         public virtual ITypeSpec OnSpec {
@@ -114,7 +116,12 @@ namespace NakedObjects.Core.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
-            return ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager);
+            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager);
+
+            if (result != null && result.Oid == null) {
+                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObject, this, parameterSet));
+            }
+            return result;
         }
 
         public virtual INakedObject RealTarget(INakedObject target) {
@@ -163,7 +170,7 @@ namespace NakedObjects.Core.Spec {
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
         public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
-            InteractionContext ic;
+            IInteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
                 INakedObject[] parms = RealParameters(nakedObject, parameterSet);
@@ -179,7 +186,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override IConsent IsUsable(INakedObject target) {
-            InteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
+            IInteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 

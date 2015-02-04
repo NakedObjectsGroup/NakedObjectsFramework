@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     A NakedObjectApplicationException represents exception that has occurred within the domain code, or as a result
     ///     of the domain code.  These indicate that the application developer need to fix their code.

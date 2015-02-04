@@ -8,11 +8,11 @@
 using System;
 using System.Drawing;
 using System.Globalization;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]

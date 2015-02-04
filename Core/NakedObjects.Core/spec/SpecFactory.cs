@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
@@ -64,11 +63,21 @@ namespace NakedObjects.Core.Spec {
             return CreateAssociation(specImmutable);
         }
 
-        public ITypeSpec CreateTypeSpec(IObjectSpecImmutable specImmutable) {
-            return specImmutable.Service ? (ITypeSpec) CreateServiceSpec(specImmutable) : CreateObjectSpec(specImmutable);
+        public ITypeSpec CreateTypeSpec(ITypeSpecImmutable specImmutable) {
+            var osi = specImmutable as IObjectSpecImmutable;
+            if (osi != null) {
+                return CreateObjectSpec(osi);
+            }
+
+            var ssi = specImmutable as IServiceSpecImmutable;
+            if (ssi != null) {
+                return CreateServiceSpec(ssi);
+            }
+
+            throw new InitialisationException(string.Format("Unexpected Spec Type {0}", specImmutable.Type));
         }
 
-        private IServiceSpec CreateServiceSpec(IObjectSpecImmutable specImmutable) {
+        private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
         }

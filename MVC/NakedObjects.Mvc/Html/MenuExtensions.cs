@@ -126,13 +126,13 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpec actionSpec = html.Framework().MetamodelManager.GetActionSpec(actionIm);
             if (nakedObject == null) {
 
-                IObjectSpecImmutable objectIm = actionIm.OwnerSpec; //This is the spec for the service
+                var serviceIm = actionIm.OwnerSpec as IServiceSpecImmutable; //This is the spec for the service
 
-                if (!objectIm.Service) {
-                    throw new Exception("Action is not on a known object or service");
+                if (serviceIm == null) {
+                    throw new Exception("Action is not on a known service");
                 }
                 //TODO: Add method to IServicesManager to get a service by its IObjectSpec (or IObjectSpecImmutable)
-                ITypeSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(objectIm);
+                ITypeSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(serviceIm);
                 nakedObject = html.Framework().ServicesManager.GetServices().Single(s => s.Spec == objectSpec);
 
             }

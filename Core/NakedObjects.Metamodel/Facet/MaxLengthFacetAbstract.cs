@@ -7,7 +7,6 @@
 
 using System;
 using System.Threading;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -38,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
             return maxLength != 0 && str.Length > maxLength;
         }
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (!Exceeds(proposedArgument)) {
                 return null;
@@ -46,7 +45,7 @@ namespace NakedObjects.Meta.Facet {
             return string.Format(Resources.NakedObjects.MaximumLengthMismatch, Value);
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMaxLengthException(ic, Value, Invalidates(ic));
         }
 

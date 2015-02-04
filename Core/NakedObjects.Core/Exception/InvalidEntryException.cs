@@ -6,20 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Resources;
 
-namespace NakedObjects.Architecture {
-    public class NotPersistableException : ObjectPersistenceException {
-        public NotPersistableException() {}
+namespace NakedObjects.Core {
+    /// <summary>
+    ///     Indicates that a value entry is not valid. The entry may still parse correctly,
+    ///     but it does not fulfil other other entry requirements
+    /// </summary>
+    public class InvalidEntryException : NakedObjectApplicationException {
+        public InvalidEntryException()
+            : this(ProgrammingModel.InvalidValue) {}
 
-        public NotPersistableException(string message)
+        public InvalidEntryException(string message)
             : base(message) {}
 
-        public NotPersistableException(Exception cause)
-            : base(cause) {}
+        public InvalidEntryException(Exception cause)
+            : this(ProgrammingModel.InvalidValue, cause) {}
 
-        public NotPersistableException(string message, Exception cause)
+        public InvalidEntryException(string message, Exception cause)
             : base(message, cause) {}
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

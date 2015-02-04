@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     A NakedObjectSystemException represents an exception that has occurred within the framework code.
     /// </summary>

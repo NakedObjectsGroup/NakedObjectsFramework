@@ -21,6 +21,9 @@ namespace NakedObjects.Meta.SpecImmutable {
             this.returnSpec = returnSpec;
         }
 
+        public abstract IObjectSpecImmutable OwnerSpec { get; }
+
+
         #region IAssociationSpecImmutable Members
 
         public override IObjectSpecImmutable ReturnSpec {

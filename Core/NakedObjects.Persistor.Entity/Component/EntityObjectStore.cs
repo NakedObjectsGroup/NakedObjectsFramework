@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Text;
 using System.Transactions;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -256,13 +255,8 @@ namespace NakedObjects.Persistor.Entity {
 
         public INakedObject GetObject(IOid oid, IObjectSpec hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-            var eoid = oid as EntityOid;
-            if (eoid != null) {
-                INakedObject adapter = createAdapter(eoid, GetObjectByKey(eoid, hint));
-                adapter.UpdateVersion(session, nakedObjectManager);
-                return adapter;
-            }
-            var aggregateOid = oid as AggregateOid;
+        
+            var aggregateOid = oid as IAggregateOid;
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
@@ -270,6 +264,13 @@ namespace NakedObjects.Persistor.Entity {
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+            }
+
+            var eoid = oid as EntityOid;
+            if (eoid != null) {
+                INakedObject adapter = createAdapter(eoid, GetObjectByKey(eoid, hint));
+                adapter.UpdateVersion(session, nakedObjectManager);
+                return adapter;
             }
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }

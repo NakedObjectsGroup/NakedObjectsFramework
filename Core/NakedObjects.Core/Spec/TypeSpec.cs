@@ -19,7 +19,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     internal abstract class TypeSpec : ITypeSpec {
-        private readonly IObjectSpecImmutable innerSpec;
+        private readonly ITypeSpecImmutable innerSpec;
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
@@ -48,7 +48,7 @@ namespace NakedObjects.Core.Spec {
         private ITypeSpec superclass;
         private string untitledName;
 
-        protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) {
+        protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, ITypeSpecImmutable innerSpec) {
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(metamodelManager);
             Assert.AssertNotNull(nakedObjectManager);
@@ -68,7 +68,7 @@ namespace NakedObjects.Core.Spec {
             get { return objectActions ?? (objectActions = MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions)); }
         }
 
-        protected IObjectSpecImmutable InnerSpec {
+        protected ITypeSpecImmutable InnerSpec {
             get { return innerSpec; }
         }
 
@@ -341,7 +341,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         private string DefaultTitle() {
-            return InnerSpec.Service ? SingularName : UntitledName;
+            return InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
         }
 
         protected abstract PersistableType GetPersistable();

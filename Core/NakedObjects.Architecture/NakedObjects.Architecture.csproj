@@ -126,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\CheckType.cs" />
+    <Compile Include="Adapter\IAggregateOid.cs" />
+    <Compile Include="Adapter\ICollectionMemento.cs" />
     <Compile Include="Adapter\IdentifierDepth.cs" />
     <Compile Include="Adapter\IEntryTextParser.cs" />
     <Compile Include="Adapter\IEncodedToStrings.cs" />
@@ -136,10 +138,12 @@
     <Compile Include="Component\IBatchRunner.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
+    <Compile Include="Component\IIdentityAdapterMap.cs" />
     <Compile Include="FacetFactory\IPropertyFilteringFacetFactory.cs" />
     <Compile Include="Facet\IFindMenuFacet.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
+    <Compile Include="Interactions\IInteractionContext.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />
     <Compile Include="Component\II18nManager.cs" />
     <Compile Include="Component\IMetamodel.cs" />
@@ -148,8 +152,6 @@
     <Compile Include="Component\IReflector.cs" />
     <Compile Include="Component\ISpecificationCache.cs" />
     <Compile Include="Configuration\IReflectorConfiguration.cs" />
-    <Compile Include="Exception\ModelException.cs" />
-    <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />
     <Compile Include="Facet\IMenuFacet.cs" />
     <Compile Include="Facet\IArrayValueFacet.cs" />
@@ -190,9 +192,6 @@
     <Compile Include="Facet\IValidateObjectFacet.cs" />
     <Compile Include="Facet\ITypeIsVoidFacet.cs" />
     <Compile Include="Framework\INakedObjectsFramework.cs" />
-    <Compile Include="Exception\InvalidEntryException.cs" />
-    <Compile Include="Exception\NakedObjectApplicationException.cs" />
-    <Compile Include="Exception\NakedObjectException.cs" />
     <Compile Include="Facet\ITableViewFacet.cs" />
     <Compile Include="Facet\ITypeOfFacet.cs" />
     <Compile Include="Facet\IActionChoicesFacet.cs" />
@@ -299,35 +298,22 @@
     <Compile Include="Facet\ISingleStringValueFacet.cs" />
     <Compile Include="Facet\ISingleValueFacet.cs" />
     <Compile Include="Facet\ISingleWhenValueFacet.cs" />
-    <Compile Include="Exception\DisabledException.cs" />
-    <Compile Include="Exception\HiddenException.cs" />
     <Compile Include="Interactions\IDisablingInteractionAdvisor.cs" />
     <Compile Include="Interactions\IHidingInteractionAdvisor.cs" />
-    <Compile Include="Interactions\InteractionBuffer.cs" />
-    <Compile Include="Interactions\InteractionContext.cs" />
-    <Compile Include="Exception\InteractionException.cs" />
     <Compile Include="Interactions\InteractionType.cs" />
-    <Compile Include="Exception\InvalidException.cs" />
     <Compile Include="Interactions\IValidatingInteractionAdvisor.cs" />
-    <Compile Include="Exception\NakedObjectSystemException.cs" />
-    <Compile Include="Exception\NakedObjectDomainException.cs" />
     <Compile Include="Configuration\ServiceType.cs" />
     <Compile Include="Configuration\IServiceWrapper.cs" />
     <Compile Include="SpecImmutable\IActionParameterSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IActionSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IMemberSpecImmutable.cs" />
-    <Compile Include="Exception\ConcurrencyException.cs" />
-    <Compile Include="Exception\DataUpdateException.cs" />
     <Compile Include="Component\IIdentityMap.cs" />
     <Compile Include="Component\INakedObjectManager.cs" />
     <Compile Include="Component\ILifecycleManager.cs" />
     <Compile Include="Component\ITransactionManager.cs" />
     <Compile Include="Component\IObjectPersistor.cs" />
     <Compile Include="Component\IServicesManager.cs" />
-    <Compile Include="Exception\NotPersistableException.cs" />
-    <Compile Include="Exception\FindObjectException.cs" />
-    <Compile Include="Exception\ObjectPersistenceException.cs" />
     <Compile Include="Component\IOidGenerator.cs" />
     <Compile Include="Persist\IPersistenceCommand.cs" />
     <Compile Include="Reflect\IConsent.cs" />
@@ -342,7 +328,6 @@
     <Compile Include="Reflect\FeatureType.cs" />
     <Compile Include="Spec\IMemberSpec.cs" />
     <Compile Include="Spec\IOneToManyFeatureSpec.cs" />
-    <Compile Include="Exception\ReflectionException.cs" />
     <Compile Include="Resolve\IResolveEvent.cs" />
     <Compile Include="Resolve\IResolveState.cs" />
     <Compile Include="Resolve\IResolveStateMachine.cs" />

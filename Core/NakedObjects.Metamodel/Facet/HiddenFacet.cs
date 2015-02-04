@@ -6,12 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
@@ -44,11 +44,11 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public virtual string Hides(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public virtual string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 

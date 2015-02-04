@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,7 +14,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
@@ -31,10 +29,7 @@ namespace NakedObjects.Xat {
 
         public ITestAction[] Actions {
             get {
-                List<ITestAction> actions = NakedObject.Spec.GetObjectActions().
-                    OfType<IActionSpec>().
-                    Select(x => Factory.CreateTestAction(x, this)).ToList();
-                return actions.ToArray();
+                return NakedObject.Spec.GetObjectActions().Select(x => Factory.CreateTestAction(x, this)).ToArray();
             }
         }
 

@@ -5,19 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Architecture {
-    public class ReflectionException : NakedObjectSystemException {
-        public ReflectionException(string message)
-            : base(message) {}
-
-        public ReflectionException(Exception cause)
-            : base(cause) {}
-
-        public ReflectionException(string message, Exception cause)
-            : base(message, cause) {}
+namespace NakedObjects.Architecture.Adapter {
+    public interface IAggregateOid : IOid {
+        IOid ParentOid { get; }
+        string FieldName { get; }
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

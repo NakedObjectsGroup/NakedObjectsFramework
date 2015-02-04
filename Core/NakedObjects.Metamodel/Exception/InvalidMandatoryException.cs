@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta {
     /// <summary>
@@ -14,10 +14,10 @@ namespace NakedObjects.Meta {
     ///     (eg not annotated with <see cref="OptionallyAttribute" />).
     /// </summary>
     public class InvalidMandatoryException : InvalidException {
-        public InvalidMandatoryException(InteractionContext ic)
+        public InvalidMandatoryException(IInteractionContext ic)
             : this(ic, Resources.NakedObjects.Mandatory) {}
 
-        public InvalidMandatoryException(InteractionContext ic, string message)
+        public InvalidMandatoryException(IInteractionContext ic, string message)
             : base(ic, message) {}
     }
 }

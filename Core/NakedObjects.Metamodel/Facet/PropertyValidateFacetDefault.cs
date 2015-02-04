@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -20,11 +19,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyValidateFacet Members
 
-        public InvalidException CreateExceptionFor(InteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return null;
         }
 
-        public string Invalidates(InteractionContext ic) {
+        public string Invalidates(IInteractionContext ic) {
             return null;
         }
 

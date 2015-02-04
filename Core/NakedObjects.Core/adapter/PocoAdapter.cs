@@ -9,7 +9,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -176,7 +175,10 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void SetATransientOid(IOid newOid) {
-            Assert.AssertNull("Oid must be null", oid);
+            if (oid != null) {
+                Log.InfoFormat("Overwriting oid {0} with {1}", oid, newOid);
+            }
+
             Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
             oid = newOid;
         }
@@ -247,7 +249,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = (IObjectSpec) (TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel)));
+            var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

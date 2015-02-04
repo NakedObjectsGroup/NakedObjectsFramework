@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
-                IObjectSpecBuilder spec = reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (DecimalValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new DecimalValueSemanticsProvider(spec, specification), specification);
             }
         }

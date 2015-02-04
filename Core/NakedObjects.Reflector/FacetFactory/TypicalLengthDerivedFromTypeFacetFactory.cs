@@ -43,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private ITypicalLengthFacet GetTypicalLengthFacet(IReflector reflector, Type type) {
-            IObjectSpecBuilder paramTypeSpec = reflector.LoadSpecification(type);
+            var paramTypeSpec = reflector.LoadSpecification<IObjectSpecImmutable>(type);
             return paramTypeSpec.GetFacet<ITypicalLengthFacet>();
         }
     }

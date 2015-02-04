@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
@@ -133,7 +133,7 @@ namespace NakedObjects.Meta.Menu {
             return GetObjectSpec<TObject>().ObjectActions.ToList();
         }
 
-        protected IObjectSpecImmutable GetObjectSpec<TObject>() {
+        protected ITypeSpecImmutable GetObjectSpec<TObject>() {
             return Metamodel.GetSpecification(typeof (TObject));
         }
 

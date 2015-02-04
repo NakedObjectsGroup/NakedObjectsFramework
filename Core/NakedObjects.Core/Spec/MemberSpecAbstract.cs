@@ -11,13 +11,14 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Reflect;
+using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Reflect {
     internal abstract class MemberSpecAbstract : IMemberSpec {
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
@@ -105,7 +106,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
         public virtual bool IsVisible(INakedObject target) {
-            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
         }
 
@@ -114,7 +115,8 @@ namespace NakedObjects.Architecture.Reflect {
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
         public virtual IConsent IsUsable(INakedObject target) {
-            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext
+                .AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }
 

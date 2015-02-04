@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
@@ -40,21 +41,25 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public ITypedMenu<TObject> AddContributedActions() {
-            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
-            foreach (IActionSpecImmutable ca in spec.ContributedActions) {
-                var facet = ca.GetFacet<IContributedActionFacet>();
-                string subMenuName = facet.SubMenuWhenContributedTo(spec);
-                if (subMenuName != null) {
-                    string id = facet.IdWhenContributedTo(spec);
-                    MenuImpl subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-                    subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
-                }
-                else {
-                    //i.e. no sub-menu
-                    AddMenuItem(new MenuAction(ca));
-                }
+            var spec = GetObjectSpec<TObject>() as IObjectSpecImmutable;
+            if (spec != null) {
+                spec.ContributedActions.ForEach(ca => AddContributedAction(ca, spec));
             }
             return this;
+        }
+
+        private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
+            var facet = ca.GetFacet<IContributedActionFacet>();
+            string subMenuName = facet.SubMenuWhenContributedTo(spec);
+            if (subMenuName != null) {
+                string id = facet.IdWhenContributedTo(spec);
+                MenuImpl subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
+                subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
+            }
+            else {
+                //i.e. no sub-menu
+                AddMenuItem(new MenuAction(ca));
+            }
         }
 
         public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
@@ -67,7 +72,7 @@ namespace NakedObjects.Meta.Menu {
         #endregion
 
         private string GetFriendlyNameForObject() {
-            IObjectSpecImmutable spec = GetObjectSpec<TObject>();
+            ITypeSpecImmutable spec = GetObjectSpec<TObject>();
             return spec.GetFacet<INamedFacet>().Value ?? spec.ShortName;
         }
     }

@@ -5,17 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Interactions;
+using System;
 
-namespace NakedObjects.Architecture {
-    /// <summary>
-    ///     Superclass of exceptions which indicate an attempt to interact with a class member that is disabled.
-    /// </summary>
-    public class DisabledException : InteractionException {
-        public DisabledException(InteractionContext ic)
-            : this(ic, Resources.NakedObjects.Disabled) {}
+namespace NakedObjects.Core {
+    public abstract class NakedObjectException : Exception {
+        protected NakedObjectException() {}
 
-        public DisabledException(InteractionContext ic, string message)
-            : base(ic, message) {}
+        protected NakedObjectException(string messsage)
+            : base(messsage) {}
+
+        protected NakedObjectException(string messsage, Exception cause)
+            : base(messsage, cause) {}
+
+        protected NakedObjectException(Exception cause)
+            : base(cause == null ? null : cause.ToString(), cause) {}
     }
 }

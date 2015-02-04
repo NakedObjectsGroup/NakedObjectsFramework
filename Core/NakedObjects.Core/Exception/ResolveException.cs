@@ -5,18 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
-    ///     Indicates an error raised by the application code
+    ///     Indicates that a request to resolve an object has failed. Unresolved objects should never be used as they
+    ///     will cause further errors.
     /// </summary>
-    public class NakedObjectDomainException : NakedObjectApplicationException {
-        public NakedObjectDomainException(string msg)
+    public class ResolveException : NakedObjectSystemException {
+        public ResolveException(string msg)
             : base(msg) {}
-
-        public NakedObjectDomainException(string msg, Exception cause)
-            : base(msg, cause) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

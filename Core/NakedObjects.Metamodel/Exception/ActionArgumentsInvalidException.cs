@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta {
     public class ActionArgumentsInvalidException : InvalidException {
-        public ActionArgumentsInvalidException(InteractionContext ic)
+        public ActionArgumentsInvalidException(IInteractionContext ic)
             : this(ic, Resources.NakedObjects.InvalidArguments) {}
 
-        public ActionArgumentsInvalidException(InteractionContext ic, string message)
+        public ActionArgumentsInvalidException(IInteractionContext ic, string message)
             : base(ic, message) {}
     }
 

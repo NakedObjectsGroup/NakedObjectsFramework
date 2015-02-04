@@ -21,11 +21,13 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Helpers {
     public class DatabaseInitializer : DropCreateDatabaseAlways<MvcTestContext> {}
@@ -122,7 +124,7 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm, cm.RecoverCollection().Oid);
@@ -136,10 +138,10 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaimsByEnumStatus");
             INakedObject[] parms = new[] {(object) ClaimStatusEnum.New}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = (IEncodedToStrings)  CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
 
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  strings);
+            var cm2 = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -153,9 +155,9 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = (IEncodedToStrings) CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  strings);
+            var cm2 = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -170,9 +172,9 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new object[] { status, "" }.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = (IEncodedToStrings) CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  strings);
+            var cm2 = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -187,13 +189,13 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             object[] selected = claims.Cast<object>().ToArray();
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  cm, selected);
+            var newCm = cm.NewSelectionMemento(selected, false);
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(5, newClaims.Cast<object>().Count());
@@ -208,11 +210,11 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  cm, new object[] { });
+            var newCm = cm.NewSelectionMemento(new object[] { }, false);
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(0, newClaims.Cast<object>().Count());
@@ -227,13 +229,13 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  service, action, parms);
+            var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             var selected = new[] {claims.Cast<object>().First()};
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  cm, selected);
+            var newCm = cm.NewSelectionMemento(selected, false);
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(1, newClaims.Cast<object>().Count());

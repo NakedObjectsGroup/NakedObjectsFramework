@@ -12,6 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
@@ -172,7 +173,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObject target = NakedObjectsContext.GetNakedObjectFromId(Id);
-            IAssociationSpec assoc = ((IObjectSpec)target.Spec).Properties.Single(a => a.Id == PropertyId);
+            IAssociationSpec assoc = target.GetObjectSpec().Properties.Single(a => a.Id == PropertyId);
             var domainObject = assoc.GetNakedObject(target).GetDomainObject();
 
             return AsFile(domainObject);
@@ -211,11 +212,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {
-            var result = action.Execute(target, parameterSet);
-            if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager, NakedObjectsContext.MetamodelManager,  target, action, parameterSet));
-            }
-            return result;
+            return action.Execute(target, parameterSet);        
         }    
 
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObject nakedObject, IActionSpec action) {

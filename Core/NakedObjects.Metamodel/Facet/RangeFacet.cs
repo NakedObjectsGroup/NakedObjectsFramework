@@ -7,7 +7,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -68,7 +67,7 @@ namespace NakedObjects.Meta.Facet {
             return 0;
         }
 
-        public virtual string Invalidates(InteractionContext ic) {
+        public virtual string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (OutOfRange(proposedArgument) == 0) {
                 return null;
@@ -82,7 +81,7 @@ namespace NakedObjects.Meta.Facet {
             return string.Format(Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRangeException(ic, Min, Max, Invalidates(ic));
         }
 

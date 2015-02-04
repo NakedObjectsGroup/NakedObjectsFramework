@@ -10,13 +10,13 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     public interface ISpecificationCache {
-        IObjectSpecImmutable GetSpecification(string key);
+        ITypeSpecImmutable GetSpecification(string key);
 
         void Clear();
 
-        IObjectSpecImmutable[] AllSpecifications();
+        ITypeSpecImmutable[] AllSpecifications();
 
-        void Cache(string key, IObjectSpecImmutable spec);
+        void Cache(string key, ITypeSpecImmutable spec);
 
         void Cache(IMenuImmutable mainMenu);
 

@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
@@ -66,7 +67,7 @@ namespace NakedObjects.Core.Spec {
         public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, (IObjectSpec) MetamodelManager.GetSpecification(t.Item2))).ToArray();
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
@@ -116,7 +117,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }

@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IBoundedFacet Members
 
-        public virtual string Disables(InteractionContext ic) {
+        public virtual string Disables(IInteractionContext ic) {
             if (!ic.TypeEquals(InteractionType.ObjectPersist)) {
                 return null;
             }
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             return DisabledReason(target);
         }
 
-        public virtual DisabledException CreateExceptionFor(InteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 
