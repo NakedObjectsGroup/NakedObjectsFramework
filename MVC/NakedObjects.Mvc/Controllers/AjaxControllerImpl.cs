@@ -74,8 +74,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static string GetFieldInputId(INakedObject nakedObject, IAssociationSpec property) {
             string fieldId;
 
-            if (nakedObject.Oid is AggregateOid) {
-                var aoid = ((AggregateOid) nakedObject.Oid);
+            var aoid = nakedObject.Oid as IAggregateOid;
+            if (aoid != null) {
                 IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
                 fieldId = IdHelper.GetInlineFieldInputId(parent, nakedObject, property);
             }

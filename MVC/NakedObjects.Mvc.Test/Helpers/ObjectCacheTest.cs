@@ -123,7 +123,7 @@ namespace MvcTestApp.Tests.Helpers {
             var claimAdapter = NakedObjectsFramework.GetNakedObject(claim);
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
 
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             claimsAdapter.SetATransientOid(mockOid);
 

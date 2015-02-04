@@ -6,25 +6,38 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Util {
     public static class CollectionMementoHelper {
         public static bool IsPaged(this INakedObject nakedObject) {
-            var oid = nakedObject.Oid as CollectionMemento;
+            var oid = nakedObject.Oid as ICollectionMemento;
             return oid != null && oid.IsPaged;
         }
 
         public static bool IsNotQueryable(this INakedObject nakedObject) {
-            var oid = nakedObject.Oid as CollectionMemento;
+            var oid = nakedObject.Oid as ICollectionMemento;
             return oid != null && oid.IsNotQueryable;
         }
 
         public static void SetNotQueryable(this INakedObject nakedObject, bool isNotQueryable) {
-            var oid = nakedObject.Oid as CollectionMemento;
+            var oid = nakedObject.Oid as ICollectionMemento;
             if (oid != null) {
                 oid.IsNotQueryable = isNotQueryable;
             }
         }
+
+        // for test purposes only 
+        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters) {
+            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, target, actionSpec, parameters);
+        }
+
+        // for test purposes only 
+        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, string[] strings) {
+            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, strings);
+        }
+
     }
 }

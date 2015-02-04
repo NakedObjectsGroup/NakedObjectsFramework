@@ -127,7 +127,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 nakedObject = Page(nakedObject, collectionSize, controlData, nakedObject.IsNotQueryable());
-                action = action ?? ((CollectionMemento)nakedObject.Oid).Action;
+                action = action ?? ((ICollectionMemento)nakedObject.Oid).Action;
                 int page, pageSize;
                 CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;
@@ -197,7 +197,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (values.Count() == 1) {
                 INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(values.First());
 
-                if (nakedObject != null && nakedObject.Oid as CollectionMemento != null) {
+                if (nakedObject != null && nakedObject.Oid as ICollectionMemento != null) {
                     nakedObject = FilterCollection(nakedObject, controlData);
                     AddAttemptedValue(name, nakedObject);
                     return true;
@@ -730,7 +730,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private  bool IsReferenceValidToPersist(INakedObject target1) {
             if (target1.ResolveState.IsTransient() ||
-                (target1.Oid is AggregateOid && ((AggregateOid)target1.Oid).ParentOid.IsTransient)) {
+                (target1.Oid is IAggregateOid && ((IAggregateOid)target1.Oid).ParentOid.IsTransient)) {
                 string validToPersist = target1.ValidToPersist();
                 if (validToPersist != null) {
                     ModelState.AddModelError("", validToPersist);
@@ -865,16 +865,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return DoPaging(nakedObject, collectionfacet, 1, collectionSize, forceEnumerable);
         }
 
-        private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
+        private INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
             INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.NakedObjectManager, forceEnumerable);
             object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager, NakedObjectsContext.MetamodelManager,  nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
+            var currentMemento = (ICollectionMemento) nakedObject.Oid;
+            ICollectionMemento newMemento = currentMemento.NewSelectionMemento(objects, true);
+            newNakedObject.SetATransientOid(newMemento);
             return newNakedObject;
         }
 
         internal INakedObject FilterCollection(INakedObject nakedObject, ObjectAndControlData controlData) {
             var form = controlData.Form;
-            if (form != null && nakedObject != null && nakedObject.Spec.IsCollection && nakedObject.Oid is CollectionMemento) {
+            if (form != null && nakedObject != null && nakedObject.Spec.IsCollection && nakedObject.Oid is ICollectionMemento) {
                 nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
                 var map = nakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
@@ -887,7 +889,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
             INakedObject adapter = NakedObjectsContext.NakedObjectManager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager,  NakedObjectsContext.MetamodelManager, nakedObject.Oid as CollectionMemento, selected));
+            var currentMemento = (ICollectionMemento) nakedObject.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(selected, false);
+            adapter.SetATransientOid(newMemento);
             return adapter;
         }
 

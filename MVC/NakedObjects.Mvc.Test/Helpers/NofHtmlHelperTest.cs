@@ -1368,7 +1368,7 @@ namespace MvcTestApp.Tests.Helpers {
             };
             var claimAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1391,7 +1391,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var claimAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1494,20 +1494,20 @@ namespace MvcTestApp.Tests.Helpers {
         public void ParameterEditForCollection() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
-
             INakedObject claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
             IActionSpec action = claimRepo.Spec.GetActionLeafNodes().Single(a => a.Id == "MyRecentClaims");
 
             var selected = claimRepo.GetDomainObject<ClaimRepository>().MyRecentClaims().First();
 
             INakedObject target = NakedObjectsFramework.NakedObjectManager.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
+            var currentMemento = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimRepo, action, new INakedObject[] {});
+            var newMemento = currentMemento.NewSelectionMemento(new object[] {selected}, false);
 
-            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager,  NakedObjectsFramework.MetamodelManager,  claimRepo, action, new INakedObject[] { }), new object[] { selected }));
+            target.SetATransientOid(newMemento);
 
             IActionSpec targetAction = claimRepo.Spec.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 
             string s = mocks.HtmlHelper.ParameterList(target.Object, null, targetAction, null, "claims", null).ToString();
-
 
             CheckResults("ParameterEditForCollection", s);
         }

@@ -55,7 +55,7 @@ namespace NakedObjects.Web.Mvc.Html {
             bool withTitle;
 
             if (action == null || action.ReturnSpec.IsVoid) {
-                var memento = nakedObject.Oid as CollectionMemento;
+                var memento = nakedObject.Oid as ICollectionMemento;
                 if (memento != null) {
                     action = memento.Action;
                 }

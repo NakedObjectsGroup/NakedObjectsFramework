@@ -175,7 +175,10 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void SetATransientOid(IOid newOid) {
-            Assert.AssertNull("Oid must be null", oid);
+            if (oid != null) {
+                Log.InfoFormat("Overwriting oid {0} with {1}", oid, newOid);
+            }
+
             Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
             oid = newOid;
         }

@@ -428,8 +428,9 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<ElementDescriptor> GetCollectionSelectedElements(this HtmlHelper html, INakedObject nakedObject) {
-            if (nakedObject.Oid is CollectionMemento) {
-                string[] selectedObjectIds = (nakedObject.Oid as CollectionMemento).SelectedObjects.Select(html.Framework().GetObjectId).ToArray();
+            var memento = nakedObject.Oid as ICollectionMemento;
+            if (memento != null) {
+                string[] selectedObjectIds = memento.SelectedObjects.Select(html.Framework().GetObjectId).ToArray();
                 int index = 0;
                 return selectedObjectIds.Select(id => new ElementDescriptor {
                     TagType = "input",

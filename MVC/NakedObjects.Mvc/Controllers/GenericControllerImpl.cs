@@ -212,11 +212,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {
-            var result = action.Execute(target, parameterSet);
-            if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.NakedObjectManager, NakedObjectsContext.MetamodelManager,  target, action, parameterSet));
-            }
-            return result;
+            return action.Execute(target, parameterSet);        
         }    
 
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObject nakedObject, IActionSpec action) {

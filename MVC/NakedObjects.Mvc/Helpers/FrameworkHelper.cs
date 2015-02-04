@@ -60,7 +60,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
         }
 
-        public static string GetObjectId(INakedObject nakedObject, CollectionMemento memento) {
+        public static string GetObjectId(INakedObject nakedObject, IEncodedToStrings memento) {
             return memento.Encode();
         }
 
@@ -112,12 +112,12 @@ namespace NakedObjects.Web.Mvc.Html {
 
             IOid oid = framework.LifecycleManager.RestoreOid(encodedId.Split(';'));
 
-            if (oid is CollectionMemento) {
-                return RestoreCollection(oid as CollectionMemento);
+            if (oid is ICollectionMemento) {
+                return RestoreCollection(oid as ICollectionMemento);
             }
 
-            if (oid is AggregateOid) {
-                return framework.RestoreInline(oid as AggregateOid);
+            if (oid is IAggregateOid) {
+                return framework.RestoreInline(oid as IAggregateOid);
             }
 
             if (oid is ViewModelOid) {
@@ -139,11 +139,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return spec;
         }
 
-        private static INakedObject RestoreCollection(CollectionMemento memento) {
+        private static INakedObject RestoreCollection(ICollectionMemento memento) {
             return memento.RecoverCollection();
         }
 
-        private static INakedObject RestoreInline(this INakedObjectsFramework framework, AggregateOid aggregateOid) {
+        private static INakedObject RestoreInline(this INakedObjectsFramework framework, IAggregateOid aggregateOid) {
             IOid parentOid = aggregateOid.ParentOid;
             INakedObject parent = framework.RestoreObject(parentOid);
             IAssociationSpec assoc = parent.GetObjectSpec().Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
@@ -270,7 +270,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (rawCollection.Count() == 1) {
                     INakedObject firstObj = framework.GetNakedObjectFromId(rawCollection.First());
 
-                    if (firstObj != null && firstObj.Oid is CollectionMemento) {
+                    if (firstObj != null && firstObj.Oid is ICollectionMemento) {
                         return firstObj;
                     }
                 }
