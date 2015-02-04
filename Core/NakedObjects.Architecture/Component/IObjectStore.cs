@@ -81,20 +81,7 @@ namespace NakedObjects.Architecture.Component {
         ///     persistence mechanism and the object recreated (as describe previously). The specified OID should then
         ///     be assigned to the recreated object by settings its OID.
         /// </para>
-        /// <para>
-        ///     If the persistence mechanism does not known of an object with the specified OID then a
-        ///     <see cref="FindObjectException" /> should be thrown
-        /// </para>
-        /// <para>
-        ///     The OID could be for an internal collection, and is therefore related to the parent
-        ///     object (using an "AggregateOid"). The elements for an internal collection are commonly
-        ///     stored as part of the parent object, so to get element the parent object needs to be retrieved first,
-        ///     and the internal collection can be got from that
-        /// </para>
-        /// <param name="oid">of the object to be retrieved</param>
-        /// <param name="hint"></param>
-        /// <returns> the requested naked object</returns>
-        /// <exception cref="FindObjectException">when no object corresponding to the oid can be found</exception>
+        
         INakedObject GetObject(IOid oid, IObjectSpec hint);
 
         void Reload(INakedObject nakedObject);

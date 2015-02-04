@@ -7,7 +7,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;

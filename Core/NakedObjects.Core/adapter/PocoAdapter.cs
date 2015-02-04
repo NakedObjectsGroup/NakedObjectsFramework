@@ -9,7 +9,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Common.Logging;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;

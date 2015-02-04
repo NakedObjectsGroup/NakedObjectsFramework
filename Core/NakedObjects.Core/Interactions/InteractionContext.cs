@@ -90,7 +90,7 @@ namespace NakedObjects.Core.Interactions {
         ///     The identifier of the object or member that is being identified with.
         /// </summary>
         /// <para>
-        ///     If the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ObjectPersist" />,
+        ///     If the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ObjectPersist" />,
         ///     will be the identifier of the <see cref="Target" /> object's specification.
         ///     Otherwise will be the identifier of the member.
         /// </para>

@@ -85,9 +85,6 @@ namespace NakedObjects.Architecture.Adapter {
         ///     Checks the version of this adapter to make sure that it does not differ from the specified
         ///     version
         /// </summary>
-        /// <exception cref="ConcurrencyException">
-        ///     If the specified version differs from the version held this adapter
-        /// </exception>
         void CheckLock(IVersion otherVersion);
 
         /// <summary>

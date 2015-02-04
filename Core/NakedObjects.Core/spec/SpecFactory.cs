@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;

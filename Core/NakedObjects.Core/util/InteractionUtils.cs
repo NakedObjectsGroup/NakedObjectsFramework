@@ -58,11 +58,6 @@ namespace NakedObjects.Core.Util {
             return buf;
         }
 
-        /// <summary>
-        ///     To decode an <see cref="InteractionBuffer" /> returned by
-        ///     <see
-        ///         cref="IsUsable(ISpecification,InteractionContext,InteractionBuffer)" />
-        /// </summary>
         private static IConsent IsUsable(InteractionBuffer buf) {
             return GetConsent(buf.ToString());
         }
@@ -80,11 +75,6 @@ namespace NakedObjects.Core.Util {
             return buf;
         }
 
-        /// <summary>
-        ///     To decode an <see cref="InteractionBuffer" /> returned by
-        ///     <see
-        ///         cref="IsValid(ISpecification,InteractionContext,InteractionBuffer)" />
-        /// </summary>
         public static IConsent IsValid(InteractionBuffer buf) {
             return GetConsent(buf.ToString());
         }
