@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
             return InvalidReason(ic.Target, ic.ProposedArgument);
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new ActionArgumentsInvalidException(ic, Invalidates(ic));
         }
 

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Architecture.Interactions {
@@ -35,6 +36,6 @@ namespace NakedObjects.Architecture.Interactions {
         ///     Create (not throw) an exception of the appropriate subclass
         ///     if the validation has failed
         /// </summary>
-        InvalidException CreateExceptionFor(IInteractionContext ic);
+        Exception CreateExceptionFor(IInteractionContext ic);
     }
 }

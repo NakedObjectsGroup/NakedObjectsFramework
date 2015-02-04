@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             return IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMandatoryException(ic, Invalidates(ic));
         }
 

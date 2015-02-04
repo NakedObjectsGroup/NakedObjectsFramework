@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.Facet {
             return string.Format(Resources.NakedObjects.MaximumLengthMismatch, Value);
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMaxLengthException(ic, Value, Invalidates(ic));
         }
 

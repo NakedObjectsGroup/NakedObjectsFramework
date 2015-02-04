@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
             return HiddenReason(ic.Session, ic.Target, lifecycleManager, manager);
         }
 
-        public virtual HiddenException CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 

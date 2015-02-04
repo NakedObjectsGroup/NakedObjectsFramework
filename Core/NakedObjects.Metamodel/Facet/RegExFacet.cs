@@ -81,7 +81,7 @@ namespace NakedObjects.Meta.Facet {
             return failureMessage ?? Resources.NakedObjects.InvalidEntry;
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
         }
 

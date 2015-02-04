@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects.Architecture.Interactions {
     /// <summary>
     ///     Mix-in interface for facets that can advise as to whether a member should be disabled.
@@ -26,6 +28,6 @@ namespace NakedObjects.Architecture.Interactions {
         /// <summary>
         ///     Create (not throw) an exception of the appropriate subclass if the validation has failed.
         /// </summary>
-        DisabledException CreateExceptionFor(IInteractionContext ic);
+        Exception CreateExceptionFor(IInteractionContext ic);
     }
 }

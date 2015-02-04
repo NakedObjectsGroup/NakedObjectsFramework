@@ -35,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMaskException(ic, Invalidates(ic));
         }
 

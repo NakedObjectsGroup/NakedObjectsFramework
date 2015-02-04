@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             return DisabledReason(target);
         }
 
-        public virtual DisabledException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 

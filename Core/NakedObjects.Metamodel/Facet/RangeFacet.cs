@@ -82,7 +82,7 @@ namespace NakedObjects.Meta.Facet {
             return string.Format(Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual InvalidException CreateExceptionFor(IInteractionContext ic) {
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRangeException(ic, Min, Max, Invalidates(ic));
         }
 
