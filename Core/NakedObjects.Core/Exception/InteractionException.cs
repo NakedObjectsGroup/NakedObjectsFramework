@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     public abstract class InteractionException : Exception {
         private readonly IIdentifier identifier;
         private readonly InteractionType interactionType;

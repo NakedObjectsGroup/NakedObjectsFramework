@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta {
     public class ActionArgumentsInvalidException : InvalidException {

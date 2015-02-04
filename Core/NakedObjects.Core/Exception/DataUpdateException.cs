@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     public class DataUpdateException : ObjectPersistenceException {
         private readonly IOid sourceOid;
 

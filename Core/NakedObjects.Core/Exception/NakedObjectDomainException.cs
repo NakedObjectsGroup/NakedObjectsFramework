@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     Indicates an error raised by the application code
     /// </summary>

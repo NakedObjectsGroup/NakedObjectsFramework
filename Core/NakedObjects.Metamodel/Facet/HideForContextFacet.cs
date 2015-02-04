@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {

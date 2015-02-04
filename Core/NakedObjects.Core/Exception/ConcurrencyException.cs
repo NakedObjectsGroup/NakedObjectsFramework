@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     public class ConcurrencyException : ObjectPersistenceException {
         public ConcurrencyException(INakedObject nakedObject)
             : this(Resources.NakedObjects.ConcurrencyMessage, nakedObject.Oid) {

@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 

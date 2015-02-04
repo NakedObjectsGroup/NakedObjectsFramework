@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;

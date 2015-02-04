@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     public class ReflectionException : NakedObjectSystemException {
         public ReflectionException(string message)
             : base(message) {}

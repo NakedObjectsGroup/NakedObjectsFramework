@@ -18,6 +18,7 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;

@@ -20,6 +20,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {

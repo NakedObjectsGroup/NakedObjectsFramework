@@ -17,6 +17,7 @@ open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open NakedObjects.Core
 
 let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 

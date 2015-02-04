@@ -13,6 +13,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {

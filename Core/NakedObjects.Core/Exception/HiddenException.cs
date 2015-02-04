@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     Superclass of exceptions which indicate an attempt to interact
     ///     with a class member that is in some way hidden or invisible.

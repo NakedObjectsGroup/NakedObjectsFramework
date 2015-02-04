@@ -17,6 +17,7 @@ open System.Collections.Generic
 open CodeOnlyTestCode
 open NakedObjects
 open TestCode
+open NakedObjects.Core
 open NakedObjects.Core.Util
 open NakedObjects.Architecture.Persist
 open Microsoft.Practices.Unity

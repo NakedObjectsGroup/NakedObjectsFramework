@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Resources;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     /// <summary>
     ///     Indicates that a value entry is not valid. The entry may still parse correctly,
     ///     but it does not fulfil other other entry requirements

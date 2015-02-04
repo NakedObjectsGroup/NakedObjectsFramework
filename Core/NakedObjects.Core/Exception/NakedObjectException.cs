@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture {
+namespace NakedObjects.Core {
     public abstract class NakedObjectException : Exception {
         protected NakedObjectException() {}
 

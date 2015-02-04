@@ -13,6 +13,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Meta.SemanticsProvider;
 using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
 
