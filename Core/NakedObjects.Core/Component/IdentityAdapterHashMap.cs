@@ -9,8 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedObjects.Core.Component {
     public class IdentityAdapterHashMap : IIdentityAdapterMap {
         private static readonly ILog Log;
         private readonly IDictionary<IOid, INakedObject> adapters;

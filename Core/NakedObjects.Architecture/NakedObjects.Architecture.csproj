@@ -136,6 +136,7 @@
     <Compile Include="Component\IBatchRunner.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
+    <Compile Include="Component\IIdentityAdapterMap.cs" />
     <Compile Include="FacetFactory\IPropertyFilteringFacetFactory.cs" />
     <Compile Include="Facet\IFindMenuFacet.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />

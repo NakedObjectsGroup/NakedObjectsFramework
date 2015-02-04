@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Core.Adapter {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     A map of the objects' identities and the adapters' of the objects
     /// </summary>
