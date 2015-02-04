@@ -19,6 +19,8 @@ open NakedObjects.Architecture.Facet
 open NakedObjects.Core.Resolve
 open NakedObjects.Core.Adapter
 open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Adapter
+
 
 let injectedObjects = new List<Object>()
 let mockInjector = new Mock<IContainerInjector>()

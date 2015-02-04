@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public class ViewModelOid : IOid, IEncodedToStrings {
+    internal class ViewModelOid : IEncodedToStrings, IViewModelOid {
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;

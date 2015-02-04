@@ -22,6 +22,8 @@ open NakedObjects.Core.Authentication
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
+open NakedObjects.Persistor.Entity.Adapter
+
 
 let resetPersistor (p : EntityObjectStore) = 
     p.Reset()
