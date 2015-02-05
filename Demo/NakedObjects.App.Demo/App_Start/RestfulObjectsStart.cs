@@ -2,8 +2,10 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+
 using System.Web.Routing;
 using NakedObjects.App.Demo;
+using NakedObjects.App.Demo.App_Start;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (RestfulObjectsStart), "PreStart")]

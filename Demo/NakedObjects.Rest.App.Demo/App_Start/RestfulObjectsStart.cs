@@ -13,7 +13,7 @@ using WebActivatorEx;
 namespace NakedObjects.Rest.App.Demo.App_Start {
     public static class RestfulObjectsStart {
         public static void PreStart() {
-            RestConfig.RestRegisterRoutes(RouteTable.Routes);
+            RestConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
         }
 
         public static void PostStart() {
