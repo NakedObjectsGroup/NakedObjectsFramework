@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.manager = manager;
 
-            IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
+            IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(Activator.CreateInstance(s)));
             services = ms.Cast<IServiceWrapper>().ToList();
         }
 
@@ -49,10 +49,6 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public virtual ServiceType GetServiceType(IServiceSpec spec) {
-            return Services.Where(sw => Equals(manager.GetServiceAdapter(sw.Service).Spec, spec)).Select(sw => sw.ServiceType).FirstOrDefault();
-        }
-
         public virtual INakedObject GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
             return Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service)).FirstOrDefault();
@@ -67,19 +63,12 @@ namespace NakedObjects.Core.Component {
             return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager lifecycleManager) {
-            Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
+        public virtual INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
+            Log.DebugFormat("GetServicesWithVisibleActions");
+            return Services.
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
                 Where(no => no.Spec.GetObjectActions().Any(a => a.IsVisible(no))).ToArray();
         }
-
-        public virtual INakedObject[] GetServices(ServiceType serviceType) {
-            Log.DebugFormat("GetServices of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
-                Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
-        }
-
         #endregion
     }
 }

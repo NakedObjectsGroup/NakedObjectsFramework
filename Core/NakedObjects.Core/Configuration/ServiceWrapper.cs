@@ -9,14 +9,12 @@ using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Core.Configuration {
     public class ServiceWrapper : IServiceWrapper {
-        public ServiceWrapper(ServiceType serviceType, object service) {
-            ServiceType = serviceType;
+        public ServiceWrapper(object service) {
             Service = service;
         }
 
         #region IServiceWrapper Members
 
-        public ServiceType ServiceType { get; private set; }
         public object Service { get; private set; }
 
         #endregion

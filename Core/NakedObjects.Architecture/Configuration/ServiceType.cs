@@ -8,9 +8,8 @@
 using System;
 
 namespace NakedObjects.Architecture.Configuration {
-    [Flags]
-    public enum ServiceType {
-        NotAService = 0,
-        Menu = 1
-    }
+    //[Flags]
+    //public enum ServiceType {
+    //    Menu = 1
+    //}
 }

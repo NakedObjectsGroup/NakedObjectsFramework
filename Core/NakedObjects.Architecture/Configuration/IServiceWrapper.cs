@@ -7,7 +7,6 @@
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IServiceWrapper {
-        ServiceType ServiceType { get; }
         object Service { get; }
     }
 }
