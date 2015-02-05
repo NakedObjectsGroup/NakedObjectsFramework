@@ -119,7 +119,7 @@ namespace NakedObjects.Reflect {
 
 
         public void Reflect() {
-            Type[] s1 = config.MenuServices;
+            Type[] s1 = config.Services;
             Type[] services = s1.ToArray();
             Type[] nonServices = GetTypesToIntrospect();
 

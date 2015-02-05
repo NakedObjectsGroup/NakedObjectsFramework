@@ -40,21 +40,7 @@ namespace $rootnamespace$ {
             }
         }
 
-        private static Type[] MenuServices {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
+        private static Type[] Services {
             get {
                 return new Type[] {
                 };
@@ -62,7 +48,7 @@ namespace $rootnamespace$ {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
+            return new ReflectorConfiguration(Types, Services, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
@@ -91,7 +77,7 @@ namespace $rootnamespace$ {
 		/// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
 		public static IMenu[] MainMenus(IMenuFactory factory) {
             return new IMenu[] {};

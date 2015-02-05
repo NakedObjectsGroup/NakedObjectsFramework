@@ -46,7 +46,7 @@ namespace NakedObjects.Mvc.App {
             }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new[] {
                     typeof (CustomerRepository),
@@ -58,23 +58,9 @@ namespace NakedObjects.Mvc.App {
                     typeof (ContactRepository),
                     typeof (VendorRepository),
                     typeof (PurchaseOrderRepository),
-                    typeof (WorkOrderRepository)
-                };
-            }
-        }
-
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
+                    typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
-                    typeof (CustomerContributedActions)
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
-            get {
-                return new[] {
+                    typeof (CustomerContributedActions),
                     typeof (SimpleEncryptDecrypt)
                 };
             }
@@ -86,7 +72,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
@@ -111,10 +97,23 @@ namespace NakedObjects.Mvc.App {
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] {};
+            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            CustomerRepository.Menu(customerMenu);
+            return new IMenu[] {
+                    customerMenu,
+                    factory.NewMenu<OrderRepository>(true),
+                    factory.NewMenu<ProductRepository>(true),
+                    factory.NewMenu<EmployeeRepository>(true),
+                    factory.NewMenu<SalesRepository>(true),
+                    factory.NewMenu<SpecialOfferRepository>(true),
+                    factory.NewMenu<ContactRepository>(true),
+                    factory.NewMenu<VendorRepository>(true),
+                    factory.NewMenu<PurchaseOrderRepository>(true),
+                    factory.NewMenu<WorkOrderRepository>(true)
+            };
         }
     }
 }

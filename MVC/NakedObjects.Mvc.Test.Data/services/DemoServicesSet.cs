@@ -14,6 +14,8 @@ using System.Reflection;
 using NakedObjects.Util;
 using NakedObjects.Resources;
 using System.ComponentModel;
+using NakedObjects.Menu;
+using NakedObjects.Architecture.Menu;
 
 namespace Expenses.Services {
     public static class DemoServicesSet {
@@ -29,6 +31,18 @@ namespace Expenses.Services {
             };
 
             return services.ToArray();
+        }
+
+        public static IMenu[] MainMenus(IMenuFactory factory) {
+            var claimMenu = factory.NewMenu<ClaimRepository>(false);
+            ClaimRepository.Menu(claimMenu);
+            return new IMenu[] {
+                factory.NewMenu<EmployeeRepository>(true),
+                claimMenu,
+                factory.NewMenu<DummyMailSender>(true),
+                factory.NewMenu<SimpleRepositoryCustomHelperTestClass>(true),
+                factory.NewMenu<SimpleRepositoryDescribedCustomHelperTestClass>(true)
+            };
         }
     }
 
