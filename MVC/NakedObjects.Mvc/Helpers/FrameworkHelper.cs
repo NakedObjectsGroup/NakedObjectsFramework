@@ -120,8 +120,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 return framework.RestoreInline(oid as IAggregateOid);
             }
 
-            if (oid is ViewModelOid) {
-                return framework.RestoreViewModel(oid as ViewModelOid);
+            if (oid is IViewModelOid) {
+                return framework.RestoreViewModel(oid as IViewModelOid);
             }
 
             return framework.RestoreObject(oid);
@@ -151,7 +151,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return assoc.GetNakedObject(parent);
         }
 
-        private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, ViewModelOid viewModelOid) {
+        private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, IViewModelOid viewModelOid) {
             return framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
         }
 

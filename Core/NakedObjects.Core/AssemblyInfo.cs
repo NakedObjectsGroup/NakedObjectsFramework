@@ -23,6 +23,8 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test") ]
 [assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.Persistor.Entity.Test")]
+
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

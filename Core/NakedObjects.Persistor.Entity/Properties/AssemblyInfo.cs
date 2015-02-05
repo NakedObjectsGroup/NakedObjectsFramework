@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -18,6 +19,9 @@ using System.Runtime.InteropServices;
 #else
 [assembly: AssemblyTitle("Naked Objects Persistor Entity (Release)")]
 #endif
+
+[assembly: InternalsVisibleTo("NakedObjects.Persistor.Entity.Test")]
+
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

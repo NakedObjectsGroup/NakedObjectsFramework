@@ -30,6 +30,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Persistor.Entity.Adapter;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Persistor.Entity.Util;
 using NakedObjects.Util;
@@ -258,7 +259,7 @@ namespace NakedObjects.Persistor.Entity {
         
             var aggregateOid = oid as IAggregateOid;
             if (aggregateOid != null) {
-                var parentOid = (EntityOid) aggregateOid.ParentOid;
+                var parentOid = (IEntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
                 var parentSpec = (IObjectSpec) metamodelManager.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
@@ -266,7 +267,7 @@ namespace NakedObjects.Persistor.Entity {
                 return parentSpec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
             }
 
-            var eoid = oid as EntityOid;
+            var eoid = oid as IEntityOid;
             if (eoid != null) {
                 INakedObject adapter = createAdapter(eoid, GetObjectByKey(eoid, hint));
                 adapter.UpdateVersion(session, nakedObjectManager);
@@ -321,7 +322,7 @@ namespace NakedObjects.Persistor.Entity {
                 }
 
                 IList<PropertyInfo> idmembers = currentContext.GetIdMembers(entityType);
-                IList<object> keyValues = ((EntityOid) nakedObject.Oid).Key;
+                IList<object> keyValues = ((IEntityOid) nakedObject.Oid).Key;
                 Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
                 IEnumerator<PropertyInfo> idIter = idmembers.GetEnumerator();
                 List<KeyValuePair<string, object>> memberValueMap = keyValues.ToDictionary(x => {
@@ -596,7 +597,7 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         private void HandleAdded(INakedObject nakedObject) {
-            var oid = (EntityOid) nakedObject.Oid;
+            var oid = (IEntityOid) nakedObject.Oid;
             LocalContext context = GetContext(nakedObject);
             oid.MakePersistentAndUpdateKey(context.GetKey(nakedObject));
 
@@ -622,7 +623,7 @@ namespace NakedObjects.Persistor.Entity {
             GetContext(nakedObject).LoadedNakedObjects.Add(nakedObject);
         }
 
-        public object GetObjectByKey(EntityOid eoid, Type type) {
+        public object GetObjectByKey(IEntityOid eoid, Type type) {
             string entitySetName;
             LocalContext context = GetContext(type);
             List<KeyValuePair<string, object>> memberValueMap = GetMemberValueMap(type, eoid, out entitySetName);
@@ -637,7 +638,7 @@ namespace NakedObjects.Persistor.Entity {
             return First((IEnumerable) oq.Execute(context.DefaultMergeOption));
         }
 
-        private List<KeyValuePair<string, object>> GetMemberValueMap(Type type, EntityOid eoid, out string entitySetName) {
+        private List<KeyValuePair<string, object>> GetMemberValueMap(Type type, IEntityOid eoid, out string entitySetName) {
             LocalContext context = GetContext(type);
             dynamic set = context.GetObjectSet(type).EntitySet;
             entitySetName = set.EntityContainer.Name + "." + set.Name;
@@ -651,7 +652,7 @@ namespace NakedObjects.Persistor.Entity {
             }).ToList();
         }
 
-        public object GetObjectByKey(EntityOid eoid, IObjectSpec hint) {
+        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) {
             Type type = TypeUtils.GetType(hint.FullName);
             return GetObjectByKey(eoid, type);
         }

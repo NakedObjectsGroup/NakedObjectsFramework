@@ -11,10 +11,11 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Adapter {
-    public class EntityOid : IOid, IEncodedToStrings {
+namespace NakedObjects.Persistor.Entity.Adapter {
+    internal class EntityOid : IEncodedToStrings, IEntityOid {
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;

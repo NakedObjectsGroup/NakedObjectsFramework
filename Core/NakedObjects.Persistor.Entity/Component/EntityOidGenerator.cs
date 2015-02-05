@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
+using NakedObjects.Persistor.Entity.Adapter;
 
 namespace NakedObjects.Persistor.Entity {
     public class EntityOidGenerator : IOidGenerator {
@@ -31,7 +32,7 @@ namespace NakedObjects.Persistor.Entity {
         public void ConvertPersistentToTransientOid(IOid oid) {}
 
         public void ConvertTransientToPersistentOid(IOid oid) {
-            var entityOid = oid as EntityOid;
+            var entityOid = oid as IEntityOid;
             if (entityOid != null) {
                 entityOid.MakePersistent();
             }
