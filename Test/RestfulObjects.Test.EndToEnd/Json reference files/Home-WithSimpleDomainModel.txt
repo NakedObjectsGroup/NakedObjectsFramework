@@ -4,25 +4,25 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6"
     },
     {
       "rel": "urn:org.restfulobjects:rels/user",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/user\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/user"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/user"
     },
     {
       "rel": "urn:org.restfulobjects:rels/services",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/list\"; charset=utf-8; x-ro-element-type=\"System.Object\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/services"
     },
     {
       "rel": "urn:org.restfulobjects:rels/version",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/version\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/version"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/version"
     }
   ],
   "extensions": {}

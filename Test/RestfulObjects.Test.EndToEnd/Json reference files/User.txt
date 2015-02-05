@@ -4,13 +4,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/user\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/user"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/user"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6"
     }
   ],
   "extensions": {},

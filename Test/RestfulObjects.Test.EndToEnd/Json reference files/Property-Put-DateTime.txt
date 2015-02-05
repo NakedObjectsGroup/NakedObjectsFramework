@@ -7,19 +7,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithValue\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithValue/2"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/ADateTimeValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithValue/2/properties/ADateTimeValue"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/ADateTimeValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithValue/properties/ADateTimeValue"
     },
     {
       "arguments": {
@@ -28,13 +28,13 @@
       "rel": "urn:org.restfulobjects:rels/modify;property=\"ADateTimeValue\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/ADateTimeValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithValue/2/properties/ADateTimeValue"
     },
     {
       "rel": "urn:org.restfulobjects:rels/clear;property=\"ADateTimeValue\"",
       "method": "DELETE",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/ADateTimeValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithValue/2/properties/ADateTimeValue"
     }
   ],
   "extensions": {

@@ -13,32 +13,32 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/services/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/services/WithActionService"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedIdempotentReturnsNull\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/services/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithActionService/actions/AnActionAnnotatedIdempotentReturnsNull"
     }
   ]
 }

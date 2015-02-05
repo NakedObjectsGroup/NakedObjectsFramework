@@ -13,32 +13,32 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionObject\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithActionObject/1"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedIdempotent\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionAnnotatedIdempotent"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithActionObject/actions/AnActionAnnotatedIdempotent"
     }
   ]
 }

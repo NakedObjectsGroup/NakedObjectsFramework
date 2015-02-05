@@ -7,13 +7,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithReferenceViewModel\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel"
     },
     {
       "arguments": {
@@ -36,7 +36,7 @@
       "rel": "urn:org.restfulobjects:rels/update",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithReferenceViewModel\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3"
     }
   ],
   "extensions": {
@@ -53,7 +53,7 @@
         "rel": "urn:org.restfulobjects:rels/value;property=\"AChoicesReference\"",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/3"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/3"
       },
       "choices": [
         {
@@ -61,14 +61,14 @@
           "rel": "urn:org.restfulobjects:rels/choice;property=\"AChoicesReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
         },
         {
           "title": "2",
           "rel": "urn:org.restfulobjects:rels/choice;property=\"AChoicesReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/2"
         }
       ],
       "hasChoices": true,
@@ -79,13 +79,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AChoicesReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AChoicesReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AChoicesReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/AChoicesReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/AChoicesReference"
         },
         {
           "arguments": {
@@ -94,7 +94,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AChoicesReference\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AChoicesReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AChoicesReference"
         }
       ],
       "extensions": {
@@ -112,7 +112,7 @@
         "rel": "urn:org.restfulobjects:rels/value;property=\"ADisabledReference\"",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/2"
       },
       "hasChoices": false,
       "memberType": "property",
@@ -122,13 +122,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"ADisabledReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/ADisabledReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/ADisabledReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/ADisabledReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/ADisabledReference"
         }
       ],
       "extensions": {
@@ -149,13 +149,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"ANullReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/ANullReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/ANullReference"
         },
         {
           "arguments": {
@@ -164,13 +164,13 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"ANullReference\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
         },
         {
           "rel": "urn:org.restfulobjects:rels/clear;property=\"ANullReference\"",
           "method": "DELETE",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/ANullReference"
         }
       ],
       "extensions": {
@@ -187,7 +187,7 @@
         "rel": "urn:org.restfulobjects:rels/value;property=\"AReference\"",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
       },
       "hasChoices": false,
       "memberType": "property",
@@ -197,13 +197,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/AReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/AReference"
         },
         {
           "arguments": {
@@ -212,7 +212,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AReference\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AReference"
         }
       ],
       "extensions": {
@@ -235,13 +235,13 @@
               "rel": "self",
               "method": "GET",
               "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
             },
             {
               "rel": "describedby",
               "method": "GET",
               "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple"
             },
             {
               "arguments": {
@@ -252,7 +252,7 @@
               "rel": "urn:org.restfulobjects:rels/update",
               "method": "PUT",
               "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
             }
           ],
           "extensions": {
@@ -273,13 +273,13 @@
                   "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
                   "method": "GET",
                   "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1/properties/Id"
+                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1/properties/Id"
                 },
                 {
                   "rel": "describedby",
                   "method": "GET",
                   "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/properties/Id"
+                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple/properties/Id"
                 },
                 {
                   "arguments": {
@@ -288,7 +288,7 @@
                   "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
                   "method": "PUT",
                   "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1/properties/Id"
+                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1/properties/Id"
                 }
               ],
               "extensions": {
@@ -305,7 +305,7 @@
         "rel": "urn:org.restfulobjects:rels/value;property=\"AnEagerReference\"",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
       },
       "hasChoices": false,
       "memberType": "property",
@@ -324,13 +324,13 @@
                     "rel": "self",
                     "method": "GET",
                     "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
                   },
                   {
                     "rel": "describedby",
                     "method": "GET",
                     "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple"
                   },
                   {
                     "arguments": {
@@ -341,7 +341,7 @@
                     "rel": "urn:org.restfulobjects:rels/update",
                     "method": "PUT",
                     "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+                    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
                   }
                 ],
                 "extensions": {
@@ -362,13 +362,13 @@
                         "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
                         "method": "GET",
                         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1/properties/Id"
+                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1/properties/Id"
                       },
                       {
                         "rel": "describedby",
                         "method": "GET",
                         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/properties/Id"
+                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple/properties/Id"
                       },
                       {
                         "arguments": {
@@ -377,7 +377,7 @@
                         "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
                         "method": "PUT",
                         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1/properties/Id"
+                        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1/properties/Id"
                       }
                     ],
                     "extensions": {
@@ -394,7 +394,7 @@
               "rel": "urn:org.restfulobjects:rels/value;property=\"AnEagerReference\"",
               "method": "GET",
               "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+              "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
             },
             "hasChoices": false,
             "id": "AnEagerReference",
@@ -403,19 +403,19 @@
                 "rel": "up",
                 "method": "GET",
                 "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithReferenceViewModel\"",
-                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3"
+                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3"
               },
               {
                 "rel": "self",
                 "method": "GET",
                 "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
+                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
               },
               {
                 "rel": "describedby",
                 "method": "GET",
                 "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/AnEagerReference"
+                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/AnEagerReference"
               },
               {
                 "arguments": {
@@ -424,7 +424,7 @@
                 "rel": "urn:org.restfulobjects:rels/modify;property=\"AnEagerReference\"",
                 "method": "PUT",
                 "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
+                "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
               }
             ],
             "extensions": {
@@ -438,13 +438,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AnEagerReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/AnEagerReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/AnEagerReference"
         },
         {
           "arguments": {
@@ -453,7 +453,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AnEagerReference\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/AnEagerReference"
         }
       ],
       "extensions": {
@@ -474,13 +474,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/Id"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReferenceViewModel/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReferenceViewModel/properties/Id"
         },
         {
           "arguments": {
@@ -489,7 +489,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReferenceViewModel/1-2-2-3/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReferenceViewModel/1-2-2-3/properties/Id"
         }
       ],
       "extensions": {

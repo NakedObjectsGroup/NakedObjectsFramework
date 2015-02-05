@@ -4,7 +4,7 @@
     "rel": "urn:org.restfulobjects:rels/value;property=\"AReference\"",
     "method": "GET",
     "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimple/1"
   },
   "hasChoices": false,
   "id": "AReference",
@@ -13,19 +13,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithReference\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReference/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReference/1"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReference/1/properties/AReference"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReference/1/properties/AReference"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReference/properties/AReference"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithReference/properties/AReference"
     },
     {
       "arguments": {
@@ -34,7 +34,7 @@
       "rel": "urn:org.restfulobjects:rels/modify;property=\"AReference\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithReference/1/properties/AReference"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/WithReference/1/properties/AReference"
     }
   ],
   "extensions": {

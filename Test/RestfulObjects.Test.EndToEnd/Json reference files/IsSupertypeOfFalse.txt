@@ -5,13 +5,13 @@
     {
       "arguments": {
         "subtype": {
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimple"
         }
       },
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAction/type-actions/isSupertypeOf/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/WithAction/type-actions/isSupertypeOf/invoke"
     }
   ],
   "extensions": {}

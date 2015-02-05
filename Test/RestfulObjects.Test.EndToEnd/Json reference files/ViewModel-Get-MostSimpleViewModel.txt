@@ -7,13 +7,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/31459"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimpleViewModel/31459"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimpleViewModel"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimpleViewModel"
     },
     {
       "arguments": {
@@ -24,7 +24,7 @@
       "rel": "urn:org.restfulobjects:rels/update",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/31459"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimpleViewModel/31459"
     }
   ],
   "extensions": {
@@ -45,13 +45,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/31459/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimpleViewModel/31459/properties/Id"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimpleViewModel/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/domain-types/MostSimpleViewModel/properties/Id"
         },
         {
           "arguments": {
@@ -60,7 +60,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/31459/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest6/objects/MostSimpleViewModel/31459/properties/Id"
         }
       ],
       "extensions": {
