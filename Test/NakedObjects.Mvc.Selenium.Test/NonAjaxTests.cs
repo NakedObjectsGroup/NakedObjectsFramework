@@ -9,7 +9,7 @@ using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class NonAjaxTests : AWWebTest {
-        protected new const string url = "http://mvc.nakedobjects.net:1081/unittest";
+        protected new const string url = "http://mvc.nakedobjects.net:1081/unittest6";
 
         public new static void InitialiseClass(TestContext context) {
             AWWebTest.InitialiseClass(context);

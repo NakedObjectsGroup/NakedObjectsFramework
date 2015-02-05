@@ -11,9 +11,9 @@
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <WorkingDir>build\working</WorkingDir>
-    <IISTransientPath>\\Saturn\UnitTestTransient</IISTransientPath>
-    <IISRestPath>\\Saturn\UnitTestRest</IISRestPath>
-    <IISAjaxPath>\\Saturn\UnitTestAjax</IISAjaxPath>
+    <IISTransientPath>\\Saturn\UnitTestTransient6</IISTransientPath>
+    <IISRestPath>\\Saturn\UnitTestRest6</IISRestPath>
+    <IISAjaxPath>\\Saturn\UnitTestAjax6</IISAjaxPath>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>

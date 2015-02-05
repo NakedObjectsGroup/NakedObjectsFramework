@@ -10,7 +10,7 @@ using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class TransientTests : AWWebTest {
-        protected new const string url = "http://mvc.nakedobjects.net:1081/unittesttransient";
+        protected new const string url = "http://mvc.nakedobjects.net:1081/unittesttransient6";
 
         //protected new const string url = "http://localhost:62468";
 

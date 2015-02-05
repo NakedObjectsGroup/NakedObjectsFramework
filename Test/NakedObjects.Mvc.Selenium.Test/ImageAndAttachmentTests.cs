@@ -22,13 +22,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             IWebElement alink = photoField.FindElement(By.CssSelector("a"));
             Assert.AreEqual(
-                "http://mvc.nakedobjects.net:1081/UnitTestAjax/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
+                url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
                 , alink.GetAttribute("href"));
 
             IWebElement img = photoField.FindElement(By.CssSelector("img"));
             Assert.AreEqual("frame_black_large.gif", img.GetAttribute("alt"));
             Assert.AreEqual(
-                "http://mvc.nakedobjects.net:1081/UnitTestAjax/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
+                url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"
                 , img.GetAttribute("src"));
         }
 
