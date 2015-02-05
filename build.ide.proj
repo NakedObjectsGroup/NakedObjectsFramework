@@ -4,7 +4,7 @@
     <PMPath>Programming Model</PMPath>
     <NOIDE>NakedObjects.Ide</NOIDE>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
-    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <PackageSourcePath>C:\NakedObjectsNugetPackages6</PackageSourcePath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>

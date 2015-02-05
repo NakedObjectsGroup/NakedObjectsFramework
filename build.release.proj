@@ -28,7 +28,7 @@
 		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
     <ReleasePath>build\release</ReleasePath>
-		<PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+		<PackageSourcePath>C:\NakedObjectsNugetPackages6</PackageSourcePath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
 		<Nuget>..\.nuget\nuget.exe</Nuget>
 	</PropertyGroup>

@@ -5,7 +5,7 @@
     <NOBAT>NakedObjects.Batch</NOBAT>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
-    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <PackageSourcePath>C:\NakedObjectsNugetPackages6</PackageSourcePath>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
   </PropertyGroup>
