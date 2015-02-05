@@ -208,7 +208,7 @@ namespace RestfulObjects.Test.EndToEnd {
             }
      
             // Jupiter
-            return @"C:\Program Files (x86)\Jenkins\jobs\CleanBuildWithSystemTest\workspace\" + suffix;
+            return @"C:\Program Files (x86)\Jenkins\jobs\6 Release\workspace\" + suffix;
         }
     }
 }
