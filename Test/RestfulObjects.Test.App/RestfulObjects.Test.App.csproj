@@ -109,13 +109,16 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Bootstrap">
-      <HintPath>..\..\packages\RestfulObjects.Server.2.0.0\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Server.2.0.1\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RestfulObjects.Mvc">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0\lib\net451\RestfulObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.1\lib\net451\RestfulObjects.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.1\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
