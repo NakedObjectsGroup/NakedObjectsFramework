@@ -120,9 +120,7 @@ namespace NakedObjects.Reflect {
 
         public void Reflect() {
             Type[] s1 = config.MenuServices;
-            Type[] s2 = config.ContributedActions;
-            Type[] s3 = config.SystemServices;
-            Type[] services = s1.Union(s2).Union(s3).ToArray();
+            Type[] services = s1.ToArray();
             Type[] nonServices = GetTypesToIntrospect();
 
             services.ForEach(t => serviceTypes.Add(t));
@@ -131,7 +129,7 @@ namespace NakedObjects.Reflect {
 
             InstallSpecifications(allTypes);
           
-            PopulateAssociatedActions(s1.Union(s2).ToArray());
+            PopulateAssociatedActions(s1.ToArray());
 
             //Menus installed once rest of metamodel has been built:
             if (config.MainMenus != null) {

@@ -205,7 +205,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         private INakedObject FindService() {
-            foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceType.Menu | ServiceType.Contributor)) {
+            foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceType.Menu)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }

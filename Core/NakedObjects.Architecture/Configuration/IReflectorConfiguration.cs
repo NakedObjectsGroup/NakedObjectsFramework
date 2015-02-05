@@ -22,8 +22,6 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] TypesToIntrospect { get; }
 
         Type[] MenuServices { get; }
-        Type[] ContributedActions { get; }
-        Type[] SystemServices { get; }
 
         /// <summary>
         ///  A whitelist of namespaces of the types that will be introspected. 

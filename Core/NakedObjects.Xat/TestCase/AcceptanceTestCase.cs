@@ -307,12 +307,14 @@ namespace NakedObjects.Xat {
 
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
+            var allServices = MenuServices.Select(s => s.GetType())
+                .Union( ContributedActions.Select(s => s.GetType()))
+                .Union(SystemServices.Select(s => s.GetType())).ToArray();
+
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
                 Types ?? new Type[] {},
-                MenuServices.Select(s => s.GetType()).ToArray(),
-                ContributedActions.Select(s => s.GetType()).ToArray(),
-                SystemServices.Select(s => s.GetType()).ToArray(),
+                allServices,
                 Namespaces ?? new string[] { });
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));

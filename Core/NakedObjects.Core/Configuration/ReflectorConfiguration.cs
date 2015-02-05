@@ -20,16 +20,12 @@ namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
             Type[] menuServices,
-            Type[] contributedActions,
-            Type[] systemServices,
             string[] supportedNamespaces,
             Func<IMenuFactory, IMenu[]> mainMenus = null) {
             SupportedNamespaces = supportedNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             MenuServices = menuServices;
-            ContributedActions = contributedActions;
-            SystemServices = systemServices;
             IgnoreCase = false;
             MainMenus = mainMenus;
         }
@@ -94,8 +90,6 @@ namespace NakedObjects.Core.Configuration {
         public Type[] TypesToIntrospect { get; private set; }
         public bool IgnoreCase { get; private set; }
         public Type[] MenuServices { get; private set; }
-        public Type[] ContributedActions { get; private set; }
-        public Type[] SystemServices { get; private set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
         public string[] SupportedNamespaces { get; private set; }
         public List<Type> SupportedSystemTypes { get; private set; }

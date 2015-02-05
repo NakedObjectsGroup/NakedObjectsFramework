@@ -33,10 +33,7 @@ namespace NakedObjects.Core.Component {
             this.manager = manager;
 
             IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
-            IEnumerable<ServiceWrapper> cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
-            IEnumerable<ServiceWrapper> ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
-
-            services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
+            services = ms.Cast<IServiceWrapper>().ToList();
         }
 
         private IList<IServiceWrapper> Services {

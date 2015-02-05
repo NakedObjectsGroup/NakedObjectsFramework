@@ -11,8 +11,6 @@ namespace NakedObjects.Architecture.Configuration {
     [Flags]
     public enum ServiceType {
         NotAService = 0,
-        Menu = 1,
-        Contributor = 2,
-        System = 4
+        Menu = 1
     }
 }
