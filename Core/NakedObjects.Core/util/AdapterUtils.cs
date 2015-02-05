@@ -111,9 +111,7 @@ namespace NakedObjects.Core.Util {
                 if (version is DateTime) {
                     return ((DateTime) version).StripMillis();
                 }
-                if (version != null) {
-                    return version;
-                }
+                return version;
             }
 
             return null;

@@ -211,8 +211,9 @@ namespace NakedObjects.Xat {
             foreach (IActionParameterSpec parm in actionSpec.Parameters) {
                 object value = parameters[i++];
 
-                if (value is string && parm.Spec.IsParseable) {
-                    parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value, manager).Object);
+                var valueAsString = value as string;
+                if (valueAsString != null && parm.Spec.IsParseable) {
+                    parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(valueAsString, manager).Object);
                 }
                 else {
                     parsedParameters.Add(value);

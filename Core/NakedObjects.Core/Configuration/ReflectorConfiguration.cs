@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Value;
+using Image = NakedObjects.Value.Image;
 
 namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {
@@ -45,7 +46,7 @@ namespace NakedObjects.Core.Configuration {
             typeof (FileAttachment),
             typeof (float),
             typeof (Guid),
-            typeof (Value.Image),
+            typeof (Image),
             typeof (int),
             typeof (long),
             typeof (sbyte),
@@ -65,7 +66,7 @@ namespace NakedObjects.Core.Configuration {
             typeof (FileAttachment[]),
             typeof (float[]),
             typeof (Guid[]),
-            typeof (Value.Image[]),
+            typeof (Image[]),
             typeof (int[]),
             typeof (long[]),
             typeof (sbyte[]),

@@ -18,11 +18,12 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Test.Adapter {
     public class TestDomainObject {

@@ -21,7 +21,7 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
-        private readonly List<IServiceWrapper> services = new List<IServiceWrapper>();
+        private readonly List<IServiceWrapper> services;
         private bool servicesInit;
 
         public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {

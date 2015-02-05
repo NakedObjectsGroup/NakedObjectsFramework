@@ -1,7 +1,8 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using System.Linq;
+using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
@@ -10,8 +11,6 @@ using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
-using System;
-using System.Linq;
 
 namespace NakedObjects.Unity {
     public static class StandardUnityConfig {

@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+
 namespace AdventureWorksModel
 {
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
-    
     public partial class AdventureWorksEntities : DbContext
     {
         public AdventureWorksEntities()

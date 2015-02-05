@@ -34,7 +34,8 @@ namespace Snapshot.Xml.Test {
 
         private IList<TestObject> testCollection = new List<TestObject>();
 
-        [Key, Hidden]
+        [Key]
+        [Hidden]
         public virtual int TestObjectId { get; set; }
 
         //Add properties with 'propv', collections with 'coll', actions with 'act' shortcuts

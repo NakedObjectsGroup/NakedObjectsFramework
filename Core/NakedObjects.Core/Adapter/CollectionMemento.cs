@@ -202,8 +202,8 @@ namespace NakedObjects.Core.Adapter {
                 return lifecycleManager.RecreateInstance(oid, oid.Spec);
             }
 
-            if (oid is ViewModelOid) {
-                return lifecycleManager.GetViewModel(oid as ViewModelOid);
+            if (oid is IViewModelOid) {
+                return lifecycleManager.GetViewModel(oid);
             }
 
             return lifecycleManager.LoadObject(oid, oid.Spec);

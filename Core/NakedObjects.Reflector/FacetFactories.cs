@@ -1,6 +1,6 @@
-﻿using NakedObjects.Reflect.FacetFactory;
+﻿using System;
+using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using System;
 
 namespace NakedObjects.Reflect {
     /// <summary>

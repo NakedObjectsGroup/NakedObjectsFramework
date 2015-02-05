@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -71,7 +72,7 @@ namespace NakedObjects.Reflect {
                     componentCompare = c1.CompareTo(c2);
                 }
                 else {
-                    componentCompare = string.Compare(components1[n], components2[n], System.StringComparison.InvariantCulture);
+                    componentCompare = string.Compare(components1[n], components2[n], StringComparison.InvariantCulture);
                 }
                 if (componentCompare != 0) {
                     return componentCompare;
