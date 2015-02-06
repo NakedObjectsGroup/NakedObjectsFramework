@@ -132,14 +132,14 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser x.api
         
-        [<Test>][<Ignore>] //Richard broke with change to service registration
-        member x.GetDomainServices() = DomainServices7.GetDomainServices x.api
+        [<Test>]
+        member x.GetDomainServices() = DomainServices7.GetDomainServicesWithTTC x.api
         
-        [<Test>][<Ignore>] //Richard broke with change to service registration
-        member x.GetDomainServicesFormal() = DomainServices7.GetDomainServicesFormal x.api
+        [<Test>]
+        member x.GetDomainServicesFormal() = DomainServices7.GetDomainServicesFormalWithTTC x.api
         
-        [<Test>][<Ignore>] //Richard broke with change to service registration
-        member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaType x.api
+        [<Test>]
+        member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaTypeWithTTC x.api
         
         [<Test>]
         member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api

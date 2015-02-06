@@ -44,33 +44,21 @@ namespace RestfulObjects.Test.App {
             }; }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new Type[] {
                     typeof (RestDataRepository),
-                    typeof (WithActionService)
+                    typeof (WithActionService),
+                    typeof (ContributorService),
+                      typeof (TestTypeCodeMapper)
                 };
             }
         }
 
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
-                    typeof (ContributorService)
-                };
-            }
-        }
 
-        private static Type[] SystemServices {
-            get {
-                return new Type[] {
-                   typeof (TestTypeCodeMapper)
-                };
-            }
-        }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, Types.Select(t => t.Namespace).Distinct().ToArray());
+            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray());
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
