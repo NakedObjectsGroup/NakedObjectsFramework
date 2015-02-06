@@ -101,7 +101,6 @@ let GetService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Rest Data Repository"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ServiceType, TObjectVal("menu"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
@@ -134,7 +133,6 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Contributor Service"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Contributor Services"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ServiceType, TObjectVal("contributor"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
@@ -313,7 +311,6 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Rest Data Repository"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ServiceType, TObjectVal("menu"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
@@ -408,7 +405,6 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Rest Data Repository"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ServiceType, TObjectVal("menu"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
@@ -1141,7 +1137,6 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action Service"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Action Services"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ServiceType, TObjectVal("menu"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
