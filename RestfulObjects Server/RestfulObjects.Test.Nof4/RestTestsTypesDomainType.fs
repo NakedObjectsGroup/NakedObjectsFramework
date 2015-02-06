@@ -65,10 +65,8 @@ type Nof4TestsTypeDomainType() =
                    typeof<TestEnum>                   
                    typeof<MostSimple[]>                 
                    typeof<SetWrapper<MostSimple>> |]
-            let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
-            let ca = [| typeof<ContributorService> |]
-            let ss = [| typeof<TestTypeCodeMapper>; typeof<TestKeyCodeMapper> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, ss, [|"RestfulObjects.Test.Data"|])
+            let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService>; typeof<TestTypeCodeMapper>; typeof<TestKeyCodeMapper> |]
+            let reflectorConfig = new ReflectorConfiguration(types, services, [|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         

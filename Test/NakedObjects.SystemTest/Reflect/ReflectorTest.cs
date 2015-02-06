@@ -66,7 +66,7 @@ namespace NakedObjects.SystemTest.Reflect {
         [TestMethod]
         public void ReflectNoTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
 
             rc.SupportedSystemTypes.Clear();
 
@@ -80,7 +80,7 @@ namespace NakedObjects.SystemTest.Reflect {
         [TestMethod]
         public void ReflectWithDecorators() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
 
             rc.SupportedSystemTypes.Clear();
 
@@ -116,7 +116,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Type[] types = AdventureWorksTypes();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
           
 
@@ -147,7 +147,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Type[] types = AdventureWorksTypes();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -227,7 +227,7 @@ namespace NakedObjects.SystemTest.Reflect {
             Type[] spec51 = AdventureWorksTypes().Skip(50).Take(1).ToArray();
             Type[] types = AdventureWorksTypes().Take(20).ToArray();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -264,7 +264,7 @@ namespace NakedObjects.SystemTest.Reflect {
             Type[] types50 = AdventureWorksTypes().Take(50).ToArray();
             Type[] types51 = AdventureWorksTypes().Take(51).ToArray();
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types50, new Type[] {}, new Type[] {}, new Type[] {}, types50.Select(t => t.Namespace).Distinct().ToArray());
+            var rc = new ReflectorConfiguration(types50, new Type[] {}, types50.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -274,7 +274,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             ITypeSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
 
-            rc = new ReflectorConfiguration(types51, new Type[] {}, new Type[] {}, new Type[] {}, types51.Select(t => t.Namespace).Distinct().ToArray());
+            rc = new ReflectorConfiguration(types51, new Type[] {}, types51.Select(t => t.Namespace).Distinct().ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 

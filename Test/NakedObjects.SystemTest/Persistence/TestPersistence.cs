@@ -35,8 +35,6 @@ namespace NakedObjects.SystemTest.Persistence {
                     typeof (SimpleRepository<Bar1>),
                     typeof (SimpleRepository<Qux1>)
                 },
-                new Type[] { },
-                new Type[] { },
                 new string[] { typeof(Foo1).Namespace });
 
 

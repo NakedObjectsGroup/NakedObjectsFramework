@@ -48,8 +48,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                     typeof (SimpleRepository<Foo1>),
                     typeof (SimpleRepository<Foo2>),
                 },
-                new Type[] {},
-                new Type[] {},
                 new string[] { typeof(Bar1).Namespace, typeof(Bar2).Namespace, typeof(Foo2).Namespace });
 
 

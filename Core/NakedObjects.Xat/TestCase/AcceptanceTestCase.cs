@@ -23,6 +23,8 @@ using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NakedObjects.Menu;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -36,7 +38,7 @@ namespace NakedObjects.Xat {
         private ISession testSession;
 
         static AcceptanceTestCase() {
-            Log = LogManager.GetLogger(typeof (AcceptanceTestCase));
+            Log = LogManager.GetLogger(typeof(AcceptanceTestCase));
         }
 
         protected AcceptanceTestCase(string name) {
@@ -49,7 +51,7 @@ namespace NakedObjects.Xat {
             });
         }
 
-        protected AcceptanceTestCase() : this("Unnamed") {}
+        protected AcceptanceTestCase() : this("Unnamed") { }
 
         protected string Name { set; get; }
 
@@ -66,7 +68,7 @@ namespace NakedObjects.Xat {
 
         protected virtual IPrincipal TestPrincipal {
             get {
-                return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {}));
+                return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] { }));
             }
             set { testPrincipal = value; }
         }
@@ -81,23 +83,49 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual object[] Fixtures {
-            get { return new object[] {}; }
+            get { return new object[] { }; }
         }
 
+        protected virtual IMenu[] MainMenus(IMenuFactory factory) {
+            return new IMenu[] {
+            };
+        }
+
+        /// <summary>
+        /// All services may be registered in this property alone.
+        /// (MenuServices, ContributedActions & SystemServices are for
+        /// backwards compatibility only.)
+        /// </summary>
+        protected virtual object[] Services {
+            get { return new object[] { }; }
+        }
+
+        /// <summary>
+        /// For backwards compatibility only.  For new tests, register
+        /// all services in the Services property only.
+        /// </summary>
         protected virtual object[] MenuServices {
-            get { return new object[] {}; }
+            get { return new object[] { }; }
         }
 
+        /// <summary>
+        /// For backwards compatibility only.  For new tests, register
+        /// all services in the Services property only.
+        /// </summary>
         protected virtual object[] ContributedActions {
-            get { return new object[] {}; }
+            get { return new object[] { }; }
         }
 
+        /// <summary>
+        /// For backwards compatibility only.  For new tests, register
+        /// all services in the Services property only.
+        /// </summary>
         protected virtual object[] SystemServices {
-            get { return new object[] {}; }
+            get { return new object[] { }; }
         }
 
         protected virtual Type[] Types {
-            get { return new Type[] {}; }
+            get { return new Type[] { }; }
         }
 
         protected virtual string[] Namespaces {
@@ -118,8 +146,7 @@ namespace NakedObjects.Xat {
             if (property != null) {
                 try {
                     property.SetValue(injectee, value, null);
-                }
-                catch (TargetInvocationException e) {
+                } catch (TargetInvocationException e) {
                     InvokeUtils.InvocationException("Exception executing " + property, e);
                 }
             }
@@ -135,8 +162,8 @@ namespace NakedObjects.Xat {
         }
 
         protected object[] GetFixtures(object fixture) {
-            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] {});
-            return getFixturesMethod == null ? new object[] {} : (object[]) getFixturesMethod.Invoke(fixture, new object[] {});
+            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] { });
+            return getFixturesMethod == null ? new object[] { } : (object[])getFixturesMethod.Invoke(fixture, new object[] { });
         }
 
         protected void InstallFixture(object fixture) {
@@ -147,8 +174,7 @@ namespace NakedObjects.Xat {
             Log.Debug("Invoking install method");
             try {
                 installMethod.Invoke(fixture, new object[0]);
-            }
-            catch (TargetInvocationException e) {
+            } catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException("Exception executing " + installMethod, e);
             }
         }
@@ -167,13 +193,11 @@ namespace NakedObjects.Xat {
                 InstallFixture(fixture);
                 transactionManager.EndTransaction();
                 Log.Info("fixture installed");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.Error("installing fixture " + fixture.GetType().FullName + " failed (" + e.Message + "); aborting fixture ", e);
                 try {
                     transactionManager.AbortTransaction();
-                }
-                catch (Exception e2) {
+                } catch (Exception e2) {
                     Log.Error("failure during abort", e2);
                 }
                 throw;
@@ -239,16 +263,16 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance<T>(string title) {
-            return GetBoundedInstance(typeof (T), title);
+            return GetBoundedInstance(typeof(T), title);
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
+            var spec = (IObjectSpec)NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
+            var spec = (IObjectSpec)NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
@@ -274,7 +298,7 @@ namespace NakedObjects.Xat {
         }
 
         protected void SetUser(string username) {
-            SetUser(username, new string[] {});
+            SetUser(username, new string[] { });
         }
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
@@ -293,6 +317,17 @@ namespace NakedObjects.Xat {
             tc.testObjectFactory = null;
         }
 
+        /// <summary>
+        /// Returns the union of Services, MenuServices, ContributedActions and SystemServices properties
+        /// </summary>
+        /// <returns></returns>
+        protected Type[] AllServices() {
+            return Services.Select(s => s.GetType())
+                .Union(MenuServices.Select(s => s.GetType()))
+                .Union(ContributedActions.Select(s => s.GetType()))
+                .Union(SystemServices.Select(s => s.GetType())).ToArray();
+        }
+
         protected virtual void RegisterTypes(IUnityContainer container) {
             //Standard configuration
             StandardUnityConfig.RegisterStandardFacetFactories(container);
@@ -307,13 +342,14 @@ namespace NakedObjects.Xat {
 
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
+
+
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
-                Types ?? new Type[] {},
-                MenuServices.Select(s => s.GetType()).ToArray(),
-                ContributedActions.Select(s => s.GetType()).ToArray(),
-                SystemServices.Select(s => s.GetType()).ToArray(),
-                Namespaces ?? new string[] { });
+                Types ?? new Type[] { },
+                AllServices(),
+                Namespaces ?? new string[] { },
+                MainMenus);
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));

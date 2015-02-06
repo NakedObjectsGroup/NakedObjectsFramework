@@ -118,7 +118,7 @@ namespace NakedObjects.Core.Test.Adapter {
             var types = new[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
             var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
             var ns = new[] { typeof(TestDomainObject).Namespace };
-            var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {}, ns);
+            var rc = new ReflectorConfiguration(types, ms, ns);
             container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
         }
 

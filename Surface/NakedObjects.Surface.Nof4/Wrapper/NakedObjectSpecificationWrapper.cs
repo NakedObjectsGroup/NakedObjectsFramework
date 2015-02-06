@@ -41,11 +41,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 var serviceSpec = spec as IServiceSpec;
-                if (serviceSpec != null) {
-                    ServiceType st = framework.ServicesManager.GetServiceType(serviceSpec);
-                    extData[ServiceType] = st.ToString();
-                }
-
                 if (spec.ContainsFacet<IPresentationHintFacet>()) {
                     extData[PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
                 }

@@ -304,8 +304,6 @@
     <Compile Include="Interactions\IHidingInteractionAdvisor.cs" />
     <Compile Include="Interactions\InteractionType.cs" />
     <Compile Include="Interactions\IValidatingInteractionAdvisor.cs" />
-    <Compile Include="Configuration\ServiceType.cs" />
-    <Compile Include="Configuration\IServiceWrapper.cs" />
     <Compile Include="SpecImmutable\IActionParameterSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IActionSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IAssociationSpecImmutable.cs" />

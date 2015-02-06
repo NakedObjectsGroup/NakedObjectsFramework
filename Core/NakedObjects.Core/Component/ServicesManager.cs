@@ -21,7 +21,7 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
-        private readonly List<IServiceWrapper> services;
+        private readonly List<object> services = new List<object>();
         private bool servicesInit;
 
         public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
@@ -32,17 +32,13 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.manager = manager;
 
-            IEnumerable<ServiceWrapper> ms = config.MenuServices.Select(s => new ServiceWrapper(ServiceType.Menu, Activator.CreateInstance(s)));
-            IEnumerable<ServiceWrapper> cs = config.ContributedActions.Select(s => new ServiceWrapper(ServiceType.Contributor, Activator.CreateInstance(s)));
-            IEnumerable<ServiceWrapper> ss = config.SystemServices.Select(s => new ServiceWrapper(ServiceType.System, Activator.CreateInstance(s)));
-
-            services = ms.Union(cs).Union(ss).Cast<IServiceWrapper>().ToList();
+            services = config.Services.Select(s => Activator.CreateInstance(s)).ToList();
         }
 
-        private IList<IServiceWrapper> Services {
+        private IList<object> Services {
             get {
                 if (!servicesInit) {
-                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
+                    services.ForEach(s => injector.InitDomainObject(s));
                     servicesInit = true;
                 }
 
@@ -52,13 +48,9 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public virtual ServiceType GetServiceType(IServiceSpec spec) {
-            return Services.Where(sw => Equals(manager.GetServiceAdapter(sw.Service).Spec, spec)).Select(sw => sw.ServiceType).FirstOrDefault();
-        }
-
         public virtual INakedObject GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
-            return Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service)).FirstOrDefault();
+            return Services.Where(service => id.Equals(ServiceUtils.GetId(service))).Select(service => manager.GetServiceAdapter(service)).FirstOrDefault();
         }
 
         public INakedObject GetService(IServiceSpec spec) {
@@ -67,22 +59,15 @@ namespace NakedObjects.Core.Component {
 
         public virtual INakedObject[] GetServices() {
             Log.Debug("GetServices");
-            return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
+            return Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager lifecycleManager) {
-            Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
-                Select(sw => manager.GetServiceAdapter(sw.Service)).
+        public virtual INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
+            Log.DebugFormat("GetServicesWithVisibleActions");
+            return Services.
+                Select(service => manager.GetServiceAdapter(service)).
                 Where(no => no.Spec.GetObjectActions().Any(a => a.IsVisible(no))).ToArray();
         }
-
-        public virtual INakedObject[] GetServices(ServiceType serviceType) {
-            Log.DebugFormat("GetServices of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
-                Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
-        }
-
         #endregion
     }
 }

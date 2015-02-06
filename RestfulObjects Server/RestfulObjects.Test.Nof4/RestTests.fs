@@ -66,9 +66,8 @@ type Nof4Tests() =
                    typeof<TestEnum>                   
                    typeof<MostSimple[]>                 
                    typeof<SetWrapper<MostSimple>> |]
-            let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
-            let ca = [| typeof<ContributorService> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, [||], [|"RestfulObjects.Test.Data"|])
+            let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService> |]
+            let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
@@ -93,11 +92,11 @@ type Nof4Tests() =
         [<TestFixtureTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
-        override x.MenuServices = 
+        override x.Services = 
            [| box (new RestDataRepository())
-              box (new WithActionService()) |]
+              box (new WithActionService())
+              box (new ContributorService()) |]
         
-        override x.ContributedActions=  [| box (new ContributorService()) |]
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
@@ -513,10 +512,7 @@ type Nof4Tests() =
         
         [<Test>]
         member x.GetService() = DomainService15.GetService x.api
-        
-        [<Test>]
-        member x.GetContributorService() = DomainService15.GetContributorService x.api
-        
+               
         [<Test>]
         member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly x.api
         

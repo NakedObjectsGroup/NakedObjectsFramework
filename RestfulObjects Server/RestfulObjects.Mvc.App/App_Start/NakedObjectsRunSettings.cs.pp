@@ -19,21 +19,7 @@ namespace $rootnamespace$ {
             }
         }
 
-        private static Type[] MenuServices {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
+        private static Type[] Services {
             get {
                 return new Type[] {
                 };
@@ -46,7 +32,7 @@ namespace $rootnamespace$ {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices);
+            return new ReflectorConfiguration(Types, Services);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

@@ -34,26 +34,12 @@ namespace MvcTestApp {
             }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new[] {
                     typeof (RestDataRepository),
-                    typeof (WithActionService)
-                };
-            }
-        }
-
-        private static Type[] ContributedActions {
-            get {
-                return new[] {
-                    typeof (ContributorService)
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
-            get {
-                return new[] {
+                    typeof (WithActionService),
+                    typeof (ContributorService),
                     typeof (TestTypeCodeMapper)
                 };
             }
@@ -65,7 +51,7 @@ namespace MvcTestApp {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

@@ -50,11 +50,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 ITypeSpec spec = WrappedNakedObject.Spec;
 
                 var serviceSpec = spec as IServiceSpec;
-                if (serviceSpec != null) {
-                    ServiceType st = framework.ServicesManager.GetServiceType(serviceSpec);
-                    extData[ServiceType] = st.ToString();
-                }
-
                 if (spec.ContainsFacet<IViewModelFacet>() && spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject)) {
                     extData[RenderInEditMode] = true;
                 }

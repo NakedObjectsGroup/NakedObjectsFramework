@@ -47,8 +47,6 @@ namespace NakedObjects.SystemTest.Audit {
                     typeof (SimpleRepository<Qux>), typeof (FooService),
                     typeof (BarService), typeof (QuxService)
                 },
-                new Type[] {},
-                new Type[] {},
                 new string[]{ typeof(Foo).Namespace });
 
 

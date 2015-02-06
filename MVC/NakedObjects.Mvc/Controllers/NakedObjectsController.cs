@@ -61,7 +61,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         protected void SetMainMenus() {
            var menus = NakedObjectsContext.MetamodelManager.MainMenus();
            if (menus.Count() == 0) {
-              menus =  nakedObjectsFramework.ServicesManager.GetServices(ServiceType.Menu).Select(s => s.Spec.ObjectMenu).ToArray();
+              menus =  nakedObjectsFramework.ServicesManager.GetServices().Select(s => s.Spec.ObjectMenu).ToArray();
            }
             ViewData[IdHelper.NofMainMenus] = menus;
         }

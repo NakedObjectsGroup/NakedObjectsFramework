@@ -23,7 +23,7 @@ namespace NakedObjects.Core.Component {
         public DomainObjectContainerInjector(IReflectorConfiguration config) {
             Assert.AssertNotNull(config);
 
-            serviceTypes = config.MenuServices.Union(config.ContributedActions).Union(config.SystemServices).ToList();
+            serviceTypes = config.Services.ToList();
         }
 
         private List<object> Services {

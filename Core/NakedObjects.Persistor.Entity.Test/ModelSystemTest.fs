@@ -34,11 +34,9 @@ type ModelSystemTests() =
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         let types = [| typeof<ModelFirst.Fruit>;typeof<List<ModelFirst.Food>> |]
         
-        let ms = [| typeof<SimpleRepository<Person>> |]
-        let ca = [|  |]
-        let ss = [|  |]
-        let ns = [| "ModelFirst"   |]
-        let reflectorConfig = new ReflectorConfiguration(types,  ms, ca, ss, ns)
+        let services = [| typeof<SimpleRepository<Person>> |]
+        let namespaces = [| "ModelFirst"   |]
+        let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

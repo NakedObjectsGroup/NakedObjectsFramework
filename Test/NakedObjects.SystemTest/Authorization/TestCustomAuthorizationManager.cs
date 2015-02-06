@@ -50,8 +50,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                     typeof (BarService),
                     typeof (QuxService)
                 },
-                new Type[] {},
-                new Type[] {}, 
                 new string[]{ typeof(Foo).Namespace });
 
 

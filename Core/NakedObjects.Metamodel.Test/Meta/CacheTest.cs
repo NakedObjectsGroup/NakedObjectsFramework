@@ -238,21 +238,21 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeIntTypes() {
-            var rc = new ReflectorConfiguration(new[] { typeof(int) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(int) }, new Type[] { }, new string[] { });
             string file = Path.Combine(testDir, "metadataint.bin");
             BinarySerialize(rc, file);
         }
 
         [TestMethod]
         public void BinarySerializeImageTypes() {
-            var rc = new ReflectorConfiguration(new[] { typeof(Image) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(Image) }, new Type[] { }, new string[] { });
             string file = Path.Combine(testDir, "metadataimg.bin");
             BinarySerialize(rc, file);
         }
 
         [TestMethod]
         public void BinarySerializeBaTypes() {
-            var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new string[] { });
             string file = Path.Combine(testDir, "metadataba.bin");
             BinarySerialize(rc, file);
         }
@@ -267,7 +267,7 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeEnumTypes() {
-            var rc = new ReflectorConfiguration(new[] { typeof(TestEnum) }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] { typeof(TestEnum) }, new Type[] { }, new string[] { });
             string file = Path.Combine(testDir, "metadataenum.bin");
             BinarySerialize(rc, file);
         }
@@ -275,7 +275,7 @@ namespace NakedObjects.Meta.Test {
         [TestMethod]
         public void BinarySerializeSimpleDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestSimpleDomainObject)}, new[] {typeof (TestService)},
-                new Type[] { }, new Type[] { }, new string[] { });
+                new string[] { });
             string file = Path.Combine(testDir, "metadatatsdo.bin");
             BinarySerialize(rc, file);
         }
@@ -283,7 +283,7 @@ namespace NakedObjects.Meta.Test {
         [TestMethod]
         public void BinarySerializeAnnotatedDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] { typeof(TestAnnotatedDomainObject) }, new[] { typeof(TestService)},
-                new Type[] {}, new Type[] {}, new string[] {});
+                new string[] {});
 
             string file = Path.Combine(testDir, "metadatatado.bin");
             BinarySerialize(rc, file);

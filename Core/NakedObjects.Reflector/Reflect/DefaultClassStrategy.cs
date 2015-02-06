@@ -52,7 +52,7 @@ namespace NakedObjects.Reflect {
         }
 
         private bool IsTypeExplicitlyRequested(Type type) {
-            IEnumerable<Type> services = config.MenuServices.Union(config.ContributedActions).Union(config.SystemServices);
+            IEnumerable<Type> services = config.Services;
             return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 

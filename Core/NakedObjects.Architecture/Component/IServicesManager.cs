@@ -19,12 +19,8 @@ namespace NakedObjects.Architecture.Component {
 
         INakedObject GetService(IServiceSpec spec);
 
-        ServiceType GetServiceType(IServiceSpec spec);
-
         INakedObject[] GetServices();
 
-        INakedObject[] GetServices(ServiceType serviceType);
-
-        INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager lifecycleManager);
+        INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
     }
 }

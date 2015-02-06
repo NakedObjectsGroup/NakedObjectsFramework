@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
             var cache = new ImmutableInMemorySpecCache();
-            var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new string[] { });
+            var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Services;
 using NakedObjects.Util;
+using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class TestTypeCodeMapper : ITypeCodeMapper {

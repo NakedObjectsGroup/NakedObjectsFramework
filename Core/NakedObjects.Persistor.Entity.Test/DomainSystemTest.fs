@@ -27,9 +27,9 @@ type DomainSystemTests() =
         base.RegisterTypes(container)
         let types = [| typeof<Product>; typeof<ProductSubcategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
         
-        let ms = [| typeof<SimpleRepository<ScrapReason>> |]
-        let ns = [| "AdventureWorksModel"   |]
-        let reflectorConfig = new ReflectorConfiguration(types,  ms, [||], [||], ns)
+        let services = [| typeof<SimpleRepository<ScrapReason>> |]
+        let namespaces = [| "AdventureWorksModel" |]
+        let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
 
         ()

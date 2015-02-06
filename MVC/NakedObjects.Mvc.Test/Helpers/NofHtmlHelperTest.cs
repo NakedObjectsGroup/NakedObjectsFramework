@@ -36,6 +36,8 @@ using NakedObjects.Xat;
 using NakedObjects.Core.Util;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+using NakedObjects.Menu;
+using NakedObjects.Architecture.Menu;
 
 
 namespace MvcTestApp.Tests.Helpers {
@@ -130,6 +132,10 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
+        protected override IMenu[] MainMenus(IMenuFactory factory) {
+            return DemoServicesSet.MainMenus(factory);
+        }
+
         protected override object[] Fixtures {
             get { return (DemoFixtureSet.FixtureSet()); }
         }
@@ -138,8 +144,10 @@ namespace MvcTestApp.Tests.Helpers {
         private class DummyController : Controller {}
 
         private void SetupViewData(object model) {
+            
             mocks.ViewDataContainer.Object.ViewData.Model = model;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
 
@@ -1995,10 +2003,8 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        public void MainMenus() {
+        public void TestMainMenus() {
             string s = mocks.HtmlHelper.MainMenus().ToString();
-
-
             CheckResults("MainMenus", s);
         }
 
