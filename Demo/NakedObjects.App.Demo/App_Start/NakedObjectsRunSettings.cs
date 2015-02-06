@@ -46,7 +46,7 @@ namespace NakedObjects.App.Demo {
             }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new[] {
                     typeof (CustomerRepository),
@@ -58,24 +58,9 @@ namespace NakedObjects.App.Demo {
                     typeof (ContactRepository),
                     typeof (VendorRepository),
                     typeof (PurchaseOrderRepository),
-                    typeof (WorkOrderRepository)
-                };
-            }
-        }
-
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
+                    typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions)
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
-            get {
-                return new[] {
-                    typeof (SimpleEncryptDecrypt)
                 };
             }
         }
@@ -86,7 +71,7 @@ namespace NakedObjects.App.Demo {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
