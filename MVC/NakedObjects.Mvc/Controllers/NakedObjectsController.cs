@@ -916,7 +916,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
-                    if (nakedObject.Spec.IsCollection) {
+                    if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) { //2nd clause is to avoid rendering a string as a collection
                         SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.MetamodelManager.Metamodel).ShortName);
                     }
                     else {
