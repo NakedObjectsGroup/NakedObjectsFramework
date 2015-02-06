@@ -33,6 +33,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         ITypeSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }
+        bool IsQueryable { get; }
         bool IsParseable { get; }
 
         //Will return true if this is a sub-type of the passed-in spec

@@ -35,6 +35,13 @@
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"ContributorService\"",
       "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/ContributorService"
+    },
+    {
+      "title": "Test Type Code Mapper",
+      "rel": "urn:org.restfulobjects:rels/service;serviceId=\"TestTypeCodeMapper\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"TestTypeCodeMapper\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/TestTypeCodeMapper"
     }
   ]
 }

@@ -13,9 +13,15 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    [TestClass] //TODO: Write more tests
+    /// <summary>
+    /// Note: This is a limited test;  it does not test collection-contributed actions
+    /// due to dependency on other facets.  That is done in system tests
+    /// </summary>
+    [TestClass]
     public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
 
@@ -56,8 +62,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //Note: The [ContributedAction] annotation is applied to the parameter,
         //but the facet is applied to the Action (if any of its params have that annotation)
         [TestMethod]
-        public void TestContributedAnnotationNullByDefault() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+        public void TestContributedAnnotationNullByDefault1() {
+            MethodInfo actionMethod = FindMethod(typeof (Service), "Action1");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -65,8 +71,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestContributedAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "SomeAction");
+        public void TestContributedAnnotationNullByDefault2() {
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet<IContributedActionFacet>();
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestContributedAnnotationPickedUp3() {
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action3");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -74,21 +89,38 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
+        [TestMethod]
+        public void TestContributedAnnotationPickedUp4() {
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            var facet = Specification.GetFacet<IContributedActionFacet>();
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ContributedActionFacet);
+            AssertNoMethodsRemoved();
+        }
+
+
         #region Nested type: Customer
 
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([ContributedAction] Customer1 cust1) {}
+        private class Service {
+
+            public void Action1() { }
+
+            public void Action2(Customer cust1) { }
+
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void Action3([ContributedAction] Customer cust1) { }
+
+            public void Action4(string str1, [ContributedAction] Customer cust1) { }
         }
 
         #endregion
 
-        #region Nested type: Customer1
+        #region Nested type: Customer
 
-        private class Customer1 {
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
+        private class Customer {
+
         }
 
         #endregion
