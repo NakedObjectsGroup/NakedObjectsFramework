@@ -267,8 +267,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsQueryable {
             get {
                 if (!isQueryable.HasValue) {
-                    var collectionFacet = InnerSpec.GetFacet<ICollectionFacet>();
-                    isQueryable = collectionFacet != null && collectionFacet.IsQueryable;
+                    isQueryable = InnerSpec.IsQueryable;
                 }
                 return isQueryable.Value;
             }

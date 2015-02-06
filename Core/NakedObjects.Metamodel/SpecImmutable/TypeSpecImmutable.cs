@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
@@ -136,6 +137,10 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public virtual bool IsCollection {
             get { return ContainsFacet(typeof (ICollectionFacet)); }
+        }
+
+        public bool IsQueryable {
+            get { return ContainsFacet(typeof(GenericIQueryableFacet)); }
         }
 
         public virtual bool IsParseable {

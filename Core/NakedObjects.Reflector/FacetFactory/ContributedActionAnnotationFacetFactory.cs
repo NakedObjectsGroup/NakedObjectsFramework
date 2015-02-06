@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using System.Collections.Generic;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -27,16 +28,17 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Action) {}
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
-            ParameterInfo[] paramsWithAttribute = member.GetParameters().Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
+            var allParams = member.GetParameters();
+            IEnumerable<ParameterInfo> paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
             if (!paramsWithAttribute.Any()) return; //Nothing to do
             var facet = new ContributedActionFacet(holder);
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification<IObjectSpecImmutable> (p.ParameterType);
-                if (type != null) {
+                if (type != null && !type.IsParseable && !type.IsCollection) {
                     //TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
-                    if (type.IsCollection) {
-                        //TODO:  Will the return type Spec always exist by this point?
+                    if (type.IsQueryable) {
+                        //TODO: For collection CA, all OTHER params must be IsParseable or IsChoicesEnabled
                         var returnType = reflector.LoadSpecification<IObjectSpecImmutable> (member.ReturnType);
                         if (!returnType.IsCollection) {
                             //Don't allow collection-contributed actions that return collections
