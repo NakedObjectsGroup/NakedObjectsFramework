@@ -140,7 +140,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsQueryable {
-            get { return ContainsFacet(typeof(GenericIQueryableFacet)); }
+            get {
+                var facet = GetFacet<ICollectionFacet>();
+                return facet != null && facet.IsQueryable; }
         }
 
         public virtual bool IsParseable {

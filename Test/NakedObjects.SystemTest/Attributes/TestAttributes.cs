@@ -48,7 +48,7 @@ namespace NakedObjects.SystemTest.Attributes {
             get { return new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"}; }
         }
 
-        protected override object[] MenuServices {
+        protected override object[] Services {
             get {
                 return new object[] {
                     new SimpleRepository<Default1>(),
@@ -90,6 +90,7 @@ namespace NakedObjects.SystemTest.Attributes {
                     new SimpleRepository<Validateprogrammaticupdates2>(),
                     new TestServiceValidateProgrammaticUpdates(),
                     new SimpleRepository<Contributee>(),
+                    new SimpleRepository<Contributee2>(),
                     new TestServiceContributedAction(),
                     new SimpleRepository<FinderAction1>(),
                     new TestServiceFinderAction()
@@ -101,7 +102,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestMethod]
         public virtual void Contributed() {
-            var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
+            //var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Contributee>().GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetObjectActions();
@@ -109,6 +110,19 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Contributed Action", actions[0].Name);
+        }
+
+        [TestMethod]
+        public virtual void CollectionContributed() {
+            var obj = NewTestObject<Contributee2>().GetDomainObject();
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
+
+            Assert.AreEqual(3, actions.Count());
+            Assert.IsTrue(actions[0] is IActionSpec);
+            Assert.AreEqual("Collection Contributed Action", actions[0].Name);
+            Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
+            Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
         }
 
         #endregion
@@ -1040,6 +1054,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Validateprogrammaticupdates1> ValidateProgrammaticUpdates1s { get; set; }
         public DbSet<Validateprogrammaticupdates2> ValidateProgrammaticUpdates2s { get; set; }
         public DbSet<Contributee> Contributees { get; set; }
+        public DbSet<Contributee2> Contributee2s { get; set; }
         public DbSet<FinderAction1> Exclude1s { get; set; }
     }
 
@@ -1668,17 +1683,41 @@ namespace NakedObjects.SystemTest.Attributes {
     #endregion
 }
 
-
 // Change the namespace of these test classes as if they start wuith 'NakedObjects' we will not introspect them
 namespace SystemTest.Attributes {
     public class TestServiceContributedAction {
+        public IDomainObjectContainer Container { set; protected get; }
+
         public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) { }
 
         public void NotContributedAction(Contributee obj) { }
+
+        public IQueryable<Contributee2> AllContributee2() {
+            return Container.Instances<Contributee2>();
+        }
+
+        public void CollectionContributedAction([ContributedAction] IQueryable<Contributee2> targets) { }
+
+        public void CollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets, string parm2) { }
+
+        public void CollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets, Contributee cont) { }
+
+        public IQueryable<Contributee2> NotCollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
+
+        public IEnumerable<Contributee2> NotCollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
+
+        public void NotCollectionContributedAction3([ContributedAction] IEnumerable<Contributee2> targets) { }
+
     }
 
     public class Contributee {
         public virtual int Id { get; set; }
+    }
+
+    public class Contributee2 {
+        public virtual int Id { get; set; }
+
+        public void NativeAction() { }
     }
 
     public class TestServiceFinderAction {

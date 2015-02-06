@@ -46,15 +46,13 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction GetAction(string actionName, string subMenu) {
-            ITestAction[] actions = Actions.Where(x => x.Name == actionName && x.SubMenu == subMenu).ToArray();
-            AssertErrors(actions, actionName, string.Format(" within sub-menu '{0}'", subMenu));
-            return actions.Single();
+            return GetMenu().GetSubMenu(subMenu).GetAction(actionName);
         }
 
         public ITestAction GetAction(string actionName, string subMenu, params Type[] parameterTypes) {
-            ITestAction[] actions = Actions.Where(x => x.Name == actionName && x.SubMenu == subMenu && x.MatchParameters(parameterTypes)).ToArray();
-            AssertErrors(actions, actionName, string.Format(" (with specified parameters) within sub-menu '{0}'", subMenu));
-            return actions.Single();
+            var action = GetAction(actionName, subMenu);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: "+actionName);
+            return action;
         }
 
         public virtual string GetObjectActionOrder() {

@@ -35,19 +35,19 @@ namespace NakedObjects.Reflect.FacetFactory {
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification<IObjectSpecImmutable> (p.ParameterType);
-                if (type != null && !type.IsParseable && !type.IsCollection) {
+                if (type != null && !type.IsParseable) {
                     //TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
-                    if (type.IsQueryable) {
-                        //TODO: For collection CA, all OTHER params must be IsParseable or IsChoicesEnabled
-                        var returnType = reflector.LoadSpecification<IObjectSpecImmutable> (member.ReturnType);
-                        if (!returnType.IsCollection) {
-                            //Don't allow collection-contributed actions that return collections
-                            Type elementType = p.ParameterType.GetGenericArguments()[0];
-                            type = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
-                            facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                    if (type.IsCollection) {
+                        if (type.IsQueryable) {
+                            var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
+                            if (!returnType.IsQueryable) {
+                                //Don't allow collection-contributed actions that return collections
+                                Type elementType = p.ParameterType.GetGenericArguments()[0];
+                                type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
+                                facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                            }
                         }
-                    }
-                    else {
+                    } else {
                         facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
                     }
                 }

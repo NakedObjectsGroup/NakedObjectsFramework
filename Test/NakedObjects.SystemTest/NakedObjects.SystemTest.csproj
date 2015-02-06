@@ -159,7 +159,6 @@
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
     <Compile Include="AbstractSystemTest.cs" />
     <Compile Include="Authorization\TestNamespaceAuthorization.cs" />
-    <Compile Include="ContributedActions\ContributedActions.cs" />
     <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
     <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
     <Compile Include="InterfaceAssociation\FixtureLinks.cs" />
@@ -173,6 +172,9 @@
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
+    <Compile Include="Menus\TestAccessingMenuActionsViaGetAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Menus\TestServiceMenus.cs" />
     <Compile Include="Menus\TestMainMenus.cs" />
     <Compile Include="Menus\TestObjectMenu.cs" />

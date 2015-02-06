@@ -83,21 +83,21 @@ namespace NakedObjects.Xat {
             return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager);
         }
 
-        public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject) {
-            throw new NotImplementedException();
+        public ITestAction CreateTestAction(IActionSpecImmutable actionSpecImm, ITestHasActions owningObject) {
+            IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
+            return CreateTestAction(actionSpec, owningObject);
         }
 
         public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
             ITypeSpecImmutable objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
 
-            if (objectIm is IObjectSpecImmutable) {
+            if (!(objectIm is IServiceSpecImmutable)) {
                 throw new Exception("Action is not on a known service");
             }
             var serviceSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
             INakedObject service = servicesManager.GetService(serviceSpec);
             ITestService testService = CreateTestService(service);
-            IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
-            return CreateTestAction(actionSpec, testService);
+            return CreateTestAction(actionSpecImm, testService);
         }
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
