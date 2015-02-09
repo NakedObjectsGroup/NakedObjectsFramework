@@ -455,25 +455,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // broken by service changes
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
         [TestMethod]
-        [Ignore] // broken by service changes
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
         [TestMethod]
-        [Ignore] // broken by service changes
         public override void InvokeContributedActionParmsValidateFail() {
             DoInvokeContributedActionParmsValidateFail();
         }
 
         [TestMethod]
-        [Ignore] // broken by service changes
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }
