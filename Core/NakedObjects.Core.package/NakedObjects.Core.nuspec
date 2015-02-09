@@ -14,7 +14,7 @@
     <dependencies>
       <dependency id="NakedObjects.ProgrammingModel" version="[6.0.0, 6.1)" />
       <dependency id="Common.Logging" version="[3.0, 4.0)" />
-      <dependency id="EntityFramework" version="[6.1.2, 7.0)" />
+      <dependency id="EntityFramework" version="[6.1.1, 7.0)" />
     </dependencies>
   </metadata>
 </package>
