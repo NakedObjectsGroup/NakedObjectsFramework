@@ -50,21 +50,23 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Order Quantity must be > 0", error.Text);
         }
 
-        public abstract void RemoteValidationParameter();
+        private void DoRemoteValidationParameter() {
+        
 
-        public void DoRemoteValidationParameter() {
-            Login();
-            br.TogglePopups(false);
-
+            // click find product by number and wait for product number input 
             var pn = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
 
+            // enter product number 
             pn.Clear();
             pn.SendKeys("LW-1000" + Keys.Tab);
 
+            // click ok and wait for best special offer button 
             var action = wait.ClickAndWait(".nof-ok", "#Product-BestSpecialOffer button");
 
+            // click best special offer and wait for quantity input 
             var qty = wait.ClickAndWait(action, "#Product-BestSpecialOffer-Quantity-Input");
 
+            // validate no 0 
             Assert.AreNotEqual("0", qty.GetAttribute("value"));
 
             // enter 0
@@ -77,28 +79,28 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Quantity must be > 0", error.Text);
         }
 
-        public abstract void RemoteValidationParameterPopup();
 
+        public abstract void RemoteValidationParameterNoPopup();
+
+        public void DoRemoteValidationParameterNoPopup() {
+            Login();
+            br.TogglePopups(false);
+
+            DoRemoteValidationParameter();
+        }
+
+        public abstract void RemoteValidationParameterPopup();
 
         public void DoRemoteValidationParameterPopup() {
             Login();
             br.TogglePopups(true);
-            FindProduct("LW-1000");
-            br.ClickAction("Product-BestSpecialOffer");
-            IWebElement qty = br.GetField("Product-BestSpecialOffer-Quantity");
-            qty.AssertInputValueNotEquals("0");
-            qty.TypeText("0", br);
-            qty.AppendText(Keys.Tab, br);
-            //br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // to move focus off field - tab doesn't seem to work on all browsers 
-            br.WaitForAjaxComplete();
-            IWebElement valMsg = br.FindElement(By.ClassName("field-validation-error"));
-            Assert.AreEqual("Quantity must be > 0", valMsg.Text);
+            DoRemoteValidationParameter();
         }
 
 
-        public abstract void ActionChoices();
+        public abstract void ActionChoicesNoPopup();
 
-        public void DoActionChoices() {
+        public void DoActionChoicesNoPopup() {
             Login();
             br.TogglePopups(false);
             FindOrder("SO63557");
@@ -201,9 +203,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Review already exists in Sales Reasons", valMsg.Text);
         }
 
-        public abstract void ActionCrossValidateFail();
+        public abstract void ActionCrossValidateFailNoPopup();
 
-        public void DoActionCrossValidateFail() {
+        public void DoActionCrossValidateFailNoPopup() {
             Login();
             br.TogglePopups(false);
             FindCustomerByAccountNumber("AW00000546");
@@ -322,9 +324,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Review already exists in Sales Reasons", valMsg.Text);
         }
 
-        public abstract void ActionMultipleChoicesEnum();
+        public abstract void ActionMultipleChoicesNoPopUpEnum();
 
-        public void DoActionMultipleChoicesEnum() {
+        public void DoActionMultipleChoicesNoPopupEnum() {
             Login();
             br.TogglePopups(false);
             FindOrder("SO72847");
@@ -368,9 +370,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
         }
 
-        public abstract void ActionMultipleChoicesDomainObject();
+        public abstract void ActionMultipleChoicesNoPopUpDomainObject();
 
-        public void DoActionMultipleChoicesDomainObject() {
+        public void DoActionMultipleChoicesNoPopupDomainObject() {
             Login();
             br.TogglePopups(false);
             FindOrder("SO72847");
@@ -505,7 +507,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         [TestMethod]
@@ -514,8 +516,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void RemoteValidationParameter() {
-            DoRemoteValidationParameter();
+        public override void RemoteValidationParameterNoPopup() {
+            DoRemoteValidationParameterNoPopup();
         }
 
         [TestMethod]
@@ -524,8 +526,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionChoices() {
-            DoActionChoices();
+        public override void ActionChoicesNoPopup() {
+            DoActionChoicesNoPopup();
         }
 
         [TestMethod]
@@ -544,8 +546,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionCrossValidateFail() {
-            DoActionCrossValidateFail();
+        public override void ActionCrossValidateFailNoPopup() {
+            DoActionCrossValidateFailNoPopup();
         }
 
         [TestMethod]
@@ -564,8 +566,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionMultipleChoicesEnum() {
-            DoActionMultipleChoicesEnum();
+        public override void ActionMultipleChoicesNoPopUpEnum() {
+            DoActionMultipleChoicesNoPopupEnum();
         }
 
         [TestMethod]
@@ -579,8 +581,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionMultipleChoicesDomainObject() {
-            DoActionMultipleChoicesDomainObject();
+        public override void ActionMultipleChoicesNoPopUpDomainObject() {
+            DoActionMultipleChoicesNoPopupDomainObject();
         }
 
         [TestMethod]
@@ -635,12 +637,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public virtual void InitializeTest() {
             br = new FirefoxDriver();
             br.Navigate().GoToUrl(url);
-            //br.Manage().Window.Maximize();
         }
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
 
@@ -650,8 +651,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void RemoteValidationParameter() {
-            DoRemoteValidationParameter();
+        public override void RemoteValidationParameterNoPopup() {
+            DoRemoteValidationParameterNoPopup();
         }
 
         [TestMethod]
@@ -660,8 +661,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod] 
-        public override void ActionChoices() {
-            DoActionChoices();
+        public override void ActionChoicesNoPopup() {
+            DoActionChoicesNoPopup();
         }
 
         [TestMethod]
@@ -680,8 +681,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionCrossValidateFail() {
-            DoActionCrossValidateFail();
+        public override void ActionCrossValidateFailNoPopup() {
+            DoActionCrossValidateFailNoPopup();
         }
 
         [TestMethod]
@@ -702,8 +703,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
 
         [TestMethod]
-        public override void ActionMultipleChoicesEnum() {
-            DoActionMultipleChoicesEnum();
+        public override void ActionMultipleChoicesNoPopUpEnum() {
+            DoActionMultipleChoicesNoPopupEnum();
         }
 
         [TestMethod]
@@ -727,8 +728,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionMultipleChoicesDomainObject() {
-            DoActionMultipleChoicesDomainObject();
+        public override void ActionMultipleChoicesNoPopUpDomainObject() {
+            DoActionMultipleChoicesNoPopupDomainObject();
         }
 
         [TestMethod]
@@ -778,7 +779,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public override void CleanUpTest() {
             base.CleanUpTest();
         }
 
@@ -788,8 +789,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void RemoteValidationParameter() {
-            DoRemoteValidationParameter();
+        public override void RemoteValidationParameterNoPopup() {
+            DoRemoteValidationParameterNoPopup();
         }
 
         [TestMethod]
@@ -798,8 +799,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionChoices() {
-            DoActionChoices();
+        public override void ActionChoicesNoPopup() {
+            DoActionChoicesNoPopup();
         }
 
         [TestMethod]
@@ -819,8 +820,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionCrossValidateFail() {
-            DoActionCrossValidateFail();
+        public override void ActionCrossValidateFailNoPopup() {
+            DoActionCrossValidateFailNoPopup();
         }
 
         [TestMethod]
@@ -841,8 +842,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
 
         [TestMethod]
-        public override void ActionMultipleChoicesEnum() {
-            DoActionMultipleChoicesEnum();
+        public override void ActionMultipleChoicesNoPopUpEnum() {
+            DoActionMultipleChoicesNoPopupEnum();
         }
 
         [TestMethod]
@@ -866,8 +867,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         [TestMethod]
-        public override void ActionMultipleChoicesDomainObject() {
-            DoActionMultipleChoicesDomainObject();
+        public override void ActionMultipleChoicesNoPopUpDomainObject() {
+            DoActionMultipleChoicesNoPopupDomainObject();
         }
 
         [TestMethod]
