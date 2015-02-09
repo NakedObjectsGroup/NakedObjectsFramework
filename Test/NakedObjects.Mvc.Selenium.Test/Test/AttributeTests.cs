@@ -85,7 +85,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
     public class AttributeTestsIE : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-           // FilePath("IEDriverServer.exe");
+            FilePath("IEDriverServer.exe");
             AWWebTest.InitialiseClass(context);
         }
 
@@ -156,7 +156,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
     public class AttributeTestsChrome : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            //FilePath("chromedriver.exe");
+            FilePath("chromedriver.exe");
             AWWebTest.InitialiseClass(context);
         }
 

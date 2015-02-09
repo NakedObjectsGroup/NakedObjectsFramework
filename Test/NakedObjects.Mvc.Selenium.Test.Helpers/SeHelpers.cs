@@ -17,12 +17,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         // new helpers 
         public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector) {
             IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
+            return wait.ClickAndWait(action, fieldSelector);
+        }
+
+        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, IWebElement action, string fieldSelector) {
             action.Click();
             IWebElement field = null;
             wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) != null);
             Assert.IsNotNull(field);
             return field;
         }
+
 
         public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
             if (webDriver is InternetExplorerDriver) {

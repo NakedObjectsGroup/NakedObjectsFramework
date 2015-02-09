@@ -6,12 +6,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Web.UnitTests.Selenium;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AjaxTests : AWWebTest {
         public new static void InitialiseClass(TestContext context) {
             AWWebTest.InitialiseClass(context);
@@ -21,18 +22,32 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         public void DoRemoteValidationProperty() {
             Login();
-            br.ClickAction("WorkOrderRepository-RandomWorkOrder");
-            br.AssertContainsObjectView();
-            br.ClickEdit();
-            IWebElement qty = br.GetField("WorkOrder-OrderQty");
-            qty.AssertInputValueNotEquals("0");
-            qty.TypeText("0", br);
-            qty.AppendText(Keys.Tab, br);
-            br.GetField("WorkOrder-ScrappedQty").TypeText("0", br);
-            br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // to move focus off field - tab doesn't seem to work on all browsers 
-            br.WaitForAjaxComplete();
-            IWebElement valMsg = br.FindElement(By.ClassName("field-validation-error"));
-            Assert.AreEqual("Order Quantity must be > 0", valMsg.Text);
+
+            // click random work order and wait for object view 
+            var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
+
+            // click edit and wait for order qrt input 
+            var qty = wait.ClickAndWait(edit, "#WorkOrder-OrderQty-Input");
+
+            // validate not 0
+            Assert.AreNotEqual("0", qty.GetAttribute("value"));
+
+            // enter 0
+            qty.Clear();
+            qty.SendKeys("0" + Keys.Tab);
+
+            // find scrapped qty 
+            var scrappedQty = br.FindElement(By.CssSelector("#WorkOrder-ScrappedQty-Input"));
+
+            // enter 0 
+            scrappedQty.Clear();
+            scrappedQty.SendKeys("0" + Keys.Tab);
+
+            // wait for error message 
+            var error = wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrder-OrderQty  span.field-validation-error")));
+  
+            // validate error message 
+            Assert.AreEqual("Order Quantity must be > 0", error.Text);
         }
 
         public abstract void RemoteValidationParameter();
@@ -40,16 +55,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void DoRemoteValidationParameter() {
             Login();
             br.TogglePopups(false);
-            FindProduct("LW-1000");
-            br.ClickAction("Product-BestSpecialOffer");
-            IWebElement qty = br.GetField("Product-BestSpecialOffer-Quantity");
-            qty.AssertInputValueNotEquals("0");
-            qty.TypeText("0", br);
-            qty.AppendText(Keys.Tab, br);
-            br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // to move focus off field - tab doesn't seem to work on all browsers 
-            br.WaitForAjaxComplete();
-            IWebElement valMsg = br.FindElement(By.ClassName("field-validation-error"));
-            Assert.AreEqual("Quantity must be > 0", valMsg.Text);
+
+            var pn = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
+
+            pn.Clear();
+            pn.SendKeys("LW-1000" + Keys.Tab);
+
+            var action = wait.ClickAndWait(".nof-ok", "#Product-BestSpecialOffer button");
+
+            var qty = wait.ClickAndWait(action, "#Product-BestSpecialOffer-Quantity-Input");
+
+            Assert.AreNotEqual("0", qty.GetAttribute("value"));
+
+            // enter 0
+            qty.Clear();
+            qty.SendKeys("0" + Keys.Tab);
+
+            // wait for error message 
+            var error = wait.Until(wd => wd.FindElement(By.CssSelector("#Product-BestSpecialOffer-Quantity  span.field-validation-error")));
+
+            Assert.AreEqual("Quantity must be > 0", error.Text);
         }
 
         public abstract void RemoteValidationParameterPopup();
