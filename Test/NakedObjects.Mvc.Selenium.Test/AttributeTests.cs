@@ -11,17 +11,31 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class AttributeTests : AWWebTest {
         public abstract void PasswordIsObscuredInAnEntryField();
 
+
+        private IWebElement ClickAndWait(string actionId, string fieldId) {
+            IWebElement action = br.FindElement(By.Id(actionId));
+
+            action.Click();
+
+            IWebElement field = null;
+            wait.Until(wd => (field = wd.FindElement(By.Id(fieldId))) != null);
+
+            Assert.IsNotNull(field);
+
+            return field; 
+        }
+
+
         public void DoPasswordIsObscuredInAnEntryField() {
             Login();
-            br.ClickAction("CustomerRepository-CreateNewIndividualCustomer");
 
-
-            IWebElement pw = br.GetField("CustomerRepository-CreateNewIndividualCustomer-InitialPassword");
-            IWebElement field = pw.FindElement(By.TagName("input"));
-            Assert.AreEqual("password", field.GetAttribute("type"));
+            var field = ClickAndWait("CustomerRepository-CreateNewIndividualCustomer", "CustomerRepository-CreateNewIndividualCustomer-InitialPassword");
+          
+            IWebElement ip = field.FindElement(By.TagName("input"));
+            Assert.AreEqual("password", ip.GetAttribute("type"));
 
             //Ordinary field
-            IWebElement fn = br.GetField("CustomerRepository-CreateNewIndividualCustomer-FirstName");
+            IWebElement fn = br.FindElement(By.Id("CustomerRepository-CreateNewIndividualCustomer-FirstName"));
             field = fn.FindElement(By.TagName("input"));
             Assert.AreEqual("text", field.GetAttribute("type"));
         }
@@ -32,7 +46,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void DoMultiLineInViewMode() {
             Login();
             FindCustomerByAccountNumber("AW00000206");
-            IWebElement demog = br.GetField("Store-FormattedDemographics").FindElement(By.CssSelector("div.multiline"));
+            IWebElement demog = null;
+
+            wait.Until(wd => (demog = wd.GetField("Store-FormattedDemographics").FindElement(By.CssSelector("div.multiline"))) != null);
 
             Assert.AreEqual("AnnualSales: 800000 AnnualRevenue: 80000 BankName: Primary International BusinessType: BM YearOpened: 1994 Specialty: Road SquareFeet: 20000 Brands: AW Internet: DSL NumberEmployees: 18", demog.Text);
         }
@@ -71,11 +87,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
-
+ 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public override void CleanUpTest() {
             base.CleanUpTest();
         }
 
@@ -95,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class AttributeTestsFirefox : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -105,14 +122,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new FirefoxDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public override void CleanUpTest() {
             base.CleanUpTest();
         }
-
 
         [TestMethod]
         public override void PasswordIsObscuredInAnEntryField() {
@@ -130,22 +147,23 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class AttributeTestsChrome : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            FilePath("chromedriver.exe");
+            FilePath("chromedriver.exe");      
             AWWebTest.InitialiseClass(context);
         }
 
         [TestInitialize]
         public virtual void InitializeTest() {
             br = InitChromeDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public override void CleanUpTest() {
             base.CleanUpTest();
         }
 

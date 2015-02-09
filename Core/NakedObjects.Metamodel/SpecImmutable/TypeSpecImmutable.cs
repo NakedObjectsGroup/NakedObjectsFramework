@@ -143,6 +143,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get {
                 var facet = GetFacet<ICollectionFacet>();
                 return facet != null && facet.IsQueryable; }
+            }
         }
 
         public virtual bool IsParseable {

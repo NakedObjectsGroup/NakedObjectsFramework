@@ -11,8 +11,48 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.DatabaseHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
+
+    public class SafeWebDriverWait : IWait<IWebDriver> {
+        private readonly WebDriverWait wait;
+
+        public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
+            wait = new WebDriverWait(driver, timeout);
+        }
+
+        public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
+            wait.IgnoreExceptionTypes(exceptionTypes);
+        }
+
+        public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
+            return wait.Until(d => {
+                try {
+                    return condition(d);
+                }
+                catch (NoSuchElementException) { }
+                return default(TResult);
+            });
+        }
+
+        public TimeSpan Timeout {
+            get { return wait.Timeout; }
+            set { wait.Timeout = value; }
+        }
+
+        public TimeSpan PollingInterval {
+            get { return wait.PollingInterval; }
+            set { wait.PollingInterval = value; }
+        }
+
+        public string Message {
+            get { return wait.Message; }
+            set { wait.Message = value; }
+        }
+    }
+
+
     [TestClass]
     public abstract class AWWebTest {
         #region overhead
@@ -31,6 +71,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
         protected IWebDriver br;
+        protected SafeWebDriverWait wait;
+        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 30);
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
