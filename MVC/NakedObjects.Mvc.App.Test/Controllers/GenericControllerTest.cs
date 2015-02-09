@@ -855,7 +855,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void AAInitialInvokeContributedActionOnEmptyCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.SalesOrderHeader;RecentOrders;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False;Object;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False",
@@ -1388,7 +1387,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void InitialInvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.SalesOrderHeader;RecentOrders;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False;Object;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False",
@@ -1411,7 +1409,6 @@ namespace MvcTestApp.Tests.Controllers {
         // run first
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void InitialInvokeCovariantContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.Store;FindStoreByName;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.CustomerRepository;1;System.Int32;0;False;;0;False;Value;System.String;cycling",
@@ -1579,7 +1576,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void InvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1597,7 +1593,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1619,7 +1614,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "CommentAsUsersUnhappy",
