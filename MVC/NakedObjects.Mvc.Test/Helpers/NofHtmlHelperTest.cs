@@ -1388,7 +1388,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void ObjectForQueryable() {
             IQueryable<Claim> claims = NakedObjectsFramework.Persistor.Instances<Claim>().Take(2);
 
@@ -1611,7 +1610,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForEmptyCollection() {
             var collection = new object[] {}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
@@ -1624,7 +1622,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForEmptyCollectionTableView() {
             var collection = new object[] {}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
@@ -1642,7 +1639,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForOneElementCollection() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1656,7 +1652,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForOneElementCollectionTableView() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1676,7 +1671,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForOneElementCollectionWithMultiline() {
             ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
@@ -1693,7 +1687,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForOneElementCollectionWithMultilineTableView() {
             ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
@@ -1714,7 +1707,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollection() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1739,7 +1731,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollectionPage1() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1764,7 +1755,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollectionPage1TableView() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1793,7 +1783,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollectionPage2() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1819,7 +1808,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollectionPage2TableView() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1847,7 +1835,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableListViewForPagedCollectionTableView() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1892,7 +1879,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForEmptyCollection() {
             var collection = new object[] {}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
@@ -1905,7 +1891,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForOneElementCollection() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1921,7 +1906,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForOneElementCollectionWithMultiline() {
             ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
@@ -1939,7 +1923,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForPagedCollection() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1964,7 +1947,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForPagedCollectionPage1() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
@@ -1990,7 +1972,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         [Test]
-        [Ignore] // probably broken by service changes 
         public void QueryableViewForPagedCollectionPage2() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
