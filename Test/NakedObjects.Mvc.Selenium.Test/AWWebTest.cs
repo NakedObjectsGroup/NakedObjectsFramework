@@ -15,42 +15,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
-    public class SafeWebDriverWait : IWait<IWebDriver> {
-        private readonly WebDriverWait wait;
-
-        public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
-            wait = new WebDriverWait(driver, timeout);
-        }
-
-        public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
-            wait.IgnoreExceptionTypes(exceptionTypes);
-        }
-
-        public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
-            return wait.Until(d => {
-                try {
-                    return condition(d);
-                }
-                catch (NoSuchElementException) { }
-                return default(TResult);
-            });
-        }
-
-        public TimeSpan Timeout {
-            get { return wait.Timeout; }
-            set { wait.Timeout = value; }
-        }
-
-        public TimeSpan PollingInterval {
-            get { return wait.PollingInterval; }
-            set { wait.PollingInterval = value; }
-        }
-
-        public string Message {
-            get { return wait.Message; }
-            set { wait.Message = value; }
-        }
-    }
+  
 
 
     [TestClass]
@@ -72,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
-        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 30);
+        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 10);
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
@@ -123,14 +88,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         protected IWebDriver InitChromeDriver() {
-            const string cacheDir = @"C:\SeleniumTestFolder";
+            //const string cacheDir = @"C:\SeleniumTestFolder";
 
             var crOptions = new ChromeOptions();
-            crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
+
+            crOptions.AddArgument(@"--test-type");
+            //crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
             var cd = new ChromeDriver(crOptions);
 
             // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             return cd;
         }
 
