@@ -360,7 +360,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #region FinderAction
 
-        [TestMethod]
+        [TestMethod, Ignore] //RP:  Pending implementation of check for all params being parseable or choices enabled
         public virtual void ActionsIncludedInFinderMenu() {
 
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
@@ -368,11 +368,10 @@ namespace NakedObjects.SystemTest.Attributes {
             INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var finderActions = ((IObjectSpec) adapter.Spec).GetFinderActions();
 
-            Assert.AreEqual(2, finderActions.Count());
-            var item0 = finderActions[0];
-            var item1 = finderActions[1];
-            Assert.AreEqual("Finder Action1", item0.Name);
-            Assert.AreEqual("Finder Action2", item1.Name);
+            Assert.AreEqual(3, finderActions.Count());
+            Assert.AreEqual("Finder Action1", finderActions[0].Name);
+            Assert.AreEqual("Finder Action2", finderActions[1].Name);
+            Assert.AreEqual("Finder Action3", finderActions[2].Name);
         }
 
         #endregion
@@ -1729,19 +1728,42 @@ namespace SystemTest.Attributes {
         }
 
         [FinderAction()]
-        public ICollection<FinderAction1> FinderAction2() {
+        public ICollection<FinderAction1> FinderAction2(string s, int i) {
             return null;
         }
 
+       [FinderAction()]
+        public FinderAction1 FinderAction3(string s, FinderAction1 obj) {
+            return null;
+        }
+
+        public IList<FinderAction1> Choices1FinderAction3()
+{
+	return new List<FinderAction1> {};
+}
+
+
+        //No annotation
         public FinderAction1 NotFinderAction1() {
             return null;
         }
 
+        //No annotation
         public ICollection<FinderAction1> NotFinderAction2() {
             return null;
         }
 
-        public FinderAction1 NewObject1() {
+        [FinderAction()] //Non-parseable param without choices
+        public FinderAction1 NotFinderAction3(string s, FinderAction1 obj) {
+            return null;
+        }
+
+        [FinderAction()] //Returns string
+        public string NotFinderAction4() {
+            return null;
+        }
+
+        internal FinderAction1 NewObject1() {
             return new FinderAction1();
         }
     }

@@ -40,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Type pType = property.PropertyType;
             if (( pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
-                Log.Warn("Ignoring Optionally annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
+                Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return;
             }
             if (property.GetGetMethod() != null && !property.PropertyType.IsPrimitive) {
@@ -53,7 +53,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             Type pType = parameter.ParameterType;
             if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType))) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
-                    Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
+                    Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
                 }
                 return;
             }

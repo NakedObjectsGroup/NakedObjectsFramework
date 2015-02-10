@@ -17,6 +17,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using System.Collections.Generic;
+using Common.Logging;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
@@ -24,6 +25,9 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionAnnotationFacetFactory));
+
         public ContributedActionAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
@@ -35,20 +39,27 @@ namespace NakedObjects.Reflect.FacetFactory {
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification<IObjectSpecImmutable> (p.ParameterType);
-                if (type != null && !type.IsParseable) {
-                    //TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
-                    if (type.IsCollection) {
-                        if (type.IsQueryable) {
-                            var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
-                            if (!returnType.IsQueryable) {
-                                //Don't allow collection-contributed actions that return collections
-                                Type elementType = p.ParameterType.GetGenericArguments()[0];
-                                type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
-                                facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
-                            }
-                        }
+                if (type != null ) {//TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
+                    if (type.IsParseable) {
+                        Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
                     } else {
-                        facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
+                        if (type.IsCollection) {
+                            if (!type.IsQueryable) {
+                                Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
+                            } else {
+                                var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
+                                if (returnType.IsQueryable) {
+                                    Log.WarnFormat("ContributedAction attribute added to an action that returns an IQueryable: {0}", member.Name);
+
+                                } else {
+                                    Type elementType = p.ParameterType.GetGenericArguments()[0];
+                                    type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
+                                    facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                                }
+                            }
+                        } else {
+                            facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
+                        }
                     }
                 }
             }

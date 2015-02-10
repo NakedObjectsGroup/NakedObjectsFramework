@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture", "Core\NakedObjects.Architecture\NakedObjects.Architecture.csproj", "{BF6D9655-B873-4980-ACE7-A122EA45F045}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core", "Core\NakedObjects.Core\NakedObjects.Core.csproj", "{3F1E438C-020C-4751-A65A-63C2990D8278}"
@@ -55,7 +53,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.SystemTest", "Test\NakedObjects.SystemTest\NakedObjects.SystemTest.csproj", "{A3921997-B0F2-4DA2-8433-E82581ACFA07}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = development.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -195,11 +198,16 @@ Global
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|x86.ActiveCfg = Debug|x86
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Debug|x86.Build.0 = Debug|x86
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|x86.ActiveCfg = Release|x86
+		{A3921997-B0F2-4DA2-8433-E82581ACFA07}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = development.vsmdi
 	EndGlobalSection
 EndGlobal

@@ -201,6 +201,27 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
+            //TODO: Add checks for invalid Finder actions here using (approx):
+            //var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
+            ////FinderActions must return a reference object or collection of them
+            //if (returnType.IsParseable) {
+            //    Log.WarnFormat("FinderAction attribute used on action with inappropriate return type: {0} ", member.Name);
+            //    return;
+            //}
+            ////Check that all params are either parseable or choices enabled
+            //var owningSpec = reflector.LoadSpecification<ITypeSpecImmutable>(member.DeclaringType);
+            //if (!(owningSpec is IServiceSpecImmutable)) {
+            //    Log.WarnFormat("FinderAction attribute used on a non-service object type {0} ", member.Name);
+            //    return;
+            //}
+            //var actionSpec = owningSpec.ObjectActions.Single(a => a.Description == member.Name);
+            //foreach (var p in actionSpec.Parameters) {
+            //    bool parseable = p.Specification.IsParseable;
+            //    bool choicesEnabled = p.IsChoicesEnabled || p.IsMultipleChoicesEnabled;
+            //    if (!(parseable || choicesEnabled)) {
+            //        Log.WarnFormat("FinderAction attribute used on action with inappropriate parameter types: {0} ", member.Name);
+            //    }
+            //} 
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
