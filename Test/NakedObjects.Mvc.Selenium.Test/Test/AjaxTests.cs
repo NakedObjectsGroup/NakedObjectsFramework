@@ -7,6 +7,7 @@
 
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Web.UnitTests.Selenium;
 using OpenQA.Selenium;
@@ -301,6 +302,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             to.Clear();
             to.SendKeys(toDate + Keys.Tab);
+
+            Thread.Sleep(1000);
         }
 
         public void DoActionCrossValidateFailNoPopup() {
@@ -316,33 +319,38 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("1/6/2013", "30/6/2013");
 
-            var apply = wait.Until(wd => wd.FindElement(By.CssSelector("button[title=Apply]")));
+            var apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
             apply.Click();
 
-            var errors = wait.Until(wd => wd.FindElements(By.ClassName("validation-summary-errors")));
+            var errors = wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")));
 
             Assert.AreEqual(0, errors.Count, "No errors expected");
 
             SetDates("28/6/2013", "2/6/2013");
 
-            apply = wait.Until(wd => wd.FindElement(By.CssSelector("button[title=Apply]")));
+
+            apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
             apply.Click();
 
-            var error = wait.Until(wd => wd.FindElement(By.ClassName("validation-summary-errors")));
+            wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
+
+            var error = wait.Until(wd => wd.FindElement(By.CssSelector(".validation-summary-errors")));
             const string expected = "Action was unsuccessful. Please correct the errors and try again.\r\n'From Date' must be before 'To Date'";
 
             Assert.AreEqual(expected, error.Text);
 
             SetDates("1/6/2013", "30/6/2013");
 
-            wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")) != null);
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
 
-            wait.ClickAndWait(".nof-ok", ".validation-summary-errors");
+            wait.ClickAndWait(ok, ".validation-summary-errors");
 
             br.AssertPageTitleEquals("No Sales Orders");
             Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.GetTopObject().Text);
 
-            errors = br.FindElements(By.ClassName("validation-summary-errors"));
+            wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count == 0);
+
+            errors = br.FindElements(By.CssSelector(".validation-summary-errors"));
             Assert.AreEqual(0, errors.Count, "No errors expected");
         }
 
@@ -393,7 +401,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             reason.SelectListBoxItems(br, "Review");
 
-            var ok = wait.Until(wd => wd.FindElement(By.Id(".nof-ok")));
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
             var valMsg = wait.ClickAndWait(ok, ".field-validation-error");
 
             Assert.AreEqual("Review already exists in Sales Reasons", valMsg.Text);
@@ -429,8 +437,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             br.TogglePopups(true);
 
-            var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine-Input");
-            var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass-Input"));
+            var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
+            var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
     
             productLine.AssertIsEmpty();
             productClass.AssertIsEmpty();
@@ -441,8 +449,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             productLine.SelectListBoxItems(br, "M");
             productClass.SelectListBoxItems(br, "L");
 
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
 
+            ok.Click();
+     
             wait.Until(wd => wd.Title == "20 Products");
            
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
@@ -488,14 +498,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // click ok and wait for best special offer button 
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
 
-            var days = wait.ClickAndWait(edit, "Product-DaysToManufacture-Input");
+            var days = wait.ClickAndWait(edit, "#Product-DaysToManufacture-Input");
 
-            days.AssertInputValueEquals("0");
+            Assert.AreEqual("0", days.GetAttribute("value"));
 
             days.Clear();
             days.SendKeys("100" + Keys.Tab);
 
-            var valMsg = wait.Until(wd => days.FindElement(By.ClassName("field-validation-error")));
+            var valMsg = wait.Until(wd => wd.FindElement(By.CssSelector("#Product-DaysToManufacture .field-validation-error")));
 
             Assert.AreEqual("Value is outside the range 1 to 90", valMsg.Text);
         }
@@ -524,6 +534,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoGoingBackToDialogPreservesEnteredValues() {
             Login();
+
+            br.TogglePopups(false);
+
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
             f.Clear();

@@ -112,6 +112,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         [TestMethod]
         public override void ActionMultipleChoicesNoPopUpDomainObject() {
             DoActionMultipleChoicesNoPopupDomainObject();
+
         }
 
         [TestMethod]
