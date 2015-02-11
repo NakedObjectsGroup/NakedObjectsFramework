@@ -1,14 +1,17 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Chrome;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class ObjectViewAndActionTests : AWWebTest {
         public abstract void ViewPersistedObject();
 
@@ -103,7 +106,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.AssertPageTitleEquals("AW00000546");
         }
 
-
         public abstract void InvokeActionNoParmsNoReturn();
 
         public void DoInvokeActionNoParmsNoReturn() {
@@ -138,11 +140,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // workaround for not picking up ok click 
             br.ClickOk();
 
-
             br.AssertContainsObjectView();
             br.AssertPageTitleEquals("Volume Discount 11 to 14");
         }
-
 
         public abstract void ShowActionParmsReturnPopup();
 
@@ -152,7 +152,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             FindProduct("BK-M68S-42");
             br.ClickAction("Product-BestSpecialOffer").GetField("Product-BestSpecialOffer-Quantity").TypeText("12", br);
             br.ClickApply();
-
 
             br.AssertPageTitleEquals("Volume Discount 11 to 14");
             br.AssertElementExists(By.CssSelector(".nof-apply")); // dialog still up 
@@ -296,7 +295,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
         }
 
-
         public abstract void InvokeContributedActionNoParmsReturnTransient();
 
         public void DoInvokeContributedActionNoParmsReturnTransient() {
@@ -364,7 +362,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             br.AssertPageTitleEquals("4 Sales Orders");
         }
-
 
         public abstract void CancelActionDialog();
 
@@ -440,7 +437,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
         }
 
-
         public abstract void RecentlyViewedOnActionDialog();
 
         public void DoRecentlyViewedOnActionDialog() {
@@ -498,7 +494,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.WaitForAjaxComplete();
             br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
         }
-
 
         public abstract void ActionFindOnActionDialog();
 
@@ -657,7 +652,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
         }
 
-
         public abstract void NewObjectOnActionDialogFailInvalid();
 
         public void DoNewObjectOnActionDialogFailInvalid() {
@@ -702,646 +696,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.WaitForAjaxComplete();
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
             Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
-        }
-    }
-
-    [TestClass, Ignore]
-    public class ObjectViewAndActionTestsIE : ObjectViewAndActionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("IEDriverServer.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new InternetExplorerDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void ViewPersistedObject() {
-            DoViewPersistedObject();
-        }
-
-        [TestMethod]
-        public override void ViewTableHeader() {
-            DoViewTableHeader();
-        }
-
-        [TestMethod]
-        public override void ViewViewModel() {
-            DoViewViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionNoParmsNoReturn() {
-            DoInvokeActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsReturn() {
-            DoInvokeActionParmsReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModel() {
-            DoInvokeActionOnViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelReturnCollection() {
-            DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatory() {
-            DoInvokeActionParmsMandatory();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalid() {
-            DoInvokeActionParmsInvalid();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnTransient() {
-            DoInvokeContributedActionNoParmsReturnTransient();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnPersistent() {
-            DoInvokeContributedActionNoParmsReturnPersistent();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsReturn() {
-            DoInvokeContributedActionParmsReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialog() {
-            DoCancelActionDialog();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void EmptyCollectionDoesNotShowListOrTableButtons() {
-            DoEmptyCollectionDoesNotShowListOrTableButtons();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialog() {
-            DoRemoveFromActionDialog();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialog() {
-            DoRecentlyViewedOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelect() {
-            DoRecentlyViewedOnActionDialogWithSelect();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialog() {
-            DoActionFindOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialog() {
-            DoNewObjectOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialog() {
-            DoAutoCompleteOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatory() {
-            DoNewObjectOnActionDialogFailMandatory();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalid() {
-            DoNewObjectOnActionDialogFailInvalid();
-        }
-
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
-        }
-    }
-
-    [TestClass]
-    public class ObjectViewAndActionTestsFirefox : ObjectViewAndActionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new FirefoxDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-
-        [TestMethod] 
-        public override void ViewPersistedObject() {
-            DoViewPersistedObject();
-        }
-
-        [TestMethod]
-        public override void ViewTableHeader() {
-            DoViewTableHeader();
-        }
-
-        [TestMethod]
-        public override void ViewViewModel() {
-            DoViewViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionNoParmsNoReturn() {
-            DoInvokeActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsReturn() {
-            DoInvokeActionParmsReturn();
-        }
-
-        [TestMethod] // intermittent failing on ff only
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        [TestMethod] // intermittent failing on ff only
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModel() {
-            DoInvokeActionOnViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelReturnCollection() {
-            DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatory() {
-            DoInvokeActionParmsMandatory();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalid() {
-            DoInvokeActionParmsInvalid();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
-        }
-
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnTransient() {
-            DoInvokeContributedActionNoParmsReturnTransient();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnPersistent() {
-            DoInvokeContributedActionNoParmsReturnPersistent();
-        }
-
-        [TestMethod] //This is repeatedly failing on server, even though it runs fine on RP's machine
-        public override void InvokeContributedActionParmsReturn() {
-            DoInvokeContributedActionParmsReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialog() {
-            DoCancelActionDialog();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void EmptyCollectionDoesNotShowListOrTableButtons() {
-            DoEmptyCollectionDoesNotShowListOrTableButtons();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialog() {
-            DoRemoveFromActionDialog();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialog() {
-            DoRecentlyViewedOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelect() {
-            DoRecentlyViewedOnActionDialogWithSelect();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialog() {
-            DoActionFindOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialog() {
-            DoNewObjectOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialog() {
-            DoAutoCompleteOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatory() {
-            DoNewObjectOnActionDialogFailMandatory();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalid() {
-            DoNewObjectOnActionDialogFailInvalid();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
-        }
-    }
-
-    [TestClass]
-    public class ObjectViewAndActionTestsChrome : ObjectViewAndActionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("chromedriver.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = InitChromeDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod] 
-        [Ignore] // fails randomly on server 
-        public override void ViewPersistedObject() {
-            DoViewPersistedObject();
-        }
-
-        [TestMethod]
-        public override void ViewTableHeader() {
-            DoViewTableHeader();
-        }
-
-        [TestMethod]
-        public override void ViewViewModel() {
-            DoViewViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionNoParmsNoReturn() {
-            DoInvokeActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsReturn() {
-            DoInvokeActionParmsReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModel() {
-            DoInvokeActionOnViewModel();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
-        [TestMethod, Ignore]
-        public override void InvokeActionOnViewModelReturnCollection() {
-            DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        [TestMethod, Ignore]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatory() {
-            DoInvokeActionParmsMandatory();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalid() {
-            DoInvokeActionParmsInvalid();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        [TestMethod]
-        [Ignore] // still failing  on chrome
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnTransient() {
-            DoInvokeContributedActionNoParmsReturnTransient();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsReturnPersistent() {
-            DoInvokeContributedActionNoParmsReturnPersistent();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsReturn() {
-            DoInvokeContributedActionParmsReturn();
-        }
-
-        [TestMethod]
-        [Ignore] // failing again on chrome
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialog() {
-            DoCancelActionDialog();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void EmptyCollectionDoesNotShowListOrTableButtons() {
-            DoEmptyCollectionDoesNotShowListOrTableButtons();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialog() {
-            DoRemoveFromActionDialog();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialog() {
-            DoRecentlyViewedOnActionDialog();
-        }
-
-        [TestMethod]
-        [Ignore] // fails randomly on server 
-        public override void RecentlyViewedOnActionDialogWithSelect() {
-            DoRecentlyViewedOnActionDialogWithSelect();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialog() {
-            DoActionFindOnActionDialog();
-        }
-
-        [TestMethod, Ignore]
-        public override void NewObjectOnActionDialog() {
-            DoNewObjectOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialog() {
-            DoAutoCompleteOnActionDialog();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatory() {
-            DoNewObjectOnActionDialogFailMandatory();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalid() {
-            DoNewObjectOnActionDialogFailInvalid();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        [Ignore] // fails randomly on server 
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        [TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
         }
     }
 }

@@ -7,8 +7,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedObjects.Mvc.Selenium.Test {
-    [TestClass, Ignore] // temp ignore failing in chrome
+namespace NakedObjects.Mvc.Selenium.Test.Chrome {
+    //[TestClass] 
     public class AjaxTestsChrome : AjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -27,108 +27,108 @@ namespace NakedObjects.Mvc.Selenium.Test {
             base.CleanUpTest();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void RemoteValidationProperty() {
             DoRemoteValidationProperty();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void RemoteValidationParameterNoPopup() {
             DoRemoteValidationParameterNoPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void RemoteValidationParameterPopup() {
             DoRemoteValidationParameterPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionChoicesNoPopup() {
             DoActionChoicesNoPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionChoicesPopup() {
             DoActionChoicesPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
 
-        [TestMethod]
+        //[TestMethod]
         // cannot select options in multiple choive boxes with chrome driver 
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionCrossValidateFailNoPopup() {
             DoActionCrossValidateFailNoPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionCrossValidateFailPopup() {
             DoActionCrossValidateFailPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopup() {
             DoActionMultipleChoicesPopup();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopupDefaults() {
             DoActionMultipleChoicesPopupDefaults();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesNoPopUpEnum() {
             DoActionMultipleChoicesNoPopupEnum();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopupEnum() {
             DoActionMultipleChoicesPopupEnum();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopupConditionalEnum() {
             DoActionMultipleChoicesPopupConditionalEnum();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopupValidateFail() {
             DoActionMultipleChoicesPopupValidateFail();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesNoPopUpDomainObject() {
             DoActionMultipleChoicesNoPopupDomainObject();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionMultipleChoicesPopupDomainObject() {
             DoActionMultipleChoicesPopupDomainObject();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void CanGoBackToDialog() {
             DoCanGoBackToDialog();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void GoingBackToDialogPreservesEnteredValues() {
             DoGoingBackToDialogPreservesEnteredValues();
         }

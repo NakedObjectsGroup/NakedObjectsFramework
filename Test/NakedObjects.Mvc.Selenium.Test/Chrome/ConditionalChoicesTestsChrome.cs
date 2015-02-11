@@ -6,42 +6,30 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Mvc.Selenium.Test.Helper;
-using OpenQA.Selenium.Firefox;
 
-namespace NakedObjects.Mvc.Selenium.Test.Firefox {
-    [TestClass]
-    public class AttributeTestsFirefox : AttributeTests {
+namespace NakedObjects.Mvc.Selenium.Test.Chrome {
+    //[TestClass]
+    public class ConditionalChoicesTestsChrome : ConditionalChoicesTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
+            FilePath("chromedriver.exe");
             AWWebTest.InitialiseClass(context);
         }
 
         [TestInitialize]
         public virtual void InitializeTest() {
-            br = new FirefoxDriver();
-            wait = new SafeWebDriverWait(br, DefaultTimeOut);
+            br = InitChromeDriver();
             br.Navigate().GoToUrl(url);
         }
 
         [TestCleanup]
-        public override void CleanUpTest() {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        [TestMethod]
-        public override void PasswordIsObscuredInAnEntryField() {
-            DoPasswordIsObscuredInAnEntryField();
-        }
-
-        [TestMethod]
-        public override void MultiLineInViewMode() {
-            DoMultiLineInViewMode();
-        }
-
-        [TestMethod]
-        public override void MultiLineInEditMode() {
-            DoMultiLineInEditMode();
+        //[TestMethod]
+        public override void TestWithoutRelyingOnAjax() {
+            DoTestWithoutRelyingOnAjax();
         }
     }
 }

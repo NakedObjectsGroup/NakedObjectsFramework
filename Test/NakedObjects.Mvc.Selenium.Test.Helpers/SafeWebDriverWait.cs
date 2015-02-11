@@ -9,13 +9,13 @@ using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public class SafeWebDriverWait : IWait<IWebDriver> {
         private readonly WebDriverWait wait;
 
         public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
             wait = new WebDriverWait(driver, timeout);
-            Driver = driver; 
+            Driver = driver;
         }
 
         public IWebDriver Driver { get; private set; }

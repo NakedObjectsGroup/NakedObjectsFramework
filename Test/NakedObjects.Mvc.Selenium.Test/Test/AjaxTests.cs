@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Web.UnitTests.Selenium;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
@@ -328,7 +328,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("28/6/2013", "2/6/2013");
 
-
             apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
             apply.Click();
 
@@ -439,7 +438,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
             var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
-    
+
             productLine.AssertIsEmpty();
             productClass.AssertIsEmpty();
             // unselect defaults 
@@ -452,9 +451,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
 
             ok.Click();
-     
+
             wait.Until(wd => wd.Title == "20 Products");
-           
+
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
         }
 

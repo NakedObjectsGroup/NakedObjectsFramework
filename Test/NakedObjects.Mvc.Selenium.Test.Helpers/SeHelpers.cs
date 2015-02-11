@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
         // new helpers 
         public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector) {
@@ -27,7 +27,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNotNull(field);
             return field;
         }
-
 
         public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
             if (webDriver is InternetExplorerDriver) {

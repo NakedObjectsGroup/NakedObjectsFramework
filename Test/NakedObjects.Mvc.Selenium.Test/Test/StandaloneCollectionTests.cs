@@ -1,15 +1,17 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class StandaloneCollectionTests : AWWebTest {
         public abstract void ViewStandaloneCollection();
 
@@ -65,7 +67,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(3, table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td")).Count);
         }
 
-
         public abstract void SelectDeselectAll();
 
         public void DoSelectDeselectAll() {
@@ -102,7 +103,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual(2, CountCheckedBoxes(coll));
         }
-
 
         public abstract void InvokeContributedActionNoParmsNoReturn();
 
@@ -155,7 +155,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void DoInvokeContributedActionParmsValidateFail() {
             Login();
             IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
-        
+
             coll.GetRow(7).CheckRow(br);
             coll.GetRow(9).CheckRow(br);
             br.ClickAction("ObjectQuery-SalesOrderHeader-AppendComment");
@@ -167,11 +167,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("[name=Details]")).AssertTextEquals("2 Sales Orders");
 
             br.FindElement(By.CssSelector("[name=Details]")).Click();
-            br.WaitForAjaxComplete();    
+            br.WaitForAjaxComplete();
 
             br.AssertPageTitleEquals("2 Sales Orders");
         }
-
 
         public abstract void InvokeContributedActionNoSelections();
 
@@ -327,246 +326,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.AssertPageTitleEquals("2 Stores");
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
-        }
-    }
-
-    [TestClass, Ignore]
-    public class StandaloneCollectionTestsIE : StandaloneCollectionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("IEDriverServer.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new InternetExplorerDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollection() {
-            DoViewStandaloneCollection();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionTable() {
-            DoViewStandaloneCollectionTable();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionDefaultToTable() {
-            DoViewStandaloneCollectionDefaultToTable();
-        }
-
-        [TestMethod]
-        public override void SelectDeselectAll() {
-            DoSelectDeselectAll();
-        }
-
-        [TestMethod]
-        public override void SelectAndUnselectIndividually() {
-            DoSelectAndUnselectIndividually();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsNoReturn() {
-            DoInvokeContributedActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsNoReturn() {
-            DoInvokeContributedActionParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsValidateFail() {
-           DoInvokeContributedActionParmsValidateFail();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoSelections() {
-            DoInvokeContributedActionNoSelections();
-        }
-
-        [TestMethod]
-        public override void PagingWithDefaultPageSize() {
-            DoPagingWithDefaultPageSize();
-        }
-
-        [TestMethod]
-        public override void PagingWithOverriddenPageSize() {
-            DoPagingWithOverriddenPageSize();
-        }
-
-        [TestMethod]
-        public override void PagingWithFormat() {
-            DoPagingWithFormat();
-        }
-    }
-
-    [TestClass]
-    public class StandaloneCollectionTestsFirefox : StandaloneCollectionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new FirefoxDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-
-        [TestMethod]
-        public override void ViewStandaloneCollection() {
-            DoViewStandaloneCollection();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionTable() {
-            DoViewStandaloneCollectionTable();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionDefaultToTable() {
-            DoViewStandaloneCollectionDefaultToTable();
-        }
-
-        [TestMethod]
-        public override void SelectDeselectAll() {
-            DoSelectDeselectAll();
-        }
-
-        [TestMethod]
-        public override void SelectAndUnselectIndividually() {
-            DoSelectAndUnselectIndividually();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsNoReturn() {
-            DoInvokeContributedActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsNoReturn() {
-            DoInvokeContributedActionParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsValidateFail() {
-            DoInvokeContributedActionParmsValidateFail();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoSelections() {
-            DoInvokeContributedActionNoSelections();
-        }
-
-        [TestMethod]
-        public override void PagingWithDefaultPageSize() {
-            DoPagingWithDefaultPageSize();
-        }
-
-        [TestMethod] // fails on server too often
-        public override void PagingWithOverriddenPageSize() {
-            DoPagingWithOverriddenPageSize();
-        }
-
-        [TestMethod]
-        public override void PagingWithFormat() {
-            DoPagingWithFormat();
-        }
-    }
-
-    [TestClass, Ignore]
-    public class StandaloneCollectionTestsChrome : StandaloneCollectionTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("chromedriver.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = InitChromeDriver();
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollection() {
-            DoViewStandaloneCollection();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionTable() {
-            DoViewStandaloneCollectionTable();
-        }
-
-        [TestMethod]
-        public override void ViewStandaloneCollectionDefaultToTable() {
-            DoViewStandaloneCollectionDefaultToTable();
-        }
-
-        [TestMethod]
-        public override void SelectDeselectAll() {
-            DoSelectDeselectAll();
-        }
-
-        [TestMethod]
-        public override void SelectAndUnselectIndividually() {
-            DoSelectAndUnselectIndividually();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoParmsNoReturn() {
-            DoInvokeContributedActionNoParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsNoReturn() {
-            DoInvokeContributedActionParmsNoReturn();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionParmsValidateFail() {
-            DoInvokeContributedActionParmsValidateFail();
-        }
-
-        [TestMethod]
-        public override void InvokeContributedActionNoSelections() {
-            DoInvokeContributedActionNoSelections();
-        }
-
-        [TestMethod]
-        public override void PagingWithDefaultPageSize() {
-            DoPagingWithDefaultPageSize();
-        }
-
-        [TestMethod]
-        public override void PagingWithOverriddenPageSize() {
-            DoPagingWithOverriddenPageSize();
-        }
-
-        [TestMethod]
-        public override void PagingWithFormat() {
-            DoPagingWithFormat();
         }
     }
 }

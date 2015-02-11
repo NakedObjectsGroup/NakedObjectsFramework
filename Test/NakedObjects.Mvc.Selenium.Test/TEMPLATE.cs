@@ -1,18 +1,21 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test {
     // Use this template to create new test classes, following these steps:
     // 1. Copy this template and replace 'MyTests' with new test class name throughout
     // 2. Write all test logic in the abstract class, in the form of an abstract method 
     //    (no annotation) and a corresponding 'Do' method (see comment in class)
     // 3. Make MyTestsIE implement the abstract MyTests class.  Each created method should be
-    //    annotated [TestMethod] and simply delegate to the inherited 'Do' method.
+    //    annotated //[TestMethod] and simply delegate to the inherited 'Do' method.
     //    The following Regex will do this automatically:
     //    Find:     ^{.*}public override void {.*}\n{.*\{}\n{.*}{throw .*}$
     //    Replace:  \1\[TestMethod\]\n\1public override void \2\n\3\n\4Do\2;
@@ -48,7 +51,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        ////[TestMethod]
         //public override void Test1()
         //{
         //    DoTest1();
