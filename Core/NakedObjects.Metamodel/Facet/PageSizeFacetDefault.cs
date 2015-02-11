@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PageSizeFacetDefault : PageSizeFacetAbstract {
+    internal class PageSizeFacetDefault : PageSizeFacetAbstract {
         private const int DefaultPageSize = 20;
 
         public PageSizeFacetDefault(ISpecification holder)

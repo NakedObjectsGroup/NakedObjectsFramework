@@ -9,12 +9,13 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
+    internal class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public DeletingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)

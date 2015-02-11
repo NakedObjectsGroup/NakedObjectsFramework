@@ -9,12 +9,13 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
+    internal class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public PropertySetterFacetViaModifyMethod(MethodInfo method, ISpecification holder)

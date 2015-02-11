@@ -14,7 +14,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
+    internal class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 

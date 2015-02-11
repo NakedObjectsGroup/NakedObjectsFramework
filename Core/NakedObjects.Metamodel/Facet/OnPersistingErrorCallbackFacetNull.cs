@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
+    internal class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
         public OnPersistingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 

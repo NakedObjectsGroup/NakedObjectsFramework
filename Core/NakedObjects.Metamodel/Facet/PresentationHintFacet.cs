@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
+    internal class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
         public PresentationHintFacet(string value, ISpecification holder)
             : base(typeof (IPresentationHintFacet), holder, value) {}
     }

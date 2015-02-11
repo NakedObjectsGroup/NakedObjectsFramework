@@ -106,7 +106,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseInvariant() {
-            CollectionUtils.ForEach(new[] {true, false}, b => {
+            new[] {true, false}.ForEach(b => {
                 string b1 = b.ToString(CultureInfo.InvariantCulture);
                 object b2 = value.ParseInvariant(b1);
                 Assert.AreEqual(b, b2);

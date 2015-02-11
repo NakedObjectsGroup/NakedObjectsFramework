@@ -14,7 +14,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
+    internal abstract class PropertyValidateFacetAbstract : FacetAbstract, IPropertyValidateFacet {
         protected PropertyValidateFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

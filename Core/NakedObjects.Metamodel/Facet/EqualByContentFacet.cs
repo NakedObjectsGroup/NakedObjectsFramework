@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
+    internal class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
         public EqualByContentFacet(ISpecification holder)
             : base(typeof (IEqualByContentFacet), holder) {}
     }

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
+    internal class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
         private readonly IObjectSpecImmutable spec;
         private readonly Type type;
 

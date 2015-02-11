@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
+    internal class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
         private readonly PropertyInfo property;
 
         public CollectionResetFacet(PropertyInfo property, ISpecification holder)

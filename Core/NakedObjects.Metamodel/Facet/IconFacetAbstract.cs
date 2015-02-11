@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class IconFacetAbstract : FacetAbstract, IIconFacet {
+    internal abstract class IconFacetAbstract : FacetAbstract, IIconFacet {
         protected IconFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

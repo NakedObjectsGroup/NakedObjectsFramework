@@ -18,7 +18,7 @@ namespace NakedObjects.Core.Interactions {
     ///     Effectively just wraps up a target object, parameters and a <see cref="ISession" />.
     ///     Defining this as a separate interface makes for a more stable API, however.
     /// </para>
-    public sealed class InteractionContext : IInteractionContext {
+    internal sealed class InteractionContext : IInteractionContext {
         private readonly IIdentifier id;
         private readonly InteractionType interactionType;
         private readonly bool programmatic;
@@ -107,11 +107,11 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set if the <see cref="InteractionType" /> type is
         ///     <see
-        ///         cref="Interactions.InteractionType.PropertyParamModify" />
+        ///         cref="Architecture.Interactions.InteractionType.PropertyParamModify" />
         ///     ,
-        ///     <see cref="Interactions.InteractionType.CollectionAddTo" /> or
+        ///     <see cref="Architecture.Interactions.InteractionType.CollectionAddTo" /> or
         ///     <see
-        ///         cref="Interactions.InteractionType.CollectionRemoveFrom" />
+        ///         cref="Architecture.Interactions.InteractionType.CollectionRemoveFrom" />
         ///     ;
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
         ///     to <see cref="INakedObject" />
@@ -124,7 +124,7 @@ namespace NakedObjects.Core.Interactions {
         ///     The arguments for a proposed action invocation.
         /// </summary>
         /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ActionInvoke" />;
+        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
         public INakedObject[] ProposedArguments {
@@ -134,7 +134,7 @@ namespace NakedObjects.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="Interactions.InteractionType.MemberAccess" />  reading a property.
+        ///     <see cref="Architecture.Interactions.InteractionType.MemberAccess" />  reading a property.
         /// </summary>
         public static InteractionContext AccessMember(ISession session,
                                                       bool programmatic,
@@ -151,7 +151,7 @@ namespace NakedObjects.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
+        ///     <see cref="Architecture.Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
         /// </summary>
         public static InteractionContext ModifyingPropParam(ISession session,
                                                             bool programmatic,
@@ -169,7 +169,7 @@ namespace NakedObjects.Core.Interactions {
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
-        ///     <see cref="Interactions.InteractionType.ActionInvoke" />  invoking an action.
+        ///     <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />  invoking an action.
         /// </summary>
         public static InteractionContext InvokingAction(ISession session,
                                                         bool programmatic,

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PageSizeFacetAnnotation : PageSizeFacetAbstract {
+    internal class PageSizeFacetAnnotation : PageSizeFacetAbstract {
         public PageSizeFacetAnnotation(int pageSize, ISpecification holder)
             : base(pageSize, holder) {}
     }

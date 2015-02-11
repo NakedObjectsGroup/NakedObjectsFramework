@@ -13,7 +13,7 @@ namespace NakedObjects.Meta.Facet {
     ///     Has a name of <c>null</c>
     /// </summary>
     [Serializable]
-    public class NamedFacetNone : NamedFacetAbstract {
+    internal class NamedFacetNone : NamedFacetAbstract {
         public NamedFacetNone(ISpecification holder)
             : base(null, holder) {}
 

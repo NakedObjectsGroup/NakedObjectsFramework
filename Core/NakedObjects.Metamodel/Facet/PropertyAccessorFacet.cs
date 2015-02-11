@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
+    internal class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
         private readonly PropertyInfo propertyMethod;
 
         public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)

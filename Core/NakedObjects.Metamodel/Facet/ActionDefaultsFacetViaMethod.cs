@@ -8,12 +8,13 @@
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
+    internal class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)

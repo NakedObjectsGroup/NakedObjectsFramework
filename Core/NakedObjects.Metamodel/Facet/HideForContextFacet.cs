@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
+    internal class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
         public HideForContextFacet(MethodInfo method, ISpecification holder)

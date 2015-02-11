@@ -32,7 +32,7 @@ namespace NakedObjects.Meta.Test.Facet {
         private ISpecification facetHolder2;
         private FacetAbstract fooFacet;
 
-        public class ConcreteFacet : FacetAbstract, IFooFacet {
+        internal class ConcreteFacet : FacetAbstract, IFooFacet {
             public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) {}
         }
 

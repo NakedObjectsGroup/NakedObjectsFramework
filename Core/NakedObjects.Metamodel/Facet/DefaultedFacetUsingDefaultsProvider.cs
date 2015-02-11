@@ -12,7 +12,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
+    internal class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
         private readonly IValueSemanticsProvider<T> defaultsProvider;
 
         public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)

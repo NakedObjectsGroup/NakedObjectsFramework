@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
+    internal class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
         public PasswordFacet(ISpecification holder)
             : base(typeof (IPasswordFacet), holder) {}
     }

@@ -446,12 +446,8 @@ namespace NakedObjects.Persistor.Entity {
                 context.Dispose();
             }
 
-            if (config is CodeFirstEntityContextConfiguration) {
-                context = ResetCodeOnlyContext(config as CodeFirstEntityContextConfiguration);
-            }
-            else {
-                context = ResetPocoContext(config as PocoEntityContextConfiguration);
-            }
+            CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = config as CodeFirstEntityContextConfiguration;
+            context = codeFirstEntityContextConfiguration != null ? ResetCodeOnlyContext(codeFirstEntityContextConfiguration) : ResetPocoContext(config as PocoEntityContextConfiguration);
             context.DefaultMergeOption = config.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;

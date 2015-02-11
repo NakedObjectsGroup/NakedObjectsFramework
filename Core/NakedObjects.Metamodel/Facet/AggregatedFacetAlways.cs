@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class AggregatedFacetAlways : MarkerFacetAbstract, IAggregatedFacet {
+    internal class AggregatedFacetAlways : MarkerFacetAbstract, IAggregatedFacet {
         public AggregatedFacetAlways(ISpecification holder)
             : base(typeof (IAggregatedFacet), holder) {}
     }

@@ -14,7 +14,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
+    internal class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
         public BoundedFacet(ISpecification holder)
             : base(typeof (IBoundedFacet), holder) {}
 

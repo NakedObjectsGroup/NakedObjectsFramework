@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
+    internal class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
         public ActionDefaultsFacetNone(ISpecification holder)
             : base(holder) {}
 

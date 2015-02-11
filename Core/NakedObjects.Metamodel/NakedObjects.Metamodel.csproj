@@ -169,7 +169,6 @@
     <Compile Include="Facet\HideForContextFacet.cs" />
     <Compile Include="Facet\IconFacetAnnotation.cs" />
     <Compile Include="Facet\IconFacetViaMethod.cs" />
-    <Compile Include="Facet\IImperativeFacet.cs" />
     <Compile Include="Facet\ImmutableFacetAnnotation.cs" />
     <Compile Include="Facet\TypeIsInterfaceFacet.cs" />
     <Compile Include="Facet\LoadedCallbackFacetNull.cs" />

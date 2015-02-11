@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class GenericIEnumerableFacet : CollectionFacetAbstract {
+    internal class GenericIEnumerableFacet : CollectionFacetAbstract {
         public GenericIEnumerableFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
 

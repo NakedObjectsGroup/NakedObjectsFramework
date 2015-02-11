@@ -17,7 +17,7 @@ namespace NakedObjects.Meta.Facet {
     ///     This implementation indicates that the <see cref="ISpecification" /> is mandatory.
     /// </para>
     [Serializable]
-    public class MandatoryFacet : MandatoryFacetAbstract {
+    internal class MandatoryFacet : MandatoryFacetAbstract {
         public MandatoryFacet(ISpecification holder)
             : base(holder) {}
 

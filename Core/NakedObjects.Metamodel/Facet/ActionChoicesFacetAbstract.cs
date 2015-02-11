@@ -14,7 +14,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
+    internal abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
         protected ActionChoicesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

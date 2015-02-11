@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypeIsVoidFacet : MarkerFacetAbstract, ITypeIsVoidFacet {
+    internal class TypeIsVoidFacet : MarkerFacetAbstract, ITypeIsVoidFacet {
         public TypeIsVoidFacet(ISpecification holder)
             : base(Type, holder) {}
 

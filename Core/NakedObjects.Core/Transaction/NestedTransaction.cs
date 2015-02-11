@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {
-    public class NestedTransaction : ITransaction {
+    internal class NestedTransaction : ITransaction {
         private static readonly ILog Log;
         private readonly IObjectStore objectStore;
         private bool complete;

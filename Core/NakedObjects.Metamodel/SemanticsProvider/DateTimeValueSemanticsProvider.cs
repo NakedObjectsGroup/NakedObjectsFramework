@@ -15,7 +15,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
+    internal class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
         private const int TypicalLengthConst = 18;
@@ -79,7 +79,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected static DateTime Now() {
-            return TestDateTime.HasValue ? TestDateTime.Value : DateTime.Now;
+            return TestDateTime ?? DateTime.Now;
         }
     }
 

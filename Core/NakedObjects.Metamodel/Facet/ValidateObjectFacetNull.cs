@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
+    internal class ValidateObjectFacetNull : FacetAbstract, IValidateObjectFacet {
         public ValidateObjectFacetNull(ISpecification holder)
             : base(Type, holder) {}
 

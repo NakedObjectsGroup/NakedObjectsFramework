@@ -15,7 +15,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
+    internal class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         private readonly Type typeOfEnum;
 
         public EnumFacet(ISpecification holder, Type typeOfEnum)

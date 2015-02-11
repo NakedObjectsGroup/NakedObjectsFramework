@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ProgramPersistableOnly : MarkerFacetAbstract, IProgramPersistableOnlyFacet {
+    internal class ProgramPersistableOnly : MarkerFacetAbstract, IProgramPersistableOnlyFacet {
         public ProgramPersistableOnly(ISpecification holder)
             : base(typeof (IProgramPersistableOnlyFacet), holder) {}
     }

@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class CollectionFacet : CollectionFacetAbstract {
+    internal class CollectionFacet : CollectionFacetAbstract {
         public CollectionFacet(ISpecification holder)
             : base(holder, false) {}
 

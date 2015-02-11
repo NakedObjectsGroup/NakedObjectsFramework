@@ -38,8 +38,8 @@ namespace NakedObjects.Reflect {
             if (m2 == null) {
                 return -1; // annotated before non-annotated
             }
-            string[] components1 = m1.Sequence.Split(new[] {'.'});
-            string[] components2 = m2.Sequence.Split(new[] {'.'});
+            string[] components1 = m1.Sequence.Split('.');
+            string[] components2 = m2.Sequence.Split('.');
 
             int length1 = components1.Length;
             int length2 = components2.Length;

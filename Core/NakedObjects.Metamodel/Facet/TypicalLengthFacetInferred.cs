@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract {
+    internal class TypicalLengthFacetInferred : TypicalLengthFacetAbstract {
         public TypicalLengthFacetInferred(int intValue, ISpecification holder)
             : base(intValue, holder) {}
     }

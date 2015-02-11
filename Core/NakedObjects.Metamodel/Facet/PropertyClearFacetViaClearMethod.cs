@@ -9,12 +9,13 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
+    internal class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public PropertyClearFacetViaClearMethod(MethodInfo method, ISpecification holder)

@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Text;
+using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Core.Interactions {
-    public class InteractionBuffer {
+    internal class InteractionBuffer : IInteractionBuffer {
         private readonly StringBuilder buf = new StringBuilder();
 
         public virtual bool IsNotEmpty {

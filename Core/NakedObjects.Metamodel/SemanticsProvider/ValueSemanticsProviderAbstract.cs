@@ -13,7 +13,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
+    internal abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
 

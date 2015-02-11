@@ -18,7 +18,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class GenericIQueryableFacet : CollectionFacetAbstract {
+    internal class GenericIQueryableFacet : CollectionFacetAbstract {
         public GenericIQueryableFacet(ISpecification holder)
             : this(holder, false) {}
 
@@ -32,8 +32,9 @@ namespace NakedObjects.Meta.Facet {
         private static bool IsOrdered(IQueryable queryable) {
             Expression expr = queryable.Expression;
 
-            if (expr is MethodCallExpression) {
-                MethodInfo method = (expr as MethodCallExpression).Method;
+            var expression = expr as MethodCallExpression;
+            if (expression != null) {
+                MethodInfo method = expression.Method;
                 return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy");
             }
 

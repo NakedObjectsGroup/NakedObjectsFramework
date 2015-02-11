@@ -16,7 +16,7 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
+    internal class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IImageValueFacet, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 0;

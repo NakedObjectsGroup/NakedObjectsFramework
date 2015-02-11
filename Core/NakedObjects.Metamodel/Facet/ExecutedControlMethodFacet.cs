@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ExecutedControlMethodFacet : FacetAbstract, IExecutedControlMethodFacet {
+    internal class ExecutedControlMethodFacet : FacetAbstract, IExecutedControlMethodFacet {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 
         public ExecutedControlMethodFacet(MethodInfo method, Where where, ISpecification holder)

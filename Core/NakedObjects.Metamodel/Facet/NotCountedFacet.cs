@@ -14,7 +14,7 @@ namespace NakedObjects.Meta.Facet {
     ///     This is only used at by the custom 'SdmNotCountedAttribute' 
     /// </summary>
     [Serializable]
-    public class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
+    internal class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {
         public NotCountedFacet(ISpecification holder)
             : base(typeof (INotCountedFacet), holder) {}
     }

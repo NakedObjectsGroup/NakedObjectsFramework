@@ -5,18 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
-
-namespace NakedObjects.Meta.Facet {
-    [Serializable]
-    internal class TypeIsAbstractFacet : MarkerFacetAbstract, ITypeIsAbstractFacet {
-        public TypeIsAbstractFacet(ISpecification holder)
-            : base(Type, holder) {}
-
-        public static Type Type {
-            get { return typeof (ITypeIsAbstractFacet); }
-        }
+namespace NakedObjects.Architecture.Interactions {
+    public interface IInteractionBuffer {
+        bool IsNotEmpty { get; }
+        bool IsEmpty { get; }
+        void Append(string reason);
+        string ToString();
     }
 }

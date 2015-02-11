@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
+    internal abstract class MultiLineFacetAbstract : FacetAbstract, IMultiLineFacet {
         private readonly int numberOfLines;
         private readonly int width;
 

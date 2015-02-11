@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class DisabledFacetAlways : DisabledFacetAbstract {
+    internal class DisabledFacetAlways : DisabledFacetAbstract {
         public DisabledFacetAlways(ISpecification holder)
             : base(WhenTo.Always, holder) {}
 
