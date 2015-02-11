@@ -8,8 +8,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Web.UnitTests.Selenium;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AttributeTests : AWWebTest {
@@ -78,113 +76,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             string txt = f2.Text;
             Assert.IsTrue(txt.StartsWith("Line 1"));
             Assert.IsTrue(txt.EndsWith("Line 2"));
-        }
-    }
-
-    [TestClass]
-    public class AttributeTestsIE : AttributeTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("IEDriverServer.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new InternetExplorerDriver();
-            wait = new SafeWebDriverWait(br, DefaultTimeOut);
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public override void CleanUpTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void PasswordIsObscuredInAnEntryField() {
-            DoPasswordIsObscuredInAnEntryField();
-        }
-
-        [TestMethod]
-        public override void MultiLineInViewMode() {
-            DoMultiLineInViewMode();
-        }
-
-        [TestMethod]
-        public override void MultiLineInEditMode() {
-            DoMultiLineInEditMode();
-        }
-    }
-
-    [TestClass]
-    public class AttributeTestsFirefox : AttributeTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = new FirefoxDriver();
-            wait = new SafeWebDriverWait(br, DefaultTimeOut);
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public override void CleanUpTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void PasswordIsObscuredInAnEntryField() {
-            DoPasswordIsObscuredInAnEntryField();
-        }
-
-        [TestMethod]
-        public override void MultiLineInViewMode() {
-            DoMultiLineInViewMode();
-        }
-
-        [TestMethod]
-        public override void MultiLineInEditMode() {
-            DoMultiLineInEditMode();
-        }
-    }
-
-    [TestClass]
-    public class AttributeTestsChrome : AttributeTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath("chromedriver.exe");
-            AWWebTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            br = InitChromeDriver();
-            wait = new SafeWebDriverWait(br, DefaultTimeOut);
-            br.Navigate().GoToUrl(url);
-        }
-
-        [TestCleanup]
-        public override void CleanUpTest() {
-            base.CleanUpTest();
-        }
-
-        [TestMethod]
-        public override void PasswordIsObscuredInAnEntryField() {
-            DoPasswordIsObscuredInAnEntryField();
-        }
-
-        [TestMethod]
-        public override void MultiLineInViewMode() {
-            DoMultiLineInViewMode();
-        }
-
-        [TestMethod]
-        public override void MultiLineInEditMode() {
-            DoMultiLineInEditMode();
         }
     }
 }

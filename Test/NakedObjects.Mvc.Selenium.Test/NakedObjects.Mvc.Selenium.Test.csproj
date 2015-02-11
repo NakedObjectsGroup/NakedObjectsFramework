@@ -84,7 +84,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AjaxTests.cs" />
+    <Compile Include="Test\AjaxTests.cs" />
+    <Compile Include="Chrome\AjaxTestsChrome.cs" />
+    <Compile Include="Firefox\AjaxTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\AjaxTestsIE.cs" />
     <Compile Include="Test\AttributeTests.cs" />
     <Compile Include="AWWebTest.cs" />
     <Compile Include="ConditionalChoicesTests.cs" />
@@ -99,6 +102,9 @@
     <Compile Include="ObjectViewAndActionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandaloneCollectionTests.cs" />
+    <Compile Include="Chrome\AttributeTestsChrome.cs" />
+    <Compile Include="Firefox\AttributeTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\AttributeTestsIE.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
