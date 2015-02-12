@@ -75,8 +75,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             return IsFinderMethod && (ReturnSpec.IsOfType(spec) || (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)));
         }
 
-
-
         public bool IsContributedMethod {
             get {
                 return OwnerSpec is IServiceSpecImmutable && parameters.Any() &&
