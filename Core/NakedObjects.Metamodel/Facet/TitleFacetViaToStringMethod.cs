@@ -9,11 +9,12 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
+    internal class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
         private readonly MethodInfo method;
 

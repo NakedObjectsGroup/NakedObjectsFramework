@@ -12,7 +12,7 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class DisabledFacetAnnotation : DisabledFacetAbstract {
+    internal class DisabledFacetAnnotation : DisabledFacetAbstract {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}
 

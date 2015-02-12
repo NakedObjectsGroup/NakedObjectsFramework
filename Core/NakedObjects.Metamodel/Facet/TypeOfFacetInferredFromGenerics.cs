@@ -15,7 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
+    internal class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
         public TypeOfFacetInferredFromGenerics(ISpecification holder)
             : base(Type, holder) {}
 

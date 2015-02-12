@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
+    internal abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
         protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
             : base(Type, holder, pageSize) {}
 

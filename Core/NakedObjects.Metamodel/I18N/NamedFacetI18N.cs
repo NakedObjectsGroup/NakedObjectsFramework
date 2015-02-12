@@ -11,7 +11,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.I18N {
     [Serializable]
-    public class NamedFacetI18N : NamedFacetAbstract {
+    internal class NamedFacetI18N : NamedFacetAbstract {
         public NamedFacetI18N(string valueString, ISpecification holder)
             : base(valueString, holder) {}
     }

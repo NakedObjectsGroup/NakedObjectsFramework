@@ -14,7 +14,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
+    internal class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
         private readonly IObjectSpecImmutable spec;
         private readonly Type type;
 

@@ -16,15 +16,15 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
+using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using NakedObjects.Menu;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {

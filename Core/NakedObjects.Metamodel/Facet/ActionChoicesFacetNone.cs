@@ -13,7 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
+    internal class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
         public ActionChoicesFacetNone(ISpecification holder)
             : base(holder) {}
 

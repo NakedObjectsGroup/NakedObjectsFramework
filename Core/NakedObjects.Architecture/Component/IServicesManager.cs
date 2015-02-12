@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {

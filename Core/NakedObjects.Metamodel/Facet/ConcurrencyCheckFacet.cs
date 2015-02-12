@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
+    internal class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
         public ConcurrencyCheckFacet(ISpecification holder)
             : base(Type, holder) {}
 

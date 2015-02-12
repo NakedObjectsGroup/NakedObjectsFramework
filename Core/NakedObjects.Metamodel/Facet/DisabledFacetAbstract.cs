@@ -14,7 +14,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
+    internal abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
         protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 

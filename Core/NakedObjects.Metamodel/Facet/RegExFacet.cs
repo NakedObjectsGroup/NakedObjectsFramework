@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class RegExFacet : FacetAbstract, IRegExFacet {
+    internal class RegExFacet : FacetAbstract, IRegExFacet {
         private readonly string failureMessage;
         private readonly string formatPattern;
         private readonly bool isCaseSensitive;

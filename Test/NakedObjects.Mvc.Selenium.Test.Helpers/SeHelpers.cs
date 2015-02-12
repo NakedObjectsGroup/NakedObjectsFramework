@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -8,8 +12,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
+        // new helpers 
+        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector) {
+            IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
+            return wait.ClickAndWait(action, fieldSelector);
+        }
+
+        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, IWebElement action, string fieldSelector) {
+            action.Click();
+            IWebElement field = null;
+            wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) != null);
+            Assert.IsNotNull(field);
+            return field;
+        }
+
         public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
             if (webDriver is InternetExplorerDriver) {
                 element.SendKeys(Keys.Space);
@@ -29,7 +47,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                     //element.Click();
                 }
                 else {
-                   //element.Click();
+                    //element.Click();
                     element.SendKeys("\n"); // use enter on button 
                 }
             }
@@ -45,7 +63,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return element;
         }
 
-        public static IWebElement FocusClick(this IWebElement element, IWebDriver webDriver) {      
+        public static IWebElement FocusClick(this IWebElement element, IWebDriver webDriver) {
             element.FindElement(By.XPath("..")).Click(); // click on browser to ensure has focus      
             return element;
         }
@@ -62,7 +80,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             return webDriver;
         }
-
 
         public static IWebDriver AssertContainsObjectView(this IWebDriver webDriver) {
             return webDriver.AssertContainsElementWithClass("nof-objectview");
@@ -108,11 +125,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 webDriver.FindElement(by);
                 Assert.Fail("Element should  not exist");
             }
-            catch (WebDriverException) { //Should be NoSuchElementException, but this doesn't work on Firefox
+            catch (WebDriverException) {
+                //Should be NoSuchElementException, but this doesn't work on Firefox
                 //As expected; test is OK
             }
         }
-
 
         /// <summary>
         /// Returns the first Div of class 'Object'  -  typically the title object of the page
@@ -149,7 +166,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return webDriver;
         }
 
-
         #endregion
 
         #region Tabbed History
@@ -172,12 +188,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         private static IWebDriver ClickClearContextMenu(this IWebDriver webDriver, int index, ClearType clearType) {
             var tab = webDriver.FindElements(By.CssSelector(".nof-tab"))[index];
-            var loc = (ILocatable)tab;
-            var mouse = ((IHasInputDevices)webDriver).Mouse;
+            var loc = (ILocatable) tab;
+            var mouse = ((IHasInputDevices) webDriver).Mouse;
             mouse.ContextClick(loc.Coordinates);
             webDriver.WaitForAjaxComplete();
 
-            tab.FindElements(By.CssSelector("li a"))[(int)clearType].Click();
+            tab.FindElements(By.CssSelector("li a"))[(int) clearType].Click();
             webDriver.WaitForAjaxComplete();
 
             var firstTabImg = webDriver.FindElements(By.CssSelector(".nof-tab img")).FirstOrDefault();
@@ -190,15 +206,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         public static IWebDriver ClickClearItem(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearThis); 
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearThis);
         }
 
         public static IWebDriver ClickClearOthers(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearOthers); 
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearOthers);
         }
 
         public static IWebDriver ClickClearAll(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearAll); 
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearAll);
         }
 
         public static IWebDriver GoToHomePage(this IWebDriver webDriver) {
@@ -207,7 +223,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #endregion
-
 
         #region Actions
 
@@ -279,7 +294,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         private static void ScrollTo(this IWebDriver webDriver, IWebElement element) {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor)webDriver).ExecuteScript(script);
+            ((IJavaScriptExecutor) webDriver).ExecuteScript(script);
         }
 
         private static IWebDriver ClickSingleGenericButton(this IWebDriver webDriver, string title) {
@@ -361,7 +376,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 Assert.Fail("unexpected validation error");
             }
             catch (NoSuchElementException) {
-               // expected  
+                // expected  
             }
             return field;
         }
@@ -467,7 +482,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             IWebElement[] options = select.FindElements(By.TagName("option")).Where(o => names.Contains(o.Text)).ToArray();
             Assert.AreEqual(names.Count(), options.Count(), "all options not found in list");
 
-
             foreach (string name in names) {
                 IWebElement option = options.Single(o => o.Text == name);
 
@@ -482,7 +496,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             return field;
         }
-
 
         #endregion
 
@@ -512,7 +525,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 Assert.Fail("Selected Div is not a Collection");
             }
         }
-
 
         public static IWebElement ViewAsTable(this IWebDriver webDriver, string collectionId) {
             return ViewAs(webDriver, collectionId, "nof-table");

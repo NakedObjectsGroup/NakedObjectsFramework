@@ -10,13 +10,14 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
+    internal class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
 
         private readonly MethodInfo actionMethod;

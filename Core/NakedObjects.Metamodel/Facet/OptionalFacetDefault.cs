@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
     ///     as manadatory.
     /// </para>
     [Serializable]
-    public class OptionalFacetDefault : MandatoryFacetAbstract {
+    internal class OptionalFacetDefault : MandatoryFacetAbstract {
         public OptionalFacetDefault(ISpecification holder)
             : base(holder) {}
 

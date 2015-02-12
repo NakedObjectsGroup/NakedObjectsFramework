@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Resolve;
 [assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
 namespace NakedObjects.Core.Resolve {
-    public class ResolveStateMachine : IResolveStateMachine {
+    internal class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 
         public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s);

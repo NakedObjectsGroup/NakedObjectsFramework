@@ -144,7 +144,12 @@
     <Compile Include="FacetFactory\IPropertyFilteringFacetFactory.cs" />
     <Compile Include="Facet\IFindMenuFacet.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />
+    <Compile Include="Facet\IImperativeFacet.cs">
+      <SubType>
+      </SubType>
+    </Compile>
     <Compile Include="Facet\IMemberOrderFacet.cs" />
+    <Compile Include="Interactions\IInteractionBuffer.cs" />
     <Compile Include="Interactions\IInteractionContext.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />
     <Compile Include="Component\II18nManager.cs" />

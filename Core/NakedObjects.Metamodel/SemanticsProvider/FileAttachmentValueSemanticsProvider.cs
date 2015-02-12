@@ -15,7 +15,7 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
+    internal class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFileAttachmentValueFacet, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthDefault = 0;

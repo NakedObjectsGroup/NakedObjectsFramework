@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
+    internal class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
         public ActionValidationFacet(MethodInfo method, ISpecification holder)

@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
+    internal class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
         private readonly IValueSemanticsProvider<T> encoderDecoder;
 
         public EncodeableFacetUsingEncoderDecoder(IValueSemanticsProvider<T> encoderDecoder, ISpecification holder)

@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
+    internal class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, ILongValueFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 20;

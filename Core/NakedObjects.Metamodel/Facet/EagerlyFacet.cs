@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class EagerlyFacet : FacetAbstract, IEagerlyFacet {
+    internal class EagerlyFacet : FacetAbstract, IEagerlyFacet {
         public EagerlyFacet(EagerlyAttribute.Do what, ISpecification holder)
             : base(Type, holder) {
             What = what;

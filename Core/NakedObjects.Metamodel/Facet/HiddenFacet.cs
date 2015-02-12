@@ -16,7 +16,7 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
+    internal class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
         public HiddenFacet(WhenTo when, ISpecification holder)
             : base(typeof (IHiddenFacet), holder, when) {}
 

@@ -13,8 +13,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     /// <summary>
@@ -104,14 +102,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Service {
 
+            // ReSharper disable once UnusedMember.Local
             public void Action1() { }
 
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void Action2(Customer cust1) { }
 
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
             public void Action3([ContributedAction] Customer cust1) { }
 
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
             public void Action4(string str1, [ContributedAction] Customer cust1) { }
         }
 
@@ -119,6 +122,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #region Nested type: Customer
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class Customer {
 
         }

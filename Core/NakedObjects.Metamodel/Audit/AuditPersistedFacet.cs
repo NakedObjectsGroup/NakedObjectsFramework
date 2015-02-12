@@ -13,7 +13,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Audit {
     [Serializable]
-    public class AuditPersistedFacet : PersistedCallbackFacetAbstract {
+    internal class AuditPersistedFacet : PersistedCallbackFacetAbstract {
         private readonly IAuditManager manager;
         private readonly IPersistedCallbackFacet underlyingFacet;
 

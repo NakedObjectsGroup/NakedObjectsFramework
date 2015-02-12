@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -19,7 +20,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
+    internal class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly bool isMultiple;

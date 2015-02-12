@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypicalLengthFacetAnnotation : TypicalLengthFacetAbstract {
+    internal class TypicalLengthFacetAnnotation : TypicalLengthFacetAbstract {
         public TypicalLengthFacetAnnotation(int value, ISpecification holder)
             : base(value, holder) {}
     }

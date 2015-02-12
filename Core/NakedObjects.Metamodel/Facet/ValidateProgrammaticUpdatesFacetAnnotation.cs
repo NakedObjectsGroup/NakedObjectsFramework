@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
+    internal class ValidateProgrammaticUpdatesFacetAnnotation : FacetAbstract, IValidateProgrammaticUpdatesFacet {
         public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
             : base(typeof (IValidateProgrammaticUpdatesFacet), holder) {}
     }

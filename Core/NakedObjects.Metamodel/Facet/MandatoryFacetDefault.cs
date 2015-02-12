@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
     ///     <i>omitting</i> the <see cref="OptionallyAttribute" /> annotation.
     /// </para>
     [Serializable]
-    public class MandatoryFacetDefault : MandatoryFacetAbstract {
+    internal class MandatoryFacetDefault : MandatoryFacetAbstract {
         public MandatoryFacetDefault(ISpecification holder)
             : base(holder) {}
 

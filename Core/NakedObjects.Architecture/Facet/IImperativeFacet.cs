@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedObjects.Architecture.Facet {
     /// <summary>
     ///     A <see cref="IFacet" /> implementation that ultimately wraps a
     ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />

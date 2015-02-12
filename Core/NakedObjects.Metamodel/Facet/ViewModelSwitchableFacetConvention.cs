@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {
+    internal class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) {}
 
         private static Type Type {

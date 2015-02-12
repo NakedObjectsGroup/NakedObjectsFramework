@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
+    internal class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet {
         public NotPersistedFacet(ISpecification holder)
             : base(typeof (INotPersistedFacet), holder) {}
     }

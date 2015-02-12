@@ -14,7 +14,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Audit {
     [Serializable]
-    public class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
+    internal class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
         private readonly IAuditManager auditManager;
         private readonly IIdentifier identifier;
         private readonly IActionInvocationFacet underlyingFacet;

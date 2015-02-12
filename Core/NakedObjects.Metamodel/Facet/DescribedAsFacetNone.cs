@@ -14,7 +14,7 @@ namespace NakedObjects.Meta.Facet {
     /// </summary>
     /// 
     [Serializable]
-    public class DescribedAsFacetNone : DescribedAsFacetAbstract {
+    internal class DescribedAsFacetNone : DescribedAsFacetAbstract {
         public DescribedAsFacetNone(ISpecification holder)
             : base("", holder) {}
 

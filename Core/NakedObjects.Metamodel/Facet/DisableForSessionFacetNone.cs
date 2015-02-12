@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
+    internal class DisableForSessionFacetNone : DisableForSessionFacetAbstract {
         public DisableForSessionFacetNone(ISpecification holder)
             : base(holder) {}
 

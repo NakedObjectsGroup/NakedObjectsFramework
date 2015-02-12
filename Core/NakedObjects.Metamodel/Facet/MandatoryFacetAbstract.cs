@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
+    internal abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
         protected MandatoryFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

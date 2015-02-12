@@ -8,12 +8,13 @@
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
+    internal class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder)

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ViewModelEditFacetConvention : ViewModelFacetConvention {
+    internal class ViewModelEditFacetConvention : ViewModelFacetConvention {
         public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) {}
 
         private static Type Type {

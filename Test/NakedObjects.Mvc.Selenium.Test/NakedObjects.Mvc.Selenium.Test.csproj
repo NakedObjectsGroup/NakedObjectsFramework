@@ -84,21 +84,57 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AjaxTests.cs" />
-    <Compile Include="AttributeTests.cs" />
-    <Compile Include="AWWebTest.cs" />
-    <Compile Include="ConditionalChoicesTests.cs" />
-    <Compile Include="TabbedHistoryAndClearTests.cs" />
-    <Compile Include="NonAjaxTests.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="Chrome\ConditionalChoicesTestsChrome.cs" />
+    <Compile Include="Chrome\EnumTestsChrome.cs" />
+    <Compile Include="Chrome\HistoryAndClearTestsChrome.cs" />
+    <Compile Include="Firefox\HistoryAndClearTestsFirefox.cs" />
+    <Compile Include="Chrome\ImageAndAttachmentTestsChrome.cs" />
+    <Compile Include="Firefox\ImageAndAttachmentTestsFirefox.cs" />
+    <Compile Include="Chrome\NonAjaxTestsChrome.cs" />
+    <Compile Include="Firefox\NonAjaxTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\NonAjaxTestsIE.cs" />
+    <Compile Include="Chrome\ObjectEditTestsChrome.cs" />
+    <Compile Include="Firefox\ObjectEditTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\ObjectEditTestsIE.cs" />
+    <Compile Include="Chrome\ObjectViewAndActionTestsChrome.cs" />
+    <Compile Include="Firefox\ObjectViewAndActionTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\ObjectViewAndActionTestsIE.cs" />
+    <Compile Include="Chrome\StandaloneCollectionTestsChrome.cs" />
+    <Compile Include="Firefox\StandaloneCollectionTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\StandaloneCollectionTestsIE.cs" />
+    <Compile Include="Chrome\TabbedHistoryAndClearTestsChrome.cs" />
+    <Compile Include="Firefox\TabbedHistoryAndClearTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\TabbedHistoryAndClearTestsIE.cs" />
+    <Compile Include="InternetExplorer\ImageAndAttachmentTestsIE.cs" />
+    <Compile Include="InternetExplorer\HistoryAndClearTestsIE.cs" />
+    <Compile Include="Chrome\ExceptionTestsChrome.cs" />
+    <Compile Include="Firefox\ExceptionTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\ExceptionTestsIE.cs" />
+    <Compile Include="Firefox\EnumTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\EnumTestsIE.cs" />
+    <Compile Include="Firefox\ConditionalChoicesTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\ConditionalChoicesTestsIE.cs" />
+    <Compile Include="Test\AjaxTests.cs" />
+    <Compile Include="Chrome\AjaxTestsChrome.cs" />
+    <Compile Include="Firefox\AjaxTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\AjaxTestsIE.cs" />
+    <Compile Include="Test\AttributeTests.cs" />
+    <Compile Include="Test\AWWebTest.cs" />
+    <Compile Include="Test\ConditionalChoicesTests.cs" />
+    <Compile Include="Test\TabbedHistoryAndClearTests.cs" />
+    <Compile Include="Test\NonAjaxTests.cs" />
+    <Compile Include="Test\EnumTests.cs" />
     <Compile Include="TEMPLATE.cs" />
-    <Compile Include="ImageAndAttachmentTests.cs" />
-    <Compile Include="ExceptionTests.cs" />
-    <Compile Include="HistoryAndClearTests.cs" />
-    <Compile Include="ObjectEditTests.cs" />
-    <Compile Include="ObjectViewAndActionTests.cs" />
+    <Compile Include="Test\ImageAndAttachmentTests.cs" />
+    <Compile Include="Test\ExceptionTests.cs" />
+    <Compile Include="Test\HistoryAndClearTests.cs" />
+    <Compile Include="Test\ObjectEditTests.cs" />
+    <Compile Include="Test\ObjectViewAndActionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StandaloneCollectionTests.cs" />
+    <Compile Include="Test\StandaloneCollectionTests.cs" />
+    <Compile Include="Chrome\AttributeTestsChrome.cs" />
+    <Compile Include="Firefox\AttributeTestsFirefox.cs" />
+    <Compile Include="InternetExplorer\AttributeTestsIE.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
@@ -116,12 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="chromedriver.exe" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="IEDriverServer.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

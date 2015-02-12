@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
+    internal class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
         public MaskFacet(string value, ISpecification holder)
             : base(typeof (IMaskFacet), holder, value) {}
 

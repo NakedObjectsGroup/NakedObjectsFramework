@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
@@ -21,7 +20,7 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
-        private readonly List<object> services = new List<object>();
+        private readonly List<object> services;
         private bool servicesInit;
 
         public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
@@ -32,7 +31,7 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.manager = manager;
 
-            services = config.Services.Select(s => Activator.CreateInstance(s)).ToList();
+            services = config.Services.Select(Activator.CreateInstance).ToList();
         }
 
         private IList<object> Services {

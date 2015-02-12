@@ -12,7 +12,7 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class ImmutableFacetImpl : ImmutableFacetAbstract {
+    internal class ImmutableFacetImpl : ImmutableFacetAbstract {
         public ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 

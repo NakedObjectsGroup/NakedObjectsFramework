@@ -13,7 +13,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class IconFacetViaMethod : IconFacetAbstract {
+    internal class IconFacetViaMethod : IconFacetAbstract {
         private readonly string iconName; // iconName from attribute
         private readonly MethodInfo method;
 

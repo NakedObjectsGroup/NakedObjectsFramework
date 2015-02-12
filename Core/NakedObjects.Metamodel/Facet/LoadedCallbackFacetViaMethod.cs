@@ -9,12 +9,13 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
+    internal class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public LoadedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)

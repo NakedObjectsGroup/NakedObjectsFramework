@@ -14,7 +14,7 @@ using NakedObjects.Meta.Menu;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class MenuFacetViaMethod : MenuFacetAbstract {
+    internal class MenuFacetViaMethod : MenuFacetAbstract {
         private readonly MethodInfo method;
 
         public MenuFacetViaMethod(MethodInfo method, ISpecification holder)

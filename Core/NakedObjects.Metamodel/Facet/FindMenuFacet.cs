@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class FindMenuFacet : FacetAbstract, IFindMenuFacet {
+    internal class FindMenuFacet : FacetAbstract, IFindMenuFacet {
         public FindMenuFacet(ISpecification holder)
             : base(typeof (IFindMenuFacet), holder) {}
     }

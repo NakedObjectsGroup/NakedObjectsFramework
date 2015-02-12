@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Diagnostics;
@@ -9,50 +12,11 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.DatabaseHelpers;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
-
-    public class SafeWebDriverWait : IWait<IWebDriver> {
-        private readonly WebDriverWait wait;
-
-        public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
-            wait = new WebDriverWait(driver, timeout);
-        }
-
-        public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
-            wait.IgnoreExceptionTypes(exceptionTypes);
-        }
-
-        public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
-            return wait.Until(d => {
-                try {
-                    return condition(d);
-                }
-                catch (NoSuchElementException) { }
-                return default(TResult);
-            });
-        }
-
-        public TimeSpan Timeout {
-            get { return wait.Timeout; }
-            set { wait.Timeout = value; }
-        }
-
-        public TimeSpan PollingInterval {
-            get { return wait.PollingInterval; }
-            set { wait.PollingInterval = value; }
-        }
-
-        public string Message {
-            get { return wait.Message; }
-            set { wait.Message = value; }
-        }
-    }
-
-
+namespace NakedObjects.Mvc.Selenium.Test {
     [TestClass]
     public abstract class AWWebTest {
         #region overhead
@@ -65,14 +29,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         //protected const string url = "http://localhost:56696/";
         //protected const string server = @".\SQLEXPRESS";
         //protected const string server = @"(localdb)\ProjectsV12";
-        
+
         //protected const string database = "AdventureWorks";
         //protected const string backup = "AdventureWorks";
 
-
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
-        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 30);
+        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 10);
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
@@ -123,14 +86,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         protected IWebDriver InitChromeDriver() {
-            const string cacheDir = @"C:\SeleniumTestFolder";
+            //const string cacheDir = @"C:\SeleniumTestFolder";
 
             var crOptions = new ChromeOptions();
-            crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
+
+            crOptions.AddArgument(@"--test-type");
+            //crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
             var cd = new ChromeDriver(crOptions);
 
             // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             return cd;
         }
 

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class IconFacetAnnotation : IconFacetAbstract {
+    internal class IconFacetAnnotation : IconFacetAbstract {
         private readonly string iconName;
 
         public IconFacetAnnotation(string iconName, ISpecification holder)
