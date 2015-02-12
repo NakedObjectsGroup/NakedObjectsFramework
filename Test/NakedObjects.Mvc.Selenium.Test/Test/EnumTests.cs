@@ -47,15 +47,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             orderNumber.SendKeys("SO67862" + Keys.Tab);
 
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
-            var status = wait.ClickAndWait(edit, "#SalesOrderHeader-Status");
+            wait.ClickAndWait(edit, "#SalesOrderHeader-Status-Input");
+
+            var status = br.FindElement(By.CssSelector("#SalesOrderHeader-Status"));
 
             status.SelectDropDownItem("Cancelled", br);
-            ////Must adjust due date or else save fails
-            //IWebElement due = br.GetField("SalesOrderHeader-ShipDate");
-            //string tomorrow = DateTime.Today.ToShortDateString();
-            //due.TypeText(tomorrow, br);
+          
 
-            status = wait.ClickAndWait(".nof-save", "#SalesOrderHeader-Status .nof-value");
+            status = wait.ClickAndWait(".nof-save", ".nof-objectview #SalesOrderHeader-Status div.nof-value");
 
             Assert.AreEqual("Cancelled", status.Text);
         }

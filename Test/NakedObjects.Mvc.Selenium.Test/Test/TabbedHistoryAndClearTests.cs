@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -14,30 +15,36 @@ namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class TabbedHistoryAndClearTests : AWWebTest {
         public abstract void CumulativeHistory();
 
+        private void CustomerByAccountNumber(string accountNumber) {
+            var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
+
+            f.Clear();
+            f.SendKeys(accountNumber + Keys.Tab);
+
+            wait.ClickAndWait(".nof-ok", ".nof-objectview");
+        }
+
         public void DoCumulativeHistory() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
-            // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
             // 3rd object
-            br.ClickOnObjectLinkInField("SalesPerson-SalesTerritory");
-            Assert.AreEqual(3, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#SalesPerson-SalesTerritory a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 3);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a"))[1].Text);
             Assert.AreEqual("Canada", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
             // collection 
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(4, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 4);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a"))[1].Text);
             Assert.AreEqual("Canada", br.GetTabbedHistory().FindElements(By.TagName("a"))[2].Text);
@@ -88,11 +95,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
         }
 
-        public abstract void ClearSingleItem();
-
         public void DoClearSingleItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
@@ -102,8 +107,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
             br.AssertPageTitleEquals("Home Page");
         }
-
-        public abstract void ClearSingleCollectionItem();
 
         public void DoClearSingleCollectionItem() {
             Login();
@@ -118,34 +121,29 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void ClearActiveItem();
-
         public void DoClearActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
             br.ClickClearItem(1);
-            Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.Until(wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
 
-        public abstract void CollectionKeepsPage();
-
         public void DoCollectionKeepsPage() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
@@ -184,11 +182,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("5 Sales Orders");
         }
 
-        public abstract void CollectionKeepsFormat();
-
         public void DoCollectionKeepsFormat() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
@@ -218,30 +214,26 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("20 Sales Orders");
         }
 
-        public abstract void ClearActiveCollectionItem();
-
         public void DoClearActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd collection
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
             br.ClickClearItem(1);
-            Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+
+            wait.Until(wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
-
-        public abstract void ClearActiveMultipleCollectionItems();
 
         public void DoClearActiveMultipleCollectionItems() {
             Login();
@@ -252,31 +244,27 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("12 Country Regions", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd collection
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("12 Country Regions", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
             br.ClickClearItem(1);
-            Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.Until(wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("12 Country Regions", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.AssertPageTitleEquals("12 Country Regions");
         }
 
-        public abstract void ClearInActiveItem();
-
         public void DoClearInActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -287,19 +275,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("José Saraiva");
         }
 
-        public abstract void ClearInActiveCollectionItem();
-
         public void DoClearInActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -309,8 +294,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.AssertPageTitleEquals("20 Sales Orders");
         }
-
-        public abstract void ClearInActiveCollectionMultipleItems();
 
         public void DoClearInActiveCollectionMultipleItems() {
             Login();
@@ -321,8 +304,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("12 Country Regions", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd collection
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("12 Country Regions", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -333,11 +315,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("20 Sales Orders");
         }
 
-        public abstract void ClearOthersSingleItem();
-
         public void DoClearOthersSingleItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
@@ -349,14 +329,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
 
-        public abstract void ClearOthersSingleCollectionItem();
-
         public void DoClearOthersSingleCollectionItem() {
             Login();
-            br.ClickAction("OrderRepository-HighestValueOrders");
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
 
-            // 1st object
-            Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+          
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.ClickClearOthers(0);
@@ -365,19 +342,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("20 Sales Orders");
         }
 
-        public abstract void ClearOthersActiveItem();
-
         public void DoClearOthersActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -388,19 +362,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("José Saraiva");
         }
 
-        public abstract void ClearOthersActiveCollectionItem();
-
         public void DoClearOthersActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -411,19 +382,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("20 Sales Orders");
         }
 
-        public abstract void ClearOthersInActiveItem();
-
         public void DoClearOthersInActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -434,19 +402,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
 
-        public abstract void ClearOthersInActiveCollectionItem();
-
         public void DoClearOthersInActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -457,11 +422,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
 
-        public abstract void ClearAllSingleItem();
-
         public void DoClearAllSingleItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
@@ -472,14 +435,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void ClearAllSingleCollectionItem();
-
         public void DoClearAllSingleCollectionItem() {
             Login();
-            br.ClickAction("OrderRepository-HighestValueOrders");
-
-            // 1st object
-            Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.ClickClearAll(0);
@@ -487,19 +445,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void ClearAllActiveItem();
-
         public void DoClearAllActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -507,20 +462,17 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
             br.AssertPageTitleEquals("Home Page");
         }
-
-        public abstract void ClearAllActiveCollectionItem();
 
         public void DoClearAllActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -529,19 +481,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void ClearAllInActiveItem();
-
         public void DoClearAllInActiveItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickOnObjectLinkInField("Store-SalesPerson");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#Store-SalesPerson a", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -550,19 +499,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void ClearAllInActiveCollectionItem();
-
         public void DoClearAllInActiveCollectionItem() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
 
             // 1st object
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             // 2nd object
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
 
@@ -571,11 +517,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Home Page");
         }
 
-        public abstract void TransientObjectsDoNotShowUpInHistory();
-
         public void DoTransientObjectsDoNotShowUpInHistory() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
+
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
 
             br.ClickAction("CustomerRepository-CreateNewStoreCustomer");
@@ -591,17 +536,43 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Foo Bar, AW00029484", br.GetTabbedHistory().FindElements(By.TagName("a")).Last().Text);
         }
 
-        public abstract void CollectionsShowUpInHistory();
-
         public void DoCollectionsShowUpInHistory() {
             Login();
-            FindCustomerByAccountNumber("AW00000065");
+            CustomerByAccountNumber("AW00000065");
             Assert.AreEqual(1, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
 
-            br.ClickAction("OrderRepository-HighestValueOrders");
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             br.AssertPageTitleEquals("20 Sales Orders");
 
-            Assert.AreEqual(2, br.GetTabbedHistory().FindElements(By.TagName("a")).Count);
         }
+
+        #region abstract
+
+        public abstract void ClearSingleItem();
+        public abstract void ClearSingleCollectionItem();
+        public abstract void ClearActiveItem();
+        public abstract void CollectionsShowUpInHistory();
+        public abstract void TransientObjectsDoNotShowUpInHistory();
+        public abstract void ClearAllInActiveCollectionItem();
+        public abstract void ClearAllInActiveItem();
+        public abstract void ClearAllActiveCollectionItem();
+        public abstract void ClearAllActiveItem();
+        public abstract void ClearAllSingleCollectionItem();
+        public abstract void ClearAllSingleItem();
+        public abstract void ClearOthersInActiveCollectionItem();
+        public abstract void ClearOthersInActiveItem();
+        public abstract void ClearOthersActiveCollectionItem();
+        public abstract void ClearOthersActiveItem();
+        public abstract void ClearOthersSingleCollectionItem();
+        public abstract void ClearOthersSingleItem();
+        public abstract void ClearInActiveCollectionMultipleItems();
+        public abstract void ClearInActiveCollectionItem();
+        public abstract void ClearInActiveItem();
+        public abstract void ClearActiveMultipleCollectionItems();
+        public abstract void ClearActiveCollectionItem();
+        public abstract void CollectionKeepsFormat();
+        public abstract void CollectionKeepsPage();
+
+        #endregion
     }
 }
