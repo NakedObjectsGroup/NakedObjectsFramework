@@ -246,7 +246,6 @@
     <Compile Include="Facet\DescribedAsFacetAbstract.cs" />
     <Compile Include="Facet\DescribedAsFacetNone.cs" />
     <Compile Include="Facet\NamedFacetAbstract.cs" />
-    <Compile Include="Facet\NamedFacetNone.cs" />
     <Compile Include="Facet\ComplexTypeFacetAbstract.cs" />
     <Compile Include="Facet\CallbackFacetAbstract.cs" />
     <Compile Include="Facet\CallbackWithExceptionFacetAbstract.cs" />

@@ -43,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facets = new List<IFacet>();
 
             if (holder is MemberSpecImmutable) {
-                facets.Add(new NamedFacetNone(holder));
+                facets.Add(new NamedFacetInferred(null, holder));
                 facets.Add(new DescribedAsFacetNone(holder));
             }
 
@@ -85,7 +85,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var param = holder as ActionParameterSpecImmutable;
             if (param != null) {
                 string name = method.GetParameters()[paramNum].Name;
-                INamedFacet namedFacet = name == null ? (INamedFacet) new NamedFacetNone(holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
+                INamedFacet namedFacet = name == null ? new NamedFacetInferred(null, holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
                 facets.Add(namedFacet);
                 facets.Add(new DescribedAsFacetNone(holder));
                 facets.Add(new MultiLineFacetNone(holder));
