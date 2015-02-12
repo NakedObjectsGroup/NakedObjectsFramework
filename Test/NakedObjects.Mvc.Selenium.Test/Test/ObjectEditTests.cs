@@ -13,15 +13,17 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class ObjectEditTests : AWWebTest {
-        public abstract void EditPersistedObject();
+        private void FindCustomerAndEdit(string custId) {
+            var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
+            f.Clear();
+            f.SendKeys(custId + Keys.Tab);
+            var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
+            wait.ClickAndWait(edit, ".nof-objectedit");
+        }
 
         public void DoEditPersistedObject() {
             Login();
-            FindCustomerByAccountNumber("AW00000546");
-
-            //Go into Edit Mode
-            br.ClickEdit();
-            br.AssertContainsObjectEdit();
+            FindCustomerAndEdit("AW00000546");
 
             //Check basics of edit view
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
@@ -40,16 +42,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             //Test unmodifiable field
             br.GetField("Store-AccountNumber").AssertIsUnmodifiable();
-
-            //Navigate to a view of an object in a property - NOT NOW VALID FOR THIS PROPERTY
-            //br.ClickOnObjectLinkInField("Store-SalesPerson");
-            //br.AssertPageTitleEquals("Linda Mitchell");
-            //br.GetField("SalesPerson-CommissionPct").AssertValueEquals("1.50 %");
-            //br.AssertElementExists(By.CssSelector("[title=Edit]"));
-            //Assert.AreEqual("nof-menu", br.FindElement(By.Id("SalesPerson-Actions")).GetAttribute("class"));
-            //br.GoBackViaHistoryBy(1);
-
-            //Internal collection - addresses is rendered eagerly
 
             Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
@@ -80,15 +72,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertContainsObjectView();
         }
 
-        public abstract void EditTableHeader();
-
         public void DoEditTableHeader() {
             Login();
-            FindProduct("BK-M38S-46");
-            br.AssertContainsObjectView();
 
-            br.ClickEdit();
-            br.AssertContainsObjectEdit();
+            var f = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
+            f.Clear();
+            f.SendKeys("BK-M38S-46" + Keys.Tab);
+            var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
+            wait.ClickAndWait(edit, ".nof-objectedit");
 
             // Collection Table
             //br.ViewAsTable("Product-ProductInventory"); - noew rendered eagerly
@@ -115,60 +106,36 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("0", table.FindElements(By.TagName("tr"))[2].FindElements(By.TagName("td"))[3].Text);
         }
 
-        public abstract void CancelButtonOnObjectEdit();
-
         public void DoCancelButtonOnObjectEdit() {
             Login();
-            FindCustomerByAccountNumber("AW00000546");
-
-            //Go into Edit Mode
-            br.ClickEdit();
-            br.AssertContainsObjectEdit();
-
-            //Cancel
-            br.ClickCancel();
-            br.AssertContainsObjectView();
+            FindCustomerAndEdit("AW00000546");
+            wait.ClickAndWait(".nof-cancel", ".nof-objectview");
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
         }
 
-        public abstract void SaveWithNoChanges();
-
         public void DoSaveWithNoChanges() {
             Login();
-            FindCustomerByAccountNumber("AW00000071");
-
-            //Save no change
-            br.ClickEdit();
-            br.ClickSave();
-            br.AssertContainsObjectView();
+            FindCustomerAndEdit("AW00000071");
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
         }
-
-        public abstract void ChangeStringField();
 
         public void DoChangeStringField() {
             Login();
-            FindCustomerByAccountNumber("AW00000072");
-
-            br.ClickEdit();
+            FindCustomerAndEdit("AW00000072");
+    
             br.GetField("Store-Name").AssertInputValueEquals("Outdoor Equipment Store").TypeText("Temporary Name", br);
-            br.ClickSave();
-            br.AssertContainsObjectView();
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-Name").AssertValueEquals("Temporary Name");
         }
 
-        public abstract void ChangeDropDownField();
-
         public void DoChangeDropDownField() {
             Login();
-            FindCustomerByAccountNumber("AW00000073");
+            FindCustomerAndEdit("AW00000073");
 
-            br.ClickEdit();
             br.GetField("Store-SalesTerritory").AssertSelectedDropDownItemIs("Northwest").SelectDropDownItem("C", br);
-            br.ClickSave();
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-SalesTerritory").AssertObjectHasTitle("Central");
         }
-
-        public abstract void ChangeReferencePropertyViaRecentlyViewed();
 
         public void DoChangeReferencePropertyViaRecentlyViewed() {
             Login();
@@ -181,11 +148,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertElementExists(By.ClassName("nof-menu"));
             br.ClickRecentlyViewed("Store-SalesPerson");
             br.SelectFinderOption("Store-SalesPerson", "Shu Ito");
-            br.ClickSave();
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-SalesPerson").AssertObjectHasTitle("Shu Ito");
         }
-
-        public abstract void ChangeReferencePropertyViaRemove();
 
         public void DoChangeReferencePropertyViaRemove() {
             Login();
@@ -195,11 +160,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.ClickEdit();
             br.AssertElementExists(By.ClassName("nof-menu"));
             br.ClickRemove("Store-SalesPerson");
-            br.ClickSave();
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-SalesPerson").AssertIsEmpty();
         }
-
-        public abstract void ChangeReferencePropertyViaAFindAction();
 
         public void DoChangeReferencePropertyViaAFindAction() {
             Login();
@@ -210,12 +173,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.ClickFinderAction("Store-SalesPerson", "Store-SalesPerson-SalesRepository-FindSalesPersonByName");
             br.GetField("SalesRepository-FindSalesPersonByName-LastName").TypeText("Vargas", br);
             br.ClickOk();
-            //br.SelectFinderOption("Store-SalesPerson", "Garrett Vargas");
-            br.ClickSave();
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-SalesPerson").AssertObjectHasTitle("Garrett Vargas");
         }
-
-        public abstract void ChangeReferencePropertyViaNewAction();
 
         public void DoChangeReferencePropertyViaANewAction() {
             Login();
@@ -243,8 +203,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.Id("WorkOrder-Product")).AssertInputValueEquals("test ");
         }
 
-        public abstract void ChangeReferencePropertyViaAutoComplete();
-
         public void DoChangeReferencePropertyViaAutoComplete() {
             Login();
             br.ClickAction("WorkOrderRepository-RandomWorkOrder");
@@ -257,8 +215,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.GetField("WorkOrder-Product-Select-AutoComplete").SendKeys(Keys.Tab);
             br.GetField("WorkOrder-Product").AssertInputValueEquals("HL Crankset");
         }
-
-        public abstract void ChangeReferencePropertyViaANewActionFailMandatory();
 
         public void DoChangeReferencePropertyViaANewActionFailMandatory() {
             Login();
@@ -280,8 +236,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
             Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
         }
-
-        public abstract void ChangeReferencePropertyViaANewActionFailInvalid();
 
         public void DoChangeReferencePropertyViaANewActionFailInvalid() {
             Login();
@@ -305,8 +259,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
         }
 
-        public abstract void CheckDefaultsOnFindAction();
-
         public void DoCheckDefaultsOnFindAction() {
             Login();
             FindOrder("SO53144");
@@ -318,8 +270,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.GetField("OrderContributedActions-FindRate-Currency1").AssertInputValueEquals("Euro");
         }
 
-        public abstract void NoEditButtonWhenNoEditableFields();
-
         public void DoNoEditButtonWhenNoEditableFields() {
             Login();
             FindOrder("SO53144");
@@ -328,18 +278,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
         }
 
-        public abstract void Refresh();
-
         public void DoRefresh() {
             Login();
-            FindCustomerByAccountNumber("AW00000071");
-            br.ClickEdit();
+            FindCustomerAndEdit("AW00000071");
+
             br.Navigate().Refresh();
             br.WaitForAjaxComplete();
             br.AssertContainsObjectEdit();
         }
-
-        public abstract void NoValidationOnTransientUntilSave();
 
         public void DoNoValidationOnTransientUntilSave() {
             Login();
@@ -360,5 +306,43 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.AssertContainsObjectEdit();
         }
+
+        #region abstract 
+
+        public abstract void EditPersistedObject();
+
+        public abstract void EditTableHeader();
+
+        public abstract void CancelButtonOnObjectEdit();
+
+        public abstract void SaveWithNoChanges();
+
+        public abstract void ChangeStringField();
+
+        public abstract void ChangeDropDownField();
+
+        public abstract void ChangeReferencePropertyViaRecentlyViewed();
+
+        public abstract void ChangeReferencePropertyViaRemove();
+
+        public abstract void ChangeReferencePropertyViaAFindAction();
+
+        public abstract void ChangeReferencePropertyViaNewAction();
+
+        public abstract void NoValidationOnTransientUntilSave();
+
+        public abstract void Refresh();
+
+        public abstract void NoEditButtonWhenNoEditableFields();
+
+        public abstract void CheckDefaultsOnFindAction();
+
+        public abstract void ChangeReferencePropertyViaAutoComplete();
+
+        public abstract void ChangeReferencePropertyViaANewActionFailMandatory();
+
+        public abstract void ChangeReferencePropertyViaANewActionFailInvalid();
+
+        #endregion
     }
 }

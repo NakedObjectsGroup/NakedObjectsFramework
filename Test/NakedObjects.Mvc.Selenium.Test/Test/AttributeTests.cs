@@ -11,8 +11,6 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AttributeTests : AWWebTest {
-        public abstract void PasswordIsObscuredInAnEntryField();
-
         public void DoPasswordIsObscuredInAnEntryField() {
             Login();
 
@@ -26,8 +24,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // validate first name is not a password field 
             Assert.AreEqual("text", ordField.GetAttribute("type"));
         }
-
-        public abstract void MultiLineInViewMode();
 
         public void DoMultiLineInViewMode() {
             Login();
@@ -43,8 +39,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var demog = wait.ClickAndWait(".nof-dialog .nof-ok", "#Store-FormattedDemographics div.multiline");
             Assert.AreEqual("AnnualSales: 800000 AnnualRevenue: 80000 BankName: Primary International BusinessType: BM YearOpened: 1994 Specialty: Road SquareFeet: 20000 Brands: AW Internet: DSL NumberEmployees: 18", demog.Text);
         }
-
-        public abstract void MultiLineInEditMode();
 
         public void DoMultiLineInEditMode() {
             Login();
@@ -77,5 +71,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.IsTrue(txt.StartsWith("Line 1"));
             Assert.IsTrue(txt.EndsWith("Line 2"));
         }
+
+        #region abstract
+
+        public abstract void PasswordIsObscuredInAnEntryField();
+
+        public abstract void MultiLineInViewMode();
+
+        public abstract void MultiLineInEditMode();
+
+        #endregion
     }
 }
