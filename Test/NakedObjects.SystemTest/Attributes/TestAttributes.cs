@@ -91,6 +91,7 @@ namespace NakedObjects.SystemTest.Attributes {
                     new TestServiceValidateProgrammaticUpdates(),
                     new SimpleRepository<Contributee>(),
                     new SimpleRepository<Contributee2>(),
+                    new SimpleRepository<Contributee3>(),
                     new TestServiceContributedAction(),
                     new SimpleRepository<FinderAction1>(),
                     new TestServiceFinderAction()
@@ -124,6 +125,29 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
             Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
             Assert.AreEqual("Collection Contributed Action3", actions[3].Name);
+        }
+
+        [TestMethod]
+        public virtual void CollectionContributedToSubClass() {
+            var obj = NewTestObject<Contributee3>().GetDomainObject();
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
+
+            Assert.AreEqual(4, actions.Count());
+            Assert.IsTrue(actions[0] is IActionSpec);
+            Assert.AreEqual("Collection Contributed Action", actions[0].Name);
+            Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
+            Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
+            Assert.AreEqual("Collection Contributed Action3", actions[3].Name);
+        }
+
+        [TestMethod]
+        public virtual void CollectionContributedNotToAnotherClass() {
+            var obj = NewTestObject<Contributee>().GetDomainObject();
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
+
+            Assert.AreEqual(0, actions.Count());
         }
 
         #endregion
@@ -1055,6 +1079,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Validateprogrammaticupdates2> ValidateProgrammaticUpdates2s { get; set; }
         public DbSet<Contributee> Contributees { get; set; }
         public DbSet<Contributee2> Contributee2s { get; set; }
+        public DbSet<Contributee3> Contributee3s { get; set; }
         public DbSet<FinderAction1> Exclude1s { get; set; }
     }
 
@@ -1718,6 +1743,11 @@ namespace SystemTest.Attributes {
         public virtual int Id { get; set; }
 
         public void NativeAction() { }
+    }
+
+    public class Contributee3 : Contributee2 {
+
+        public void NativeAction3() { }
     }
 
     public class TestServiceFinderAction {
