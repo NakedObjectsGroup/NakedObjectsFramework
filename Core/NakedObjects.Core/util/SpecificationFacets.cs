@@ -31,7 +31,15 @@ namespace NakedObjects.Core.Util {
             return spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
         }
 
+        public static bool IsBoundedSet(this ITypeSpecImmutable spec) {
+            return spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
+        }
+
         public static bool IsCollectionOfBoundedSet(this ITypeSpec spec, IObjectSpec elementSpec) {
+            return spec.IsCollection && elementSpec.IsBoundedSet();
+        }
+
+        public static bool IsCollectionOfBoundedSet(this ITypeSpecImmutable spec, IObjectSpecImmutable elementSpec) {
             return spec.IsCollection && elementSpec.IsBoundedSet();
         }
 

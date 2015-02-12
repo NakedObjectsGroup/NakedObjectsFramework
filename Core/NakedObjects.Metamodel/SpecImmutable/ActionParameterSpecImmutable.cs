@@ -11,6 +11,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
@@ -29,6 +31,18 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public override IIdentifier Identifier {
             get { return null; }
+        }
+
+        public bool IsChoicesEnabled {
+            get {
+                return !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
+            }
+        }
+
+        public bool IsMultipleChoicesEnabled {
+            get {
+                return ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
+            }
         }
 
         #endregion

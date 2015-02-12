@@ -360,7 +360,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #region FinderAction
 
-        [TestMethod, Ignore] //RP:  Pending implementation of check for all params being parseable or choices enabled
+        [TestMethod]
         public virtual void ActionsIncludedInFinderMenu() {
 
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;

@@ -74,7 +74,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsChoicesEnabled {
             get {
                 if (!isChoicesEnabled.HasValue) {
-                    isChoicesEnabled = !IsMultipleChoicesEnabled && (Spec.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
+                    isChoicesEnabled = actionParameterSpecImmutable.IsChoicesEnabled;
                 }
                 return isChoicesEnabled.Value;
             }
@@ -84,8 +84,7 @@ namespace NakedObjects.Core.Spec {
             get {
                 if (!isMultipleChoicesEnabled.HasValue) {
                     isMultipleChoicesEnabled = Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                                               Spec.IsCollectionOfEnum(ElementSpec) ||
-                                               (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple);
+                                               Spec.IsCollectionOfEnum(ElementSpec) ||actionParameterSpecImmutable.IsMultipleChoicesEnabled;
                 }
                 return isMultipleChoicesEnabled.Value;
             }

@@ -56,16 +56,26 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsFinderMethod {
-            get { return HasReturn() && ContainsFacet(typeof (IFinderActionFacet)); }
+            get {
+                if (HasReturn() && ContainsFacet(typeof(IFinderActionFacet))) {
+                    foreach (var p in this.Parameters) {
+                        bool parseable = p.Specification.IsParseable;
+                        bool choicesEnabled = p.IsChoicesEnabled || p.IsMultipleChoicesEnabled;
+                        if (!(parseable || choicesEnabled)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
         }
 
         public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
-            if (!IsFinderMethod) return false;
-            if (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)) {
-                return true;
-            }
-            return ReturnSpec.IsOfType(spec);
+            return IsFinderMethod && (ReturnSpec.IsOfType(spec) || (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)));
         }
+
+
 
         public bool IsContributedMethod {
             get {
