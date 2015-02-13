@@ -240,7 +240,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string SingularName {
-            get { return singularName ?? (singularName = InnerSpec.GetFacet<INamedFacet>().Value); }
+            get { return singularName ?? (singularName = InnerSpec.GetFacet<INamedFacet>().NaturalName); }
         }
 
         public string UntitledName {

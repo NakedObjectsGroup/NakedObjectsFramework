@@ -1140,7 +1140,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is INamedFacet);
             var namedFacet = (INamedFacet) facet;
-            Assert.AreEqual("An Action With Named Annotation", namedFacet.Value);
+            Assert.AreEqual("An Action With Named Annotation", namedFacet.NaturalName);
         }
     }
 

@@ -29,6 +29,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return specification; }
         }
 
+        // todo do not like returning null here 
         public override IIdentifier Identifier {
             get { return null; }
         }

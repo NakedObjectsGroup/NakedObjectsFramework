@@ -2011,8 +2011,6 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ServiceList() {
             string s = mocks.HtmlHelper.Services().ToString();
-
-
             CheckResults("ServiceList", s);
         }
 

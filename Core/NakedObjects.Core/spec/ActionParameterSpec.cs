@@ -116,14 +116,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string Name {
-            get {
-                if (name == null) {
-                    var facet = GetFacet<INamedFacet>();
-                    string nv = facet == null ? null : facet.Value;
-                    name = nv ?? Spec.SingularName;
-                }
-                return name;
-            }
+            get { return name ?? (name = GetFacet<INamedFacet>().NaturalName); }
         }
 
         public virtual string Description {

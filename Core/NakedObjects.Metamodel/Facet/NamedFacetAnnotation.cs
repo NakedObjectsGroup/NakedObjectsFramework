@@ -7,12 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class NamedFacetAnnotation : NamedFacetAbstract {
         public NamedFacetAnnotation(string value, ISpecification holder)
-            : base(value, holder) {}
+            : base(value, holder) {
+            ShortName = value;
+            CapitalizedName = value;
+            SimpleName = value;
+            NaturalName = value;
+            PluralName = NameUtils.PluralName(NaturalName);
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

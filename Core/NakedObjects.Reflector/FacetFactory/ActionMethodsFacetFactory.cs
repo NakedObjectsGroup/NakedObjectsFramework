@@ -74,7 +74,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             Type[] paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
             FindAndRemoveValidMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
 
-            DefaultNamedFacet(facets, capitalizedName, action); // must be called after the checkForXxxPrefix methods
+            DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
 
             AddHideForSessionFacetNone(facets, action);
             AddDisableForSessionFacetNone(facets, action);
@@ -122,8 +122,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
         /// </summary>
-        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string capitalizedName, ISpecification action) {
-            actionFacets.Add(new NamedFacetInferred(NameUtils.NaturalName(capitalizedName), action));
+        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) {
+            actionFacets.Add(new NamedFacetInferred(name, action));
         }
 
         private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {

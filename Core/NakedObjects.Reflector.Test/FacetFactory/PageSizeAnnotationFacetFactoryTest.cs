@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
@@ -63,7 +64,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            var actionPeer = new ActionSpecImmutable(null, null, null);
+            var identifier = new IdentifierImpl(null, "Customer1", "SomeAction");
+            var actionPeer = new ActionSpecImmutable(identifier, null, null);
             new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);

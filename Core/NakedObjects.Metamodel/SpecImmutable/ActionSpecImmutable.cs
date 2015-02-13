@@ -15,12 +15,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
-    // TODO (in all DotNet...Peer classes) make all methodsArray throw ReflectiveActionException when 
-    // an exception occurs when calling a method reflectively (see execute method).  Then instead of 
-    // calling invocationExcpetion() the exception will be passed though, and dealt with generally by 
-    // the reflection package (which will be the same for all reflectors and will allow the message to
-    // be better passed back to the client).
-
     [Serializable]
     public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;

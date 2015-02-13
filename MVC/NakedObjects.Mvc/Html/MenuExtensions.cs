@@ -45,18 +45,18 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
-            var mainMenusFromViewData = (IEnumerable)html.ViewData[IdHelper.NofMainMenus];
+            var mainMenusFromViewData = (IEnumerable) html.ViewData[IdHelper.NofMainMenus];
             if (mainMenusFromViewData != null && mainMenusFromViewData.Cast<IMenuImmutable>().Any()) {
                 return RenderMainMenus(html, mainMenusFromViewData.Cast<IMenuImmutable>());
-            } else { //Use the MenuServices to derive the menus
-                var services = (IEnumerable)html.ViewData[IdHelper.NofServices];
-                var mainMenus = new List<IMenuImmutable>();
-                foreach (object service in services.Cast<object>()) {
-                    INakedObject nakedObject = html.Framework().GetNakedObject(service);
-                    mainMenus.Add(nakedObject.Spec.ObjectMenu);
-                }
-                return RenderMainMenus(html, mainMenus);
             }
+            //Use the MenuServices to derive the menus
+            var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
+            var mainMenus = new List<IMenuImmutable>();
+            foreach (object service in services.Cast<object>()) {
+                INakedObject nakedObject = html.Framework().GetNakedObject(service);
+                mainMenus.Add(nakedObject.Spec.ObjectMenu);
+            }
+            return RenderMainMenus(html, mainMenus);
         }
 
         private static MvcHtmlString RenderMainMenus(HtmlHelper html, IEnumerable<IMenuImmutable> menus) {

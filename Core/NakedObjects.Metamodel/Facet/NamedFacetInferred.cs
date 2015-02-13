@@ -7,12 +7,20 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
+using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class NamedFacetInferred : NamedFacetAbstract {
         public NamedFacetInferred(string value, ISpecification holder)
-            : base(value, holder) {}
+            : base(value, holder) {
+            ShortName = TypeNameUtils.GetShortName(value);
+            CapitalizedName = NameUtils.CapitalizeName(ShortName);
+            SimpleName = NameUtils.SimpleName(ShortName);
+            NaturalName = NameUtils.NaturalName(ShortName);
+            PluralName = NameUtils.PluralName(NaturalName);
+        }
 
         public override bool CanAlwaysReplace {
             get { return false; }

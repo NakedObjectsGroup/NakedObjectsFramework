@@ -34,7 +34,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         
 
         public string Name {
-            get { return GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(identifier.MemberName); }
+            get { return GetFacet<INamedFacet>().NaturalName; }
         }
 
         public string Description {

@@ -8,8 +8,6 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -23,25 +21,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region INamedFacet Members
 
-        public string CapitalizedName {
-            get { return NameUtils.CapitalizeName(ShortName); }
-        }
-
-        public string ShortName {
-            get { return TypeNameUtils.GetShortName(Value); }
-        }
-
-        public string SimpleName {
-            get { return NameUtils.SimpleName(ShortName); }
-        }
-
-        public string PluralName {
-            get { return NameUtils.PluralName(ShortName); }
-        }
-
-        public string NaturalName {
-            get { return NameUtils.NaturalName(ShortName); }
-        }
+        public string CapitalizedName { get; protected set; }
+        public string ShortName { get; protected set; }
+        public string SimpleName { get; protected set; }
+        public string PluralName { get; protected set; }
+        public string NaturalName { get; protected set; }
 
         #endregion
     }

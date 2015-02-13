@@ -30,10 +30,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return returnSpec; }
         }
 
-        public string GroupFullName {
-            get { return ""; }
-        }
-
         #endregion
 
         #region ISerializable

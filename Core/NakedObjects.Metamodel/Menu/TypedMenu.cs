@@ -73,7 +73,7 @@ namespace NakedObjects.Meta.Menu {
 
         private string GetFriendlyNameForObject() {
             ITypeSpecImmutable spec = GetObjectSpec<TObject>();
-            return spec.GetFacet<INamedFacet>().Value ?? spec.ShortName;
+            return spec.GetFacet<INamedFacet>().NaturalName;
         }
     }
 }
