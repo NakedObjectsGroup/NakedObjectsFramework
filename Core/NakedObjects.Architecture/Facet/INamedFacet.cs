@@ -13,5 +13,11 @@ namespace NakedObjects.Architecture.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to
     ///     annotating the member with <see cref="NamedAttribute" />
     /// </para>
-    public interface INamedFacet : ISingleStringValueFacet {}
+    public interface INamedFacet : ISingleStringValueFacet {
+        string ShortName { get; }
+        string SimpleName { get; }
+        string PluralName { get; }
+        string NaturalName { get; }
+        string CapitalizedName { get; }
+    }
 }
