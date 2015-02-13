@@ -280,7 +280,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter\IClock.cs" />
     <Compile Include="Exception\TitleException.cs" />
     <Compile Include="Authentication\WindowsSession.cs" />
     <Compile Include="Util\CopyUtils.cs" />

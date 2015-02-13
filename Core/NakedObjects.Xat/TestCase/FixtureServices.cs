@@ -60,10 +60,7 @@ namespace NakedObjects.Core.Fixture {
         protected class FixtureClock {
             private DateTime time;
 
-            /// <summary>
-            ///     Access via <see cref="IClock.Ticks" />
-            /// </summary>
-            protected long Ticks {
+             protected long Ticks {
                 get { return time.Ticks; }
             }
 
