@@ -18,52 +18,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             AWWebTest.InitialiseClass(context);
         }
 
-        #region abstract
-
-        public abstract void RemoteValidationProperty();
-
-        public abstract void RemoteValidationParameterNoPopup();
-
-        public abstract void RemoteValidationParameterPopup();
-
-        public abstract void ActionChoicesNoPopup();
-
-        public abstract void ActionChoicesPopup();
-
-        public abstract void ActionMultipleChoices();
-
-        public abstract void ActionConditionalMultipleChoices();
-
-        public abstract void ActionMultipleChoicesValidateFail();
-
-        public abstract void ActionCrossValidateFailNoPopup();
-
-        public abstract void ActionCrossValidateFailPopup();
-
-        public abstract void ActionMultipleChoicesPopup();
-
-        public abstract void ActionMultipleChoicesPopupDefaults();
-
-        public abstract void ActionMultipleChoicesPopupValidateFail();
-
-        public abstract void ActionMultipleChoicesNoPopUpEnum();
-
-        public abstract void ActionMultipleChoicesPopupEnum();
-
-        public abstract void ActionMultipleChoicesPopupConditionalEnum();
-
-        public abstract void ActionMultipleChoicesNoPopUpDomainObject();
-
-        public abstract void ActionMultipleChoicesPopupDomainObject();
-
-        public abstract void ClientSideValidation();
-
-        public abstract void CanGoBackToDialog();
-
-        public abstract void GoingBackToDialogPreservesEnteredValues();
-
-        #endregion
-
         public void DoRemoteValidationProperty() {
             Login();
 
@@ -569,5 +523,51 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.IsFalse(checkBox.Selected);
             br.TogglePopups(false);
         }
+
+        #region abstract
+
+        public abstract void RemoteValidationProperty();
+
+        public abstract void RemoteValidationParameterNoPopup();
+
+        public abstract void RemoteValidationParameterPopup();
+
+        public abstract void ActionChoicesNoPopup();
+
+        public abstract void ActionChoicesPopup();
+
+        public abstract void ActionMultipleChoices();
+
+        public abstract void ActionConditionalMultipleChoices();
+
+        public abstract void ActionMultipleChoicesValidateFail();
+
+        public abstract void ActionCrossValidateFailNoPopup();
+
+        public abstract void ActionCrossValidateFailPopup();
+
+        public abstract void ActionMultipleChoicesPopup();
+
+        public abstract void ActionMultipleChoicesPopupDefaults();
+
+        public abstract void ActionMultipleChoicesPopupValidateFail();
+
+        public abstract void ActionMultipleChoicesNoPopUpEnum();
+
+        public abstract void ActionMultipleChoicesPopupEnum();
+
+        public abstract void ActionMultipleChoicesPopupConditionalEnum();
+
+        public abstract void ActionMultipleChoicesNoPopUpDomainObject();
+
+        public abstract void ActionMultipleChoicesPopupDomainObject();
+
+        public abstract void ClientSideValidation();
+
+        public abstract void CanGoBackToDialog();
+
+        public abstract void GoingBackToDialogPreservesEnteredValues();
+
+        #endregion
     }
 }

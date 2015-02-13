@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -26,6 +27,16 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) != null);
             Assert.IsNotNull(field);
             return field;
+        }
+
+        public static void ClickAndWait(this SafeWebDriverWait wait, string actionSelector, Func<IWebDriver, bool> f) {
+            IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
+            wait.ClickAndWait(action, f);
+        }
+
+        public static void ClickAndWait(this SafeWebDriverWait wait, IWebElement action, Func<IWebDriver, bool> f) {
+            action.Click();
+            wait.Until(f);
         }
 
         public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {

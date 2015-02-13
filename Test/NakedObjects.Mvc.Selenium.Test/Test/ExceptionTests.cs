@@ -7,7 +7,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
-using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class ExceptionTests : AWWebTest {
@@ -15,8 +14,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoDomainException() {
             Login();
-            br.ClickAction("CustomerRepository-ThrowDomainException");
-            string text = br.FindElement(By.ClassName("error")).FindElement(By.TagName("h2")).Text;
+
+            var err = wait.ClickAndWait("#CustomerRepository-ThrowDomainException button", ".error h2");
+
+            string text = err.Text;
             Assert.AreEqual("An exception was thrown within the application code", text);
         }
     }

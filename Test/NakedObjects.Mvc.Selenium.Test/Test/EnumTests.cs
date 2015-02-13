@@ -25,29 +25,38 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         protected void DoViewEnumProperty() {
             Login();
-            FindOrder("SO67861");
+
+            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
+
+            orderNumber.Clear();
+            orderNumber.SendKeys("SO67861" + Keys.Tab);
+
+            var status = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-Status .nof-value");
+            Assert.AreEqual("Shipped", status.Text);
             br.AssertPageTitleEquals("SO67861");
-            IWebElement status = br.GetField("SalesOrderHeader-Status");
-            status.AssertValueEquals("Shipped");
         }
 
         public abstract void EditEnumProperty();
 
         protected void DoEditEnumProperty() {
             Login();
-            FindOrder("SO67862");
-            br.AssertPageTitleEquals("SO67862");
-            br.ClickEdit();
-            IWebElement status = br.GetField("SalesOrderHeader-Status");
-            status.SelectDropDownItem("Cancelled", br);
-            ////Must adjust due date or else save fails
-            //IWebElement due = br.GetField("SalesOrderHeader-ShipDate");
-            //string tomorrow = DateTime.Today.ToShortDateString();
-            //due.TypeText(tomorrow, br);
 
-            br.ClickSave();
-            status = br.GetField("SalesOrderHeader-Status");
-            status.AssertValueEquals("Cancelled");
+            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
+
+            orderNumber.Clear();
+            orderNumber.SendKeys("SO67862" + Keys.Tab);
+
+            var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
+            wait.ClickAndWait(edit, "#SalesOrderHeader-Status-Input");
+
+            var status = br.FindElement(By.CssSelector("#SalesOrderHeader-Status"));
+
+            status.SelectDropDownItem("Cancelled", br);
+          
+
+            status = wait.ClickAndWait(".nof-save", ".nof-objectview #SalesOrderHeader-Status div.nof-value");
+
+            Assert.AreEqual("Cancelled", status.Text);
         }
     }
 }

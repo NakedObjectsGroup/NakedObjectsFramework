@@ -20,34 +20,45 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoTestWithoutRelyingOnAjax() {
             Login();
-            FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsObjectView();
+
+            var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
+
+            f.Clear();
+            f.SendKeys("AW00000546" + Keys.Tab);
+
+            var action = wait.ClickAndWait(".nof-ok", "#Store-CreateNewAddress button");
+
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
 
-            br.ClickAction("Store-CreateNewAddress");
+            var country = wait.ClickAndWait(action, "#Address-CountryRegion");
 
-            IWebElement country = br.GetField("Address-CountryRegion").AssertIsEmpty();
+            country.AssertIsEmpty();
 
-            IWebElement province = br.GetField("Address-StateProvince").AssertIsEmpty();
+            IWebElement province = br.FindElement(By.CssSelector("#Address-StateProvince"));
+
+            province.AssertIsEmpty(); 
 
             country.SelectDropDownItem("Australia", br);
 
-            br.ClickSave();
+            br.FindElement(By.CssSelector(".nof-save")).Click();
 
-            province = br.GetField("Address-StateProvince").AssertIsEmpty();
+            province = br.FindElement(By.CssSelector("#Address-StateProvince"));
+            province.AssertIsEmpty();
             province.SelectDropDownItem("Queensland", br);
 
-            br.ClickSave();
+            br.FindElement(By.CssSelector(".nof-save")).Click();
 
-            country = br.GetField("Address-CountryRegion").AssertIsEmpty();
+            country = br.FindElement(By.CssSelector("#Address-CountryRegion"));
+            country.AssertIsEmpty();
             country.SelectDropDownItem("United Kingdom", br);
 
-            br.ClickSave();
+            br.FindElement(By.CssSelector(".nof-save")).Click();
 
-            province = br.GetField("Address-StateProvince").AssertIsEmpty();
+            province = br.FindElement(By.CssSelector("#Address-StateProvince"));
+            province.AssertIsEmpty();
             province.SelectDropDownItem("England", br);
 
-            br.ClickSave();
+            br.FindElement(By.CssSelector(".nof-save")).Click();
         }
     }
 }

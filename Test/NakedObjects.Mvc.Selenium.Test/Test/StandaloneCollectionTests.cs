@@ -14,22 +14,25 @@ using OpenQA.Selenium;
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class StandaloneCollectionTests : AWWebTest {
         public abstract void ViewStandaloneCollection();
+        public abstract void ViewStandaloneCollectionTable();
+
 
         public void DoViewStandaloneCollection() {
             Login();
-            br.ClickAction("OrderRepository-HighestValueOrders");
-            br.AssertPageTitleEquals("20 Sales Orders");
+
+            wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.Title == "20 Sales Orders");
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.GetTopObject().Text);
             IWebElement table = br.FindElement(By.ClassName("SalesOrderHeader"));
             Assert.AreEqual(21, table.FindElements(By.TagName("tr")).Count);
         }
 
-        public abstract void ViewStandaloneCollectionTable();
+        
 
         public void DoViewStandaloneCollectionTable() {
             Login();
-            br.ClickAction("SpecialOfferRepository-CurrentSpecialOffers");
-            br.AssertPageTitleEquals("7 Special Offers");
+          
+            wait.ClickAndWait("#SpecialOfferRepository-CurrentSpecialOffers button", wd => wd.Title == "7 Special Offers");
+
             Assert.AreEqual("Current Special Offers: Query Result: Viewing 7 of 7 Special Offers", br.GetTopObject().Text);
 
             br.FindElement(By.ClassName("nof-table")).BrowserSpecificClick(br);
