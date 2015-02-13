@@ -33,7 +33,6 @@ namespace NakedObjects.Core.Reflect {
             AssertArgNotNull(lifecycleManager);
 
             this.id = id;
-            NameUtils.NaturalName(id);
             memberSpecImmutable = memberSpec;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
@@ -71,7 +70,9 @@ namespace NakedObjects.Core.Reflect {
         /// </summary>
         /// <seealso cref="Id()" />
         public virtual string Name {
-            get { return memberSpecImmutable.Name; }
+            get {
+                return memberSpecImmutable.Name;
+            }
         }
 
         public virtual string Description {

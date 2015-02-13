@@ -7,13 +7,21 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Util;
 
 namespace NakedObjects.Meta.I18N {
     [Serializable]
     internal class NamedFacetI18N : NamedFacetAbstract {
         public NamedFacetI18N(string valueString, ISpecification holder)
-            : base(valueString, holder) {}
+            : base(valueString, holder) {
+            ShortName = TypeNameUtils.GetShortName(valueString);
+            CapitalizedName = NameUtils.CapitalizeName(ShortName);
+            SimpleName = NameUtils.SimpleName(ShortName);
+            NaturalName = NameUtils.NaturalName(ShortName);
+            PluralName = NameUtils.PluralName(NaturalName);
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

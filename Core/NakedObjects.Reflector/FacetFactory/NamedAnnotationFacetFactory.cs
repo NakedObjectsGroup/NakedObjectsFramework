@@ -116,12 +116,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private INamedFacet SaveDefaultName(ISpecification holder) {
-            string name = NameUtils.NaturalName(SafeGetName(holder));
+            string name = holder.Identifier.MemberName;
             if (!namesScratchPad.Contains(name)) {
                 if (!TypeUtils.IsNakedObjects(currentType) && !IsAlwaysHidden(holder) && !string.IsNullOrWhiteSpace(name)) {
                     namesScratchPad.Add(name);
                 }
-                return null;
+                return null; 
             }
             return CreateAnnotation(name, holder);
         }

@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]

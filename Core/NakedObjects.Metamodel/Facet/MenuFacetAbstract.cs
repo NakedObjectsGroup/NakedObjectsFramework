@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.Facet {
 
         protected static string GetMenuName(TypeSpecImmutable spec) {
             if (spec is IServiceSpecImmutable) {
-                return spec.GetFacet<INamedFacet>().Value ?? NameUtils.NaturalName(spec.ShortName);
+                return spec.GetFacet<INamedFacet>().NaturalName;
             }
             return Model.ActionsMenuName;
         }

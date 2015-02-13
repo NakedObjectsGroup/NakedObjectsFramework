@@ -41,10 +41,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return parameters; }
         }
 
-        public string GroupFullName {
-            get { return ""; }
-        }
-
         public override IObjectSpecImmutable ElementSpec {
             get { return GetFacet<IActionInvocationFacet>().ElementType; }
         }

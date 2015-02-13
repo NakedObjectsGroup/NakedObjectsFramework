@@ -175,7 +175,7 @@ namespace NakedObjects.Core.Spec {
             return Manager.CreateAdapter(obj, null, null);
         }
 
-        public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
+        private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
             Tuple<object, TypeOfDefaultValue> defaultValue = null;
 
             // Check Facet on property, then facet on type finally fall back on type; 
