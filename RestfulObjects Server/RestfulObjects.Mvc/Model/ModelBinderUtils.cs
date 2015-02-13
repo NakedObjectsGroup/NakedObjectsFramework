@@ -20,7 +20,7 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Mvc.Model {
     public static class ModelBinderUtils {
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
 
         private static bool IsReservedName(string name) {
             return name.StartsWith(RestControlFlags.ReservedPrefix);

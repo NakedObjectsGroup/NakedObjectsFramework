@@ -29,7 +29,7 @@ namespace RestfulObjects.Mvc {
     public class RestfulObjectsControllerBase : ApiController {
         #region static and routes
 
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Logger = LogManager.GetLogger<RestfulObjectsControllerBase>();
 
         static RestfulObjectsControllerBase() {
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);

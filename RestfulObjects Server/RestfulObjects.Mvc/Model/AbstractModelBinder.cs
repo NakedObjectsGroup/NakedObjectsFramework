@@ -54,7 +54,7 @@ namespace RestfulObjects.Mvc.Model {
                 bindingContext.Model = parseFunc();
             }
             catch (Exception e) {
-                LogManager.GetCurrentClassLogger().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
+                LogManager.GetLogger<AbstractModelBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
                 bindingContext.Model = failFunc();
             }
         }

@@ -12,7 +12,7 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Mvc.Model {
     public class ReferenceValue : IValue {
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Logger = LogManager.GetLogger<ReferenceValue>();
         private readonly string internalValue;
 
         public ReferenceValue(object value, string name) {

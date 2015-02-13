@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Utility {
     public class UriMtHelper {
         public static Func<HttpRequestMessage, string> GetAuthority;
         public static Func<string> GetApplicationPath;
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly INakedObjectActionSurface action;
         private readonly INakedObjectAssociationSurface assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
