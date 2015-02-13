@@ -27,30 +27,18 @@ namespace $rootnamespace$ {
             }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new Type[] {
+				typeof (AsyncService)
                 };
             }
         }
 
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
-            get {
-                return new Type[] {
-					typeof (AsyncService)
-                };
-            }
-        }
+     
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
+            return new ReflectorConfiguration(Types, Services, new string[]{}, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

@@ -39,7 +39,7 @@ namespace NakedObjects.Batch {
             }
         }
 
-        private static Type[] MenuServices {
+        private static Type[] Services {
             get {
                 return new[] {
                     typeof (CustomerRepository),
@@ -51,27 +51,15 @@ namespace NakedObjects.Batch {
                     typeof (ContactRepository),
                     typeof (VendorRepository),
                     typeof (PurchaseOrderRepository),
-                    typeof (WorkOrderRepository)
+                    typeof (WorkOrderRepository),
+                     typeof (OrderContributedActions),
+                    typeof (CustomerContributedActions),
+                     typeof (AsyncService),
                 };
             }
         }
 
-        private static Type[] ContributedActions {
-            get {
-                return new Type[] {
-                    typeof (OrderContributedActions),
-                    typeof (CustomerContributedActions)
-                };
-            }
-        }
-
-        private static Type[] SystemServices {
-            get {
-                return new Type[] {
-                    typeof (AsyncService)
-                };
-            }
-        }
+       
 
         private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
@@ -79,7 +67,7 @@ namespace NakedObjects.Batch {
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, MenuServices, ContributedActions, SystemServices, MainMenus);
+            return new ReflectorConfiguration(Types, Services, new string[]{}, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

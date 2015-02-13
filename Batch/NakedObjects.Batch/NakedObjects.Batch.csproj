@@ -41,9 +41,13 @@
     <StartupObject>NakedObjects.Batch.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=2.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Common.Logging.2.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,17 +66,20 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Architecture">
+    <Reference Include="NakedObjects.Architecture, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-beta2\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Core">
+    <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.FWResources">
+    <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,7 +89,8 @@
     <Reference Include="NakedObjects.Metamodel">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Persistor.Entity">
+    <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -92,7 +100,8 @@
     <Reference Include="NakedObjects.Reflector">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Reflector.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Snapshot.Xml">
+    <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
