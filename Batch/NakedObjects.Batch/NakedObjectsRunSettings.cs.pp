@@ -17,8 +17,22 @@ namespace $rootnamespace$ {
     // Use this class to configure the application running under Naked Objects
     public class NakedObjectsRunSettings {
         
+				private static string[] ModelNamespaces { 
+            get {
+                return new string[] {}; //Add top-level namespace(s) that cover the domain model
+            }			
+		}
 
-        // Specify any types that need to be reflected-over by the framework and that
+        private static Type[] Services {
+            get {
+                return new Type[] {
+					typeof (AsyncService)
+					//Add your domain services here
+                };
+            }
+        }
+
+		// Specify any types that need to be reflected-over by the framework and that
         // will not be discovered via the services
 		private static Type[] Types {
             get {
@@ -27,18 +41,8 @@ namespace $rootnamespace$ {
             }
         }
 
-        private static Type[] Services {
-            get {
-                return new Type[] {
-				typeof (AsyncService)
-                };
-            }
-        }
-
-     
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, new string[]{}, MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

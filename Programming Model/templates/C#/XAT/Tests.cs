@@ -1,10 +1,8 @@
+using System;
 using System.Linq;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.EntityObjectStore;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using NakedObjects.Xat.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace $rootnamespace$
@@ -16,42 +14,66 @@ namespace $rootnamespace$
     {
 
         #region Run configuration
-         //Set up the properties in this region exactly the same way as in your Run class
+        //Specify top-level Namespace(s) covering your domain model
+        protected override string[] Namespaces {
+            get { return new string[] { }; }
+        }
 
-	protected override IServicesInstaller MenuServices
-	{
-		get
-		{
-			return new ServicesInstaller();
-		}
-	}
+         //Register all services here as types
+        protected override Type[] Services {
+            get { return new Type[] { }; }
+        }
 
+        //Create main menus here, if they need to be accessed in tests
+        //protected virtual IMenu[] MainMenus(IMenuFactory factory) {
+        //    return new IMenu[] {
+        //    };
+        //}
 
-        protected override IObjectPersistorInstaller Persistor
+        //Specify any domain types that won't be reached by traversing the object graph 
+        //from methods in the registered services
+        protected override Type[] Types {
+            get {
+                return new Type[] {};
+            }
+        }
+
+        protected override EntityObjectStoreConfiguration Persistor
         {
             get
             {
-		var installer = new EntityPersistorInstaller();
-                installer.UsingCodeFirstContext(() => new MyDbContext());
+		        var installer = new EntityObjectStoreConfiguration();
+                //installer.UsingCodeFirstContext(() => new MyDbContext());
                 return installer;
             }
         }
         #endregion
 
         #region Initialize and Cleanup
+        //private bool fixturesRun;
 
         [TestInitialize()]
         public void Initialize()
         {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             // Use e.g. DatabaseUtils.RestoreDatabase to revert database before each test (or within a [ClassInitialize()] method).
+            //if (!fixturesRun) {
+            //    RunFixtures();
+            //    fixturesRun = true;
+            //}
+            StartTest();
         }
 
         [TestCleanup()]
         public void  Cleanup()
         {
-		CleanupNakedObjectsFramework();
         }
+
+        //protected override object[] Fixtures {
+        //    get {
+        //        return new object[] { };
+        //    }
+        //}
 
         #endregion
 

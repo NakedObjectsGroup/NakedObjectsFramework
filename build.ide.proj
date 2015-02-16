@@ -60,7 +60,6 @@
     <MSBuild Properties="template=DbContext" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=DbInitialiser" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=DbMapping" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
-    <MSBuild Properties="template=PartialDomainObjectWithBuddy" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=Repository" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=Fixture" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=XAT" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>

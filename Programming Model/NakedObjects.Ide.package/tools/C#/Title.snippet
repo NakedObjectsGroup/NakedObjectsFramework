@@ -4,7 +4,7 @@
     <Header>
       <Title>Title</Title>
       <Author>Naked Objects Group</Author>
-      <Description>Adds a Title() method to function as the domain object's title.</Description>
+      <Description>Adds a ToString() method to function as the domain object's title.</Description>
       <HelpUrl>www.nakedobjects.net</HelpUrl>
       <Shortcut>title</Shortcut>
     </Header>
@@ -27,7 +27,7 @@
       <Code Language="CSharp" Kind="method decl"><![CDATA[
       public override string ToString()
       {
-        TitleBuilder t = new TitleBuilder();
+        var t = Container.NewTitleBuilder();
         t.Append($content$);
         return t.ToString();
       }

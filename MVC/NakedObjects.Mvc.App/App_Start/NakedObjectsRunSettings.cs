@@ -26,23 +26,10 @@ namespace NakedObjects.Mvc.App {
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
-        /// <summary>
-        /// Specify any types that need to be reflected-over by the framework and that
-        /// will not be discovered via the services
-        /// </summary>
-        private static Type[] Types {
+
+        private static string[] ModelNamespaces {
             get {
-                return new[] {
-                    typeof (EnumerableQuery<object>),
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>),
-                    typeof (CustomerCollectionViewModel),
-                    typeof (OrderLine),
-                    typeof (QuickOrderForm),
-                    typeof (ActionResultModelQ<>),
-                    typeof (ActionResultModel<>)
-                };
+                return AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray();
             }
         }
 
@@ -66,13 +53,28 @@ namespace NakedObjects.Mvc.App {
             }
         }
 
+        private static Type[] Types {
+            get {
+                return new[] {
+                    //These types must be registered because they are defined in
+                    //NakedObjects.Mvc, not in Core.
+                    typeof (ActionResultModelQ<>),
+                    typeof (ActionResultModel<>),
+                    //Add any types here that cannot be reached by traversing model from the registered services
+                    typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (QuickOrderForm)
+                };
+            }
+        }
+
         private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
             return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

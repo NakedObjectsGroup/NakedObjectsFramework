@@ -92,12 +92,17 @@ namespace NakedObjects.Xat {
         }
 
         /// <summary>
-        /// All services may be registered in this property alone.
-        /// (MenuServices, ContributedActions & SystemServices are for
-        /// backwards compatibility only.)
+        /// By default this returns the union of the types specified in MenuServices, ContributedActions
+        /// & SystemServices. This is for backwards compatibility only. 
+        /// The property may be overridden to return a fresh list of types, in which case Menu Services etc
+        /// will be ignored.
         /// </summary>
-        protected virtual object[] Services {
-            get { return new object[] { }; }
+        protected virtual Type[] Services {
+            get {
+                return (new List<Type>()).Union(MenuServices.Select(s => s.GetType()))
+                .Union(ContributedActions.Select(s => s.GetType()))
+                .Union(SystemServices.Select(s => s.GetType())).ToArray();
+            }
         }
 
         /// <summary>
@@ -130,6 +135,12 @@ namespace NakedObjects.Xat {
 
         protected virtual string[] Namespaces {
             get { return new string[] { }; }
+        }
+
+        protected virtual EntityObjectStoreConfiguration Persistor {
+            get {
+                return new EntityObjectStoreConfiguration();
+            }
         }
 
         protected void StartTest() {
@@ -317,17 +328,6 @@ namespace NakedObjects.Xat {
             tc.testObjectFactory = null;
         }
 
-        /// <summary>
-        /// Returns the union of Services, MenuServices, ContributedActions and SystemServices properties
-        /// </summary>
-        /// <returns></returns>
-        protected Type[] AllServices() {
-            return Services.Select(s => s.GetType())
-                .Union(MenuServices.Select(s => s.GetType()))
-                .Union(ContributedActions.Select(s => s.GetType()))
-                .Union(SystemServices.Select(s => s.GetType())).ToArray();
-        }
-
         protected virtual void RegisterTypes(IUnityContainer container) {
             //Standard configuration
             StandardUnityConfig.RegisterStandardFacetFactories(container);
@@ -335,19 +335,14 @@ namespace NakedObjects.Xat {
             StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
-            var config = new EntityObjectStoreConfiguration();
-
-            //config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
 
 
 
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
                 Types ?? new Type[] { },
-                AllServices(),
+                Services,
                 Namespaces ?? new string[] { },
                 MainMenus);
 

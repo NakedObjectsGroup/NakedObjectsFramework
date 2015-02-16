@@ -97,11 +97,11 @@ type Nof4TestsDomainType() =
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         override x.Services  = 
-          [| box (new RestDataRepository())
-             box (new WithActionService()) 
-             box (new ContributorService()) 
-             box (new TestTypeCodeMapper())
-             box (new TestKeyCodeMapper())  |]
+          [| typeof<RestDataRepository>
+             typeof<WithActionService> 
+             typeof<ContributorService> 
+             typeof<TestTypeCodeMapper>
+             typeof<TestKeyCodeMapper> |]
                
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         

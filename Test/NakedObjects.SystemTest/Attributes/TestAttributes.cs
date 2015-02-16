@@ -20,8 +20,6 @@ using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
-
-
 namespace NakedObjects.SystemTest.Attributes {
     [TestClass]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
@@ -48,53 +46,53 @@ namespace NakedObjects.SystemTest.Attributes {
             get { return new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"}; }
         }
 
-        protected override object[] Services {
+        protected override Type[] Services {
             get {
-                return new object[] {
-                    new SimpleRepository<Default1>(),
-                    new SimpleRepository<Describedas1>(),
-                    new SimpleRepository<Describedas2>(),
-                    new SimpleRepository<Description1>(),
-                    new SimpleRepository<Description2>(),
-                    new SimpleRepository<Disabled1>(),
-                    new SimpleRepository<Displayname1>(),
-                    new SimpleRepository<Hidden1>(),
-                    new SimpleRepository<Iconname1>(),
-                    new SimpleRepository<Iconname2>(),
-                    new SimpleRepository<Iconname3>(),
-                    new SimpleRepository<Iconname4>(),
-                    new SimpleRepository<Immutable1>(),
-                    new SimpleRepository<Immutable2>(),
-                    new SimpleRepository<Immutable3>(),
-                    new SimpleRepository<Mask1>(),
-                    new SimpleRepository<Mask2>(),
-                    new SimpleRepository<Maxlength1>(),
-                    new SimpleRepository<Maxlength2>(),
-                    new SimpleRepository<Named1>(),
-                    new SimpleRepository<Range1>(),
-                    new SimpleRepository<Regex1>(),
-                    new SimpleRepository<Regex2>(),
-                    new SimpleRepository<Memberorder1>(),
-                    new SimpleRepository<Memberorder2>(),
-                    new SimpleRepository<Stringlength1>(),
-                    new SimpleRepository<Title1>(),
-                    new SimpleRepository<Title2>(),
-                    new SimpleRepository<Title3>(),
-                    new SimpleRepository<Title4>(),
-                    new SimpleRepository<Title5>(),
-                    new SimpleRepository<Title6>(),
-                    new SimpleRepository<Title7>(),
-                    new SimpleRepository<Title8>(),
-                    new SimpleRepository<Title9>(),
-                    new SimpleRepository<Validateprogrammaticupdates1>(),
-                    new SimpleRepository<Validateprogrammaticupdates2>(),
-                    new TestServiceValidateProgrammaticUpdates(),
-                    new SimpleRepository<Contributee>(),
-                    new SimpleRepository<Contributee2>(),
-                    new SimpleRepository<Contributee3>(),
-                    new TestServiceContributedAction(),
-                    new SimpleRepository<FinderAction1>(),
-                    new TestServiceFinderAction()
+                return new Type[] {
+                    typeof(SimpleRepository<Default1>),
+                    typeof(SimpleRepository<Describedas1>),
+                    typeof(SimpleRepository<Describedas2>),
+                    typeof(SimpleRepository<Description1>),
+                    typeof(SimpleRepository<Description2>),
+                    typeof(SimpleRepository<Disabled1>),
+                    typeof(SimpleRepository<Displayname1>),
+                    typeof(SimpleRepository<Hidden1>),
+                    typeof(SimpleRepository<Iconname1>),
+                    typeof(SimpleRepository<Iconname2>),
+                    typeof(SimpleRepository<Iconname3>),
+                    typeof(SimpleRepository<Iconname4>),
+                    typeof(SimpleRepository<Immutable1>),
+                    typeof(SimpleRepository<Immutable2>),
+                    typeof(SimpleRepository<Immutable3>),
+                    typeof(SimpleRepository<Mask1>),
+                    typeof(SimpleRepository<Mask2>),
+                    typeof(SimpleRepository<Maxlength1>),
+                    typeof(SimpleRepository<Maxlength2>),
+                    typeof(SimpleRepository<Named1>),
+                    typeof(SimpleRepository<Range1>),
+                    typeof(SimpleRepository<Regex1>),
+                    typeof(SimpleRepository<Regex2>),
+                    typeof(SimpleRepository<Memberorder1>),
+                    typeof(SimpleRepository<Memberorder2>),
+                    typeof(SimpleRepository<Stringlength1>),
+                    typeof(SimpleRepository<Title1>),
+                    typeof(SimpleRepository<Title2>),
+                    typeof(SimpleRepository<Title3>),
+                    typeof(SimpleRepository<Title4>),
+                    typeof(SimpleRepository<Title5>),
+                    typeof(SimpleRepository<Title6>),
+                    typeof(SimpleRepository<Title7>),
+                    typeof(SimpleRepository<Title8>),
+                    typeof(SimpleRepository<Title9>),
+                    typeof(SimpleRepository<Validateprogrammaticupdates1>),
+                    typeof(SimpleRepository<Validateprogrammaticupdates2>),
+                    typeof(TestServiceValidateProgrammaticUpdates),
+                    typeof(SimpleRepository<Contributee>),
+                    typeof(SimpleRepository<Contributee2>),
+                    typeof(SimpleRepository<Contributee3>),
+                    typeof(TestServiceContributedAction),
+                    typeof(SimpleRepository<FinderAction1>),
+                    typeof(TestServiceFinderAction)
                 };
             }
         }

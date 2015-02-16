@@ -54,7 +54,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
         private IReflectorConfiguration MyReflectorConfig() {
             return new ReflectorConfiguration(
                 this.Types ?? new Type[] { },
-                this.AllServices(),
+                this.Services,
                 Types.Select(t => t.Namespace).Distinct().ToArray(),
                 LocalMainMenus.MainMenus);
         }

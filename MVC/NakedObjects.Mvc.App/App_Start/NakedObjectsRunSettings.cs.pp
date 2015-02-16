@@ -21,25 +21,13 @@ namespace $rootnamespace$ {
 
     // Use this class to configure the application running under Naked Objects
     public class NakedObjectsRunSettings {
-        
-        // Specify any types that need to be reflected-over by the framework and that
-        // will not be discovered via the services
-		private static Type[] Types {
-            get {
-                return new Type[] {
-				    // TODO: This list is a temporary kludge pending completion of ticket #4135. 
-					// When released, NOF 7 will register these (and other) generic collection types
-					// transparently, not explicitly here.
-				    typeof (EnumerableQuery<object>),
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>),
-                    typeof (NakedObjects.Value.Image),
-                    typeof (NakedObjects.Value.FileAttachment)
-                };
-            }
-        }
 
+		private static string[] ModelNamespaces { 
+            get {
+                return new string[] {}; //Add top-level namespace(s) that cover the domain model
+            }			
+		}
+        
         private static Type[] Services {
             get {
                 return new Type[] {
@@ -47,8 +35,20 @@ namespace $rootnamespace$ {
             }
         }
 
+		private static Type[] Types {
+            get {
+                return new Type[] {
+                    //These types must be registered because they are defined in
+                    //NakedObjects.Mvc, not in Core.
+                    typeof (ActionResultModelQ<>),
+                    typeof (ActionResultModel<>)
+                    //Add any domain types that cannot be reached by traversing model from the registered services
+                };
+            }
+        }
+
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

@@ -34,13 +34,13 @@ namespace NakedObjects.SystemTest.Menus {
             get { return new[] { typeof(Foo).Namespace }; }
         }
 
-        protected override object[] Services {
+        protected override Type[] Services {
             get {
-                return new object[] {
-                    new SimpleRepository<Foo>(),
-                    new SimpleRepository<Foo2>(),
-                    new SimpleRepository<Bar>(),
-                    new ContributingService()
+                return new Type[] {
+                    typeof(SimpleRepository<Foo>),
+                    typeof(SimpleRepository<Foo2>),
+                    typeof(SimpleRepository<Bar>),
+                    typeof(ContributingService)
                 };
             }
         }

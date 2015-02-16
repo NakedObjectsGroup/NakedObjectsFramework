@@ -25,17 +25,11 @@ namespace NakedObjects.Batch {
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
-        /// <summary>
-        /// Specify any types that need to be reflected-over by the framework and that
-        /// will not be discovered via the services
-        /// </summary>
-        private static Type[] Types {
+        private const string awModel = "AdventureWorksModel";
+
+        private static string[] ModelNamespaces {
             get {
-                return new[] {
-                    typeof (EnumerableQuery<object>),
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>)
-                };
+                return new string[] { awModel }; //Add top-level namespace(s) that cover the domain model
             }
         }
 
@@ -52,22 +46,34 @@ namespace NakedObjects.Batch {
                     typeof (VendorRepository),
                     typeof (PurchaseOrderRepository),
                     typeof (WorkOrderRepository),
-                     typeof (OrderContributedActions),
+                    typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
-                     typeof (AsyncService),
+                    typeof (AsyncService)
                 };
             }
         }
 
-       
+        /// <summary>
+        /// Specify any types that need to be reflected-over by the framework and that
+        /// will not be discovered via the services
+        /// </summary>
+        private static Type[] Types {
+            get {
+                return new[] {
+                    typeof (EnumerableQuery<object>),
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>)
+                };
+            }
+        }
 
         private static Type[] AllPersistedTypesInMainModel() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
+            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == awModel).GetTypes();
             return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, new string[]{}, MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

@@ -93,9 +93,9 @@ type Nof4Tests() =
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         override x.Services = 
-           [| box (new RestDataRepository())
-              box (new WithActionService())
-              box (new ContributorService()) |]
+           [| typeof<RestDataRepository>
+              typeof<WithActionService>
+              typeof<ContributorService> |]
         
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         

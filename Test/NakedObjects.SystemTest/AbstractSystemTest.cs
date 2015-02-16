@@ -32,13 +32,19 @@ namespace NakedObjects.SystemTest {
             }
         }
 
+        protected override EntityObjectStoreConfiguration Persistor {
+            get {
+                var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+                config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
+                return config;
+            }
+        }
+
         #region Run Configuration
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 
