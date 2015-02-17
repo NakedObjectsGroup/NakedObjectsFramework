@@ -29,6 +29,26 @@ namespace NakedObjects.Core.Configuration {
             Services = services;
             IgnoreCase = false;
             MainMenus = mainMenus;
+            ValidateConfig();
+        }
+
+        private void ValidateConfig() {
+            string msg = "Reflector configuration errors;\r\n";
+            bool configError = false;
+
+            if (Services == null || !Services.Any()) {
+                configError = true;
+                msg += "No services specified;\r\n";
+            }
+
+            if (SupportedNamespaces == null || !SupportedNamespaces.Any()) {
+                configError = true;
+                msg += "No Namespaces specified;\r\n";
+            }
+
+            if (configError) {
+                throw new InitialisationException(msg);
+            }
         }
 
         private readonly Type[] defaultSystemTypes = {

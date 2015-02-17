@@ -94,6 +94,7 @@ namespace NakedObjects.Persistor.Entity {
 
         public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
             : this(metamodel, session, injector, nakedObjectManager) {
+            config.AssertSetup();
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
 

@@ -87,5 +87,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         IEnumerable<EntityContextConfiguration> PocoConfiguration();
         void FlagConnectionStringMismatches(string[] connectionStringNames);
         string[] GetConnectionStringNamesFromConfig();
+        void AssertSetup();
     }
 }
