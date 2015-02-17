@@ -79,13 +79,17 @@ namespace NakedObjects.Core.Component {
 
         private ITypeSpecImmutable GetInnerSpec(Type type) {
             ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(type);
-            Assert.AssertNotNull(string.Format("failed to find spec for {0}", type.FullName), innerSpec);
+            if (innerSpec == null) {
+                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type.FullName));
+            }
             return innerSpec;
         }
 
         private ITypeSpecImmutable GetInnerSpec(string name) {
             ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(name);
-            Assert.AssertNotNull(string.Format("failed to find spec for {0}", name), innerSpec);
+            if (innerSpec == null) {
+                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", name));
+            }
             return innerSpec;
         }
     }
