@@ -24,7 +24,6 @@ namespace NakedObjects.Meta.Facet {
         public string CapitalizedName { get; protected set; }
         public string ShortName { get; protected set; }
         public string SimpleName { get; protected set; }
-        public string PluralName { get; protected set; }
         public string NaturalName { get; protected set; }
 
         #endregion

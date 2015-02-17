@@ -20,7 +20,6 @@ namespace NakedObjects.Meta.I18N {
             CapitalizedName = NameUtils.CapitalizeName(ShortName);
             SimpleName = NameUtils.SimpleName(ShortName);
             NaturalName = NameUtils.NaturalName(ShortName);
-            PluralName = NameUtils.PluralName(NaturalName);
         }
     }
 

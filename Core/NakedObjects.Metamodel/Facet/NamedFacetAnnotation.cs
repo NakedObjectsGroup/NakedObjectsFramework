@@ -18,7 +18,6 @@ namespace NakedObjects.Meta.Facet {
             CapitalizedName = value;
             SimpleName = value;
             NaturalName = value;
-            PluralName = NameUtils.PluralName(NaturalName);
         }
     }
 

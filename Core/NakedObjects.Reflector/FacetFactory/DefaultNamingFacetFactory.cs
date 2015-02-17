@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
             if (pluralFacet == null) {
-                string pluralName = namedFacet.PluralName;
+                string pluralName = NameUtils.PluralName(namedFacet.NaturalName);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);
                 Log.InfoFormat("No plural facet found inferring name {0}", pluralName);

@@ -16,7 +16,6 @@ namespace NakedObjects.Architecture.Facet {
     public interface INamedFacet : ISingleStringValueFacet {
         string ShortName { get; }
         string SimpleName { get; }
-        string PluralName { get; }
         string NaturalName { get; }
         string CapitalizedName { get; }
     }

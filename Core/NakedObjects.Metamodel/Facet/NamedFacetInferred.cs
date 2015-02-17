@@ -19,7 +19,6 @@ namespace NakedObjects.Meta.Facet {
             CapitalizedName = NameUtils.CapitalizeName(ShortName);
             SimpleName = NameUtils.SimpleName(ShortName);
             NaturalName = NameUtils.NaturalName(ShortName);
-            PluralName = NameUtils.PluralName(NaturalName);
         }
 
         public override bool CanAlwaysReplace {
