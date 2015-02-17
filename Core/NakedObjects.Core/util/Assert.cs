@@ -5,8 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Diagnostics;
+
 namespace NakedObjects.Core.Util {
-    // TODO not sure it is a good idea to have our own implementation of assert
     public static class Assert {
         public static void AssertEquals(object expected, object actual) {
             AssertEquals("", expected, actual);
@@ -14,7 +15,8 @@ namespace NakedObjects.Core.Util {
 
         public static void AssertEquals(string message, int expected, int intValue) {
             if (expected != intValue) {
-                throw new NakedObjectAssertException(message + " expected " + expected + "; but was " + intValue);
+                var msg = message + " expected " + expected + "; but was " + intValue;
+                Trace.Fail(msg);
             }
         }
 
@@ -71,9 +73,8 @@ namespace NakedObjects.Core.Util {
         }
 
         public static void AssertTrue(string message, object target, bool flag) {
-            if (!flag) {
-                throw new NakedObjectAssertException(message + (target == null ? "" : (": " + target)));
-            }
+            var msg = message + (target == null ? "" : (": " + target));
+            Trace.Assert(flag, msg);
         }
     }
 

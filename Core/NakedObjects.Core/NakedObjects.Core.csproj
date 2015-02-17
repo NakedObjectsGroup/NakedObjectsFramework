@@ -233,7 +233,6 @@
     <Compile Include="Util\InteractionUtils.cs" />
     <Compile Include="Util\InvokeUtils.cs" />
     <Compile Include="Util\MimeUtils.cs" />
-    <Compile Include="Exception\NakedObjectAssertException.cs" />
     <Compile Include="Util\QueryableList.cs" />
     <Compile Include="Util\EnumerableUtils.cs" />
     <Compile Include="Util\QueryableUtils.cs" />
