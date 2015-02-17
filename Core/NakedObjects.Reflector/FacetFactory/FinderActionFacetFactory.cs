@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
-using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -14,8 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Architecture.SpecImmutable;
-using Common.Logging;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>

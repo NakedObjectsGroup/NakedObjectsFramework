@@ -8,11 +8,11 @@
 using System;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]

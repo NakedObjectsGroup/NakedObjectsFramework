@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Interactions;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Reflect {
     internal abstract class MemberSpecAbstract : IMemberSpec {

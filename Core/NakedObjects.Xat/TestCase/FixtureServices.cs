@@ -7,7 +7,6 @@
 
 using System;
 using System.Threading;
-using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureServices {

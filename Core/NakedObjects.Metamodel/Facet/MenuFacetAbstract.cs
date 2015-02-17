@@ -14,7 +14,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

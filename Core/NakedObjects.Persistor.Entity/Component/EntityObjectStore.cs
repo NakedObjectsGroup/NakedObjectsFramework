@@ -73,7 +73,6 @@ namespace NakedObjects.Persistor.Entity {
             MaximumCommitCycles = 10;
             RollBackOnError = true;
             EnforceProxies = true;
-            FirstInitialization = true;
             IsInitializedCheck = () => true;
         }
 
@@ -139,8 +138,6 @@ namespace NakedObjects.Persistor.Entity {
         }
 
         #endregion
-
-        private static bool FirstInitialization { get; set; }
 
         public static bool EnforceProxies { get; set; }
 
@@ -802,7 +799,6 @@ namespace NakedObjects.Persistor.Entity {
             Log.Debug("Reset");
             contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
             contexts.Values.ForEach(c => c.Manager = nakedObjectManager);
-            FirstInitialization = false; // so validation of types only happens once 
         }
 
         private static TransactionScope CreateTransactionScope() {
@@ -1094,7 +1090,6 @@ namespace NakedObjects.Persistor.Entity {
                 WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
                 Name = config.ContextName;
                 Log.DebugFormat("Context {0} Created", Name);
-                ValidatePreCachedTypes(config);
             }
 
             public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
@@ -1102,7 +1097,6 @@ namespace NakedObjects.Persistor.Entity {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
                 Log.DebugFormat("Context {0} Wrapped", Name);
-                ValidatePreCachedTypes(config);
             }
 
             public INakedObjectManager Manager { protected get; set; }
@@ -1128,31 +1122,6 @@ namespace NakedObjects.Persistor.Entity {
             public MergeOption DefaultMergeOption { get; set; }
             public INakedObject CurrentSaveRootObject { get; set; }
             public INakedObject CurrentUpdateRootObject { get; set; }
-
-            private void ValidatePreCachedTypes(EntityContextConfiguration config) {
-                // do only once 
-
-                if (FirstInitialization) {
-                    bool temp = RequireExplicitAssociationOfTypes;
-
-                    try {
-                        RequireExplicitAssociationOfTypes = false;
-
-                        IEnumerable<string> incorrectTypes = config.PreCachedTypes().Where(t => !this.ContextKnowsType(t)).Select(t => t.ToString()).ToArray();
-                        if (incorrectTypes.Any()) {
-                            throw new InitialisationException(string.Format("Attempting to associate types: {0} to context: {1} that are unrecognised", incorrectTypes.ListOut(), Name));
-                        }
-
-                        incorrectTypes = config.NotPersistedTypes().Where(this.ContextKnowsType).Select(t => t.ToString());
-                        if (incorrectTypes.Any()) {
-                            throw new InitialisationException(string.Format("Attempting to mark as 'Not Persisted' types: {0} that are recognised by context: {1}", incorrectTypes.ListOut(), Name));
-                        }
-                    }
-                    finally {
-                        RequireExplicitAssociationOfTypes = temp;
-                    }
-                }
-            }
 
             public Type GetMostBaseType(Type type) {
                 if (!baseTypeMap.ContainsKey(type)) {
