@@ -14,12 +14,14 @@ open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 
 let persistor = 
+    EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 
-let overwritePersistor = 
+let overwritePersistor =
+    EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges

@@ -49,6 +49,8 @@ type DomainTests() =
         
         override x.RegisterTypes(container) = 
             base.RegisterTypes(container)
+            EntityObjectStoreConfiguration.NoValidate <- true
+
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore

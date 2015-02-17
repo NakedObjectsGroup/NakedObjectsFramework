@@ -29,7 +29,10 @@ type DomainSystemTests() =
         
         let services = [| typeof<SimpleRepository<ScrapReason>> |]
         let namespaces = [| "AdventureWorksModel" |]
+        ReflectorConfiguration.NoValidate <- true
+
         let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
+
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
 
         ()

@@ -28,7 +28,7 @@ let ModelConfig =
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 
-
+ReflectorConfiguration.NoValidate <- true
 let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], [||]  )
 let injector = new DomainObjectContainerInjector(config)
 

@@ -31,7 +31,9 @@ let resetPersistor (p : EntityObjectStore) =
 
 let getEntityObjectStore (config) = 
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
-    let i = new DomainObjectContainerInjector(new ReflectorConfiguration( [||], [||],[||]))
+    ReflectorConfiguration.NoValidate <- true
+    let c = new ReflectorConfiguration( [||], [||],[||])
+    let i = new DomainObjectContainerInjector(c)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     new EntityObjectStore(s, config, new EntityOidGenerator(m), m, i, nom)

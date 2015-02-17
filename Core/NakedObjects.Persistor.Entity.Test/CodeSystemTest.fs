@@ -31,6 +31,8 @@ type CodeSystemTests() =
     
     override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
+        EntityObjectStoreConfiguration.NoValidate <- true
+
         let config = new EntityObjectStoreConfiguration()
         let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
@@ -38,7 +40,10 @@ type CodeSystemTests() =
         let types = [| typeof<TestCodeOnly.CountryCode>  |]
         let services = [| typeof<SimpleRepository<Person>> |]
         let namespaces = [| "TestCodeOnly"   |]
+        ReflectorConfiguration.NoValidate <- true
+
         let reflectorConfig = new ReflectorConfiguration(types, services, namespaces)
+
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

@@ -32,7 +32,12 @@ namespace NakedObjects.Core.Configuration {
             ValidateConfig();
         }
 
+        // for testing
+        public static bool NoValidate { get; set; }
+
         private void ValidateConfig() {
+            if (NoValidate) return;
+            
             string msg = "Reflector configuration errors;\r\n";
             bool configError = false;
 

@@ -28,15 +28,19 @@ type ModelSystemTests() =
     
     override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
+        EntityObjectStoreConfiguration.NoValidate <- true
+
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
         config.UsingEdmxContext "Model1Container" |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         let types = [| typeof<ModelFirst.Fruit>;typeof<List<ModelFirst.Food>> |]
-        
+        ReflectorConfiguration.NoValidate <- true
+
         let services = [| typeof<SimpleRepository<Person>> |]
         let namespaces = [| "ModelFirst"   |]
         let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
+
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

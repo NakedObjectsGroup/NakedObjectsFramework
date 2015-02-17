@@ -20,6 +20,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
     public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStoreConfiguration));
 
+        public static bool NoValidate { get; set; }
+
         private bool isContextSet;
 
         public EntityObjectStoreConfiguration() {
@@ -172,7 +174,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         #endregion
 
         public void AssertSetup() {
-            if (!isContextSet) {
+            if (!NoValidate && !isContextSet) {
                 throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             }
         }

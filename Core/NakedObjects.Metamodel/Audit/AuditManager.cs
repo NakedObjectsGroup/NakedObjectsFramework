@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Audit;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Audit {
@@ -85,7 +86,10 @@ namespace NakedObjects.Meta.Audit {
         #endregion
 
         private void ValidateType(Type toValidate) {
-            Assert.AssertTrue(toValidate.FullName + " is not an IAuditor", typeof (IAuditor).IsAssignableFrom(toValidate));
+            if (!typeof (IAuditor).IsAssignableFrom(toValidate)) {
+                throw new InitialisationException(toValidate.FullName + " is not an IAuditor");
+            }
+
         }
 
         private void Validate() {

@@ -16,6 +16,8 @@ open ModelFirst
 open NakedObjects.Persistor.Entity.Configuration
 
 let multiDomainDatabasePersistor = 
+    EntityObjectStoreConfiguration.NoValidate <- true
+
     let c = new EntityObjectStoreConfiguration()
     c.UsingEdmxContext "Model1Container" |> ignore
     c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore

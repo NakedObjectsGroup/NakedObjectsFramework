@@ -40,7 +40,9 @@ let Config =
     c.DbContext <- fun () -> upcast new TestDataContext()
     c
 
-let db = 
+let db =
+    EntityObjectStoreConfiguration.NoValidate <- true
+ 
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     c.ContextConfiguration <- [| (box Config :?> EntityContextConfiguration) |]
@@ -134,6 +136,8 @@ type EntityTestSuite() =
     
     override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
+        EntityObjectStoreConfiguration.NoValidate <- true
+
         let config = new EntityObjectStoreConfiguration()
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
@@ -143,7 +147,10 @@ type EntityTestSuite() =
                         typeof<SimpleRepository<Product>>;
                          typeof<SimpleRepository<Address>> |]
         let namespaces = [| "TestData"   |]
+        ReflectorConfiguration.NoValidate <- true
+
         let reflectorConfig = new ReflectorConfiguration(types, services, namespaces)
+
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

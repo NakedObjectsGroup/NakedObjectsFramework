@@ -147,7 +147,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectNoTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[]{});
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -160,7 +162,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectObjectType() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new[] { typeof(object) }, new Type[] { }, new string[] { });
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {typeof (object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -174,7 +178,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectListTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>) }, new Type[] { }, new string[] { });
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -188,7 +194,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectSetTypes() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new[] { typeof(SetWrapper<>) }, new Type[] { }, new string[] { });
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<>)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -204,7 +212,9 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             IQueryable<object> qo = new List<object>().AsQueryable();
             IQueryable<int> qi = new List<int>().AsQueryable();
-            var rc = new ReflectorConfiguration(new[] { qo.GetType(), qi.GetType() }, new Type[] { }, new string[] { });
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType()}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -219,8 +229,9 @@ namespace NakedObjects.Reflect.Test {
         public void ReflectWhereIterator() {
             IUnityContainer container = GetContainer();
             IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+            ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { it.GetType() }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {it.GetType()}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -234,8 +245,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectByteArray() {
             IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new string[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -248,8 +260,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectStringArray() {
             IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithStringArray) }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray)}, new Type[] {}, new string[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -262,8 +275,9 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectWithScalars() {
             IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new string[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 

@@ -338,6 +338,7 @@ namespace NakedObjects.Xat {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
 
 
+            ReflectorConfiguration.NoValidate = true;
 
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(

@@ -27,7 +27,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             base.SetUp();
 
             var cache = new ImmutableInMemorySpecCache();
-            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] { typeof(Customer).Namespace });
+            ReflectorConfiguration.NoValidate = true;
+
+            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new[] {typeof (Customer).Namespace});
             var menuFactory = new NullMenuFactory();
 
             facetFactory = new UnsupportedMethodFilteringFactory(0);

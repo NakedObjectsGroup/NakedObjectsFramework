@@ -112,7 +112,8 @@ namespace NakedObjects.Reflect.Test {
         public virtual void SetUp() {
 
             var cache = new ImmutableInMemorySpecCache();
-            var config = new ReflectorConfiguration(new[] { typeof(List<TestPoco>), typeof(ArrayList) }, new Type[] { }, new[] { typeof(TestPoco).Namespace });
+            ReflectorConfiguration.NoValidate = true;
+            var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>), typeof (ArrayList)}, new Type[] {}, new[] {typeof (TestPoco).Namespace});
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache);

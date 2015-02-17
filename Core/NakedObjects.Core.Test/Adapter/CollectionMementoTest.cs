@@ -108,6 +108,10 @@ namespace NakedObjects.Core.Test.Adapter {
 
         #endregion
 
+        protected override string[] Namespaces {
+            get { return new[] {typeof (TestDomainObject).Namespace}; }
+        }
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             // replace INakedObjectStore types

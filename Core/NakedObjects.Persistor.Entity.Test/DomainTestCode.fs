@@ -556,7 +556,8 @@ let DomainCanGetContextForType persistor = CanGetContextForType<SalesOrderHeader
 let CanDetectConcurrency(persistor : EntityObjectStore) = 
     let sr1 = persistor.GetInstances<ScrapReason>() |> Seq.head
     
-    let otherPersistor = 
+    let otherPersistor =
+        EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
         c.ContextConfiguration <- [| (box PocoConfig :?> EntityContextConfiguration) |]
         let p = getEntityObjectStore c
@@ -615,6 +616,8 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
     let l1 = persistor.GetInstances<Location>() |> Seq.head
     
     let otherPersistor = 
+        EntityObjectStoreConfiguration.NoValidate <- true
+
         let c = new EntityObjectStoreConfiguration()
         c.ContextConfiguration <- [| (box PocoConfig :?> EntityContextConfiguration) |]
         let p = getEntityObjectStore c

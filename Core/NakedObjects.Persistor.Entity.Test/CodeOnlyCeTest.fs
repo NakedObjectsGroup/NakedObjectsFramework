@@ -12,7 +12,9 @@ open TestTypes
 open TestCode
 open NakedObjects.Persistor.Entity.Configuration
 
-let codeOnlyCePersistor = 
+let codeOnlyCePersistor =
+    EntityObjectStoreConfiguration.NoValidate <- true
+ 
     let c = new EntityObjectStoreConfiguration()
     c.UsingCodeFirstContext((CodeFirstConfig "CodeOnlyCeTests").DbContext) |> ignore
     let p = getEntityObjectStore c

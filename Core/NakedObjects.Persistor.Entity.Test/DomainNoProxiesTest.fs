@@ -13,7 +13,9 @@ open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 
-let persistor = 
+let persistor =
+    EntityObjectStoreConfiguration.NoValidate <- true
+ 
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
@@ -22,6 +24,8 @@ let persistor =
     p
 
 let overwritePersistor = 
+    EntityObjectStoreConfiguration.NoValidate <- true
+
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
