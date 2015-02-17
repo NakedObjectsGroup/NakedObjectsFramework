@@ -195,6 +195,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Start\NakedObjectsRunSettings.cs.pp" />
+    <None Include="Web.config.transform" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

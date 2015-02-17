@@ -106,6 +106,7 @@
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>    
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>       
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(RestSrcFiles)" DestinationFolder="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)" />
