@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +11,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
@@ -16,7 +18,6 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class SystemExtensions {
-
         private const int DefaultHistorySize = 10;
 
         public static INakedObjectsFramework GetFramework(this HtmlHelper html) {
@@ -47,11 +48,10 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
         public static MvcHtmlString SystemMessages(this HtmlHelper html) {
-            string[] messages = (string[])html.ViewData[IdHelper.SystemMessages] ?? new string[0];
+            string[] messages = (string[]) html.ViewData[IdHelper.SystemMessages] ?? new string[0];
 
             return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdHelper.NofMessages));
         }
-
 
         public static MvcHtmlString History(this HtmlHelper html, object domainObject = null, bool clearAll = false) {
             return html.History(DefaultHistorySize, domainObject, clearAll);
@@ -77,14 +77,14 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (urls.Any()) {
-                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new { clearAll }));
+                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new {clearAll}));
             }
 
             return MvcHtmlString.Create(tag.ToString());
         }
 
         public static MvcHtmlString TabbedHistory(this HtmlHelper html, object domainObject = null) {
-            if (html.ViewData.ContainsKey("updateHistory") && !(bool)html.ViewData["updateHistory"]) {
+            if (html.ViewData.ContainsKey("updateHistory") && !(bool) html.ViewData["updateHistory"]) {
                 return new MvcHtmlString("");
             }
             return html.TabbedHistory(DefaultHistorySize, domainObject);
@@ -99,7 +99,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     DivElement = Document.Element("div");
                     string href = DivElement.Element("a").Attribute("href").Value;
                     string id = string.IsNullOrWhiteSpace(href) ? "" : HttpUtility.UrlDecode(href.Substring(href.IndexOf('=') + 1));
-            
+
                     if (id != null && id.Contains("&")) {
                         Id = id.Substring(0, id.IndexOf("&"));
                         var parms = id.Substring(id.IndexOf("&")).Split('&');
@@ -161,13 +161,13 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             public void AddCloseThis(HtmlHelper html, UrlData nextEntry) {
-                var closeThis = html.ControllerAction("", IdHelper.ClearHistoryItemAction, IdHelper.HomeName, IdHelper.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new { id = Id, nextId = nextEntry.Id }))).ToString();
+                var closeThis = html.ControllerAction("", IdHelper.ClearHistoryItemAction, IdHelper.HomeName, IdHelper.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new {id = Id, nextId = nextEntry.Id}))).ToString();
                 var closeThisElem = XDocument.Parse(closeThis).Element("form");
                 AddElement(closeThisElem);
             }
 
             public void AddCloseOthers(HtmlHelper html) {
-                var closeOthers = html.ControllerAction("", IdHelper.ClearHistoryOthersAction, IdHelper.HomeName, IdHelper.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new { id = Id }))).ToString();
+                var closeOthers = html.ControllerAction("", IdHelper.ClearHistoryOthersAction, IdHelper.HomeName, IdHelper.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new {id = Id}))).ToString();
                 AddElement(ToElement(closeOthers));
             }
 
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             public void AddCloseAll(HtmlHelper html) {
                 const bool clearAll = true;
-                var closeAll = html.ControllerAction("", IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new { clearAll })).ToString();
+                var closeAll = html.ControllerAction("", IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new {clearAll})).ToString();
                 AddElement(ToElement(closeAll));
             }
 
@@ -188,7 +188,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             public void AddCancel(HtmlHelper html, UrlData nextEntry) {
-                var cancel = html.ControllerAction(MvcUi.Cancel, IdHelper.CancelAction, IdHelper.HomeName, IdHelper.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new { nextId = nextEntry.Id }))).ToString();
+                var cancel = html.ControllerAction(MvcUi.Cancel, IdHelper.CancelAction, IdHelper.HomeName, IdHelper.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new {nextId = nextEntry.Id}))).ToString();
                 Document = XDocument.Parse(cancel).Element("form").Document;
             }
         }
@@ -218,7 +218,6 @@ namespace NakedObjects.Web.Mvc.Html {
             var newEntry = new UrlData(newUrl);
 
             foreach (UrlData currentEntry in entries) {
-                
                 if (currentEntry.Equals(newEntry)) {
                     currentEntry.SetActive();
                 }
@@ -239,7 +238,6 @@ namespace NakedObjects.Web.Mvc.Html {
         private static UrlData GetLastEntry(UrlData[] entries) {
             return entries.Any() ? entries.Last() : UrlData.Empty();
         }
-
 
         private static UrlData GetNextEntry(UrlData[] entries, UrlData thisEntry) {
             if (entries.Count() == 1) {
@@ -277,12 +275,12 @@ namespace NakedObjects.Web.Mvc.Html {
             // if target is transient  cancel back to history
             if (domainObject != null && html.Framework().NakedObjectManager.CreateAdapter(domainObject, null, null).ResolveState.IsTransient()) {
                 domainObject = null;
-            }    
+            }
 
             string nextUrl = domainObject == null ? "" : html.Tab(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
 
             UrlData nextEntry;
-            
+
             if (string.IsNullOrEmpty(nextUrl)) {
                 List<string> existingUrls = html.ViewContext.HttpContext.Session.AllCachedUrls(ObjectCache.ObjectFlag.BreadCrumb).ToList();
                 var existingEntries = existingUrls.Select(u => new UrlData(u)).ToArray();
@@ -294,7 +292,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             var cancelForm = new UrlData("");
             cancelForm.AddCancel(html, nextEntry);
-     
+
             return MvcHtmlString.Create(cancelForm.ToString());
         }
 

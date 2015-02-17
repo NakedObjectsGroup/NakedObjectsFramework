@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,14 +13,10 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
-
-      
-
         #region all
 
         public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, IActionSpec action, string defaultTo = IdHelper.ListDisplayFormat) {
@@ -75,7 +75,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         // exclusions 
 
-
         /// <summary>
         /// Display ViewData Model as a collection excluding columns identified by the excludingColumns parameters 
         /// </summary>
@@ -92,7 +91,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <example>
         /// html.CollectionTableWithout(obj, y => y.TestCollectionOne, y => y.TestInt)
         /// </example>
-        public static MvcHtmlString CollectionTableWithout<TModel>(this HtmlHelper html, IEnumerable<TModel> model, params Expression<Func<TModel, object>>[] excludingColumns) {      
+        public static MvcHtmlString CollectionTableWithout<TModel>(this HtmlHelper html, IEnumerable<TModel> model, params Expression<Func<TModel, object>>[] excludingColumns) {
             return html.CollectionTableWithout(model, excludingColumns.Select(ex => html.GetProperty(ex).Name).ToArray());
         }
 
@@ -122,7 +121,6 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.GetStandaloneCollection(nakedObject, x => !excludingColumns.Any(s => s == x.Id), null, true) :
                 html.GetStandaloneList(nakedObject, null);
         }
-
 
         /// <summary>
         /// Display ViewData Model as a collection excluding columns identified by the excludingColumns parameters 
@@ -171,8 +169,6 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.GetStandaloneList(nakedObject, null);
         }
 
-
-
         #endregion
 
         #region with
@@ -186,7 +182,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.CollectionTableWith(y => y.TestCollectionOne, y => y.TestInt)
         /// </example>
         public static MvcHtmlString CollectionTableWith<TModel>(this HtmlHelper<IEnumerable<TModel>> html, params Expression<Func<TModel, object>>[] includingColumns) {
-           
             return html.CollectionTableWith(includingColumns.Select(ex => html.GetProperty(ex).Name).ToArray());
         }
 
@@ -197,7 +192,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.CollectionTableWith(obj, y => y.TestCollectionOne, y => y.TestInt)
         /// </example>
         public static MvcHtmlString CollectionTableWith<TModel>(this HtmlHelper html, IEnumerable<TModel> model, params Expression<Func<TModel, object>>[] includingColumns) {
-          
             return html.CollectionTableWith(model, includingColumns.Select(ex => html.GetProperty(ex).Name).ToArray());
         }
 
@@ -211,7 +205,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (html.ViewData.Model == null) {
                 throw new ArgumentException("html");
             }
-          
+
             return html.CollectionTableWith(html.ViewData.Model, includingColumns);
         }
 
@@ -229,9 +223,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.GetStandaloneList(nakedObject, null);
         }
 
-
         private static string DefaultFormat(HtmlHelper html, string defaultTo) {
-            string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string)html.ViewData[IdHelper.CollectionFormat] : defaultTo;
+            string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string) html.ViewData[IdHelper.CollectionFormat] : defaultTo;
             html.ViewData[IdHelper.CollectionFormat] = displayType; // ensure default value is saved
             return displayType;
         }
@@ -243,7 +236,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.CollectionTableWith(y => y.TestCollectionOne, y => y.TestInt)
         /// </example>
         public static MvcHtmlString CollectionListWith<TModel>(this HtmlHelper<IEnumerable<TModel>> html, params Expression<Func<TModel, object>>[] includingColumns) {
-
             return html.CollectionListWith(includingColumns.Select(ex => html.GetProperty(ex).Name).ToArray());
         }
 
@@ -254,7 +246,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.CollectionTableWith(obj, y => y.TestCollectionOne, y => y.TestInt)
         /// </example>
         public static MvcHtmlString CollectionListWith<TModel>(this HtmlHelper html, IEnumerable<TModel> model, params Expression<Func<TModel, object>>[] includingColumns) {
-
             return html.CollectionListWith(model, includingColumns.Select(ex => html.GetProperty(ex).Name).ToArray());
         }
 
@@ -285,8 +276,6 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.GetStandaloneCollection(nakedObject, x => includingColumns.Any(s => s == x.Id), x => Array.IndexOf(includingColumns, x.Id), true) :
                 html.GetStandaloneList(nakedObject, null);
         }
-
-
 
         #endregion
     }

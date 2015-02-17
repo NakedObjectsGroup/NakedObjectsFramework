@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,16 +17,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
-
-      
-
         #region Properties
 
         /// <summary>
         /// Display the identified property on the ViewData Model
         /// </summary>
         public static MvcHtmlString ObjectPropertyView<TModel, TParm>(this HtmlHelper<TModel> html,
-                                                                      Expression<Func<TModel, TParm>> expression) {
+            Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyView(html.ViewData.Model, html.GetProperty(expression));
         }
 
@@ -30,7 +31,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the model parameter
         /// </summary>
         public static MvcHtmlString ObjectPropertyView<TModel, TParm>(this HtmlHelper html, TModel model,
-                                                                      Expression<Func<TModel, TParm>> expression) {
+            Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyView(model, html.GetProperty(expression));
         }
 
@@ -49,7 +50,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible(nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
@@ -57,7 +58,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the ViewData Model in an edit field 
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit<TModel, TParm>(this HtmlHelper<TModel> html,
-                                                                      Expression<Func<TModel, TParm>> expression) {
+            Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyEdit(html.ViewData.Model, html.GetProperty(expression));
         }
 
@@ -65,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the model parameter in an edit field 
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit<TModel, TParm>(this HtmlHelper html, TModel model,
-                                                                      Expression<Func<TModel, TParm>> expression) {
+            Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyEdit(model, html.GetProperty(expression));
         }
 
@@ -84,7 +85,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible(nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
 
@@ -98,7 +99,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public enum CollectionFormat {
             Table,
             List
-        } ;
+        };
 
         /// <summary>
         /// List all the properties of the domain object applying the appropriate format to the identified property. 
@@ -210,7 +211,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyListWithoutCollections(this HtmlHelper html, object domainObject) {
-           return html.PropertyListWithFilter(domainObject, x => x is IOneToOneAssociationSpec, null);
+            return html.PropertyListWithFilter(domainObject, x => x is IOneToOneAssociationSpec, null);
         }
 
         /// <summary>
@@ -236,7 +237,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.PropertyListWithFilter(domainObject, x => x is IOneToManyAssociationSpec, null);
         }
 
-
         /// <summary>
         /// List all the properties of the domain object with only collections 
         /// </summary>
@@ -249,8 +249,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
         }
-
-
 
         /// <summary>
         /// List the properties of the ViewData Model except those identified by the excludingProperties parameters
@@ -348,8 +346,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return html.BuildEditContainer(nakedObject, html.EditObjectFields(nakedObject, null, x => true, null),
-                                           IdHelper.FieldContainerName,
-                                           IdHelper.GetFieldContainerId(nakedObject));
+                IdHelper.FieldContainerName,
+                IdHelper.GetFieldContainerId(nakedObject));
         }
 
         /// <summary>
@@ -360,8 +358,6 @@ namespace NakedObjects.Web.Mvc.Html {
             var fields = html.EditObjectFields(nakedObject, null, x => false, null);
             return MvcHtmlString.Create(ElementDescriptor.BuildElementSet(fields).ToString());
         }
-
-
 
         /// <summary>
         ///  Display all the properties of the domain object in edit fields, with action dialog or collection view
@@ -377,9 +373,9 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject nakedObject = html.Framework().GetNakedObject(contextObject);
             INakedObject target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,
-                                           html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, true),
-                                           IdHelper.FieldContainerName,
-                                           IdHelper.GetFieldContainerId(nakedObject));
+                html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, true),
+                IdHelper.FieldContainerName,
+                IdHelper.GetFieldContainerId(nakedObject));
         }
 
         /// <summary>
@@ -396,11 +392,10 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject nakedObject = html.Framework().GetNakedObject(contextObject);
             INakedObject target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,
-                                           html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, false),
-                                           IdHelper.FieldContainerName,
-                                           IdHelper.GetFieldContainerId(nakedObject));
+                html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, false),
+                IdHelper.FieldContainerName,
+                IdHelper.GetFieldContainerId(nakedObject));
         }
-
 
         // formats
 
@@ -752,6 +747,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.Scalar(scalar);
         }
 
-        #endregion 
+        #endregion
     }
 }

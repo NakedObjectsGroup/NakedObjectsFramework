@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -9,12 +12,10 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
@@ -49,7 +50,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return Jsonp(true);
             }
 
-            IAssociationSpec property =  (nakedObject.GetObjectSpec()).Properties.SingleOrDefault(p => p.Id == propertyName);
+            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.SingleOrDefault(p => p.Id == propertyName);
             string fieldId = GetFieldInputId(nakedObject, property);
 
             bool isValid = false;
@@ -76,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
-                IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
+                IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
                 fieldId = IdHelper.GetInlineFieldInputId(parent, nakedObject, property);
             }
             else {
@@ -117,11 +118,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private  INakedObject GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
+        private INakedObject GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
             if (!values.Any()) {
                 return null;
             }
-         
+
             if (spec.IsParseable) {
                 return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.NakedObjectManager);
             }
@@ -142,7 +143,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.ToArray();
         }
 
-
         private IDictionary<string, INakedObject> GetOtherValues(IActionSpec action) {
             var results = new Dictionary<string, INakedObject>();
             var parms = new FormCollection(HttpContext.Request.Params);
@@ -150,7 +150,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Decrypt(parms);
 
             foreach (IActionParameterSpec parm in action.Parameters) {
-                string[] values =  GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
+                string[] values = GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
                 results[parm.Id.ToLower()] = GetValue(values, parm, parm.Spec);
             }
 
@@ -171,7 +171,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-
         public virtual JsonResult GetActionChoices(string id, string actionName) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
@@ -189,9 +188,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             return Jsonp(choices);
         }
-
-     
-
 
         public virtual JsonResult GetPropertyChoices(string id) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
@@ -228,7 +224,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return new {label, value, link, src, alt};
         }
 
-
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
@@ -241,7 +236,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return Jsonp(completions);
         }
-
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);

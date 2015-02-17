@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,15 +12,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Resources;
@@ -24,12 +25,10 @@ using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
-using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
         private readonly INakedObjectsFramework nakedObjectsFramework;
-
 
         protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework) {
             this.nakedObjectsFramework = nakedObjectsFramework;
@@ -39,10 +38,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         protected INakedObjectsFramework NakedObjectsContext {
             get { return nakedObjectsFramework; }
-        }
-
-        protected void SetSession() {
-           // NakedObjectsContext.Instance.SetSession(new WindowsSession(User));
         }
 
         protected void SetControllerName(string name) {
@@ -59,10 +54,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetMainMenus() {
-           var menus = NakedObjectsContext.MetamodelManager.MainMenus();
-           if (menus.Count() == 0) {
-              menus =  nakedObjectsFramework.ServicesManager.GetServices().Select(s => s.Spec.ObjectMenu).ToArray();
-           }
+            var menus = NakedObjectsContext.MetamodelManager.MainMenus();
+            if (!menus.Any()) {
+                menus = nakedObjectsFramework.ServicesManager.GetServices().Select(s => s.Spec.ObjectMenu).ToArray();
+            }
             ViewData[IdHelper.NofMainMenus] = menus;
         }
 
@@ -71,8 +66,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
-            //NakedObjectsContext.EnsureReady();
-            //SetSession();
             SetServices();
             SetMainMenus();
             SetFramework();
@@ -127,7 +120,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 nakedObject = Page(nakedObject, collectionSize, controlData, nakedObject.IsNotQueryable());
-                action = action ?? ((ICollectionMemento)nakedObject.Oid).Action;
+                action = action ?? ((ICollectionMemento) nakedObject.Oid).Action;
                 int page, pageSize;
                 CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;
@@ -142,12 +135,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
-                                          View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
+                View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
         }
 
-
         internal bool ValidateParameters(INakedObject targetNakedObject, IActionSpec action, ObjectAndControlData controlData) {
-
             // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
             // all mandatory fields are set. 
             foreach (IActionParameterSpec parm in action.Parameters) {
@@ -254,7 +245,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return FilterCollection(nakedObject, controlData);
         }
 
-        internal  INakedObject GetParameterValue(IActionParameterSpec parm, object value) {
+        internal INakedObject GetParameterValue(IActionParameterSpec parm, object value) {
             if (value == null) {
                 return null;
             }
@@ -277,7 +268,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static object GetRawParameterValue(IActionParameterSpec parm, ObjectAndControlData controlData, string name) {
-
             var form = controlData.Form;
             ValueProviderResult vp = form.GetValue(name);
             string[] values = vp == null ? null : (string[]) vp.RawValue;
@@ -286,7 +276,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (controlData.Files.ContainsKey(name)) {
                     return controlData.Files[name];
                 }
-                return null; 
+                return null;
             }
             if (parm is IOneToManyActionParameterSpec) {
                 return values.All(string.IsNullOrEmpty) ? null : values;
@@ -412,34 +402,32 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal  INakedObject GetNakedObjectValue(IAssociationSpec assoc, INakedObject targetNakedObject, object value) {
+        internal INakedObject GetNakedObjectValue(IAssociationSpec assoc, INakedObject targetNakedObject, object value) {
             if (value == null) {
                 return null;
             }
             var fromStreamFacet = assoc.ReturnSpec.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
-                var httpPostedFileBase = (HttpPostedFileBase)value;
+                var httpPostedFileBase = (HttpPostedFileBase) value;
                 return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
             }
             var stringValue = value as string;
             if (assoc.ReturnSpec.IsParseable) {
-
                 return assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.NakedObjectManager);
             }
-       
+
             if (assoc is IOneToOneAssociationSpec) {
                 return NakedObjectsContext.GetNakedObjectFromId(stringValue);
             }
             // collection 
-            return null; 
+            return null;
         }
 
         internal void CheckConcurrency(INakedObject nakedObject, IAssociationSpec parent, ObjectAndControlData controlData, Func<IAssociationSpec, INakedObject, IAssociationSpec, string> idFunc) {
-
             var objectSpec = nakedObject.Spec as IObjectSpec;
-            var concurrencyFields =  objectSpec == null ? new  List<IAssociationSpec>() : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
+            var concurrencyFields = objectSpec == null ? new List<IAssociationSpec>() : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
 
-            if (!nakedObject.ResolveState.IsTransient() && concurrencyFields.Any() ) {
+            if (!nakedObject.ResolveState.IsTransient() && concurrencyFields.Any()) {
                 IEnumerable<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
 
                 foreach (var pair in fieldsAndMatchingValues) {
@@ -497,11 +485,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (ModelState.IsValid) {
-
                 var validateFacet = nakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
                 if (validateFacet != null) {
-
                     var parms = fieldsAndMatchingValues.Select(t => new Tuple<string, INakedObject>(t.Item1.Id.ToLower(), GetNakedObjectValue(t.Item1, nakedObject, t.Item2))).ToArray();
                     var result = validateFacet.ValidateParms(nakedObject, parms);
 
@@ -524,7 +510,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private void ValidateOrApplyInlineChanges(INakedObject nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationSpec> assocs, Func<INakedObject, ObjectAndControlData, IAssociationSpec, bool> validateOrApply) {
-
             var form = controlData.Form;
             // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
             foreach (IAssociationSpec assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
@@ -535,7 +520,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private  void GetUsableAndVisibleFields(INakedObject nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
+        private void GetUsableAndVisibleFields(INakedObject nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = (nakedObject.GetObjectSpec()).Properties.Where(p => IsUsable(p, nakedObject) && IsVisible(p, nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
@@ -562,7 +547,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {
-                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.MetamodelManager );
+                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.MetamodelManager);
                     }
                 }
             }
@@ -570,13 +555,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ModelState.IsValid;
         }
 
-
         private static IEnumerable<Tuple<IAssociationSpec, object>> GetFieldsAndMatchingValues(INakedObject nakedObject,
-                                                                                                      IAssociationSpec parent,
-                                                                                                      IEnumerable<IAssociationSpec> associations,                                                                                                      
-                                                                                                      ObjectAndControlData controlData, 
-                                                                                                      Func<IAssociationSpec, INakedObject, IAssociationSpec, string> idFunc) {
-                       
+            IAssociationSpec parent,
+            IEnumerable<IAssociationSpec> associations,
+            ObjectAndControlData controlData,
+            Func<IAssociationSpec, INakedObject, IAssociationSpec, string> idFunc) {
             foreach (IAssociationSpec assoc in associations.Where(a => !a.IsInline)) {
                 string name = idFunc(parent, nakedObject, assoc);
                 object newValue = GetValueFromForm(controlData, name);
@@ -584,7 +567,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private static object GetValueFromForm(ObjectAndControlData controlData,  string name) {
+        private static object GetValueFromForm(ObjectAndControlData controlData, string name) {
             var form = controlData.Form;
 
             if (form.GetValue(name) != null) {
@@ -597,11 +580,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void AddErrorAndAttemptedValue(INakedObject nakedObject, string newValue, IAssociationSpec assoc, string errorText, IAssociationSpec parent = null) {
             string key = GetFieldInputId(parent, nakedObject, assoc);
             ModelState.AddModelError(key, errorText);
-            AddAttemptedValue(key, assoc.ReturnSpec.IsParseable ? (object)newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
+            AddAttemptedValue(key, assoc.ReturnSpec.IsParseable ? (object) newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
         }
 
         internal void AddAttemptedValues(INakedObject nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
-          
             foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => (IsUsable(p, nakedObject) && IsVisible(p, nakedObject)) || IsConcurrency(p))) {
                 string name = GetFieldInputId(parent, nakedObject, assoc);
                 string value = GetValueFromForm(controlData, name) as string;
@@ -610,9 +592,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
             }
 
-            foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(IsConcurrency)) {             
+            foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(IsConcurrency)) {
                 string name = GetConcurrencyFieldInputId(parent, nakedObject, assoc);
-                string value = GetValueFromForm(controlData, name) as string; 
+                string value = GetValueFromForm(controlData, name) as string;
                 if (value != null) {
                     AddAttemptedValue(name, value);
                 }
@@ -622,35 +604,34 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var inlineNakedObject = assoc.GetNakedObject(nakedObject);
                 AddAttemptedValues(inlineNakedObject, controlData, assoc);
             }
-
         }
 
-        internal  bool IsUsable(IAssociationSpec assoc, INakedObject nakedObject) {
-            return assoc.IsUsable( nakedObject).IsAllowed;
+        internal bool IsUsable(IAssociationSpec assoc, INakedObject nakedObject) {
+            return assoc.IsUsable(nakedObject).IsAllowed;
         }
 
-        internal  bool IsVisible(IAssociationSpec assoc, INakedObject nakedObject) {
+        internal bool IsVisible(IAssociationSpec assoc, INakedObject nakedObject) {
             return assoc.IsVisible(nakedObject);
         }
 
-        internal  bool IsConcurrency(IAssociationSpec assoc) {
+        internal bool IsConcurrency(IAssociationSpec assoc) {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
         }
 
-        internal  void RefreshTransient(INakedObject nakedObject, FormCollection form, IAssociationSpec parent = null) {
-            if (nakedObject.Oid.IsTransient) { // use oid to catch transient aggregates 
+        internal void RefreshTransient(INakedObject nakedObject, FormCollection form, IAssociationSpec parent = null) {
+            if (nakedObject.Oid.IsTransient) {
+                // use oid to catch transient aggregates 
                 foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => !p.IsReadOnly)) {
                     // TODO change this to use GetValueFromForm 
                     foreach (string item in form.AllKeys) {
-                        string name =  GetFieldInputId(parent, nakedObject, assoc);
+                        string name = GetFieldInputId(parent, nakedObject, assoc);
                         if (name == item) {
                             object newValue = ((string[]) form.GetValue(item).RawValue).First();
 
                             if (assoc.ReturnSpec.IsParseable) {
                                 try {
-                                 
                                     var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
-                                    INakedObject value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.NakedObjectManager);
+                                    INakedObject value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue, NakedObjectsContext.NakedObjectManager);
                                     oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {
@@ -671,7 +652,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ValueProviderResult items = form.GetValue(name);
 
                     if (items != null && assoc.Count(nakedObject) == 0) {
-                        var itemIds = (string[])items.RawValue;
+                        var itemIds = (string[]) items.RawValue;
                         var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
                         var collection = assoc.GetNakedObject(nakedObject);
                         collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
@@ -682,7 +663,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     var inlineNakedObject = assoc.GetNakedObject(nakedObject);
                     RefreshTransient(inlineNakedObject, form, assoc);
                 }
-
             }
         }
 
@@ -693,8 +673,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObject nakedObject, IAssociationSpec assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) : IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
-
-       
 
         private bool CanPersist(INakedObject nakedObject, IEnumerable<IAssociationSpec> usableAndVisibleFields) {
             foreach (IAssociationSpec assoc in usableAndVisibleFields) {
@@ -710,7 +688,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return true;
         }
 
-
         private bool IsObjectCompleteAndSaved(INakedObject fieldTarget) {
             if (fieldTarget.Spec.IsCollection) {
                 if (fieldTarget.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any(no => !IsReferenceValidToPersist(no))) {
@@ -724,13 +701,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     return false;
                 }
             }
-         
+
             return true;
         }
 
-        private  bool IsReferenceValidToPersist(INakedObject target1) {
+        private bool IsReferenceValidToPersist(INakedObject target1) {
             if (target1.ResolveState.IsTransient() ||
-                (target1.Oid is IAggregateOid && ((IAggregateOid)target1.Oid).ParentOid.IsTransient)) {
+                (target1.Oid is IAggregateOid && ((IAggregateOid) target1.Oid).ParentOid.IsTransient)) {
                 string validToPersist = target1.ValidToPersist();
                 if (validToPersist != null) {
                     ModelState.AddModelError("", validToPersist);
@@ -739,7 +716,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             return true;
         }
-
 
         internal void SetAssociation(INakedObject nakedObject, IOneToOneAssociationSpec oneToOneAssoc, INakedObject valueNakedObject, object attemptedValue) {
             IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
@@ -758,7 +734,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             try {
                 INakedObject valueNakedObject = GetNakedObjectValue(oneToOneAssoc, nakedObject, attemptedValue);
 
-                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);               
+                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(key, consent.Reason);
                 }
@@ -791,12 +767,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var existingMessages = TempData[IdHelper.NofMessages];
             var existingWarnings = TempData[IdHelper.NofWarnings];
 
-            if (existingMessages is string[] && ((string[])existingMessages).Length > 0) {
-                messages = ((string[])existingMessages).Union(messages).ToArray();
+            if (existingMessages is string[] && ((string[]) existingMessages).Length > 0) {
+                messages = ((string[]) existingMessages).Union(messages).ToArray();
             }
 
-            if (existingWarnings is string[] && ((string[])existingWarnings).Length > 0) {
-                warnings = ((string[])existingWarnings).Union(warnings).ToArray();
+            if (existingWarnings is string[] && ((string[]) existingWarnings).Length > 0) {
+                warnings = ((string[]) existingWarnings).Union(warnings).ToArray();
             }
 
             ViewData.Add(IdHelper.NofMessages, messages);
@@ -814,7 +790,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-
         internal bool CurrentlyPaging(ObjectAndControlData controlData, int collectionSize, out int page, out int pageSize) {
             pageSize = GetPageSize(controlData);
             page = 1;
@@ -823,10 +798,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 page = GetPage(controlData);
 
                 var pagingData = new Dictionary<string, int> {
-                                                                 {IdHelper.PagingCurrentPage, page},
-                                                                 {IdHelper.PagingPageSize, pageSize},
-                                                                 {IdHelper.PagingTotal, collectionSize}
-                                                             };
+                    {IdHelper.PagingCurrentPage, page},
+                    {IdHelper.PagingPageSize, pageSize},
+                    {IdHelper.PagingTotal, collectionSize}
+                };
                 ViewData[IdHelper.PagingData] = pagingData;
                 return true;
             }
@@ -841,8 +816,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return !string.IsNullOrEmpty(controlData.Page) ? int.Parse(controlData.Page) : 1;
         }
 
-
-        internal  int GetPageSize(ObjectAndControlData controlData) {
+        internal int GetPageSize(ObjectAndControlData controlData) {
             if (controlData.DataDict.ContainsKey(IdHelper.PageSizeKey)) {
                 return int.Parse(controlData.DataDict[IdHelper.PageSizeKey]);
             }
@@ -852,7 +826,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             IActionSpec action = controlData.GetAction(NakedObjectsContext);
             return action != null ? action.GetFacet<IPageSizeFacet>().Value : 0;
         }
-
 
         internal INakedObject Page(INakedObject nakedObject, int collectionSize, ObjectAndControlData controlData, bool forceEnumerable) {
             int page, pageSize;
@@ -886,9 +859,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return nakedObject;
         }
 
-        private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
+        private INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-            INakedObject adapter = NakedObjectsContext.NakedObjectManager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
+            INakedObject adapter = NakedObjectsContext.NakedObjectManager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
             var currentMemento = (ICollectionMemento) nakedObject.Oid;
             var newMemento = currentMemento.NewSelectionMemento(selected, false);
             adapter.SetATransientOid(newMemento);
@@ -916,7 +889,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
-                    if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) { //2nd clause is to avoid rendering a string as a collection
+                    if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) {
+                        //2nd clause is to avoid rendering a string as a collection
                         SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsFramework.MetamodelManager.Metamodel).ShortName);
                     }
                     else {

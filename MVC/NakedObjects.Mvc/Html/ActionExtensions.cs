@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -12,15 +15,12 @@ using System.Web.Mvc.Html;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ActionExtensions {
-
-       
         #region name and ids
 
         /// <summary>
@@ -58,12 +58,12 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the parameters of an action for display within a form
         /// </summary>
         public static MvcHtmlString ParameterList(this HtmlHelper html,
-                                                  object contextObject,
-                                                  object targetObject,
-                                                  IActionSpec contextAction,
-                                                  IActionSpec targetAction,
-                                                  string propertyName,
-                                                  IEnumerable collection) {
+            object contextObject,
+            object targetObject,
+            IActionSpec contextAction,
+            IActionSpec targetAction,
+            string propertyName,
+            IEnumerable collection) {
             var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction);
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
@@ -73,30 +73,27 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the parameters of an action for display within a form
         /// </summary>
         public static MvcHtmlString ParameterListWith(this HtmlHelper html,
-                                                      object contextObject,
-                                                      object targetObject,
-                                                      IActionSpec contextAction,
-                                                      IActionSpec targetAction,
-                                                      string propertyName,
-                                                      IEnumerable collection) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
-
+            object contextObject,
+            object targetObject,
+            IActionSpec contextAction,
+            IActionSpec targetAction,
+            string propertyName,
+            IEnumerable collection) {
+            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) {Filter = x => x.Id == propertyName};
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
-
 
         private static MvcHtmlString ParameterList(IActionSpec contextAction, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
             if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
                 return html.ParameterList(actionContext);
             }
 
-
             var targetActionContext = new ActionContext(false, html.Framework().GetNakedObject(targetObject), targetAction);
             return html.BuildParamContainer(actionContext,
-                                            html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
-                                            IdHelper.ParamContainerName,
-                                            IdHelper.GetParameterContainerId(contextAction));
+                html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
+                IdHelper.ParamContainerName,
+                IdHelper.GetParameterContainerId(contextAction));
         }
 
         /// <summary>
@@ -108,15 +105,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString ParameterListWith(this HtmlHelper html, object context, IActionSpec action, string parameterName) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) { Filter = x => x.Id == parameterName };
+            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) {Filter = x => x.Id == parameterName};
             return html.ParameterList(actionContext);
         }
 
         internal static MvcHtmlString ParameterList(this HtmlHelper html, ActionContext actionContext) {
             return html.BuildParamContainer(actionContext,
-                                            html.ActionParameterFields(actionContext),
-                                            IdHelper.ParamContainerName,
-                                            IdHelper.GetParameterContainerId(actionContext.Action));
+                html.ActionParameterFields(actionContext),
+                IdHelper.ParamContainerName,
+                IdHelper.GetParameterContainerId(actionContext.Action));
         }
 
         #endregion
@@ -150,7 +147,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ControllerAction(this HtmlHelper html, string linkText, string actionName, string controller, string classAttribute, string name, RouteValueDictionary routeValueDictionary) {
             return html.ObjectActionAsString(linkText, actionName, controller, classAttribute, name, routeValueDictionary);
         }
-
 
         #endregion
 
@@ -194,9 +190,9 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.GetActionContainerId(nakedObject),
-                                                       IdHelper.GetActionLabel(nakedObject));
+                IdHelper.MenuContainerName,
+                IdHelper.GetActionContainerId(nakedObject),
+                IdHelper.GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -204,9 +200,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Menu(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(false, menuItems),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.MakeId(name, IdHelper.ActionContainerName),
-                                                       name + " " + MvcUi.Actions);
+                IdHelper.MenuContainerName,
+                IdHelper.MakeId(name, IdHelper.ActionContainerName),
+                name + " " + MvcUi.Actions);
         }
 
         /// <summary>
@@ -215,9 +211,9 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.GetActionContainerId(nakedObject),
-                                                       IdHelper.GetActionLabel(nakedObject));
+                IdHelper.MenuContainerName,
+                IdHelper.GetActionContainerId(nakedObject),
+                IdHelper.GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -226,9 +222,9 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.GetActionContainerId(nakedObject),
-                                                       IdHelper.GetActionLabel(nakedObject));
+                IdHelper.MenuContainerName,
+                IdHelper.GetActionContainerId(nakedObject),
+                IdHelper.GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -236,9 +232,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(true, menuItems),
-                                                       IdHelper.MenuContainerName,
-                                                       IdHelper.MakeId(name, IdHelper.ActionContainerName),
-                                                       name + " " + MvcUi.Actions);
+                IdHelper.MenuContainerName,
+                IdHelper.MakeId(name, IdHelper.ActionContainerName),
+                name + " " + MvcUi.Actions);
         }
 
         #endregion
@@ -252,7 +248,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction(y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel>(this HtmlHelper<TModel> html,
-                                                         Expression<Func<TModel, Action>> expression) {
+            Expression<Func<TModel, Action>> expression) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -263,7 +259,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction(model, y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel>(this HtmlHelper html, TModel model,
-                                                         Expression<Func<TModel, Action>> expression) {
+            Expression<Func<TModel, Action>> expression) {
             return html.ObjectAction(model, html.GetAction(expression));
         }
 
@@ -274,8 +270,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,ParmType&gt;(y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm>(this HtmlHelper<TModel> html,
-                                                                Expression<Func<TModel, Action<TParm>>> expression,
-                                                                object paramValues = null) {
+            Expression<Func<TModel, Action<TParm>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -286,8 +282,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,ParmType&gt;(model, y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm>(this HtmlHelper html, TModel model,
-                                                                Expression<Func<TModel, Action<TParm>>> expression,
-                                                                object paramValues = null) {
+            Expression<Func<TModel, Action<TParm>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -298,8 +294,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,Parm1Type, Parm2Type&gt;(y => y.TwoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2>(this HtmlHelper<TModel> html,
-                                                                         Expression<Func<TModel, Action<TParm1, TParm2>>> expression,
-                                                                         object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -310,8 +306,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,Parm1Type,Parm2Type&gt;(model, y => y.TwoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2>(this HtmlHelper html, TModel model,
-                                                                         Expression<Func<TModel, Action<TParm1, TParm2>>> expression,
-                                                                         object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -322,8 +318,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,Parm1Type, Parm2Type, Parm3Type&gt;(y => y.ThreeParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3>(this HtmlHelper<TModel> html,
-                                                                                 Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression,
-                                                                                 object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -334,8 +330,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction&lt;ModelType,Parm1Type,Parm2Type,Parm3Type&gt;(model, y => y.ThreeParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3>(this HtmlHelper html, TModel model,
-                                                                                 Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression,
-                                                                                 object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -347,8 +343,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper<TModel> html,
-                                                                                         Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression,
-                                                                                         object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -360,8 +356,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper html, TModel model,
-                                                                                         Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression,
-                                                                                         object paramValues = null) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -372,7 +368,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction(y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectAction<TModel, TResult>(this HtmlHelper<TModel> html,
-                                                                  Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -384,7 +380,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething()
         public static MvcHtmlString ObjectAction<TModel, TResult>(this HtmlHelper html, TModel model,
-                                                                  Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectAction(model, html.GetAction(expression));
         }
 
@@ -396,8 +392,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectAction<TModel, TParm, TResult>(this HtmlHelper<TModel> html,
-                                                                         Expression<Func<TModel, Func<TParm, TResult>>> expression,
-                                                                         object paramValues = null) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -409,8 +405,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectAction<TModel, TParm, TResult>(this HtmlHelper html, TModel model,
-                                                                         Expression<Func<TModel, Func<TParm, TResult>>> expression,
-                                                                         object paramValues = null) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -422,8 +418,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TResult>(this HtmlHelper<TModel> html,
-                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression,
-                                                                                  object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -435,8 +431,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TResult>(this HtmlHelper html, TModel model,
-                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression,
-                                                                                  object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -448,8 +444,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper<TModel> html,
-                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression,
-                                                                                          object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -461,8 +457,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper html, TModel model,
-                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression,
-                                                                                          object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -474,8 +470,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper<TModel> html,
-                                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression,
-                                                                                                  object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(html.ViewData.Model, html.GetAction(expression), paramValues);
         }
 
@@ -487,8 +483,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectAction<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper html, TModel model,
-                                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression,
-                                                                                                  object paramValues = null) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression,
+            object paramValues = null) {
             return html.ObjectAction(model, html.GetAction(expression), paramValues);
         }
 
@@ -541,7 +537,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient(y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel>(this HtmlHelper<TModel> html,
-                                                                    Expression<Func<TModel, Action>> expression) {
+            Expression<Func<TModel, Action>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -552,7 +548,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient(model, y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel>(this HtmlHelper html, TModel model,
-                                                                    Expression<Func<TModel, Action>> expression) {
+            Expression<Func<TModel, Action>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -563,7 +559,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,ParmType&gt;(y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm>(this HtmlHelper<TModel> html,
-                                                                           Expression<Func<TModel, Action<TParm>>> expression) {
+            Expression<Func<TModel, Action<TParm>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -574,7 +570,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,ParmType&gt;(model, y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm>(this HtmlHelper html, TModel model,
-                                                                           Expression<Func<TModel, Action<TParm>>> expression) {
+            Expression<Func<TModel, Action<TParm>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -585,7 +581,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,Parm1Type, Parm2Type&gt;(y => y.TwoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2>(this HtmlHelper<TModel> html,
-                                                                                    Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -596,7 +592,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,Parm1Type,Parm2Type&gt;(model, y => y.TwoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2>(this HtmlHelper html, TModel model,
-                                                                                    Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -607,7 +603,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,Parm1Type, Parm2Type, Parm3Type&gt;(y => y.ThreeParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3>(this HtmlHelper<TModel> html,
-                                                                                            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -618,7 +614,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient&lt;ModelType,Parm1Type,Parm2Type,Parm3Type&gt;(model, y => y.ThreeParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3>(this HtmlHelper html, TModel model,
-                                                                                            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -630,7 +626,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper<TModel> html,
-                                                                                                    Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -642,7 +638,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper html, TModel model,
-                                                                                                    Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -653,7 +649,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient(y => y.NoParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionOnTransient<TModel, TResult>(this HtmlHelper<TModel> html,
-                                                                             Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -665,7 +661,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething()
         public static MvcHtmlString ObjectActionOnTransient<TModel, TResult>(this HtmlHelper html, TModel model,
-                                                                             Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -677,7 +673,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm, TResult>(this HtmlHelper<TModel> html,
-                                                                                    Expression<Func<TModel, Func<TParm, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -689,7 +685,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm, TResult>(this HtmlHelper html, TModel model,
-                                                                                    Expression<Func<TModel, Func<TParm, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -701,7 +697,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TResult>(this HtmlHelper<TModel> html,
-                                                                                             Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -713,7 +709,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TResult>(this HtmlHelper html, TModel model,
-                                                                                             Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -725,7 +721,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper<TModel> html,
-                                                                                                     Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -737,7 +733,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper html, TModel model,
-                                                                                                     Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -749,7 +745,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper<TModel> html,
-                                                                                                             Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
             return html.ObjectActionOnTransient(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -761,7 +757,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionOnTransient<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper html, TModel model,
-                                                                                                             Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
             return html.ObjectActionOnTransient(model, html.GetAction(expression));
         }
 
@@ -803,7 +799,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionAsDialog&lt;ModelType,ParmType&gt;(y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm>(this HtmlHelper<TModel> html,
-                                                                        Expression<Func<TModel, Action<TParm>>> expression) {
+            Expression<Func<TModel, Action<TParm>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -814,7 +810,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionAsDialog&lt;ModelType,ParmType&gt;(model, y => y.OneParameterAction)
         /// </example>
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm>(this HtmlHelper html, TModel model,
-                                                                        Expression<Func<TModel, Action<TParm>>> expression) {
+            Expression<Func<TModel, Action<TParm>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -823,7 +819,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2>(this HtmlHelper<TModel> html,
-                                                                                 Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -832,7 +828,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2>(this HtmlHelper html, TModel model,
-                                                                                 Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -841,7 +837,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3>(this HtmlHelper<TModel> html,
-                                                                                         Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -850,7 +846,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3>(this HtmlHelper html, TModel model,
-                                                                                         Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -859,7 +855,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper<TModel> html,
-                                                                                                 Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -868,7 +864,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg void DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TParm4>(this HtmlHelper html, TModel model,
-                                                                                                 Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
+            Expression<Func<TModel, Action<TParm1, TParm2, TParm3, TParm4>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -877,7 +873,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething()
         public static MvcHtmlString ObjectActionAsDialog<TModel, TResult>(this HtmlHelper<TModel> html,
-                                                                          Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -886,7 +882,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething()
         public static MvcHtmlString ObjectActionAsDialog<TModel, TResult>(this HtmlHelper html, TModel model,
-                                                                          Expression<Func<TModel, Func<TResult>>> expression) {
+            Expression<Func<TModel, Func<TResult>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -895,7 +891,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm, TResult>(this HtmlHelper<TModel> html,
-                                                                                 Expression<Func<TModel, Func<TParm, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -904,7 +900,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm, TResult>(this HtmlHelper html, TModel model,
-                                                                                 Expression<Func<TModel, Func<TParm, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm, TResult>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -913,7 +909,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TResult>(this HtmlHelper<TModel> html,
-                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -922,7 +918,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TResult>(this HtmlHelper html, TModel model,
-                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TResult>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -931,7 +927,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper<TModel> html,
-                                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -940,7 +936,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TResult>(this HtmlHelper html, TModel model,
-                                                                                                  Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TResult>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -949,7 +945,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper<TModel> html,
-                                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
             return html.ObjectActionAsDialog(html.ViewData.Model, html.GetAction(expression));
         }
 
@@ -958,7 +954,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         // eg bool DoSomething(bool parm1, bool parm2, bool parm3, bool parm4)
         public static MvcHtmlString ObjectActionAsDialog<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper html, TModel model,
-                                                                                                          Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
+            Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression) {
             return html.ObjectActionAsDialog(model, html.GetAction(expression));
         }
 
@@ -1109,7 +1105,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.Contents(html.ViewData.Model, actionId, index);
         }
 
-
         /// <summary>
         ///     Get the contents of the identified parameter
         /// </summary>
@@ -1234,7 +1229,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Description<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper html, TModel model, Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, int index) {
             return html.Description(model, html.GetAction(expression).Name, index);
         }
-
 
         /// <summary>
         ///     Get the description of the identified parameter
@@ -1370,7 +1364,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel, TParm1, TParm2, TParm3, TParm4, TResult>(this HtmlHelper html, TModel model, Expression<Func<TModel, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, int index) {
             return html.Name(model, html.GetAction(expression).Name, index);
         }
-
 
         /// <summary>
         ///     Get the name of the identified parameter

@@ -1,26 +1,26 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Resources;
 using NakedObjects.Util;
-using System.Linq;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class IdHelper {
-       
-
         private const string sep = "-";
 
         // viewdata keys 
         public const string NofMessages = "Nof-Messages";
         public const string NofWarnings = "Nof-Warnings";
         public const string NofServices = "Services";
-        public const string NofMainMenus  = "NofMainMenus";
+        public const string NofMainMenus = "NofMainMenus";
         public const string NoFramework = "NakedObjectsFramework";
         public const string SystemMessages = "Messages";
         public const string PagingData = "Nof-PagingData";
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string ParamName = "nof-parameter";
         public const string CollContainerName = "nof-objecttable";
         public const string ActionListName = "nof-menuitems";
-        public const string SubMenuName = "nof-submenu";     
+        public const string SubMenuName = "nof-submenu";
         public const string SystemMenuName = "nof-system";
         public const string SubMenuItemsName = "nof-submenuitems";
         public const string CollectionTableName = "nof-collection-table";
@@ -87,7 +87,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string Checkbox = "checkbox";
         public const string CheckboxAll = "checkboxAll";
 
-        
         public const string MinDisplayFormat = "min";
         public const string MaxDisplayFormat = "max";
 
@@ -130,7 +129,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string ClearHistoryItemAction = "ClearHistoryItem";
         public const string ClearHistoryOthersAction = "ClearHistoryOthers";
 
-
         public const string ClearName = "Clear";
 
         // Class attributes for HTML buttons, to permit CSS styling
@@ -164,7 +162,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string PageSizeKey = "pageSize";
         public const string FormatKey = "format";
 
-
         public const string ActiveClass = "active";
 
         private static string InputOrSelect(ITypeSpec spec) {
@@ -196,8 +193,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(owner) + sep + assoc.Id;
         }
 
-        public static string GetInlineFieldId( IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
-            return  parent.Id + sep + GetObjectId(owner) + sep + assoc.Id;
+        public static string GetInlineFieldId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
+            return parent.Id + sep + GetObjectId(owner) + sep + assoc.Id;
         }
 
         public static string GetFieldInputId(INakedObject owner, IAssociationSpec assoc) {
@@ -279,7 +276,6 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetServiceContainerId(INakedObject nakedObject) {
-           
             return GetObjectId(nakedObject);
         }
 
@@ -288,7 +284,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetParameterContainerId(IActionSpec action) {
-            return  action.Id + sep + ParamListName;
+            return action.Id + sep + ParamListName;
         }
 
         public static string GetGenericActionId(INakedObject owner, string type) {

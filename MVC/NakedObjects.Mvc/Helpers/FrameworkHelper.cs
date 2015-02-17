@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -9,15 +12,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 using NakedObjects.Value;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
@@ -38,9 +39,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
-          
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a.IsFinderMethod && a.IsVisible( nakedObject) && IsOfTypeOrCollectionOfType(a, spec));
+                Where(a => a.IsFinderMethod && a.IsVisible(nakedObject) && IsOfTypeOrCollectionOfType(a, spec));
         }
 
         private static bool IsOfTypeOrCollectionOfType(IActionSpec actionSpec, IObjectSpec spec) {
@@ -74,7 +74,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return GetObjectId(nakedObject.Oid);
         }
-
 
         public static string GetObjectId(IOid oid) {
             return ((IEncodedToStrings) oid).Encode();
@@ -214,12 +213,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsImage(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
+            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
+            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
@@ -254,7 +253,6 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
-
             IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;

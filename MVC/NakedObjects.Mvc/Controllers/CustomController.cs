@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +12,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Web.Mvc.Html;
@@ -313,7 +315,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             bool result = false;
 
             if (ValidateChanges(naked, new ObjectAndControlData() {Form = form})) {
-                if (ApplyChanges(naked, new ObjectAndControlData() { Form = form })) {
+                if (ApplyChanges(naked, new ObjectAndControlData() {Form = form})) {
                     result = true;
                 }
             }
@@ -329,7 +331,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     If id is null or empty use creator function to create and return a new object otherwise
         ///     returns the domain object that has the specified objectId (typically extracted from the URL).
         /// </summary>
-        protected  T GetOrCreateFromId<T>(string id, Func<T> creator) {
+        protected T GetOrCreateFromId<T>(string id, Func<T> creator) {
             if (string.IsNullOrEmpty(id)) {
                 return creator();
             }
@@ -340,14 +342,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <summary>
         ///     Returns the domain object that has the specified objectId (typically extracted from the URL)
         /// </summary>
-        protected  T GetObjectFromId<T>(string objectId) {
+        protected T GetObjectFromId<T>(string objectId) {
             return NakedObjectsContext.GetNakedObjectFromId(objectId).GetDomainObject<T>();
         }
 
         /// <summary>
         ///     Obtains the Id for the specified object
         /// </summary>
-        protected  string GetIdFromObject(object domainObject) {
+        protected string GetIdFromObject(object domainObject) {
             return NakedObjectsContext.GetObjectId(domainObject);
         }
 
@@ -378,7 +380,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (action.ParameterCount == 1) {
                     // contributed action being invoked with a single parm that is the current target
                     // no dialog - go straight through 
-                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject });
+                    INakedObject result = action.Execute(nakedObject, new[] {nakedObject});
                     valid = true;
                     return result.GetDomainObject<T>();
                 }
@@ -402,22 +404,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return default(T);
         }
 
-
         private ViewResult InvokeAction(INakedObject nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
             bool valid;
             var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
             return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.GetDomainObject());
         }
 
-        private static MethodInfo GetAction(LambdaExpression expression)
-        {
-            if (expression == null)
-            {
+        private static MethodInfo GetAction(LambdaExpression expression) {
+            if (expression == null) {
                 throw new ArgumentNullException("expression");
             }
 
-            if (expression.Body.NodeType != ExpressionType.Convert)
-            {
+            if (expression.Body.NodeType != ExpressionType.Convert) {
                 throw new ArgumentException("must be method");
             }
             Expression actionExpr = ((MethodCallExpression) (((UnaryExpression) expression.Body).Operand)).Object;

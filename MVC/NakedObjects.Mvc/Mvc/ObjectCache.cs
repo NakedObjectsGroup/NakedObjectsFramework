@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,21 +35,20 @@ namespace NakedObjects.Web.Mvc {
         private const string NoneBucket = "ObjectCache";
         private const string BreadCrumbBucket = "BreadCrumbCache";
 
-
         public const int CacheSize = 100;
-        private static readonly string[] Bucket = new[] { NoneBucket, BreadCrumbBucket };
+        private static readonly string[] Bucket = new[] {NoneBucket, BreadCrumbBucket};
 
-        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             INakedObject nakedObject = framework.GetNakedObject(domainObject);
             session.AddToCache(framework, nakedObject, url, flag);
         }
 
-        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             INakedObject nakedObject = framework.GetNakedObject(domainObject);
             session.AddOrUpdateInCache(framework, nakedObject, url, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
             INakedObject nakedObject = framework.GetNakedObject(domainObject);
             session.AddToCache(framework, nakedObject, flag);
         }
@@ -84,7 +87,7 @@ namespace NakedObjects.Web.Mvc {
             session.GetCache(flag).AddToCache(framework, nakedObject, null, flag);
         }
 
-        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, ObjectFlag flag = ObjectFlag.None) {
+        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
             INakedObject nakedObject = framework.GetNakedObject(domainObject);
             session.RemoveFromCache(framework, nakedObject, flag);
         }
@@ -159,13 +162,13 @@ namespace NakedObjects.Web.Mvc {
         // This is dangerous - retrieves all cached objects from the database - use with care !
         private static void ClearDestroyedObjects(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework)}).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
         public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, ITypeSpec spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, framework)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, framework)).Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework)}).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
@@ -189,10 +192,10 @@ namespace NakedObjects.Web.Mvc {
         }
 
         private static Dictionary<string, CacheMemento> GetCache(this HttpSessionStateBase session, ObjectFlag flag) {
-            var objs = (Dictionary<string, CacheMemento>)session[Bucket[(int)flag]];
+            var objs = (Dictionary<string, CacheMemento>) session[Bucket[(int) flag]];
             if (objs == null) {
                 objs = new Dictionary<string, CacheMemento>();
-                session.Add(Bucket[(int)flag], objs);
+                session.Add(Bucket[(int) flag], objs);
             }
             return objs;
         }
@@ -205,7 +208,7 @@ namespace NakedObjects.Web.Mvc {
                 cache[objectId].Url = url;
             }
             else {
-                cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url };
+                cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url};
                 while (cache.Count > CacheSize) {
                     RemoveOldest(cache, flag);
                 }
@@ -214,7 +217,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag) {
             string objectId = framework.GetObjectId(nakedObject);
-            cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url };
+            cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url};
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
             }

@@ -1,11 +1,14 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Linq;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
@@ -21,7 +24,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public INakedObject Target { get; set; }
     }
-
 
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(ObjectContext otherContext) : base(otherContext) {}
@@ -42,7 +44,9 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = parentContext;
         }
 
-        public INakedObject OriginalTarget { get { return ParentContext == null ? Target : ParentContext.OriginalTarget; } }
+        public INakedObject OriginalTarget {
+            get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
+        }
 
         public PropertyContext ParentContext { get; set; }
 
@@ -68,10 +72,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return false;
         }
 
-        public ObjectContext OuterContext { get { return this; } }
+        public ObjectContext OuterContext {
+            get { return this; }
+        }
 
         public string GetFieldInputId() {
-            return ParentContext == null ? IdHelper.GetFieldInputId(Target, Property) : IdHelper.GetInlineFieldInputId(ParentContext.Property , Target, Property);
+            return ParentContext == null ? IdHelper.GetFieldInputId(Target, Property) : IdHelper.GetInlineFieldInputId(ParentContext.Property, Target, Property);
         }
 
         public string GetAutoCompleteFieldId() {
@@ -98,7 +104,6 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-
     internal class ActionContext : FeatureContext {
         public ActionContext(ActionContext otherContext)
             : base(otherContext) {
@@ -120,7 +125,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private Func<IActionParameterSpec, bool> filter;
 
-        private ParameterContext[] parameterContexts; 
+        private ParameterContext[] parameterContexts;
 
         public Func<IActionParameterSpec, bool> Filter {
             get {
@@ -131,7 +136,6 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             set { filter = value; }
         }
-
 
         public bool EmbeddedInObject { get; set; }
 
@@ -174,7 +178,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return facet == null ? "" : " " + facet.Value;
         }
 
-        private  bool IsFileActionNoParms(INakedObjectsFramework framework) {
+        private bool IsFileActionNoParms(INakedObjectsFramework framework) {
             return Action != null && Action.ReturnSpec.IsFile(framework) && !Action.Parameters.Any();
         }
 
@@ -194,7 +198,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return IdHelper.GetFindMenuId(Target, Action, propertyName);
         }
     }
-
 
     internal class ParameterContext : ActionContext {
         public ParameterContext(ParameterContext otherContext) : base(otherContext) {

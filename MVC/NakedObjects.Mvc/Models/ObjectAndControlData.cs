@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Diagnostics;
@@ -9,16 +13,13 @@ using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Web.Mvc.Html;
-using System;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
-
         private INakedObject nakedObject;
         private IActionSpec nakedObjectAction;
 
@@ -30,16 +31,16 @@ namespace NakedObjects.Web.Mvc.Models {
             ActionAsFind,
             InvokeActionAsFind,
             InvokeActionAsSave,
-            Action, 
-            Details, 
-            Pager, 
+            Action,
+            Details,
+            Pager,
             Cancel,
-            None, 
-        } ;
-        
+            None,
+        };
+
         public SubActionType SubAction {
             get {
-                var subActions = new List<string> { Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel };
+                var subActions = new List<string> {Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel};
 
                 Assert.AssertFalse(subActions.Count(s => !string.IsNullOrEmpty(s)) > 1);
 
@@ -58,8 +59,7 @@ namespace NakedObjects.Web.Mvc.Models {
                 if (!string.IsNullOrEmpty(InvokeAction)) {
                     return SubActionType.Action;
                 }
-                if (!string.IsNullOrEmpty(InvokeActionAsFinder))
-                {
+                if (!string.IsNullOrEmpty(InvokeActionAsFinder)) {
                     return SubActionType.InvokeActionAsFind;
                 }
                 if (!string.IsNullOrEmpty(InvokeActionAsSave)) {
@@ -77,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Models {
                 return SubActionType.None;
             }
         }
-   
+
         public string Id { get; set; }
         public string ActionId { get; set; }
 
@@ -97,9 +97,9 @@ namespace NakedObjects.Web.Mvc.Models {
         public string Page { get; set; }
         public string Format { get; set; }
 
-        public  IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
+        public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
 
-        public  IDictionary<string, HttpPostedFileBase> Files {
+        public IDictionary<string, HttpPostedFileBase> Files {
             get { return files; }
         }
 
@@ -110,15 +110,14 @@ namespace NakedObjects.Web.Mvc.Models {
         public IDictionary<string, string> DataDict {
             get {
                 if (dataDict == null) {
-                    string data = Finder ?? Selector ?? ActionAsFinder ??  Redisplay ?? InvokeActionAsFinder ?? InvokeActionAsSave ?? InvokeAction ?? Details ?? Pager ?? None ?? "";
+                    string data = Finder ?? Selector ?? ActionAsFinder ?? Redisplay ?? InvokeActionAsFinder ?? InvokeActionAsSave ?? InvokeAction ?? Details ?? Pager ?? None ?? "";
                     dataDict = data.Split('&').ToDictionary(GetName, GetValue);
                 }
                 return dataDict;
             }
-           
         }
 
-        public INakedObject GetNakedObject( INakedObjectsFramework framework) {
+        public INakedObject GetNakedObject(INakedObjectsFramework framework) {
             if (nakedObject == null) {
                 nakedObject = framework.GetNakedObjectFromId(Id);
             }
