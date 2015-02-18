@@ -89,12 +89,13 @@
     <Compile Include="Facet\MenuFacetDefault.cs" />
     <Compile Include="Facet\MenuFacetViaMethod.cs" />
     <Compile Include="Facet\ValidateObjectFacetNull.cs" />
+    <Compile Include="Meta\SerializedData.cs" />
     <Compile Include="SemanticsProvider\IFromStream.cs" />
     <Compile Include="SemanticsProvider\IValueSemanticsProvider.cs" />
     <Compile Include="Facet\AuthorizationDisableForSessionFacet.cs" />
     <Compile Include="Facet\AuthorizationHideForSessionFacet.cs" />
     <Compile Include="I18N\I18NManager.cs" />
-    <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
+    <Compile Include="Component\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\TypeIsAbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Facet\ElementTypeFacet.cs" />
     <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
-    <Compile Include="Meta\Metamodel.cs" />
+    <Compile Include="Component\Metamodel.cs" />
     <Compile Include="I18N\DescribedAsFacetI18N.cs" />
     <Compile Include="I18N\NamedFacetI18N.cs" />
     <Compile Include="Menu\MenuImpl.cs" />

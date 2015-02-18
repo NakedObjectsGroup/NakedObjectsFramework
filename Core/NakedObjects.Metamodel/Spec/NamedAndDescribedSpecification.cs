@@ -11,7 +11,7 @@ namespace NakedObjects.Meta.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class NamedAndDescribedSpecification : Specification, INamedAndDescribed {
+    internal class NamedAndDescribedSpecification : Specification, INamedAndDescribed {
         private readonly string description;
         private readonly string name;
 

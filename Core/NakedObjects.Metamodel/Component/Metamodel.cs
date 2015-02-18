@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Meta {
+namespace NakedObjects.Meta.Component {
     [Serializable]
     public class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));

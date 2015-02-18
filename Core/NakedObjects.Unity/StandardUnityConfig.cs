@@ -7,6 +7,7 @@ using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflect;

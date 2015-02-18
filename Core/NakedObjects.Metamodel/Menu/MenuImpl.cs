@@ -17,7 +17,7 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    public class MenuImpl : IMenu, IMenuImmutable {
+    internal class MenuImpl : IMenu, IMenuImmutable {
         #region Injected ServicesManager
 
         private readonly IMetamodel metamodel;

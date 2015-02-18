@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -16,13 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta {
-    [Serializable]
-    internal class SerializedData {
-        public IList<string> Keys { get; set; }
-        public IList<ITypeSpecImmutable> Values { get; set; }
-    }
-
+namespace NakedObjects.Meta.Component {
     public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
 
