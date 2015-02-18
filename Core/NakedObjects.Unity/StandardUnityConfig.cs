@@ -8,8 +8,9 @@ using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Persistor.Entity;
+using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflect;
+using NakedObjects.Reflect.Component;
 using NakedObjects.Service;
 
 namespace NakedObjects.Unity {

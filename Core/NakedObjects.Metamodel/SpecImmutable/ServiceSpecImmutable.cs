@@ -12,7 +12,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
+    internal class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
         public ServiceSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
         }
 

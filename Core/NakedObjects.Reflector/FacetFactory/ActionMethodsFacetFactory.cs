@@ -83,7 +83,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             FindDefaultDisableMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", paramTypes, action);
             FindAndRemoveDisableMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
 
-            var actionSpecImmutable = action as ActionSpecImmutable;
+            var actionSpecImmutable = action as IActionSpecImmutable;
             if (actionSpecImmutable != null) {
                 // Process the action's parameters names, descriptions and optional
                 // an alternative design would be to have another facet factory processing just ActionParameter, and have it remove these

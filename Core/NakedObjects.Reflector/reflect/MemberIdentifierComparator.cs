@@ -13,7 +13,7 @@ namespace NakedObjects.Reflect {
     /// <summary>
     ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
     /// </summary>
-    public class MemberIdentifierComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
+    internal class MemberIdentifierComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
         #region IComparer<T> Members
 
         public int Compare(T o1, T o2) {

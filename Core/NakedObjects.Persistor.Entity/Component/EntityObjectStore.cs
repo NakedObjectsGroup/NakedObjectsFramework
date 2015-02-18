@@ -33,7 +33,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Persistor.Entity.Util;
 using NakedObjects.Util;
 
-namespace NakedObjects.Persistor.Entity {
+namespace NakedObjects.Persistor.Entity.Component {
     public class EntityObjectStore : IObjectStore {
         #region Delegates
 

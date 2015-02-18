@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        private string UniqueShortName(TypeSpecImmutable spec) {
+        private string UniqueShortName(ITypeSpecImmutable spec) {
             string usn = spec.ShortName;
             Type type = spec.Type;
             if (type.IsGenericType) {

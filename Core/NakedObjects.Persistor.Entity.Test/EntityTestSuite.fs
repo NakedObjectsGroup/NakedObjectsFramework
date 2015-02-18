@@ -21,6 +21,8 @@ open NakedObjects.Core.Authentication
 open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Component
+
 
 
 let assemblyName = "NakedObjects.Persistor.Test.Data"

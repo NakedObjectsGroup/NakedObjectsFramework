@@ -16,7 +16,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
+    internal class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;
         private readonly ITypeSpecImmutable ownerSpec;
 

@@ -23,8 +23,8 @@ namespace NakedObjects.Meta.Facet {
             Menu = null;
         }
 
-        protected TypeSpecImmutable Spec {
-            get { return (TypeSpecImmutable) Specification; }
+        protected ITypeSpecImmutable Spec {
+            get { return (ITypeSpecImmutable) Specification; }
         }
 
         protected MenuImpl Menu { get; set; }
@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected static string GetMenuName(TypeSpecImmutable spec) {
+        protected static string GetMenuName(ITypeSpecImmutable spec) {
             if (spec is IServiceSpecImmutable) {
                 return spec.GetFacet<INamedFacet>().NaturalName;
             }

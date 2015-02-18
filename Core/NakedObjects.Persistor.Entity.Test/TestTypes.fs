@@ -20,6 +20,8 @@ open NakedObjects.Core.Resolve
 open NakedObjects.Core.Adapter
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Adapter
+open NakedObjects.Persistor.Entity.Component
+
 
 
 let injectedObjects = new List<Object>()

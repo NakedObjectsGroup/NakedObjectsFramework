@@ -15,7 +15,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
+    internal abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
 
         protected MemberSpecImmutable(IIdentifier identifier) {

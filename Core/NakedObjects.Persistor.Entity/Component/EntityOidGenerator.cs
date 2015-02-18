@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Adapter;
 
-namespace NakedObjects.Persistor.Entity {
+namespace NakedObjects.Persistor.Entity.Component {
     public class EntityOidGenerator : IOidGenerator {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidGenerator));
         private static long transientId;

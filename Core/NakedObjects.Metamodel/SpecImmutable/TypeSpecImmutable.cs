@@ -24,11 +24,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class TypeSpecImmutable : Specification, ITypeSpecBuilder {
+    internal abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         private readonly IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
 
-        public TypeSpecImmutable(Type type, IMetamodel metamodel) {
+        protected TypeSpecImmutable(Type type, IMetamodel metamodel) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;

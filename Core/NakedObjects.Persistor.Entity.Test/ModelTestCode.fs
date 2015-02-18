@@ -21,6 +21,8 @@ open Moq
 open NakedObjects.Core.Container
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Component
+
 
 let ModelConfig = 
     let pc = new PocoEntityContextConfiguration()

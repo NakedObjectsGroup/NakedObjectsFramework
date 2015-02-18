@@ -19,6 +19,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta;
+using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 

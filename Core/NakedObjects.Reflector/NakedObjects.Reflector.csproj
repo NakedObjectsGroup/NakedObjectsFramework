@@ -206,11 +206,10 @@
     <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
     <Compile Include="Reflect\Introspector.cs" />
-    <Compile Include="Reflect\MethodRemoverConstants.cs" />
-    <Compile Include="Reflect\Reflector.cs" />
+    <Compile Include="Component\Reflector.cs" />
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />
     <Compile Include="Reflect\MemberOrderComparator.cs" />
-    <Compile Include="Reflect\DefaultClassStrategy.cs" />
+    <Compile Include="Component\DefaultClassStrategy.cs" />
     <Compile Include="Reflect\FacetDecoratorSet.cs" />
     <Compile Include="TypeFacetFactory\ArrayValueTypeFacetFactory.cs" />
     <Compile Include="TypeFacetFactory\BoolValueTypeFacetFactory.cs" />

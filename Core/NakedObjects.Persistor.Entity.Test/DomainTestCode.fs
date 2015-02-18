@@ -25,6 +25,7 @@ open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
+open NakedObjects.Persistor.Entity.Component
 
 
 let PocoConfig = 

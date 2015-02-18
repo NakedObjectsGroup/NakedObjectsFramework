@@ -17,11 +17,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect;
+using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Value;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -187,7 +189,7 @@ namespace NakedObjects.Meta.Test {
             IEnumerable<string> f1 =
                 cache.AllSpecifications().SelectMany(s => s.Fields)
                     .Where(s => s != null)
-                    .OfType<OneToOneAssociationSpecImmutable>()
+                    .OfType<IOneToOneAssociationSpecImmutable>()
                     .SelectMany(s => s.GetFacets())
                     .Select(f => f.GetType().FullName)
                     .Distinct();

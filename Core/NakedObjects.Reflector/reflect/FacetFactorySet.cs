@@ -109,19 +109,19 @@ namespace NakedObjects.Reflect {
 
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
-                facetFactory.Process(reflector, type, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, type, methodRemover, specification);
             }
         }
 
         public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(reflector, method, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, method, methodRemover, specification);
             }
         }
 
         public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(reflector, property, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, property, methodRemover, specification);
             }
         }
 
@@ -137,8 +137,5 @@ namespace NakedObjects.Reflect {
             return factoriesByFeatureType[featureType];
         }
 
-        private static IMethodRemover RemoverElseNullRemover(IMethodRemover methodRemover) {
-            return methodRemover ?? MethodRemoverConstants.Null;
-        }
     }
 }

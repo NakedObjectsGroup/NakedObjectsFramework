@@ -22,7 +22,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflect {
+namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public class Reflector : IReflector {
         private static readonly ILog Log;
@@ -242,7 +242,7 @@ namespace NakedObjects.Reflect {
         private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
-            return IsService(type) ? (ITypeSpecBuilder) new ServiceSpecImmutable(type, metamodel) : new ObjectSpecImmutable(type, metamodel);
+            return IsService(type) ? (ITypeSpecBuilder)ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
         private bool IsService(Type type) {

@@ -23,7 +23,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
-    public class Introspector : IIntrospector {
+    internal class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
 
         private readonly IMetamodel metamodel;
@@ -187,7 +187,8 @@ namespace NakedObjects.Reflect {
                 var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable> (returnType);
                 Type defaultType = typeof (object);
                 var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable> (defaultType);
-                var collection = new OneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
+
+                var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);
@@ -209,7 +210,8 @@ namespace NakedObjects.Reflect {
                 var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 Type propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable> (propertyType);
-                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+
 
                 // Process facets for the property
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
@@ -239,9 +241,9 @@ namespace NakedObjects.Reflect {
 
                         // build action & its parameters          
 
-                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
+                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt))).ToArray();
                         IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-                        var action = new ActionSpecImmutable(identifier, spec, actionParams);
+                        var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
 
                         // Process facets on the action & parameters
                         FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
