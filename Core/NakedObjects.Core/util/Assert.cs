@@ -5,23 +5,40 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Diagnostics;
 
 namespace NakedObjects.Core.Util {
     public static class Assert {
+        private static string SafeMsg(Func<string> f) {
+            try {
+                return f();
+            }
+            catch (Exception e) {
+                return "message creation threw exception :" + e.Message;
+            }
+        }
+
+        private static string ExpectedMsg(string message, object expected, object actual) {
+            return string.Format("{0}: expected {1}; but was {2}", message, expected, actual);
+        }
+
         public static void AssertEquals(object expected, object actual) {
             AssertEquals("", expected, actual);
         }
 
         public static void AssertEquals(string message, int expected, int intValue) {
             if (expected != intValue) {
-                var msg = message + " expected " + expected + "; but was " + intValue;
+                var msg = SafeMsg(() => ExpectedMsg(message, expected, intValue));
                 Trace.Fail(msg);
             }
         }
 
         public static void AssertEquals(string message, object expected, object actual) {
-            AssertTrue(message + ": expected " + expected + " but was " + actual, (expected == null && actual == null) || (expected != null && expected.Equals(actual)));
+            if (expected != actual) {
+                var msg = SafeMsg(() => ExpectedMsg(message, expected, actual));
+                Trace.Fail(msg);
+            }
         }
 
         public static void AssertFalse(bool flag) {
@@ -61,7 +78,10 @@ namespace NakedObjects.Core.Util {
         }
 
         public static void AssertSame(string message, object expected, object actual) {
-            AssertTrue(message + ": expected " + expected + " but was " + actual, expected == actual);
+            if (expected != actual) {
+                var msg = SafeMsg(() => ExpectedMsg(message, expected, actual));
+                Trace.Fail(msg);
+            }
         }
 
         public static void AssertTrue(bool flag) {
@@ -73,8 +93,10 @@ namespace NakedObjects.Core.Util {
         }
 
         public static void AssertTrue(string message, object target, bool flag) {
-            var msg = message + (target == null ? "" : (": " + target));
-            Trace.Assert(flag, msg);
+            if (!flag) {
+                var msg = SafeMsg(() => string.Format("{0} :  {1}", message, target));
+                Trace.Assert(flag, msg);
+            }
         }
     }
 
