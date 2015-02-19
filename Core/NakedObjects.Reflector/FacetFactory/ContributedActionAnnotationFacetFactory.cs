@@ -39,7 +39,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification<IObjectSpecImmutable> (p.ParameterType);
-                if (type != null ) {//TODO: This guard is really only there for a unit test -  SMELL! Should be mocked out
+               if (type != null ) {
                     if (type.IsParseable) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
                     } else {

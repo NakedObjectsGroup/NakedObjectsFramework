@@ -56,10 +56,19 @@ namespace NakedObjects.Web.Mvc.Html {
             var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
             var mainMenus = new List<IMenuImmutable>();
             foreach (object service in services.Cast<object>()) {
-                INakedObject nakedObject = html.Framework().GetNakedObject(service);
-                mainMenus.Add(nakedObject.Spec.ObjectMenu);
+                var menu = GetMenu(html, service);
+                mainMenus.Add(menu);
             }
             return RenderMainMenus(html, mainMenus);
+        }
+
+        private static IMenuImmutable GetMenu(HtmlHelper html, object service) {
+            return html.Framework().GetNakedObject(service).Spec.ObjectMenu;
+        }
+
+        public static MvcHtmlString MainMenu(this HtmlHelper html, object service) {
+            var menu = GetMenu(html, service);
+            return MenuAsHtml(html, menu, null, false);
         }
 
         private static MvcHtmlString RenderMainMenus(HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
@@ -129,12 +138,11 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpecImmutable actionIm = menuAction.Action;
             IActionSpec actionSpec = html.Framework().MetamodelManager.GetActionSpec(actionIm);
             if (nakedObject == null) {
-                var serviceIm = actionIm.OwnerSpec as IServiceSpecImmutable; //This is the spec for the service
+                var serviceIm = actionIm.OwnerSpec as IServiceSpecImmutable;
 
                 if (serviceIm == null) {
                     throw new Exception("Action is not on a known service");
                 }
-                //TODO: Add method to IServicesManager to get a service by its IObjectSpec (or IObjectSpecImmutable)
                 ITypeSpec objectSpec = html.Framework().MetamodelManager.GetSpecification(serviceIm);
                 nakedObject = html.Framework().ServicesManager.GetServices().Single(s => s.Spec == objectSpec);
             }

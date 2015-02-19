@@ -7,13 +7,13 @@
 
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
+using System;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
         #region ServiceMenus
 
-        //TODO: Mark obsolete when Menus refactoring complete
-        //[Obsolete("Use MenuExtensions#MainMenus")]
+        [Obsolete("Use MenuExtensions#MainMenus")]
         public static MvcHtmlString Services(this HtmlHelper html) {
             return MenuExtensions.MainMenus(html);
         }
@@ -28,8 +28,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 nakedObject.TitleString());
         }
 
-        //TODO: Mark obsolete when Menus refactoring complete
-        //[Obsolete("Use MenuExtensions#MainMenu")]
+        [Obsolete("Use MenuExtensions#MainMenu")]
         public static MvcHtmlString ServiceMenu(this HtmlHelper html, object service) {
             return html.Service(service);
         }

@@ -340,7 +340,6 @@ namespace NakedObjects.Xat {
 
             ReflectorConfiguration.NoValidate = true;
 
-            // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(
                 Types ?? new Type[] { },
                 Services,

@@ -64,7 +64,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public bool IsPropertyEdit { get; set; }
 
-        //TODO:  Make a property for consistency?
         public bool IsFindMenuEnabled() {
             if (Property is IOneToOneAssociationSpec) {
                 return (Property as IOneToOneAssociationSpec).IsFindMenuEnabled;
@@ -212,7 +211,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public bool IsHidden { get; set; }
 
-        //TODO:  Make a property for consistency?
         public bool IsFindMenuEnabled() {
             if (Parameter is IOneToOneActionParameterSpec) {
                 var p = Parameter as IOneToOneActionParameterSpec;

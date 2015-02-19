@@ -19,8 +19,6 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsFindMenuEnabled {
             get {
-                //TODO: Temporary approach.  
-                //TODO: Does not currently disable for Contributee parameter on a ContributedAction
                 if (!isFindMenuEnabled.HasValue) {
                     isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
                      || ContainsFacet<IFindMenuFacet>() ;

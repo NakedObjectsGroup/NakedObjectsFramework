@@ -39,7 +39,6 @@ using Assert = NUnit.Framework.Assert;
 using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
 
-
 namespace MvcTestApp.Tests.Helpers {
     public static class StringHelper {
         public static string StripWhiteSpace(this string s) {
@@ -52,7 +51,6 @@ namespace MvcTestApp.Tests.Helpers {
     }
 
     [TestFixture]
-   
     public class NofHtmlHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
@@ -2010,7 +2008,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ServiceList() {
-            string s = mocks.HtmlHelper.Services().ToString();
+            string s = mocks.HtmlHelper.MainMenus().ToString();
             CheckResults("ServiceList", s);
         }
 
