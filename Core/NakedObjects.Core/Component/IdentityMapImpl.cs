@@ -75,16 +75,15 @@ namespace NakedObjects.Core.Component {
             // finally re-add to the map.
 
             identityAdapterMap.Remove(oid);
-            var newOid = oidGenerator.ConvertTransientToPersistentOid(oid);
-            adapter.UpdateOid(newOid);
+            oidGenerator.ConvertTransientToPersistentOid(oid);
 
             adapter.ResolveState.Handle(Events.StartResolvingEvent);
             adapter.ResolveState.Handle(Events.EndResolvingEvent);
 
             Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + newOid, identityAdapterMap.GetAdapter(newOid));
-            identityAdapterMap.Add(newOid, adapter);
-            Log.DebugFormat("Made persistent {0}; was {1}", adapter, newOid.Previous);
+            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
+            identityAdapterMap.Add(oid, adapter);
+            Log.DebugFormat("Made persistent {0}; was {1}", adapter, oid.Previous);
         }
 
         public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
@@ -96,13 +95,12 @@ namespace NakedObjects.Core.Component {
 
             identityAdapterMap.Remove(oid);
 
-            var newOid = ((ViewModelOid)adapter.Oid).UpdateKeys(keys, false);
-            adapter.UpdateOid(newOid);
+            ((ViewModelOid) adapter.Oid).UpdateKeys(keys, false);
 
             Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + newOid, identityAdapterMap.GetAdapter(newOid));
-            identityAdapterMap.Add(newOid, adapter);
-            Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, newOid.Previous);
+            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
+            identityAdapterMap.Add(oid, adapter);
+            Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
         }
 
         public virtual void Unloaded(INakedObject nakedObject) {

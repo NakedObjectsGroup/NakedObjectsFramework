@@ -16,9 +16,9 @@ namespace NakedObjects.Architecture.Component {
         /// <para>
         ///     The specified object's data should be removed from the persistence mechanism.
         /// </para>
-        IOid ConvertPersistentToTransientOid(IOid oid);
+        void ConvertPersistentToTransientOid(IOid oid);
 
-        IOid ConvertTransientToPersistentOid(IOid oid);
+        void ConvertTransientToPersistentOid(IOid oid);
 
         IOid CreateTransientOid(object obj);
 

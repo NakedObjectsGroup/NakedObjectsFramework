@@ -183,9 +183,8 @@ namespace NakedObjects.Core.Adapter {
             get { return false; }
         }
 
-        public IOid CopyFrom(IOid oid) {
+        public void CopyFrom(IOid oid) {
             // do nothing
-            return oid;
         }
 
         public ITypeSpec Spec {
