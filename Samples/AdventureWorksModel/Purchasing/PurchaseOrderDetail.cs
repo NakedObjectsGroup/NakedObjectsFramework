@@ -81,7 +81,6 @@ namespace AdventureWorksModel {
             ReceivedQty = qtyReceived;
             RejectedQty = qtyRejected;
             StockedQty = qtyIntoStock;
-            //TODO:  Update inventory level.
         }
 
         public virtual int Default0ReceiveGoods() {

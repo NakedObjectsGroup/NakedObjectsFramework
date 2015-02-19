@@ -168,7 +168,6 @@ namespace AdventureWorksModel
         [Optionally]
         [StringLength(25)]
         [MemberOrder(25)]
-        //TODO: Add Mask or RegEx validation and formatting
         public virtual string Phone { get; set; }
 
         #endregion

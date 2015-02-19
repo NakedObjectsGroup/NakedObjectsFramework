@@ -404,7 +404,7 @@ namespace AdventureWorksModel {
 
         [Hidden]
         public virtual SpecialOfferProduct BestSpecialOfferProduct(short quantity) {
-            //TODO:  reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
+            //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
             var query = from obj in Container.Instances<SpecialOfferProduct>()
                                                            where obj.Product.ProductID == ProductID &&
                                                                  obj.SpecialOffer.StartDate <= DateTime.Now &&
