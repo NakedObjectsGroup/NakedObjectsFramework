@@ -182,14 +182,14 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>), typeof(object), typeof(int)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
@@ -198,15 +198,14 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<>)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<>), typeof(object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
         }
 
         [TestMethod]
@@ -216,15 +215,14 @@ namespace NakedObjects.Reflect.Test {
             IQueryable<int> qi = new List<int>().AsQueryable();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType()}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
         }
 
         [TestMethod]
@@ -233,14 +231,14 @@ namespace NakedObjects.Reflect.Test {
             IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType()}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {it.GetType(), typeof(int)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 

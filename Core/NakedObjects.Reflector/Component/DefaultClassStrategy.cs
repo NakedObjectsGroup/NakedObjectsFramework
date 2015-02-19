@@ -66,7 +66,10 @@ namespace NakedObjects.Reflect.Component {
 
         public virtual bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) && !IsTypeUnsupportedByReflector(returnType) && IsTypeWhiteListed(returnType);
+            return !IsTypeIgnored(returnType) &&
+                    !IsTypeUnsupportedByReflector(returnType) &&
+                    IsTypeWhiteListed(returnType) &&
+                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));                    ;
         }
 
         public virtual Type GetType(Type type) {
