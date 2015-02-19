@@ -25,8 +25,10 @@ using NakedObjects.Menu;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Component;
 using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
+using NakedObjects.Reflect.Component;
 using NakedObjects.Security;
 
 namespace NakedObjects.SystemTest.Reflect {

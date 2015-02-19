@@ -32,6 +32,9 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Component;
+using NakedObjects.Persistor.Entity.Component;
+using NakedObjects.Reflect.Component;
 
 namespace NakedObjects.App.Demo {
     /// <summary>
