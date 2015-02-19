@@ -88,12 +88,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         [TestMethod]
-        public void TestEntryWithShortISOFormat() {
-            // not currently recognised
-            //assertEntry("20070521T1030", 2007, 5, 21, 10, 30, 0);
-        }
-
-        [TestMethod]
         public void TestParseInvariant() {
             var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
             string s1 = d1.ToString(CultureInfo.InvariantCulture);

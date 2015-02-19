@@ -34,7 +34,6 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
-            //Assert.assertNotNull(encodedData);
             if (EncodedNull.Equals(encodedData)) {
                 return null;
             }

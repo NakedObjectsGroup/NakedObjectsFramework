@@ -205,8 +205,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             namedFacetAbstract = (NamedFacetAbstract) facet;
             Assert.AreEqual("some name", namedFacetAbstract.Value);
             AssertNoMethodsRemoved();
-
-            //Assert.Contains("Duplicate name: some name found on type: NakedObjects.Reflector.DotNet.Facets.Naming.Named.NamedAnnotationFacetFactoryTest+Customer16", NakedObjectsContext.InitialisationWarnings);
         }
 
         [TestMethod]

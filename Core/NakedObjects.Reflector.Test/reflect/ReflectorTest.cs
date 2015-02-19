@@ -190,7 +190,6 @@ namespace NakedObjects.Reflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
         [TestMethod]
@@ -239,7 +238,6 @@ namespace NakedObjects.Reflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
         [TestMethod]
@@ -247,14 +245,14 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new string[] { "System" });
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+            Assert.AreEqual(31, reflector.AllObjectSpecImmutables.Count());
         }
 
         [TestMethod]
@@ -262,14 +260,14 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray), typeof(string)}, new Type[] {}, new string[] {});
+            rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
         }
 
         [TestMethod]
@@ -277,14 +275,13 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new string[] {});
-
+            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new string[] {"System"});
+            rc.SupportedSystemTypes.Clear();
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+            Assert.AreEqual(74, reflector.AllObjectSpecImmutables.Count());
         }
 
         #region Nested type: SetWrapper
