@@ -9,66 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    internal class MenuImpl : IMenu, IMenuImmutable {
-        #region Injected ServicesManager
-
+    internal class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
         private readonly IMetamodel metamodel;
-
-        #endregion
 
         public MenuImpl(IMetamodel metamodel, string name) {
             this.metamodel = metamodel;
             Name = name ?? "Undefined";
         }
-
-        #region properties
-
-        private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
-
-        /// <summary>
-        /// Will only be set if this menu is a sub-menu of another.
-        /// </summary>
-        public IMenu SuperMenu { get; private set; }
-
-        /// <summary>
-        /// The name of the menu -  will typically be rendered on the UI
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Id is optional.  It is only included to facilitate backwards compatibility with
-        /// existing auto-generated menus.
-        /// </summary>
-        public string Id { get; set; }
-
-        //Includes both actions and sub-menus
-        public IList<IMenuItemImmutable> MenuItems {
-            get { return items; }
-        }
-
-        protected IMetamodel Metamodel {
-            get { return metamodel; }
-        }
-
-        protected void AddMenuItem(IMenuItemImmutable item) {
-            items = items.Add(item); //Only way to add to an immutable collection
-        }
-
-        protected bool HasAction(IActionSpecImmutable action) {
-            bool nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
-            if (nativeAction) return true;
-            return MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
-        }
-
-        #endregion
 
         #region IMenu Members
 
@@ -153,10 +110,78 @@ namespace NakedObjects.Meta.Menu {
             return subMenu;
         }
 
-        public MenuImpl AddAsSubMenu(MenuImpl subMenu) {
+        protected MenuImpl AddAsSubMenu(MenuImpl subMenu) {
             AddMenuItem(subMenu);
             subMenu.SuperMenu = this;
             return this;
         }
+
+        #region properties
+
+        private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
+
+        /// <summary>
+        /// Will only be set if this menu is a sub-menu of another.
+        /// </summary>
+        public IMenu SuperMenu { get; private set; }
+
+        /// <summary>
+        /// The name of the menu -  will typically be rendered on the UI
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Id is optional.  It is only included to facilitate backwards compatibility with
+        /// existing auto-generated menus.
+        /// </summary>
+        public string Id { get; set; }
+
+        //Includes both actions and sub-menus
+        public IList<IMenuItemImmutable> MenuItems {
+            get { return items; }
+        }
+
+        protected IMetamodel Metamodel {
+            get { return metamodel; }
+        }
+
+        protected void AddMenuItem(IMenuItemImmutable item) {
+            items = items.Add(item); //Only way to add to an immutable collection
+        }
+
+        protected bool HasAction(IActionSpecImmutable action) {
+            bool nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
+            if (nativeAction) return true;
+            return MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
+        }
+
+        #endregion
+
+        #region ISerializable
+
+        private readonly IList<IMenuItemImmutable> tempItems;
+
+        // The special constructor is used to deserialize values. 
+        protected MenuImpl(SerializationInfo info, StreamingContext context) {
+            tempItems = info.GetValue<IList<IMenuItemImmutable>>("items");
+            SuperMenu = info.GetValue<IMenu>("SuperMenu");
+            Name = info.GetValue<string>("Name");
+            Id = info.GetValue<string>("Id");
+            metamodel = info.GetValue<IMetamodel>("Metamodel");
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<IList<IMenuItemImmutable>>("items", items.ToList());
+            info.AddValue<IMenu>("SuperMenu", SuperMenu);
+            info.AddValue<string>("Name",Name);
+            info.AddValue<string>("Id",Id);
+            info.AddValue<IMetamodel>("metamodel", metamodel);
+        }
+
+        public void OnDeserialization(object sender) {
+            items = tempItems.ToImmutableList();      
+        }
+
+        #endregion
     }
 }

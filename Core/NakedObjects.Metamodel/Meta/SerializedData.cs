@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
     [Serializable]
     internal class SerializedData {
-        public IList<string> Keys { get; set; }
-        public IList<ITypeSpecImmutable> Values { get; set; }
+        public IList<string> SpecKeys { get; set; }
+        public IList<ITypeSpecImmutable> SpecValues { get; set; }
+        public IList<IMenuImmutable> MenuValues { get; set; }
     }
 }

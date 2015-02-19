@@ -53,7 +53,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-
+            ReflectorConfiguration.NoValidate = true;
             RegisterFacetFactories(container);
 
             container.RegisterType<IMenuFactory, NullMenuFactory>();
@@ -141,7 +141,7 @@ namespace NakedObjects.SystemTest.Reflect {
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
         [TestMethod]
-        [Ignore] // #8225
+        [Ignore] // #9221
         public void SerializeAdventureworks() {
             // load adventurework
 
@@ -217,7 +217,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        [Ignore] // #8225
+        [Ignore] // #9221
 
         public void SerializeAdventureworksByType() {
             // load adventurework

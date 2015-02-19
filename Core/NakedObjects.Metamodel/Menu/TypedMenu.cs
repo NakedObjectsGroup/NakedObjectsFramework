@@ -48,6 +48,15 @@ namespace NakedObjects.Meta.Menu {
             return this;
         }
 
+        public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
+            var sub = new TypedMenu<TObject>(Metamodel, false, subMenuName);
+            sub.Id += "-" + subMenuName + ":";
+            AddMenuItem(sub);
+            return sub;
+        }
+
+        #endregion
+
         private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
             var facet = ca.GetFacet<IContributedActionFacet>();
             string subMenuName = facet.SubMenuWhenContributedTo(spec);
@@ -61,15 +70,6 @@ namespace NakedObjects.Meta.Menu {
                 AddMenuItem(new MenuAction(ca));
             }
         }
-
-        public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
-            var sub = new TypedMenu<TObject>(Metamodel, false, subMenuName);
-            sub.Id += "-" + subMenuName + ":";
-            AddMenuItem(sub);
-            return sub;
-        }
-
-        #endregion
 
         private string GetFriendlyNameForObject() {
             ITypeSpecImmutable spec = GetObjectSpec<TObject>();

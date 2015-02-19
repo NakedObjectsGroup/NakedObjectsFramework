@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -13,32 +14,57 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Component {
-    public class ImmutableInMemorySpecCache : ISpecificationCache {
+    [Serializable]
+    public class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
+        private readonly SerializedData tempData;
         private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
-
-        private ImmutableDictionary<string, ITypeSpecImmutable> specs =
-            ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
-
+        private ImmutableDictionary<string, ITypeSpecImmutable> specs = ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
         // constructor to use when reflecting
         public ImmutableInMemorySpecCache() {}
-
         // constructor to use when loading metadata from file
         public ImmutableInMemorySpecCache(string file) {
             using (FileStream fs = File.Open(file, FileMode.Open)) {
                 IFormatter formatter = new BinaryFormatter();
                 var data = (SerializedData) formatter.Deserialize(fs);
-                specs = data.Keys.Zip(data.Values, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+                specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+
+                mainMenus = data.MenuValues.ToImmutableList();
             }
         }
+      
+        #region IDeserializationCallback Members
+
+        public void OnDeserialization(object sender) {
+            specs = tempData.SpecKeys.Zip(tempData.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+            mainMenus = tempData.MenuValues.ToImmutableList();
+        }
+
+        #endregion
+
+        #region ISerializable Members
+
+        // The special constructor is used to deserialize values. 
+        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
+            tempData = info.GetValue<SerializedData>("data");
+        }
+
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+            info.AddValue<SerializedData>("data", data);
+        }
+
+        #endregion
 
         #region ISpecificationCache Members
 
         public void Serialize(string file) {
             using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
                 IFormatter formatter = new BinaryFormatter();
-                var data = new SerializedData {Keys = specs.Keys.ToList(), Values = specs.Values.ToList()};
+                var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
                 formatter.Serialize(fs, data);
             }
         }

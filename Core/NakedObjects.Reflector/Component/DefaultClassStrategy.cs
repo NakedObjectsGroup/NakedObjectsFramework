@@ -34,6 +34,7 @@ namespace NakedObjects.Reflect.Component {
         }
 
         // only intended for use during initial reflection
+        [NonSerialized]
         private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
         private bool IsNamespaceMatch(Type type) {

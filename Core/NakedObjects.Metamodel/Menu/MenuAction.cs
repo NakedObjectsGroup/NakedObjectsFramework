@@ -20,9 +20,7 @@ namespace NakedObjects.Meta.Menu {
         #region IMenuActionImmutable Members
 
         public string Name { get; set; }
-
         public string Id { get; set; }
-
         public IActionSpecImmutable Action { get; set; }
 
         #endregion

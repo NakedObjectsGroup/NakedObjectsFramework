@@ -18,6 +18,7 @@ using NakedObjects.Value;
 using Image = NakedObjects.Value.Image;
 
 namespace NakedObjects.Core.Configuration {
+    [Serializable]
     public class ReflectorConfiguration : IReflectorConfiguration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
             Type[] services,
