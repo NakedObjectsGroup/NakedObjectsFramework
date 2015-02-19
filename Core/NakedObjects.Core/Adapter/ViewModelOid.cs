@@ -15,9 +15,21 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Adapter {
     internal class ViewModelOid : IEncodedToStrings, IViewModelOid {
         private readonly IMetamodelManager metamodel;
-        private int cachedHashCode;
-        private string cachedToString;
-        private ViewModelOid previous;
+        private readonly int cachedHashCode;
+        private readonly string cachedToString;
+        private readonly ViewModelOid previous;
+
+        private ViewModelOid(string[] keys, ViewModelOid previous) {
+            Assert.AssertNotNull(metamodel);
+            this.metamodel = previous.metamodel;
+            IsTransient = false;
+            TypeName = previous.TypeName;
+            Keys = keys;
+            this.previous = previous;
+            var cache = CacheState();
+            cachedHashCode = cache.Item1;
+            cachedToString = cache.Item2;
+        }
 
         public ViewModelOid(IMetamodelManager metamodel, IObjectSpec spec) {
             Assert.AssertNotNull(metamodel);
@@ -25,7 +37,9 @@ namespace NakedObjects.Core.Adapter {
             IsTransient = false;
             TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
             Keys = new[] {Guid.NewGuid().ToString()};
-            CacheState();
+            var cache = CacheState();
+            cachedHashCode = cache.Item1;
+            cachedToString = cache.Item2;
         }
 
         public ViewModelOid(IMetamodelManager metamodel, string[] strings) {
@@ -37,7 +51,9 @@ namespace NakedObjects.Core.Adapter {
             Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};
 
             IsTransient = false;
-            CacheState();
+            var cache = CacheState();
+            cachedHashCode = cache.Item1;
+            cachedToString = cache.Item2;
         }
 
         public string TypeName { get; private set; }
@@ -65,7 +81,9 @@ namespace NakedObjects.Core.Adapter {
 
         #region IOid Members
 
-        public void CopyFrom(IOid oid) {}
+        public IOid CopyFrom(IOid oid) {
+            return oid;
+        }
 
         public IOid Previous {
             get { return previous; }
@@ -83,21 +101,19 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
+        private Tuple<int, string> CacheState() {
+            var hashCode = HashCodeUtils.Seed;
+            hashCode = HashCodeUtils.Hash(hashCode, TypeName);
+            hashCode = HashCodeUtils.Hash(hashCode, Keys);
 
             object keys = Keys.Aggregate((s, t) => s + ":" + t);
 
-            cachedToString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+            var toString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+            return new Tuple<int, string>(hashCode, toString);
         }
 
-        public void UpdateKeys(string[] newKeys, bool final) {
-            previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
-            Keys = newKeys; // after old key is saved ! 
-            IsFinal = final;
-            CacheState();
+        public IOid UpdateKeys(string[] newKeys, bool final) {
+            return new ViewModelOid(newKeys, this) {IsFinal = final};
         }
 
         #region Object Overrides
@@ -113,8 +129,6 @@ namespace NakedObjects.Core.Adapter {
             return false;
         }
 
-        // ReSharper disable once NonReadonlyFieldInGetHashCode
-        // investigate making Oid immutable
         public override int GetHashCode() {
             return cachedHashCode;
         }

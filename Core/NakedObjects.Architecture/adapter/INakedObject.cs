@@ -106,6 +106,12 @@ namespace NakedObjects.Architecture.Adapter {
         /// <param name="oid"></param>
         void SetATransientOid(IOid oid);
 
+        /// <summary>
+        ///     Update the Oid - eg when making persistent
+        /// </summary>
+        /// <param name="oid"></param>
+        void UpdateOid(IOid oid);
+
         void LoadAnyComplexTypes();
         void Created();
         void Deleting();

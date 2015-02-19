@@ -77,7 +77,7 @@ namespace NakedObjects.Core.Adapter {
             get { return parentOid.IsTransient; }
         }
 
-        public virtual void CopyFrom(IOid oid) {
+        public virtual IOid CopyFrom(IOid oid) {
             throw new NotImplementedException();
         }
 

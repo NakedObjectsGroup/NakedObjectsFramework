@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Adapter {
     public interface IEntityOid : IOid {
         string TypeName { get; }
         object[] Key { get; }
-        void MakePersistent();
-        void MakePersistentAndUpdateKey(object[] newKey);
+        IOid MakePersistent();
+        IOid MakePersistentAndUpdateKey(object[] newKey);
     }
 }

@@ -28,14 +28,17 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region IOidGenerator Members
 
-        public void ConvertPersistentToTransientOid(IOid oid) {}
+        public IOid ConvertPersistentToTransientOid(IOid oid) {
+            return oid;
+        }
 
-        public void ConvertTransientToPersistentOid(IOid oid) {
+        public IOid ConvertTransientToPersistentOid(IOid oid) {
             var entityOid = oid as IEntityOid;
             if (entityOid != null) {
-                entityOid.MakePersistent();
+                Log.DebugFormat("Converted transient OID to persistent {0}", oid);
+                return entityOid.MakePersistent();
             }
-            Log.DebugFormat("Converted transient OID to persistent {0}", oid);
+            return oid;
         }
 
         public IOid CreateTransientOid(object obj) {

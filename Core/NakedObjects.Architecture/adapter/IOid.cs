@@ -33,11 +33,11 @@ namespace NakedObjects.Architecture.Adapter {
         ITypeSpec Spec { get; }
 
         /// <summary>
-        ///     Copies the content of the specified oid into this oid. After this call the hash code return by
+        ///     Copies the content of the specified oid into new oid. After this call the hash code return by
         ///     both the specified object and this object will be the same, and both objects will be equal
         ///     (<c>Equals(IOid)</c> returns true)
         /// </summary>
-        void CopyFrom(IOid oid);
+        IOid CopyFrom(IOid oid);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

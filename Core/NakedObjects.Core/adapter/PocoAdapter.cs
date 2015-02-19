@@ -183,6 +183,13 @@ namespace NakedObjects.Core.Adapter {
             oid = newOid;
         }
 
+        public void UpdateOid(IOid newOid) {
+            Trace.Assert(oid != null);
+            Log.DebugFormat("Replacing oid {0} with new oid {1}", oid, newOid);
+
+            Oid = newOid;
+        }
+
         public virtual void CheckLock(IVersion otherVersion) {
             if (version != null && version.IsDifferent(otherVersion)) {
                 Log.Info("concurrency conflict on " + this + " (" + otherVersion + ")");
