@@ -116,6 +116,7 @@ namespace RestfulObjects.Test.Data {
         private ICollection<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();
         private ICollection<MostSimple> aDisabledCollection = new List<MostSimple>();
         private ICollection<MostSimple> aHiddenCollection = new List<MostSimple>();
+        private ICollection<MostSimple> aNakedObjectsIgnoredCollection = new List<MostSimple>();
         private ICollection<MostSimple> aSetAsCollection = new List<MostSimple>();
         private ICollection<MostSimple> anEagerCollection = new List<MostSimple>();
         private ICollection<MostSimple> anEmptyCollection = new List<MostSimple>();
@@ -160,6 +161,12 @@ namespace RestfulObjects.Test.Data {
         public virtual ICollection<MostSimple> AHiddenCollection {
             get { return aHiddenCollection; }
             set { aHiddenCollection = value; }
+        }
+
+        [NakedObjectsIgnore]
+        public virtual ICollection<MostSimple> ANakedObjectsIgnoredCollection {
+            get { return aNakedObjectsIgnoredCollection; }
+            set { aNakedObjectsIgnoredCollection = value; }
         }
 
         [DescribedAs("an empty collection for testing")]

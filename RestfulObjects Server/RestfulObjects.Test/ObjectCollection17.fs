@@ -578,6 +578,20 @@ let GetHiddenValueCollection(api : RestfulObjectsControllerBase) =
     Assert.AreEqual("199 RestfulObjects \"No such collection AHiddenCollection\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
+let GetNakedObjectsIgnoredCollection(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithCollection"
+    let oid = ktc "1"
+    let pid = "ANakedObjectsIgnoredCollection"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/collections/%s" ourl pid
+    let args = CreateReservedArgs ""
+    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    let result = api.GetCollection(oType, oid, pid, args)
+    let jsonResult = readSnapshotToJson result
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual("199 RestfulObjects \"No such collection ANakedObjectsIgnoredCollection\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("", jsonResult)
+
 let NotAcceptableGetCollectionWrongMediaType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
     let oid = ktc "1"

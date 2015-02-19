@@ -945,7 +945,10 @@ type Nof4TestsDomainType() =
         
         [<Test>]
         member x.GetHiddenValueCollection() = ObjectCollection17.GetHiddenValueCollection x.api
-        
+
+        [<Test>]
+        member x.GetNakedObjectsIgnoredCollection() = ObjectCollection17.GetNakedObjectsIgnoredCollection x.api
+             
         [<Test>]
         member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
