@@ -16,6 +16,8 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Test.App {
     public class NakedObjectsRunSettings {
@@ -72,13 +74,38 @@ namespace NakedObjects.Test.App {
             return config;
         }
 
+        public static IAuditConfiguration AuditConfig() {
+            return null;
+        }
+
+        public static IAuthorizationConfiguration AuthorizationConfig() {
+            return null;
+        }
+
+        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
+        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
+
+
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] { };
+            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            CustomerRepository.Menu(customerMenu);
+            return new IMenu[] {
+                    customerMenu,
+                    factory.NewMenu<OrderRepository>(true),
+                    factory.NewMenu<ProductRepository>(true),
+                    factory.NewMenu<EmployeeRepository>(true),
+                    factory.NewMenu<SalesRepository>(true),
+                    factory.NewMenu<SpecialOfferRepository>(true),
+                    factory.NewMenu<ContactRepository>(true),
+                    factory.NewMenu<VendorRepository>(true),
+                    factory.NewMenu<PurchaseOrderRepository>(true),
+                    factory.NewMenu<WorkOrderRepository>(true)
+            };
         }
     }
 }

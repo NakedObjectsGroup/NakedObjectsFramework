@@ -6,33 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Authentication;
-using NakedObjects.Core.Component;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Container;
-using NakedObjects.Core.Spec;
-using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Menu;
-using NakedObjects.Persistor.Entity;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Reflect;
-using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.TypeFacetFactory;
-using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Meta.Authorization;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Mvc.App {

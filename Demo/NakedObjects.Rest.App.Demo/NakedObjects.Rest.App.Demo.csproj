@@ -129,6 +129,9 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-beta2\lib\net40\NakedObjects.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Unity">
+      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-beta2\lib\net451\NakedObjects.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>

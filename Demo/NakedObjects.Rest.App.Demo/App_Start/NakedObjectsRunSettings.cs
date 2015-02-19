@@ -15,7 +15,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
-
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
@@ -68,6 +69,15 @@ namespace NakedObjects.Rest.App.Demo {
             config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
+        }
+
+
+        public static IAuditConfiguration AuditConfig() {
+            return null;
+        }
+
+        public static IAuthorizationConfiguration AuthorizationConfig() {
+            return null;
         }
 
         /// <summary>

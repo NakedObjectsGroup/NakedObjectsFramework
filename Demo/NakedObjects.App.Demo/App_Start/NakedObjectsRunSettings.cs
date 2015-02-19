@@ -11,15 +11,13 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Web.Mvc.Helpers;
-using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
-using System.Collections.Generic;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.App.Demo {
     /// <summary>
@@ -37,7 +35,7 @@ namespace NakedObjects.App.Demo {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (ActionResultModelQ<object>),
-                     typeof (CustomerCollectionViewModel),
+                    typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
                     typeof (ActionResultModelQ<>),
@@ -67,7 +65,7 @@ namespace NakedObjects.App.Demo {
 
         private static Type[] AllPersistedTypesInMainModel() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => (t.BaseType == typeof (AWDomainObject)) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
@@ -86,12 +84,11 @@ namespace NakedObjects.App.Demo {
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-                return null;
+            return null;
         }
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
-
 
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
@@ -99,7 +96,7 @@ namespace NakedObjects.App.Demo {
         /// the Main Menus will be derived automatically from the MenuServices.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] { };
+            return new IMenu[] {};
         }
     }
 }

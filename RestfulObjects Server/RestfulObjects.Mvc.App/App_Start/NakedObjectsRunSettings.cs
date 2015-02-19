@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
 namespace MvcTestApp {
-    public static class NakedObjectsSettings {
+    public static class NakedObjectsRunSettings {
         //TODO: Add similar Configuration mechanisms for Authentication, Auditing
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 

@@ -12,6 +12,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Mvc.App;
 using NakedObjects.Test.App;
 using WebActivatorEx;
 using WebApiResolver = Microsoft.Practices.Unity.WebApi.UnityDependencyResolver;

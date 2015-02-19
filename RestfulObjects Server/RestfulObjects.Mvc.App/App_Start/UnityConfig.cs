@@ -51,8 +51,8 @@ namespace MvcTestApp {
             StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
             // config 
-            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
             container.RegisterType<IOidStrategy, ExternalOid>(new PerResolveLifetimeManager());
