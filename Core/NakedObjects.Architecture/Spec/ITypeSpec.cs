@@ -167,13 +167,12 @@ namespace NakedObjects.Architecture.Spec {
 
         #region Actions
 
-        IMenuImmutable ObjectMenu { get; }
+        IMenuImmutable Menu { get; }
 
         /// <summary>
-        ///     Returns an array of object actions (i.e. native actions and object-contributedActions)
+        ///     Returns an array of actions (i.e. native actions and object-contributedActions)
         /// </summary>
-        //TODO: Rename to GetObjectActions for this type
-        IActionSpec[] GetObjectActions();
+        IActionSpec[] GetActions();
 
         #endregion
     }

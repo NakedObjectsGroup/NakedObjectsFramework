@@ -87,7 +87,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObject no = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);

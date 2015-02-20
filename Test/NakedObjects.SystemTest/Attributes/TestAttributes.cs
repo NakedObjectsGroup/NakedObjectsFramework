@@ -105,7 +105,7 @@ namespace NakedObjects.SystemTest.Attributes {
             //var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Contributee>().GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = adapter.Spec.GetObjectActions();
+            var actions = adapter.Spec.GetActions();
 
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);

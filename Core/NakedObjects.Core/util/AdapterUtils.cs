@@ -78,7 +78,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) {
-            return spec.GetObjectActions().SelectMany(GetActionLeafNodes).ToArray();
+            return spec.GetActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
         public static IActionSpec GetActionLeafNode(this INakedObject nakedObject, string actionName) {

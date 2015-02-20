@@ -23,7 +23,7 @@ using NakedObjects.Value;
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
         public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Spec.GetObjectActions().Where(a => a.IsUsable(nakedObject).IsAllowed).
+            return nakedObject.Spec.GetActions().Where(a => a.IsUsable(nakedObject).IsAllowed).
                 Where(a => a.IsVisible(nakedObject));
         }
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
             }
-            return nakedObject.Spec.GetObjectActions().Where(a => a.IsVisible(nakedObject));
+            return nakedObject.Spec.GetActions().Where(a => a.IsVisible(nakedObject));
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
@@ -204,7 +204,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
-            return spec.GetObjectActions().Single(a => a.Id == id);
+            return spec.GetActions().Single(a => a.Id == id);
         }
 
         public static bool IsNotPersistent(this INakedObject nakedObject) {

@@ -90,7 +90,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -104,7 +104,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaimsByEnumStatus");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaimsByEnumStatus");
             INakedObject[] parms = new[] {(object) ClaimStatusEnum.New}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = (IEncodedToStrings) CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -121,7 +121,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = (IEncodedToStrings) CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -138,7 +138,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var status = NakedObjectsFramework.Persistor.Instances<ClaimStatus>().First();
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new object[] {status, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = (IEncodedToStrings) CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -154,7 +154,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -175,7 +175,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
@@ -194,7 +194,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
-            IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
+            IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);

@@ -8,16 +8,11 @@
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
-    // TODO this should be done by OS - move OIDGen to OS
+    /// <summary>
+    /// Oid factory
+    /// </summary>
     public interface IOidGenerator {
-        /// <summary>
-        ///     Removes the specified object from the system.
-        /// </summary>
-        /// <para>
-        ///     The specified object's data should be removed from the persistence mechanism.
-        /// </para>
         void ConvertPersistentToTransientOid(IOid oid);
-
         void ConvertTransientToPersistentOid(IOid oid);
         IOid CreateTransientOid(object obj);
         IOid RestoreOid(string[] encodedData);

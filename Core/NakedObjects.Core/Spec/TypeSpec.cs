@@ -171,9 +171,9 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public abstract IActionSpec[] GetObjectActions();
+        public abstract IActionSpec[] GetActions();
 
-        public IMenuImmutable ObjectMenu {
+        public IMenuImmutable Menu {
             get { return InnerSpec.ObjectMenu; }
         }
 

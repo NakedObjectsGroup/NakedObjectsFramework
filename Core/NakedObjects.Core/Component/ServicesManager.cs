@@ -65,7 +65,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("GetServicesWithVisibleActions");
             return Services.
                 Select(service => manager.GetServiceAdapter(service)).
-                Where(no => no.Spec.GetObjectActions().Any(a => a.IsVisible(no))).ToArray();
+                Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
         }
 
         #endregion

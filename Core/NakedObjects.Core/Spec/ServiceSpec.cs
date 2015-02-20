@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Spec {
 
         #region IServiceSpec Members
 
-        public override IActionSpec[] GetObjectActions() {
+        public override IActionSpec[] GetActions() {
             return ObjectActions;
         }
 

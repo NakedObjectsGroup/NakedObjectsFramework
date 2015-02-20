@@ -13,6 +13,5 @@ namespace NakedObjects.Architecture.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to annotating the property
     ///     or collection with the <see cref="NotPersistedAttribute" /> annotation
     /// </para>
-    // TODO: need to reconcile with  IDerivedFacet that has very similar semantics for properties
     public interface INotPersistedFacet : IMarkerFacet {}
 }

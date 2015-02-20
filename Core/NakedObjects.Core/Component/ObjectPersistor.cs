@@ -22,6 +22,10 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
+    /// <summary>
+    /// This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is 
+    /// the store specific portion of the logic. 
+    /// </summary>
     public class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;

@@ -146,7 +146,7 @@ namespace NakedObjects.Web.Mvc.Models {
                     actions = elementSpec.GetCollectionContributedActions();
                 }
                 else {
-                    actions = nakedObject.Spec.GetObjectActions();
+                    actions = nakedObject.Spec.GetActions();
                 }
                 nakedObjectAction = actions.Where(a => a.IsUsable(nakedObject).IsAllowed).Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == ActionId);
             }

@@ -32,7 +32,7 @@ namespace NakedObjects.Xat {
         public INakedObject NakedObject { get; set; }
 
         public ITestAction[] Actions {
-            get { return NakedObject.Spec.GetObjectActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
+            get { return NakedObject.Spec.GetActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
         }
 
         public ITestAction GetAction(string actionName) {
@@ -59,7 +59,7 @@ namespace NakedObjects.Xat {
 
         public virtual string GetObjectActionOrder() {
             ITypeSpec spec = NakedObject.Spec;
-            IActionSpec[] actionsSpec = spec.GetObjectActions();
+            IActionSpec[] actionsSpec = spec.GetActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actionsSpec));
             return order.ToString();
@@ -73,7 +73,7 @@ namespace NakedObjects.Xat {
         public abstract string Title { get; }
 
         public ITestMenu GetMenu() {
-            IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
+            IMenuImmutable menu = NakedObject.Spec.Menu;
             return new TestMenu(menu, Factory, this);
         }
 

@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
-    //TODO: Clafiy distinction/relationship to IIdentityMap
     /// <summary>
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>

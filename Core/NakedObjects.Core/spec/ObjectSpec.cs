@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public override IActionSpec[] GetObjectActions() {
+        public override IActionSpec[] GetActions() {
             if (combinedActions == null) {
                 var ca = new List<IActionSpec>();
                 ca.AddRange(ObjectActions);
