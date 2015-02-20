@@ -402,7 +402,6 @@ namespace AdventureWorksModel
         {
             SubTotal = Details.Sum(d => d.LineTotal);
             TotalDue = SubTotal;
-            //TODO:  Calculate Tax, (Freight?)
         }
 
         #region CurrencyRate
