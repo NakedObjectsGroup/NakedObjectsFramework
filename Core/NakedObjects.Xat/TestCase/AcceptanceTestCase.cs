@@ -25,6 +25,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+#pragma warning disable 618
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
