@@ -10,7 +10,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-
 using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
@@ -24,45 +23,16 @@ using NUnit.Framework;
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class HomeControllerTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            StartTest();
-            controller = new HomeController(NakedObjectsFramework);
-            mocks = new ContextMocks(controller);
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
+        private HomeController controller;
+        private ContextMocks mocks;
 
         protected override string[] Namespaces {
             get {
                 return new[] {
-                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"                };
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"
+                };
             }
         }
-
-
-        [TestFixtureSetUp]
-        public  void SetupTestFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
-
-      
-
-        private HomeController controller;
-        private ContextMocks mocks;
-
 
         protected override object[] MenuServices {
             get {
@@ -81,7 +51,6 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-
         private Employee Employee {
             get { return NakedObjectsFramework.Persistor.Instances<Employee>().First(); }
         }
@@ -89,7 +58,6 @@ namespace MvcTestApp.Tests.Controllers {
         private Vendor Vendor {
             get { return NakedObjectsFramework.Persistor.Instances<Vendor>().First(); }
         }
-
 
         private string EmployeeId {
             get { return NakedObjectsFramework.GetObjectId(Employee); }
@@ -99,6 +67,30 @@ namespace MvcTestApp.Tests.Controllers {
             get { return NakedObjectsFramework.GetObjectId(Vendor); }
         }
 
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
+            controller = new HomeController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
+        }
 
         [Test]
         public void ClearAllHistory() {
@@ -162,7 +154,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Index", result.RouteValues.Values.ElementAt(0));
             Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
         }
-
 
         [Test]
         public void ClearHistoryOthers1() {

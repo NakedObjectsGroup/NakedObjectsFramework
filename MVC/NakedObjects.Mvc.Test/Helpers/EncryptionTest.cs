@@ -27,21 +27,44 @@ using NUnit.Framework;
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
     public class EncryptionTest : AcceptanceTestCase {
-         [SetUp]
-        public void SetupTest() {
-            StartTest();
-            controller = new DummyController();
-            mocks = new ContextMocks(controller);
-            SetUser("sven");
-        }
+        private DummyController controller;
+        private ContextMocks mocks;
 
         protected override Type[] Types {
             get { return new Type[] {typeof (Employee), typeof (AbstractExpenseItem)}; }
         }
 
         protected override string[] Namespaces {
-             get { return new[] { "MvcTestApp.Tests.Helpers", "Expenses.ExpenseClaims", "Expenses.ExpenseEmployee" }; }
-         }
+            get { return new[] {"MvcTestApp.Tests.Helpers", "Expenses.ExpenseClaims", "Expenses.ExpenseEmployee"}; }
+        }
+
+        protected override object[] MenuServices {
+            get { return (DemoServicesSet.ServicesSet()); }
+        }
+
+        protected override object[] ContributedActions {
+            get { return (new object[] {new RecordedActionContributedActions()}); }
+        }
+
+        protected override object[] Fixtures {
+            get { return (DemoFixtureSet.FixtureSet()); }
+        }
+
+        private CustomHelperTestClass TestClass {
+            get { return (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
+        }
+
+        private DescribedCustomHelperTestClass DescribedTestClass {
+            get { return (DescribedCustomHelperTestClass) GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
+        }
+
+        [SetUp]
+        public void SetupTest() {
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+        }
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
@@ -62,34 +85,6 @@ namespace MvcTestApp.Tests.Helpers {
             Database.Delete("EncryptionTest");
         }
 
-        private DummyController controller;
-        private ContextMocks mocks;
-
-        protected override object[] MenuServices {
-            get { return (DemoServicesSet.ServicesSet()); }
-        }
-
-        protected override object[] ContributedActions {
-            get { return (new object[] {new RecordedActionContributedActions()}); }
-        }
-
-        protected override object[] Fixtures {
-            get { return  (DemoFixtureSet.FixtureSet()); }
-        }
-
-
-        private class DummyController : Controller {}
-
-
-        private CustomHelperTestClass TestClass {
-            get { return (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
-        }
-
-        private DescribedCustomHelperTestClass DescribedTestClass {
-            get { return (DescribedCustomHelperTestClass) GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
-        }
-
-
         private static byte[] GetConstantKey(int size) {
             var ba = new byte[size];
 
@@ -98,7 +93,6 @@ namespace MvcTestApp.Tests.Helpers {
             }
             return ba;
         }
-
 
         [Test]
         public void CustomEncrypted() {
@@ -162,5 +156,11 @@ namespace MvcTestApp.Tests.Helpers {
 
             Assert.AreEqual(@"<input name=""-encryptedField-name"" type=""hidden"" value=""+xG+YO3ZY8KuTB6z4pUXjQ=="" />", result);
         }
+
+        #region Nested type: DummyController
+
+        private class DummyController : Controller {}
+
+        #endregion
     }
 }

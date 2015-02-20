@@ -15,10 +15,10 @@ using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
+using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -28,43 +28,17 @@ using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
-using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class GenericControllerTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            StartTest();
-            controller = new GenericController(NakedObjectsFramework);
-            mocks = new ContextMocks(controller);
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
+        private GenericController controller;
+        private ContextMocks mocks;
 
         protected override string[] Namespaces {
             get { return null; }
         }
-
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
-
-        private GenericController controller;
-        private ContextMocks mocks;
 
         protected override Type[] Types {
             get {
@@ -113,6 +87,154 @@ namespace MvcTestApp.Tests.Controllers {
                     new CustomerContributedActions()
                 };
             }
+        }
+
+        private Employee Employee {
+            get { return NakedObjectsFramework.Persistor.Instances<Employee>().First(); }
+        }
+
+        private string EmployeeId {
+            get { return NakedObjectsFramework.GetObjectId(Employee); }
+        }
+
+        private Employee TransientEmployee {
+            get { return AdapterUtils.GetDomainObject<Employee>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Employee)))); }
+        }
+
+        private Vendor TransientVendor {
+            get { return AdapterUtils.GetDomainObject<Vendor>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor)))); }
+        }
+
+        private Shift TransientShift {
+            get { return AdapterUtils.GetDomainObject<Shift>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift)))); }
+        }
+
+        private Individual TransientIndividual {
+            get { return AdapterUtils.GetDomainObject<Individual>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Individual)))); }
+        }
+
+        private NotPersistedObject NotPersistedObject {
+            get {
+                var repo = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
+                return repo.NewInstance();
+            }
+        }
+
+        private SalesOrderHeader Order {
+            get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
+        }
+
+        private string OrderId {
+            get { return NakedObjectsFramework.GetObjectId(Order); }
+        }
+
+        private Vendor Vendor {
+            get { return NakedObjectsFramework.Persistor.Instances<Vendor>().First(); }
+        }
+
+        private Contact Contact {
+            get { return NakedObjectsFramework.Persistor.Instances<Contact>().First(); }
+        }
+
+        private Individual Individual {
+            get { return NakedObjectsFramework.Persistor.Instances<Individual>().First(); }
+        }
+
+        private Product Product {
+            get { return NakedObjectsFramework.Persistor.Instances<Product>().First(); }
+        }
+
+        private string ProductId {
+            get { return NakedObjectsFramework.GetObjectId(Product); }
+        }
+
+        private INakedObject EmployeeRepo {
+            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
+        }
+
+        private INakedObject OrderContributedActions {
+            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
+        }
+
+        private string OrderContributedActionsId {
+            get { return NakedObjectsFramework.GetObjectId(OrderContributedActions); }
+        }
+
+        private INakedObject ProductRepo {
+            get { return NakedObjectsFramework.GetAdaptedService("ProductRepository"); }
+        }
+
+        private string EmployeeRepoId {
+            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
+        }
+
+        private string ProductRepoId {
+            get { return NakedObjectsFramework.GetObjectId(ProductRepo); }
+        }
+
+        private INakedObject OrderRepo {
+            get { return NakedObjectsFramework.GetAdaptedService("OrderRepository"); }
+        }
+
+        private string OrderRepoId {
+            get { return NakedObjectsFramework.GetObjectId(OrderRepo); }
+        }
+
+        private INakedObject OrderContrib {
+            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
+        }
+
+        private string OrderContribId {
+            get { return NakedObjectsFramework.GetObjectId(OrderContrib); }
+        }
+
+        private INakedObject CustomerRepo {
+            get { return NakedObjectsFramework.GetAdaptedService("CustomerRepository"); }
+        }
+
+        private string CustomerRepoId {
+            get { return NakedObjectsFramework.GetObjectId(CustomerRepo); }
+        }
+
+        public Store Store {
+            get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
+        }
+
+        private string StoreId {
+            get { return NakedObjectsFramework.GetObjectId(Store); }
+        }
+
+        private SalesPerson SalesPerson {
+            get { return NakedObjectsFramework.Persistor.Instances<SalesPerson>().First(); }
+        }
+
+        private Store TransientStore {
+            get { return AdapterUtils.GetDomainObject<Store>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store)))); }
+        }
+
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
+            controller = new GenericController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
         }
 
         private static void AssertPagingData(ViewResult result, int currentPage, int pageSize, int pageTotal) {
@@ -261,10 +383,10 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private FormCollection GetFormForShiftEdit(INakedObject shift,
-            INakedObject timePeriod,
-            string t1,
-            string t2,
-            out IDictionary<string, string> idToRawValue) {
+                                                   INakedObject timePeriod,
+                                                   string t1,
+                                                   string t2,
+                                                   out IDictionary<string, string> idToRawValue) {
             IObjectSpec shiftSpec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift));
             IObjectSpec timePeriodSpec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (TimePeriod));
 
@@ -288,13 +410,13 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private FormCollection GetFormForVendorEdit(INakedObject vendor,
-            string accountNumber,
-            string name,
-            string creditRating,
-            string preferredVendorStatus,
-            string activeFlag,
-            string purchasingWebServiceURL,
-            out IDictionary<string, string> idToRawValue) {
+                                                    string accountNumber,
+                                                    string name,
+                                                    string creditRating,
+                                                    string preferredVendorStatus,
+                                                    string activeFlag,
+                                                    string purchasingWebServiceURL,
+                                                    out IDictionary<string, string> idToRawValue) {
             IObjectSpec nakedObjectSpecification = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor));
             IAssociationSpec assocAN = nakedObjectSpecification.GetProperty("AccountNumber");
             IAssociationSpec assocN = nakedObjectSpecification.GetProperty("Name");
@@ -323,10 +445,10 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public FormCollection GetFormForStoreEdit(INakedObject store,
-            string storeName,
-            string salesPerson,
-            string modifiedDate,
-            out IDictionary<string, string> idToRawValue) {
+                                                  string storeName,
+                                                  string salesPerson,
+                                                  string modifiedDate,
+                                                  out IDictionary<string, string> idToRawValue) {
             IObjectSpec nakedObjectSpecification = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store));
             IAssociationSpec assocSN = nakedObjectSpecification.GetProperty("Name");
             IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
@@ -346,11 +468,11 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private FormCollection GetFormForCeditCardEdit(INakedObject creditCard,
-            string cardType,
-            string cardNumber,
-            string expiryMonth,
-            string expiryYear,
-            out IDictionary<string, string> idToRawValue) {
+                                                       string cardType,
+                                                       string cardNumber,
+                                                       string expiryMonth,
+                                                       string expiryYear,
+                                                       out IDictionary<string, string> idToRawValue) {
             IObjectSpec nakedObjectSpecification = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (CreditCard));
             IAssociationSpec assocCT = nakedObjectSpecification.GetProperty("CardType");
             IAssociationSpec assocCN = nakedObjectSpecification.GetProperty("CardNumber");
@@ -393,129 +515,6 @@ namespace MvcTestApp.Tests.Controllers {
                 {idCopy, copy.ToString()},
             };
             return GetForm(idToRawValue);
-        }
-
-        private Employee Employee {
-            get { return NakedObjectsFramework.Persistor.Instances<Employee>().First(); }
-        }
-
-        private string EmployeeId {
-            get { return NakedObjectsFramework.GetObjectId(Employee); }
-        }
-
-        private Employee TransientEmployee {
-            get { return AdapterUtils.GetDomainObject<Employee>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Employee)))); }
-        }
-
-        private Vendor TransientVendor {
-            get { return AdapterUtils.GetDomainObject<Vendor>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor)))); }
-        }
-
-        private Shift TransientShift {
-            get { return AdapterUtils.GetDomainObject<Shift>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift)))); }
-        }
-
-        private Individual TransientIndividual {
-            get { return AdapterUtils.GetDomainObject<Individual>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Individual)))); }
-        }
-
-        private NotPersistedObject NotPersistedObject {
-            get {
-                var repo = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
-                return repo.NewInstance();
-            }
-        }
-
-        private SalesOrderHeader Order {
-            get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
-        }
-
-        private string OrderId {
-            get { return NakedObjectsFramework.GetObjectId(Order); }
-        }
-
-        private Vendor Vendor {
-            get { return NakedObjectsFramework.Persistor.Instances<Vendor>().First(); }
-        }
-
-        private Contact Contact {
-            get { return NakedObjectsFramework.Persistor.Instances<Contact>().First(); }
-        }
-
-        private Individual Individual {
-            get { return NakedObjectsFramework.Persistor.Instances<Individual>().First(); }
-        }
-
-        private Product Product {
-            get { return NakedObjectsFramework.Persistor.Instances<Product>().First(); }
-        }
-
-        private string ProductId {
-            get { return NakedObjectsFramework.GetObjectId(Product); }
-        }
-
-        private INakedObject EmployeeRepo {
-            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
-        }
-
-        private INakedObject OrderContributedActions {
-            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
-        }
-
-        private string OrderContributedActionsId {
-            get { return NakedObjectsFramework.GetObjectId(OrderContributedActions); }
-        }
-
-        private INakedObject ProductRepo {
-            get { return NakedObjectsFramework.GetAdaptedService("ProductRepository"); }
-        }
-
-        private string EmployeeRepoId {
-            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
-        }
-
-        private string ProductRepoId {
-            get { return NakedObjectsFramework.GetObjectId(ProductRepo); }
-        }
-
-        private INakedObject OrderRepo {
-            get { return NakedObjectsFramework.GetAdaptedService("OrderRepository"); }
-        }
-
-        private string OrderRepoId {
-            get { return NakedObjectsFramework.GetObjectId(OrderRepo); }
-        }
-
-        private INakedObject OrderContrib {
-            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
-        }
-
-        private string OrderContribId {
-            get { return NakedObjectsFramework.GetObjectId(OrderContrib); }
-        }
-
-        private INakedObject CustomerRepo {
-            get { return NakedObjectsFramework.GetAdaptedService("CustomerRepository"); }
-        }
-
-        private string CustomerRepoId {
-            get { return NakedObjectsFramework.GetObjectId(CustomerRepo); }
-        }
-
-        public Store Store {
-            get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
-        }
-
-        private string StoreId {
-            get { return NakedObjectsFramework.GetObjectId(Store); }
-        }
-
-        private SalesPerson SalesPerson {
-            get { return NakedObjectsFramework.Persistor.Instances<SalesPerson>().First(); }
-        }
-
-        private Store TransientStore {
-            get { return AdapterUtils.GetDomainObject<Store>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store)))); }
         }
 
         private static IActionSpec GetAction(INakedObject owner, string id) {
@@ -613,7 +612,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(adaptedVendor, ((IObjectSpec)adaptedVendor.Spec).GetProperty("PreferredVendorStatus"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(adaptedVendor, ((IObjectSpec) adaptedVendor.Spec).GetProperty("PreferredVendorStatus"))].Errors.Any());
             AssertIsEditViewOf<Vendor>(result);
         }
 
@@ -631,7 +630,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(((IObjectSpec)adaptedShift.Spec).GetProperty("Times"), adaptedTimePeriod, ((IObjectSpec)adaptedTimePeriod.Spec).GetProperty("EndTime"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(((IObjectSpec) adaptedShift.Spec).GetProperty("Times"), adaptedTimePeriod, ((IObjectSpec) adaptedTimePeriod.Spec).GetProperty("EndTime"))].Errors.Any());
             AssertIsEditViewOf<Shift>(result);
         }
 
@@ -842,16 +841,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertNameAndParms(result, "FormWithFinderDialog", null, OrderContrib.Object, action, CustomerRepo.Object, findByName, "cust");
             AssertStateInModelStateDictionary(result, "OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input", testValue.ToString());
-        }
-
-        private class TestCreator : ICreditCardCreator {
-            #region ICreditCardCreator Members
-
-            public void CreatedCardHasBeenSaved(CreditCard card) {
-                // do nothing
-            }
-
-            #endregion
         }
 
         [Test]
@@ -1238,7 +1227,7 @@ namespace MvcTestApp.Tests.Controllers {
             Employee report1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
             Employee report2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
             INakedObject employeeNakedObject = NakedObjectsFramework.GetNakedObject(employee);
-            IAssociationSpec collectionAssoc = ((IObjectSpec)employeeNakedObject.Spec).Properties.Single(p => p.Id == "DirectReports");
+            IAssociationSpec collectionAssoc = ((IObjectSpec) employeeNakedObject.Spec).Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
                 {IdHelper.DisplayFormatFieldId, "Addresses=list"},
@@ -1536,7 +1525,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
-            IAssociationSpec assocMD = ((IObjectSpec)order.Spec).GetProperty("ModifiedDate");
+            IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasons");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
@@ -1563,7 +1552,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
-            IAssociationSpec assocMD = ((IObjectSpec)order.Spec).GetProperty("ModifiedDate");
+            IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasonsByCategories");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
@@ -2075,28 +2064,26 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsSetAfterTransactionViewOf<EmployeeRepository>(result);
         }
+
+        #region Nested type: TestCreator
+
+        private class TestCreator : ICreditCardCreator {
+            #region ICreditCardCreator Members
+
+            public void CreatedCardHasBeenSaved(CreditCard card) {
+                // do nothing
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 
     [TestFixture]
     public class ConcurrencyTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            StartTest();
-            controller = new GenericController(NakedObjectsFramework);
-            mocks = new ContextMocks(controller);
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
+        private GenericController controller;
+        private ContextMocks mocks;
 
         protected override string[] Namespaces {
             get {
@@ -2106,40 +2093,8 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestFixtureSetUp]
-        public void SetupTestFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
-
-        private GenericController controller;
-        private ContextMocks mocks;
-
         public Store Store {
             get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
-        }
-
-        public FormCollection GetFormForStoreEdit(INakedObject store,
-            string storeName,
-            string salesPerson,
-            string modifiedDate,
-            out IDictionary<string, string> idToRawValue) {
-            IObjectSpec nakedObjectSpecification = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store));
-            IAssociationSpec assocSN = nakedObjectSpecification.GetProperty("Name");
-            IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
-            IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
-
-            string idSN = IdHelper.GetFieldInputId(store, assocSN);
-            string idSP = IdHelper.GetFieldInputId(store, assocSP);
-            string idMD = IdHelper.GetConcurrencyFieldInputId(store, assocMD);
-
-            idToRawValue = new Dictionary<string, string> {
-                {idSN, storeName},
-                {idSP, salesPerson},
-                {idMD, modifiedDate}
-            };
-
-            return GetForm(idToRawValue);
         }
 
         protected override object[] MenuServices {
@@ -2166,6 +2121,54 @@ namespace MvcTestApp.Tests.Controllers {
 
         private SalesOrderHeader Order {
             get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
+        }
+
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
+            controller = new GenericController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
+        }
+
+        public FormCollection GetFormForStoreEdit(INakedObject store,
+                                                  string storeName,
+                                                  string salesPerson,
+                                                  string modifiedDate,
+                                                  out IDictionary<string, string> idToRawValue) {
+            IObjectSpec nakedObjectSpecification = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store));
+            IAssociationSpec assocSN = nakedObjectSpecification.GetProperty("Name");
+            IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
+            IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
+
+            string idSN = IdHelper.GetFieldInputId(store, assocSN);
+            string idSP = IdHelper.GetFieldInputId(store, assocSP);
+            string idMD = IdHelper.GetConcurrencyFieldInputId(store, assocMD);
+
+            idToRawValue = new Dictionary<string, string> {
+                {idSN, storeName},
+                {idSP, salesPerson},
+                {idMD, modifiedDate}
+            };
+
+            return GetForm(idToRawValue);
         }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {

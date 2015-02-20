@@ -12,7 +12,6 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Controllers {
     public class AutoCompleteRepository {
         public IDomainObjectContainer Container { set; protected get; }
-
         public void AnAction(string parm1, string parm2, int parm3) {}
 
         public IQueryable<string> AutoComplete0AnAction(string name) {

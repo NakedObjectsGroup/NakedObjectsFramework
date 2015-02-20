@@ -14,62 +14,32 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NakedObjects.Core.Util;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class CustomControllerTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            StartTest();
-            controller = new CustomControllerWrapper(NakedObjectsFramework);
-            mocks = new ContextMocks(controller);
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
+        private CustomControllerWrapper controller;
+        private ContextMocks mocks;
 
         protected override string[] Namespaces {
             get {
                 return new[] {
-                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"                };
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"
+                };
             }
         }
-
-
-        [TestFixtureSetUp]
-        public  void SetupTestFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
-
-       
-
-        private CustomControllerWrapper controller;
-        private ContextMocks mocks;
 
         protected override Type[] Types {
             get {
@@ -101,165 +71,44 @@ namespace MvcTestApp.Tests.Controllers {
             get { return (new object[] {new OrderContributedActions()}); }
         }
 
+        private INakedObject EmployeeRepo {
+            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
+        }
+
+        private string EmployeeRepoId {
+            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
+        }
+
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            StartTest();
+            controller = new CustomControllerWrapper(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
+        }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
             nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
-
-
-        private INakedObject EmployeeRepo {
-            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
-        }
-
-
-        private string EmployeeRepoId {
-            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
-        }
-
-
-        private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
-
-            public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
-                return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);
-            }
-
-
-            public new TResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, out bool valid) {
-                return base.InvokeAction(domainObject, expression, parameters, out valid);
-            }
-
-
-            public new TResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, out bool valid) {
-                return base.InvokeAction(domainObject, expression, parameters, out valid);
-            }
-
-
-            public new TResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, out bool valid) {
-                return base.InvokeAction(domainObject, expression, parameters, out valid);
-            }
-
-
-            public new TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, out bool valid) {
-                return base.InvokeAction(domainObject, expression, parameters, out valid);
-            }
-
-
-            public new TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, out bool valid) {
-                return base.InvokeAction(domainObject, expression, parameters, out valid);
-            }
-
-
-            public new ViewResult InvokeAction(object domainObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget>(TTarget domainObject, Expression<Func<TTarget, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm>(TTarget domainObject, Expression<Func<TTarget, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-            public new ViewResult InvokeAction(string objectId, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, actionName, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T>(string objectId, Expression<Func<T, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm>(string objectId, Expression<Func<T, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2>(string objectId, Expression<Func<T, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-            public new ViewResult InvokeAction<T, TResult>(string objectId, Expression<Func<T, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm, TResult>(string objectId, Expression<Func<T, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-
-
-            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
-            }
-        }
-
 
         [Test]
         public void InvokeActionByLambda() {
@@ -296,7 +145,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsNotNull(result);
             Assert.IsTrue(valid);
         }
-
 
         [Test]
         public void InvokeViewActionByLambda() {
@@ -361,5 +209,125 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
         }
+
+        #region Nested type: CustomControllerWrapper
+
+        private class CustomControllerWrapper : CustomController {
+            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+
+            public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
+                return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);
+            }
+
+            public new TResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, out bool valid) {
+                return base.InvokeAction(domainObject, expression, parameters, out valid);
+            }
+
+            public new TResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, out bool valid) {
+                return base.InvokeAction(domainObject, expression, parameters, out valid);
+            }
+
+            public new TResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, out bool valid) {
+                return base.InvokeAction(domainObject, expression, parameters, out valid);
+            }
+
+            public new TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, out bool valid) {
+                return base.InvokeAction(domainObject, expression, parameters, out valid);
+            }
+
+            public new TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, out bool valid) {
+                return base.InvokeAction(domainObject, expression, parameters, out valid);
+            }
+
+            public new ViewResult InvokeAction(object domainObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget>(TTarget domainObject, Expression<Func<TTarget, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm>(TTarget domainObject, Expression<Func<TTarget, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(domainObject, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction(string objectId, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, actionName, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T>(string objectId, Expression<Func<T, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm>(string objectId, Expression<Func<T, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2>(string objectId, Expression<Func<T, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TResult>(string objectId, Expression<Func<T, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm, TResult>(string objectId, Expression<Func<T, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+
+            public new ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+                return base.InvokeAction(objectId, expression, parameters, viewNameForFailure, viewNameForSuccess);
+            }
+        }
+
+        #endregion
     }
 }

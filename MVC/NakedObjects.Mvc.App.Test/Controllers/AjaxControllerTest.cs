@@ -16,11 +16,10 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-
 using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -28,43 +27,14 @@ using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NakedObjects.Core.Util;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class AjaxControllerTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-
-            StartTest();
-            controller = new AjaxController(NakedObjectsFramework);
-            mocks = new ContextMocks(controller);
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
-
-        [TestFixtureSetUp]
-        public  void SetupTestFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
-
         private AjaxController controller;
         private ContextMocks mocks;
-
 
         protected override object[] MenuServices {
             get {
@@ -103,10 +73,36 @@ namespace MvcTestApp.Tests.Controllers {
         protected override string[] Namespaces {
             get {
                 return new[] {
-                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"                };
+                    "AdventureWorksModel", "MvcTestApp.Tests.Controllers"
+                };
             }
         }
 
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+
+            StartTest();
+            controller = new AjaxController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
+        }
 
         public void TestGetActionChoicesOtherParms(string value) {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
@@ -261,7 +257,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][1].SequenceEqual(new string[] {}));
         }
 
-
         [Test]
         public void TestGetActionChoicesOtherParms1() {
             TestGetActionChoicesOtherParms("value1");
@@ -322,7 +317,6 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new string[] {}));
         }
 
-
         [Test]
         public void TestGetPropertyAutoComplete() {
             INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
@@ -361,7 +355,6 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
-
             string id = NakedObjectsFramework.GetObjectId(choicesObject);
 
             const string parm1Id = "ChoicesObject-Name-Input";
@@ -377,17 +370,14 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(1, dict.Count);
             Assert.IsTrue(dict.ContainsKey("ChoicesObject-AProperty-Input"));
 
-
             Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][0].SequenceEqual(new string[] {}));
             Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new string[] {}));
         }
-
 
         [Test]
         public void TestGetPropertyChoicesOtherValue() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
-
 
             string id = NakedObjectsFramework.GetObjectId(choicesObject);
 
@@ -484,7 +474,6 @@ namespace MvcTestApp.Tests.Controllers {
         public void TestValidateFailValueParameter() {
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
 
-
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";
 
@@ -529,7 +518,6 @@ namespace MvcTestApp.Tests.Controllers {
             const string actionName = "CreateNewOrder";
             const string parameterName = "customer";
 
-
             string id = NakedObjectsFramework.GetObjectId(store);
             string value = NakedObjectsFramework.GetObjectId(store);
 
@@ -553,7 +541,6 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void TestValidateOkValueParameter() {
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-
 
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";

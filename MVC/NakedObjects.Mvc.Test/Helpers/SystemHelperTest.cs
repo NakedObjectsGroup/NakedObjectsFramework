@@ -16,7 +16,6 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-
 using MvcTestApp.Tests.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -27,58 +26,12 @@ using NUnit.Framework;
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
     public class SystemHelperTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        private static bool runFixtures;
-
-        private void RunFixturesOnce() {
-            if (!runFixtures) {
-                RunFixtures();
-                runFixtures = true;
-            }
-        }
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            RunFixturesOnce();
-            StartTest();
-            controller = new DummyController();
-            mocks = new ContextMocks(controller);
-            SetUser("sven");
-            SetupViewData();
-        }
-
-        #endregion
-
-
-        protected override string[] Namespaces {
-            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
-        }
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new MvcTestContext("SystemHelperTest"));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
-
-        [TestFixtureSetUp]
-        public  void SetupTestFixture() {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
-
-        [TestFixtureTearDown]
-        public  void TearDownTest() {
-            Database.Delete("SystemHelperTest");
-        }
-
+        private static readonly bool writeTest = false;
         private DummyController controller;
         private ContextMocks mocks;
 
-        private void SetupViewData() {
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+        protected override string[] Namespaces {
+            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
         }
 
         protected override Type[] Types {
@@ -105,17 +58,32 @@ namespace MvcTestApp.Tests.Helpers {
             get { return (DemoFixtureSet.FixtureSet()); }
         }
 
-     
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new MvcTestContext("SystemHelperTest"));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
 
-        private class DummyController : Controller {}
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
 
+        [TestFixtureTearDown]
+        public void TearDownTest() {
+            Database.Delete("SystemHelperTest");
+        }
+
+        private void SetupViewData() {
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+        }
 
         private static string GetTestData(string name) {
             var file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
             return File.ReadAllText(file);
         }
-
-        private static bool writeTest = false;
 
         private static void WriteTestData(string name, string data) {
             string file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
@@ -150,7 +118,6 @@ namespace MvcTestApp.Tests.Helpers {
             Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
             Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
-
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp1);
@@ -165,7 +132,6 @@ namespace MvcTestApp.Tests.Helpers {
             Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
             Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
-
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp1);
@@ -174,6 +140,34 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("History", s);
         }
 
-       
+        #region Nested type: DummyController
+
+        private class DummyController : Controller {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        private static bool runFixtures;
+
+        private void RunFixturesOnce() {
+            if (!runFixtures) {
+                RunFixtures();
+                runFixtures = true;
+            }
+        }
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            RunFixturesOnce();
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+            SetupViewData();
+        }
+
+        #endregion
     }
 }

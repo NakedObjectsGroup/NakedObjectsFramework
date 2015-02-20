@@ -10,7 +10,6 @@ using System.Linq;
 namespace MvcTestApp.Tests.Controllers {
     public class AutoCompleteObject {
         public virtual string Name { get; set; }
-
         public virtual string AProperty { get; set; }
 
         public IQueryable<string> AutoCompleteAProperty(string name) {

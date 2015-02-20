@@ -10,7 +10,6 @@ using System.Collections.Generic;
 namespace MvcTestApp.Tests.Controllers {
     public class ChoicesObject {
         public virtual string Name { get; set; }
-
         public virtual string AProperty { get; set; }
 
         public IList<string> ChoicesAProperty(string name) {

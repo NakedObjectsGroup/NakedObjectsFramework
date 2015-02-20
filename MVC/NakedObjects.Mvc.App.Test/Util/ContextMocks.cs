@@ -11,7 +11,6 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-
 using Moq;
 using NakedObjects.Mvc.App;
 using NUnit.Framework;
@@ -25,7 +24,6 @@ namespace MvcTestApp.Tests.Util {
 #endif
     }
 
-
     /// <summary>
     /// Helper code lifted from Pro ASP.NET MVC Framework - Sanderson 
     /// </summary>
@@ -38,9 +36,7 @@ namespace MvcTestApp.Tests.Util {
             View = new Mock<IView>();
             ViewDataContainer = new Mock<IViewDataContainer>();
 
-
             onController.ValueProvider = new DictionaryValueProvider<string>(new Dictionary<string, string>(), null);
-
 
             HttpContext.Setup(x => x.Request).Returns(Request.Object);
             HttpContext.Setup(x => x.Response).Returns(Response.Object);

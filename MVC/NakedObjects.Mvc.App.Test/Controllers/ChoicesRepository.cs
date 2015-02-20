@@ -12,8 +12,6 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Controllers {
     public class ChoicesRepository {
         public IDomainObjectContainer Container { set; protected get; }
-
-
         public void AnAction(string parm1, string parm2, int parm3) {}
 
         public IList<string> Choices0AnAction() {
@@ -54,7 +52,6 @@ namespace MvcTestApp.Tests.Controllers {
 
             return new string[] {};
         }
-
 
         public ChoicesObject GetChoicesObject() {
             var co = Container.NewTransientInstance<ChoicesObject>();

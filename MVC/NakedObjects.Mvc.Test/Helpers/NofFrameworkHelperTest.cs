@@ -15,65 +15,22 @@ using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
-
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NakedObjects.Core.Util;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
     public class NofFrameworkHelperTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        private static bool runFixtures;
-
-        private void RunFixturesOnce() {
-            if (!runFixtures) {
-                RunFixtures();
-                runFixtures = true;
-            }
-        }
-
-        protected override string[] Namespaces {
-            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
-        }
-
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-            RunFixturesOnce();
-            SetUser("sven");
-            StartTest();
-        }
-
-        #endregion
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new MvcTestContext("NofFrameworkHelperTest"));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-        }
-
-        [TestFixtureSetUp]
-        public  void SetupTestFixture() {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
-
-        [TestFixtureTearDown]
-        public  void TearDownTest() {
-            Database.Delete("NofFrameworkHelperTest");
-        }
+        private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
+        private const string genericObjectId = @"Expenses.Services.SimpleRepositoryCustomHelperTestClass;1;System.Int32;0;False;;0";
 
         protected override Type[] Types {
             get {
@@ -87,7 +44,6 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
-
         protected override object[] MenuServices {
             get { return (DemoServicesSet.ServicesSet()); }
         }
@@ -100,9 +56,22 @@ namespace MvcTestApp.Tests.Helpers {
             get { return (DemoFixtureSet.FixtureSet()); }
         }
 
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new MvcTestContext("NofFrameworkHelperTest"));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+        }
 
-        private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
-        private const string genericObjectId = @"Expenses.Services.SimpleRepositoryCustomHelperTestClass;1;System.Int32;0;False;;0";
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+
+        [TestFixtureTearDown]
+        public void TearDownTest() {
+            Database.Delete("NofFrameworkHelperTest");
+        }
 
         [Test]
         public void ActionsForHelper() {
@@ -119,7 +88,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
             IActionSpec action = service.Spec.GetObjectActions().Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             no.SetATransientOid(cm);
@@ -147,7 +116,6 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(repo1, repo2);
         }
 
-
         [Test]
         public void GetNakedObjectFromId() {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
@@ -164,7 +132,7 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(claim1, claim2);
         }
 
-        [Test] 
+        [Test]
         public void GetObjectIdForGenericObject() {
             object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             string id = NakedObjectsFramework.GetObjectId(repo);
@@ -200,13 +168,11 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;System.Int32;0;False;;0", serviceId);
         }
 
-
         [Test]
         public void GetServices() {
             var services = NakedObjectsFramework.GetAllServices();
             Assert.AreEqual(6, services.Count());
         }
-
 
         [Test]
         public void GetServicesMatch() {
@@ -246,7 +212,6 @@ namespace MvcTestApp.Tests.Helpers {
             var s37 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
             var s38 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
 
-
             Assert.AreSame(s1, s11);
             Assert.AreSame(s2, s12);
             Assert.AreSame(s3, s13);
@@ -283,7 +248,6 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(s7.Object, s37);
             Assert.AreSame(s8.Object, s38);
 
-
             // test getting by base class
             var s51 = NakedObjectsFramework.GetService<IUserFinder>();
             var s61 = NakedObjectsFramework.GetAdaptedService<IUserFinder>();
@@ -291,5 +255,30 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreSame(s21, s51);
             Assert.AreSame(s11, s61);
         }
+
+        #region Setup/Teardown
+
+        private static bool runFixtures;
+
+        private void RunFixturesOnce() {
+            if (!runFixtures) {
+                RunFixtures();
+                runFixtures = true;
+            }
+        }
+
+        protected override string[] Namespaces {
+            get { return Types.Select(t => t.Namespace).Distinct().ToArray(); }
+        }
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+            RunFixturesOnce();
+            SetUser("sven");
+            StartTest();
+        }
+
+        #endregion
     }
 }
