@@ -32,7 +32,7 @@ namespace MvcTestApp.Tests.Helpers {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
 
-        private static readonly bool Writetests = false;
+        private static readonly bool Writetests = true;
         private DummyController controller;
         private ContextMocks mocks;
 
@@ -144,6 +144,12 @@ namespace MvcTestApp.Tests.Helpers {
             if (expected == actual) {
                 return;
             }
+            // pad shorter string 
+            var maxlen = expected.Length >= actual.Length ? expected.Length : actual.Length;
+
+            expected = expected.PadRight(maxlen);
+            actual = actual.PadRight(maxlen);
+
             for (int i = 0; i < expected.Length; i++) {
                 if (expected.Substring(i, 1) != actual.Substring(i, 1)) {
                     int start = i > 10 ? i - 10 : 0;
