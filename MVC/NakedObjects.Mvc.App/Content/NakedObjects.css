@@ -1116,11 +1116,12 @@ display: none; /*Hide the Find menu always*/
           box-sizing: border-box;
 }
 
-button[title="OK"],  button[title="Apply"], button[title="Edit"],  button[title="Save"] ,  button[name="Cancel"]{
+button[title="OK"],  button[title="Apply"], button[title="Edit"],  button[title="Save"] , button[title="Save And Close"], button[name="Cancel"]{
 background-color: #d3dce0;
 padding: 7px;
 margin-right: 8px;
 margin-top: 8px;
 border: none;
 font-size: 12px;
+color: black;
 }
