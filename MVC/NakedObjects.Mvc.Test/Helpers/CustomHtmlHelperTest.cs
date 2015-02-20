@@ -32,7 +32,7 @@ namespace MvcTestApp.Tests.Helpers {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
 
-        private static readonly bool Writetests = true;
+        private static readonly bool Writetests = false;
         private DummyController controller;
         private ContextMocks mocks;
 
