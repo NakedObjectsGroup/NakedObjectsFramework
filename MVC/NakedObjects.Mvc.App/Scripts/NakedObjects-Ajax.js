@@ -324,7 +324,11 @@
     }
 
     api.bindAjaxError = function () {
-        $(".main-content").ajaxError(function (e, xhr, settings) {
+        $(document).ajaxError(function (e, xhr, settings) {
+            if (xhr.status === 0 && xhr.statusText === 'abort') {
+                // validate has aborted so consume event 
+                return false;
+            }
             // check if we were doing a ajax call - if not ignore - must have been a validate 
             if (endSubmitFeedBack() || endLinkFeedBack()) {
                 safeDecrementAjaxCount();

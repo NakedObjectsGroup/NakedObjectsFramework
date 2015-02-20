@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -52,7 +54,7 @@ namespace AdventureWorksModel {
         [DisplayName("Card No.")]
         public virtual string ObfuscatedNumber {
             get {
-                if (_ObfuscatedNumber == null && CardNumber != null) {
+                if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {
                     _ObfuscatedNumber = CardNumber.Substring(CardNumber.Length - 4).PadLeft(CardNumber.Length, '*');
                 }
                 return _ObfuscatedNumber;
@@ -115,9 +117,13 @@ namespace AdventureWorksModel {
         }
 
         public virtual string ValidateCardNumber(string cardNumber) {
+            Thread.Sleep(500);
+
             if (cardNumber != null && cardNumber.Length <= 4) {
                 return "card number too short";
             }
+           
+
             return null;
         }
 
