@@ -233,8 +233,9 @@ namespace NakedObjects.Reflect {
 
                         // build action & its parameters          
 
-                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt))).ToArray();
                         IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                        IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
+                        
                         var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
 
                         // Process facets on the action & parameters

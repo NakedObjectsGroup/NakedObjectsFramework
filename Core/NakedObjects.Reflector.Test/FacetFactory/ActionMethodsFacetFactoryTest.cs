@@ -52,9 +52,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var tps2 = new Mock<IObjectSpecImmutable>(); //System.Int64"
             var tps3 = new Mock<IObjectSpecImmutable>(); //"System.Int64"
 
-            var param1 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps1.Object);
-            var param2 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps2.Object);
-            var param3 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps3.Object);
+            var param1 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps1.Object, null);
+            var param2 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps2.Object, null);
+            var param3 = ImmutableSpecFactory.CreateActionParameterSpecImmutable(tps3.Object, null);
 
             var parms = new[] {param1, param2, param3};
 

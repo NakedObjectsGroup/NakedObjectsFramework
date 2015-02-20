@@ -18,9 +18,11 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     internal class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
+        private readonly IIdentifier identifier;
 
-        public ActionParameterSpecImmutable(IObjectSpecImmutable specification) {
+        public ActionParameterSpecImmutable(IObjectSpecImmutable specification, IIdentifier identifier) {
             this.specification = specification;
+            this.identifier = identifier;
         }
 
         #region IActionParameterSpecImmutable Members
@@ -29,9 +31,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return specification; }
         }
 
-        // todo do not like returning null here 
         public override IIdentifier Identifier {
-            get { return null; }
+            get { return identifier; }
         }
 
         public bool IsChoicesEnabled {

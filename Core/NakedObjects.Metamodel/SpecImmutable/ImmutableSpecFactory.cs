@@ -12,8 +12,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public static class ImmutableSpecFactory {
-        public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec) {
-            return new ActionParameterSpecImmutable(spec);
+        public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) {
+            return new ActionParameterSpecImmutable(spec, identifier);
         }
 
         public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) {
