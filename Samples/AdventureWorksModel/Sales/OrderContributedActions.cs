@@ -1,19 +1,78 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-using System.Collections.Generic;
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System;
 using System.ComponentModel;
 using System.Linq;
 using AdventureWorksModel.Sales;
 using NakedObjects;
 using NakedObjects.Services;
-using System;
 
 namespace AdventureWorksModel {
     [DisplayName("Orders")]
-    public class OrderContributedActions : AbstractFactoryAndRepository  {
-
+    public class OrderContributedActions : AbstractFactoryAndRepository {
         private const string subMenu = "Orders";
+
+        #region RecentOrders
+
+        [MemberOrder(22)]
+        [TableView(true, "OrderDate", "Status", "TotalDue")]
+        public IQueryable<SalesOrderHeader> RecentOrders([ContributedAction(subMenu)] Customer customer) {
+            return from obj in Instances<SalesOrderHeader>()
+                where obj.Customer.Id == customer.Id
+                orderby obj.SalesOrderNumber descending
+                select obj;
+        }
+
+        #endregion
+
+        #region LastOrder
+
+        [MemberOrder(20), QueryOnly]
+        public SalesOrderHeader LastOrder([ContributedAction(subMenu)] Customer customer) {
+            var query = from obj in Container.Instances<SalesOrderHeader>()
+                where obj.Customer.Id == customer.Id
+                orderby obj.SalesOrderNumber descending
+                select obj;
+
+            return SingleObjectWarnIfNoMatch(query);
+        }
+
+        #endregion
+
+        #region OpenOrders
+
+        [MemberOrder(21)]
+        [TableView(true, "OrderDate", "TotalDue")]
+        public IQueryable<SalesOrderHeader> OpenOrders([ContributedAction(subMenu)] Customer customer) {
+            return from obj in Container.Instances<SalesOrderHeader>()
+                where obj.Customer.Id == customer.Id &&
+                      obj.Status <= 3
+                orderby obj.SalesOrderNumber descending
+                select obj;
+        }
+
+        #endregion
+
+        [QueryOnly]
+        [FinderAction]
+        [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
+        public CurrencyRate FindRate(string currency, string currency1) {
+            return Container.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == currency && cr.Currency1.Name == currency1);
+        }
+
+        public string Default0FindRate() {
+            return "US Dollar";
+        }
+
+        public string Default1FindRate() {
+            return "Euro";
+        }
+
         #region Comments
 
         public void AppendComment(string commentToAppend, [ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
@@ -29,7 +88,6 @@ namespace AdventureWorksModel {
 
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
-
 
         public void AppendComment(string commentToAppend, [ContributedAction(subMenu)] SalesOrderHeader order) {
             if (order.Comment == null) {
@@ -60,54 +118,10 @@ namespace AdventureWorksModel {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-
         public void ClearComments(IQueryable<SalesOrderHeader> toOrders) {
             foreach (SalesOrderHeader order in toOrders) {
                 order.Comment = null;
             }
-        }
-        #endregion
-
-        #region RecentOrders
-
-        [MemberOrder(22)]
-        [TableView(true,"OrderDate","Status","TotalDue")]
-        public IQueryable<SalesOrderHeader> RecentOrders([ContributedAction(subMenu)]Customer customer)
-        {
-            return from obj in Instances<SalesOrderHeader>()
-                        where obj.Customer.Id == customer.Id
-                        orderby obj.SalesOrderNumber descending
-                        select obj;
-        }
-
-        #endregion
-
-        #region LastOrder
-
-        [MemberOrder(20), QueryOnly]
-        public SalesOrderHeader LastOrder([ContributedAction(subMenu)]Customer customer)
-        {
-            var query = from obj in Container.Instances<SalesOrderHeader>()
-                        where obj.Customer.Id == customer.Id
-                        orderby obj.SalesOrderNumber descending
-                        select obj;
-
-            return SingleObjectWarnIfNoMatch(query);
-        }
-
-        #endregion
-
-        #region OpenOrders
-
-        [MemberOrder(21)]
-        [TableView(true, "OrderDate", "TotalDue")]
-        public IQueryable<SalesOrderHeader> OpenOrders([ContributedAction(subMenu)]Customer customer)
-        {
-            return from obj in Container.Instances<SalesOrderHeader>()
-                        where obj.Customer.Id == customer.Id &&
-                              obj.Status <= 3
-                        orderby obj.SalesOrderNumber descending
-                        select obj;
         }
 
         #endregion
@@ -117,24 +131,22 @@ namespace AdventureWorksModel {
         [MemberOrder(12), PageSize(10)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public IQueryable<SalesOrderHeader> SearchForOrders(
-            [ContributedAction(subMenu)][Optionally]  Customer customer,
+            [ContributedAction(subMenu)] [Optionally] Customer customer,
             [Optionally] [Mask("d")] DateTime? fromDate,
-            [Optionally] [Mask("d")] DateTime? toDate)
-        {
+            [Optionally] [Mask("d")] DateTime? toDate) {
             IQueryable<SalesOrderHeader> query = Instances<SalesOrderHeader>();
 
-            if (customer != null)
-            {
+            if (customer != null) {
                 query = from obj in query
-                        where obj.Customer.Id == customer.Id
-                        select obj;
+                    where obj.Customer.Id == customer.Id
+                    select obj;
             }
 
             return from obj in query
-                    where ((fromDate == null) || obj.OrderDate >= fromDate) &&
-                          ((toDate == null) || obj.OrderDate <= toDate)
-                    orderby obj.OrderDate
-                    select obj;
+                where ((fromDate == null) || obj.OrderDate >= fromDate) &&
+                      ((toDate == null) || obj.OrderDate <= toDate)
+                orderby obj.OrderDate
+                select obj;
         }
 
         public string ValidateSearchForOrders(Customer customer, DateTime? fromDate, DateTime? toDate) {
@@ -151,17 +163,14 @@ namespace AdventureWorksModel {
         #region CreateNewOrder
 
         [MemberOrder(1)]
-        public SalesOrderHeader CreateNewOrder([ContributedAction(subMenu)]Customer customer,
-                                               [Optionally] bool copyHeaderFromLastOrder)
-        {
+        public SalesOrderHeader CreateNewOrder([ContributedAction(subMenu)] Customer customer,
+                                               [Optionally] bool copyHeaderFromLastOrder) {
             var newOrder = Container.NewTransientInstance<SalesOrderHeader>();
             newOrder.Customer = customer;
 
-            if (copyHeaderFromLastOrder)
-            {
+            if (copyHeaderFromLastOrder) {
                 SalesOrderHeader last = LastOrder(customer);
-                if (last != null)
-                {
+                if (last != null) {
                     newOrder.BillingAddress = last.BillingAddress;
                     newOrder.ShippingAddress = last.ShippingAddress;
                     newOrder.SetUpContact(last.Contact);
@@ -170,8 +179,7 @@ namespace AdventureWorksModel {
                     newOrder.AccountNumber = last.AccountNumber;
                 }
             }
-            else
-            {
+            else {
                 newOrder.BillingAddress = newOrder.DefaultBillingAddress();
                 newOrder.ShippingAddress = newOrder.DefaultShippingAddress();
             }
@@ -185,25 +193,10 @@ namespace AdventureWorksModel {
             return qo;
         }
 
-        public virtual bool Default1CreateNewOrder()
-        {
+        public virtual bool Default1CreateNewOrder() {
             return true;
         }
 
         #endregion
-
-        [QueryOnly][FinderAction]
-        [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
-        public CurrencyRate FindRate(string currency, string currency1) {
-            return Container.Instances<CurrencyRate>().FirstOrDefault(cr => cr.Currency.Name == currency && cr.Currency1.Name == currency1);
-        }
-
-        public string Default0FindRate() {
-            return "US Dollar";
-        }
-
-        public string Default1FindRate() {
-            return "Euro";
-        }
     }
 }

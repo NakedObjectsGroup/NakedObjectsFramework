@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +13,6 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
     public class Vendor : AWDomainObject {
-
         private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
         private ICollection<PurchaseOrderHeader> _PurchaseOrderHeader = new List<PurchaseOrderHeader>();
         private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
@@ -45,20 +48,19 @@ namespace AdventureWorksModel {
             set { _ProductVendor = value; }
         }
 
-         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true)]  // TableView == ListView
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(true)] // TableView == ListView
         public virtual ICollection<VendorAddress> Addresses {
             get { return _VendorAddress; }
             set { _VendorAddress = value; }
         }
 
-         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true)]  // TableView == ListView
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(true)] // TableView == ListView
         public virtual ICollection<VendorContact> Contacts {
             get { return _VendorContact; }
             set { _VendorContact = value; }
         }
-
 
         #region ModifiedDate
 
@@ -68,8 +70,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public Contact CreateNewContact()
-        {
+        public Contact CreateNewContact() {
             var _Contact = Container.NewTransientInstance<Contact>();
 
             _Contact.Contactee = this;

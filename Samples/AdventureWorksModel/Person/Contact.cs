@@ -1,29 +1,43 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects;
-using System.ComponentModel;
 
-namespace AdventureWorksModel
-{
+namespace AdventureWorksModel {
     [IconName("cellphone.png")]
-    public class Contact : AWDomainObject
-    {
+    public class Contact : AWDomainObject {
+        #region ID
+
+        [Hidden]
+        public virtual int ContactID { get; set; }
+
+        #endregion
+
+        #region AdditionalContactInfo
+
+        [Optionally]
+        [MemberOrder(30)]
+        public virtual string AdditionalContactInfo { get; set; }
+
+        #endregion
+
         #region Title
 
-        public override string ToString()
-        {
+        public override string ToString() {
             var t = Container.NewTitleBuilder();
-            if (NameStyle)
-            {
+            if (NameStyle) {
                 t.Append(LastName).Append(FirstName);
             }
-            else
-            {
+            else {
                 t.Append(FirstName).Append(LastName);
             }
             return t.ToString();
@@ -40,8 +54,7 @@ namespace AdventureWorksModel
 
         #region Life Cycle Methods
 
-        public override void Persisting()
-        {
+        public override void Persisting() {
             base.Persisting();
             CreateSaltAndHash(InitialPassword);
         }
@@ -54,21 +67,18 @@ namespace AdventureWorksModel
         [NotPersisted]
         public ContactType ContactType { get; set; }
 
-        public void Persisted()
-        {
-            if (Contactee is Store)
-            {
+        public void Persisted() {
+            if (Contactee is Store) {
                 var contactRole = Container.NewTransientInstance<StoreContact>();
-                contactRole.Store = (Store)Contactee;
+                contactRole.Store = (Store) Contactee;
                 contactRole.Contact = this;
                 contactRole.ContactType = ContactType;
 
                 Container.Persist(ref contactRole);
             }
-            else if (Contactee is Vendor)
-            {
+            else if (Contactee is Vendor) {
                 var vendorContact = Container.NewTransientInstance<VendorContact>();
-                vendorContact.Vendor = (Vendor)Contactee;
+                vendorContact.Vendor = (Vendor) Contactee;
                 vendorContact.Contact = this;
                 vendorContact.ContactType = ContactType;
 
@@ -76,17 +86,9 @@ namespace AdventureWorksModel
             }
         }
 
-        public virtual bool HideContactType()
-        {
+        public virtual bool HideContactType() {
             return Container.IsPersistent(this);
         }
-
-        #endregion
-
-        #region ID
-
-        [Hidden]
-        public virtual int ContactID { get; set; }
 
         #endregion
 
@@ -194,34 +196,27 @@ namespace AdventureWorksModel
 
         [Hidden(WhenTo.UntilPersisted)]
         [MemberOrder(1)]
-        public void ChangePassword([DataType(DataType.Password)] string oldPassword, [DataType(DataType.Password)] string newPassword, [Named("New Password (Confirm)"), DataType(DataType.Password)] string confirm)
-        {
+        public void ChangePassword([DataType(DataType.Password)] string oldPassword, [DataType(DataType.Password)] string newPassword, [Named("New Password (Confirm)"), DataType(DataType.Password)] string confirm) {
             CreateSaltAndHash(newPassword);
         }
 
-        internal void CreateSaltAndHash(string newPassword)
-        {
+        internal void CreateSaltAndHash(string newPassword) {
             PasswordSalt = CreateRandomSalt();
             PasswordHash = Hashed(newPassword, PasswordSalt);
         }
 
-        public virtual string ValidateChangePassword(string oldPassword, string newPassword, string confirm)
-        {
+        public virtual string ValidateChangePassword(string oldPassword, string newPassword, string confirm) {
             var rb = new ReasonBuilder();
-            if (Hashed(oldPassword, PasswordSalt) != PasswordHash)
-            {
+            if (Hashed(oldPassword, PasswordSalt) != PasswordHash) {
                 rb.Append("Old Password is incorrect");
             }
-            if (newPassword != confirm)
-            {
+            if (newPassword != confirm) {
                 rb.Append("New Password and Confirmation don't match");
             }
-            if (newPassword.Length < 6)
-            {
+            if (newPassword.Length < 6) {
                 rb.Append("New Password must be at least 6 characters");
             }
-            if (newPassword == oldPassword)
-            {
+            if (newPassword == oldPassword) {
                 rb.Append("New Password should be different from Old Password");
             }
             return rb.Reason;
@@ -238,16 +233,14 @@ namespace AdventureWorksModel
         [DataType(DataType.Password)]
         public string InitialPassword { get; set; }
 
-        public void ModifyInitialPassword([DataType(DataType.Password)] string value)
-        {
+        public void ModifyInitialPassword([DataType(DataType.Password)] string value) {
             InitialPassword = value;
             ChangePassword(null, value, null);
         }
 
         #endregion
 
-        private static string Hashed(string password, string salt)
-        {
+        private static string Hashed(string password, string salt) {
             string saltedPassword = password + salt;
             byte[] data = Encoding.UTF8.GetBytes(saltedPassword);
             byte[] hash = SHA256.Create().ComputeHash(data);
@@ -255,26 +248,16 @@ namespace AdventureWorksModel
             return new string(chars);
         }
 
-        private static string CreateRandomSalt()
-        {
+        private static string CreateRandomSalt() {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
             var output = new StringBuilder();
-            for (int i = 1; i <= 7; i++)
-            {
+            for (int i = 1; i <= 7; i++) {
                 output.Append(chars.Substring(random.Next(chars.Length - 1), 1));
             }
             output.Append("=");
             return output.ToString();
         }
-
-        #endregion
-
-        #region AdditionalContactInfo
-
-        [Optionally]
-        [MemberOrder(30)]
-        public virtual string AdditionalContactInfo { get; set; }
 
         #endregion
 
@@ -296,6 +279,5 @@ namespace AdventureWorksModel
         #endregion
 
         #endregion
-
     }
 }

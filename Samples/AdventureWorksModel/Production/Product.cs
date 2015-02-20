@@ -1,18 +1,21 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Value;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
     [IconName("carton.png")]
     public class Product : AWDomainObject {
-
         #region Injected Services
 
         #region Injected: SpecialOfferRepository
@@ -22,7 +25,6 @@ namespace AdventureWorksModel {
         #endregion
 
         public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
-
 
         #endregion
 
@@ -67,7 +69,7 @@ namespace AdventureWorksModel {
             get {
                 if (cachedPhoto == null) {
                     ProductPhoto p = (from obj in ProductProductPhoto
-                                          select obj.ProductPhoto).FirstOrDefault();
+                        select obj.ProductPhoto).FirstOrDefault();
 
                     if (p != null) {
                         cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
@@ -77,15 +79,12 @@ namespace AdventureWorksModel {
             }
         }
 
-
-        public void AddOrChangePhoto(Image newImage)
-        {
+        public void AddOrChangePhoto(Image newImage) {
             ProductPhoto p = (from obj in ProductProductPhoto
-                              select obj.ProductPhoto).FirstOrDefault();
+                select obj.ProductPhoto).FirstOrDefault();
 
             p.LargePhoto = newImage.GetResourceAsByteArray();
             p.LargePhotoFileName = newImage.Name;
-
         }
 
         #endregion
@@ -172,7 +171,7 @@ namespace AdventureWorksModel {
 
         #region DaysToManufacture
 
-        [MemberOrder(24), Range(1,90)]
+        [MemberOrder(24), Range(1, 90)]
         public virtual int DaysToManufacture { get; set; }
 
         #endregion
@@ -184,9 +183,8 @@ namespace AdventureWorksModel {
         public virtual string ProductLine { get; set; }
 
         public virtual string[] ChoicesProductLine() {
-            return new[] { "R", "M", "T", "S" };
+            return new[] {"R", "M", "T", "S"};
         }
-
 
         #endregion
 
@@ -209,9 +207,8 @@ namespace AdventureWorksModel {
         public virtual string Style { get; set; }
 
         public virtual string[] ChoicesStyle() {
-            return new[] { "U", "M", "W" };
+            return new[] {"U", "M", "W"};
         }
-
 
         #endregion
 
@@ -249,9 +246,9 @@ namespace AdventureWorksModel {
         #region ProductModel
 
         [Optionally]
-        [MemberOrder(10)][FindMenu]
+        [MemberOrder(10)]
+        [FindMenu]
         public virtual ProductModel ProductModel { get; set; }
-
 
         public virtual IQueryable<ProductModel> AutoCompleteProductModel(string match) {
             return Container.Instances<ProductModel>().Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
@@ -260,8 +257,6 @@ namespace AdventureWorksModel {
         //public virtual IList<ProductModel> ChoicesProductModel() {
         //    return Container.Instances<ProductModel>().ToList();
         //}
-
-
 
         #endregion
 
@@ -272,14 +267,12 @@ namespace AdventureWorksModel {
         public virtual ProductCategory ProductCategory {
             get {
                 if (productCategory == null) {
-
-                    return ProductSubcategory  == null ? null : ProductSubcategory .ProductCategory;
+                    return ProductSubcategory == null ? null : ProductSubcategory.ProductCategory;
                 }
                 return productCategory;
             }
             set { productCategory = value; }
         }
-
 
         [Optionally]
         [MemberOrder(12)]
@@ -357,7 +350,7 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual int NumberInStock() {
             return (from obj in ProductInventory
-                    select obj).Sum(obj => obj.Quantity);
+                select obj).Sum(obj => obj.Quantity);
         }
 
         #endregion
@@ -373,7 +366,7 @@ namespace AdventureWorksModel {
             set { _SpecialOfferProduct = value; }
         }
 
-         [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public IList<SpecialOffer> SpecialOffers {
             get { return SpecialOfferProduct.Select(n => n.SpecialOffer).Where(so => so != null).ToList(); }
@@ -406,27 +399,23 @@ namespace AdventureWorksModel {
         public virtual SpecialOfferProduct BestSpecialOfferProduct(short quantity) {
             //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
             var query = from obj in Container.Instances<SpecialOfferProduct>()
-                                                           where obj.Product.ProductID == ProductID &&
-                                                                 obj.SpecialOffer.StartDate <= DateTime.Now &&
-                                                                 obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
-                                                                 obj.SpecialOffer.MinQty < quantity
-                                                           orderby obj.SpecialOffer.DiscountPct descending
-                                                           select obj;
+                where obj.Product.ProductID == ProductID &&
+                      obj.SpecialOffer.StartDate <= DateTime.Now &&
+                      obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
+                      obj.SpecialOffer.MinQty < quantity
+                orderby obj.SpecialOffer.DiscountPct descending
+                select obj;
 
             SpecialOfferProduct best = query.FirstOrDefault();
             if (best != null) {
                 return best;
             }
             else {
-                 
                 SpecialOffer none = SpecialOfferRepository.NoDiscount();
                 return SpecialOfferRepository.AssociateSpecialOfferWithProduct(none, this);
-        
             }
         }
 
         #endregion
-
-
     }
 }

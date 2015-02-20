@@ -1,69 +1,18 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.ComponentModel;
-using NakedObjects;
 using System.ComponentModel.DataAnnotations;
+using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("trolley_item.png")]
     public class SalesOrderDetail : AWDomainObject {
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(OrderQty.ToString()).Append(" x", Product);
-            return t.ToString();
-        }
-
-
-        #region Life Cycle methods
-
-        public void Persisted() {
-            SalesOrderHeader.Details.Add(this);
-            SalesOrderHeader.Recalculate();
-        }
-
-        #endregion
-
-        #region ID
-
-        [Hidden]
-        public virtual int SalesOrderID { get; set; }
-
-        [Hidden]
-        public virtual int SalesOrderDetailID { get; set; }
-
-        #endregion
-
-        #region Product & Special Offer
-
-        #region SpecialOfferProduct
-
-        [Hidden]
-        public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
-
-        #endregion
-
-        [Disabled]
-        [NotPersisted]
-        [MemberOrder(11)]
-        public virtual Product Product {
-            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; }
-            set {
-                //Does nothing -  derived field
-            }
-        }
-
-        [Disabled]
-        [MemberOrder(12)]
-        public virtual SpecialOffer SpecialOffer {
-            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer; }
-            set { }
-        }
-
-        #endregion
-
         #region OrderQty
 
         [Disabled]
@@ -109,32 +58,24 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        public  override DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region rowguid
-
-        [Hidden]
-        public override Guid rowguid { get; set; }
-
-        #endregion
-
-        #endregion
-
         #region SalesOrder
 
-       // [Hidden]
-        private SalesOrderHeader _salesOrderHeader;
-        public virtual SalesOrderHeader SalesOrderHeader {
-            get { return _salesOrderHeader; }
-            set { _salesOrderHeader = value; }
+        // [Hidden]
+        public virtual SalesOrderHeader SalesOrderHeader { get; set; }
+
+        #endregion
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(OrderQty.ToString()).Append(" x", Product);
+            return t.ToString();
+        }
+
+        #region Life Cycle methods
+
+        public void Persisted() {
+            SalesOrderHeader.Details.Add(this);
+            SalesOrderHeader.Recalculate();
         }
 
         #endregion
@@ -142,7 +83,7 @@ namespace AdventureWorksModel {
         public void Recalculate() {
             UnitPrice = SpecialOfferProduct.Product.ListPrice;
             UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct*UnitPrice);
-            LineTotal = (UnitPrice - UnitPriceDiscount) * OrderQty;
+            LineTotal = (UnitPrice - UnitPriceDiscount)*OrderQty;
             if (Container.IsPersistent(this)) {
                 SalesOrderHeader.Recalculate();
             }
@@ -157,5 +98,62 @@ namespace AdventureWorksModel {
         public virtual string DisableChangeQuantity() {
             return SalesOrderHeader.DisableAddNewDetail();
         }
+
+        #region ID
+
+        [Hidden]
+        public virtual int SalesOrderID { get; set; }
+
+        [Hidden]
+        public virtual int SalesOrderDetailID { get; set; }
+
+        #endregion
+
+        #region Product & Special Offer
+
+        #region SpecialOfferProduct
+
+        [Hidden]
+        public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
+
+        #endregion
+
+        [Disabled]
+        [NotPersisted]
+        [MemberOrder(11)]
+        public virtual Product Product {
+            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; }
+            set {
+                //Does nothing -  derived field
+            }
+        }
+
+        [Disabled]
+        [MemberOrder(12)]
+        public virtual SpecialOffer SpecialOffer {
+            get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer; }
+            set { }
+        }
+
+        #endregion
+
+        #region ModifiedDate and rowguid
+
+        #region ModifiedDate
+
+        [MemberOrder(99)]
+        [Disabled]
+        public override DateTime ModifiedDate { get; set; }
+
+        #endregion
+
+        #region rowguid
+
+        [Hidden]
+        public override Guid rowguid { get; set; }
+
+        #endregion
+
+        #endregion
     }
 }

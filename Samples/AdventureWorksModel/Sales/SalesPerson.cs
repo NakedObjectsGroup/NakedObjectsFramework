@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +14,27 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("dog.png")]
     public class SalesPerson : AWDomainObject {
+        #region RecalulateSalesYTD (Action)
+
+        [MemberOrder(1)]
+        public void RecalulateSalesYTD() {
+            var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+            IQueryable<SalesOrderHeader> query = from obj in Container.Instances<SalesOrderHeader>()
+                where obj.SalesPerson.SalesPersonID == SalesPersonID &&
+                      obj.Status == 5 &&
+                      obj.OrderDate >= startOfYear
+                select obj;
+            if (query.Count() > 0) {
+                query.Sum(n => n.SubTotal);
+            }
+            else {
+                SalesYTD = 0;
+            }
+        }
+
+        // Use 'hide', 'dis', 'val', 'actdef', 'actcho' shortcuts to add supporting methods here.
+
+        #endregion
 
         #region Properties
 
@@ -87,7 +112,7 @@ namespace AdventureWorksModel {
 
         private ICollection<SalesPersonQuotaHistory> _quotaHistory = new List<SalesPersonQuotaHistory>();
 
-        [TableView(false, "QuotaDate", "SalesQuota")] 
+        [TableView(false, "QuotaDate", "SalesQuota")]
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory {
             get { return _quotaHistory; }
             set { _quotaHistory = value; }
@@ -112,7 +137,7 @@ namespace AdventureWorksModel {
 
         #region Territory History
 
-        [TableView(false, "StartDate", "EndDate", "SalesTerritory")] 
+        [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory {
             get { return _territoryHistory; }
             set { _territoryHistory = value; }
@@ -139,28 +164,6 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
-
-        #endregion
-
-        #region RecalulateSalesYTD (Action)
-
-        [MemberOrder(1)]
-        public void RecalulateSalesYTD() {
-            var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
-            IQueryable<SalesOrderHeader> query = from obj in Container.Instances<SalesOrderHeader>()
-                                                 where obj.SalesPerson.SalesPersonID == SalesPersonID &&
-                                                       obj.Status == 5 &&
-                                                       obj.OrderDate >= startOfYear
-                                                 select obj;
-            if (query.Count() > 0) {
-                query.Sum(n => n.SubTotal);
-            }
-            else {
-                SalesYTD = 0;
-            }
-        }
-
-        // Use 'hide', 'dis', 'val', 'actdef', 'actcho' shortcuts to add supporting methods here.
 
         #endregion
     }

@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,14 +12,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 
-namespace AdventureWorksModel
-{
-
+namespace AdventureWorksModel {
     [DisplayName("Sales Order")]
     [IconName("trolley.png")]
-    public class SalesOrderHeader : AWDomainObject, ICreditCardCreator
-    {
+    public class SalesOrderHeader : AWDomainObject, ICreditCardCreator {
+        [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
+        public bool AddItemsFromCart { get; set; }
+
         #region Injected Servives
+
         public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
 
         public ProductRepository ProductRepository { set; protected get; }
@@ -26,8 +31,7 @@ namespace AdventureWorksModel
 
         #region Life Cycle Methods
 
-        public void Created()
-        {
+        public void Created() {
             OrderDate = DateTime.Now.Date;
             DueDate = DateTime.Now.Date.AddDays(7);
             RevisionNumber = 1;
@@ -38,41 +42,32 @@ namespace AdventureWorksModel
             TotalDue = 0;
         }
 
-        public override void Updating()
-        {
+        public override void Updating() {
             base.Updating();
             const byte increment = 1;
             RevisionNumber += increment;
-
         }
 
-        public override void Persisting()
-        {
-            if (Customer.IsStore())
-            {
+        public override void Persisting() {
+            if (Customer.IsStore()) {
                 contact = StoreContact.Contact;
             }
             base.Persisting();
         }
 
-        public void Loaded()
-        {
+        public void Loaded() {
             UpdateStoreContact();
         }
 
-        private void UpdateStoreContact()
-        {
-            if (Customer.IsStore() && StoreContact == null && Contact != null && Customer != null)
-            {
+        private void UpdateStoreContact() {
+            if (Customer.IsStore() && StoreContact == null && Contact != null && Customer != null) {
                 StoreContact = FindStoreContactForContact();
             }
         }
 
-        public void Persisted()
-        {
+        public void Persisted() {
             UpdateStoreContact();
-            if (AddItemsFromCart)
-            {
+            if (AddItemsFromCart) {
                 ShoppingCartRepository.AddAllItemsInCartToOrder(this);
                 AddItemsFromCart = false;
             }
@@ -103,50 +98,41 @@ namespace AdventureWorksModel
         //Properly, the Status property should be [Disabled], and modified only through
         //appropriate actions such as Approve.  It has been left modifiable here only
         //to demonstrate the behaviour of Enum properties.
-        [MemberOrder(1.1), TypicalLength(12), EnumDataType(typeof(OrderStatus))]
+        [MemberOrder(1.1), TypicalLength(12), EnumDataType(typeof (OrderStatus))]
         public virtual byte Status { get; set; }
 
-        
-        public OrderStatus DefaultStatus()
-        {
+        public OrderStatus DefaultStatus() {
             return OrderStatus.InProcess;
         }
-      
 
         [Hidden]
-        public virtual Boolean IsInProcess()
-        {
-            return Status.Equals((byte)OrderStatus.InProcess);
+        public virtual Boolean IsInProcess() {
+            return Status.Equals((byte) OrderStatus.InProcess);
         }
 
         [Hidden]
-        public virtual Boolean IsApproved()
-        {
-            return Status.Equals((byte)OrderStatus.Approved);
+        public virtual Boolean IsApproved() {
+            return Status.Equals((byte) OrderStatus.Approved);
         }
 
         [Hidden]
-        public virtual bool IsBackOrdered()
-        {
-            return Status.Equals((byte)OrderStatus.BackOrdered);
+        public virtual bool IsBackOrdered() {
+            return Status.Equals((byte) OrderStatus.BackOrdered);
         }
 
         [Hidden]
-        public virtual bool IsRejected()
-        {
-            return Status.Equals((byte)OrderStatus.Rejected);
+        public virtual bool IsRejected() {
+            return Status.Equals((byte) OrderStatus.Rejected);
         }
 
         [Hidden]
-        public virtual bool IsShipped()
-        {
-            return Status.Equals((byte)OrderStatus.Shipped);
+        public virtual bool IsShipped() {
+            return Status.Equals((byte) OrderStatus.Shipped);
         }
 
         [Hidden]
-        public virtual bool IsCancelled()
-        {
-            return Status.Equals((byte)OrderStatus.Cancelled);
+        public virtual bool IsCancelled() {
+            return Status.Equals((byte) OrderStatus.Cancelled);
         }
 
         #endregion
@@ -163,14 +149,12 @@ namespace AdventureWorksModel
         private Contact contact;
 
         [Hidden]
-        public virtual Contact Contact
-        {
+        public virtual Contact Contact {
             get { return contact; }
             set { contact = value; }
         }
 
-        internal void SetUpContact(Contact value)
-        {
+        internal void SetUpContact(Contact value) {
             Contact = value;
             storeContact = FindStoreContactForContact();
         }
@@ -180,39 +164,32 @@ namespace AdventureWorksModel
         private StoreContact storeContact;
 
         [MemberOrder(3)]
-        public virtual StoreContact StoreContact
-        {
+        public virtual StoreContact StoreContact {
             get { return storeContact; }
-            set
-            {
-                if (value != null)
-                {
+            set {
+                if (value != null) {
                     storeContact = value;
                     Contact = value.Contact;
                 }
             }
         }
 
-        private StoreContact FindStoreContactForContact()
-        {
+        private StoreContact FindStoreContactForContact() {
             IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
-                                             where obj.Contact.ContactID == Contact.ContactID && obj.Store.Id == Customer.Id
-                                             select obj;
+                where obj.Contact.ContactID == Contact.ContactID && obj.Store.Id == Customer.Id
+                select obj;
 
             return query.FirstOrDefault();
         }
 
-        public virtual bool HideStoreContact()
-        {
+        public virtual bool HideStoreContact() {
             return Customer != null && Customer.IsIndividual();
         }
 
         [Executed(Where.Remotely)]
-        public List<StoreContact> ChoicesStoreContact()
-        {
-            if (Customer != null && Customer.IsStore())
-            {
-                return new List<StoreContact>(((Store)Customer).Contacts);
+        public List<StoreContact> ChoicesStoreContact() {
+            if (Customer != null && Customer.IsStore()) {
+                return new List<StoreContact>(((Store) Customer).Contacts);
             }
             return new List<StoreContact>();
         }
@@ -226,26 +203,23 @@ namespace AdventureWorksModel
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
-        public Address DefaultBillingAddress()
-        {
-            if (Customer == null)
-            {
+        public Address DefaultBillingAddress() {
+            if (Customer == null) {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                                        where obj.Customer.Id == Customer.Id &&
-                                              obj.AddressType.Name == "Billing"
-                                        select obj.Address;
+                where obj.Customer.Id == Customer.Id &&
+                      obj.AddressType.Name == "Billing"
+                select obj.Address;
 
             return query.FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]
-        public List<Address> ChoicesBillingAddress()
-        {
+        public List<Address> ChoicesBillingAddress() {
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                                        where obj.Customer.Id == Customer.Id
-                                        select obj.Address;
+                where obj.Customer.Id == Customer.Id
+                select obj.Address;
 
             return query.ToList();
         }
@@ -264,23 +238,20 @@ namespace AdventureWorksModel
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
-        public Address DefaultShippingAddress()
-        {
-            if (Customer == null)
-            {
+        public Address DefaultShippingAddress() {
+            if (Customer == null) {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                                        where obj.Customer.Id == Customer.Id &&
-                                              obj.AddressType.Name == "Shipping"
-                                        select obj.Address;
+                where obj.Customer.Id == Customer.Id &&
+                      obj.AddressType.Name == "Shipping"
+                select obj.Address;
 
             return query.FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]
-        public List<Address> ChoicesShippingAddress()
-        {
+        public List<Address> ChoicesShippingAddress() {
             return ChoicesBillingAddress();
         }
 
@@ -291,12 +262,9 @@ namespace AdventureWorksModel
         [MemberOrder(11)]
         public virtual ShipMethod ShipMethod { get; set; }
 
-        
-        public ShipMethod DefaultShipMethod()
-        {
+        public ShipMethod DefaultShipMethod() {
             return Container.Instances<ShipMethod>().FirstOrDefault();
         }
-      
 
         #endregion
 
@@ -324,24 +292,20 @@ namespace AdventureWorksModel
         [Mask("d")]
         public virtual DateTime DueDate { get; set; }
 
-        public string DisableDueDate()
-        {
+        public string DisableDueDate() {
             return DisableIfShipped();
         }
 
         public string ValidateDueDate(DateTime dueDate) {
-
             if (dueDate.Date < OrderDate.Date) {
                 return "Due date cannot be before order date";
             }
 
-            return null; 
+            return null;
         }
 
-        private string DisableIfShipped()
-        {
-            if (IsShipped())
-            {
+        private string DisableIfShipped() {
+            if (IsShipped()) {
                 return "Order has been shipped";
             }
             return null;
@@ -357,20 +321,17 @@ namespace AdventureWorksModel
         [Range(-30, 0)]
         public virtual DateTime? ShipDate { get; set; }
 
-        public string DisableShipDate()
-        {
+        public string DisableShipDate() {
             return DisableIfShipped();
         }
 
         public string ValidateShipDate(DateTime? shipDate) {
-
             if (shipDate.HasValue && shipDate.Value.Date < OrderDate.Date) {
                 return "Ship date cannot be before order date";
             }
 
             return null;
         }
-
 
         #endregion
 
@@ -398,8 +359,7 @@ namespace AdventureWorksModel
         [Mask("C")]
         public virtual decimal TotalDue { get; set; }
 
-        public void Recalculate()
-        {
+        public void Recalculate() {
             SubTotal = Details.Sum(d => d.LineTotal);
             TotalDue = SubTotal;
         }
@@ -465,8 +425,8 @@ namespace AdventureWorksModel
         public string[] Choices0AddStandardComments() {
             return new[] {
                 "Payment on delivery",
-                "Leave parcel with neighbour", 
-                "Leave parcel round back", 
+                "Leave parcel with neighbour",
+                "Leave parcel round back",
             };
         }
 
@@ -486,8 +446,7 @@ namespace AdventureWorksModel
         public virtual SalesPerson SalesPerson { get; set; }
 
         [PageSize(20)]
-        public IQueryable<SalesPerson> AutoCompleteSalesPerson([MinLength(2)] string name)
-        {
+        public IQueryable<SalesPerson> AutoCompleteSalesPerson([MinLength(2)] string name) {
             return SalesRepository.FindSalesPersonByName(null, name);
         }
 
@@ -530,8 +489,7 @@ namespace AdventureWorksModel
         private ICollection<SalesOrderDetail> details = new List<SalesOrderDetail>();
 
         [Disabled]
-        public virtual ICollection<SalesOrderDetail> Details
-        {
+        public virtual ICollection<SalesOrderDetail> Details {
             get { return details; }
             set { details = value; }
         }
@@ -544,8 +502,7 @@ namespace AdventureWorksModel
 
         [Disabled]
         [DisplayName("Reasons")]
-        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason
-        {
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason {
             get { return salesOrderHeaderSalesReason; }
             set { salesOrderHeaderSalesReason = value; }
         }
@@ -561,11 +518,9 @@ namespace AdventureWorksModel
         [Description("Add a new line item to the order")]
         [MemberOrder(1)]
         public SalesOrderDetail AddNewDetail(Product product,
-                            [DefaultValue((short)1), Range(1, 999)] short quantity)
-        {
+                                             [DefaultValue((short) 1), Range(1, 999)] short quantity) {
             int stock = product.NumberInStock();
-            if (stock < quantity)
-            {
+            if (stock < quantity) {
                 var t = Container.NewTitleBuilder();
                 t.Append("Current inventory of").Append(product).Append(" is").Append(stock);
                 Container.WarnUser(t.ToString());
@@ -588,8 +543,7 @@ namespace AdventureWorksModel
         }
 
         [PageSize(20)]
-        public IQueryable<Product> AutoComplete0AddNewDetail([MinLength(2)] string name)
-        {
+        public IQueryable<Product> AutoComplete0AddNewDetail([MinLength(2)] string name) {
             return ProductRepository.FindProductByName(name);
         }
 
@@ -623,19 +577,16 @@ namespace AdventureWorksModel
             return Details;
         }
 
-
         #endregion
 
         #region CreateNewCreditCard
 
         [Hidden]
-        public void CreatedCardHasBeenSaved(CreditCard card)
-        {
+        public void CreatedCardHasBeenSaved(CreditCard card) {
             CreditCard = card;
         }
 
-        public CreditCard CreateNewCreditCard()
-        {
+        public CreditCard CreateNewCreditCard() {
             var newCard = Container.NewTransientInstance<CreditCard>();
             newCard.ForContact = Contact;
             newCard.Creator = this;
@@ -660,11 +611,9 @@ namespace AdventureWorksModel
             }
         }
 
-       
         public string ValidateAddNewSalesReason(SalesReason reason) {
             return SalesOrderHeaderSalesReason.Any(y => y.SalesReason == reason) ? string.Format("{0} already exists in Sales Reasons", reason.Name) : null;
         }
-
 
         [MemberOrder(2)]
         public void AddNewSalesReasons(IEnumerable<SalesReason> reasons) {
@@ -680,7 +629,7 @@ namespace AdventureWorksModel
         // This is done with an enum in order to test enum parameter handling by the framework
         public enum SalesReasonCategories {
             Other,
-            Promotion, 
+            Promotion,
             Marketing
         }
 
@@ -694,15 +643,12 @@ namespace AdventureWorksModel
             }
         }
 
-    
         [MemberOrder(4)]
         public void AddNewSalesReasonsByCategories(IEnumerable<SalesReasonCategories> reasonCategories) {
             foreach (SalesReasonCategories rc in reasonCategories) {
                 AddNewSalesReasonsByCategory(rc);
             }
         }
-
-
 
         // Use 'hide', 'dis', 'val', 'actdef', 'actcho' shortcuts to add supporting methods here.
 
@@ -711,21 +657,17 @@ namespace AdventureWorksModel
         #region ApproveOrder
 
         [MemberOrder(1)]
-        public void ApproveOrder()
-        {
+        public void ApproveOrder() {
             Status = (byte) OrderStatus.Approved;
         }
 
-        public virtual bool HideApproveOrder()
-        {
+        public virtual bool HideApproveOrder() {
             return !IsInProcess();
         }
 
-        public virtual string DisableApproveOrder()
-        {
+        public virtual string DisableApproveOrder() {
             var rb = new ReasonBuilder();
-            if (Details.Count == 0)
-            {
+            if (Details.Count == 0) {
                 rb.Append("Cannot approve orders with no Details");
             }
             return rb.Reason;
@@ -737,33 +679,27 @@ namespace AdventureWorksModel
 
         [Description("Indicate that the order has been shipped, specifying the date")]
         [Hidden]
-        public void MarkAsShipped(DateTime shipDate)
-        {
+        public void MarkAsShipped(DateTime shipDate) {
             Status = (byte) OrderStatus.Shipped;
             ShipDate = shipDate;
         }
 
-        public virtual string ValidateMarkAsShipped(DateTime date)
-        {
+        public virtual string ValidateMarkAsShipped(DateTime date) {
             var rb = new ReasonBuilder();
-            if (date.Date > DateTime.Now.Date)
-            {
+            if (date.Date > DateTime.Now.Date) {
                 rb.Append("Ship Date cannot be after Today");
             }
             return rb.Reason;
         }
 
-        public virtual string DisableMarkAsShipped()
-        {
-            if (!IsApproved())
-            {
+        public virtual string DisableMarkAsShipped() {
+            if (!IsApproved()) {
                 return "Order must be Approved before shipping";
             }
             return null;
         }
 
-        public virtual bool HideMarkAsShipped(DateTime shipDate)
-        {
+        public virtual bool HideMarkAsShipped(DateTime shipDate) {
             return IsRejected() || IsShipped() || IsCancelled();
         }
 
@@ -771,23 +707,25 @@ namespace AdventureWorksModel
 
         #region CancelOrder
 
-        public void CancelOrder()
-        {
+        public void CancelOrder() {
             Status = (byte) OrderStatus.Cancelled;
         }
 
-        public virtual bool HideCancelOrder()
-        {
+        public virtual bool HideCancelOrder() {
             return IsShipped() || IsCancelled();
         }
 
         #endregion
 
         #endregion
-
-        [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
-        public bool AddItemsFromCart { get; set; }
     }
 
-    public enum OrderStatus : byte {InProcess=1, Approved=2, BackOrdered=3, Rejected=4, Shipped=5,  Cancelled=6 }
+    public enum OrderStatus : byte {
+        InProcess = 1,
+        Approved = 2,
+        BackOrdered = 3,
+        Rejected = 4,
+        Shipped = 5,
+        Cancelled = 6
+    }
 }

@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -39,6 +42,48 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region FindProductByNumber
+
+        [FinderAction()]
+        [QueryOnly, MemberOrder(2)]
+        public Product FindProductByNumber(string number) {
+            IQueryable<Product> query = from obj in Instances<Product>()
+                where obj.ProductNumber == number
+                select obj;
+
+            return SingleObjectWarnIfNoMatch(query);
+        }
+
+        #endregion
+
+        #region RandomProduct
+
+        [FinderAction()]
+        [QueryOnly]
+        [MemberOrder(10)]
+        public Product RandomProduct() {
+            return Random<Product>();
+        }
+
+        #endregion
+
+        #region NewProduct
+
+        [FinderAction()]
+        [MemberOrder(9)]
+        public virtual Product NewProduct() {
+            return Container.NewTransientInstance<Product>();
+        }
+
+        #endregion
+
+        [FinderAction()]
+        [QueryOnly]
+        [MemberOrder(11)]
+        public Product FindProductByKey(string key) {
+            return Container.FindByKey<Product>(int.Parse(key));
+        }
+
         #region FindProduct
 
         [FinderAction()]
@@ -47,8 +92,6 @@ namespace AdventureWorksModel {
         public Product FindProduct(Product product) {
             return product;
         }
-
-        
 
         public Product Default0FindProduct() {
             return Instances<Product>().First();
@@ -64,6 +107,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ListProductsBySubCategory
+
         [FinderAction()]
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
         public IQueryable<Product> ListProductsBySubCategory([ContributedAction("Products")] ProductSubcategory subCategory) {
@@ -105,7 +149,6 @@ namespace AdventureWorksModel {
             return q;
         }
 
-
         public string Validate0ListProductsBySubCategories(IEnumerable<ProductSubcategory> subCategories) {
             var rb = new ReasonBuilder();
             rb.AppendOnCondition(subCategories.Count() > 5, "Max 5 SubCategories may be selected");
@@ -114,21 +157,8 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region FindProductByNumber
-
-        [FinderAction()]
-        [QueryOnly, MemberOrder(2)]
-        public Product FindProductByNumber(string number) {
-            IQueryable<Product> query = from obj in Instances<Product>()
-                where obj.ProductNumber == number
-                select obj;
-
-            return SingleObjectWarnIfNoMatch(query);
-        }
-
-        #endregion
-
         #region FindProductsByCategory
+
         [FinderAction()]
         [MemberOrder(8)]
         public IQueryable<Product> FindProductsByCategory(IEnumerable<ProductCategory> categories, IEnumerable<ProductSubcategory> subcategories) {
@@ -171,27 +201,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region RandomProduct
-
-        [FinderAction()]
-        [QueryOnly]
-        [MemberOrder(10)]
-        public Product RandomProduct() {
-            return Random<Product>();
-        }
-
-        #endregion
-
-        #region NewProduct
-
-        [FinderAction()]
-        [MemberOrder(9)]
-        public virtual Product NewProduct() {
-            return Container.NewTransientInstance<Product>();
-        }
-
-        #endregion
-
         #region FindByProductLinesAndClasses
 
         [FinderAction()]
@@ -211,7 +220,6 @@ namespace AdventureWorksModel {
 
             return products;
         }
-
 
         public virtual IList<ProductLineEnum> Default0FindByProductLinesAndClasses() {
             return new List<ProductLineEnum> {ProductLineEnum.M, ProductLineEnum.S};
@@ -243,13 +251,5 @@ namespace AdventureWorksModel {
         }
 
         #endregion
-
-        [FinderAction()]
-        [QueryOnly]
-        [MemberOrder(11)]
-        public Product FindProductByKey(string key)
-        {
-            return Container.FindByKey<Product>(int.Parse(key));
-        }
     }
 }

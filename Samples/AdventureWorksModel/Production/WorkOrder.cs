@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -11,19 +14,9 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("gear.png")]
     public class WorkOrder : AWDomainObject {
-
         #region Injected Servives
+
         public ProductRepository ProductRepository { set; protected get; }
-
-        #endregion
-
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Product).Append(StartDate, "d", null);
-            return t.ToString();
-        }
 
         #endregion
 
@@ -31,22 +24,6 @@ namespace AdventureWorksModel {
 
         [Hidden]
         public virtual int WorkOrderID { get; set; }
-
-        #endregion
-
-        #region OrderQty
-
-        [MemberOrder(20)]
-        public virtual int OrderQty { get; set; }
-
-        public virtual string ValidateOrderQty(int qty) {
-         
-            var rb = new ReasonBuilder();
-            if (qty <= 0) {
-                rb.Append("Order Quantity must be > 0");
-            }
-            return rb.Reason;
-        }
 
         #endregion
 
@@ -65,6 +42,56 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region EndDate
+
+        [Optionally]
+        [MemberOrder(32)]
+        [Mask("d")]
+        public virtual DateTime? EndDate { get; set; }
+
+        #endregion
+
+        #region ModifiedDate
+
+        [MemberOrder(99)]
+        [Disabled]
+        public override DateTime ModifiedDate { get; set; }
+
+        #endregion
+
+        #region ScrapReason
+
+        [Optionally]
+        [MemberOrder(26)]
+        public virtual ScrapReason ScrapReason { get; set; }
+
+        #endregion
+
+        #region Title
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(Product).Append(StartDate, "d", null);
+            return t.ToString();
+        }
+
+        #endregion
+
+        #region OrderQty
+
+        [MemberOrder(20)]
+        public virtual int OrderQty { get; set; }
+
+        public virtual string ValidateOrderQty(int qty) {
+            var rb = new ReasonBuilder();
+            if (qty <= 0) {
+                rb.Append("Order Quantity must be > 0");
+            }
+            return rb.Reason;
+        }
+
+        #endregion
+
         #region StartDate
 
         [MemberOrder(30)]
@@ -74,15 +101,6 @@ namespace AdventureWorksModel {
         public virtual DateTime DefaultStartDate() {
             return DateTime.Now;
         }
-
-        #endregion
-
-        #region EndDate
-
-        [Optionally]
-        [MemberOrder(32)]
-        [Mask("d")]
-        public virtual DateTime? EndDate { get; set; }
 
         #endregion
 
@@ -98,14 +116,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        public override DateTime ModifiedDate { get; set; }
-
-        #endregion
-
         #region Product
 
         [MemberOrder(10), FindMenu]
@@ -118,21 +128,13 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ScrapReason
-
-        [Optionally]
-        [MemberOrder(26)]
-        public virtual ScrapReason ScrapReason { get; set; }
-
-        #endregion
-
         #region WorkOrderRoutings
 
         private ICollection<WorkOrderRouting> _WorkOrderRouting = new List<WorkOrderRouting>();
 
         [Disabled]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate","Location", "PlannedCost")]
+        [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings {
             get { return _WorkOrderRouting; }
             set { _WorkOrderRouting = value; }

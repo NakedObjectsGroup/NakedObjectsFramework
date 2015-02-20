@@ -1,28 +1,19 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
-using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel
-{
+namespace AdventureWorksModel {
     [IconName("person.png")]
-    public class Employee : AWDomainObject
-    {
-        #region Title & Icon
-
-        public override string ToString()
-        {
-            var t = Container.NewTitleBuilder();
-            t.Append(ContactDetails);
-            return t.ToString();
-        }
-
-        #endregion
-
+    public class Employee : AWDomainObject {
         #region Injected Services
 
         #region Injected: EmployeeRepository
@@ -30,6 +21,16 @@ namespace AdventureWorksModel
         public EmployeeRepository EmployeeRepository { set; protected get; }
 
         #endregion
+
+        #endregion
+
+        #region Title & Icon
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(ContactDetails);
+            return t.ToString();
+        }
 
         #endregion
 
@@ -60,7 +61,6 @@ namespace AdventureWorksModel
         [StringLength(1)]
         public virtual string MaritalStatus { get; set; }
 
-        
         public IList<string> ChoicesMaritalStatus() {
             return new[] {"S", "M"};
         }
@@ -70,7 +70,7 @@ namespace AdventureWorksModel
         public virtual string Gender { get; set; }
 
         public IList<string> ChoicesGender() {
-            return new[] { "M", "F" };
+            return new[] {"M", "F"};
         }
 
         [MemberOrder(16)]
@@ -90,41 +90,38 @@ namespace AdventureWorksModel
         public virtual bool Current { get; set; }
 
         #region Manager
+
         [Optionally]
         [MemberOrder(30)]
         public virtual Employee Manager { get; set; }
 
         [PageSize(20)]
-        public IQueryable<Employee> AutoCompleteManager([MinLength(2)] string name)
-        {
+        public IQueryable<Employee> AutoCompleteManager([MinLength(2)] string name) {
             return EmployeeRepository.FindEmployeeByName(null, name);
         }
+
         #endregion
 
-        public virtual ICollection<Employee> DirectReports
-        {
+        public virtual ICollection<Employee> DirectReports {
             get { return _directReports; }
             set { _directReports = value; }
         }
 
         [Disabled]
         [TableView(true)] //TableView == ListView
-        public virtual ICollection<EmployeeAddress> Addresses
-        {
+        public virtual ICollection<EmployeeAddress> Addresses {
             get { return _addresses; }
             set { _addresses = value; }
         }
 
-        [TableView(true, "StartDate", "EndDate", "Department", "Shift")] 
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory
-        {
+        [TableView(true, "StartDate", "EndDate", "Department", "Shift")]
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory {
             get { return _departmentHistory; }
             set { _departmentHistory = value; }
         }
 
         [TableView(true, "RateChangeDate", "Rate")]
-        public virtual ICollection<EmployeePayHistory> PayHistory
-        {
+        public virtual ICollection<EmployeePayHistory> PayHistory {
             get { return _payHistory; }
             set { _payHistory = value; }
         }
@@ -135,8 +132,7 @@ namespace AdventureWorksModel
         public virtual string LoginID { get; set; }
 
         [Executed(Where.Remotely)]
-        public virtual bool HideLoginID()
-        {
+        public virtual bool HideLoginID() {
             if (Container.IsPersistent(this)) {
                 Employee userAsEmployee = EmployeeRepository.CurrentUserAsEmployee();
                 return userAsEmployee != null ? userAsEmployee.LoginID != LoginID : true;
@@ -146,8 +142,7 @@ namespace AdventureWorksModel
 
         #endregion
 
-
-       #endregion
+        #endregion
 
         #region ModifiedDate and rowguid
 
@@ -171,8 +166,7 @@ namespace AdventureWorksModel
         #region ChangePayRate (Action)
 
         [MemberOrder(10)]
-        public EmployeePayHistory ChangePayRate()
-        {
+        public EmployeePayHistory ChangePayRate() {
             EmployeePayHistory current = CurrentEmployeePayHistory();
             var eph = Container.NewTransientInstance<EmployeePayHistory>();
             eph.Employee = this;
@@ -181,11 +175,10 @@ namespace AdventureWorksModel
             return eph;
         }
 
-        private EmployeePayHistory CurrentEmployeePayHistory()
-        {
+        private EmployeePayHistory CurrentEmployeePayHistory() {
             var query = from obj in PayHistory
-                        orderby obj.RateChangeDate descending
-                        select obj;
+                orderby obj.RateChangeDate descending
+                select obj;
             return query.FirstOrDefault();
         }
 
@@ -196,8 +189,7 @@ namespace AdventureWorksModel
         #region ChangeDepartmentOrShift (Action)
 
         [MemberOrder(20)]
-        public void ChangeDepartmentOrShift(Department department, [Optionally] Shift shift)
-        {
+        public void ChangeDepartmentOrShift(Department department, [Optionally] Shift shift) {
             CurrentAssignment().EndDate = DateTime.Now;
             var newAssignment = Container.NewTransientInstance<EmployeeDepartmentHistory>();
             newAssignment.Department = department;
@@ -208,14 +200,12 @@ namespace AdventureWorksModel
             DepartmentHistory.Add(newAssignment);
         }
 
-        public Department Default0ChangeDepartmentOrShift()
-        {
+        public Department Default0ChangeDepartmentOrShift() {
             EmployeeDepartmentHistory current = CurrentAssignment();
             return current != null ? current.Department : null;
         }
 
-        private EmployeeDepartmentHistory CurrentAssignment()
-        {
+        private EmployeeDepartmentHistory CurrentAssignment() {
             EmployeeDepartmentHistory current = DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
             return current;
         }

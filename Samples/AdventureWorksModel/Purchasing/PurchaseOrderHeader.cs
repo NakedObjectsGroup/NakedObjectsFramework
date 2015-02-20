@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,23 +14,6 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("memo.png")]
     public class PurchaseOrderHeader : AWDomainObject {
-
-        #region Life Cycle methods
-
-        public void Created() {
-            RevisionNumber = 0;
-            Status = 1;
-            OrderDate = DateTime.Today.Date;
-        }
-
-        public override void Updating() {
-            base.Updating();
-            byte increment = 1;
-            RevisionNumber += increment;
-        }
-
-        #endregion
-
         #region Injected Services
 
         #region Injected: EmployeeRepository
@@ -49,6 +36,45 @@ namespace AdventureWorksModel {
         [Disabled]
         [MemberOrder(90)]
         public virtual byte RevisionNumber { get; set; }
+
+        #endregion
+
+        #region ModifiedDate
+
+        [MemberOrder(99)]
+        [Disabled]
+        public override DateTime ModifiedDate { get; set; }
+
+        #endregion
+
+        #region ShipMethod
+
+        [MemberOrder(22)]
+        public virtual ShipMethod ShipMethod { get; set; }
+
+        #endregion
+
+        #region Vendor
+
+        [Disabled]
+        [MemberOrder(1)]
+        public virtual Vendor Vendor { get; set; }
+
+        #endregion
+
+        #region Life Cycle methods
+
+        public void Created() {
+            RevisionNumber = 0;
+            Status = 1;
+            OrderDate = DateTime.Today.Date;
+        }
+
+        public override void Updating() {
+            base.Updating();
+            byte increment = 1;
+            RevisionNumber += increment;
+        }
 
         #endregion
 
@@ -111,14 +137,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        public override DateTime ModifiedDate { get; set; }
-
-        #endregion
-
         #region Order Placed By (Employee)
 
         [MemberOrder(12)]
@@ -135,26 +153,11 @@ namespace AdventureWorksModel {
         private ICollection<PurchaseOrderDetail> _details = new List<PurchaseOrderDetail>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true, "OrderQty", "Product",  "UnitPrice", "LineTotal")]
+        [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
         public virtual ICollection<PurchaseOrderDetail> Details {
             get { return _details; }
             set { _details = value; }
         }
-
-        #endregion
-
-        #region ShipMethod
-
-        [MemberOrder(22)]
-        public virtual ShipMethod ShipMethod { get; set; }
-
-        #endregion
-
-        #region Vendor
-
-        [Disabled]
-        [MemberOrder(1)]
-        public virtual Vendor Vendor { get; set; }
 
         #endregion
 
