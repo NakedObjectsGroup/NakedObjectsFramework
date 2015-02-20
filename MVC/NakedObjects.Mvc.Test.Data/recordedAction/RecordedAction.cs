@@ -50,6 +50,10 @@ namespace Expenses.RecordedActions {
 
         #endregion
 
+        public void Persisting() {
+            ConcurrencyCheck = DateTime.Now;
+        }
+
         #region Context field
 
         #endregion
@@ -76,10 +80,5 @@ namespace Expenses.RecordedActions {
         #region User field
 
         #endregion
-
-        public void Persisting() {
-            ConcurrencyCheck = DateTime.Now;
-        }
-
     }
 }

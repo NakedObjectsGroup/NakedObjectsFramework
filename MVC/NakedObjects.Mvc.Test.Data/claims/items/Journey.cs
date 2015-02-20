@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using NakedObjects;
 
 namespace Expenses {
@@ -72,14 +76,8 @@ namespace Expenses {
 
             #region Return journey
 
-            private bool m_returnJourney;
-
             [MemberOrder(Sequence = "2.3")]
-            public virtual bool ReturnJourney {
-                get { return m_returnJourney; }
-
-                set { m_returnJourney = value; }
-            }
+            public virtual bool ReturnJourney { get; set; }
 
             public virtual void ModifyReturnJourney(ref bool newReturnJourney) {
                 ReturnJourney = newReturnJourney;
@@ -115,7 +113,7 @@ namespace Expenses {
             #region Fields complete
 
             protected internal override bool MandatorySubClassFieldsComplete() {
-                return m_origin != null && ! (m_origin.Equals("")) && m_destination != null && ! (m_destination.Equals("")) && MandatoryJourneySubClassFieldsComplete();
+                return m_origin != null && !(m_origin.Equals("")) && m_destination != null && !(m_destination.Equals("")) && MandatoryJourneySubClassFieldsComplete();
             }
 
             protected internal abstract bool MandatoryJourneySubClassFieldsComplete();

@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +14,8 @@ using Expenses.ExpenseEmployees;
 using Expenses.Services;
 using NakedObjects;
 using NakedObjects.Core.Util;
-using NakedObjects.Services;
 using NakedObjects.Menu;
+using NakedObjects.Services;
 
 namespace Expenses {
     namespace ExpenseClaims {
@@ -23,20 +26,6 @@ namespace Expenses {
 
         [Named("Claims")]
         public class ClaimRepository : AbstractFactoryAndRepository {
-            #region Injected Services
-
-            #region Injected: UserFinder
-
-            private IUserFinder m_userFinder;
-
-            public IUserFinder UserFinder {
-                set { m_userFinder = value; }
-            }
-
-            #endregion
-
-            #endregion
-
             public static string CLAIM_DIFFERENTIATOR = " - ";
 
             public static void Menu(ITypedMenu<ClaimRepository> menu) {
@@ -143,14 +132,15 @@ namespace Expenses {
                 return FindClaims(MeAsEmployee(), status, description);
             }
 
-            [FinderAction()][MemberOrder(3)]
+            [FinderAction()]
+            [MemberOrder(3)]
             public virtual IList<Claim> FindMyClaimsByEnumStatus(ClaimStatusEnum eStatus) {
                 ClaimStatus status = FindClaimStatus(eStatus.ToString());
 
                 return FindClaims(MeAsEmployee(), status, null);
             }
 
-           [FinderAction()]
+            [FinderAction()]
             [MemberOrder(1)]
             public virtual IList<Claim> MyRecentClaims() {
                 return FindClaims(MeAsEmployee(), null, null);
@@ -175,7 +165,8 @@ namespace Expenses {
                 return DefaultUniqueClaimDescription(MeAsEmployee());
             }
 
-            [FinderAction()][MemberOrder(4)]
+            [FinderAction()]
+            [MemberOrder(4)]
             public virtual IList<Claim> ClaimsAwaitingMyApproval() {
                 return FindClaimsAwaitingApprovalBy(MeAsEmployee());
             }
@@ -208,7 +199,7 @@ namespace Expenses {
             private string CreateUniqueDescription(Employee employee, string initialDescription) {
                 int increment = 2;
                 string description = initialDescription;
-                while (! (DescriptionIsUniqueForClaimant(employee, description))) {
+                while (!(DescriptionIsUniqueForClaimant(employee, description))) {
                     description = initialDescription + CLAIM_DIFFERENTIATOR + increment;
                     increment += 1;
                 }
@@ -228,6 +219,20 @@ namespace Expenses {
             public void ApproveClaims([ContributedAction("Claims")] IQueryable<Claim> claims) {
                 claims.ForEach(c => c.ApproveItems(true));
             }
+
+            #region Injected Services
+
+            #region Injected: UserFinder
+
+            private IUserFinder m_userFinder;
+
+            public IUserFinder UserFinder {
+                set { m_userFinder = value; }
+            }
+
+            #endregion
+
+            #endregion
         }
     }
 }

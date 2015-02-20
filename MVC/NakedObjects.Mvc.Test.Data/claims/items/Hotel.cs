@@ -1,8 +1,11 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using NakedObjects;
-using NakedObjects.Value;
 
 namespace Expenses {
     namespace ExpenseClaims.Items {
@@ -55,7 +58,6 @@ namespace Expenses {
 
 #pragma warning disable 612,618
             private decimal m_accommodation;
-
 
             [MemberOrder(Sequence = "2.3")]
             public virtual decimal Accommodation {
@@ -162,9 +164,7 @@ namespace Expenses {
             }
 
             private static decimal AddIfNotNull(decimal amountToAdd, decimal sum) {
-              
-                    return sum + amountToAdd;
-                
+                return sum + amountToAdd;
             }
 
             #endregion
@@ -174,7 +174,7 @@ namespace Expenses {
             protected internal override void CopyAllSameClassFields(AbstractExpenseItem otherItem) {
                 base.CopyAllSameClassFields(otherItem);
 
-                if (otherItem is Hotel) {}
+                if (otherItem is Hotel) { }
             }
 
             protected internal override void CopyAnyEmptyFieldsSpecificToSubclassOfAbstractExpenseItem(AbstractExpenseItem otherItem) {
@@ -201,7 +201,7 @@ namespace Expenses {
             #endregion
 
             protected internal override bool MandatorySubClassFieldsComplete() {
-                return m_hotelURL != null && ! (m_hotelURL.Equals("")) && m_accommodation > 0M;
+                return m_hotelURL != null && !(m_hotelURL.Equals("")) && m_accommodation > 0M;
             }
 #pragma warning restore 612,618
         }

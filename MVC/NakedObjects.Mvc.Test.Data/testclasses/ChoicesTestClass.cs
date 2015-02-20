@@ -17,14 +17,12 @@ namespace MvcTestApp.Tests.Helpers {
         [Hidden, Key]
         public int Id { get; set; }
 
-
         public IDomainObjectContainer Container { protected get; set; }
 
         [Title]
         public string Name { get; set; }
 
         public ChoicesTestClass TestChoicesProperty { get; set; }
-
         public string TestChoicesStringProperty { get; set; }
 
         public IEnumerable<ChoicesTestClass> ChoicesTestChoicesProperty() {
@@ -62,7 +60,6 @@ namespace MvcTestApp.Tests.Helpers {
         public string Default1TestChoicesAction4() {
             return "test1";
         }
-
 
         public void TestChoicesAction2(ChoicesTestClass parm1, string parm2) {}
 
@@ -134,11 +131,8 @@ namespace MvcTestApp.Tests.Helpers {
             return new[] {"test1", "test2"};
         }
 
-
         public void TestMultipleChoicesBounded(IEnumerable<ChoicesTestClass> parm1) {}
-
         public void TestQueryableAction(IQueryable<ViewModelTestClass> parm1) {}
-
         public void TestEnumerableAction(IEnumerable<ViewModelTestClass> parm1) {}
     }
 }

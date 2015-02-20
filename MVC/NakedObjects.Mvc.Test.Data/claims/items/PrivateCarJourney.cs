@@ -1,18 +1,40 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using NakedObjects;
-using NakedObjects.Value;
 
 namespace Expenses {
     namespace ExpenseClaims.Items {
         public class PrivateCarJourney : Journey {
-
-            public override string IconName()
-            {
+            public override string IconName() {
                 return "PrivateCarJourney";
             }
+
+            #region Copying
+
+            protected internal override void CopyAnyEmptyFieldsSpecificToSubclassOfJourney(AbstractExpenseItem otherItem) {
+                if (otherItem is PrivateCarJourney) {
+                    var carJourney = (PrivateCarJourney) otherItem;
+                    if (m_totalMiles == 0) {
+                        ModifyTotalMiles(carJourney.TotalMiles);
+                    }
+                    if (m_mileageRate == 0) {
+                        ModifyMileageRate(carJourney.MileageRate);
+                    }
+                }
+            }
+
+            #endregion
+
+            protected internal override bool MandatoryJourneySubClassFieldsComplete() {
+                return m_totalMiles > 0 && m_mileageRate > 0;
+            }
+
             #region Total Miles field
 
             private int m_totalMiles;
@@ -63,8 +85,7 @@ namespace Expenses {
 
             [Disabled]
 #pragma warning disable 612,618
-            public override decimal Amount {
-
+                public override decimal Amount {
                 get { return base.Amount; }
                 set { base.Amount = value; }
             }
@@ -73,27 +94,8 @@ namespace Expenses {
                 ModifyAmount(Convert.ToDecimal(m_totalMiles*m_mileageRate));
             }
 #pragma warning restore 612,618
-            #endregion
-
-            #region Copying
-
-            protected internal override void CopyAnyEmptyFieldsSpecificToSubclassOfJourney(AbstractExpenseItem otherItem) {
-                if (otherItem is PrivateCarJourney) {
-                    var carJourney = (PrivateCarJourney) otherItem;
-                    if (m_totalMiles == 0) {
-                        ModifyTotalMiles(carJourney.TotalMiles);
-                    }
-                    if (m_mileageRate == 0) {
-                        ModifyMileageRate(carJourney.MileageRate);
-                    }
-                }
-            }
 
             #endregion
-
-            protected internal override bool MandatoryJourneySubClassFieldsComplete() {
-                return m_totalMiles > 0 && m_mileageRate > 0;
-            }
         }
     }
 } //end of root namespace

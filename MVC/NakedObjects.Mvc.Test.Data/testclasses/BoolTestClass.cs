@@ -15,25 +15,16 @@ namespace MvcTestApp.Tests.Helpers {
         [Hidden, Key]
         public int Id { get; set; }
 
-
         [Title]
         public string Name { get; set; }
 
         public bool TestBool1 { get; set; }
-
         public bool TestBool2 { get; set; }
-
         public bool? TestNullableBool1 { get; set; }
-
         public bool? TestNullableBool2 { get; set; }
-
         public bool? TestNullableBool3 { get; set; }
-
-
         public void TestBoolAction(bool parm) {}
-
         public void TestNullableBoolAction(bool? parm) {}
-
         public void DuplicateAction() {}
         public void DuplicateAction(string parm) {}
     }

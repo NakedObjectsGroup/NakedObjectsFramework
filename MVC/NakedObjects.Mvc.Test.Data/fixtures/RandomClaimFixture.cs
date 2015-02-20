@@ -1,56 +1,34 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Expenses.ExpenseClaims;
 using Expenses.ExpenseClaims.Items;
 using Expenses.ExpenseEmployees;
-using NakedObjects;
-using NakedObjects.Value;
 
 namespace Expenses.Fixtures {
     public class RandomClaimFixture : AbstractClaimFixture {
-
-        
-
         private const int claimCount = 4;
         private readonly Random random = new Random();
         private IList<ProjectCode> codes;
         private IList<ExpenseType> expenseTypes;
         private int numberOfCodes;
-
 #pragma warning disable 612,618
         private decimal RandomAmount {
-
             get { return new decimal(random.NextDouble()*1000); }
         }
 #pragma warning restore 612,618
-
         private ProjectCode RandomProjectCode {
             get { return codes[random.Next(numberOfCodes)]; }
         }
 
-        #region Injected Services
-
-        #region Injected: ClaimRepository
-
-        #endregion
-
-        #region Injected: EmployeeRepository
-
-        #endregion
-
-        //
-        //		* This region contains references to the services (Repositories, 
-        //		* Factories or other Services) used by this domain object.  The 
-        //		* references are injected by the application container.
-        //		
-
-        #endregion
-
-        public  void Install() {
+        public void Install() {
             LoadExpenseTypes();
             LoadProjectCodes();
 
@@ -151,5 +129,23 @@ namespace Expenses.Fixtures {
             codes = allCodes;
             numberOfCodes = allCodes.Count;
         }
+
+        #region Injected Services
+
+        #region Injected: ClaimRepository
+
+        #endregion
+
+        #region Injected: EmployeeRepository
+
+        #endregion
+
+        //
+        //		* This region contains references to the services (Repositories, 
+        //		* Factories or other Services) used by this domain object.  The 
+        //		* references are injected by the application container.
+        //		
+
+        #endregion
     }
 }

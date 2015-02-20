@@ -35,14 +35,6 @@ namespace Expenses.Currencies {
             get { return new byte[0]; }
         }
 
-        #region Title & Icon
-
-        public virtual string Title() {
-            return CurrencyCode;
-        }
-
-        #endregion
-
         #region Currency Code
 
         public virtual string CurrencyCode { get; set; }
@@ -61,10 +53,16 @@ namespace Expenses.Currencies {
 
         #endregion
 
+        #region Title & Icon
+
+        public virtual string Title() {
+            return CurrencyCode;
+        }
+
+        #endregion
+
         public void UploadImage(Image image) {}
-
         public void UploadFile(FileAttachment fileAttachment) {}
-
         public void UploadByteArray(byte[] bytes) {}
     }
 }

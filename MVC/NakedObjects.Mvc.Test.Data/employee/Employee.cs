@@ -17,6 +17,27 @@ namespace Expenses.ExpenseEmployees {
         [Hidden, Key]
         public int Id { get; set; }
 
+        #region Name
+
+        [MemberOrder(Sequence = "1"), Disabled]
+        public virtual string Name { get; set; }
+
+        #endregion
+
+        #region UserName field
+
+        [Hidden]
+        public virtual string UserName { get; set; }
+
+        #endregion
+
+        #region Currency
+
+        [MemberOrder(Sequence = "3"), Disabled]
+        public virtual Currency Currency { get; set; }
+
+        #endregion
+
         #region Title & icon
 
         public virtual string Title() {
@@ -49,20 +70,6 @@ namespace Expenses.ExpenseEmployees {
 
         #endregion
 
-        #region Name
-
-        [MemberOrder(Sequence = "1"), Disabled]
-        public virtual string Name { get; set; }
-
-        #endregion
-
-        #region UserName field
-
-        [Hidden]
-        public virtual string UserName { get; set; }
-
-        #endregion
-
         #region EmailAddress
 
         private object currentUser;
@@ -82,7 +89,7 @@ namespace Expenses.ExpenseEmployees {
 
         [Executed(Where.Remotely)]
         public virtual bool HideEmailAddress() {
-            return ! (EmployeeIsCurrentUser());
+            return !(EmployeeIsCurrentUser());
         }
 
         private bool EmployeeIsCurrentUser() {
@@ -91,13 +98,6 @@ namespace Expenses.ExpenseEmployees {
             }
             return currentUser.Equals(this);
         }
-
-        #endregion
-
-        #region Currency
-
-        [MemberOrder(Sequence = "3"), Disabled]
-        public virtual Currency Currency { get; set; }
 
         #endregion
 

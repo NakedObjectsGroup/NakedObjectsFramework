@@ -16,6 +16,12 @@ namespace Expenses {
             [Hidden, Key]
             public int Id { get; set; }
 
+            #region TitleString
+
+            public virtual string TitleString { get; set; }
+
+            #endregion
+
             #region Title & Icon
 
             public override string ToString() {
@@ -25,12 +31,6 @@ namespace Expenses {
             public virtual string IconName() {
                 return TitleString;
             }
-
-            #endregion
-
-            #region TitleString
-
-            public virtual string TitleString { get; set; }
 
             #endregion
 

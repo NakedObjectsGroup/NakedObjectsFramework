@@ -16,6 +16,19 @@ namespace Expenses {
             [Hidden, Key]
             public int Id { get; set; }
 
+            #region Code
+
+            public virtual string Code { get; set; }
+
+            #endregion
+
+            #region Description
+
+            [MultiLine(NumberOfLines = 2, Width = 10)]
+            public virtual string Description { get; set; }
+
+            #endregion
+
             #region Title & Icon
 
             public virtual string Title() {
@@ -27,19 +40,6 @@ namespace Expenses {
             public virtual string IconName() {
                 return "LookUp";
             }
-
-            #endregion
-
-            #region Code
-
-            public virtual string Code { get; set; }
-
-            #endregion
-
-            #region Description
-
-            [MultiLine(NumberOfLines = 2, Width = 10)]
-            public virtual string Description { get; set; }
 
             #endregion
         }

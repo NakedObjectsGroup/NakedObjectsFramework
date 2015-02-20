@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -23,6 +26,15 @@ namespace Expenses {
 
             public virtual string Title() {
                 return Description;
+            }
+
+            #endregion
+
+            #region Life Cycle methods
+
+            public virtual void Created() {
+                ChangeStatusToNew();
+                m_dateCreated = DateTime.Now;
             }
 
             #endregion
@@ -68,15 +80,6 @@ namespace Expenses {
             }
 
             #endregion
-
-            #endregion
-
-            #region Life Cycle methods
-
-            public virtual void Created() {
-                ChangeStatusToNew();
-                m_dateCreated = DateTime.Now;
-            }
 
             #endregion
 
@@ -251,7 +254,6 @@ namespace Expenses {
 
             private decimal m_total;
 
-
             [MemberOrder(Sequence = "7"), Disabled]
             public virtual decimal Total {
                 get { return m_total; }
@@ -412,7 +414,7 @@ namespace Expenses {
             }
 
             private void SendEmailIfPossible(bool sendEmail, string emailAddress, string message) {
-                if (sendEmail && ! (emailAddress.Equals("")) && m_emailSender != null) {
+                if (sendEmail && !(emailAddress.Equals("")) && m_emailSender != null) {
                     try {
                         m_emailSender.SendTextEmail(emailAddress, message);
                     }
@@ -431,13 +433,13 @@ namespace Expenses {
             }
 
             public virtual string DisableSubmit() {
-                if (! (AllItemsComplete())) {
+                if (!(AllItemsComplete())) {
                     return HAS_INCOMPLETE_ITEMS;
                 }
-                if (! (IsNew()) && ! (IsReturned())) {
+                if (!(IsNew()) && !(IsReturned())) {
                     return CAN_ONLY_SUBMIT_NEW_OR_RETURNED_CLAIMS;
                 }
-                if (! (UserIsClaimant())) {
+                if (!(UserIsClaimant())) {
                     return ONLY_CLAIMANT_MAY_SUBMIT;
                 }
                 return null;
@@ -482,7 +484,7 @@ namespace Expenses {
             public virtual void ApproveItems([Optionally] bool approveNewItemsOnly) {
                 for (int i = 0; i < ExpenseItems.Count; i++) {
                     AbstractExpenseItem item = (ExpenseItems[i]);
-                    if ((! approveNewItemsOnly) || (item.NewComplete())) {
+                    if ((!approveNewItemsOnly) || (item.NewComplete())) {
                         item.Approve();
                     }
                 }
@@ -500,7 +502,7 @@ namespace Expenses {
             public virtual void RejectItems(string reason, [Optionally] bool newItemsOnly) {
                 for (int i = 0; i < ExpenseItems.Count; i++) {
                     AbstractExpenseItem item = (ExpenseItems[i]);
-                    if ((! newItemsOnly) || (item.NewComplete())) {
+                    if ((!newItemsOnly) || (item.NewComplete())) {
                         item.Reject(reason);
                     }
                 }
@@ -531,7 +533,7 @@ namespace Expenses {
             public virtual void QueryItems(string reason, bool newOnly) {
                 for (int i = 0; i < ExpenseItems.Count; i++) {
                     AbstractExpenseItem item = (ExpenseItems[i]);
-                    if ((! newOnly) || (item.NewComplete())) {
+                    if ((!newOnly) || (item.NewComplete())) {
                         item.Query(reason);
                     }
                 }
@@ -550,10 +552,10 @@ namespace Expenses {
 
             [Hidden]
             public string DisableApproverActionsOnAllItems() {
-                if (! (IsSubmitted())) {
+                if (!(IsSubmitted())) {
                     return APPROVER_ACTIONS_NOT_VALID_ON_NEW_CLAIM;
                 }
-                if (! (UserIsTheApproverForThisClaim())) {
+                if (!(UserIsTheApproverForThisClaim())) {
                     return USER_IS_NOT_THE_APPROVER;
                 }
                 return null;
@@ -576,7 +578,7 @@ namespace Expenses {
                 }
                 for (int i = 0; i < ExpenseItems.Count; i++) {
                     AbstractExpenseItem item = (ExpenseItems[i]);
-                    if (! (item.NewComplete())) {
+                    if (!(item.NewComplete())) {
                         return false;
                     }
                 }

@@ -21,6 +21,22 @@ namespace Expenses {
 
             public IDomainObjectContainer Container { protected get; set; }
 
+            #region ExpenseType
+
+            [Hidden]
+            public virtual ExpenseType ExpenseType { get; set; }
+
+            #endregion
+
+            #region Find similar items
+
+            [MemberOrder(Sequence = "4")]
+            public virtual IList<AbstractExpenseItem> FindSimilarExpenseItems() {
+                return m_claimRepository.FindExpenseItemsLike(this);
+            }
+
+            #endregion
+
             #region Title & Icon
 
             public virtual string Title() {
@@ -68,13 +84,6 @@ namespace Expenses {
             public virtual void Persisted() {
                 m_claim.AddToExpenseItems(this);
             }
-
-            #endregion
-
-            #region ExpenseType
-
-            [Hidden]
-            public virtual ExpenseType ExpenseType { get; set; }
 
             #endregion
 
@@ -127,7 +136,6 @@ namespace Expenses {
             public static string CURRENCY_NOT_VALID_FOR_THIS_CLAIM = "Currency not valid for this claim";
 #pragma warning disable 612,618
 
-
             [MemberOrder(Sequence = "3")]
             public virtual decimal Amount { get; set; }
 
@@ -145,7 +153,6 @@ namespace Expenses {
             public virtual string DisableAmount() {
                 return DisabledIfLocked();
             }
-
 
             protected internal virtual string ValidateAnyAmountField(decimal newAmount) {
                 return newAmount < 0M ? AMOUNT_CANNOT_BE_NEGATIVE : "";
@@ -197,7 +204,7 @@ namespace Expenses {
             }
 
             public virtual string ValidateDescription(string newTitle) {
-                return Convert.ToString((((! (string.IsNullOrEmpty(newTitle)))) ? null : DESCRIPTION_WARN));
+                return Convert.ToString((((!(string.IsNullOrEmpty(newTitle)))) ? null : DESCRIPTION_WARN));
             }
 
             public virtual string DisableDescription() {
@@ -285,7 +292,7 @@ namespace Expenses {
             public virtual string Comment { get; set; }
 
             public virtual bool HideComment() {
-                return ! (Rejected() || Queried());
+                return !(Rejected() || Queried());
             }
 
             #endregion
@@ -293,13 +300,13 @@ namespace Expenses {
             #region Controls
 
             protected internal virtual bool MandatoryFieldsComplete() {
-                return (!(Amount == 0M) && Description != null && ! (Description.Equals("")) && ProjectCode != null && MandatorySubClassFieldsComplete());
+                return (!(Amount == 0M) && Description != null && !(Description.Equals("")) && ProjectCode != null && MandatorySubClassFieldsComplete());
             }
 
             protected internal abstract bool MandatorySubClassFieldsComplete();
 
             protected internal virtual void CheckIfComplete() {
-                if (NewComplete() && ! (MandatoryFieldsComplete())) {
+                if (NewComplete() && !(MandatoryFieldsComplete())) {
                     ChangeStatusToNewIncomplete();
                 }
                 if (NewIncomplete() && MandatoryFieldsComplete()) {
@@ -380,7 +387,7 @@ namespace Expenses {
 
             protected internal virtual void CheckIfCompleteAndRecalculateClaimTotalIfPersistent() {
                 RecalculateClaimTotalIfPersistent();
-                if (! (IsLocked)) {
+                if (!(IsLocked)) {
                     CheckIfComplete();
                 }
             }
@@ -444,15 +451,6 @@ namespace Expenses {
                 return Amount;
             }
 #pragma warning restore 612,618
-
-            #endregion
-
-            #region Find similar items
-
-            [MemberOrder(Sequence = "4")]
-            public virtual IList<AbstractExpenseItem> FindSimilarExpenseItems() {
-                return m_claimRepository.FindExpenseItemsLike(this);
-            }
 
             #endregion
         }

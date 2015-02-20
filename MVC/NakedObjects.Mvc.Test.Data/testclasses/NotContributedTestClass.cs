@@ -14,7 +14,6 @@ namespace MvcTestApp.Tests.Helpers {
         [Hidden, Key]
         public int Id { get; set; }
 
-
         [Title]
         public string Name { get; set; }
 
@@ -25,7 +24,6 @@ namespace MvcTestApp.Tests.Helpers {
     public class NotContributedTestClass2 {
         [Hidden, Key]
         public int Id { get; set; }
-
 
         [Title]
         public string Name { get; set; }

@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using Expenses.Services;
 using NakedObjects;
@@ -8,20 +12,6 @@ using NakedObjects.Services;
 
 namespace Expenses.RecordedActions {
     public class RecordActionService : AbstractFactoryAndRepository {
-        #region Injected Services
-
-        #region Injected: UserFinder
-
-        private IUserFinder m_userFinder;
-
-        public IUserFinder UserFinder {
-            set { m_userFinder = value; }
-        }
-
-        #endregion
-
-        #endregion
-
         private void RecordAction(IRecordedActionContext context, string type, string action, string details) {
             var ra = NewTransientInstance<RecordedAction>();
             ra.Context = context;
@@ -51,5 +41,19 @@ namespace Expenses.RecordedActions {
             string details = "From: " + fromValue + " to: " + toValue;
             RecordAction(context, RecordedAction.CHANGE, fieldName, details);
         }
+
+        #region Injected Services
+
+        #region Injected: UserFinder
+
+        private IUserFinder m_userFinder;
+
+        public IUserFinder UserFinder {
+            set { m_userFinder = value; }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

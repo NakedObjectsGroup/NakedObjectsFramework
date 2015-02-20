@@ -14,7 +14,6 @@ using MvcTestApp.Tests.Helpers;
 namespace NakedObjects.Mvc.Test.Data {
     public class MvcTestContext : DbContext {
         public MvcTestContext(string name) : base(name) {}
-
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
         public DbSet<ExpenseItemStatus> ExpenseItemStatuses { get; set; }
         public DbSet<ClaimStatus> ClaimStatuses { get; set; }

@@ -1,36 +1,31 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-using System.Data.Entity.Infrastructure.Interception;
 using MvcTestApp.Tests.Helpers;
 using NakedObjects;
 
 namespace Expenses.Fixtures {
-    public class ChoicesTestFixture  {
-
-        public IDomainObjectContainer Container { protected get; set; }
-
-
+    public class ChoicesTestFixture {
         public static ChoicesTestClass Class1;
         public static ChoicesTestClass Class2;
         public static ChoicesTestClass Class3;
-
         public static AutoCompleteTestClass Class4;
         public static AutoCompleteTestClass Class5;
         public static AutoCompleteTestClass Class6;
-
         public static BoolTestClass BoolClass;
-
         public static EnumTestClass EnumClass;
         public static NotContributedTestClass1 NC1Class;
         public static NotContributedTestClass2 NC2Class;
-
         public static HintTestClass HintTestClass;
+        public IDomainObjectContainer Container { protected get; set; }
 
         public void Install() {
-            Class1 = CreateChoicesTest("Class1" );
-            Class2 = CreateChoicesTest("Class2" );
+            Class1 = CreateChoicesTest("Class1");
+            Class2 = CreateChoicesTest("Class2");
             Class3 = CreateChoicesTest("Class3");
             Class4 = CreateAutoCompleteTest("Class4");
             Class5 = CreateAutoCompleteTest("Class5");
@@ -98,6 +93,5 @@ namespace Expenses.Fixtures {
             Container.Persist(ref etc);
             return etc;
         }
-       
     }
 }
