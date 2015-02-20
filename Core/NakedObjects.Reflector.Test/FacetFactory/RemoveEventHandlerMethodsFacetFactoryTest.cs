@@ -19,31 +19,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            var cache = new ImmutableInMemorySpecCache();
-            ReflectorConfiguration.NoValidate = true;
-
-            var reflectorConfiguration = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
-            facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
-            var menuFactory = new NullMenuFactory();
-            var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(classStrategy, cache);
-
-            Reflector = new Reflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private RemoveEventHandlerMethodsFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -64,19 +39,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        #region TestClass
-
-#pragma warning disable 67
-        // ReSharper disable EventNeverSubscribedTo.Local
-        private class Customer {
-            public event EventHandler AnEventHandler;
-        }
-
-        // ReSharper restore EventNeverSubscribedTo.Local
-#pragma warning restore 67
-
-        #endregion
 
         [TestMethod]
         public void TestActionWithNoParameters() {
@@ -102,5 +64,47 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Action));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
+
+        #region Nested type: Customer
+
+        #region TestClass
+
+#pragma warning disable 67
+        // ReSharper disable EventNeverSubscribedTo.Local
+        private class Customer {
+            public event EventHandler AnEventHandler;
+        }
+
+        // ReSharper restore EventNeverSubscribedTo.Local
+#pragma warning restore 67
+
+        #endregion
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            var cache = new ImmutableInMemorySpecCache();
+            ReflectorConfiguration.NoValidate = true;
+
+            var reflectorConfiguration = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
+            facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
+            var menuFactory = new NullMenuFactory();
+            var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
+            var metamodel = new Metamodel(classStrategy, cache);
+
+            Reflector = new Reflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 }

@@ -30,22 +30,12 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Meta.Test {
     public class AbstractTestWithByteArray {
         public virtual object Ba { get; set; }
-
-        //public virtual byte[] GetBa(byte[] baparm) {
-        //    return baparm;
-        //}
     }
 
     public class TestWithByteArray : AbstractTestWithByteArray {}
 
     public class TestService {
-        //public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
-        //    return testParm;
-        //}
-
-        //public virtual TestAnnotatedDomainObject TestAction1(TestAnnotatedDomainObject testParm) {
-        //    return testParm;
-        //}
+        
     }
 
     public class TestSimpleDomainObject {
@@ -96,9 +86,7 @@ namespace NakedObjects.Meta.Test {
 
         //[System.ComponentModel.DataAnnotations.Range(0, 100)]
         public virtual int? TestInt { get; set; }
-
         public virtual DateTime TestDateTime { get; set; }
-
         public virtual TestEnum TestEnum { get; set; }
 
         [ConcurrencyCheck]
@@ -160,8 +148,6 @@ namespace NakedObjects.Meta.Test {
             RegisterTypes(c);
             return c;
         }
-
-     
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IFacetFactory, UnsupportedMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
@@ -239,7 +225,7 @@ namespace NakedObjects.Meta.Test {
         [TestMethod]
         public void BinarySerializeIntTypes() {
             var ss = new[] {typeof (int)};
-            var ns = new[] {  typeof (int).Namespace};
+            var ns = new[] {typeof (int).Namespace};
             ReflectorConfiguration.NoValidate = true;
             var rc = new ReflectorConfiguration(ss, ss, ns);
             string file = Path.Combine(testDir, "metadataint.bin");
@@ -248,8 +234,8 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod, Ignore]
         public void BinarySerializeImageTypes() {
-            var ss = new[] { typeof(Image) };
-            var ns = new[] { typeof(TestService).Namespace };
+            var ss = new[] {typeof (Image)};
+            var ns = new[] {typeof (TestService).Namespace};
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(ss, ss, ns);
@@ -259,9 +245,9 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeBaTypes() {
-            var ss = new[] { typeof(AbstractTestWithByteArray) };
+            var ss = new[] {typeof (AbstractTestWithByteArray)};
 
-            var ns = new[] { typeof(AbstractTestWithByteArray).Namespace };
+            var ns = new[] {typeof (AbstractTestWithByteArray).Namespace};
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {typeof (AbstractTestWithByteArray)}, ss, ns);

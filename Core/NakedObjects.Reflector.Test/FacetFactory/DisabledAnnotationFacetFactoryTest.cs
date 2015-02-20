@@ -18,6 +18,16 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private DisabledAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IDisabledFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -33,16 +43,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private DisabledAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDisabledFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
 
         private class Customer {
             [Disabled]

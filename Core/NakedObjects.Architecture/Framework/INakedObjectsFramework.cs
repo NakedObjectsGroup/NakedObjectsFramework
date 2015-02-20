@@ -15,25 +15,15 @@ namespace NakedObjects {
     /// </summary>
     public interface INakedObjectsFramework {
         IMessageBroker MessageBroker { get; }
-
         ISession Session { get; }
-
         ILifecycleManager LifecycleManager { get; }
-
         INakedObjectManager NakedObjectManager { get; }
-
         IServicesManager ServicesManager { get; }
-
         IObjectPersistor Persistor { get; }
-
         IReflector Reflector { get; }
-
         IMetamodelManager MetamodelManager { get; }
-
         IContainerInjector ContainerInjector { get; }
-
         ITransactionManager TransactionManager { get; }
-
         IFrameworkResolver FrameworkResolver { get; }
     }
 }

@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.Spec {
     [Serializable]
     internal abstract class Specification : ISpecificationBuilder, ISerializable, IDeserializationCallback {
         private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
-
         protected Specification() {}
 
         #region IDeserializationCallback Members
@@ -34,7 +33,7 @@ namespace NakedObjects.Meta.Spec {
 
         #endregion
 
-        #region ISpecification Members
+        #region ISpecificationBuilder Members
 
         public virtual Type[] FacetTypes {
             get { return facetsByClass.Keys.ToArray(); }
@@ -64,15 +63,18 @@ namespace NakedObjects.Meta.Spec {
             return facetsByClass.Values;
         }
 
-        #endregion
-
-        #region ISpecificationBuilder Members
-
         public void AddFacet(IFacet facet) {
             AddFacet(facet.FacetType, facet);
         }
 
         #endregion
+
+        private void AddFacet(Type facetType, IFacet facet) {
+            IFacet existingFacet = GetFacet(facetType);
+            if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
+                facetsByClass = facetsByClass.SetItem(facetType, facet);
+            }
+        }
 
         #region ISerializable
 
@@ -89,12 +91,5 @@ namespace NakedObjects.Meta.Spec {
         }
 
         #endregion
-
-        private void AddFacet(Type facetType, IFacet facet) {
-            IFacet existingFacet = GetFacet(facetType);
-            if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
-                facetsByClass = facetsByClass.SetItem(facetType, facet);
-            }
-        }
     }
 }

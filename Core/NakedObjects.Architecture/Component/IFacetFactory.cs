@@ -66,7 +66,6 @@ namespace NakedObjects.Architecture.Component {
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-
         IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
     }
 }

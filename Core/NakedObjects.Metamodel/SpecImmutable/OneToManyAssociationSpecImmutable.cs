@@ -16,9 +16,9 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     internal class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
-        private readonly IObjectSpecImmutable ownerSpec;
         private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly Type defaultElementType;
+        private readonly IObjectSpecImmutable ownerSpec;
 
         public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnSpec) {
@@ -26,6 +26,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             this.ownerSpec = ownerSpec;
             this.defaultElementSpec = defaultElementSpec;
         }
+
+        #region IOneToManyAssociationSpecImmutable Members
 
         /// <summary>
         ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
@@ -40,6 +42,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public override IObjectSpecImmutable OwnerSpec {
             get { return ownerSpec; }
         }
+
+        #endregion
 
         public override string ToString() {
             return "OneToManyAssociation [name=\"" + Identifier + "\",Type=" + ReturnSpec + " ]";

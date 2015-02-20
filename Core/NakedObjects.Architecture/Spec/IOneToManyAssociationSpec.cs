@@ -14,12 +14,12 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsASet { get; }
 
+        IObjectSpec ElementSpec { get; }
+
         /// <summary>
         ///     Return the count of elements in this collection field on the specified object
         /// </summary>
         int Count(INakedObject nakedObject);
-
-        IObjectSpec ElementSpec { get; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

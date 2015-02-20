@@ -20,22 +20,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class IconMethodFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new IconMethodFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private IconMethodFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -53,6 +37,22 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
             return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new IconMethodFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local

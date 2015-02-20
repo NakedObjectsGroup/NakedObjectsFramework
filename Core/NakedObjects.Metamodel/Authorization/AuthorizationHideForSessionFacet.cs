@@ -18,8 +18,8 @@ namespace NakedObjects.Meta.Authorization {
         private readonly IIdentifier identifier;
 
         public AuthorizationHideForSessionFacet(IIdentifier identifier,
-            IAuthorizationManager authorizationManager,
-            ISpecification holder)
+                                                IAuthorizationManager authorizationManager,
+                                                ISpecification holder)
             : base(holder) {
             this.identifier = identifier;
             this.authorizationManager = authorizationManager;

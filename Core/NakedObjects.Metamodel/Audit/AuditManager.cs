@@ -31,8 +31,6 @@ namespace NakedObjects.Meta.Audit {
             Validate();
         }
 
-        // validate all the passed in types to fail at reflection time as far as possible
-
         #region IAuditManager Members
 
         public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
@@ -89,7 +87,6 @@ namespace NakedObjects.Meta.Audit {
             if (!typeof (IAuditor).IsAssignableFrom(toValidate)) {
                 throw new InitialisationException(toValidate.FullName + " is not an IAuditor");
             }
-
         }
 
         private void Validate() {

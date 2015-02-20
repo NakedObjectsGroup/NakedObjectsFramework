@@ -16,10 +16,8 @@ namespace NakedObjects.Architecture.Component {
     public interface IMetamodel {
         ITypeSpecImmutable[] AllSpecifications { get; }
         IMenuImmutable[] MainMenus { get; }
-
         // remove this
         ITypeSpecImmutable GetSpecification(Type type);
-
         // remove this
         ITypeSpecImmutable GetSpecification(string name);
     }

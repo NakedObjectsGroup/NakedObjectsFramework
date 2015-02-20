@@ -14,7 +14,6 @@ namespace NakedObjects.Architecture.FacetFactory {
     /// </summary>
     public interface IMethodRemover {
         void RemoveMethod(MethodInfo method);
-
         void RemoveMethods(IList<MethodInfo> methodList);
     }
 }

@@ -25,8 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionAnnotationFacetFactory));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ContributedActionAnnotationFacetFactory));
 
         public ContributedActionAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}

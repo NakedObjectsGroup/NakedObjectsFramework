@@ -17,6 +17,16 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PotencyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private PotencyAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IQueryOnlyFacet), typeof (IIdempotentFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -32,16 +42,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private PotencyAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IQueryOnlyFacet), typeof (IIdempotentFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
 
         private class Customer {
             [QueryOnly]

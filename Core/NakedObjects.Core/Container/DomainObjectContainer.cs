@@ -159,6 +159,7 @@ namespace NakedObjects.Core.Container {
         }
 
         #region Titles
+
         public ITitleBuilder NewTitleBuilder() {
             return new TitleBuilderImpl(this);
         }
@@ -178,6 +179,7 @@ namespace NakedObjects.Core.Container {
             }
             return naked.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, naked, framework.NakedObjectManager);
         }
+
         #endregion
     }
 

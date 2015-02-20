@@ -26,19 +26,17 @@ namespace NakedObjects.Core.Spec {
     internal class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
-
         private readonly SpecFactory memberFactory;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly IServicesManager servicesManager;
         private readonly IActionParameterSpec[] parametersSpec;
-
+        private readonly IServicesManager servicesManager;
+        private IObjectSpec elementSpec;
+        private Where? executedWhere;
+        private bool? hasReturn;
+        private bool? isFinderMethod;
+        private ITypeSpec onSpec;
         // cached values     
         private IObjectSpec returnSpec;
-        private IObjectSpec elementSpec;
-        private ITypeSpec onSpec;
-        private Where? executedWhere;
-        private bool? isFinderMethod;
-        private bool? hasReturn;
 
         public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
@@ -59,6 +57,10 @@ namespace NakedObjects.Core.Spec {
             get { return actionSpecImmutable.GetFacet<IActionInvocationFacet>(); }
         }
 
+        public virtual IActionSpec[] Actions {
+            get { return new IActionSpec[0]; }
+        }
+
         #region IActionSpec Members
 
         public override IObjectSpec ReturnSpec {
@@ -71,10 +73,6 @@ namespace NakedObjects.Core.Spec {
 
         public virtual ITypeSpec OnSpec {
             get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
-        }
-
-        public virtual IActionSpec[] Actions {
-            get { return new IActionSpec[0]; }
         }
 
         public override Type[] FacetTypes {

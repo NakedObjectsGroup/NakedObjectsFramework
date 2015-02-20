@@ -53,7 +53,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private void ProcessCollection(IReflector reflector, ISpecification holder) {
             Type collectionElementType = typeof (object);
-            var spec = reflector.LoadSpecification<IObjectSpecImmutable> (collectionElementType);
+            var spec = reflector.LoadSpecification<IObjectSpecImmutable>(collectionElementType);
             FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
         }

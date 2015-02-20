@@ -16,22 +16,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // Reflector place holder for validate facet factory tests !!!
     [TestClass]
     public class ValidateObjectFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ValidateObjectFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ValidateObjectFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -52,36 +36,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
 
-        //[TestMethod]
-        //public void TestNoExplicitTitleOrToStringMethod() {
-        //    facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
-        //    Assert.IsNull(Specification.GetFacet(typeof (ITitleFacet)));
-        //    AssertNoMethodsRemoved();
-        //}
+        #region Setup/Teardown
 
-        //[TestMethod]
-        //public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
-        //    MethodInfo titleMethod = FindMethod(typeof (Customer), "Title");
-        //    facetFactory.Process(typeof (Customer), MethodRemover, Specification);
-        //    IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
-        //    Assert.IsNotNull(facet);
-        //    Assert.IsTrue(facet is TitleFacetViaTitleMethod);
-        //    var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
-        //    Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
-        //    AssertMethodRemoved(titleMethod);
-        //}
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ValidateObjectFacetFactory(0);
+        }
 
-        //[TestMethod]
-        //public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
-        //    MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString");
-        //    facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
-        //    IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
-        //    Assert.IsNotNull(facet);
-        //    Assert.IsTrue(facet is TitleFacetViaToStringMethod);
-        //    var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
-        //    Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
-        //    AssertMethodRemoved(toStringMethod);
-        //}
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

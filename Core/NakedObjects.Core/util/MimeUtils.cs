@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace NakedObjects.Core.Util {
     public static class MimeUtils {
+        public const string DefaultMimeType = "application/octet-stream";
+        public const string DefaultFileExtension = "txt";
+
         #region extensionToMimeType
 
         private static readonly IDictionary<string, string> ExtensionToMimeType = new Dictionary<string, string> {
@@ -204,10 +207,6 @@ namespace NakedObjects.Core.Util {
         };
 
         #endregion
-
-        public const string DefaultMimeType = "application/octet-stream";
-
-        public const string DefaultFileExtension = "txt";
 
         public static string GetMimeTypeFromExtension(string extension) {
             if (!string.IsNullOrEmpty(extension) && ExtensionToMimeType.ContainsKey(extension)) {

@@ -13,11 +13,27 @@ using NakedObjects;
 namespace Snapshot.Xml.Test {
     public class TestObjectContext : DbContext {
         public TestObjectContext(string name) : base(name) {}
-
         public DbSet<TestObject> TestObjects { get; set; }
     }
 
     public class TestObject {
+        private IList<TestObject> testCollection = new List<TestObject>();
+
+        [Key]
+        [Hidden]
+        public virtual int TestObjectId { get; set; }
+
+        //Add properties with 'propv', collections with 'coll', actions with 'act' shortcuts
+
+        public virtual int TestInt { get; set; }
+        public virtual string TestString { get; set; }
+        public virtual TestObject TestReference { get; set; }
+
+        public virtual IList<TestObject> TestCollection {
+            get { return testCollection; }
+            set { testCollection = value; }
+        }
+
         #region Injected Services
 
         // This region should contain properties to hold references to any services required by the
@@ -31,23 +47,5 @@ namespace Snapshot.Xml.Test {
         // Created(), Persisted() etc) called by the framework at specified stages in the lifecycle.
 
         #endregion
-
-        private IList<TestObject> testCollection = new List<TestObject>();
-
-        [Key]
-        [Hidden]
-        public virtual int TestObjectId { get; set; }
-
-        //Add properties with 'propv', collections with 'coll', actions with 'act' shortcuts
-
-        public virtual int TestInt { get; set; }
-        public virtual string TestString { get; set; }
-
-        public virtual TestObject TestReference { get; set; }
-
-        public virtual IList<TestObject> TestCollection {
-            get { return testCollection; }
-            set { testCollection = value; }
-        }
     }
 }

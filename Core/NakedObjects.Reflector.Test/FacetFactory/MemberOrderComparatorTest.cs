@@ -11,6 +11,14 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class MemberOrderComparatorTest {
+        private MemberOrderComparator<MemberPeerStub> comparator;
+        private MemberPeerStub m1;
+        private MemberPeerStub m2;
+
+        public MemberOrderComparatorTest() {
+            Reset();
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -19,15 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private MemberOrderComparator<MemberPeerStub> comparator;
-
-        private MemberPeerStub m1;
-        private MemberPeerStub m2;
-
-        public MemberOrderComparatorTest() {
-            Reset();
-        }
 
         private void Reset() {
             m1 = new MemberPeerStub("abc");

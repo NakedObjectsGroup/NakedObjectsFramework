@@ -17,7 +17,6 @@ namespace NakedObjects.Xat {
         ITestNaked GetDefault();
         ITestNaked[] GetChoices();
         ITestNaked[] GetCompletions(string autoCompleteParm);
-
         ITestProperty SetObject(ITestObject testObject);
         ITestProperty RemoveFromCollection(ITestObject testObject);
 
@@ -34,10 +33,8 @@ namespace NakedObjects.Xat {
         ITestProperty AssertCannotParse(string text);
         ITestProperty AssertFieldEntryInvalid(string text);
         ITestProperty AssertFieldEntryIsValid(string text);
-
         ITestProperty AssertSetObjectInvalid(ITestObject testObject);
         ITestProperty AssertSetObjectIsValid(ITestObject testObject);
-
         ITestProperty AssertIsInvisible();
         ITestProperty AssertIsVisible();
         ITestProperty AssertIsMandatory();

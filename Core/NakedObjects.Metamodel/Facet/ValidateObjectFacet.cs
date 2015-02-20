@@ -39,7 +39,6 @@ namespace NakedObjects.Meta.Facet {
                 var objectSpec = nakedObject.Spec as IObjectSpec;
                 Trace.Assert(objectSpec != null);
 
-
                 IAssociationSpec[] matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 
                 if (matches.Count() == validator.ParameterNames.Count()) {

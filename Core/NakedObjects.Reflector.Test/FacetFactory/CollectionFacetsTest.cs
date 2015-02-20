@@ -23,17 +23,16 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class CollectionFacetsTest {
-        private readonly ISpecification specification = new Mock<ISpecification>().Object;
-
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager manager;
+        private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
         private readonly Mock<INakedObjectManager> mockManager = new Mock<INakedObjectManager>();
         private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
-        private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
-        private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
         private readonly IObjectPersistor persistor;
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager manager;
+        private readonly ISession session = new Mock<ISession>().Object;
+        private readonly ISpecification specification = new Mock<ISpecification>().Object;
 
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;
@@ -60,7 +59,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         private void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
             Assert.AreSame(first, collectionFacet.AsEnumerable(collection, manager).First().Object);
         }
@@ -80,7 +78,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
             INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, manager, false);
 

@@ -22,6 +22,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             this.identifier = identifier;
         }
 
+        public abstract IObjectSpecImmutable ElementSpec { get; }
+
         #region IMemberSpecImmutable Members
 
         public override IIdentifier Identifier {
@@ -29,8 +31,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public abstract IObjectSpecImmutable ReturnSpec { get; }
-        public abstract IObjectSpecImmutable ElementSpec { get; }
-        
 
         public string Name {
             get { return GetFacet<INamedFacet>().NaturalName; }

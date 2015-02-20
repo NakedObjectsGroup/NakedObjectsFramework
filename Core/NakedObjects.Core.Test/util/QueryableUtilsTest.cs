@@ -34,7 +34,6 @@ namespace NakedObjects.Core.Util.Query {
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(queryable.Take(9).Cast<object>().ToArray()));
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(queryable.Take(9).Cast<object>().ToList().Cast<object>()));
-
         }
 
         [TestMethod]
@@ -48,11 +47,10 @@ namespace NakedObjects.Core.Util.Query {
         [TestMethod]
         public void TestContains() {
             var list = Enumerable.Range(10, 100);
-            var queryable = (IQueryable)list.AsQueryable();
+            var queryable = (IQueryable) list.AsQueryable();
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(queryable.Contains(49));
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(queryable.Contains(201));
-
         }
     }
 }

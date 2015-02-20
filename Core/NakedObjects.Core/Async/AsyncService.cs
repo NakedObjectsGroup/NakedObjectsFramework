@@ -18,7 +18,6 @@ namespace NakedObjects.Core.Async {
     /// </summary>
     public class AsyncService : IAsyncService {
         private readonly ILog log = LogManager.GetLogger(typeof (AsyncService));
-
         public INakedObjectsFramework Framework { set; protected get; }
 
         #region IAsyncService Members

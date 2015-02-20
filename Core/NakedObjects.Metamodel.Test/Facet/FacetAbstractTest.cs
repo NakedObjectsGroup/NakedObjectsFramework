@@ -16,6 +16,10 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Test.Facet {
     [TestClass]
     public class FacetAbstractTest {
+        private ISpecification facetHolder2;
+        private FacetAbstract fooFacet;
+        private ISpecification specification;
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -27,16 +31,6 @@ namespace NakedObjects.Meta.Test.Facet {
         }
 
         #endregion
-
-        private ISpecification specification;
-        private ISpecification facetHolder2;
-        private FacetAbstract fooFacet;
-
-        internal class ConcreteFacet : FacetAbstract, IFooFacet {
-            public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) {}
-        }
-
-        public interface IFooFacet : IFacet {}
 
         [TestMethod]
         public void FacetType() {
@@ -69,5 +63,19 @@ namespace NakedObjects.Meta.Test.Facet {
         public void TestToString() {
             Assert.AreEqual("FacetAbstractTest+ConcreteFacet[type=FacetAbstractTest+IFooFacet]", fooFacet.ToString());
         }
+
+        #region Nested type: ConcreteFacet
+
+        internal class ConcreteFacet : FacetAbstract, IFooFacet {
+            public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) {}
+        }
+
+        #endregion
+
+        #region Nested type: IFooFacet
+
+        public interface IFooFacet : IFacet {}
+
+        #endregion
     }
 }

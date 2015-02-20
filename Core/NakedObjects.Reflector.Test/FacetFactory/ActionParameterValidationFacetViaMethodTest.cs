@@ -15,6 +15,25 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
+        private ActionParameterValidation facet;
+        private INakedObject target;
+
+        [TestMethod]
+        public void Test1() {
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(10);
+            Assert.IsNull(facet.InvalidReason(target, value));
+        }
+
+        [TestMethod]
+        public void Test2() {
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(-7);
+            Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -35,25 +54,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TearDown() {}
 
         #endregion
-
-        private INakedObject target;
-        private ActionParameterValidation facet;
-
-        [TestMethod]
-        public void Test1() {
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
-            mock.Setup(no => no.Object).Returns(10);
-            Assert.IsNull(facet.InvalidReason(target, value));
-        }
-
-        [TestMethod]
-        public void Test2() {
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
-            mock.Setup(no => no.Object).Returns(-7);
-            Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
-        }
     }
 
     internal class Customer17 {

@@ -17,9 +17,7 @@ namespace NakedObjects.Xat {
         ITestObject InvokeReturnObject(params object[] parameters);
         ITestCollection InvokeReturnCollection(params object[] parameters);
         void Invoke(params object[] parameters);
-
         ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters);
-
         ITestAction AssertIsDisabled();
         ITestAction AssertIsEnabled();
         ITestAction AssertIsInvalidWithParms(params object[] parameters);

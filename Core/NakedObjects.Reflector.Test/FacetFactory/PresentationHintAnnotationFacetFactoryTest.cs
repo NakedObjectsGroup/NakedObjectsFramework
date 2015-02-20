@@ -18,6 +18,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PresentationHintAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private PresentationHintAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IPresentationHintFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [PresentationHint("ahint")]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -33,19 +50,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private PresentationHintAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPresentationHintFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [PresentationHint("ahint")]
-        private class Customer {}
 
         private class Customer1 {
             [PresentationHint("ahint")]

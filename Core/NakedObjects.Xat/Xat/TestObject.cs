@@ -42,7 +42,7 @@ namespace NakedObjects.Xat {
         #region ITestObject Members
 
         public ITestProperty[] Properties {
-            get { return ((IObjectSpec)NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
+            get { return ((IObjectSpec) NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
         }
 
         public object GetDomainObject() {

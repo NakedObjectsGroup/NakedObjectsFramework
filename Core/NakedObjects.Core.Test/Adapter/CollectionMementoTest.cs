@@ -57,7 +57,6 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         public IQueryable<TestDomainObject> Action5(IEnumerable<TestDomainObject> filter) {
             IEnumerable<int> idsToFilter = filter.Select(tdo => tdo.Id);
             return Action4(idsToFilter);
@@ -98,42 +97,8 @@ namespace NakedObjects.Core.Test.Adapter {
 
     [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void Setup() {
-            RunFixtures();
-            StartTest();
-        }
-
-        #endregion
-
         protected override string[] Namespaces {
             get { return new[] {typeof (TestDomainObject).Namespace}; }
-        }
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            // replace INakedObjectStore types
-            var c = new EntityObjectStoreConfiguration();
-            c.UsingCodeFirstContext(() => new TestContext("TestContext"));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
-
-            var types = new[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
-            var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
-            var ns = new[] { typeof(TestDomainObject).Namespace };
-            var rc = new ReflectorConfiguration(types, ms, ns);
-            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
-        }
-
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDownFixture() {
-            CleanupNakedObjectsFramework(this);
         }
 
         protected override Type[] Types {
@@ -146,6 +111,40 @@ namespace NakedObjects.Core.Test.Adapter {
 
         protected override object[] MenuServices {
             get { return new object[] {new SimpleRepository<TestDomainObject>()}; }
+        }
+
+        #region Setup/Teardown
+
+        [SetUp]
+        public void Setup() {
+            RunFixtures();
+            StartTest();
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            // replace INakedObjectStore types
+            var c = new EntityObjectStoreConfiguration();
+            c.UsingCodeFirstContext(() => new TestContext("TestContext"));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
+
+            var types = new[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
+            var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
+            var ns = new[] {typeof (TestDomainObject).Namespace};
+            var rc = new ReflectorConfiguration(types, ms, ns);
+            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupFixture() {
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [TestFixtureTearDown]
+        public void TearDownFixture() {
+            CleanupNakedObjectsFramework(this);
         }
 
         private void RoundTrip(CollectionMemento memento) {
@@ -211,7 +210,6 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         [Test]
         public void TestActionObjectCollectionParm() {
             TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);

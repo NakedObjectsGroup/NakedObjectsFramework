@@ -13,9 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     internal class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
-        public ObjectSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
-          
-        }
+        public ObjectSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {}
 
         #region ISerializable
 

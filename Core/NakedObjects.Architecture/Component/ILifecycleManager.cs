@@ -16,9 +16,7 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface ILifecycleManager {
         INakedObject CreateInstance(IObjectSpec spec);
-
         INakedObject CreateViewModel(IObjectSpec spec);
-
         INakedObject RecreateInstance(IOid oid, ITypeSpec spec);
 
         /// <summary>
@@ -38,11 +36,8 @@ namespace NakedObjects.Architecture.Component {
         void MakePersistent(INakedObject nakedObject);
 
         void PopulateViewModelKeys(INakedObject nakedObject);
-
         INakedObject GetViewModel(IOid oid);
-
         IOid RestoreOid(string[] encodedData);
-
         INakedObject LoadObject(IOid oid, ITypeSpec spec);
     }
 

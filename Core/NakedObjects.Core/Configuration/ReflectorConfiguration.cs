@@ -20,43 +20,6 @@ using Image = NakedObjects.Value.Image;
 namespace NakedObjects.Core.Configuration {
     [Serializable]
     public class ReflectorConfiguration : IReflectorConfiguration {
-        public ReflectorConfiguration(Type[] typesToIntrospect,
-            Type[] services,
-            string[] supportedNamespaces,
-            Func<IMenuFactory, IMenu[]> mainMenus = null) {
-            SupportedNamespaces = supportedNamespaces;
-            SupportedSystemTypes = defaultSystemTypes.ToList();
-            TypesToIntrospect = typesToIntrospect;
-            Services = services;
-            IgnoreCase = false;
-            MainMenus = mainMenus;
-            ValidateConfig();
-        }
-
-        // for testing
-        public static bool NoValidate { get; set; }
-
-        private void ValidateConfig() {
-            if (NoValidate) return;
-            
-            string msg = "Reflector configuration errors;\r\n";
-            bool configError = false;
-
-            if (Services == null || !Services.Any()) {
-                configError = true;
-                msg += "No services specified;\r\n";
-            }
-
-            if (SupportedNamespaces == null || !SupportedNamespaces.Any()) {
-                configError = true;
-                msg += "No Namespaces specified;\r\n";
-            }
-
-            if (configError) {
-                throw new InitialisationException(msg);
-            }
-        }
-
         private readonly Type[] defaultSystemTypes = {
             typeof (bool),
             typeof (byte),
@@ -112,6 +75,22 @@ namespace NakedObjects.Core.Configuration {
             typeof (EntityCollection<>)
         };
 
+        public ReflectorConfiguration(Type[] typesToIntrospect,
+                                      Type[] services,
+                                      string[] supportedNamespaces,
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null) {
+            SupportedNamespaces = supportedNamespaces;
+            SupportedSystemTypes = defaultSystemTypes.ToList();
+            TypesToIntrospect = typesToIntrospect;
+            Services = services;
+            IgnoreCase = false;
+            MainMenus = mainMenus;
+            ValidateConfig();
+        }
+
+        // for testing
+        public static bool NoValidate { get; set; }
+
         #region IReflectorConfiguration Members
 
         public Type[] TypesToIntrospect { get; private set; }
@@ -122,5 +101,26 @@ namespace NakedObjects.Core.Configuration {
         public List<Type> SupportedSystemTypes { get; private set; }
 
         #endregion
+
+        private void ValidateConfig() {
+            if (NoValidate) return;
+
+            string msg = "Reflector configuration errors;\r\n";
+            bool configError = false;
+
+            if (Services == null || !Services.Any()) {
+                configError = true;
+                msg += "No services specified;\r\n";
+            }
+
+            if (SupportedNamespaces == null || !SupportedNamespaces.Any()) {
+                configError = true;
+                msg += "No Namespaces specified;\r\n";
+            }
+
+            if (configError) {
+                throw new InitialisationException(msg);
+            }
+        }
     }
 }

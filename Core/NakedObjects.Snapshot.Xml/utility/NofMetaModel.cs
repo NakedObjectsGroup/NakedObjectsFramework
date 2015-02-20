@@ -17,46 +17,24 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //default location for this schema.
 
         public const string DefaultNofSchemaLocation = "nof.xsd";
-
         // The base of the namespace URI to use for application namespaces if none
         // explicitly supplied in the constructor.
 
         public const string DefaultUriBase = "http://www.nakedobjects.org/ns/app/";
-
         // Enumeration of nof:feature attribute representing a class
 
         public const string NofMetamodelFeatureClass = "class";
-
         // Enumeration of nof:feature attribute representing a collection (1:n
         // association)
 
         public const string NofMetamodelFeatureCollection = "collection";
-
         // Enumeration of nof:feature attribute representing a reference (1:1
         // association)
 
         public const string NofMetamodelFeatureReference = "reference";
-
         // Enumeration of nof:feature attribute representing a value field
 
         public const string NofMetamodelFeatureValue = "value";
-
-        #region nof 
-
-        // Namespace prefix for NofMetamodelNsUri.
-        // The NamespaceManager will not allow any namespace to use this prefix.
-
-        public const string NofMetamodelNsPrefix = "nof";
-
-        // URI representing the namespace of NakedObject framework's metamodel.
-        // The NamespaceManager will not allow any namespaces with this URI to be
-        // added.
-
-        public const string NofMetamodelNsUri = "http://www.nakedobjects.org/ns/0.1/metamodel";
-
-        public static readonly XNamespace Nof = NofMetamodelNsUri;
-
-        #endregion
 
         public static void AddNamespace(XElement element) {
             Helper.RootElementFor(element).SetAttributeValue(XNamespace.Xmlns + NofMetamodelNsPrefix, Nof.NamespaceName);
@@ -137,14 +115,31 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // <code>nof:size=&quote;...&quot;</code> for the supplied element.
 
         public static void SetNofCollection(XElement element,
-            string prefix,
-            string fullyQualifiedClassName,
-            INakedObject collection,
-            INakedObjectManager manager
+                                            string prefix,
+                                            string fullyQualifiedClassName,
+                                            INakedObject collection,
+                                            INakedObjectManager manager
             ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
             SetAttribute(element, "type", prefix + ":" + fullyQualifiedClassName);
             SetAttribute(element, "size", "" + collection.GetAsEnumerable(manager).Count());
         }
+
+        #region nof 
+
+        // Namespace prefix for NofMetamodelNsUri.
+        // The NamespaceManager will not allow any namespace to use this prefix.
+
+        public const string NofMetamodelNsPrefix = "nof";
+
+        // URI representing the namespace of NakedObject framework's metamodel.
+        // The NamespaceManager will not allow any namespaces with this URI to be
+        // added.
+
+        public const string NofMetamodelNsUri = "http://www.nakedobjects.org/ns/0.1/metamodel";
+
+        public static readonly XNamespace Nof = NofMetamodelNsUri;
+
+        #endregion
     }
 }

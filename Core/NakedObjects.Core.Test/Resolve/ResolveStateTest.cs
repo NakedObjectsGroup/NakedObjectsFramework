@@ -36,8 +36,6 @@ namespace NakedObjects.Core.Test.Resolve {
             }
         }
 
-        public interface ITestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {}
-
         private static IResolveStateMachine NewSm() {
             var mockAdapter = new Mock<INakedObject>();
             INakedObject testAdapter = mockAdapter.Object;
@@ -342,5 +340,11 @@ namespace NakedObjects.Core.Test.Resolve {
         public void ValidChangesFromUpdating() {
             ExpectNoException(() => UpdatingSm().Handle(Events.EndUpdatingEvent));
         }
+
+        #region Nested type: ITestCallbackFacet
+
+        public interface ITestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {}
+
+        #endregion
     }
 }

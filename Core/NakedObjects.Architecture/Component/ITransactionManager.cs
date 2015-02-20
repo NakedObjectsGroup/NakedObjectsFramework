@@ -8,13 +8,9 @@
 namespace NakedObjects.Architecture.Component {
     public interface ITransactionManager {
         void StartTransaction();
-
         bool FlushTransaction();
-
         void AbortTransaction();
-
         void UserAbortTransaction();
-
         void EndTransaction();
     }
 

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (CharValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(CharValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new CharValueSemanticsProvider(spec, specification), specification);
             }
         }

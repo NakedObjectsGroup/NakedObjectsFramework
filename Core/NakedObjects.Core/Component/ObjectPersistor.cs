@@ -28,7 +28,7 @@ namespace NakedObjects.Core.Component {
         private readonly IObjectStore objectStore;
 
         public ObjectPersistor(IObjectStore objectStore,
-            INakedObjectManager nakedObjectManager) {
+                               INakedObjectManager nakedObjectManager) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(nakedObjectManager);
 

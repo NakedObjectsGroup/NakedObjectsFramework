@@ -13,6 +13,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class JobCandidate {
+        #region Navigation Properties
+
+        #region Employee (Employee)
+
+        [MemberOrder(130)]
+        public virtual Employee Employee { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region JobCandidateID (Int32)
@@ -33,17 +44,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(120), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region Employee (Employee)
-
-        [MemberOrder(130)]
-        public virtual Employee Employee { get; set; }
 
         #endregion
 

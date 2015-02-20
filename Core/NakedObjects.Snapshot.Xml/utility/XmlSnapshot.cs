@@ -27,14 +27,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
-
         private readonly Place rootPlace;
-
         private bool topLevelElementWritten;
-
         //  Start a snapshot at the root object, using own namespace manager.
         public XmlSnapshot(object obj, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), nakedObjectManager, metamodelManager) {}
-
         // Start a snapshot at the root object, using supplied namespace manager.
         public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
             this.nakedObjectManager = nakedObjectManager;
@@ -60,14 +56,11 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         public XDocument XmlDocument { get; private set; }
-
         //  The root element of GetXmlDocument(). Returns <code>null</code>
         //  until the snapshot has actually been built.
 
         public XElement XmlElement { get; private set; }
-
         public XDocument XsdDocument { get; private set; }
-
         //  The root element of GetXsdDocument(). Returns <code>null</code>
         //  until the snapshot has actually been built.
 
@@ -224,7 +217,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         private bool AppendXmlThenIncludeRemaining(Place parentPlace, INakedObject referencedObject, IList<string> fieldNames,
-            string annotation) {
+                                                   string annotation) {
             Log.Debug("appendXmlThenIncludeRemaining(: " + DoLog("parentPlace", parentPlace)
                       + AndLog("referencedObj", referencedObject) + AndLog("fieldNames", fieldNames) + AndLog("annotation", annotation)
                       + ")");
@@ -276,7 +269,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             Log.Debug("includeField(Pl, Vec, Str):" + DoLog("processing field", fieldName) + AndLog("left", "" + fieldNames.Count()));
 
             // locate the field in the object's class
-            var nos = (IObjectSpec)nakedObject.Spec;
+            var nos = (IObjectSpec) nakedObject.Spec;
             IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {

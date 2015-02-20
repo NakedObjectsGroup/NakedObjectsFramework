@@ -16,22 +16,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ComplementaryMethodsFilteringFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ComplementaryMethodsFilteringFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -42,153 +26,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        private class BasePropertyClass {
-            public virtual string AProperty { get; set; }
-
-            public virtual bool MeaninglessPrefixAProperty() {
-                return false;
-            }
-
-            public virtual void ModifyAProperty(Type value) {}
-
-            public virtual void ClearAProperty() {}
-
-            public virtual IList<string> ChoicesAProperty() {
-                return null;
-            }
-
-            public virtual string DefaultAProperty() {
-                return string.Empty;
-            }
-
-            public virtual string ValidateAProperty(string prop) {
-                return string.Empty;
-            }
-
-            public virtual string DisableAProperty() {
-                return null;
-            }
-
-            public virtual bool HideAProperty() {
-                return false;
-            }
-        }
-
-        private class PropertyClass : BasePropertyClass {
-            public override bool MeaninglessPrefixAProperty() {
-                return false;
-            }
-
-            public override void ModifyAProperty(Type value) {}
-
-            public override void ClearAProperty() {}
-
-            public override IList<string> ChoicesAProperty() {
-                return null;
-            }
-
-            public override string DefaultAProperty() {
-                return string.Empty;
-            }
-
-            public override string ValidateAProperty(string prop) {
-                return string.Empty;
-            }
-
-            public override string DisableAProperty() {
-                return null;
-            }
-
-            public override bool HideAProperty() {
-                return false;
-            }
-        }
-
-        private class BaseNoPropertyClass {
-            public virtual bool MeaninglessPrefixAProperty() {
-                return false;
-            }
-
-            public virtual void ModifyAProperty(Type value) {}
-
-            public virtual void ClearAProperty() {}
-
-            public virtual IList<string> ChoicesAProperty() {
-                return null;
-            }
-
-            public virtual string DefaultAProperty() {
-                return string.Empty;
-            }
-
-            public virtual string ValidateAProperty(string prop) {
-                return string.Empty;
-            }
-
-            public virtual string DisableAProperty() {
-                return null;
-            }
-
-            public virtual bool HideAProperty() {
-                return false;
-            }
-        }
-
-        private class NoPropertyClass : BaseNoPropertyClass {
-            public override bool MeaninglessPrefixAProperty() {
-                return false;
-            }
-
-            public override void ModifyAProperty(Type value) {}
-
-            public override void ClearAProperty() {}
-
-            public override IList<string> ChoicesAProperty() {
-                return null;
-            }
-
-            public override string DefaultAProperty() {
-                return string.Empty;
-            }
-
-            public override string ValidateAProperty(string prop) {
-                return string.Empty;
-            }
-
-            public override string DisableAProperty() {
-                return null;
-            }
-
-            public override bool HideAProperty() {
-                return false;
-            }
-        }
+        #region Nested type: BaseCollectionClass
 
         private class BaseCollectionClass {
             public virtual ICollection<string> ACollection { get; set; }
-
             public virtual void AddToACollection(string value) {}
-
             public virtual void RemoveFromACollection(string value) {}
         }
 
-        private class CollectionClass : BaseCollectionClass {
-            public override void AddToACollection(string value) {}
+        #endregion
 
-            public override void RemoveFromACollection(string value) {}
-        }
-
-        private class BaseNoCollectionClass {
-            public virtual void AddToACollection(string value) {}
-
-            public virtual void RemoveFromACollection(string value) {}
-        }
-
-        private class NoCollectionClass : BaseNoCollectionClass {
-            public override void AddToACollection(string value) {}
-
-            public override void RemoveFromACollection(string value) {}
-        }
+        #region Nested type: BaseCollectionClass1
 
         //
 
@@ -204,15 +52,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        private class CollectionClass1 : BaseCollectionClass1 {
-            public override string ValidateAddToACollection(string value) {
-                return null;
-            }
+        #endregion
 
-            public override string ValidateRemoveFromACollection(string value) {
-                return null;
-            }
+        #region Nested type: BaseNoCollectionClass
+
+        private class BaseNoCollectionClass {
+            public virtual void AddToACollection(string value) {}
+            public virtual void RemoveFromACollection(string value) {}
         }
+
+        #endregion
+
+        #region Nested type: BaseNoCollectionClass1
 
         private class BaseNoCollectionClass1 {
             public virtual string ValidateAddToACollection(string value) {
@@ -224,6 +75,110 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+        #endregion
+
+        #region Nested type: BaseNoPropertyClass
+
+        private class BaseNoPropertyClass {
+            public virtual bool MeaninglessPrefixAProperty() {
+                return false;
+            }
+
+            public virtual void ModifyAProperty(Type value) {}
+            public virtual void ClearAProperty() {}
+
+            public virtual IList<string> ChoicesAProperty() {
+                return null;
+            }
+
+            public virtual string DefaultAProperty() {
+                return string.Empty;
+            }
+
+            public virtual string ValidateAProperty(string prop) {
+                return string.Empty;
+            }
+
+            public virtual string DisableAProperty() {
+                return null;
+            }
+
+            public virtual bool HideAProperty() {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: BasePropertyClass
+
+        private class BasePropertyClass {
+            public virtual string AProperty { get; set; }
+
+            public virtual bool MeaninglessPrefixAProperty() {
+                return false;
+            }
+
+            public virtual void ModifyAProperty(Type value) {}
+            public virtual void ClearAProperty() {}
+
+            public virtual IList<string> ChoicesAProperty() {
+                return null;
+            }
+
+            public virtual string DefaultAProperty() {
+                return string.Empty;
+            }
+
+            public virtual string ValidateAProperty(string prop) {
+                return string.Empty;
+            }
+
+            public virtual string DisableAProperty() {
+                return null;
+            }
+
+            public virtual bool HideAProperty() {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: CollectionClass
+
+        private class CollectionClass : BaseCollectionClass {
+            public override void AddToACollection(string value) {}
+            public override void RemoveFromACollection(string value) {}
+        }
+
+        #endregion
+
+        #region Nested type: CollectionClass1
+
+        private class CollectionClass1 : BaseCollectionClass1 {
+            public override string ValidateAddToACollection(string value) {
+                return null;
+            }
+
+            public override string ValidateRemoveFromACollection(string value) {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: NoCollectionClass
+
+        private class NoCollectionClass : BaseNoCollectionClass {
+            public override void AddToACollection(string value) {}
+            public override void RemoveFromACollection(string value) {}
+        }
+
+        #endregion
+
+        #region Nested type: NoCollectionClass1
+
         private class NoCollectionClass1 : BaseNoCollectionClass1 {
             public override string ValidateAddToACollection(string value) {
                 return null;
@@ -233,6 +188,90 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
+
+        #endregion
+
+        #region Nested type: NoPropertyClass
+
+        private class NoPropertyClass : BaseNoPropertyClass {
+            public override bool MeaninglessPrefixAProperty() {
+                return false;
+            }
+
+            public override void ModifyAProperty(Type value) {}
+            public override void ClearAProperty() {}
+
+            public override IList<string> ChoicesAProperty() {
+                return null;
+            }
+
+            public override string DefaultAProperty() {
+                return string.Empty;
+            }
+
+            public override string ValidateAProperty(string prop) {
+                return string.Empty;
+            }
+
+            public override string DisableAProperty() {
+                return null;
+            }
+
+            public override bool HideAProperty() {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: PropertyClass
+
+        private class PropertyClass : BasePropertyClass {
+            public override bool MeaninglessPrefixAProperty() {
+                return false;
+            }
+
+            public override void ModifyAProperty(Type value) {}
+            public override void ClearAProperty() {}
+
+            public override IList<string> ChoicesAProperty() {
+                return null;
+            }
+
+            public override string DefaultAProperty() {
+                return string.Empty;
+            }
+
+            public override string ValidateAProperty(string prop) {
+                return string.Empty;
+            }
+
+            public override string DisableAProperty() {
+                return null;
+            }
+
+            public override bool HideAProperty() {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ComplementaryMethodsFilteringFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
 
         private class BaseActionClass {
 // ReSharper disable once UnusedMember.Local

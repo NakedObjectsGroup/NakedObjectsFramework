@@ -10,15 +10,10 @@ using System;
 namespace NakedObjects.Xat {
     public interface ITestObject : ITestHasActions, ITestHasProperties {
         string IconName { get; }
-
         ITestObject AssertIsImmutable();
-
         ITestObject AssertIsDescribedAs(string expectedDescription);
-
         ITestObject AssertIsType(Type expectedType);
-
         ITestObject AssertTitleEquals(string expectedTitle);
-
         object GetDomainObject();
     }
 

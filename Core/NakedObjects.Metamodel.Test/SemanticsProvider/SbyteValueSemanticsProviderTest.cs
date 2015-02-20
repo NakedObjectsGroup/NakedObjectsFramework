@@ -17,24 +17,6 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            byteObj = 102;
-            holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         private sbyte byteObj;
         private ISpecification holder;
         private SbyteValueSemanticsProvider value;
@@ -101,6 +83,22 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.TestEmptyEncoding();
         }
 
-        // Copyright (c) Naked Objects Group Ltd.
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            byteObj = 102;
+            holder = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
     }
 }

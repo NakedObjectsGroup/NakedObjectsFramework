@@ -23,14 +23,16 @@ namespace NakedObjects.Xat {
             this.factory = factory;
         }
 
+        protected ITestObjectFactory Factory {
+            get { return factory; }
+        }
+
         #region ITestHasActions Members
 
         public INakedObject NakedObject { get; set; }
 
         public ITestAction[] Actions {
-            get {
-                return NakedObject.Spec.GetObjectActions().Select(x => Factory.CreateTestAction(x, this)).ToArray();
-            }
+            get { return NakedObject.Spec.GetObjectActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
         }
 
         public ITestAction GetAction(string actionName) {
@@ -51,7 +53,7 @@ namespace NakedObjects.Xat {
 
         public ITestAction GetAction(string actionName, string subMenu, params Type[] parameterTypes) {
             var action = GetAction(actionName, subMenu);
-            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: "+actionName);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: " + actionName);
             return action;
         }
 
@@ -69,10 +71,6 @@ namespace NakedObjects.Xat {
         }
 
         public abstract string Title { get; }
-
-        protected ITestObjectFactory Factory {
-            get { return factory; }
-        }
 
         public ITestMenu GetMenu() {
             IMenuImmutable menu = NakedObject.Spec.ObjectMenu;

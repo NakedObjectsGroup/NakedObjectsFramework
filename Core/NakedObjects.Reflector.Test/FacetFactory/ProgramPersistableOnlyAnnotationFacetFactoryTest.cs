@@ -16,22 +16,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ProgramPersistableOnlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ProgramPersistableOnlyAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -41,11 +25,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        [ProgramPersistableOnly]
-        private class Customer {}
-
-        private class Customer1 {}
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -73,6 +52,35 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is ProgramPersistableOnly);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        [ProgramPersistableOnly]
+        private class Customer {}
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

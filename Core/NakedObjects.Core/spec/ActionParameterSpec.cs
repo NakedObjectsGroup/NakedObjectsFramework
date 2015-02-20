@@ -29,7 +29,6 @@ namespace NakedObjects.Core.Spec {
         private readonly IActionSpec parentAction;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
-
         // cache 
         private bool checkedForElementSpec;
         private Tuple<string, IObjectSpec>[] choicesParameters;
@@ -60,6 +59,19 @@ namespace NakedObjects.Core.Spec {
             this.persistor = persistor;
         }
 
+        public virtual IObjectSpec ElementSpec {
+            get {
+                if (!checkedForElementSpec) {
+                    var facet = GetFacet<IElementTypeFacet>();
+                    IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
+                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
+                    checkedForElementSpec = true;
+                }
+
+                return elementSpec;
+            }
+        }
+
         #region IActionParameterSpec Members
 
         public bool IsAutoCompleteEnabled {
@@ -84,7 +96,7 @@ namespace NakedObjects.Core.Spec {
             get {
                 if (!isMultipleChoicesEnabled.HasValue) {
                     isMultipleChoicesEnabled = Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                                               Spec.IsCollectionOfEnum(ElementSpec) ||actionParameterSpecImmutable.IsMultipleChoicesEnabled;
+                                               Spec.IsCollectionOfEnum(ElementSpec) || actionParameterSpecImmutable.IsMultipleChoicesEnabled;
                 }
                 return isMultipleChoicesEnabled.Value;
             }
@@ -100,19 +112,6 @@ namespace NakedObjects.Core.Spec {
 
         public virtual IObjectSpec Spec {
             get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
-        }
-
-        public virtual IObjectSpec ElementSpec {
-            get {
-                if (!checkedForElementSpec) {
-                    var facet = GetFacet<IElementTypeFacet>();
-                    IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
-                    elementSpec = es == null ? null : metamodel.GetSpecification(es);
-                    checkedForElementSpec = true;
-                }
-
-                return elementSpec;
-            }
         }
 
         public string Name {

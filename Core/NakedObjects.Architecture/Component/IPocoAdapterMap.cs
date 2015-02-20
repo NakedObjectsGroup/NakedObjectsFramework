@@ -14,15 +14,10 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IPocoAdapterMap : IEnumerable<INakedObject> {
         void Add(object obj, INakedObject adapter);
-
         bool ContainsObject(object obj);
-
         INakedObject GetObject(object obj);
-
         void Reset();
-
         void Shutdown();
-
         void Remove(INakedObject nakedObject);
     }
 

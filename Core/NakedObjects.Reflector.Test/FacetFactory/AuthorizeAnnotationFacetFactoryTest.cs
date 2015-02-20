@@ -19,54 +19,9 @@ using NakedObjects.Security;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(0);
-
-            mockPersistor = new Mock<ILifecycleManager>();
-            lifecycleManager = mockPersistor.Object;
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class TestSession : ISession {
-            private readonly string testRole;
-            private readonly string testUser;
-
-            public TestSession(string testRole, string testUser) {
-                this.testRole = testRole;
-                this.testUser = testUser;
-            }
-
-            #region ISession Members
-
-            public string UserName {
-                get { return Principal.Identity.Name; }
-            }
-
-            public bool IsAuthenticated {
-                get { return Principal.Identity.IsAuthenticated; }
-            }
-
-            public IPrincipal Principal {
-                get { return new TestPrincipal(testRole, testUser); }
-            }
-
-            #endregion
-        }
-
         private AuthorizeAnnotationFacetFactory facetFactory;
-        private Mock<ILifecycleManager> mockPersistor;
         private ILifecycleManager lifecycleManager;
+        private Mock<ILifecycleManager> mockPersistor;
 
         protected override Type[] SupportedTypes {
             get { return new[] {typeof (IHiddenFacet)}; }
@@ -75,235 +30,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        // ReSharper disable UnusedMember.Local
-        private class Customer {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty]
-            public int Property2 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(ViewRoles = "")]
-            public int Property3 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(ViewUsers = "")]
-            public int Property4 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(EditRoles = "")]
-            public int Property5 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(EditUsers = "")]
-            public int Property6 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
-            public int Property7 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
-            public int Property8 {
-                get { return 0; }
-            }
-
-            [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
-            public int Property9 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-
-            [AuthorizeAction]
-            public int Action2() {
-                return 0;
-            }
-
-            [AuthorizeAction(Roles = "aRole")]
-            public int Action3() {
-                return 0;
-            }
-
-            [AuthorizeAction(Users = "aUser")]
-            public int Action4() {
-                return 0;
-            }
-
-            [AuthorizeAction(Roles = "aRole", Users = "aUser")]
-            public int Action5() {
-                return 0;
-            }
-        }
-
-        private class Customer1 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty]
-        private class Customer2 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(ViewRoles = "")]
-        private class Customer3 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(ViewUsers = "")]
-        private class Customer4 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(EditRoles = "")]
-        private class Customer5 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(EditUsers = "")]
-        private class Customer6 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
-        private class Customer7 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
-        private class Customer8 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
-        private class Customer9 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeAction]
-        private class Customer10 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeAction(Roles = "aRole")]
-        private class Customer11 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeAction(Users = "aUser")]
-        private class Customer12 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeAction(Roles = "aRole", Users = "aUser")]
-        private class Customer13 {
-            public int Property1 {
-                get { return 0; }
-            }
-
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        [AuthorizeAction(Roles = "aRole", Users = "aUser")]
-        [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
-        private class Customer14 {
-            [AuthorizeProperty(ViewRoles = "anotherRole", ViewUsers = "anotherUser")]
-            public int Property1 {
-                get { return 0; }
-            }
-
-            [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
-            public int Action1() {
-                return 0;
-            }
-        }
-
-        // ReSharper restore UnusedMember.Local
 
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
@@ -1048,6 +774,284 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Action));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
+
+        #region Nested type: TestSession
+
+        private class TestSession : ISession {
+            private readonly string testRole;
+            private readonly string testUser;
+
+            public TestSession(string testRole, string testUser) {
+                this.testRole = testRole;
+                this.testUser = testUser;
+            }
+
+            #region ISession Members
+
+            public string UserName {
+                get { return Principal.Identity.Name; }
+            }
+
+            public bool IsAuthenticated {
+                get { return Principal.Identity.IsAuthenticated; }
+            }
+
+            public IPrincipal Principal {
+                get { return new TestPrincipal(testRole, testUser); }
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new AuthorizeAnnotationFacetFactory(0);
+
+            mockPersistor = new Mock<ILifecycleManager>();
+            lifecycleManager = mockPersistor.Object;
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
+        // ReSharper disable UnusedMember.Local
+        private class Customer {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty]
+            public int Property2 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(ViewRoles = "")]
+            public int Property3 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(ViewUsers = "")]
+            public int Property4 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(EditRoles = "")]
+            public int Property5 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(EditUsers = "")]
+            public int Property6 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+            public int Property7 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
+            public int Property8 {
+                get { return 0; }
+            }
+
+            [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
+            public int Property9 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+
+            [AuthorizeAction]
+            public int Action2() {
+                return 0;
+            }
+
+            [AuthorizeAction(Roles = "aRole")]
+            public int Action3() {
+                return 0;
+            }
+
+            [AuthorizeAction(Users = "aUser")]
+            public int Action4() {
+                return 0;
+            }
+
+            [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+            public int Action5() {
+                return 0;
+            }
+        }
+
+        private class Customer1 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty]
+        private class Customer2 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(ViewRoles = "")]
+        private class Customer3 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(ViewUsers = "")]
+        private class Customer4 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(EditRoles = "")]
+        private class Customer5 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(EditUsers = "")]
+        private class Customer6 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+        private class Customer7 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
+        private class Customer8 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
+        private class Customer9 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeAction]
+        private class Customer10 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeAction(Roles = "aRole")]
+        private class Customer11 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeAction(Users = "aUser")]
+        private class Customer12 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+        private class Customer13 {
+            public int Property1 {
+                get { return 0; }
+            }
+
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+        [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+        private class Customer14 {
+            [AuthorizeProperty(ViewRoles = "anotherRole", ViewUsers = "anotherUser")]
+            public int Property1 {
+                get { return 0; }
+            }
+
+            [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
+            public int Action1() {
+                return 0;
+            }
+        }
+
+        // ReSharper restore UnusedMember.Local
     }
 
     internal class TestPrincipal : IPrincipal {

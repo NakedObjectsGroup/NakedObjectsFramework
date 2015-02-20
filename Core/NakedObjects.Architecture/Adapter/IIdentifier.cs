@@ -11,13 +11,9 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Adapter {
     public interface IIdentifier : IComparable {
         string ClassName { get; }
-
         string MemberName { get; }
-
         string[] MemberParameterTypeNames { get; }
-
         string[] MemberParameterNames { get; }
-
         ITypeSpecImmutable[] MemberParameterSpecifications { get; }
 
         /// <summary>
@@ -26,7 +22,6 @@ namespace NakedObjects.Architecture.Adapter {
         bool IsField { get; }
 
         string ToIdentityString(IdentifierDepth depth);
-
         string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType);
     }
 

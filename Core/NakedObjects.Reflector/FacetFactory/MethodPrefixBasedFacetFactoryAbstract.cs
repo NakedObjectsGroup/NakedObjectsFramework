@@ -45,10 +45,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         protected MethodInfo[] FindMethods(IReflector reflector,
-            Type type,
-            MethodType methodType,
-            string name,
-            Type returnType = null) {
+                                           Type type,
+                                           MethodType methodType,
+                                           string name,
+                                           Type returnType = null) {
             return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).
                 Where(m => m.Name == name).
                 Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).
@@ -69,12 +69,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="paramTypes">the set of parameters the method should have, if null then is ignored</param>
         /// <param name="paramNames">the names of the parameters the method should have, if null then is ignored</param>
         protected MethodInfo FindMethod(IReflector reflector,
-            Type type,
-            MethodType methodType,
-            string name,
-            Type returnType,
-            Type[] paramTypes,
-            string[] paramNames = null) {
+                                        Type type,
+                                        MethodType methodType,
+                                        string name,
+                                        Type returnType,
+                                        Type[] paramTypes,
+                                        string[] paramNames = null) {
             try {
                 MethodInfo method = paramTypes == null
                     ? type.GetMethod(name, GetBindingFlagsForMethodType(methodType, reflector))

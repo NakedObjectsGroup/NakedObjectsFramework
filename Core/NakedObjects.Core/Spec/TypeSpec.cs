@@ -23,15 +23,14 @@ namespace NakedObjects.Core.Spec {
         private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
-
         // cached values 
         private string description;
         private bool? hasNoIdentity;
         private bool? hasSubclasses;
         private ITypeSpec[] interfaces;
-        private bool? isASet;
         private bool? isAbstract;
         private bool? isAggregated;
+        private bool? isASet;
         private bool? isCollection;
         private bool? isEncodeable;
         private bool? isInterface;

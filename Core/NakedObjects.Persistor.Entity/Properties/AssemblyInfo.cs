@@ -21,8 +21,6 @@ using System.Runtime.InteropServices;
 #endif
 
 [assembly: InternalsVisibleTo("NakedObjects.Persistor.Entity.Test")]
-
-
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]

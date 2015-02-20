@@ -44,22 +44,12 @@ namespace NakedObjects.Core.Fixture {
             Clock.SetTime(hour, minute);
         }
 
-        //public void SetUser(string username, string[] roles) {
-        //    var staticContext = (StaticContext) NakedObjectsContext.Instance;
-
-        //    IIdentity identity = new GenericIdentity(username);
-        //    IPrincipal principal = new GenericPrincipal(identity, roles);
-
-        //    ISession session = new SimpleSession(principal);
-        //    staticContext.SetSession(session);
-        //}
-
         #region Nested type: FixtureClock
 
         protected class FixtureClock {
             private DateTime time;
 
-             protected long Ticks {
+            protected long Ticks {
                 get { return time.Ticks; }
             }
 

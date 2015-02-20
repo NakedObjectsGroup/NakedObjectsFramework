@@ -61,7 +61,5 @@ namespace NakedObjects.Xat {
         }
 
         #endregion
-
-        // Copyright (c) INakedObject Objects Group Ltd.
     }
 }

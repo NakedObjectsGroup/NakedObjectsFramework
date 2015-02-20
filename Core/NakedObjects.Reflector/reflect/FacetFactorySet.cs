@@ -17,21 +17,6 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect {
     internal class FacetFactorySet : IFacetFactorySet {
-        public FacetFactorySet(IFacetFactory[] factories) {
-            List<IFacetFactory> allFactories = factories.ToList();
-            allFactories.Sort();
-
-            Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
-
-            foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
-                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
-            }
-
-            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
-            propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToList();
-            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
-        }
-
         private readonly IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
 
         /// <summary>
@@ -61,6 +46,21 @@ namespace NakedObjects.Reflect {
         ///     Used within <see cref="IFacetFactorySet.Recognizes" />
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
+
+        public FacetFactorySet(IFacetFactory[] factories) {
+            List<IFacetFactory> allFactories = factories.ToList();
+            allFactories.Sort();
+
+            Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
+
+            foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
+                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
+            }
+
+            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
+            propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToList();
+            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
+        }
 
         private string[] Prefixes { get; set; }
 
@@ -136,6 +136,5 @@ namespace NakedObjects.Reflect {
         private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
             return factoriesByFeatureType[featureType];
         }
-
     }
 }

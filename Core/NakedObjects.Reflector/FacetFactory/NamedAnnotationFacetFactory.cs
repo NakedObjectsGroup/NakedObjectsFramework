@@ -114,7 +114,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 if (!TypeUtils.IsNakedObjects(currentType) && !IsAlwaysHidden(holder) && !string.IsNullOrWhiteSpace(name)) {
                     namesScratchPad.Add(name);
                 }
-                return null; 
+                return null;
             }
             return CreateAnnotation(name, holder);
         }

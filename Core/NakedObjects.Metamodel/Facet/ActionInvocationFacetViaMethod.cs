@@ -19,7 +19,6 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
-
         private readonly MethodInfo actionMethod;
         private readonly IObjectSpecImmutable elementType;
         private readonly bool isQueryOnly;

@@ -52,20 +52,15 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
-
         private static RemoveAdapterDelegate removeAdapter;
         private static ReplacePocoDelegate replacePoco;
-
         private static EventHandler savingChangesHandlerDelegate;
-
         private static Action<INakedObject> handleLoaded;
         private static Func<Type, ITypeSpec> loadSpecification;
-        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodelManager;
-
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
-
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
 
@@ -106,16 +101,22 @@ namespace NakedObjects.Persistor.Entity.Component {
             Reset();
         }
 
+        public static bool EnforceProxies { get; set; }
+        public static bool RollBackOnError { get; set; }
+        public static int MaximumCommitCycles { get; set; }
+        public static Func<bool> IsInitializedCheck { get; set; }
+        public static bool RequireExplicitAssociationOfTypes { get; set; }
+
         #region for testing only
 
         public void SetupForTesting(IContainerInjector containerInjector,
-            CreateAdapterDelegate createAdapterDelegate,
-            ReplacePocoDelegate replacePocoDelegate,
-            RemoveAdapterDelegate removeAdapterDelegate,
-            CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
-            Action<INakedObject> handleLoadedTest,
-            EventHandler savingChangeshandler,
-            Func<Type, IObjectSpec> loadSpecificationHandler) {
+                                    CreateAdapterDelegate createAdapterDelegate,
+                                    ReplacePocoDelegate replacePocoDelegate,
+                                    RemoveAdapterDelegate removeAdapterDelegate,
+                                    CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
+                                    Action<INakedObject> handleLoadedTest,
+                                    EventHandler savingChangeshandler,
+                                    Func<Type, IObjectSpec> loadSpecificationHandler) {
             injector = containerInjector;
             createAdapter = createAdapterDelegate;
             replacePoco = replacePocoDelegate;
@@ -139,15 +140,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         #endregion
-
-        public static bool EnforceProxies { get; set; }
-
-        public static bool RollBackOnError { get; set; }
-
-        public static int MaximumCommitCycles { get; set; }
-
-        public static Func<bool> IsInitializedCheck { get; set; }
-        public static bool RequireExplicitAssociationOfTypes { get; set; }
 
         #region IObjectStore Members
 
@@ -177,7 +169,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteCreateObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
-                 ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
+                ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -190,7 +182,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteDestroyObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateDestroyObjectCommand : {0}", nakedObject);
             try {
-                 ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
+                ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -203,7 +195,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteSaveObjectCommand(INakedObject nakedObject) {
             Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
             try {
-                 ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
+                ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
@@ -252,7 +244,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public INakedObject GetObject(IOid oid, IObjectSpec hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-        
+
             var aggregateOid = oid as IAggregateOid;
             if (aggregateOid != null) {
                 var parentOid = (IEntityOid) aggregateOid.ParentOid;
@@ -841,7 +833,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private class EntityCreateObjectCommand : ICreateObjectCommand {
             private readonly LocalContext context;
-
             private readonly INakedObject nakedObject;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
 
@@ -1101,9 +1092,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             public INakedObjectManager Manager { protected get; set; }
-
             public ObjectContext WrappedObjectContext { get; private set; }
-
             public string Name { get; private set; }
 
             public ISet<INakedObject> LoadedNakedObjects {
@@ -1119,7 +1108,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             public bool IsInitialized { get; set; }
-
             public MergeOption DefaultMergeOption { get; set; }
             public INakedObject CurrentSaveRootObject { get; set; }
             public INakedObject CurrentUpdateRootObject { get; set; }

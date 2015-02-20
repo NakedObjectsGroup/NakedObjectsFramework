@@ -17,24 +17,6 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<long> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            l = 32;
-            holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new LongValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         private ISpecification holder;
         private long l;
         private LongValueSemanticsProvider value;
@@ -112,6 +94,24 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            l = 32;
+            holder = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(value = new LongValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

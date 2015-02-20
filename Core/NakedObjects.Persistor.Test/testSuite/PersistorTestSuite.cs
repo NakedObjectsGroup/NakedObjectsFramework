@@ -202,14 +202,14 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private INakedObject GetAdaptedAddress(Person person) {
             var personAdapter = AdapterFor(person);
-            return ((IObjectSpec)personAdapter.Spec).GetProperty("Address").GetNakedObject(personAdapter);
+            return ((IObjectSpec) personAdapter.Spec).GetProperty("Address").GetNakedObject(personAdapter);
         }
 
         private INakedObject GetAdaptedRelatives(Person person) {
             TransactionManager.StartTransaction();
             var personAdapter = AdapterFor(person);
             TransactionManager.EndTransaction();
-            return((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+            return ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
         }
 
         #endregion
@@ -617,7 +617,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(person2Adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(person2Adapter.Oid.IsTransient, "is transient");
 
-            var collectionAdapter = ((IObjectSpec)person1Adapter.Spec).GetProperty("Relatives").GetNakedObject(person1Adapter);
+            var collectionAdapter = ((IObjectSpec) person1Adapter.Spec).GetProperty("Relatives").GetNakedObject(person1Adapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
@@ -634,7 +634,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-            var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+            var collectionAdapter = ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
@@ -653,7 +653,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-            var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
+            var collectionAdapter = ((IObjectSpec) personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }

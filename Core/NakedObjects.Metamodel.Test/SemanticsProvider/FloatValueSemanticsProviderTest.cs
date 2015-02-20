@@ -17,28 +17,7 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(new FloatValueSemanticsProvider(spec, holder));
-
-            floatObj = 32.5F;
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         private Single floatObj;
-
         private ISpecification holder;
 
         [TestMethod]
@@ -119,6 +98,26 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            holder = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(new FloatValueSemanticsProvider(spec, holder));
+
+            floatObj = 32.5F;
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -12,14 +12,10 @@ using NakedObjects.Security;
 namespace NakedObjects.Meta.Authorization {
     public interface IAuthorizationConfiguration {
         Type DefaultAuthorizer { get; }
-
         IDictionary<string, Type> NamespaceAuthorizers { get; }
-
         IDictionary<string, Type> TypeAuthorizers { get; }
-
         //The specified type authorizer will apply to the whole namespace specified
         void AddNamespaceAuthorizer<TAuth>(string namespaceCovered) where TAuth : INamespaceAuthorizer;
-
         //The specified type authorizer will apply only to the domain object type specified (not even sub-classes)
         void AddTypeAuthorizer<TDomain, TAuth>()
             where TDomain : new()

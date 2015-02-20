@@ -21,6 +21,12 @@ namespace NakedObjects.Core.Test.Component {
     /// </summary>
     [TestFixture]
     public class DefaultPersistAlgorithmTest {
+        private DefaultPersistAlgorithm algorithm;
+        private INakedObjectManager manager;
+        private Mock<INakedObjectManager> mockManager;
+        private Mock<IObjectPersistor> mockPersistor;
+        private IObjectPersistor persistor;
+
         #region Setup/Teardown
 
         [SetUp]
@@ -35,12 +41,6 @@ namespace NakedObjects.Core.Test.Component {
         }
 
         #endregion
-
-        private DefaultPersistAlgorithm algorithm;
-        private IObjectPersistor persistor;
-        private INakedObjectManager manager;
-        private Mock<IObjectPersistor> mockPersistor;
-        private Mock<INakedObjectManager> mockManager;
 
         [Test]
         public void TestMakePersistent() {

@@ -10,7 +10,6 @@ using System;
 namespace NakedObjects.Xat {
     public interface ITestHasActions : ITestNaked {
         ITestAction[] Actions { get; }
-
         ITestAction GetAction(string name);
 
         /// <summary>

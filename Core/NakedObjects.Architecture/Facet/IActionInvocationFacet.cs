@@ -21,14 +21,10 @@ namespace NakedObjects.Architecture.Facet {
     /// </para>
     public interface IActionInvocationFacet : IFacet {
         IObjectSpecImmutable ReturnType { get; }
-
         ITypeSpecImmutable OnType { get; }
-
         IObjectSpecImmutable ElementType { get; }
         bool IsQueryOnly { get; }
-
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
-
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
     }
 

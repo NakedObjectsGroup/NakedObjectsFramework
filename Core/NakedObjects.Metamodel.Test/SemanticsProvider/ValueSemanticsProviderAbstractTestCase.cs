@@ -17,13 +17,13 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
+        private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
         protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
         protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
+        private ParseableFacetUsingParser<T> parseableFacet;
         protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
         protected IReflector Reflector = new Mock<IReflector>().Object;
-        private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
-        private ParseableFacetUsingParser<T> parseableFacet;
         private IValueSemanticsProvider<T> value;
 
         protected void SetValue(IValueSemanticsProvider<T> newValue) {

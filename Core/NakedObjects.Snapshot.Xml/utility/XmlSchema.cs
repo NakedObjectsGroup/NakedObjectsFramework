@@ -14,11 +14,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSchema {
         public const string DefaultPrefix = "app";
         private string uri;
-
         // The base part of the namespace prefix to use if none explicitly supplied in the constructor.
 
         public XmlSchema() : this(NofMetaModel.DefaultUriBase, DefaultPrefix) {}
-
         // uriBase the prefix for the application namespace's URIs
         // prefix the prefix for the application namespace's prefix
 
@@ -61,7 +59,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public string UriBase { get; private set; }
         public string Prefix { get; private set; }
-
         // Returns the namespace URI for the class.
         public void SetUri(string fullyQualifiedClassName) {
             if (uri != null) {

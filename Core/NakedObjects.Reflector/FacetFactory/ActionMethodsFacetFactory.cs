@@ -111,7 +111,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (returnSpec != null && returnSpec.IsCollection) {
                 Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
-                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
+                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
 

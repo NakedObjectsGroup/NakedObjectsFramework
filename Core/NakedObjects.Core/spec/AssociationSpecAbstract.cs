@@ -42,6 +42,10 @@ namespace NakedObjects.Core.Spec {
             get { return manager; }
         }
 
+        public virtual bool IsASet {
+            get { return false; }
+        }
+
         #region IAssociationSpec Members
 
         /// <summary>
@@ -51,10 +55,6 @@ namespace NakedObjects.Core.Spec {
         /// </summary>
         public override IObjectSpec ReturnSpec {
             get { return returnSpec; }
-        }
-
-        public virtual bool IsASet {
-            get { return false; }
         }
 
         /// <summary>
@@ -69,12 +69,9 @@ namespace NakedObjects.Core.Spec {
         }
 
         public abstract bool IsMandatory { get; }
-
         public abstract INakedObject GetNakedObject(INakedObject fromObject);
-
         public abstract bool IsEmpty(INakedObject inObject);
         public abstract bool IsInline { get; }
-
         public abstract INakedObject GetDefault(INakedObject nakedObject);
         public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
         public abstract void ToDefault(INakedObject nakedObject);
@@ -113,9 +110,7 @@ namespace NakedObjects.Core.Spec {
         #endregion
 
         public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
-
         public abstract Tuple<string, IObjectSpec>[] GetChoicesParameters();
-
         public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {

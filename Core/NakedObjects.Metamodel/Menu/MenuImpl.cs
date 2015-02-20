@@ -173,13 +173,13 @@ namespace NakedObjects.Meta.Menu {
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
             info.AddValue<IList<IMenuItemImmutable>>("items", items.ToList());
             info.AddValue<IMenu>("SuperMenu", SuperMenu);
-            info.AddValue<string>("Name",Name);
-            info.AddValue<string>("Id",Id);
+            info.AddValue<string>("Name", Name);
+            info.AddValue<string>("Id", Id);
             info.AddValue<IMetamodel>("metamodel", metamodel);
         }
 
         public void OnDeserialization(object sender) {
-            items = tempItems.ToImmutableList();      
+            items = tempItems.ToImmutableList();
         }
 
         #endregion

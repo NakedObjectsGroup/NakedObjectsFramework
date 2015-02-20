@@ -17,7 +17,6 @@ namespace TestData {
         public virtual string Name { get; set; }
 
         public virtual int ParentOrderId { get; set; }
-
         public virtual bool PersistingCalled { get; set; }
 
         public override void Persisting() {

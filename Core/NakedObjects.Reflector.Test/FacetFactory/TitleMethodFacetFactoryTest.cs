@@ -17,6 +17,16 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
+        private TitleMethodFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (ITitleFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -32,16 +42,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private TitleMethodFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (ITitleFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local

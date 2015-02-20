@@ -17,42 +17,6 @@ namespace NakedObjects.Architecture.Spec {
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
     public interface ITypeSpec : ISpecification {
-        #region Name & Description
-
-        /// <summary>
-        ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
-        ///     this object represents (i.e. it includes the full namespace).
-        /// </summary>
-        string FullName { get; }
-
-        /// <summary>
-        ///     Returns the plural name for objects of this specification
-        /// </summary>
-        string PluralName { get; }
-
-        /// <summary>
-        ///     Returns the class name without the namespace. Removes the text up to, and including the last
-        ///     period (".")
-        /// </summary>
-        string ShortName { get; }
-
-        /// <summary>
-        ///     Returns the description, if any, of the specification
-        /// </summary>
-        string Description { get; }
-
-        /// <summary>
-        ///     Returns the singular name for objects of this specification
-        /// </summary>
-        string SingularName { get; }
-
-        /// <summary>
-        ///     Returns the singular name for objects of this specification
-        /// </summary>
-        string UntitledName { get; }
-
-        #endregion
-
         /// <summary>
         ///     Determines if objects of this type can be set up from a text entry string.
         /// </summary>
@@ -98,9 +62,7 @@ namespace NakedObjects.Architecture.Spec {
         bool IsAbstract { get; }
         bool IsInterface { get; }
         bool HasNoIdentity { get; }
-
         bool IsQueryable { get; }
-
         bool IsVoid { get; }
 
         /// <summary>
@@ -113,6 +75,16 @@ namespace NakedObjects.Architecture.Spec {
         bool IsASet { get; }
         bool IsViewModel { get; }
 
+        #region Default Provider
+
+        /// <summary>
+        ///     Default value to be provided for properties or parameters that are not declared as
+        ///     <see cref="OptionallyAttribute" /> but where the UI has not (yet) provided a value.
+        /// </summary>
+        object DefaultValue { get; }
+
+        #endregion
+
         /// <summary>
         ///     Returns the name of an icon to use for the specified object
         /// </summary>
@@ -124,6 +96,42 @@ namespace NakedObjects.Architecture.Spec {
         string GetTitle(INakedObject nakedObject);
 
         string GetInvariantString(INakedObject nakedObject);
+
+        #region Name & Description
+
+        /// <summary>
+        ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
+        ///     this object represents (i.e. it includes the full namespace).
+        /// </summary>
+        string FullName { get; }
+
+        /// <summary>
+        ///     Returns the plural name for objects of this specification
+        /// </summary>
+        string PluralName { get; }
+
+        /// <summary>
+        ///     Returns the class name without the namespace. Removes the text up to, and including the last
+        ///     period (".")
+        /// </summary>
+        string ShortName { get; }
+
+        /// <summary>
+        ///     Returns the description, if any, of the specification
+        /// </summary>
+        string Description { get; }
+
+        /// <summary>
+        ///     Returns the singular name for objects of this specification
+        /// </summary>
+        string SingularName { get; }
+
+        /// <summary>
+        ///     Returns the singular name for objects of this specification
+        /// </summary>
+        string UntitledName { get; }
+
+        #endregion
 
         #region Inheritance Hierarchy
 
@@ -166,16 +174,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         //TODO: Rename to GetObjectActions for this type
         IActionSpec[] GetObjectActions();
-
-        #endregion
-
-        #region Default Provider
-
-        /// <summary>
-        ///     Default value to be provided for properties or parameters that are not declared as
-        ///     <see cref="OptionallyAttribute" /> but where the UI has not (yet) provided a value.
-        /// </summary>
-        object DefaultValue { get; }
 
         #endregion
     }

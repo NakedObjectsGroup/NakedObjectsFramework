@@ -17,11 +17,11 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     internal class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
-        private readonly IActionParameterSpecImmutable[] parameters;
         private readonly ITypeSpecImmutable ownerSpec;
+        private readonly IActionParameterSpecImmutable[] parameters;
 
         public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
-            IActionParameterSpecImmutable[] parameters)
+                                   IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.ownerSpec = ownerSpec;
             this.parameters = parameters;
@@ -33,7 +33,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return GetFacet<IActionInvocationFacet>().ReturnType; }
         }
 
-        public  ITypeSpecImmutable OwnerSpec {
+        public ITypeSpecImmutable OwnerSpec {
             get { return ownerSpec; }
         }
 

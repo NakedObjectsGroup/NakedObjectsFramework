@@ -20,22 +20,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new CallbackMethodsFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private CallbackMethodsFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -65,68 +49,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
             return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
-
-        // ReSharper disable UnusedMember.Local
-
-        private class Customer {
-            public void Created() {}
-        }
-
-        private class Customer1 {
-            public void Persisting() {}
-        }
-
-        private class Customer2 {
-            public void Persisted() {}
-        }
-
-        private class Customer3 {
-            public void Updating() {}
-        }
-
-        private class Customer4 {
-            public void Updated() {}
-        }
-
-        private class Customer5 {
-            public void Loading() {}
-        }
-
-        private class Customer6 {
-            public void Loaded() {}
-        }
-
-        private class Customer7 {
-            public void Deleting() {}
-        }
-
-        private class Customer8 {
-            public void Deleted() {}
-        }
-
-        private class Customer9 {
-            public void Saving() {}
-        }
-
-        private class Customer10 {
-            public void Saved() {}
-        }
-
-        // ReSharper disable UnusedParameter.Local
-        private class Customer11 {
-            public string OnPersistingError(Exception e) {
-                Assert.IsNotNull(e);
-                return string.Empty;
-            }
-
-            public string OnUpdatingError(Exception e) {
-                Assert.IsNotNull(e);
-                return string.Empty;
-            }
-        }
-
-        // ReSharper restore UnusedParameter.Local
-        // ReSharper restore UnusedMember.Local
 
         [TestMethod]
         public void TestCreatedLifecycleMethodPickedUpOn() {
@@ -313,6 +235,84 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(method, updatingCallbackFacetViaMethod.GetMethod());
             AssertMethodsRemoved(new[] {method});
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new CallbackMethodsFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
+        // ReSharper disable UnusedMember.Local
+
+        private class Customer {
+            public void Created() {}
+        }
+
+        private class Customer1 {
+            public void Persisting() {}
+        }
+
+        private class Customer2 {
+            public void Persisted() {}
+        }
+
+        private class Customer3 {
+            public void Updating() {}
+        }
+
+        private class Customer4 {
+            public void Updated() {}
+        }
+
+        private class Customer5 {
+            public void Loading() {}
+        }
+
+        private class Customer6 {
+            public void Loaded() {}
+        }
+
+        private class Customer7 {
+            public void Deleting() {}
+        }
+
+        private class Customer8 {
+            public void Deleted() {}
+        }
+
+        private class Customer9 {
+            public void Saving() {}
+        }
+
+        private class Customer10 {
+            public void Saved() {}
+        }
+
+        // ReSharper disable UnusedParameter.Local
+        private class Customer11 {
+            public string OnPersistingError(Exception e) {
+                Assert.IsNotNull(e);
+                return string.Empty;
+            }
+
+            public string OnUpdatingError(Exception e) {
+                Assert.IsNotNull(e);
+                return string.Empty;
+            }
+        }
+
+        // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedMember.Local
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -26,14 +26,12 @@ namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public class Reflector : IReflector {
         private static readonly ILog Log;
-
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
-
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
         static Reflector() {
@@ -41,11 +39,11 @@ namespace NakedObjects.Reflect.Component {
         }
 
         public Reflector(IClassStrategy classStrategy,
-            IMetamodelBuilder metamodel,
-            IReflectorConfiguration config,
-            IMenuFactory menuFactory,
-            IFacetDecorator[] facetDecorators,
-            IFacetFactory[] facetFactories) {
+                         IMetamodelBuilder metamodel,
+                         IReflectorConfiguration config,
+                         IMenuFactory menuFactory,
+                         IFacetDecorator[] facetDecorators,
+                         IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
@@ -103,21 +101,6 @@ namespace NakedObjects.Reflect.Component {
             return (T) LoadSpecification(type);
         }
 
-
-        private Type EnsureGenericTypeIsComplete(Type type) {
-            if (type.IsGenericType &&  !type.IsConstructedGenericType) {
-                return type.GetGenericTypeDefinition().MakeGenericType(typeof (object));
-            }
-            return type;
-        }
-
-        private Type[] GetTypesToIntrospect() {
-            var types = config.TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
-            var systemTypes = config.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
-            return types.Union(systemTypes).ToArray();
-        }
-
-
         public void Reflect() {
             Type[] s1 = config.Services;
             Type[] services = s1.ToArray();
@@ -128,7 +111,7 @@ namespace NakedObjects.Reflect.Component {
             var allTypes = services.Union(nonServices).ToArray();
 
             InstallSpecifications(allTypes);
-          
+
             PopulateAssociatedActions(s1.ToArray());
 
             //Menus installed once rest of metamodel has been built:
@@ -140,6 +123,19 @@ namespace NakedObjects.Reflect.Component {
         }
 
         #endregion
+
+        private Type EnsureGenericTypeIsComplete(Type type) {
+            if (type.IsGenericType && !type.IsConstructedGenericType) {
+                return type.GetGenericTypeDefinition().MakeGenericType(typeof (object));
+            }
+            return type;
+        }
+
+        private Type[] GetTypesToIntrospect() {
+            var types = config.TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
+            var systemTypes = config.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+            return types.Union(systemTypes).ToArray();
+        }
 
         private void InstallSpecifications(Type[] types) {
             types.ForEach(type => LoadSpecification(type));
@@ -204,7 +200,7 @@ namespace NakedObjects.Reflect.Component {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                List<IActionSpecImmutable> matchingActions = 
+                List<IActionSpecImmutable> matchingActions =
                     serviceSpecification.ObjectActions.
                         Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
@@ -222,7 +218,7 @@ namespace NakedObjects.Reflect.Component {
             Type actualType = classStrategy.GetType(type);
 
             if (actualType == null) {
-                throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName +  " ");
+                throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName + " ");
             }
 
             ITypeSpecBuilder specification = CreateSpecification(actualType);
@@ -242,7 +238,7 @@ namespace NakedObjects.Reflect.Component {
         private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
-            return IsService(type) ? (ITypeSpecBuilder)ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
+            return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
         private bool IsService(Type type) {

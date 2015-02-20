@@ -34,7 +34,12 @@ namespace NakedObjects.Meta.Component {
                 mainMenus = data.MenuValues.ToImmutableList();
             }
         }
-      
+
+        // The special constructor is used to deserialize values. 
+        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
+            tempData = info.GetValue<SerializedData>("data");
+        }
+
         #region IDeserializationCallback Members
 
         public void OnDeserialization(object sender) {
@@ -45,12 +50,6 @@ namespace NakedObjects.Meta.Component {
         #endregion
 
         #region ISerializable Members
-
-        // The special constructor is used to deserialize values. 
-        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
-            tempData = info.GetValue<SerializedData>("data");
-        }
-
 
         public void GetObjectData(SerializationInfo info, StreamingContext context) {
             var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};

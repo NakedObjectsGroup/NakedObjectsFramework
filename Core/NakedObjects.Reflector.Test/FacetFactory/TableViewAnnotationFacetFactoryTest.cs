@@ -20,22 +20,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     // ReSharper disable UnusedMember.Local
     public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new TableViewAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private TableViewAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -45,6 +29,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        #region Nested type: Customer1
 
         private class Customer1 {
             [TableView(true, "col1", "col2")]
@@ -74,9 +60,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
+        #endregion
+
+        #region Nested type: Customer2
+
         private class Customer2 {
             public Order[] Orders { get; set; }
-
             public ICollection<Order> Orders1 { get; set; }
 
             public Order[] OrdersAction() {
@@ -87,6 +76,24 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return null;
             }
         }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new TableViewAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
 
 // ReSharper disable once ClassNeverInstantiated.Local
         private class Order {}

@@ -12,7 +12,6 @@ namespace TestCodeOnly {
 
     public class Person : AbstractPerson {
         public IDomainObjectContainer Container { protected get; set; }
-
         public virtual int ID { get; set; }
         public virtual string Name { get; set; }
         public virtual Product Favourite { get; set; }

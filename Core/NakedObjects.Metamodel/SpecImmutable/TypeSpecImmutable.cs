@@ -38,7 +38,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
         }
 
-        #region IObjectSpecBuilder Members
+        #region ITypeSpecBuilder Members
 
         public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
             introspector.IntrospectType(Type, this);
@@ -55,22 +55,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             subclasses = subclasses.Add(subclass);
         }
 
-        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) {
-            ContributedActions = contributedActions.ToImmutableList();
-        }
-
-        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) {
-            CollectionContributedActions = collectionContributedActions.ToImmutableList();
-        }
-
-        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
-            FinderActions = finderActions.ToImmutableList();
-        }
-
-        #endregion
-
-        #region IObjectSpecImmutable Members
-
         public ITypeSpecImmutable Superclass { get; private set; }
 
         public override IIdentifier Identifier {
@@ -78,9 +62,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public Type Type { get; private set; }
-
         public string FullName { get; private set; }
-
         public string ShortName { get; private set; }
 
         public IMenuImmutable ObjectMenu {
@@ -88,15 +70,10 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
-
         public IList<IActionSpecImmutable> ContributedActions { get; private set; }
-
         public IList<IActionSpecImmutable> CollectionContributedActions { get; private set; }
-
         public IList<IActionSpecImmutable> FinderActions { get; private set; }
-
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
-
         public IList<ITypeSpecImmutable> Interfaces { get; private set; }
 
         public IList<ITypeSpecImmutable> Subclasses {
@@ -141,7 +118,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public bool IsQueryable {
             get {
                 var facet = GetFacet<ICollectionFacet>();
-                return facet != null && facet.IsQueryable; }
+                return facet != null && facet.IsQueryable;
+            }
         }
 
         public virtual bool IsParseable {
@@ -194,6 +172,18 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         #endregion
+
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) {
+            ContributedActions = contributedActions.ToImmutableList();
+        }
+
+        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) {
+            CollectionContributedActions = collectionContributedActions.ToImmutableList();
+        }
+
+        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
+            FinderActions = finderActions.ToImmutableList();
+        }
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);

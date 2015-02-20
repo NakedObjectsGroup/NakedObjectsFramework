@@ -24,6 +24,41 @@ namespace NakedObjects.Core.Resolve {
 
         #endregion
 
+        private readonly List<HistoryEvent> history = new List<HistoryEvent>();
+
+        public ResolveStateMachine(INakedObject owner, ISession session) {
+            CurrentState = States.NewState;
+            Owner = owner;
+            Session = session;
+        }
+
+        private ISession Session { get; set; }
+        private INakedObject Owner { get; set; }
+        public bool FullTrace { get; set; }
+
+        #region IResolveStateMachine Members
+
+        public IResolveState CurrentState { get; private set; }
+
+        public void Handle(IResolveEvent rEvent) {
+            IResolveState newState = CurrentState.Handle(rEvent, Owner, this, Session);
+            history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
+            CurrentState = newState;
+        }
+
+        public void AddHistoryNote(string note) {
+            HistoryEvent lastEvent = history.LastOrDefault();
+            if (lastEvent != null) {
+                lastEvent.AddNote(note);
+            }
+        }
+
+        #endregion
+
+        public override string ToString() {
+            return CurrentState.ToString();
+        }
+
         #region Events
 
         #region Nested type: DestroyEvent
@@ -572,45 +607,13 @@ namespace NakedObjects.Core.Resolve {
 
         #endregion
 
-        private readonly List<HistoryEvent> history = new List<HistoryEvent>();
-
-        public ResolveStateMachine(INakedObject owner, ISession session) {
-            CurrentState = States.NewState;
-            Owner = owner;
-            Session = session;
-        }
-
-        private ISession Session { get; set; }
-
-        private INakedObject Owner { get; set; }
-        public bool FullTrace { get; set; }
-
-        #region IResolveStateMachine Members
-
-        public IResolveState CurrentState { get; private set; }
-
-        public void Handle(IResolveEvent rEvent) {
-            IResolveState newState = CurrentState.Handle(rEvent, Owner, this, Session);
-            history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
-            CurrentState = newState;
-        }
-
-        public void AddHistoryNote(string note) {
-            HistoryEvent lastEvent = history.LastOrDefault();
-            if (lastEvent != null) {
-                lastEvent.AddNote(note);
-            }
-        }
-
-        #endregion
-
-        public override string ToString() {
-            return CurrentState.ToString();
-        }
-
         #region Nested type: HistoryEvent
 
         private class HistoryEvent {
+            // ReSharper disable once NotAccessedField.Local
+            // for viewing via debugger
+            private StackTrace trace;
+
             public HistoryEvent(IResolveState startState, IResolveState endState, IResolveEvent rEvent, bool fullTrace) {
                 StartState = startState;
                 EndState = endState;
@@ -623,14 +626,10 @@ namespace NakedObjects.Core.Resolve {
             }
 
             private IList<string> Notes { get; set; }
-
             private IResolveState StartState { get; set; }
             private IResolveState EndState { get; set; }
             private IResolveEvent Event { get; set; }
             private DateTime TimeStamp { get; set; }
-            // ReSharper disable once NotAccessedField.Local
-            // for viewing via debugger
-            private StackTrace trace;
 
             public void AddNote(string note) {
                 Notes.Add(note);

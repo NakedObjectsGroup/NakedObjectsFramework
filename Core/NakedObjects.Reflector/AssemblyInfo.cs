@@ -22,7 +22,6 @@ using System.Runtime.CompilerServices;
 #endif
 
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
-
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]

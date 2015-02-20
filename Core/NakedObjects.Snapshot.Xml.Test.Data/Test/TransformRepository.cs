@@ -12,13 +12,6 @@ using TransformFull = Snapshot.Xml.Test.One.TransformFull;
 namespace Snapshot.Xml.Test {
     //[Named("")]
     public class TransformRepository : AbstractFactoryAndRepository {
-        #region Injected Services
-
-        // This region should contain properties to hold references to any services required by the
-        // object.  Use the 'injs' shortcut to add a new service.
-
-        #endregion
-
         // 'fact' shortcut to add a factory method, 
         // 'alli' for an all-instances method
         // 'find' for a method to find a single object by query
@@ -49,5 +42,12 @@ namespace Snapshot.Xml.Test {
 
             return obj;
         }
+
+        #region Injected Services
+
+        // This region should contain properties to hold references to any services required by the
+        // object.  Use the 'injs' shortcut to add a new service.
+
+        #endregion
     }
 }

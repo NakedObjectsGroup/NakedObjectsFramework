@@ -24,7 +24,6 @@ namespace NakedObjects.Core {
             : base(message, cause) {}
 
         public IOid SourceOid { get; private set; }
-
         public INakedObject SourceNakedObject { get; set; }
     }
 

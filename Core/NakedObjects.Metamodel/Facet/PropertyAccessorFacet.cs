@@ -34,7 +34,6 @@ namespace NakedObjects.Meta.Facet {
 
         public object GetProperty(INakedObject nakedObject) {
             try {
-                
                 return propertyMethod.GetValue(nakedObject.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {

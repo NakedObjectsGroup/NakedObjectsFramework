@@ -18,7 +18,9 @@ namespace NakedObjects.Core.Spec {
         private int? typicalLineLength;
 
         public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) { }
+            : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) {}
+
+        #region IActionParseableParameterSpec Members
 
         public virtual int NoLines {
             get {
@@ -50,5 +52,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsFindMenuEnabled {
             get { return false; }
         }
+
+        #endregion
     }
 }

@@ -24,9 +24,8 @@ namespace NakedObjects.Meta.I18N {
         private const string Parameter = "parameter";
         private const string Property = "property";
         private static readonly ILog Log = LogManager.GetLogger(typeof (I18NManager));
-        private ResourceManager resources;
         private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
-
+        private ResourceManager resources;
         // make resources testable 
         public ResourceManager Resources {
             private get { return resources ?? Model.ResourceManager; }
@@ -36,7 +35,6 @@ namespace NakedObjects.Meta.I18N {
         #region IFacetDecorator Members
 
         public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
-            
             IIdentifier identifier = holder.Identifier;
             Type facetType = facet.FacetType;
 

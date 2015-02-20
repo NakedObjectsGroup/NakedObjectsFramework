@@ -43,6 +43,8 @@ namespace NakedObjects.Core.Interactions {
             proposedArguments = arguments;
         }
 
+        #region IInteractionContext Members
+
         /// <summary>
         ///     The type of interaction
         /// </summary>
@@ -131,6 +133,15 @@ namespace NakedObjects.Core.Interactions {
             get { return proposedArguments; }
         }
 
+        /// <summary>
+        ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine
+        ///     if the interaction's type applies.
+        /// </summary>
+        public bool TypeEquals(InteractionType other) {
+            return InteractionType.Equals(other);
+        }
+
+        #endregion
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
@@ -183,14 +194,6 @@ namespace NakedObjects.Core.Interactions {
                 actionIdentifier,
                 null,
                 arguments);
-        }
-
-        /// <summary>
-        ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine
-        ///     if the interaction's type applies.
-        /// </summary>
-        public bool TypeEquals(InteractionType other) {
-            return InteractionType.Equals(other);
         }
     }
 

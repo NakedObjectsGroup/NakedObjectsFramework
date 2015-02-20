@@ -19,11 +19,8 @@ namespace NakedObjects.Architecture.Component {
         void ConvertPersistentToTransientOid(IOid oid);
 
         void ConvertTransientToPersistentOid(IOid oid);
-
         IOid CreateTransientOid(object obj);
-
         IOid RestoreOid(string[] encodedData);
-
         IOid CreateOid(string typeName, object[] keys);
     }
 

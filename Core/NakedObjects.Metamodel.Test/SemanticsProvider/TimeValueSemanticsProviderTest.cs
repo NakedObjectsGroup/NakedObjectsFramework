@@ -16,25 +16,6 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            SetupSpecification(typeof (TimeSpan));
-            time = new TimeSpan(8, 13, 0);
-            holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         private TimeValueSemanticsProvider adapter;
         private ISpecification holder;
         private TimeSpan time;
@@ -86,6 +67,25 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            SetupSpecification(typeof (TimeSpan));
+            time = new TimeSpan(8, 13, 0);
+            holder = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     public class TestClock {

@@ -17,7 +17,6 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal abstract class FacetAbstract : IFacet, IDeserializationCallback {
         private static readonly ILog Log = LogManager.GetLogger(typeof (FacetAbstract));
-
         private readonly Type facetType;
         private ISpecification holder;
 

@@ -11,15 +11,10 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Component {
     public interface ISpecificationCache {
         ITypeSpecImmutable GetSpecification(string key);
-
         void Clear();
-
         ITypeSpecImmutable[] AllSpecifications();
-
         void Cache(string key, ITypeSpecImmutable spec);
-
         void Cache(IMenuImmutable mainMenu);
-
         IMenuImmutable[] MainMenus();
         void Serialize(string file);
     }

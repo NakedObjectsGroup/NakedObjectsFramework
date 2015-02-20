@@ -15,10 +15,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public class DomainObjectContainerInjector : IContainerInjector {
+        private readonly List<Type> serviceTypes;
         private IDomainObjectContainer container;
         private bool initialized;
         private List<object> services;
-        private readonly List<Type> serviceTypes;
 
         public DomainObjectContainerInjector(IReflectorConfiguration config) {
             Assert.AssertNotNull(config);

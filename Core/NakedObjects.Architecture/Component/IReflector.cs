@@ -21,13 +21,10 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IReflector {
         IClassStrategy ClassStrategy { get; }
-
         IFacetFactorySet FacetFactorySet { get; }
-
         ITypeSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
         IMetamodel Metamodel { get; }
-
         ITypeSpecBuilder LoadSpecification(Type type);
 
         /// <summary>

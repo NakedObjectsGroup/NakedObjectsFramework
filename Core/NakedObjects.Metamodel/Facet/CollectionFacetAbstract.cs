@@ -32,11 +32,9 @@ namespace NakedObjects.Meta.Facet {
         public abstract bool IsQueryable { get; }
         public abstract bool Contains(INakedObject collection, INakedObject element);
         public abstract INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
-
         public bool IsASet { get; private set; }
         public abstract IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         public abstract IQueryable AsQueryable(INakedObject collection);
-
         public abstract void Init(INakedObject collection, INakedObject[] initData);
 
         #endregion

@@ -12,9 +12,7 @@ using NakedObjects.Audit;
 namespace NakedObjects.Meta.Audit {
     public interface IAuditConfiguration {
         Type DefaultAuditor { get; }
-
         Dictionary<string, Type> NamespaceAuditors { get; }
-
         void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor;
     }
 }

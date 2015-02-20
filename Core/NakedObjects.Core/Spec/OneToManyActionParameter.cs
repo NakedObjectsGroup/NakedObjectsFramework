@@ -13,7 +13,5 @@ namespace NakedObjects.Core.Spec {
     internal class OneToManyActionParameter : ActionParameterSpec, IOneToManyActionParameterSpec {
         public OneToManyActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
-
-       
     }
 }

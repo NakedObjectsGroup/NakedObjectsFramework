@@ -20,8 +20,6 @@ namespace NakedObjects.Architecture.Spec {
 
         IObjectSpec ReturnSpec { get; }
 
-      
-
         /// <summary>
         ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
         /// </summary>

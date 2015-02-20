@@ -12,6 +12,8 @@ namespace NakedObjects.Core.Interactions {
     internal class InteractionBuffer : IInteractionBuffer {
         private readonly StringBuilder buf = new StringBuilder();
 
+        #region IInteractionBuffer Members
+
         public virtual bool IsNotEmpty {
             get { return !IsEmpty; }
         }
@@ -33,6 +35,8 @@ namespace NakedObjects.Core.Interactions {
         public override string ToString() {
             return buf.ToString();
         }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

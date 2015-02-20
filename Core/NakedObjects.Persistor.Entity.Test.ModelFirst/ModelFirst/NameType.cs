@@ -16,15 +16,7 @@ namespace ModelFirst {
         public Person Parent { get; set; }
 
         public IDomainObjectContainer Container { protected get; set; }
-
         public SimpleRepository<Person> Service { protected get; set; }
-
-        #region Primitive Properties
-
-        public string Firstname { get; set; }
-        public string Surname { get; set; }
-
-        #endregion
 
         [NakedObjectsIgnore]
         public object ExposeContainerForTest() {
@@ -35,5 +27,12 @@ namespace ModelFirst {
         public object ExposeServiceForTest() {
             return Service;
         }
+
+        #region Primitive Properties
+
+        public string Firstname { get; set; }
+        public string Surname { get; set; }
+
+        #endregion
     }
 }

@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Authorization {
         #region IAuthorizationConfiguration Members
 
         public Type DefaultAuthorizer { get; private set; }
-
         public IDictionary<string, Type> NamespaceAuthorizers { get; private set; }
-
         public IDictionary<string, Type> TypeAuthorizers { get; private set; }
 
         public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)

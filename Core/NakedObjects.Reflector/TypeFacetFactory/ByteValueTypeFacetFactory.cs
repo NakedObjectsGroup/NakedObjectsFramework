@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ByteValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (ByteValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(ByteValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new ByteValueSemanticsProvider(spec, specification), specification);
             }
         }

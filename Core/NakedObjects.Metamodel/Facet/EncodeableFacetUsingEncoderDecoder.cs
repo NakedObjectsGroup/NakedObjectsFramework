@@ -27,11 +27,11 @@ namespace NakedObjects.Meta.Facet {
             get { return "NULL"; }
         }
 
-        #region IEncodeableFacet Members
-
         public bool IsValid {
             get { return encoderDecoder != null; }
         }
+
+        #region IEncodeableFacet Members
 
         public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
             if (EncodedNull.Equals(encodedData)) {

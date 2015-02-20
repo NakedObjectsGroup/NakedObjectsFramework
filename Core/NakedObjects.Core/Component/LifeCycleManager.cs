@@ -23,8 +23,8 @@ namespace NakedObjects.Core.Component {
     public class LifeCycleManager : ILifecycleManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (LifeCycleManager));
         private readonly IContainerInjector injector;
-        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodel;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
@@ -165,7 +165,7 @@ namespace NakedObjects.Core.Component {
 
         private IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            ITypeSpec spec =  metamodel.GetSpecification(typeName);
+            ITypeSpec spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
                 return new CollectionMemento(this, nakedObjectManager, metamodel, encodedData);

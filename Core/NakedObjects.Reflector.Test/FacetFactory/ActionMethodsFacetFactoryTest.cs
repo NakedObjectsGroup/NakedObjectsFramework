@@ -25,22 +25,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ActionMethodsFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -126,395 +110,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             AssertMethodNotRemoved(autoCompleteMethod);
         }
-
-        // ReSharper disable UnusedMember.Local
-        // ReSharper disable UnusedParameter.Local
-
-        private class Customer {
-            public void SomeAction() {}
-        }
-
-        private class Customer1 {
-            [Named("Renamed an action with a named annotation")]
-            public void AnActionWithNamedAnnotation() {}
-
-            public void AnActionWithNullableParm(bool? parm) {}
-            public void AnActionWithoutNullableParm(bool parm) {}
-        }
-
-        private class Customer11 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int Default0SomeAction() {
-                return 0;
-            }
-
-            [Executed(Where.Remotely)]
-            public long Default1SomeAction() {
-                return 0;
-            }
-
-            [Executed(Where.Locally)]
-            public long Default2SomeAction() {
-                return 0;
-            }
-        }
-
-        private class Customer22 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int DefaultSomeAction(int x) {
-                return 0;
-            }
-
-            [Executed(Where.Remotely)]
-            public long DefaultSomeAction(long y) {
-                return 0;
-            }
-
-            [Executed(Where.Locally)]
-            public long Default2SomeAction() {
-                return 0;
-            }
-        }
-
-        private class Customer13 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int[] Choices0SomeAction() {
-                return new int[0];
-            }
-
-            [Executed(Where.Remotely)]
-            public long[] Choices1SomeAction() {
-                return new long[0];
-            }
-
-            [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() {
-                return new long[0];
-            }
-        }
-
-        private class Customer26 {
-            public void SomeAction(string x, Customer26 y, long z) {}
-
-            public IQueryable<string> AutoComplete0SomeAction(string name) {
-                return new string[0].AsQueryable();
-            }
-
-            public IQueryable<Customer26> AutoComplete1SomeAction(string name) {
-                return new Customer26[0].AsQueryable();
-            }
-
-            public IQueryable<long> AutoComplete2SomeAction(string name) {
-                return new long[0].AsQueryable();
-            }
-        }
-
-        private class Customer27 {
-            public void SomeAction(string x, string y, string z) {}
-
-            public IEnumerable<string> AutoComplete0SomeAction(string name) {
-                return new string[0].AsQueryable();
-            }
-
-            public IQueryable<string> AutoComplete1SomeAction() {
-                return new string[0].AsQueryable();
-            }
-
-            public IQueryable<string> AutoComplete2SomeAction(int name) {
-                return new string[0].AsQueryable();
-            }
-        }
-
-        private class Customer28 {
-            public void SomeAction(string x, Customer26 y, long z) {}
-
-            [PageSize(33)]
-            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name) {
-                return new string[0].AsQueryable();
-            }
-
-            [PageSize(66)]
-            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name) {
-                return new Customer26[0].AsQueryable();
-            }
-        }
-
-        private class Customer30 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int[] Choices0SomeAction(long y, long z) {
-                return new int[0];
-            }
-
-            [Executed(Where.Remotely)]
-            public long[] Choices1SomeAction(long z) {
-                return new long[0];
-            }
-
-            [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() {
-                return new long[0];
-            }
-        }
-
-        private class Customer31 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int[] Choices0SomeAction(long y, long z) {
-                return new int[0];
-            }
-
-            [Executed(Where.Remotely)]
-            public long[] Choices0SomeAction(long z) {
-                return new long[0];
-            }
-
-            [Executed(Where.Locally)]
-            public long[] Choices0SomeAction() {
-                return new long[0];
-            }
-        }
-
-        private class Customer21 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public int[] ChoicesSomeAction(int x) {
-                return new int[0];
-            }
-
-            [Executed(Where.Remotely)]
-            public long[] ChoicesSomeAction(long y) {
-                return new long[0];
-            }
-
-            [Executed(Where.Locally)]
-            public long[] Choices2SomeAction() {
-                return new long[0];
-            }
-        }
-
-        private class Customer14 {
-            public void SomeAction() {}
-        }
-
-        private class Customer15 {
-            public string SomeAction() {
-                return null;
-            }
-        }
-
-        private class Customer16 {
-            public string SomeAction() {
-                return null;
-            }
-        }
-
-        private class Customer8 {
-            public void SomeAction() {}
-
-            public string ValidateSomeAction() {
-                return null;
-            }
-        }
-
-        private class Customer9 {
-            public void SomeAction(int x, int y) {}
-
-            public string ValidateSomeAction(int x, int y) {
-                return null;
-            }
-        }
-
-        private class Customer10 {
-            public void SomeActionOne() {}
-
-            public bool HideSomeActionOne() {
-                return false;
-            }
-
-            public void SomeActionTwo(int x) {}
-
-            public bool HideSomeActionTwo(int x) {
-                return false;
-            }
-
-            public void SomeActionThree(int x) {}
-
-            public bool HideSomeActionThree() {
-                return false;
-            }
-
-            public void SomeActionFour(int x, int y) {}
-
-            public bool HideSomeActionFour(int x, int y) {
-                return false;
-            }
-
-            public bool HideSomeActionFour() {
-                return false;
-            }
-        }
-
-        private class Customer12 {
-            public void SomeActionOne() {}
-
-            public string DisableSomeActionOne() {
-                return "";
-            }
-
-            public void SomeActionTwo(int x) {}
-
-            public string DisableSomeActionTwo(int x) {
-                return "";
-            }
-
-            public void SomeActionThree(int x) {}
-
-            public string DisableSomeActionThree() {
-                return "";
-            }
-
-            public void SomeActionFour(int x, int y) {}
-
-            public string DisableSomeActionFour(int x, int y) {
-                return "";
-            }
-
-            public string DisableSomeActionFour() {
-                return "";
-            }
-        }
-
-        private class Customer18 {
-            public string DisableActionDefault() {
-                return "";
-            }
-
-            public void SomeActionTwo(int x) {}
-
-            public string DisableSomeActionTwo(int x) {
-                return "";
-            }
-
-            public void SomeActionThree(int x) {}
-        }
-
-        private class Customer19 {
-            public bool HideActionDefault() {
-                return false;
-            }
-
-            public void SomeActionTwo(int x) {}
-
-            public bool HideSomeActionTwo(int x) {
-                return false;
-            }
-
-            public void SomeActionThree(int x) {}
-        }
-
-        public class CustomerStatic {
-            public void SomeAction(int x, long y) {}
-
-            public static bool HideSomeAction(IPrincipal principal) {
-                return true;
-            }
-
-            public static string DisableSomeAction(IPrincipal principal) {
-                return "disabled for this user";
-            }
-
-            public static void OtherAction(int x, long y) {}
-        }
-
-        private class Customer17 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public string Validate0SomeAction(int x) {
-                return "failed";
-            }
-
-            public string Validate1SomeAction(long x) {
-                return null;
-            }
-        }
-
-        private class Customer20 {
-            public void SomeAction(int x, long y, long z) {}
-
-            public string ValidateSomeAction(int x) {
-                return "failed";
-            }
-
-            public string ValidateSomeAction(long y) {
-                return null;
-            }
-        }
-
-        private class Customer23 {
-            public void SomeAction(int x, long y, long z) {}
-
-            [Executed(Ajax.Enabled)]
-            public string ValidateSomeAction(int x) {
-                return "failed";
-            }
-
-            public string ValidateSomeAction(long y) {
-                return null;
-            }
-        }
-
-        private class Customer24 {
-            public void SomeAction(int x, long y, long z) {}
-
-            [Executed(Ajax.Disabled)]
-            public string ValidateSomeAction(int x) {
-                return "failed";
-            }
-
-            public string ValidateSomeAction(long y) {
-                return null;
-            }
-        }
-
-        private class Customer25 {
-            public void SomeAction(int x, long y, long z) {}
-        }
-
-        public interface ICustomer {}
-
-        private class Customer32 {
-            public void SomeAction(string x, ICustomer y, long z) {}
-
-            public IQueryable<string> AutoComplete0SomeAction(string name) {
-                return new string[0].AsQueryable();
-            }
-
-            public IQueryable<ICustomer> AutoComplete1SomeAction(string name) {
-                return new ICustomer[0].AsQueryable();
-            }
-
-            public IQueryable<long> AutoComplete2SomeAction(string name) {
-                return new long[0].AsQueryable();
-            }
-        }
-
-        private class Customer33 {
-            public IQueryable<Customer33> SomeQueryableAction1() {
-                return null;
-            }
-
-            [QueryOnly]
-            public IEnumerable<Customer33> SomeQueryableAction2() {
-                return null;
-            }
-        }
-
-        // ReSharper restore UnusedMember.Local
-        // ReSharper restore UnusedParameter.Local
 
         [TestMethod]
         public void TestActionInvocationFacetIsInstalledAndMethodRemoved() {
@@ -1142,6 +737,411 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var namedFacet = (INamedFacet) facet;
             Assert.AreEqual("An Action With Named Annotation", namedFacet.NaturalName);
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ActionMethodsFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
+        // ReSharper disable UnusedMember.Local
+        // ReSharper disable UnusedParameter.Local
+
+        private class Customer {
+            public void SomeAction() {}
+        }
+
+        private class Customer1 {
+            [Named("Renamed an action with a named annotation")]
+            public void AnActionWithNamedAnnotation() {}
+
+            public void AnActionWithNullableParm(bool? parm) {}
+            public void AnActionWithoutNullableParm(bool parm) {}
+        }
+
+        private class Customer11 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int Default0SomeAction() {
+                return 0;
+            }
+
+            [Executed(Where.Remotely)]
+            public long Default1SomeAction() {
+                return 0;
+            }
+
+            [Executed(Where.Locally)]
+            public long Default2SomeAction() {
+                return 0;
+            }
+        }
+
+        private class Customer22 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int DefaultSomeAction(int x) {
+                return 0;
+            }
+
+            [Executed(Where.Remotely)]
+            public long DefaultSomeAction(long y) {
+                return 0;
+            }
+
+            [Executed(Where.Locally)]
+            public long Default2SomeAction() {
+                return 0;
+            }
+        }
+
+        private class Customer13 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int[] Choices0SomeAction() {
+                return new int[0];
+            }
+
+            [Executed(Where.Remotely)]
+            public long[] Choices1SomeAction() {
+                return new long[0];
+            }
+
+            [Executed(Where.Locally)]
+            public long[] Choices2SomeAction() {
+                return new long[0];
+            }
+        }
+
+        private class Customer26 {
+            public void SomeAction(string x, Customer26 y, long z) {}
+
+            public IQueryable<string> AutoComplete0SomeAction(string name) {
+                return new string[0].AsQueryable();
+            }
+
+            public IQueryable<Customer26> AutoComplete1SomeAction(string name) {
+                return new Customer26[0].AsQueryable();
+            }
+
+            public IQueryable<long> AutoComplete2SomeAction(string name) {
+                return new long[0].AsQueryable();
+            }
+        }
+
+        private class Customer27 {
+            public void SomeAction(string x, string y, string z) {}
+
+            public IEnumerable<string> AutoComplete0SomeAction(string name) {
+                return new string[0].AsQueryable();
+            }
+
+            public IQueryable<string> AutoComplete1SomeAction() {
+                return new string[0].AsQueryable();
+            }
+
+            public IQueryable<string> AutoComplete2SomeAction(int name) {
+                return new string[0].AsQueryable();
+            }
+        }
+
+        private class Customer28 {
+            public void SomeAction(string x, Customer26 y, long z) {}
+
+            [PageSize(33)]
+            public IQueryable<string> AutoComplete0SomeAction([MinLength(2)] string name) {
+                return new string[0].AsQueryable();
+            }
+
+            [PageSize(66)]
+            public IQueryable<Customer26> AutoComplete1SomeAction([MinLength(3)] string name) {
+                return new Customer26[0].AsQueryable();
+            }
+        }
+
+        private class Customer30 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int[] Choices0SomeAction(long y, long z) {
+                return new int[0];
+            }
+
+            [Executed(Where.Remotely)]
+            public long[] Choices1SomeAction(long z) {
+                return new long[0];
+            }
+
+            [Executed(Where.Locally)]
+            public long[] Choices2SomeAction() {
+                return new long[0];
+            }
+        }
+
+        private class Customer31 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int[] Choices0SomeAction(long y, long z) {
+                return new int[0];
+            }
+
+            [Executed(Where.Remotely)]
+            public long[] Choices0SomeAction(long z) {
+                return new long[0];
+            }
+
+            [Executed(Where.Locally)]
+            public long[] Choices0SomeAction() {
+                return new long[0];
+            }
+        }
+
+        private class Customer21 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public int[] ChoicesSomeAction(int x) {
+                return new int[0];
+            }
+
+            [Executed(Where.Remotely)]
+            public long[] ChoicesSomeAction(long y) {
+                return new long[0];
+            }
+
+            [Executed(Where.Locally)]
+            public long[] Choices2SomeAction() {
+                return new long[0];
+            }
+        }
+
+        private class Customer14 {
+            public void SomeAction() {}
+        }
+
+        private class Customer15 {
+            public string SomeAction() {
+                return null;
+            }
+        }
+
+        private class Customer16 {
+            public string SomeAction() {
+                return null;
+            }
+        }
+
+        private class Customer8 {
+            public void SomeAction() {}
+
+            public string ValidateSomeAction() {
+                return null;
+            }
+        }
+
+        private class Customer9 {
+            public void SomeAction(int x, int y) {}
+
+            public string ValidateSomeAction(int x, int y) {
+                return null;
+            }
+        }
+
+        private class Customer10 {
+            public void SomeActionOne() {}
+
+            public bool HideSomeActionOne() {
+                return false;
+            }
+
+            public void SomeActionTwo(int x) {}
+
+            public bool HideSomeActionTwo(int x) {
+                return false;
+            }
+
+            public void SomeActionThree(int x) {}
+
+            public bool HideSomeActionThree() {
+                return false;
+            }
+
+            public void SomeActionFour(int x, int y) {}
+
+            public bool HideSomeActionFour(int x, int y) {
+                return false;
+            }
+
+            public bool HideSomeActionFour() {
+                return false;
+            }
+        }
+
+        private class Customer12 {
+            public void SomeActionOne() {}
+
+            public string DisableSomeActionOne() {
+                return "";
+            }
+
+            public void SomeActionTwo(int x) {}
+
+            public string DisableSomeActionTwo(int x) {
+                return "";
+            }
+
+            public void SomeActionThree(int x) {}
+
+            public string DisableSomeActionThree() {
+                return "";
+            }
+
+            public void SomeActionFour(int x, int y) {}
+
+            public string DisableSomeActionFour(int x, int y) {
+                return "";
+            }
+
+            public string DisableSomeActionFour() {
+                return "";
+            }
+        }
+
+        private class Customer18 {
+            public string DisableActionDefault() {
+                return "";
+            }
+
+            public void SomeActionTwo(int x) {}
+
+            public string DisableSomeActionTwo(int x) {
+                return "";
+            }
+
+            public void SomeActionThree(int x) {}
+        }
+
+        private class Customer19 {
+            public bool HideActionDefault() {
+                return false;
+            }
+
+            public void SomeActionTwo(int x) {}
+
+            public bool HideSomeActionTwo(int x) {
+                return false;
+            }
+
+            public void SomeActionThree(int x) {}
+        }
+
+        public class CustomerStatic {
+            public void SomeAction(int x, long y) {}
+
+            public static bool HideSomeAction(IPrincipal principal) {
+                return true;
+            }
+
+            public static string DisableSomeAction(IPrincipal principal) {
+                return "disabled for this user";
+            }
+
+            public static void OtherAction(int x, long y) {}
+        }
+
+        private class Customer17 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public string Validate0SomeAction(int x) {
+                return "failed";
+            }
+
+            public string Validate1SomeAction(long x) {
+                return null;
+            }
+        }
+
+        private class Customer20 {
+            public void SomeAction(int x, long y, long z) {}
+
+            public string ValidateSomeAction(int x) {
+                return "failed";
+            }
+
+            public string ValidateSomeAction(long y) {
+                return null;
+            }
+        }
+
+        private class Customer23 {
+            public void SomeAction(int x, long y, long z) {}
+
+            [Executed(Ajax.Enabled)]
+            public string ValidateSomeAction(int x) {
+                return "failed";
+            }
+
+            public string ValidateSomeAction(long y) {
+                return null;
+            }
+        }
+
+        private class Customer24 {
+            public void SomeAction(int x, long y, long z) {}
+
+            [Executed(Ajax.Disabled)]
+            public string ValidateSomeAction(int x) {
+                return "failed";
+            }
+
+            public string ValidateSomeAction(long y) {
+                return null;
+            }
+        }
+
+        private class Customer25 {
+            public void SomeAction(int x, long y, long z) {}
+        }
+
+        public interface ICustomer {}
+
+        private class Customer32 {
+            public void SomeAction(string x, ICustomer y, long z) {}
+
+            public IQueryable<string> AutoComplete0SomeAction(string name) {
+                return new string[0].AsQueryable();
+            }
+
+            public IQueryable<ICustomer> AutoComplete1SomeAction(string name) {
+                return new ICustomer[0].AsQueryable();
+            }
+
+            public IQueryable<long> AutoComplete2SomeAction(string name) {
+                return new long[0].AsQueryable();
+            }
+        }
+
+        private class Customer33 {
+            public IQueryable<Customer33> SomeQueryableAction1() {
+                return null;
+            }
+
+            [QueryOnly]
+            public IEnumerable<Customer33> SomeQueryableAction2() {
+                return null;
+            }
+        }
+
+        // ReSharper restore UnusedMember.Local
+        // ReSharper restore UnusedParameter.Local
     }
 
     // Copyright (c) Naked Objects Group Ltd.

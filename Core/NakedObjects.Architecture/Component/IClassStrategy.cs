@@ -25,7 +25,6 @@ namespace NakedObjects.Architecture.Component {
         ///     field
         /// </summary>
         //bool IsSystemClass(Type type);
-
         string GetKeyForType(Type type);
 
         bool IsTypeToBeIntrospected(Type type);

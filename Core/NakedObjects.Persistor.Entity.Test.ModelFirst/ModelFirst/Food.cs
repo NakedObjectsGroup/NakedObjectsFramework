@@ -7,17 +7,17 @@
 
 namespace ModelFirst {
     public class Food {
+        #region Navigation Properties
+
+        public virtual Person Person { get; set; }
+
+        #endregion
+
         #region Primitive Properties
 
         public virtual int Id { get; set; }
 
         public virtual string Name { get; set; }
-
-        #endregion
-
-        #region Navigation Properties
-
-        public virtual Person Person { get; set; }
 
         #endregion
     }

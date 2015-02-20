@@ -20,6 +20,101 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
+        public EntityKey EntityKey { get; set; }
+
+        #region IEncodedToStrings Members
+
+        public string[] ToEncodedStrings() {
+            var helper = new StringEncoderHelper();
+
+            helper.Add(TypeName);
+            helper.Add(Key);
+            helper.Add(IsTransient);
+            helper.AddSerializable(EntityKey);
+            helper.Add(HasPrevious);
+            if (HasPrevious) {
+                helper.Add(previous as IEncodedToStrings);
+            }
+
+            return helper.ToArray();
+        }
+
+        public string[] ToShortEncodedStrings() {
+            var helper = new StringEncoderHelper();
+
+            helper.Add(TypeName);
+            helper.Add(Key);
+            helper.Add(IsTransient);
+            helper.AddSerializable(EntityKey);
+
+            return helper.ToArray();
+        }
+
+        #endregion
+
+        #region IEntityOid Members
+
+        public string TypeName { get; private set; }
+        public object[] Key { get; private set; }
+
+        public void CopyFrom(IOid oid) {
+            Assert.AssertTrue("Copy from Oid must be Entity Oid", oid is EntityOid);
+            var from = (EntityOid) oid;
+            Key = from.Key;
+            TypeName = from.TypeName;
+            EntityKey = from.EntityKey;
+            IsTransient = from.IsTransient;
+            CacheState();
+        }
+
+        public ITypeSpec Spec {
+            get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
+        }
+
+        public IOid Previous {
+            get { return previous; }
+        }
+
+        public bool HasPrevious {
+            get { return previous != null; }
+        }
+
+        public bool IsTransient { get; private set; }
+
+        public void MakePersistent() {
+            ThrowErrorIfNotTransient();
+            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
+            IsTransient = false;
+            CacheState();
+        }
+
+        public void MakePersistentAndUpdateKey(object[] newKey) {
+            ThrowErrorIfNotTransient(newKey);
+            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
+            Key = newKey; // after old key is saved ! 
+            IsTransient = false;
+            CacheState();
+        }
+
+        #endregion
+
+        private void CacheState() {
+            cachedHashCode = HashCodeUtils.Seed;
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Key);
+
+            object keys = Key.Aggregate((s, t) => s + ":" + t);
+
+            cachedToString = string.Format("{0}EOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+        }
+
+        private void ThrowErrorIfNotTransient(object[] newKey = null) {
+            if (!IsTransient) {
+                string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
+                string error = string.Format("Attempting to make persistent an already persisted object. Existing Key: {0} {1}", ToString(), newKeyString);
+                Assert.AssertTrue(error, IsTransient);
+            }
+        }
 
         #region Constructors
 
@@ -62,101 +157,6 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         }
 
         #endregion
-
-        public string TypeName { get; private set; }
-        public object[] Key { get; private set; }
-        public EntityKey EntityKey { get; set; }
-
-        #region IEncodedToStrings Members
-
-        public string[] ToEncodedStrings() {
-            var helper = new StringEncoderHelper();
-
-            helper.Add(TypeName);
-            helper.Add(Key);
-            helper.Add(IsTransient);
-            helper.AddSerializable(EntityKey);
-            helper.Add(HasPrevious);
-            if (HasPrevious) {
-                helper.Add(previous as IEncodedToStrings);
-            }
-
-            return helper.ToArray();
-        }
-
-        public string[] ToShortEncodedStrings() {
-            var helper = new StringEncoderHelper();
-
-            helper.Add(TypeName);
-            helper.Add(Key);
-            helper.Add(IsTransient);
-            helper.AddSerializable(EntityKey);
-
-            return helper.ToArray();
-        }
-
-        #endregion
-
-        #region IOid Members
-
-        public void CopyFrom(IOid oid) {
-            Assert.AssertTrue("Copy from Oid must be Entity Oid", oid is EntityOid);
-            var from = (EntityOid) oid;
-            Key = from.Key;
-            TypeName = from.TypeName;
-            EntityKey = from.EntityKey;
-            IsTransient = from.IsTransient;
-            CacheState();
-        }
-
-        public ITypeSpec Spec {
-            get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
-        }
-
-        public IOid Previous {
-            get { return previous; }
-        }
-
-        public bool HasPrevious {
-            get { return previous != null; }
-        }
-
-        public bool IsTransient { get; private set; }
-
-        #endregion
-
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Key);
-
-            object keys = Key.Aggregate((s, t) => s + ":" + t);
-
-            cachedToString = string.Format("{0}EOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
-        }
-
-        public void MakePersistent() {
-            ThrowErrorIfNotTransient();
-            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
-            IsTransient = false;
-            CacheState();
-        }
-
-        private void ThrowErrorIfNotTransient(object[] newKey = null) {
-            if (!IsTransient) {
-                string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
-                string error = string.Format("Attempting to make persistent an already persisted object. Existing Key: {0} {1}", ToString(), newKeyString);
-                Assert.AssertTrue(error, IsTransient);
-            }
-        }
-
-        public void MakePersistentAndUpdateKey(object[] newKey) {
-            ThrowErrorIfNotTransient(newKey);
-            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
-            Key = newKey; // after old key is saved ! 
-            IsTransient = false;
-            CacheState();
-        }
 
         #region Object Overrides
 

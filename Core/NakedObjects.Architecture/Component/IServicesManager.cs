@@ -13,13 +13,9 @@ namespace NakedObjects.Architecture.Component {
     /// Provides access to the domain services that have been registered as part of the application. 
     /// </summary>
     public interface IServicesManager {
-      
         INakedObject GetService(string id);
-
         INakedObject GetService(IServiceSpec spec);
-
         INakedObject[] GetServices();
-
         INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager);
     }
 }

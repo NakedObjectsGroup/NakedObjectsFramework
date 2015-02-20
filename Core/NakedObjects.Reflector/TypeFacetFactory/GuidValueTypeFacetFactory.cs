@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable> (GuidValueSemanticsProvider.AdaptedType);
+                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(GuidValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
             }
         }

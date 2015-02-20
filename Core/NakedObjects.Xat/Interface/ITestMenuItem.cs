@@ -8,13 +8,9 @@
 namespace NakedObjects.Xat {
     public interface ITestMenuItem {
         ITestMenuItem AssertNameEquals(string name);
-
         ITestMenuItem AssertIsAction();
-
         ITestAction AsAction();
-
         ITestMenuItem AssertIsSubMenu();
-
         ITestMenu AsSubMenu();
     }
 }

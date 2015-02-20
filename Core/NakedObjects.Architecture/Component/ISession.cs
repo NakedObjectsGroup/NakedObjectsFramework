@@ -18,7 +18,6 @@ namespace NakedObjects.Architecture.Component {
         string UserName { get; }
 
         bool IsAuthenticated { get; }
-
         IPrincipal Principal { get; }
     }
 

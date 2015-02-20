@@ -14,6 +14,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class TransactionHistory {
+        #region Navigation Properties
+
+        #region Product (Product)
+
+        [MemberOrder(180)]
+        public virtual Product Product { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region TransactionID (Int32)
@@ -69,17 +80,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(170), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region Product (Product)
-
-        [MemberOrder(180)]
-        public virtual Product Product { get; set; }
 
         #endregion
 

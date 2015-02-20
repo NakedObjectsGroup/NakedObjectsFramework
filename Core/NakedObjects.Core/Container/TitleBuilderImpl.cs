@@ -9,80 +9,12 @@ using System;
 using System.Text;
 
 namespace NakedObjects.Core.Container {
-
     internal class TitleBuilderImpl : ITitleBuilder {
         private const string Space = " ";
-
         private StringBuilder Title { get; set; }
-        private IDomainObjectContainer Container {get; set;}
-        #region Constructors
+        private IDomainObjectContainer Container { get; set; }
 
-        /// <summary>
-        ///     Creates a new, empty, TitleBuilder object
-        /// </summary>
-        public TitleBuilderImpl(IDomainObjectContainer container) {
-            Title = new StringBuilder();
-            Container = container;
-        }
-
-        /// <summary>
-        ///     Creates a new TitleBuilder object, containing the Title of the specified object
-        /// </summary>
-        public TitleBuilderImpl(IDomainObjectContainer container, object obj, string defaultTitle = null)
-            : this(container) {
-            if (IsEmpty(obj, null)) {
-                Concat(defaultTitle);
-            } else {
-                Concat(obj);
-            }
-        }
-
-        /// <summary>
-        ///     Creates a new Title object, containing the specified text
-        /// </summary>
-        public TitleBuilderImpl(IDomainObjectContainer container, string text)
-            : this(container) {
-            Concat(text);
-        }
-
-        #endregion
-
-        #region Private
-        private void AppendJoiner(string joiner) {
-            if (Title.Length > 0) {
-                Title.Append(joiner);
-            }
-        }
-
-        private void AppendWithSpace(string str) {
-            AppendSpace();
-            Title.Append(str);
-        }
-
-        private void AppendWithSpace(object obj, string format) {
-            AppendSpace();
-            Title.Append(Container.TitleOf(obj, format));
-        }
-
-        #endregion
-
-
-        /// <summary>
-        ///     Determines if the specified object's Title (from its <c>ToString()</c> method) is empty. Will
-        ///     return true if either: the specified reference is null; the object's <c>ToString()</c> method
-        ///     returns null; or if the <c>ToString()</c> returns an empty string
-        /// </summary>
-        public bool IsEmpty(object obj, string format) {
-            return obj == null || IsEmpty(Container.TitleOf(obj, format));
-        }
-
-        /// <summary>
-        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
-        ///     or if the reference is an empty string
-        /// </summary>
-        public  bool IsEmpty(string text) {
-            return string.IsNullOrEmpty(text);
-        }
+        #region ITitleBuilder Members
 
         /// <summary>
         ///     Append the Title of the specified object
@@ -107,7 +39,8 @@ namespace NakedObjects.Core.Container {
         public ITitleBuilder Append(object obj, string format, string defaultValue) {
             if (!IsEmpty(obj, format)) {
                 AppendWithSpace(obj, format);
-            } else {
+            }
+            else {
                 AppendWithSpace(defaultValue);
             }
             return this;
@@ -156,7 +89,8 @@ namespace NakedObjects.Core.Container {
         public ITitleBuilder Append(string joiner, object obj, string format, string defaultTitle) {
             if (IsEmpty(obj, format)) {
                 Append(joiner, defaultTitle);
-            } else {
+            }
+            else {
                 AppendJoiner(joiner);
                 AppendWithSpace(obj, format);
             }
@@ -286,7 +220,7 @@ namespace NakedObjects.Core.Container {
             if (noWords < 1) {
                 throw new ArgumentException("Truncation must be to one or more words");
             }
-            string[] words = Title.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             if (noWords >= words.Length) {
                 return this;
             }
@@ -297,5 +231,77 @@ namespace NakedObjects.Core.Container {
             Title.Append("...");
             return this;
         }
+
+        #endregion
+
+        /// <summary>
+        ///     Determines if the specified object's Title (from its <c>ToString()</c> method) is empty. Will
+        ///     return true if either: the specified reference is null; the object's <c>ToString()</c> method
+        ///     returns null; or if the <c>ToString()</c> returns an empty string
+        /// </summary>
+        public bool IsEmpty(object obj, string format) {
+            return obj == null || IsEmpty(Container.TitleOf(obj, format));
+        }
+
+        /// <summary>
+        ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
+        ///     or if the reference is an empty string
+        /// </summary>
+        public bool IsEmpty(string text) {
+            return string.IsNullOrEmpty(text);
+        }
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates a new, empty, TitleBuilder object
+        /// </summary>
+        public TitleBuilderImpl(IDomainObjectContainer container) {
+            Title = new StringBuilder();
+            Container = container;
+        }
+
+        /// <summary>
+        ///     Creates a new TitleBuilder object, containing the Title of the specified object
+        /// </summary>
+        public TitleBuilderImpl(IDomainObjectContainer container, object obj, string defaultTitle = null)
+            : this(container) {
+            if (IsEmpty(obj, null)) {
+                Concat(defaultTitle);
+            }
+            else {
+                Concat(obj);
+            }
+        }
+
+        /// <summary>
+        ///     Creates a new Title object, containing the specified text
+        /// </summary>
+        public TitleBuilderImpl(IDomainObjectContainer container, string text)
+            : this(container) {
+            Concat(text);
+        }
+
+        #endregion
+
+        #region Private
+
+        private void AppendJoiner(string joiner) {
+            if (Title.Length > 0) {
+                Title.Append(joiner);
+            }
+        }
+
+        private void AppendWithSpace(string str) {
+            AppendSpace();
+            Title.Append(str);
+        }
+
+        private void AppendWithSpace(object obj, string format) {
+            AppendSpace();
+            Title.Append(Container.TitleOf(obj, format));
+        }
+
+        #endregion
     }
 }

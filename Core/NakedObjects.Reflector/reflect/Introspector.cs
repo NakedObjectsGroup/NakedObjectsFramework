@@ -25,10 +25,8 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect {
     internal class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
-
         private readonly IMetamodel metamodel;
         private readonly IReflector reflector;
-        private Type introspectedType;
         private MethodInfo[] methods;
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;
@@ -49,32 +47,30 @@ namespace NakedObjects.Reflect {
         }
 
         private Type[] InterfacesTypes {
-            get { return introspectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
+            get { return IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
         }
 
         private Type SuperclassType {
-            get { return introspectedType.BaseType; }
+            get { return IntrospectedType.BaseType; }
         }
 
         #region IIntrospector Members
 
-        public Type IntrospectedType {
-            get { return introspectedType; }
-        }
+        public Type IntrospectedType { get; private set; }
 
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
         /// </summary>
         public string ClassName {
-            get { return introspectedType.Name; }
+            get { return IntrospectedType.Name; }
         }
 
         public string FullName {
-            get { return introspectedType.GetProxiedTypeFullName(); }
+            get { return IntrospectedType.GetProxiedTypeFullName(); }
         }
 
         public string ShortName {
-            get { return TypeNameUtils.GetShortName(introspectedType.Name); }
+            get { return TypeNameUtils.GetShortName(IntrospectedType.Name); }
         }
 
         public IList<IAssociationSpecImmutable> Fields {
@@ -86,7 +82,6 @@ namespace NakedObjects.Reflect {
         }
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
-
         public ITypeSpecBuilder Superclass { get; set; }
 
         public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec) {
@@ -96,19 +91,19 @@ namespace NakedObjects.Reflect {
                 throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
             }
 
-            introspectedType = typeToIntrospect;
+            IntrospectedType = typeToIntrospect;
             properties = typeToIntrospect.GetProperties();
             methods = GetNonPropertyMethods();
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new IntrospectorMethodRemover(methods);
-            FacetFactorySet.Process(reflector, introspectedType, methodRemover, spec);
+            FacetFactorySet.Process(reflector, IntrospectedType, methodRemover, spec);
 
             if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
                 Superclass = reflector.LoadSpecification(SuperclassType);
             }
-       
+
             AddAsSubclass(spec);
 
             var interfaces = new List<ITypeSpecBuilder>();
@@ -149,7 +144,7 @@ namespace NakedObjects.Reflect {
 
         private MethodInfo[] GetNonPropertyMethods() {
             // no better way to do this (ie no flag that indicates getter/setter)
-            var allMethods = new List<MethodInfo>(introspectedType.GetMethods());
+            var allMethods = new List<MethodInfo>(IntrospectedType.GetMethods());
             foreach (PropertyInfo pInfo in properties) {
                 allMethods.Remove(pInfo.GetGetMethod());
                 allMethods.Remove(pInfo.GetSetMethod());
@@ -159,8 +154,7 @@ namespace NakedObjects.Reflect {
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
-          
-            Log.DebugFormat("Looking for fields for {0}", introspectedType);
+            Log.DebugFormat("Looking for fields for {0}", IntrospectedType);
 
             // now create fieldSpecs for value properties, for collections and for reference properties        
             IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
@@ -184,9 +178,9 @@ namespace NakedObjects.Reflect {
 
                 // create a collection property spec
                 Type returnType = property.PropertyType;
-                var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable> (returnType);
+                var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable>(returnType);
                 Type defaultType = typeof (object);
-                var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable> (defaultType);
+                var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType);
 
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
@@ -209,9 +203,8 @@ namespace NakedObjects.Reflect {
                 // create a reference property spec
                 var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 Type propertyType = property.PropertyType;
-                var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable> (propertyType);
+                var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType);
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
-
 
                 // Process facets for the property
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
@@ -222,11 +215,10 @@ namespace NakedObjects.Reflect {
         }
 
         private IActionSpecImmutable[] FindActionMethods(ITypeSpecImmutable spec) {
- 
             Log.Debug("Looking for action methods");
 
             var actionSpecs = new List<IActionSpecImmutable>();
-         
+
             for (int i = 0; i < methods.Length; i++) {
                 // careful in here - methods are being nulled out within the methods array as we iterate. 
                 if (methods[i] != null) {
@@ -269,6 +261,8 @@ namespace NakedObjects.Reflect {
             return list;
         }
 
+        #region Nested type: IntrospectorMethodRemover
+
         #region Nested Type: DotnetIntrospectorMethodRemover
 
         private class IntrospectorMethodRemover : IMethodRemover {
@@ -302,6 +296,8 @@ namespace NakedObjects.Reflect {
 
             #endregion
         }
+
+        #endregion
 
         #endregion
 

@@ -59,15 +59,10 @@ namespace NakedObjects.Architecture.Component {
         void ExecuteSaveObjectCommand(INakedObject nakedObject);
 
         void EndTransaction();
-
         IQueryable<T> GetInstances<T>() where T : class;
-
         IQueryable GetInstances(Type type);
-
         IQueryable GetInstances(IObjectSpec spec);
-
         T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class;
-
         object CreateInstance(Type type);
 
         /// <summary>
@@ -81,27 +76,17 @@ namespace NakedObjects.Architecture.Component {
         ///     persistence mechanism and the object recreated (as describe previously). The specified OID should then
         ///     be assigned to the recreated object by settings its OID.
         /// </para>
-        
         INakedObject GetObject(IOid oid, IObjectSpec hint);
 
         void Reload(INakedObject nakedObject);
-
         void ResolveField(INakedObject nakedObject, IAssociationSpec field);
-
         void ResolveImmediately(INakedObject nakedObject);
-
         void Execute(IPersistenceCommand[] commands);
-
         void StartTransaction();
-
         PropertyInfo[] GetKeys(Type type);
-
         void Refresh(INakedObject nakedObject);
-
         int CountField(INakedObject nakedObject, IAssociationSpec associationSpec);
-
         INakedObject FindByKeys(Type type, object[] keys);
-
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }
 

@@ -23,23 +23,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     // ReSharper disable UnusedParameter.Local
     // ReSharper disable ClassNeverInstantiated.Local
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new CollectionFieldMethodsFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private CollectionFieldMethodsFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -54,194 +37,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        private class Customer {
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer1 {
-            public ArrayList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer10 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void RemoveFromOrders(Order o) {}
-        }
-
-        private class Customer11 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void RemoveFromOrders(Order o) {}
-        }
-
-        private class Customer12 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void ClearOrders() {}
-        }
-
-        private class Customer13 {
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer14 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Order o) {}
-
-            public string ValidateAddToOrders(Order o) {
-                return null;
-            }
-        }
-
-        private class Customer15 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void RemoveFromOrders(Order o) {}
-
-            public string ValidateRemoveFromOrders(Order o) {
-                return null;
-            }
-        }
-
-        private class Customer16 {
-            public IList<Order> Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Order o) {}
-        }
-
-        private class Customer17 {
-            public IList<Order> Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Customer c) {}
-
-            public void RemoveFromOrders(Customer c) {}
-        }
-
-        private class Customer18 {
-            public ISet<Order> Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Customer c) {}
-
-            public void RemoveFromOrders(Customer c) {}
-        }
-
-        private class Customer2 {
-            public ArrayList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer3 {
-            public object[] Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer4 {
-            public Order[] Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer5 {
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer6 {
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer7 {
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        private class Customer8 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Order o) {}
-        }
-
-        private class Customer9 {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public void AddToOrders(Order o) {}
-        }
-
-        public class CustomerStatic {
-            public IList Orders {
-                get { return null; }
-            }
-
-            public static string NameOrders() {
-                return "Most Recent Orders";
-            }
-
-            public static string DescriptionOrders() {
-                return "Some old description";
-            }
-
-            public static bool AlwaysHideOrders() {
-                return true;
-            }
-
-            public static bool ProtectOrders() {
-                return true;
-            }
-
-            public static bool HideOrders(IPrincipal principal) {
-                return true;
-            }
-
-            public static string DisableOrders(IPrincipal principal) {
-                return "disabled for this user";
-            }
-
-            public static void OtherOrders() {}
-
-            public static bool AlwaysHideOtherOrders() {
-                return false;
-            }
-
-            public static bool ProtectOtherOrders() {
-                return false;
-            }
-        }
-
-        private class Order {}
 
         [TestMethod]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
@@ -351,6 +146,293 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IIsASetFacet));
             Assert.IsNull(facet);
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            public IList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            public ArrayList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer10
+
+        private class Customer10 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void RemoveFromOrders(Order o) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer11
+
+        private class Customer11 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void RemoveFromOrders(Order o) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer12
+
+        private class Customer12 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void ClearOrders() {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer13
+
+        private class Customer13 {
+            public IList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer14
+
+        private class Customer14 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Order o) {}
+
+            public string ValidateAddToOrders(Order o) {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer15
+
+        private class Customer15 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void RemoveFromOrders(Order o) {}
+
+            public string ValidateRemoveFromOrders(Order o) {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer16
+
+        private class Customer16 {
+            public IList<Order> Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Order o) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer17
+
+        private class Customer17 {
+            public IList<Order> Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Customer c) {}
+            public void RemoveFromOrders(Customer c) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer18
+
+        private class Customer18 {
+            public ISet<Order> Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Customer c) {}
+            public void RemoveFromOrders(Customer c) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            public ArrayList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            public object[] Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            public Order[] Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        private class Customer5 {
+            public IList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer6
+
+        private class Customer6 {
+            public IList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7 {
+            public IList Orders {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer8
+
+        private class Customer8 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Order o) {}
+        }
+
+        #endregion
+
+        #region Nested type: Customer9
+
+        private class Customer9 {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public void AddToOrders(Order o) {}
+        }
+
+        #endregion
+
+        #region Nested type: CustomerStatic
+
+        public class CustomerStatic {
+            public IList Orders {
+                get { return null; }
+            }
+
+            public static string NameOrders() {
+                return "Most Recent Orders";
+            }
+
+            public static string DescriptionOrders() {
+                return "Some old description";
+            }
+
+            public static bool AlwaysHideOrders() {
+                return true;
+            }
+
+            public static bool ProtectOrders() {
+                return true;
+            }
+
+            public static bool HideOrders(IPrincipal principal) {
+                return true;
+            }
+
+            public static string DisableOrders(IPrincipal principal) {
+                return "disabled for this user";
+            }
+
+            public static void OtherOrders() {}
+
+            public static bool AlwaysHideOtherOrders() {
+                return false;
+            }
+
+            public static bool ProtectOtherOrders() {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Order
+
+        private class Order {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            facetFactory = new CollectionFieldMethodsFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

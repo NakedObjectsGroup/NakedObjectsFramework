@@ -20,6 +20,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class NamedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private NamedAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (INamedFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [Named("some name")]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -36,19 +53,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private NamedAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (INamedFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [Named("some name")]
-        private class Customer {}
 
         private class Customer1 {
             [Named("some name")]

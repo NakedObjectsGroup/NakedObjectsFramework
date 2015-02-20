@@ -13,8 +13,6 @@ namespace NakedObjects.Architecture.Spec {
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
     public interface IObjectSpec : ITypeSpec {
-
-
         #region Properties
 
         /// <summary>
@@ -33,14 +31,12 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IActionSpec[] GetCollectionContributedActions();
 
-
         /// <summary>
         ///     Returns an array of actions that can find objects of this type
         /// </summary>
         IActionSpec[] GetFinderActions();
 
         #endregion
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

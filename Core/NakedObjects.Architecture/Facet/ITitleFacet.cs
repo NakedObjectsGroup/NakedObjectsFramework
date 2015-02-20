@@ -20,7 +20,6 @@ namespace NakedObjects.Architecture.Facet {
     /// <seealso cref="IPluralFacet" />
     public interface ITitleFacet : IFacet {
         string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager);
-
         string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager);
     }
 }

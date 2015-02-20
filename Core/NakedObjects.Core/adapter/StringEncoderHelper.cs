@@ -22,7 +22,6 @@ namespace NakedObjects.Core.Adapter {
     /// <seealso cref="StringDecoderHelper" />
     public class StringEncoderHelper {
         private readonly List<string> strings = new List<string>();
-
         public bool Encode { get; set; }
 
         /// <summary>

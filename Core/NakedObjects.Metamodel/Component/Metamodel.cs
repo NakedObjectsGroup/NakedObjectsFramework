@@ -16,7 +16,6 @@ namespace NakedObjects.Meta.Component {
     [Serializable]
     public class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
-
         private readonly ISpecificationCache cache;
         private readonly IClassStrategy classStrategy;
 

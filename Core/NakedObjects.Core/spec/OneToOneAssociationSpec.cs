@@ -31,11 +31,11 @@ namespace NakedObjects.Core.Spec {
             this.transactionManager = transactionManager;
         }
 
-        #region IOneToOneAssociationSpec Members
-
         public override IObjectSpec ElementSpec {
             get { return null; }
         }
+
+        #region IOneToOneAssociationSpec Members
 
         public override bool IsChoicesEnabled {
             get { return ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Spec {
             get {
                 if (!isFindMenuEnabled.HasValue) {
                     isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
-                     || ContainsFacet<IFindMenuFacet>();
+                                        || ContainsFacet<IFindMenuFacet>();
                 }
                 return isFindMenuEnabled.Value;
             }

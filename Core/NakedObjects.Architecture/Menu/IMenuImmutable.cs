@@ -13,9 +13,7 @@ namespace NakedObjects.Architecture.Menu {
     /// </summary>
     public interface IMenuImmutable : IMenuItemImmutable {
         IList<IMenuItemImmutable> MenuItems { get; }
-
         IMenuActionImmutable GetAction(string actionName);
-
         IMenuImmutable GetSubMenu(string menuName);
     }
 }

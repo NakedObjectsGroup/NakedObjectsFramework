@@ -22,38 +22,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         #endregion
 
-        #region xs
-
-        // Namespace prefix for XML schema.
-
-        private const string W3OrgXsUri = "http://www.w3.org/2001/XMLSchema";
-
-        // Namespace prefix for W3OrgXsUri.
-        //  
-        // The NamespaceManager will not allow any namespace to use this prefix.
-
-        public const string W3OrgXsPrefix = "xs";
-
-        public static readonly XNamespace Xs = W3OrgXsUri;
-
-        #endregion
-
-        #region xsi
-
-        // Namespace prefix for XML schema instance.
-
-        private const string W3OrgXsiUri = "http://www.w3.org/2001/XMLSchema-instance";
-
-        // Namespace prefix for W3OrgXsiUri.
-        //  
-        // The NamespaceManager will not allow any namespace to use this prefix.
-
-        public const string W3OrgXsiPrefix = "xsi";
-
-        public static readonly XNamespace Xsi = W3OrgXsiUri;
-
-        #endregion
-
         // Creates an &lt;xs:schema&gt; element for the document
         // to the provided element, attaching to root of supplied Xsd doc.
         // 
@@ -220,7 +188,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         // returns child <code>xs:simpleContent</code> element for supplied parent XSD
         // element, creating and appending if necessary.
         // 
@@ -246,7 +213,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-
         // return the <code>xs:schema</code> element (the root element of the owning XSD Doc).
 
         public static XElement SchemaFor(XElement xsElement) {
@@ -272,5 +238,37 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             }
             return xsElement;
         }
+
+        #region xs
+
+        // Namespace prefix for XML schema.
+
+        private const string W3OrgXsUri = "http://www.w3.org/2001/XMLSchema";
+
+        // Namespace prefix for W3OrgXsUri.
+        //  
+        // The NamespaceManager will not allow any namespace to use this prefix.
+
+        public const string W3OrgXsPrefix = "xs";
+
+        public static readonly XNamespace Xs = W3OrgXsUri;
+
+        #endregion
+
+        #region xsi
+
+        // Namespace prefix for XML schema instance.
+
+        private const string W3OrgXsiUri = "http://www.w3.org/2001/XMLSchema-instance";
+
+        // Namespace prefix for W3OrgXsiUri.
+        //  
+        // The NamespaceManager will not allow any namespace to use this prefix.
+
+        public const string W3OrgXsiPrefix = "xsi";
+
+        public static readonly XNamespace Xsi = W3OrgXsiUri;
+
+        #endregion
     }
 }

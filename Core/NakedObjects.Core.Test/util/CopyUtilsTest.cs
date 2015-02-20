@@ -14,36 +14,6 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.Core.Test.Util {
     [TestFixture]
     public class CopyUtilsTest {
-        public class SimpleObject {
-            public int ValueOne { get; set; }
-            public int ValueTwo { get; set; }
-        }
-
-        public class ReferenceObject {
-            public SimpleObject ReferenceOne { get; set; }
-        }
-
-        public class CollectionObject {
-            private ICollection<SimpleObject> collectionOne = new List<SimpleObject>();
-
-            public ICollection<SimpleObject> CollectionOne {
-                get { return collectionOne; }
-                set { collectionOne = value; }
-            }
-        }
-
-        public class AllObject {
-            private ICollection<SimpleObject> collectionOne = new List<SimpleObject>();
-            public int ValueOne { get; set; }
-            public int ValueTwo { get; set; }
-            public SimpleObject ReferenceOne { get; set; }
-
-            public ICollection<SimpleObject> CollectionOne {
-                get { return collectionOne; }
-                set { collectionOne = value; }
-            }
-        }
-
         [Test]
         public void TestAllClone() {
             var so1 = new SimpleObject {ValueOne = 1, ValueTwo = 2};
@@ -198,5 +168,51 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreEqual(so.ValueOne, clone.ValueOne);
             Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
         }
+
+        #region Nested type: AllObject
+
+        public class AllObject {
+            private ICollection<SimpleObject> collectionOne = new List<SimpleObject>();
+            public int ValueOne { get; set; }
+            public int ValueTwo { get; set; }
+            public SimpleObject ReferenceOne { get; set; }
+
+            public ICollection<SimpleObject> CollectionOne {
+                get { return collectionOne; }
+                set { collectionOne = value; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: CollectionObject
+
+        public class CollectionObject {
+            private ICollection<SimpleObject> collectionOne = new List<SimpleObject>();
+
+            public ICollection<SimpleObject> CollectionOne {
+                get { return collectionOne; }
+                set { collectionOne = value; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: ReferenceObject
+
+        public class ReferenceObject {
+            public SimpleObject ReferenceOne { get; set; }
+        }
+
+        #endregion
+
+        #region Nested type: SimpleObject
+
+        public class SimpleObject {
+            public int ValueOne { get; set; }
+            public int ValueTwo { get; set; }
+        }
+
+        #endregion
     }
 }

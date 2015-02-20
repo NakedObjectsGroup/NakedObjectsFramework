@@ -12,19 +12,23 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     internal class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
+        private bool? isFindMenuEnabled;
+
         public OneToOneActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
 
-        private bool? isFindMenuEnabled;
+        #region IOneToOneActionParameterSpec Members
 
         public bool IsFindMenuEnabled {
             get {
                 if (!isFindMenuEnabled.HasValue) {
                     isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
-                     || ContainsFacet<IFindMenuFacet>() ;
+                                        || ContainsFacet<IFindMenuFacet>();
                 }
                 return isFindMenuEnabled.Value;
             }
         }
+
+        #endregion
     }
 }

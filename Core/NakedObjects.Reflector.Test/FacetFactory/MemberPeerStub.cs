@@ -19,24 +19,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public MemberPeerStub(string name)
             : base(name) {}
 
-        #region IMemberSpecImmutable Members
-
-        public override IIdentifier Identifier {
-            get { return new IdentifierNull(this); }
-        }
-
-        
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public IObjectSpecImmutable ReturnSpec { get; private set; }
-        public IObjectSpecImmutable ElementSpec { get; private set; }
-        public IObjectSpecImmutable OwnerSpec { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
-
-
-        #endregion
-
-        #region IOrderableElement<MemberPeerStub> Members
-
         public MemberPeerStub Spec {
             get { return this; }
         }
@@ -47,6 +29,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         public string GroupFullName {
             get { return ""; }
+        }
+
+        #region IMemberSpecImmutable Members
+
+        public override IIdentifier Identifier {
+            get { return new IdentifierNull(this); }
         }
 
         #endregion
@@ -83,6 +71,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             return Name;
         }
 
+        #region Nested type: IdentifierNull
+
         #region Nested Type: IdentifierNull
 
         private class IdentifierNull : IdentifierImpl {
@@ -99,5 +89,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         };
 
         #endregion
+
+        #endregion
+
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        public IObjectSpecImmutable ReturnSpec { get; private set; }
+        public IObjectSpecImmutable ElementSpec { get; private set; }
+        public IObjectSpecImmutable OwnerSpec { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

@@ -23,8 +23,8 @@ namespace NakedObjects.Core.Adapter {
     internal class PocoAdapter : INakedObject {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodel;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
         private string defaultTitle;

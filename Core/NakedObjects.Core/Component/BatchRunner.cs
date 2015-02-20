@@ -17,19 +17,23 @@ namespace NakedObjects.Core.Component {
             this.framework = framework;
         }
 
-        protected void StartTransaction() {
-            framework.TransactionManager.StartTransaction();
-        }
-
-        protected void EndTransaction() {
-            framework.TransactionManager.EndTransaction();
-        }
+        #region IBatchRunner Members
 
         public virtual void Run(IBatchStartPoint batchStartPoint) {
             framework.ContainerInjector.InitDomainObject(batchStartPoint);
             StartTransaction();
             batchStartPoint.Execute();
             EndTransaction();
+        }
+
+        #endregion
+
+        protected void StartTransaction() {
+            framework.TransactionManager.StartTransaction();
+        }
+
+        protected void EndTransaction() {
+            framework.TransactionManager.EndTransaction();
         }
     }
 }

@@ -31,11 +31,8 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
-
         public virtual void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
-
         public virtual void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
-
         public virtual void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {}
 
         public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {

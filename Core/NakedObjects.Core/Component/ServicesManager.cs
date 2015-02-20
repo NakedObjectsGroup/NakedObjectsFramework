@@ -67,6 +67,7 @@ namespace NakedObjects.Core.Component {
                 Select(service => manager.GetServiceAdapter(service)).
                 Where(no => no.Spec.GetObjectActions().Any(a => a.IsVisible(no))).ToArray();
         }
+
         #endregion
     }
 }

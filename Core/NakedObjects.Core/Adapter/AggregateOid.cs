@@ -41,6 +41,8 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
+        #region IAggregateOid Members
+
         public virtual IOid ParentOid {
             get { return parentOid; }
         }
@@ -48,26 +50,6 @@ namespace NakedObjects.Core.Adapter {
         public virtual string FieldName {
             get { return fieldName; }
         }
-
-        #region IEncodedToStrings Members
-
-        public string[] ToEncodedStrings() {
-            var helper = new StringEncoderHelper();
-            helper.Add(typeName);
-            helper.Add(fieldName);
-            if (parentOid != null) {
-                helper.Add(parentOid as IEncodedToStrings);
-            }
-            return helper.ToArray();
-        }
-
-        public string[] ToShortEncodedStrings() {
-            return ToEncodedStrings();
-        }
-
-        #endregion
-
-        #region IOid Members
 
         public virtual IOid Previous {
             get { return null; }
@@ -87,6 +69,24 @@ namespace NakedObjects.Core.Adapter {
 
         public virtual bool HasPrevious {
             get { return false; }
+        }
+
+        #endregion
+
+        #region IEncodedToStrings Members
+
+        public string[] ToEncodedStrings() {
+            var helper = new StringEncoderHelper();
+            helper.Add(typeName);
+            helper.Add(fieldName);
+            if (parentOid != null) {
+                helper.Add(parentOid as IEncodedToStrings);
+            }
+            return helper.ToArray();
+        }
+
+        public string[] ToShortEncodedStrings() {
+            return ToEncodedStrings();
         }
 
         #endregion

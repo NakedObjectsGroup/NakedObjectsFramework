@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Facet {
     public interface IMoneyValueFacet : IFacet {
         decimal GetAmount(INakedObject nakedObject);
-
         string GetCurrencyCode(INakedObject nakedObject);
     }
 

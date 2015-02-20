@@ -40,6 +40,15 @@ namespace NakedObjects.Reflect.Test {
 
     [TestClass]
     public class ReflectorTest {
+        #region TestEnum enum
+
+        public enum TestEnum {
+            Value1,
+            Value2
+        }
+
+        #endregion
+
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
             RegisterTypes(c);
@@ -181,7 +190,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>), typeof(object), typeof(int)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (List<object>), typeof (List<int>), typeof (object), typeof (int)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -196,7 +205,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<>), typeof(object)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (SetWrapper<>), typeof (object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -213,7 +222,7 @@ namespace NakedObjects.Reflect.Test {
             IQueryable<int> qi = new List<int>().AsQueryable();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof (int), typeof (object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -229,7 +238,7 @@ namespace NakedObjects.Reflect.Test {
             IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType(), typeof(int)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {it.GetType(), typeof (int)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -244,7 +253,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new[] { "System" });
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -259,7 +268,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray), typeof(string)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {typeof (TestObjectWithStringArray), typeof (string)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -392,14 +401,13 @@ namespace NakedObjects.Reflect.Test {
 
         #endregion
 
+        #region Nested type: TestObjectWithStringArray
+
         public class TestObjectWithStringArray {
             public string[] StringArray { get; set; }
         }
 
-        public enum TestEnum {
-            Value1,
-            Value2
-        }
+        #endregion
 
         public class WithScalars {
             private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
@@ -408,13 +416,6 @@ namespace NakedObjects.Reflect.Test {
 
             public WithScalars() {
                 Init();
-            }
-
-            private void Init() {
-                SByte = 10;
-                UInt = 14;
-                ULong = 15;
-                UShort = 16;
             }
 
             [Key, Title, ConcurrencyCheck]
@@ -438,6 +439,13 @@ namespace NakedObjects.Reflect.Test {
 
             [NotMapped]
             public virtual ulong ULong { get; set; }
+
+            private void Init() {
+                SByte = 10;
+                UInt = 14;
+                ULong = 15;
+                UShort = 16;
+            }
 
             public virtual char Char {
                 get { return '3'; }

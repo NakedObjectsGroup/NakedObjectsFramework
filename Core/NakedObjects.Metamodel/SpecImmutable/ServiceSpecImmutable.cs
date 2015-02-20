@@ -13,11 +13,8 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     internal class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
-        public ServiceSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {
-        }
-
+        public ServiceSpecImmutable(Type type, IMetamodel metamodel) : base(type, metamodel) {}
         // The special constructor is used to deserialize values. 
         public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
-
     }
 }

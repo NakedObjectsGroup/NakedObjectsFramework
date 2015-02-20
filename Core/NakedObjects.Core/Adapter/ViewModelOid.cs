@@ -40,10 +40,6 @@ namespace NakedObjects.Core.Adapter {
             CacheState();
         }
 
-        public string TypeName { get; private set; }
-        public string[] Keys { get; private set; }
-        public bool IsFinal { get; private set; }
-
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -63,8 +59,11 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        #region IOid Members
+        #region IViewModelOid Members
 
+        public string TypeName { get; private set; }
+        public string[] Keys { get; private set; }
+        public bool IsFinal { get; private set; }
         public void CopyFrom(IOid oid) {}
 
         public IOid Previous {

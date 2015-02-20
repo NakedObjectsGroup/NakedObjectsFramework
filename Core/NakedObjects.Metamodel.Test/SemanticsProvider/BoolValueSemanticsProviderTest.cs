@@ -20,25 +20,6 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            booleanObj = true;
-            booleanNO = CreateAdapter(booleanObj);
-            specification = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         private INakedObject booleanNO;
         private object booleanObj;
         private ISpecification specification;
@@ -143,6 +124,25 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            booleanObj = true;
+            booleanNO = CreateAdapter(booleanObj);
+            specification = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

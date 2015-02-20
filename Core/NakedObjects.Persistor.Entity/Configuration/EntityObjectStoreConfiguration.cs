@@ -19,9 +19,6 @@ using NakedObjects.Resources;
 namespace NakedObjects.Persistor.Entity.Configuration {
     public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStoreConfiguration));
-
-        public static bool NoValidate { get; set; }
-
         private bool isContextSet;
 
         public EntityObjectStoreConfiguration() {
@@ -34,6 +31,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             MaximumCommitCycles = 10;
             IsInitializedCheck = () => true;
         }
+
+        public static bool NoValidate { get; set; }
 
         #region IEntityObjectStoreConfiguration Members
 
@@ -49,7 +48,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         }
 
         public IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
-
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
@@ -171,13 +169,13 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             return connectionStrings.Select(cs => cs.Name).ToArray();
         }
 
-        #endregion
-
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
                 throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             }
         }
+
+        #endregion
 
         #region Nested type: EntityContextConfigurator
 

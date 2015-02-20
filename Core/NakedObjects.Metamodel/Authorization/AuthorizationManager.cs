@@ -24,6 +24,54 @@ namespace NakedObjects.Meta.Authorization {
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 
+        #region IAuthorizationManager Members
+
+        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
+            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
+
+            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (ITypeAuthorizer<object>) authorizer;
+                return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
+            }
+            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
+        }
+
+        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
+            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
+
+            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (ITypeAuthorizer<object>) authorizer;
+                return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
+            }
+            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsEditable", authorizer);
+        }
+
+        #endregion
+
+        private static object ExecuteOnTypeAuthorizer(ISession session, INakedObject target, IIdentifier identifier, string toInvoke, object authorizer) {
+            return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
+        }
+
+        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager,
+                                     IMetamodelManager manager) {
+            Assert.AssertNotNull(target);
+
+            //Look for exact-fit TypeAuthorizer
+            string fullyQualifiedOfTarget = target.Spec.FullName;
+            Type authorizer = typeAuthorizers.
+                Where(ta => ta.Key == fullyQualifiedOfTarget).
+                Select(ta => ta.Value).
+                FirstOrDefault() ??
+                              namespaceAuthorizers.
+                                  Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
+                                  OrderByDescending(x => x.Key.Length).
+                                  Select(x => x.Value).
+                                  FirstOrDefault() ??
+                              defaultAuthorizer;
+
+            return lifecycleManager.CreateInstance((IObjectSpec) manager.GetSpecification(authorizer)).GetDomainObject();
+        }
+
         #region Constructors
 
         public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration) {
@@ -57,53 +105,5 @@ namespace NakedObjects.Meta.Authorization {
         }
 
         #endregion
-
-        #region IAuthorizationManager Members
-
-        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
-
-            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
-                var nameAuth = (ITypeAuthorizer<object>) authorizer;
-                return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
-            }
-            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
-        }
-
-        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
-
-            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
-                var nameAuth = (ITypeAuthorizer<object>) authorizer;
-                return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
-            }
-            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsEditable", authorizer);
-        }
-
-        #endregion
-
-        private static object ExecuteOnTypeAuthorizer(ISession session, INakedObject target, IIdentifier identifier, string toInvoke, object authorizer) {
-            return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
-        }
-
-        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager,
-            IMetamodelManager manager) {
-            Assert.AssertNotNull(target);
-
-            //Look for exact-fit TypeAuthorizer
-            string fullyQualifiedOfTarget = target.Spec.FullName;
-            Type authorizer = typeAuthorizers.
-                Where(ta => ta.Key == fullyQualifiedOfTarget).
-                Select(ta => ta.Value).
-                FirstOrDefault() ??
-                              namespaceAuthorizers.
-                                  Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
-                                  OrderByDescending(x => x.Key.Length).
-                                  Select(x => x.Value).
-                                  FirstOrDefault() ??
-                              defaultAuthorizer;
-
-            return lifecycleManager.CreateInstance((IObjectSpec) manager.GetSpecification(authorizer)).GetDomainObject();
-        }
     }
 }

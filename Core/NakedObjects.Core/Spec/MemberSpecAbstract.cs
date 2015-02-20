@@ -50,6 +50,8 @@ namespace NakedObjects.Core.Reflect {
             get { return metamodelManager; }
         }
 
+        public abstract IObjectSpec ElementSpec { get; }
+
         #region IMemberSpec Members
 
         public virtual string Id {
@@ -69,9 +71,7 @@ namespace NakedObjects.Core.Reflect {
         /// </summary>
         /// <seealso cref="Id()" />
         public virtual string Name {
-            get {
-                return memberSpecImmutable.Name;
-            }
+            get { return memberSpecImmutable.Name; }
         }
 
         public virtual string Description {
@@ -79,7 +79,6 @@ namespace NakedObjects.Core.Reflect {
         }
 
         public abstract IObjectSpec ReturnSpec { get; }
-        public abstract IObjectSpec ElementSpec { get; }
 
         public virtual bool ContainsFacet(Type facetType) {
             return memberSpecImmutable.ContainsFacet(facetType);

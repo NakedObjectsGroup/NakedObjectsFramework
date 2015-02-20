@@ -19,23 +19,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new ViewModelFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public new void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ViewModelFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -45,6 +28,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        #region Nested type: Class1
 
         private class Class1 : IViewModel {
             public string Value1 { get; set; }
@@ -64,6 +49,25 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             #endregion
         }
 
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            facetFactory = new ViewModelFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public new void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
         private class Class2 {
             // ReSharper disable once UnusedMember.Local
             public string[] DeriveKeys() {
@@ -81,10 +85,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             private string Value1 { get; set; }
             private string Value2 { get; set; }
 
-            #region IViewModel Members
+            #region IViewModelEdit Members
 
             public string[] DeriveKeys() {
-                return new[] { Value1, Value2 };
+                return new[] {Value1, Value2};
             }
 
             public void PopulateUsingKeys(string[] instanceId) {
@@ -99,10 +103,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             private string Value1 { get; set; }
             private string Value2 { get; set; }
 
-            #region IViewModel Members
+            #region IViewModelSwitchable Members
 
             public string[] DeriveKeys() {
-                return new[] { Value1, Value2 };
+                return new[] {Value1, Value2};
             }
 
             public void PopulateUsingKeys(string[] instanceId) {
@@ -116,7 +120,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             #endregion
         }
-
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -169,23 +172,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestViewModelEditPickedUp() {
-            var class3Type = typeof(Class3);
+            var class3Type = typeof (Class3);
             facetFactory.Process(Reflector, class3Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelEditFacetConvention);
 
             MethodInfo m1 = class3Type.GetMethod("DeriveKeys");
             MethodInfo m2 = class3Type.GetMethod("PopulateUsingKeys");
 
-            AssertMethodsRemoved(new[] { m1, m2 });
+            AssertMethodsRemoved(new[] {m1, m2});
         }
 
         [TestMethod]
         public void TestViewModelSwitchablePickedUp() {
-            var class4Type = typeof(Class4);
+            var class4Type = typeof (Class4);
             facetFactory.Process(Reflector, class4Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelSwitchableFacetConvention);
 
@@ -193,9 +196,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             MethodInfo m2 = class4Type.GetMethod("PopulateUsingKeys");
             MethodInfo m3 = class4Type.GetMethod("IsEditView");
 
-            AssertMethodsRemoved(new[] { m1, m2, m3 });
+            AssertMethodsRemoved(new[] {m1, m2, m3});
         }
-
 
         [TestMethod]
         public void TestViewModelPopulate() {

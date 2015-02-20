@@ -17,23 +17,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new MenuFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public new void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private MenuFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -44,7 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -54,7 +36,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Action));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
-
 
         [TestMethod]
         public void TestDefaultMenuPickedUp() {
@@ -78,6 +59,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Class1
 
         private class Class1 {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            facetFactory = new MenuFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public new void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
 
         #endregion
 

@@ -98,38 +98,6 @@ namespace NakedObjects.Meta.Adapter {
 
         #endregion
 
-        #region Object overrides 
-
-        public override bool Equals(object obj) {
-            if (this == obj) {
-                return true;
-            }
-            var other = obj as IdentifierImpl;
-            return other != null && (string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes));
-        }
-
-        public override string ToString() {
-            if (asString == null) {
-                var str = new StringBuilder();
-                str.Append(className).Append('#').Append(name).Append('(');
-                for (int i = 0; i < parameterTypes.Length; i++) {
-                    if (i > 0) {
-                        str.Append(", ");
-                    }
-                    str.Append(parameterTypes[i]);
-                }
-                str.Append(')');
-                asString = str.ToString();
-            }
-            return asString;
-        }
-
-        public override int GetHashCode() {
-            return (className + name + parameterTypes.Aggregate("", (s, t) => s + t)).GetHashCode();
-        }
-
-        #endregion
-
         private static string FullName(Type type) {
             if (type.IsGenericType) {
                 if (CollectionUtils.IsGenericEnumerable(type)) {
@@ -226,6 +194,38 @@ namespace NakedObjects.Meta.Adapter {
             string[] parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] {};
             return new IdentifierImpl(metamodel, className, name, parms);
         }
+
+        #region Object overrides 
+
+        public override bool Equals(object obj) {
+            if (this == obj) {
+                return true;
+            }
+            var other = obj as IdentifierImpl;
+            return other != null && (string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes));
+        }
+
+        public override string ToString() {
+            if (asString == null) {
+                var str = new StringBuilder();
+                str.Append(className).Append('#').Append(name).Append('(');
+                for (int i = 0; i < parameterTypes.Length; i++) {
+                    if (i > 0) {
+                        str.Append(", ");
+                    }
+                    str.Append(parameterTypes[i]);
+                }
+                str.Append(')');
+                asString = str.ToString();
+            }
+            return asString;
+        }
+
+        public override int GetHashCode() {
+            return (className + name + parameterTypes.Aggregate("", (s, t) => s + t)).GetHashCode();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

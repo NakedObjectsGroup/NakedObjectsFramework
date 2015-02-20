@@ -16,6 +16,33 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
+        private IteratorFilteringFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new Type[] {}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Property));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Action));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
+        }
+
+        [TestMethod]
+        public void TestRequestsRemoverToRemoveIteratorMethods() {
+            MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
+            AssertMethodRemoved(enumeratorMethod);
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -31,16 +58,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private IteratorFilteringFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new Type[] {}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
 
         // ReSharper disable UnusedMember.Local
         // ReSharper disable InconsistentNaming
@@ -64,23 +81,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         // ReSharper restore AssignNullToNotNullAttribute
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Local
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Property));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Action));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
-        }
-
-        [TestMethod]
-        public void TestRequestsRemoverToRemoveIteratorMethods() {
-            MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            AssertMethodRemoved(enumeratorMethod);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

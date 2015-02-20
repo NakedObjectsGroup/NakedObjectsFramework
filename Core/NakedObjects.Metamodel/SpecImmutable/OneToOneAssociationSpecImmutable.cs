@@ -20,24 +20,28 @@ namespace NakedObjects.Meta.SpecImmutable {
             this.ownerSpec = ownerSpec;
         }
 
-        public override IObjectSpecImmutable ElementSpec {
-            get { return null; }
-        }
-
-        public override IObjectSpecImmutable OwnerSpec {
-            get { return ownerSpec; }
-        }
-
-        public override string ToString() {
-            return "Reference Association [name=\"" + Identifier + ", Type=" + ReturnSpec + " ]";
-        }
-
         #region ISerializable
 
         // The special constructor is used to deserialize values. 
         public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
 
         #endregion
+
+        public override IObjectSpecImmutable ElementSpec {
+            get { return null; }
+        }
+
+        #region IOneToOneAssociationSpecImmutable Members
+
+        public override IObjectSpecImmutable OwnerSpec {
+            get { return ownerSpec; }
+        }
+
+        #endregion
+
+        public override string ToString() {
+            return "Reference Association [name=\"" + Identifier + ", Type=" + ReturnSpec + " ]";
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

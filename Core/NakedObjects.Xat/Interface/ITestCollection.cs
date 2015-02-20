@@ -10,9 +10,7 @@ using System.Collections.Generic;
 namespace NakedObjects.Xat {
     public interface ITestCollection : ITestNaked, IEnumerable<ITestObject> {
         ITestCollection AssertIsEmpty();
-
         ITestCollection AssertIsNotEmpty();
-
         ITestCollection AssertCountIs(int count);
         ITestCollection AssertIsTransient();
         ITestCollection AssertIsPersistent();

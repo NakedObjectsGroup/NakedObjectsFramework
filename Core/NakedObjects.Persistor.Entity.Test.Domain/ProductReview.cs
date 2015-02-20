@@ -14,6 +14,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class ProductReview {
+        #region Navigation Properties
+
+        #region Product (Product)
+
+        [MemberOrder(170)]
+        public virtual Product Product { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region ProductReviewID (Int32)
@@ -62,17 +73,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(160), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region Product (Product)
-
-        [MemberOrder(170)]
-        public virtual Product Product { get; set; }
 
         #endregion
 

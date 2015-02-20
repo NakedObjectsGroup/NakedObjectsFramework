@@ -12,30 +12,30 @@ using NakedObjects.Core.Spec;
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
         private readonly IContainerInjector containerInjector;
+        private readonly IFrameworkResolver frameworkResolver;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMessageBroker messageBroker;
         private readonly IMetamodelManager metamodelManagerManager;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectPersistor persistor;
         private readonly IReflector reflector;
         private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
-        private readonly IFrameworkResolver frameworkResolver;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
-            ISession session,
-            ILifecycleManager lifecycleManager,
-            IServicesManager servicesManager,
-            INakedObjectManager nakedObjectManager,
-            IObjectPersistor persistor,
-            IReflector reflector,
-            IMetamodelManager metamodelManagerManager,
-            IContainerInjector containerInjector,
-            NakedObjectFactory nakedObjectFactory,
-            SpecFactory memberFactory,
-            ITransactionManager transactionManager,
-            IFrameworkResolver frameworkResolver) {
+                                     ISession session,
+                                     ILifecycleManager lifecycleManager,
+                                     IServicesManager servicesManager,
+                                     INakedObjectManager nakedObjectManager,
+                                     IObjectPersistor persistor,
+                                     IReflector reflector,
+                                     IMetamodelManager metamodelManagerManager,
+                                     IContainerInjector containerInjector,
+                                     NakedObjectFactory nakedObjectFactory,
+                                     SpecFactory memberFactory,
+                                     ITransactionManager transactionManager,
+                                     IFrameworkResolver frameworkResolver) {
             this.messageBroker = messageBroker;
             this.session = session;
             this.lifecycleManager = lifecycleManager;

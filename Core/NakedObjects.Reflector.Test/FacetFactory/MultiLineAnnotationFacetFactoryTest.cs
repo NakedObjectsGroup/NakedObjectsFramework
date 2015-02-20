@@ -17,6 +17,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class MultiLineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private MultiLineAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IMultiLineFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [MultiLine(NumberOfLines = 3, Width = 9)]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -32,19 +49,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private MultiLineAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMultiLineFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [MultiLine(NumberOfLines = 3, Width = 9)]
-        private class Customer {}
 
         private class Customer1 {
             [MultiLine(NumberOfLines = 12, Width = 36)]

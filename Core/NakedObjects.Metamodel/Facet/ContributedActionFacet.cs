@@ -15,20 +15,11 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
-        private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
+        private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 
         public ContributedActionFacet(ISpecification holder)
             : base(typeof (IContributedActionFacet), holder) {}
-
-        public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) {
-            objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
-        }
-
-        //Here the type is the ElementType of the collection, not the type of collection.
-        public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
-            collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
-        }
 
         #region IContributedActionFacet Members
 
@@ -48,6 +39,17 @@ namespace NakedObjects.Meta.Facet {
             return FindContributee(spec).Item3;
         }
 
+        #endregion
+
+        public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) {
+            objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
+        }
+
+        //Here the type is the ElementType of the collection, not the type of collection.
+        public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
+            collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
+        }
+
         private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {
             if (!IsContributedTo(spec)) {
                 throw new Exception("Action is not contributed to " + spec.Type);
@@ -55,7 +57,5 @@ namespace NakedObjects.Meta.Facet {
             Tuple<IObjectSpecImmutable, string, string> tuple = objectContributees.First(t => spec.IsOfType(t.Item1));
             return tuple;
         }
-
-        #endregion
     }
 }

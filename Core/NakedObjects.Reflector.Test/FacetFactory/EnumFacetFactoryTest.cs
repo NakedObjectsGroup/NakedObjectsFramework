@@ -20,22 +20,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class EnumFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new EnumFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private EnumFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -64,11 +48,31 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObject));
         }
 
+        #region Nested type: Cities
+
         private enum Cities {
             London,
             Paris,
             NewYork
         }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new EnumFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
 
         private class Customer1 {
             [EnumDataType(typeof (Cities))]

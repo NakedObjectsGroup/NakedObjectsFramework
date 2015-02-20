@@ -32,7 +32,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             return new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
         }
 
-        public static  IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) {
+        public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) {
             return new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
         }
     }

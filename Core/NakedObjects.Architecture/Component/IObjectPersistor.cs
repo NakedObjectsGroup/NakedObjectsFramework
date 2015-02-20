@@ -17,15 +17,10 @@ namespace NakedObjects.Architecture.Component {
     //Consider merging all the methods down.
     public interface IObjectPersistor {
         IQueryable<T> Instances<T>() where T : class;
-
         IQueryable Instances(Type type);
-
         IQueryable Instances(IObjectSpec spec);
-
         INakedObject LoadObject(IOid oid, IObjectSpec spec);
-
         void AddPersistedObject(INakedObject nakedObject);
-
         void Reload(INakedObject nakedObject);
         void ResolveField(INakedObject nakedObject, IAssociationSpec field);
         void LoadField(INakedObject nakedObject, string field);

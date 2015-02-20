@@ -17,23 +17,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new ComplexTypeAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public new void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ComplexTypeAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -43,9 +26,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        [ComplexType]
-        private class Customer {}
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -65,5 +45,29 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        [ComplexType]
+        private class Customer {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            facetFactory = new ComplexTypeAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public new void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 }

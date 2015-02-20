@@ -13,6 +13,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class SalesPersonQuotaHistory {
+        #region Navigation Properties
+
+        #region SalesPerson (SalesPerson)
+
+        [MemberOrder(150)]
+        public virtual SalesPerson SalesPerson { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region SalesPersonID (Int32)
@@ -47,17 +58,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(140), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region SalesPerson (SalesPerson)
-
-        [MemberOrder(150)]
-        public virtual SalesPerson SalesPerson { get; set; }
 
         #endregion
 

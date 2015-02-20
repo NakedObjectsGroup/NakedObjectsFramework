@@ -46,7 +46,6 @@ namespace NakedObjects.Xat {
         }
 
         public string SubMenu { get; private set; }
-
         public string LastMessage { get; private set; }
 
         public ITestParameter[] Parameters {

@@ -16,22 +16,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class PluralAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PluralAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private PluralAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -41,9 +25,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        [Plural("Some plural name")]
-        private class Customer {}
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -65,6 +46,29 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("Some plural name", pluralFacet.Value);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        [Plural("Some plural name")]
+        private class Customer {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PluralAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

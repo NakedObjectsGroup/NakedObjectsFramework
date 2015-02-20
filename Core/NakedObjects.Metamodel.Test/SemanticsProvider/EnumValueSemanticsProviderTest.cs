@@ -24,23 +24,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
     [TestClass]
     public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TestEnum> {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            base.TearDown();
-        }
-
-        #endregion
-
         #region TestEnumB enum
 
         public enum TestEnumB : byte {
@@ -222,6 +205,23 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             object c2 = value.ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            holder = new Mock<ISpecification>().Object;
+            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            base.TearDown();
+        }
+
+        #endregion
 
         [TestMethod]
         public void TestParseOverflow() {

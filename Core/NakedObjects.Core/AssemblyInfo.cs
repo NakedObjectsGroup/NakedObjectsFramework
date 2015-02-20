@@ -21,11 +21,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Naked Objects Core (Release)")]
 #endif
 
-[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test") ]
+[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Persistor.Entity.Test")]
-
-
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]

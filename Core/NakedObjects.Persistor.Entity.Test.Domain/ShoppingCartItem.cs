@@ -14,6 +14,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class ShoppingCartItem {
+        #region Navigation Properties
+
+        #region Product (Product)
+
+        [MemberOrder(150)]
+        public virtual Product Product { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region ShoppingCartItemID (Int32)
@@ -48,17 +59,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(140), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region Product (Product)
-
-        [MemberOrder(150)]
-        public virtual Product Product { get; set; }
 
         #endregion
 

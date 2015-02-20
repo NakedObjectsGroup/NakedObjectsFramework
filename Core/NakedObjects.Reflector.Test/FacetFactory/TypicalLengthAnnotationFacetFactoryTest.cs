@@ -17,6 +17,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class TypicalLengthAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private TypicalLengthAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (ITypicalLengthFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [TypicalLength(16)]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -32,19 +49,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private TypicalLengthAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (ITypicalLengthFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [TypicalLength(16)]
-        private class Customer {}
 
         private class Customer1 {
             [TypicalLength(30)]

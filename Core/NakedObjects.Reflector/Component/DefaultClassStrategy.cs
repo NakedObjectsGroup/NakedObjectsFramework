@@ -22,23 +22,66 @@ namespace NakedObjects.Reflect.Component {
     /// </summary>
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
-        private readonly IReflectorConfiguration config;
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
+        private readonly IReflectorConfiguration config;
+        // only intended for use during initial reflection
+        [NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
         public DefaultClassStrategy(IReflectorConfiguration config) {
             this.config = config;
         }
 
+        #region IClassStrategy Members
+
+        public virtual bool IsTypeToBeIntrospected(Type type) {
+            Type returnType = FilterNullableAndProxies(type);
+            return !IsTypeIgnored(returnType) &&
+                   !IsTypeUnsupportedByReflector(returnType) &&
+                   IsTypeWhiteListed(returnType) &&
+                   (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
+        }
+
+        public virtual Type GetType(Type type) {
+            Type returnType = FilterNullableAndProxies(type);
+            return IsTypeToBeIntrospected(returnType) ? returnType : null;
+        }
+
+        public Type FilterNullableAndProxies(Type type) {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
+                // use type inside nullable wrapper
+                Log.DebugFormat("Using wrapped type instead of {0}", type);
+                return type.GetGenericArguments()[0];
+            }
+            if (TypeUtils.IsProxy(type)) {
+                Log.DebugFormat("Using proxied type instead of {0}", type);
+                return type.BaseType;
+            }
+            return type;
+        }
+
+        public bool IsSystemClass(Type introspectedType) {
+            return introspectedType.FullName.StartsWith("System.");
+        }
+
+        public string GetKeyForType(Type type) {
+            if (IsGenericCollection(type)) {
+                return type.Namespace + "." + type.Name;
+            }
+
+            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof (string))) {
+                return "System.Array";
+            }
+
+            return type.GetProxiedTypeFullName();
+        }
+
+        #endregion
+
         private bool IsTypeIgnored(Type type) {
             return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
         }
 
-        // only intended for use during initial reflection
-        [NonSerialized]
-        private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
-
         private bool IsNamespaceMatch(Type type) {
-
             if (!namespaceScratchPad.ContainsKey(type)) {
                 var ns = type.Namespace ?? "";
                 var match = config.SupportedNamespaces.Any(ns.StartsWith);
@@ -65,54 +108,12 @@ namespace NakedObjects.Reflect.Component {
             return config.SupportedSystemTypes.Any(t => t == ToMatch(type));
         }
 
-        public virtual bool IsTypeToBeIntrospected(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                    !IsTypeUnsupportedByReflector(returnType) &&
-                    IsTypeWhiteListed(returnType) &&
-                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
-        }
-
-        public virtual Type GetType(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
-            return IsTypeToBeIntrospected(returnType) ? returnType : null;
-        }
-
-        public  Type FilterNullableAndProxies(Type type) {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
-                // use type inside nullable wrapper
-                Log.DebugFormat("Using wrapped type instead of {0}", type);
-                return type.GetGenericArguments()[0];
-            }
-            if (TypeUtils.IsProxy(type)) {
-                Log.DebugFormat("Using proxied type instead of {0}", type);
-                return type.BaseType;
-            }
-            return type;
-        }
-
-        public bool IsSystemClass(Type introspectedType) {
-            return introspectedType.FullName.StartsWith("System.");
-        }
-
         private bool IsTypeUnsupportedByReflector(Type type) {
             return type.IsPointer ||
                    type.IsByRef ||
                    CollectionUtils.IsDictionary(type) ||
                    type.IsGenericParameter ||
                    type.ContainsGenericParameters;
-        }
-
-        public string GetKeyForType(Type type) {
-            if (IsGenericCollection(type)) {
-                return type.Namespace + "." + type.Name;
-            }
-
-            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof (string))) {
-                return "System.Array";
-            }
-
-            return type.GetProxiedTypeFullName();
         }
 
         // because Sets don't implement IEnumerable<>

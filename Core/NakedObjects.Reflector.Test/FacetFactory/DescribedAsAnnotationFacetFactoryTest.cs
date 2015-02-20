@@ -18,6 +18,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class DescribedAsAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private DescribedAsAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IDescribedAsFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [DescribedAs("some description")]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -33,19 +50,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private DescribedAsAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDescribedAsFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [DescribedAs("some description")]
-        private class Customer {}
 
         private class Customer1 {
             [DescribedAs("some description")]

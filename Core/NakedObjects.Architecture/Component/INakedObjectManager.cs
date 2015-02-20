@@ -17,23 +17,15 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface INakedObjectManager {
         void RemoveAdapter(INakedObject objectToDispose);
-
         INakedObject GetAdapterFor(object obj);
-
         INakedObject GetAdapterFor(IOid oid);
-
         INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version);
-
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
-
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
-
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
-
         void MadePersistent(INakedObject nakedObject);
         void UpdateViewModel(INakedObject adapter, string[] keys);
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
-
         INakedObject GetServiceAdapter(object service);
         INakedObject GetKnownAdapter(IOid oid);
         INakedObject CreateViewModelAdapter(IObjectSpec spec, object viewModel);

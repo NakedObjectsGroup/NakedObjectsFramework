@@ -20,29 +20,17 @@ namespace NakedObjects.Xat {
     public interface ITestObjectFactory {
         ISession Session { get; set; }
         ITestService CreateTestService(Object service);
-
         ITestMenu CreateTestMenuMain(IMenuImmutable menu);
-
         ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
-
         ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject);
-
         ITestCollection CreateTestCollection(INakedObject instances);
-
         ITestObject CreateTestObject(INakedObject nakedObject);
-
         ITestNaked CreateTestNaked(INakedObject nakedObject);
-
         ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm);
-
         ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject);
-
         ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
-
         ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject);
-
         ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject);
-
         ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
     }
 

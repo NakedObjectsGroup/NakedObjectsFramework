@@ -18,6 +18,16 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private EagerlyAnnotationFacetFactory annotationFacetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IEagerlyFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return annotationFacetFactory; }
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -33,16 +43,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private EagerlyAnnotationFacetFactory annotationFacetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IEagerlyFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return annotationFacetFactory; }
-        }
 
         private class Customer1 {
             [Eagerly(EagerlyAttribute.Do.Rendering)]
@@ -61,7 +61,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         private class Customer2 {
             public int Prop { get; set; }
-
             public IList<Customer1> Coll { get; set; }
 
             public IList<Customer1> Act() {

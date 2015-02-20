@@ -38,6 +38,5 @@ namespace NakedObjects.Core.Util {
         public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, string[] strings) {
             return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, strings);
         }
-
     }
 }

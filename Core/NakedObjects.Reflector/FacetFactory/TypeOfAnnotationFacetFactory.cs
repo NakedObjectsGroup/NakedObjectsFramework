@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (methodReturnType.IsArray) {
                 Type elementType = methodReturnType.GetElementType();
-                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable> (elementType);
+                var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }

@@ -14,6 +14,17 @@ namespace AdventureWorksModel {
     // ReSharper disable InconsistentNaming
 
     public partial class SalesTaxRate {
+        #region Navigation Properties
+
+        #region StateProvince (StateProvince)
+
+        [MemberOrder(160)]
+        public virtual StateProvince StateProvince { get; set; }
+
+        #endregion
+
+        #endregion
+
         #region Primitive Properties
 
         #region SalesTaxRateID (Int32)
@@ -55,17 +66,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(150), Mask("d")]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Navigation Properties
-
-        #region StateProvince (StateProvince)
-
-        [MemberOrder(160)]
-        public virtual StateProvince StateProvince { get; set; }
 
         #endregion
 

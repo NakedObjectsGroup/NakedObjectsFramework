@@ -16,7 +16,6 @@ namespace NakedObjects.Xat {
         ITestObject AssertCannotBeSaved();
         ITestObject AssertIsTransient();
         ITestObject AssertIsPersistent();
-
         string GetPropertyOrder();
 
         /// <summary>

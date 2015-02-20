@@ -18,6 +18,23 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class RegExAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        private RegExAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IRegExFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        #region Nested type: Customer
+
+        [RegEx(Validation = "^A.*", Message = "Class message", CaseSensitive = false)]
+        private class Customer {}
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -33,19 +50,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private RegExAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IRegExFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
-
-        [RegEx(Validation = "^A.*", Message = "Class message", CaseSensitive = false)]
-        private class Customer {}
 
         private class Customer1 {
             [RegEx(Validation = "^A.*", Message = "Property message", CaseSensitive = false)]

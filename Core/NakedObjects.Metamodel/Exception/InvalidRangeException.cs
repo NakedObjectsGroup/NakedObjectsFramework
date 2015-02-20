@@ -23,7 +23,6 @@ namespace NakedObjects.Meta {
         }
 
         public object Min { get; private set; }
-
         public object Max { get; private set; }
     }
 }

@@ -35,15 +35,11 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsChoicesEnabled {
-            get {
-                return !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
-            }
+            get { return !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>()); }
         }
 
         public bool IsMultipleChoicesEnabled {
-            get {
-                return ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
-            }
+            get { return ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple; }
         }
 
         #endregion

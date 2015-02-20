@@ -16,23 +16,6 @@ using NakedObjects.Reflect.FacetFactory;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            facetFactory = new ImmutableAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ImmutableAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -73,21 +56,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
-        [Immutable]
-        private class Customer {}
-
-        [Immutable(WhenTo.Always)]
-        private class Customer1 {}
-
-        [Immutable(WhenTo.Never)]
-        private class Customer2 {}
-
-        [Immutable(WhenTo.OncePersisted)]
-        private class Customer3 {}
-
-        [Immutable(WhenTo.UntilPersisted)]
-        private class Customer4 {}
-
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -119,6 +87,58 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(WhenTo.UntilPersisted, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        [Immutable]
+        private class Customer {}
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        [Immutable(WhenTo.Always)]
+        private class Customer1 {}
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        [Immutable(WhenTo.Never)]
+        private class Customer2 {}
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        [Immutable(WhenTo.OncePersisted)]
+        private class Customer3 {}
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        [Immutable(WhenTo.UntilPersisted)]
+        private class Customer4 {}
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            facetFactory = new ImmutableAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

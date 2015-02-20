@@ -21,22 +21,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     /// </summary>
     [TestClass]
     public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private ContributedActionAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -70,7 +54,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestContributedAnnotationNullByDefault2() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action2");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -89,7 +73,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestContributedAnnotationPickedUp4() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action4");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -97,25 +81,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
         }
 
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ContributedActionAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
 
         #region Nested type: Customer
 
         private class Service {
-
             // ReSharper disable once UnusedMember.Local
-            public void Action1() { }
-
+            public void Action1() {}
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
-            public void Action2(Customer cust1) { }
-
+            public void Action2(Customer cust1) {}
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
-            public void Action3([ContributedAction] Customer cust1) { }
-
+            public void Action3([ContributedAction] Customer cust1) {}
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable UnusedParameter.Local
-            public void Action4(string str1, [ContributedAction] Customer cust1) { }
+            public void Action4(string str1, [ContributedAction] Customer cust1) {}
             // ReSharper restore UnusedParameter.Local
         }
 
@@ -124,9 +119,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer
 
         // ReSharper disable once ClassNeverInstantiated.Local
-        private class Customer {
-
-        }
+        private class Customer {}
 
         #endregion
     }

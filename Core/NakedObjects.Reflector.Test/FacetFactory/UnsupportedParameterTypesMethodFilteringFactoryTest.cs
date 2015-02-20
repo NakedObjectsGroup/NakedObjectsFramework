@@ -21,33 +21,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     // ReSharper disable UnusedMember.Local
     public class UnsupportedParameterTypesMethodFilteringFactoryTest : AbstractFacetFactoryTest {
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-
-            var cache = new ImmutableInMemorySpecCache();
-            ReflectorConfiguration.NoValidate = true;
-
-            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new[] {typeof (Customer).Namespace});
-            var menuFactory = new NullMenuFactory();
-
-            facetFactory = new UnsupportedMethodFilteringFactory(0);
-            var classStrategy = new DefaultClassStrategy( config);
-            var metamodel = new Metamodel(classStrategy, cache);
-
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
         private UnsupportedMethodFilteringFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -68,24 +41,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-        // ReSharper disable UnusedParameter.Local
-        private class Customer {
-            public void ActionWithNoParameters() {}
-            public void ActionWithOneGoodParameter(int i) {}
-            public void ActionWithTwoGoodParameter(int i, Customer c) {}
-
-            public void ActionWithOneBadParameter(out int c) {
-                c = 0;
-            }
-
-            public void ActionWithOneGoodOneBadParameter(int i, ref int j) {}
-            public void ActionWithGenericParameter(Predicate<int> p) {}
-            public void ActionWithNullableParameter(int? i) {}
-            public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
-        }
-
-        // ReSharper restore UnusedParameter.Local
 
         [TestMethod]
         public void TestActionWithDictionaryParameter() {
@@ -144,6 +99,55 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Action));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
         }
+
+        #region Nested type: Customer
+
+        // ReSharper disable UnusedParameter.Local
+        private class Customer {
+            public void ActionWithNoParameters() {}
+            public void ActionWithOneGoodParameter(int i) {}
+            public void ActionWithTwoGoodParameter(int i, Customer c) {}
+
+            public void ActionWithOneBadParameter(out int c) {
+                c = 0;
+            }
+
+            public void ActionWithOneGoodOneBadParameter(int i, ref int j) {}
+            public void ActionWithGenericParameter(Predicate<int> p) {}
+            public void ActionWithNullableParameter(int? i) {}
+            public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
+        }
+
+        // ReSharper restore UnusedParameter.Local
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+
+            var cache = new ImmutableInMemorySpecCache();
+            ReflectorConfiguration.NoValidate = true;
+
+            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new[] {typeof (Customer).Namespace});
+            var menuFactory = new NullMenuFactory();
+
+            facetFactory = new UnsupportedMethodFilteringFactory(0);
+            var classStrategy = new DefaultClassStrategy(config);
+            var metamodel = new Metamodel(classStrategy, cache);
+
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // ReSharper restore UnusedMember.Local

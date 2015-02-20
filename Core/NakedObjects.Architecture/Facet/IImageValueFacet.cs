@@ -11,9 +11,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Facet {
     public interface IImageValueFacet : IFacet {
         Image GetImage(INakedObject nakedObject);
-
         int GetHeight(INakedObject nakedObject);
-
         int GetWidth(INakedObject nakedObject);
     }
 

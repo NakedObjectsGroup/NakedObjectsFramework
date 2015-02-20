@@ -16,7 +16,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
     internal abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
-
         private readonly bool equalByContent;
         private readonly bool immutable;
         private readonly IObjectSpecImmutable specImmutable;
@@ -26,13 +25,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
         ///     Lazily looked up per <see cref="SpecImmutable" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-            ISpecification holder,
-            Type adaptedType,
-            int typicalLength,
-            bool immutable,
-            bool equalByContent,
-            T defaultValue,
-            IObjectSpecImmutable specImmutable)
+                                                 ISpecification holder,
+                                                 Type adaptedType,
+                                                 int typicalLength,
+                                                 bool immutable,
+                                                 bool equalByContent,
+                                                 T defaultValue,
+                                                 IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -119,9 +118,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected abstract T DoParse(string entry);
-
         protected abstract T DoParseInvariant(string entry);
-
         protected abstract string GetInvariantString(T obj);
 
         protected virtual string TitleString(T obj) {
@@ -133,7 +130,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected abstract string DoEncode(T obj);
-
         protected abstract T DoRestore(string data);
 
         protected string OutOfRangeMessage(string entry, T minValue, T maxValue) {
