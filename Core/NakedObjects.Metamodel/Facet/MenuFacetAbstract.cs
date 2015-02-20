@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.Facet {

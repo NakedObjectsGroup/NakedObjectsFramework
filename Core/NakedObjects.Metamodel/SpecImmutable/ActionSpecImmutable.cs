@@ -47,17 +47,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public bool IsFinderMethod {
             get {
-                if (HasReturn() && ContainsFacet(typeof(IFinderActionFacet))) {
-                    foreach (var p in this.Parameters) {
-                        bool parseable = p.Specification.IsParseable;
-                        bool choicesEnabled = p.IsChoicesEnabled || p.IsMultipleChoicesEnabled;
-                        if (!(parseable || choicesEnabled)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
+                return HasReturn() &&
+                       ContainsFacet(typeof (IFinderActionFacet)) &&
+                       Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
             }
         }
 
@@ -91,12 +83,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var facet = GetFacet<IContributedActionFacet>();
-
-            if (facet == null) {
-                return false;
-            }
-
-            return contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
+            return facet != null && (contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec));
         }
 
         #region ISerializable

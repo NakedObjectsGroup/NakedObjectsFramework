@@ -16,8 +16,12 @@ namespace NakedObjects.Unity {
             this.unityContainer = unityContainer;
         }
 
+        #region IFrameworkResolver Members
+
         public INakedObjectsFramework GetFramework() {
             return unityContainer.Resolve<INakedObjectsFramework>();
         }
+
+        #endregion
     }
 }

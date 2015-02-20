@@ -70,7 +70,7 @@ namespace NakedObjects.Reflect.Component {
             return !IsTypeIgnored(returnType) &&
                     !IsTypeUnsupportedByReflector(returnType) &&
                     IsTypeWhiteListed(returnType) &&
-                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));                    ;
+                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
         }
 
         public virtual Type GetType(Type type) {

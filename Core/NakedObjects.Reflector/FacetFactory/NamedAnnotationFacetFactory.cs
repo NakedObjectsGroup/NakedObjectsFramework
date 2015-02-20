@@ -103,13 +103,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             return new NamedFacetAnnotation(name, holder);
         }
 
-        private string SafeGetName(ISpecification holder) {
-            if (holder.Identifier != null && holder.Identifier.MemberName != null) {
-                return holder.Identifier.MemberName;
-            }
-            return "";
-        }
-
         private static bool IsAlwaysHidden(ISpecification holder) {
             var hiddenfacet = holder.GetFacet<IHiddenFacet>();
             return hiddenfacet != null && hiddenfacet.Value == WhenTo.Always;

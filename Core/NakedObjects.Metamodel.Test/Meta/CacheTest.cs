@@ -22,8 +22,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
-using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Value;
@@ -240,8 +238,8 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeIntTypes() {
-            var ss = new Type[] {typeof (int)};
-            var ns = new string[] {  typeof (int).Namespace};
+            var ss = new[] {typeof (int)};
+            var ns = new[] {  typeof (int).Namespace};
             ReflectorConfiguration.NoValidate = true;
             var rc = new ReflectorConfiguration(ss, ss, ns);
             string file = Path.Combine(testDir, "metadataint.bin");
@@ -250,8 +248,8 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod, Ignore]
         public void BinarySerializeImageTypes() {
-            var ss = new Type[] { typeof(Image) };
-            var ns = new string[] { typeof(TestService).Namespace };
+            var ss = new[] { typeof(Image) };
+            var ns = new[] { typeof(TestService).Namespace };
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(ss, ss, ns);
@@ -261,9 +259,9 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeBaTypes() {
-            var ss = new Type[] { typeof(AbstractTestWithByteArray) };
+            var ss = new[] { typeof(AbstractTestWithByteArray) };
 
-            var ns = new string[] { typeof(AbstractTestWithByteArray).Namespace };
+            var ns = new[] { typeof(AbstractTestWithByteArray).Namespace };
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {typeof (AbstractTestWithByteArray)}, ss, ns);
@@ -281,8 +279,8 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeEnumTypes() {
-            var ss = new Type[] {typeof (TestEnum)};
-            var ns = new string[] {typeof (TestEnum).Namespace};
+            var ss = new[] {typeof (TestEnum)};
+            var ns = new[] {typeof (TestEnum).Namespace};
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(ss, ss, ns);
@@ -292,7 +290,7 @@ namespace NakedObjects.Meta.Test {
 
         [TestMethod]
         public void BinarySerializeSimpleDomainObjectTypes() {
-            var ns = new string[] {typeof (TestSimpleDomainObject).Namespace};
+            var ns = new[] {typeof (TestSimpleDomainObject).Namespace};
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {typeof (TestSimpleDomainObject)}, new[] {typeof (TestService)}, ns);
@@ -305,7 +303,7 @@ namespace NakedObjects.Meta.Test {
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
-                new string[] {typeof (TestService).Namespace});
+                new[] {typeof (TestService).Namespace});
 
             string file = Path.Combine(testDir, "metadatatado.bin");
             BinarySerialize(rc, file);

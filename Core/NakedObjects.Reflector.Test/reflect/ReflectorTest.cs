@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
-using NakedObjects.Meta;
 using NakedObjects.Meta.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
@@ -245,7 +244,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new string[] { "System" });
+            var rc = new ReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -275,7 +274,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new string[] {"System"});
+            var rc = new ReflectorConfiguration(new[] {typeof (WithScalars)}, new Type[] {}, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
             container.RegisterInstance<IReflectorConfiguration>(rc);
 

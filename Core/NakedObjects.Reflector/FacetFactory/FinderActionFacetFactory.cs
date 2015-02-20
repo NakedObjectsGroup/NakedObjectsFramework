@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -21,20 +20,17 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="FinderActionAttribute" /> annotation
     /// </summary>
     public class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FinderActionFacetFactory));
-
         public FinderActionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Action) {}
 
-        private static void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
+        private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();
             if (attribute == null) return;
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(reflector, method, specification);
+            Process(method, specification);
         }
 
         private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) {

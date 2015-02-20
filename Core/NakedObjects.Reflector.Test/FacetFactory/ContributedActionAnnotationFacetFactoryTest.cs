@@ -114,8 +114,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void Action3([ContributedAction] Customer cust1) { }
 
             // ReSharper disable once UnusedMember.Local
-            // ReSharper disable once UnusedParameter.Local
+            // ReSharper disable UnusedParameter.Local
             public void Action4(string str1, [ContributedAction] Customer cust1) { }
+            // ReSharper restore UnusedParameter.Local
         }
 
         #endregion

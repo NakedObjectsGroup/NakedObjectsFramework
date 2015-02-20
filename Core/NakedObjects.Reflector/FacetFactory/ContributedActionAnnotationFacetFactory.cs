@@ -38,26 +38,29 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facet = new ContributedActionFacet(holder);
             foreach (ParameterInfo p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
-                var type = reflector.LoadSpecification<IObjectSpecImmutable> (p.ParameterType);
-               if (type != null ) {
+                var type = reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType);
+                if (type != null) {
                     if (type.IsParseable) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
-                    } else {
+                    }
+                    else {
                         if (type.IsCollection) {
                             if (!type.IsQueryable) {
                                 Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
-                            } else {
+                            }
+                            else {
                                 var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
                                 if (returnType.IsQueryable) {
                                     Log.WarnFormat("ContributedAction attribute added to an action that returns an IQueryable: {0}", member.Name);
-
-                                } else {
+                                }
+                                else {
                                     Type elementType = p.ParameterType.GetGenericArguments()[0];
                                     type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                                     facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
                                 }
                             }
-                        } else {
+                        }
+                        else {
                             facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
                         }
                     }

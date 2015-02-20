@@ -221,7 +221,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IList<ITypeSpecImmutable> tempSubclasses;
 
         // The special constructor is used to deserialize values. 
-        public TypeSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+        protected TypeSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
             Type = info.GetValue<Type>("Type");
             FullName = info.GetValue<string>("FullName");
             ShortName = info.GetValue<string>("ShortName");
