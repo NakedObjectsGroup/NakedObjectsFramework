@@ -6,8 +6,8 @@ using System.Web.Routing;
 using NakedObjects.Mvc.App;
 using WebActivatorEx;
 
-[assembly: PreApplicationStartMethod(typeof (RestfulObjectsStart), "PreStart")]
-[assembly: PostApplicationStartMethod(typeof (RestfulObjectsStart), "PostStart")]
+//[assembly: PreApplicationStartMethod(typeof (RestfulObjectsStart), "PreStart")]
+//[assembly: PostApplicationStartMethod(typeof (RestfulObjectsStart), "PostStart")]
 
 namespace NakedObjects.Mvc.App {
     public static class RestfulObjectsStart {

@@ -189,6 +189,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
             fieldSet.InnerHtml += html.Hidden(IdHelper.GetDisplayFormatId(id), ToNameValuePairs(html.GetDisplayStatuses()));
             fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdHelper.SaveButtonClass, MvcUi.Save, string.Empty, new RouteValueDictionary());
+            fieldSet.InnerHtml += nakedObject.ResolveState.IsTransient() ? GetSubmitButton(IdHelper.SaveCloseButtonClass, MvcUi.SaveAndClose, IdHelper.SaveAndCloseAction, new RouteValueDictionary(new { close = true })) : "";
+            
             return MvcHtmlString.Create(fieldSet.ToString());
         }
 

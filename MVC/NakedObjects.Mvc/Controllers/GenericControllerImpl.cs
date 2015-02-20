@@ -119,6 +119,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     return Redisplay(controlData);
                 case (ObjectAndControlData.SubActionType.None):
                     return ApplyEdit(controlData);
+                case (ObjectAndControlData.SubActionType.SaveAndClose):
+                    return ApplyEditAndClose(controlData);
                 case (ObjectAndControlData.SubActionType.Action):
                     return ApplyEditAction(controlData);
             }
@@ -307,6 +309,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             return View(viewName, controlData.GetNakedObject().Object);
+        }
+
+        private ActionResult ApplyEditAndClose(ObjectAndControlData controlData) {
+            var nakedObject = controlData.GetNakedObject();
+            if (ValidateChanges(nakedObject, controlData)) {
+                if (ApplyChanges(nakedObject, controlData)) {
+                    // last object or home
+                    object lastObject = Session.LastObject(ObjectCache.ObjectFlag.BreadCrumb);
+                    if (lastObject == null) {
+                        return RedirectHome();
+                    }
+                    nakedObject = FrameworkHelper.GetNakedObject(lastObject);
+                    return AppropriateView(controlData, nakedObject);
+                }
+            }
+            return View("ObjectEdit", nakedObject.Object);
         }
 
         private ActionResult ApplyEditAction(ObjectAndControlData controlData) {

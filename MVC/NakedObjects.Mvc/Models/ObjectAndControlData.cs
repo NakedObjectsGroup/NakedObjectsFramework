@@ -29,13 +29,14 @@ namespace NakedObjects.Web.Mvc.Models {
             Details, 
             Pager, 
             Cancel,
-            None, 
+            None,
+            SaveAndClose
         } ;
         
         public SubActionType SubAction {
             get {
-                var subActions = new List<string> { Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel };
-
+                var subActions = new List<string> { Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel, SaveAndClose };
+ 
                 Assert.AssertFalse(subActions.Count(s => !string.IsNullOrEmpty(s)) > 1);
 
                 if (!string.IsNullOrEmpty(Finder)) {
@@ -69,6 +70,9 @@ namespace NakedObjects.Web.Mvc.Models {
                 if (!string.IsNullOrEmpty(Cancel)) {
                     return SubActionType.Cancel;
                 }
+                if (!string.IsNullOrEmpty(SaveAndClose)) {
+                    return SubActionType.SaveAndClose;
+                }
                 return SubActionType.None;
             }
         }
@@ -87,6 +91,7 @@ namespace NakedObjects.Web.Mvc.Models {
         public string Pager { get; set; }
         public string Cancel { get; set; }
         public string None { get; set; }
+        public string SaveAndClose { get; set; }
 
         public string PageSize { get; set; }
         public string Page { get; set; }

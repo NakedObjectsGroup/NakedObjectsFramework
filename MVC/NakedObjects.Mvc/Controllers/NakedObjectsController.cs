@@ -77,6 +77,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetEncryptDecrypt();
         }
 
+        internal ActionResult RedirectHome() {
+            TempData[IdHelper.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
+            TempData[IdHelper.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
+            return RedirectToAction(IdHelper.IndexAction, IdHelper.HomeName);
+        }
+
+
         internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObject nakedObject, INakedObjectAction action = null, string propertyName = null) {
             if (nakedObject == null) {
                 // no object to go to 
@@ -89,9 +96,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (nakedObject.Specification.IsService) {
                     object lastObject = Session.LastObject(ObjectCache.ObjectFlag.BreadCrumb);
                     if (lastObject == null) {
-                        TempData[IdHelper.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
-                        TempData[IdHelper.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
-                        return RedirectToAction(IdHelper.IndexAction, IdHelper.HomeName);
+                        return RedirectHome();
                     }
 
                     nakedObject = FrameworkHelper.GetNakedObject(lastObject);
