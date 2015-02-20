@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -117,8 +115,7 @@ namespace AdventureWorksModel {
         }
 
         public virtual string ValidateCardNumber(string cardNumber) {
-            Thread.Sleep(500);
-
+         
             if (cardNumber != null && cardNumber.Length <= 4) {
                 return "card number too short";
             }

@@ -1,11 +1,11 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -40,7 +40,7 @@ namespace AdventureWorksModel {
         public virtual int OrderQty { get; set; }
 
         public virtual string ValidateOrderQty(int qty) {
-            Thread.Sleep(500);
+         
             var rb = new ReasonBuilder();
             if (qty <= 0) {
                 rb.Append("Order Quantity must be > 0");

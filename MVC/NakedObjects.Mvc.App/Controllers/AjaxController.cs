@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Web.Mvc.Controllers;
@@ -16,34 +15,16 @@ namespace NakedObjects.Mvc.App.Controllers {
     public class AjaxController : AjaxControllerImpl {
         public AjaxController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
-        private bool IsKnownKey(string key) {
-            return key == "id" || key == "propertyName" || key == "actionName" || key == "parameterName";
-        }
-
-        private string GetValue() {
-            var keys = Request.QueryString.AllKeys;
-
-            var otherKeys = keys.Where(k => k.EndsWith("-Input"));
-
-            if (otherKeys.Count() == 1) {
-                var valueKey = otherKeys.First();
-                var values = Request.QueryString.GetValues(valueKey);
-                return values != null && values.Count() == 1 ? values.First() : null;
-            }
-            return null;
-        }
-
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {
-            // behaviour from client libraries has changed and value is now in parm with id of field
-            // keep existing value check for backward compatibility but if it fail look for par with id ending in -Input
-            return base.ValidateProperty(id, value ?? GetValue(), propertyName);
+            // value here is probably null - field value is extracted by id later
+            return base.ValidateProperty(id, value, propertyName);
         }
 
         [HttpGet]
         public override JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
             // see ValidateProperty comment
-            return base.ValidateParameter(id, value ?? GetValue(), actionName, parameterName);
+            return base.ValidateParameter(id, value, actionName, parameterName);
         }
 
         [HttpGet]
