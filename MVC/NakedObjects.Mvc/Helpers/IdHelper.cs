@@ -125,6 +125,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string HomeName = "Home";
         public const string AddAction = "Add";
         public const string SaveAction = "Save";
+        public const string SaveAndCloseAction = "SaveAndClose";
         public const string ClearHistoryAction = "ClearHistory";
         public const string ClearHistoryItemAction = "ClearHistoryItem";
         public const string ClearHistoryOthersAction = "ClearHistoryOthers";
@@ -134,6 +135,7 @@ namespace NakedObjects.Web.Mvc.Html {
         // Class attributes for HTML buttons, to permit CSS styling
         public const string OkButtonClass = "nof-ok";
         public const string SaveButtonClass = "nof-save";
+        public const string SaveCloseButtonClass = "nof-saveclose";
         public const string EditButtonClass = "nof-edit";
         public const string SummaryButtonClass = "nof-summary";
         public const string ListButtonClass = "nof-list";
@@ -163,6 +165,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string FormatKey = "format";
 
         public const string ActiveClass = "active";
+       
 
         private static string InputOrSelect(ITypeSpec spec) {
             return (spec.IsParseable ? inputName : selectName);
