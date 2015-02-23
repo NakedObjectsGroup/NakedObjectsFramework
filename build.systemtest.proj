@@ -143,7 +143,7 @@
   </Target>
 
   <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
+    <!--<Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />-->
   </Target>
 
   <Target Name="WebTest" DependsOnTargets="EndToEndTest">
