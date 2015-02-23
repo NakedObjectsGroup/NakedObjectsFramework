@@ -24,7 +24,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
 
-            //todo rework this so that factories filter actions appropraitely
+            // todo rework this so that factories filter actions appropraitely
+            // cf property filtering factory 
+            // code below this should be in action finder 
             if (classStrategy.IsSystemClass(method.DeclaringType)) {
                 Log.InfoFormat("Skipping fields in {0} (system class according to ClassStrategy)", typeName);
                 return true;

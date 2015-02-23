@@ -13,6 +13,9 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
+    /// <summary>
+    /// add summary here 
+    /// </summary>
     public class UnsupportedPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedPropertyFilteringFactory));
 
@@ -25,6 +28,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             string typeName = property.DeclaringType == null ? "Unknown" : property.DeclaringType.FullName;
 
             //todo rework this so that factories filter actions appropraitely
+            // rename this facetfactory and also action one to indicate more clearly what they do so 
+            // that they can be replaced as necessary. 
             if (classStrategy.IsSystemClass(property.DeclaringType)) {
                 Log.InfoFormat("Skipping fields in {0} (system class according to ClassStrategy)", typeName);
                 return true;
