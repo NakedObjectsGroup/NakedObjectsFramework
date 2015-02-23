@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
@@ -73,13 +74,39 @@ namespace NakedObjects.Meta.SemanticsProvider {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// http://jonskeet.uk/csharp/readbinary.html
+        /// Reads data into a complete array, throwing an EndOfStreamException
+        /// if the stream runs out of data first, or if an IOException
+        /// naturally occurs.
+        /// </summary>
+        /// <param name="stream">The stream to read data from</param>
+        /// <param name="data">The array to read bytes into. The array
+        /// will be completely filled from the stream, so an appropriate
+        /// size must be given.</param>
+        private static void ReadWholeArray(Stream stream, byte[] data) {
+            int offset = 0;
+            int remaining = data.Length;
+            while (remaining > 0) {
+                int read = stream.Read(data, offset, remaining);
+                if (read <= 0) {
+                    throw new EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remaining));
+                }
+                remaining -= read;
+                offset += read;
+            }
+        }
+
         protected override string DoEncode(Image image) {
             Stream stream = image.GetResourceAsStream();
-            long len = stream.Length;
+           
+            if (stream.Length > int.MaxValue) {
+                throw new ModelException(string.Format("Image is too large size: {0} max: {1} name: {2}", stream.Length, int.MaxValue, image.Name));
+            }
 
+            int len = Convert.ToInt32(stream.Length);
             var buffer = new byte[len];
-            // TODO check size
-            stream.Read(buffer, 0, (int) len);
+            ReadWholeArray(stream, buffer);
             string encoded = Convert.ToBase64String(buffer);
             return image.MimeType + " " + encoded;
         }
