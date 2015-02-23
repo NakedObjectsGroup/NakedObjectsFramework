@@ -25,6 +25,10 @@ namespace RestfulObjects.Test.Data {
         public DbSet<WithReference> WithReferences { get; set; }
         public DbSet<WithScalars> WithScalarses { get; set; }
         public DbSet<WithValue> WithValues { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+            Database.SetInitializer(new CodeFirstInitializer());
+        }
     }
 
     public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContext> {
