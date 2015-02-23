@@ -18,5 +18,8 @@
       <dependency id="Newtonsoft.Json" version="[6.0.8, 7.0)" />
       <dependency id="Microsoft.AspNet.WebApi" version="[5.2.3, 6.0)" />
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5.2" />
+    </frameworkAssemblies>
   </metadata>
 </package>

@@ -18,19 +18,10 @@ using NakedObjects.Menu;
 
 namespace MvcTestApp {
     public static class NakedObjectsRunSettings {
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
-        private static Type[] Types {
-            get { 
-                return new[] {
-                    typeof (MostSimple[]), 
-                    typeof (Image), 
-                    typeof (FileAttachment), 
-                    typeof (EntityCollection<object>), 
-                    typeof (ObjectQuery<object>)
-                }; 
+        private static string[] Namespaces {
+            get {
+                return new string[] { "MvcTestApp" };
             }
         }
 
@@ -45,13 +36,19 @@ namespace MvcTestApp {
             }
         }
 
+        private static Type[] Types {
+            get {
+                return new Type[] { };
+            }
+        }
+
         //private static Type[] AssociatedTypes() {
         //    var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
         //    return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, Namespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
