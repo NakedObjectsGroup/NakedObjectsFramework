@@ -42,7 +42,6 @@ namespace NakedObjects.Meta.Adapter {
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
-            MemberParameterSpecifications = parameterTypes.Select(x => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))).ToArray();
             this.parameterNames = parameterNames;
             this.isField = isField;
         }
@@ -69,7 +68,6 @@ namespace NakedObjects.Meta.Adapter {
             get { return isField; }
         }
 
-        public ITypeSpecImmutable[] MemberParameterSpecifications { get; private set; }
 
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);

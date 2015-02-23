@@ -46,8 +46,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        // TODO: is this safe? really?
-
         protected override string ToStringValues() {
             return encoderDecoder.ToString();
         }

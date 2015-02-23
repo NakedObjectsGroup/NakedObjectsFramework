@@ -231,21 +231,21 @@ namespace NakedObjects.Reflect {
 
                         Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                        // build action & its parameters          
+                        // build action & its parameters   
+
+                        if (actionMethod.ReturnType != typeof(void)) {
+                            reflector.LoadSpecification(actionMethod.ReturnType);
+                        }
 
                         IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
                         IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
-                        
+   
                         var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
 
                         // Process facets on the action & parameters
                         FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
                         for (int l = 0; l < actionParams.Length; l++) {
                             FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
-                        }
-
-                        if (actionMethod.ReturnType != typeof (void)) {
-                            reflector.LoadSpecification(actionMethod.ReturnType);
                         }
 
                         actionSpecs.Add(action);

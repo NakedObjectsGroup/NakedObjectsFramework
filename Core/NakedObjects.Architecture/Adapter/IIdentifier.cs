@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Adapter {
     public interface IIdentifier : IComparable {
@@ -14,7 +13,6 @@ namespace NakedObjects.Architecture.Adapter {
         string MemberName { get; }
         string[] MemberParameterTypeNames { get; }
         string[] MemberParameterNames { get; }
-        ITypeSpecImmutable[] MemberParameterSpecifications { get; }
 
         /// <summary>
         ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action

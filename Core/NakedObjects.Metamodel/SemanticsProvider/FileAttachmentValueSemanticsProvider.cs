@@ -11,6 +11,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
@@ -58,11 +59,14 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override string DoEncode(FileAttachment fileAttachment) {
             Stream stream = fileAttachment.GetResourceAsStream();
-            long len = stream.Length;
+         
+            if (stream.Length > int.MaxValue) {
+                throw new ModelException(string.Format("Attachment is too large size: {0} max: {1} name: {2}", stream.Length, int.MaxValue, fileAttachment.Name));
+            }
 
+            int len = Convert.ToInt32(stream.Length);
             var buffer = new byte[len];
-            // TODO check size
-            stream.Read(buffer, 0, (int) len);
+            ReadWholeArray(stream, buffer);
             string encoded = Convert.ToBase64String(buffer);
             return fileAttachment.MimeType + " " + encoded;
         }

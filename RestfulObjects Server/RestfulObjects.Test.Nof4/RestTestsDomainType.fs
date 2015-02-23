@@ -184,9 +184,11 @@ type Nof4TestsDomainType() =
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
+        [<Ignore>] // sort ids 
         member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
         
         [<Test>]
+        [<Ignore>] // sort ids 
         member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
         
         [<Test>]

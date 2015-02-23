@@ -94,7 +94,7 @@ namespace NakedObjects.Reflect.Component {
 
         public virtual ITypeSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
-            return (ITypeSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
+            return (ITypeSpecBuilder) metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 
         public virtual T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
