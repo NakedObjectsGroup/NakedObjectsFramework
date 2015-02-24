@@ -28,9 +28,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
 
-        protected TypeSpecImmutable(Type type, IMetamodel metamodel) {
+        protected TypeSpecImmutable(Type type) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
-            identifier = new IdentifierImpl(metamodel, type.FullName);
+            identifier = new IdentifierImpl(type.FullName);
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;

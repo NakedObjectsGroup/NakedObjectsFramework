@@ -76,7 +76,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Type baseType = declaringType.BaseType;
                 Trace.Assert(baseType != null, "baseType != null");
 
-                if (InheritsProperty(baseType, propertyName)) {
+                if (InheritsProperty(declaringType, propertyName)) {
                     Log.InfoFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType.FullName);
                     return true;
                 }
@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
                 Type declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
-                if (InheritsMethod(declaringType.BaseType, propertyName)) {
+                if (InheritsMethod(declaringType, propertyName)) {
                     string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 propertyName = TrimDigits(propertyName);
                 Type declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
-                if (InheritsMethod(declaringType.BaseType, propertyName)) {
+                if (InheritsMethod(declaringType, propertyName)) {
                     string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
@@ -131,19 +131,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static bool InheritsProperty(Type typeToCheck, string name) {
-            if (typeToCheck == null) {
-                return false;
-            }
-
-            return typeToCheck.GetProperty(name) != null || InheritsProperty(typeToCheck.BaseType, name);
+            return typeToCheck != null && (typeToCheck.GetProperty(name) != null || InheritsProperty(typeToCheck.BaseType, name));
         }
 
         private static bool InheritsMethod(Type typeToCheck, string name) {
-            if (typeToCheck == null) {
-                return false;
-            }
-
-            return typeToCheck.GetMethod(name) != null || InheritsMethod(typeToCheck.BaseType, name);
+            return typeToCheck != null && (typeToCheck.GetMethods().Any(m => m.Name == name) || InheritsMethod(typeToCheck.BaseType, name));
         }
     }
 }

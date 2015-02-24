@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -64,8 +63,5 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="paramNum">zero-based index to the parameter to be processed</param>
         /// <param name="holder">to attach the facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
-
-        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
-        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
     }
 }

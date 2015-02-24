@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.AutoCompletePrefix,
             PrefixesAndRecognisedMethods.ParameterDefaultPrefix,
@@ -116,6 +116,24 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             FacetUtils.AddFacets(facets);
+        }
+
+        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
+            foreach (ParameterInfo parameterInfo in method.GetParameters()) {
+                if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
+                    Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
+            return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
+                                                  !methodInfo.IsStatic &&
+                                                  !methodInfo.IsGenericMethod &&
+                                                  classStrategy.IsTypeToBeIntrospected(methodInfo.ReturnType) &&
+                                                  ParametersAreSupported(methodInfo, classStrategy)).ToList();
         }
 
         /// <summary>

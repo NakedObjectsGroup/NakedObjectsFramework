@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.IO;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -138,6 +139,29 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected static string FormatMessage(string entry) {
             return string.Format(Resources.NakedObjects.CannotFormat, entry, typeof (T).Name);
+        }
+
+        /// <summary>
+        /// http://jonskeet.uk/csharp/readbinary.html
+        /// Reads data into a complete array, throwing an EndOfStreamException
+        /// if the stream runs out of data first, or if an IOException
+        /// naturally occurs.
+        /// </summary>
+        /// <param name="stream">The stream to read data from</param>
+        /// <param name="data">The array to read bytes into. The array
+        /// will be completely filled from the stream, so an appropriate
+        /// size must be given.</param>
+        protected static void ReadWholeArray(Stream stream, byte[] data) {
+            int offset = 0;
+            int remaining = data.Length;
+            while (remaining > 0) {
+                int read = stream.Read(data, offset, remaining);
+                if (read <= 0) {
+                    throw new EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remaining));
+                }
+                remaining -= read;
+                offset += read;
+            }
         }
     }
 

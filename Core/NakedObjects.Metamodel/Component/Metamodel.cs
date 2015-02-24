@@ -10,6 +10,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Component {
@@ -30,25 +31,27 @@ namespace NakedObjects.Meta.Component {
             get { return cache.AllSpecifications(); }
         }
 
-        public ITypeSpecImmutable GetSpecification(Type type) {
-            return GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
+        public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
+            try {
+                var spec = GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
+                if (spec == null && !allowNull) {
+                    Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, "unexpected null");
+                    throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type == null ? "null" : type.FullName));
+                }
+                return spec;
+            }
+            catch (NakedObjectSystemException) {
+                throw;
+            }
+            catch (Exception e) {
+                Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, e);
+                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type == null ? "null" : type.FullName));
+            }
         }
 
         public ITypeSpecImmutable GetSpecification(string name) {
-            try {
-                Type type = TypeUtils.GetType(name);
-                return GetSpecification(type);
-            }
-            catch (Exception e) {
-                //todo this looks redundant
-                Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
-                ITypeSpecImmutable spec = cache.GetSpecification(name);
-                if (spec != null) {
-                    Log.InfoFormat("Found {0} in cache", name);
-                    return spec;
-                }
-                throw;
-            }
+            Type type = TypeUtils.GetType(name);
+            return GetSpecification(type);
         }
 
         public void Add(Type type, ITypeSpecBuilder spec) {

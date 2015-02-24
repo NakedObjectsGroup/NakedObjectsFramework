@@ -21,7 +21,7 @@ namespace NakedObjects.Core.Test.Component {
     /// </summary>
     [TestFixture]
     public class DefaultPersistAlgorithmTest {
-        private DefaultPersistAlgorithm algorithm;
+        private RecursivePersistAlgorithm algorithm;
         private INakedObjectManager manager;
         private Mock<INakedObjectManager> mockManager;
         private Mock<IObjectPersistor> mockPersistor;
@@ -37,7 +37,7 @@ namespace NakedObjects.Core.Test.Component {
             mockManager = new Mock<INakedObjectManager>();
             manager = mockManager.Object;
 
-            algorithm = new DefaultPersistAlgorithm(persistor, manager);
+            algorithm = new RecursivePersistAlgorithm(persistor, manager);
         }
 
         #endregion

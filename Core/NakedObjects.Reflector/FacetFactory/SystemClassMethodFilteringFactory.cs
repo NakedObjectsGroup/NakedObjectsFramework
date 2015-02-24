@@ -13,20 +13,22 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class UnsupportedPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedPropertyFilteringFactory));
+    /// <summary>
+    /// This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a string.
+    /// </summary>
+    public class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (SystemClassMethodFilteringFactory));
 
-        public UnsupportedPropertyFilteringFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Property) {}
+        public SystemClassMethodFilteringFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
-        #region IPropertyFilteringFacetFactory Members
+        #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) {
-            string typeName = property.DeclaringType == null ? "Unknown" : property.DeclaringType.FullName;
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
+            string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
 
-            //todo rework this so that factories filter actions appropraitely
-            if (classStrategy.IsSystemClass(property.DeclaringType)) {
-                Log.InfoFormat("Skipping fields in {0} (system class according to ClassStrategy)", typeName);
+            if (classStrategy.IsSystemClass(method.DeclaringType)) {
+                Log.InfoFormat("Skipping actions in {0} (system class according to ClassStrategy)", typeName);
                 return true;
             }
 

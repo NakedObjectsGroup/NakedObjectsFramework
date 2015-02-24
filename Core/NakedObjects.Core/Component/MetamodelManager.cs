@@ -78,19 +78,11 @@ namespace NakedObjects.Core.Component {
         }
 
         private ITypeSpecImmutable GetInnerSpec(Type type) {
-            ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(type);
-            if (innerSpec == null) {
-                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type.FullName));
-            }
-            return innerSpec;
+            return Metamodel.GetSpecification(type);
         }
 
         private ITypeSpecImmutable GetInnerSpec(string name) {
-            ITypeSpecImmutable innerSpec = Metamodel.GetSpecification(name);
-            if (innerSpec == null) {
-                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", name));
-            }
-            return innerSpec;
+            return  Metamodel.GetSpecification(name);           
         }
     }
 }

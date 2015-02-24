@@ -79,7 +79,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             private readonly MemberPeerStub owner;
 
             public IdentifierNull(MemberPeerStub owner)
-                : base(null, "", "") {
+                : base("", "") {
                 this.owner = owner;
             }
 

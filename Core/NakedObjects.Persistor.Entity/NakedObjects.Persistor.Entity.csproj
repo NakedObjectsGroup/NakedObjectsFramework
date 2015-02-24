@@ -112,7 +112,6 @@
     <Compile Include="Configuration\EntityContextConfiguration.cs" />
     <Compile Include="Configuration\EntityObjectStoreConfiguration.cs" />
     <Compile Include="Component\EntityOidGenerator.cs" />
-    <Compile Include="Component\EntityPersistAlgorithm.cs" />
     <Compile Include="Util\EntityUtils.cs" />
     <Compile Include="Configuration\IEntityObjectStoreConfiguration.cs" />
     <Compile Include="Util\ObjectContextUtils.cs" />

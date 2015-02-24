@@ -14,12 +14,15 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class DefaultPersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultPersistAlgorithm));
+    /// <summary>
+    /// Recursively walk the object's fields and collections persisting them.  
+    /// </summary>
+    public class RecursivePersistAlgorithm : IPersistAlgorithm {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (RecursivePersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 
-        public DefaultPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
+        public RecursivePersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(manager);
 

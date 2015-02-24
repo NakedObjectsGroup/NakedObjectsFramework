@@ -20,6 +20,8 @@ namespace NakedObjects.Architecture.Reflect {
     public interface IFacetFactorySet {
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
         IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+        IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
+
 
         /// <summary>
         ///     Whether this <see cref="MethodInfo" /> is recognized by any of the <see cref="IFacetFactory" />s.

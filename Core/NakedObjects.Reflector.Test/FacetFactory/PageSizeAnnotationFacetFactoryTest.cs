@@ -64,7 +64,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            var identifier = new IdentifierImpl(null, "Customer1", "SomeAction");
+            var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
             new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));

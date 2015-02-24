@@ -5,23 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Architecture.Adapter {
-    public interface IIdentifier : IComparable {
-        string ClassName { get; }
-        string MemberName { get; }
-        string[] MemberParameterTypeNames { get; }
-        string[] MemberParameterNames { get; }
-
-        /// <summary>
-        ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action
-        /// </summary>
-        bool IsField { get; }
-
-        string ToIdentityString(IdentifierDepth depth);
-        string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType);
-    }
+namespace NakedObjects.Architecture.FacetFactory {
+    /// <summary>
+    ///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations
+    /// </summary>
+    /// <seealso cref="IInterfaceBasedFacetFactory" />
+    public interface IAnnotationBasedFacetFactory {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }
