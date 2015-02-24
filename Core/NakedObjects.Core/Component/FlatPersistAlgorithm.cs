@@ -12,15 +12,17 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Persistor.Entity.Component {
-    //TODO: Rename to something that describes the nature of this algorithm, which is not
-    //specific to EF.  This also suggests it should be moved out of this assembly.
-    public class EntityPersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (EntityPersistAlgorithm));
+namespace NakedObjects.Core.Component {
+    /// <summary>
+    /// Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single object or each 
+    /// object in the collection to the store.
+    /// </summary>
+    public class FlatPersistAlgorithm : IPersistAlgorithm {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (FlatPersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 
-        public EntityPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
+        public FlatPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
             this.persistor = persistor;
             this.manager = manager;
         }

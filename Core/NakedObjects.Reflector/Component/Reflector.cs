@@ -230,7 +230,7 @@ namespace NakedObjects.Reflect.Component {
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(actualType, specification);
 
-            specification.Introspect(facetDecoratorSet, new Introspector(this, metamodel));
+            specification.Introspect(facetDecoratorSet, new Introspector(this));
 
             return specification;
         }

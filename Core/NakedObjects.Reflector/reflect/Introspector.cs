@@ -25,17 +25,15 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect {
     internal class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
-        private readonly IMetamodel metamodel;
         private readonly IReflector reflector;
         private MethodInfo[] methods;
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector, IMetamodel metamodel) {
+        public Introspector(IReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector");
             this.reflector = reflector;
-            this.metamodel = metamodel;
         }
 
         private IClassStrategy ClassStrategy {
@@ -174,7 +172,7 @@ namespace NakedObjects.Reflect {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
-                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
 
                 // create a collection property spec
                 Type returnType = property.PropertyType;
@@ -201,7 +199,7 @@ namespace NakedObjects.Reflect {
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
                 // create a reference property spec
-                var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
+                var identifier = new IdentifierImpl(FullName, property.Name);
                 Type propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType);
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
@@ -232,7 +230,7 @@ namespace NakedObjects.Reflect {
                     reflector.LoadSpecification(actionMethod.ReturnType);
                 }
 
-                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
                 IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
    
                 var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);

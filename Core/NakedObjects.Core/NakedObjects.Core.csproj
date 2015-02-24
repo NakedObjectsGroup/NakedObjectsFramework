@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\ConcurrencyCheckVersion.cs" />
+    <Compile Include="Component\FlatPersistAlgorithm.cs" />
     <Compile Include="Component\IdentityAdapterHashMap.cs" />
     <Compile Include="Async\AsyncService.cs" />
     <Compile Include="Component\BatchRunner.cs" />
@@ -194,7 +195,7 @@
     <Compile Include="Exception\AdapterException.cs" />
     <Compile Include="Adapter\CollectionMemento.cs" />
     <Compile Include="Util\CollectionMementoHelper.cs" />
-    <Compile Include="Component\DefaultPersistAlgorithm.cs" />
+    <Compile Include="Component\RecursivePersistAlgorithm.cs" />
     <Compile Include="Exception\TransactionException.cs" />
     <Compile Include="Adapter\AggregateOid.cs" />
     <Compile Include="Adapter\ViewModelOid.cs" />

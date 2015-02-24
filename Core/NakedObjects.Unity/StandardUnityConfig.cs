@@ -37,7 +37,7 @@ namespace NakedObjects.Unity {
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new T(), new InjectionConstructor(10));
             container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new T());
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new T());
-            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new T());
+            container.RegisterType<IPersistAlgorithm, FlatPersistAlgorithm>(new T());
             container.RegisterType<IObjectStore, EntityObjectStore>(new T());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new T());
             container.RegisterType<ITransactionManager, TransactionManager>(new T());

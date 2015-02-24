@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        private List<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
+        private readonly List<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
 
         public FacetFactorySet(IFacetFactory[] factories) {
             List<IFacetFactory> allFactories = factories.ToList();

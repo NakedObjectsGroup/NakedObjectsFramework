@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Text;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Adapter {
@@ -26,19 +25,19 @@ namespace NakedObjects.Meta.Adapter {
         private string asString;
         private string identityString;
 
-        public IdentifierImpl(IMetamodel metamodel, string className)
-            : this(metamodel, className, "", new string[0], new string[0], false) {}
+        public IdentifierImpl(string className)
+            : this(className, "", new string[0], new string[0], false) {}
 
-        public IdentifierImpl(IMetamodel metamodel, string className, string fieldName)
-            : this(metamodel, className, fieldName, new string[0], new string[0], true) {}
+        public IdentifierImpl(string className, string fieldName)
+            : this(className, fieldName, new string[0], new string[0], true) {}
 
-        public IdentifierImpl(IMetamodel metamodel, string className, string methodName, ParameterInfo[] parameters)
-            : this(metamodel, className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) {}
+        public IdentifierImpl(string className, string methodName, ParameterInfo[] parameters)
+            : this(className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) {}
 
-        public IdentifierImpl(IMetamodel metamodel, string className, string methodName, string[] parameterTypeNames)
-            : this(metamodel, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) {}
+        public IdentifierImpl(string className, string methodName, string[] parameterTypeNames)
+            : this(className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) {}
 
-        private IdentifierImpl(IMetamodel metamodel, string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
+        private IdentifierImpl(string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
@@ -180,17 +179,17 @@ namespace NakedObjects.Meta.Adapter {
             int indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
             string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - (0));
             if (indexOfHash == -1 || indexOfHash == (asString.Length - 1)) {
-                return new IdentifierImpl(metamodel, className);
+                return new IdentifierImpl(className);
             }
             string name;
             if (indexOfOpenBracket == -1) {
                 name = asString.Substring(indexOfHash + 1);
-                return new IdentifierImpl(metamodel, className, name);
+                return new IdentifierImpl(className, name);
             }
             name = asString.Substring(indexOfHash + 1, (indexOfOpenBracket) - (indexOfHash + 1));
             string allParms = asString.Substring(indexOfOpenBracket + 1, (indexOfCloseBracket) - (indexOfOpenBracket + 1)).Trim();
             string[] parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] {};
-            return new IdentifierImpl(metamodel, className, name, parms);
+            return new IdentifierImpl(className, name, parms);
         }
 
         #region Object overrides 

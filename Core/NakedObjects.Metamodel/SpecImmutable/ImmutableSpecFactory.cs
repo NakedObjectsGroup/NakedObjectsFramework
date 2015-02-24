@@ -21,11 +21,11 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) {
-            return new ObjectSpecImmutable(type, metamodel);
+            return new ObjectSpecImmutable(type);
         }
 
         public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) {
-            return new ServiceSpecImmutable(type, metamodel);
+            return new ServiceSpecImmutable(type);
         }
 
         public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) {

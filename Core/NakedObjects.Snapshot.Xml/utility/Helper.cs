@@ -32,7 +32,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (fullNameLastPeriodIdx > 0) {
                 return fullyQualifiedClassName.Substring(0, fullNameLastPeriodIdx);
             }
-            return "default"; // TODO: should provide a better way to specify namespace.
+            return "default"; 
         }
 
         // Returns the root element for the element by looking up the owner document for the element,

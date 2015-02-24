@@ -25,67 +25,50 @@ namespace NakedObjects.Meta.Test.Adapter {
 
         [TestMethod]
         public void TestCreateOk() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass");
-
+            var identifier = new IdentifierImpl("testclass");
             Assert.IsNotNull(identifier);
         }
 
         [TestMethod]
-        public void TestToClassString() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass");
+        public void TestToClassString() {           
+            var identifier = new IdentifierImpl("testclass");
             var s = identifier.ToIdentityString(IdentifierDepth.Class);
             Assert.AreEqual("testclass", s);
         }
 
         [TestMethod]
-        public void TestToClassNameString() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass", "testfield");
-
+        public void TestToClassNameString() {      
+            var identifier = new IdentifierImpl("testclass", "testfield");
             var s = identifier.ToIdentityString(IdentifierDepth.ClassName);
-
             Assert.AreEqual("testclass#testfield", s);
         }
 
         [TestMethod]
         public void TestToClassNameParamsString() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-
+            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             var s = identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
-
             Assert.AreEqual("testclass#testmethod(testparam1,testparam2)", s);
         }
 
         [TestMethod]
         public void TestEquals() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier1 = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var identifier2 = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-
+            var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+            var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             Assert.AreEqual(identifier1, identifier2);
         }
 
         [TestMethod]
         public void TestHash() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier1 = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-            var identifier2 = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-
+            var identifier1 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+            var identifier2 = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             var testDict = new Dictionary<IdentifierImpl, string> {{identifier1, "1"}};
-
             Assert.IsTrue(testDict.ContainsKey(identifier2));
         }
 
         [TestMethod]
         public void TestToClassNameParamsStringWithCheck() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-
+            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.Action);
-
             Assert.AreEqual("testclass#testmethod(testparam1,testparam2):Action", s);
         }
 
@@ -107,21 +90,15 @@ namespace NakedObjects.Meta.Test.Adapter {
 
         [TestMethod]
         public void TestToNameString() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass", "testfield");
-
+            var identifier = new IdentifierImpl("testclass", "testfield");
             var s = identifier.ToIdentityString(IdentifierDepth.Name);
-
             Assert.AreEqual("testfield", s);
         }
 
         [TestMethod]
         public void TestToParmsString() {
-            var mockMetaModel = new Mock<IMetamodel>();
-            var identifier = new IdentifierImpl(mockMetaModel.Object, "testclass", "testmethod", new[] {"testparam1", "testparam2"});
-
+            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             var s = identifier.ToIdentityString(IdentifierDepth.Parms);
-
             Assert.AreEqual("(testparam1,testparam2)", s);
         }
     }
