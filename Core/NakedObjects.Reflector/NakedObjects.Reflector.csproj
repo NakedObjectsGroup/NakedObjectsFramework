@@ -140,7 +140,7 @@
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\DefaultNamingFacetFactory.cs" />
-    <Compile Include="FacetFactory\UnsupportedPropertyFilteringFactory.cs" />
+    <Compile Include="FacetFactory\SystemClassPropertyFilteringFactory.cs" />
     <Compile Include="FacetFactory\ValidateObjectFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />

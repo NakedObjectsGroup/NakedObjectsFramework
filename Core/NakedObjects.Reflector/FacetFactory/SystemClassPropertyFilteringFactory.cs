@@ -14,12 +14,12 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    /// add summary here 
+    /// This factory filters out properties on system types. So for example 'Length' will not show up when displaying a string.
     /// </summary>
-    public class UnsupportedPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedPropertyFilteringFactory));
+    public class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (SystemClassPropertyFilteringFactory));
 
-        public UnsupportedPropertyFilteringFactory(int numericOrder)
+        public SystemClassPropertyFilteringFactory(int numericOrder)
             : base(numericOrder, FeatureType.Property) {}
 
         #region IPropertyFilteringFacetFactory Members
@@ -27,11 +27,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         public bool Filters(PropertyInfo property, IClassStrategy classStrategy) {
             string typeName = property.DeclaringType == null ? "Unknown" : property.DeclaringType.FullName;
 
-            //todo rework this so that factories filter actions appropraitely
-            // rename this facetfactory and also action one to indicate more clearly what they do so 
-            // that they can be replaced as necessary. 
             if (classStrategy.IsSystemClass(property.DeclaringType)) {
-                Log.InfoFormat("Skipping fields in {0} (system class according to ClassStrategy)", typeName);
+                Log.InfoFormat("Skipping field {0} in {1} (system class according to ClassStrategy)", property.Name, typeName);
                 return true;
             }
 
