@@ -292,6 +292,21 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreEqual(74, reflector.AllObjectSpecImmutables.Count());
         }
 
+        [TestMethod]
+        public void ReflectSimpleDomainObject() {
+            IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { }, new[] { "System" });
+            rc.SupportedSystemTypes.Clear();
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
+        }
+
+
         #region Nested type: SetWrapper
 
         public class SetWrapper<T> : ISet<T> {
@@ -481,5 +496,19 @@ namespace NakedObjects.Reflect.Test {
             [EnumDataType(typeof (TestEnum))]
             public virtual int EnumByAttributeChoices { get; set; }
         }
+
+        public class SimpleDomainObject {
+            [Key, Title, ConcurrencyCheck]
+            public virtual int Id { get; set; }
+
+            public virtual void Action() {
+                
+            }
+
+            public virtual string HideAction() {
+                return null;
+            }
+        }
+
     }
 }
