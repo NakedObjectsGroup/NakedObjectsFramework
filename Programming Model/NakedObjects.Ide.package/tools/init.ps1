@@ -60,13 +60,15 @@ param($rootPath, $toolsPath, $package, $project)
 	build.sf.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
+	build.batch.proj /t:Clean
 	
 	build.ide.proj 
 	build.pm.proj 
 	build.core.proj 
 	build.sf.proj 
 	build.ro.proj 
-	build.mvc.proj 
+	build.mvc.proj
+	build.batch.proj 
 
 	.EXAMPLE
 
@@ -85,6 +87,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.sf.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
+		build build.batch.proj /t:Clean
 		
 		build build.ide.proj 
 		build build.pm.proj 
@@ -92,6 +95,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.sf.proj 
 		build build.ro.proj 
 		build build.mvc.proj 
+		build build.batch.proj
 	}
 
 	<#
@@ -109,6 +113,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.sf.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
+	build.batch.proj /t:Clean
 	
 	build.ide.proj 
 	build.pm.proj 
@@ -116,6 +121,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.sf.proj 
 	build.ro.proj /t:RestfulObjectsPackageNoTest
 	build.mvc.proj /t:MvcPackageNoTest
+	build.batch.proj
 
 	.EXAMPLE
 
@@ -134,6 +140,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.sf.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
+		build build.batch.proj /t:Clean
 		
 
 		build build.ide.proj 
@@ -142,6 +149,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.sf.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
 		build build.mvc.proj /t:MvcPackageNoTest
+		build build.batch.proj
 	}
 
 	<#
