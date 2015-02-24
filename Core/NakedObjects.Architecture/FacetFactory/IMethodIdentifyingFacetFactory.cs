@@ -5,16 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
+using NakedObjects.Architecture.Reflect;
 
-namespace NakedObjects.Reflect.FacetFactory {
+namespace NakedObjects.Architecture.FacetFactory {
     /// <summary>
-    ///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations
+    ///     A <see cref="IFacetFactory" /> implementation that is able to identify an action
     /// </summary>
-    /// <seealso cref="IInterfaceBasedFacetFactory" />
-    /// <seealso cref="IMethodPrefixBasedFacetFactory" />
-    public interface IAnnotationBasedFacetFactory {}
-
-    // Copyright (c) Naked Objects Group Ltd.
+    /// <para>
+    ///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
+    ///     whether a <see cref="MethodInfo" /> represents an action.
+    /// </para>
+    public interface IMethodIdentifyingFacetFactory : IFacetFactory {
+        IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy);
+    }
 }

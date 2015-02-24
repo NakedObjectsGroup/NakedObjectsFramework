@@ -47,6 +47,8 @@ namespace NakedObjects.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
+        private List<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
+
         public FacetFactorySet(IFacetFactory[] factories) {
             List<IFacetFactory> allFactories = factories.ToList();
             allFactories.Sort();
@@ -60,6 +62,8 @@ namespace NakedObjects.Reflect {
             methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
             propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToList();
             propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
+            actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToList();
+
         }
 
         private string[] Prefixes { get; set; }
@@ -72,6 +76,11 @@ namespace NakedObjects.Reflect {
 
         public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
+        }
+
+        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
+            return actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToList();
+
         }
 
         /// <summary>

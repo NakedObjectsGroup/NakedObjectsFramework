@@ -129,7 +129,7 @@
     <Compile Include="FacetFactory\ActionDefaultAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\PageSizeAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\PotencyAnnotationFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\UnsupportedParameterTypesMethodFilteringFactoryTest.cs" />
+    <Compile Include="FacetFactory\SystemClassMethodFilteringFactoryTest.cs" />
     <Compile Include="FacetFactory\ActionParameterValidationFacetViaMethodTest.cs" />
     <Compile Include="FacetFactory\AuthorizeAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\CollectionFacetsTest.cs" />

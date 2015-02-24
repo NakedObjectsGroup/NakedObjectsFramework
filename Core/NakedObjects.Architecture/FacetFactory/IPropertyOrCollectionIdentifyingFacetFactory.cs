@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
@@ -21,5 +22,8 @@ namespace NakedObjects.Architecture.FacetFactory {
     ///     Used by <see cref="IFacetFactorySet" /> to determine which facet factories to ask
     ///     whether a <see cref="PropertyInfo" /> represents a property or a collection.
     /// </para>
-    public interface IPropertyOrCollectionIdentifyingFacetFactory : IFacetFactory {}
+    public interface IPropertyOrCollectionIdentifyingFacetFactory : IFacetFactory {
+        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
+    }
 }

@@ -18,8 +18,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
@@ -738,6 +740,32 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("An Action With Named Annotation", namedFacet.NaturalName);
         }
 
+        [TestMethod]
+        public void TestFindActions() {
+            ReflectorConfiguration.NoValidate = true;
+
+            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new[] {typeof (Customer34).Namespace});
+
+            var classStrategy = new DefaultClassStrategy(config);
+
+            var methods = typeof (Customer34).GetMethods().ToList();
+            var actions = facetFactory.FindActions(methods, classStrategy);
+
+            var expectedNames = new List<string> {
+                "ActionWithNoParameters",
+                "ActionWithOneGoodParameter",
+                "ActionWithTwoGoodParameter",
+                "ActionWithNullableParameter",
+                "ToString",
+                "Equals",
+                "GetHashCode"
+            };
+
+            Assert.AreEqual(expectedNames.Count, actions.Count);
+
+            expectedNames.ForEach(n => Assert.IsTrue(actions.Select(a => a.Name).Contains(n)));
+        }
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -1138,6 +1166,28 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public IEnumerable<Customer33> SomeQueryableAction2() {
                 return null;
             }
+        }
+
+        private class Customer34 {
+            [NakedObjectsIgnore]
+            public void ActionIgnored() {}
+
+            public static void ActionStatic() {}
+
+            public void ActionGeneric<T>(T parm) {}
+
+            public void ActionWithNoParameters() {}
+            public void ActionWithOneGoodParameter(int i) {}
+            public void ActionWithTwoGoodParameter(int i, Customer34 c) {}
+
+            public void ActionWithOneBadParameter(out int c) {
+                c = 0;
+            }
+
+            public void ActionWithOneGoodOneBadParameter(int i, ref int j) {}
+            public void ActionWithGenericParameter(Predicate<int> p) {}
+            public void ActionWithNullableParameter(int? i) {}
+            public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
         }
 
         // ReSharper restore UnusedMember.Local
