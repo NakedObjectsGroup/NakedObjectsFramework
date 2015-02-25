@@ -12,10 +12,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-// TODO: Review the values of the assembly attributes
-
 #if DEBUG
-
 [assembly: AssemblyTitle("Naked Objects Reflector (Debug)")]
 #else
 [assembly: AssemblyTitle("Naked Objects Reflector (Release)")]
