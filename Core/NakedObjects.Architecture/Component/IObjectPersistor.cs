@@ -13,8 +13,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
-    //TODO: Review the value added by this component -  given the huge overlap with IObjectStore.
-    //Consider merging all the methods down.
+    /// <summary>
+    /// The non-store specific parts of the Object persistance mechanism. Implemented as a composite rather than with inheritance.
+    /// </summary>
     public interface IObjectPersistor {
         IQueryable<T> Instances<T>() where T : class;
         IQueryable Instances(Type type);

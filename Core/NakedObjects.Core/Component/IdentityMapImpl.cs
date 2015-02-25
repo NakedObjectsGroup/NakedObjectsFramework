@@ -54,7 +54,6 @@ namespace NakedObjects.Core.Component {
                 throw new TransientReferenceException(msg);
             }
 
-            // TODO we should be ignoring immutable values object as well
             if (nakedObject.Spec.IsObject) {
                 pocoAdapterMap.Add(obj, nakedObject);
             }
@@ -105,9 +104,7 @@ namespace NakedObjects.Core.Component {
 
         public virtual void Unloaded(INakedObject nakedObject) {
             Log.DebugFormat("Unload: {0}", nakedObject);
-
-            // TODO need to unload object that are no longer referenced
-            // 
+ 
             // If an object is unloaded while its poco still exist then accessing that poco via the reflector will
             // create a different PocoAdapter and no OID will exist to identify - hence the adapter will appear as
             // transient and will no longer be usable as a persistent object
