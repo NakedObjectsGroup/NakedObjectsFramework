@@ -15,11 +15,12 @@ using WebActivatorEx;
 namespace NakedObjects.Mvc.App {
     public static class NakedObjectsActivator {
         public static void PreStart() {
-            InitialiseLogging();
             //RestConfig.RestPreStart();           
         }
 
         public static void PostStart() {
+            // TODO - need to sort this so we still support injection of container and services into controller and views
+
             //var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.LifecycleManager.GetServices().Select(no => no.Object).ToArray());
             //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
             //RestConfig.RestPostStart();
@@ -27,18 +28,6 @@ namespace NakedObjects.Mvc.App {
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation
             // - that overrides the required NOF behaviour based on the 'Optionally' attribute.
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
-        }
-
-        public static void InitialiseLogging() {
-            // uncomment and add appropriate Common.Logging package
-            // http://netcommon.sourceforge.net/docs/2.1.0/reference/html/index.html
-
-            //var properties = new NameValueCollection();
-
-            //properties["configType"] = "INLINE";
-            //properties["configFile"] = @"C:\Naked Objects\nologfile.txt";
-
-            //LogManager.Adapter = new Common.Logging.Log4Net.Log4NetLoggerFactoryAdapter(properties);
         }
     }
 }
