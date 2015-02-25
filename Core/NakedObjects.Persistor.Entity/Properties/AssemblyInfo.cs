@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]
 [assembly: AssemblyProduct("Naked Objects Framework")]
-[assembly: AssemblyCopyright("Copyright © Naked Objects Group 2010")]
+[assembly: AssemblyCopyright("Copyright © Naked Objects Group 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

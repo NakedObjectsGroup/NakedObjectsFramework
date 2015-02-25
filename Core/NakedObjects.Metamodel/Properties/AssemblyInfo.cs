@@ -13,17 +13,22 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NakedObjects.Metadata")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NakedObjects.Metadata")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+#if DEBUG
+[assembly: AssemblyTitle("Naked Objects Metamodel (Debug)")]
+#else
+[assembly: AssemblyTitle("Naked Objects Metamodel (Release)")]
+#endif
+
 [assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Naked Objects Group")]
+[assembly: AssemblyProduct("Naked Objects Framework")]
+[assembly: AssemblyCopyright("Copyright © Naked Objects Group 2015")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

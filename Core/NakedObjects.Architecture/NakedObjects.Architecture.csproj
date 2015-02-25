@@ -156,6 +156,7 @@
     <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Interactions\IInteractionBuffer.cs" />
     <Compile Include="Interactions\IInteractionContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflect\IFacetFactorySet.cs" />
     <Compile Include="Component\II18nManager.cs" />
     <Compile Include="Component\IMetamodel.cs" />
@@ -192,7 +193,6 @@
     <Compile Include="Facet\IUnsignedLongValueFacet.cs" />
     <Compile Include="Facet\IUnsignedShortValueFacet.cs" />
     <Compile Include="Adapter\IVersion.cs" />
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Component\IContainerInjector.cs" />
     <Compile Include="Component\IMessageBroker.cs" />
     <Compile Include="Component\IObjectStore.cs" />
