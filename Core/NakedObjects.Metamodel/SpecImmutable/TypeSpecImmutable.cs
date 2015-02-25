@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -130,17 +131,19 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return !IsCollection; }
         }
 
-        public bool IsOfType(IObjectSpecImmutable specification) {
-            if (specification == this) {
+        public bool IsOfType(IObjectSpecImmutable otherSpecification) {
+            if (otherSpecification == this) {
                 return true;
             }
-            if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(specification))) {
+
+            Type otherType = otherSpecification.Type;
+
+            if (otherType.IsAssignableFrom(Type)) {
                 return true;
             }
 
             // match covariant generic types 
             if (Type.IsGenericType && IsCollection) {
-                Type otherType = specification.Type;
                 if (otherType.IsGenericType && Type.GetGenericArguments().Count() == 1 && otherType.GetGenericArguments().Count() == 1) {
                     if (Type.GetGenericTypeDefinition() == (typeof (IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
                         Type genericArgument = Type.GetGenericArguments().Single();
@@ -155,7 +158,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 }
             }
 
-            return Superclass != null && Superclass.IsOfType(specification);
+            return false;
         }
 
         public string GetIconName(INakedObject forObject, IMetamodel metamodel) {
