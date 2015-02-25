@@ -303,7 +303,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(19, reflector.AllObjectSpecImmutables.Count());
         }
 
 

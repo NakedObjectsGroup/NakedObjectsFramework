@@ -219,31 +219,36 @@ namespace NakedObjects.Reflect {
             var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
             methods = methods.Except(actions).ToArray();
 
-            foreach (MethodInfo actionMethod in actions) {
-                string fullMethodName = actionMethod.Name;
+            for (int i = 0; i < actions.Length; i++) {
+                MethodInfo actionMethod = actions[i];
 
-                Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
+                // actions are potentially being nulled within this loop
+                if (actionMethod != null) {
+                    string fullMethodName = actionMethod.Name;
 
-                // build action & its parameters   
+                    Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                if (actionMethod.ReturnType != typeof(void)) {
-                    reflector.LoadSpecification(actionMethod.ReturnType);
+                    // build action & its parameters   
+
+                    if (actionMethod.ReturnType != typeof (void)) {
+                        reflector.LoadSpecification(actionMethod.ReturnType);
+                    }
+
+                    IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                    IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
+
+                    var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
+
+                    // Process facets on the action & parameters
+                    FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Action);
+                    for (int l = 0; l < actionParams.Length; l++) {
+                        FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
+                    }
+
+                    actionSpecs.Add(action);
                 }
-
-                IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-                IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
-   
-                var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
-
-                // Process facets on the action & parameters
-                FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
-                for (int l = 0; l < actionParams.Length; l++) {
-                    FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
-                }
-
-                actionSpecs.Add(action);
             }
-                
+
             return actionSpecs.ToArray();
         }
 
