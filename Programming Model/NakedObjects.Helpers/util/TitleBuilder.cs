@@ -13,7 +13,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects {
 
-     [Obsolete("Use Container.NewTitleBuilder() methods")]
+     [Obsolete("Use Container.NewTitleBuilder() method")]
     public class TitleBuilder {
         private const string Space = " ";
         private static readonly IDictionary<Type, Title> titleFrom = new Dictionary<Type, Title>();
