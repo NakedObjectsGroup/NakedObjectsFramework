@@ -1,6 +1,0 @@
-<Project ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ReleaseVersion>DEV</ReleaseVersion>
-    <CopyrightYear>2003 - 2011</CopyrightYear>
-  </PropertyGroup>
-</Project>

@@ -132,8 +132,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="FacetFactories.cs" />
+    <Compile Include="Reflect\FacetFactories.cs" />
     <Compile Include="FacetFactory\FindMenuFacetFactory.cs" />
     <Compile Include="FacetFactory\MenuFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactory.cs" />
@@ -159,6 +158,7 @@
     <Compile Include="FacetFactory\CollectionFieldMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\DisabledAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\DisableDefaultMethodFacetFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflect\FacetFactorySet.cs" />
     <Compile Include="FacetFactory\FallbackFacetFactory.cs" />
     <Compile Include="FacetFactory\HiddenAnnotationFacetFactory.cs" />
@@ -285,7 +285,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

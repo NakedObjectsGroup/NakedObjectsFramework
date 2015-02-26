@@ -13,7 +13,10 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
+            // Uncomment this if you wish to have NakedObject Container and services injected 
+            //nakedObjectsContext.ContainerInjector.InitDomainObject(this);
+        }
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {

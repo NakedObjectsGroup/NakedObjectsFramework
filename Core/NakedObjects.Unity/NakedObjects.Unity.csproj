@@ -55,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StandardUnityConfig.cs" />
-    <Compile Include="UnityFrameworkResolver.cs" />
+    <Compile Include="Unity\StandardUnityConfig.cs" />
+    <Compile Include="Unity\UnityFrameworkResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">

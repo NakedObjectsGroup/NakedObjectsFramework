@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if DEBUG
-
 [assembly: AssemblyTitle("Naked Objects Xat (Debug)")]
 #else
 [assembly: AssemblyTitle("Naked Objects Xat (Release)")]
@@ -23,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]
 [assembly: AssemblyProduct("Naked Objects Framework")]
-[assembly: AssemblyCopyright("Copyright © Naked Objects Group 2010")]
+[assembly: AssemblyCopyright("Copyright © Naked Objects Group 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

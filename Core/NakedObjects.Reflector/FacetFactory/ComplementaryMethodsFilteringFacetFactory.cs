@@ -76,7 +76,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Type baseType = declaringType.BaseType;
                 Trace.Assert(baseType != null, "baseType != null");
 
-                if (InheritsProperty(declaringType, propertyName)) {
+                if (InheritsProperty(declaringType.BaseType, propertyName)) {
                     Log.InfoFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType.FullName);
                     return true;
                 }
@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
                 Type declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
-                if (InheritsMethod(declaringType, propertyName)) {
+                if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 propertyName = TrimDigits(propertyName);
                 Type declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
-                if (InheritsMethod(declaringType, propertyName)) {
+                if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.InfoFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;

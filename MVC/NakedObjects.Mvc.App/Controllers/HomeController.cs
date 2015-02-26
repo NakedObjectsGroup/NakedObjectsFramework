@@ -10,7 +10,10 @@ namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
+            // Uncomment this if you wish to have NakedObject Container and services injected 
+            //nakedObjectsContext.ContainerInjector.InitDomainObject(this);
+        }
 
         public ActionResult Index() {
             return View();
