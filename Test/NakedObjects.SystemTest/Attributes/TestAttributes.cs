@@ -118,12 +118,11 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
-            Assert.AreEqual(4, actions.Count());
+            Assert.AreEqual(3, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
             Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
-            Assert.AreEqual("Collection Contributed Action3", actions[3].Name);
         }
 
         [TestMethod]
@@ -132,12 +131,11 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
-            Assert.AreEqual(4, actions.Count());
+            Assert.AreEqual(3, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
             Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
-            Assert.AreEqual("Collection Contributed Action3", actions[3].Name);
         }
 
         [TestMethod]
@@ -1758,9 +1756,9 @@ namespace SystemTest.Attributes {
 
         public void CollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets, Contributee cont) { }
 
-        public IEnumerable<Contributee2> CollectionContributedAction3([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
-
         public IQueryable<Contributee2> NotCollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
+
+        public ICollection<Contributee2> NotCollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
 
         public void NotCollectionContributedAction3([ContributedAction] IEnumerable<Contributee2> targets) { }
 

@@ -49,8 +49,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                             }
                             else {
                                 var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
-                                if (returnType.IsQueryable) {
-                                    Log.WarnFormat("ContributedAction attribute added to an action that returns an IQueryable: {0}", member.Name);
+                                if (returnType.IsCollection) {
+                                    Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
                                 }
                                 else {
                                     Type elementType = p.ParameterType.GetGenericArguments()[0];
