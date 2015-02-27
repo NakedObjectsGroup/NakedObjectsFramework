@@ -16,10 +16,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate; 
 
         public PropertyDefaultFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -31,7 +33,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override object GetDefault(INakedObject inObject) {
-            return InvokeUtils.Invoke(method, inObject);
+            return methodDelegate.Invoke(inObject.GetDomainObject(), new object[] {});
         }
 
         protected override string ToStringValues() {

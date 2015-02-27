@@ -38,6 +38,21 @@ namespace NakedObjects.Core.Util {
             return (Func<object, object[], object>) ret;
         }
 
+        public static Action<object> CreateCallbackDelegate(MethodInfo method) {
+
+            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("CallbackHelper", BindingFlags.Static | BindingFlags.NonPublic);
+
+            // Now supply the type arguments
+            var typeArgs = new List<Type> { method.DeclaringType };
+            var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
+
+            // Now call it. The null argument is because it’s a static method.
+            object ret = delegateHelper.Invoke(null, new object[] { method });
+
+            // Cast the result to the right kind of delegate and return it
+            return (Action<object>)ret;
+        }
+
         private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
             var helperName = method.ReturnType == typeof (void) ? "ActionHelper" : "FuncHelper";
 
@@ -61,6 +76,11 @@ namespace NakedObjects.Core.Util {
         // in each convert the slow MethodInfo into a fast, strongly typed, open delegate
         // then create a more weakly typed delegate which will call the strongly typed one
         // at some point in the future these may be replaced with generated code.  
+
+        private static Action<object> CallbackHelper<TTarget>(MethodInfo method) where TTarget : class {
+            var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);
+            return target => action((TTarget) target);
+        }
 
         private static Func<object, object[], object> ActionHelper0<TTarget>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);

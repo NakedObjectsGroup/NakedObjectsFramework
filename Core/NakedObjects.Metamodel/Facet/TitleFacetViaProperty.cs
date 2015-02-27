@@ -17,10 +17,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;  
 
         public TitleFacetViaProperty(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            object obj = InvokeUtils.Invoke(method, nakedObject);
+            object obj = methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
             return obj == null ? null : nakedObjectManager.CreateAdapter(obj, null, null).TitleString();
         }
     }

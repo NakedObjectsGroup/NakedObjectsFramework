@@ -16,11 +16,13 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class DeletedCallbackFacetViaMethod : DeletedCallbackFacetAbstract, IImperativeFacet {
+        private readonly Action<object> deletedDelegate;
         private readonly MethodInfo method;
 
         public DeletedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            deletedDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            InvokeUtils.Invoke(method, nakedObject);
+            deletedDelegate.Invoke(nakedObject.GetDomainObject());
         }
 
         protected override string ToStringValues() {
