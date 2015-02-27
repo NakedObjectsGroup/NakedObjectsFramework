@@ -69,6 +69,7 @@
     <Compile Include="Adapter\TestIdentifierImpl.cs" />
     <Compile Include="Audit\AuditManagerTest.cs" />
     <Compile Include="Authorization\AuthorizationManagerTest.cs" />
+    <Compile Include="Facet\ActionInvocationFacetViaMethodTest.cs" />
     <Compile Include="Facet\FacetAbstractTest.cs" />
     <Compile Include="I18N\I18NManagerTest.cs" />
     <Compile Include="Meta\CacheTest.cs" />
