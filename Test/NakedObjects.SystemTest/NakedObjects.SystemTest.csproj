@@ -158,6 +158,7 @@
   <ItemGroup>
     <Compile Include="Attributes\TestAttributes.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
+    <Compile Include="Authorization\TestUsersAndRoles.cs" />
     <Compile Include="Authorization\TestCustomAuthorizer.cs" />
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
     <Compile Include="AbstractSystemTest.cs" />
