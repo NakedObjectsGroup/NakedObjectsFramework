@@ -71,6 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetViaMethod);
             Assert.AreEqual(defaultMethod, ((ActionDefaultsFacetViaMethod) facet).GetMethod());
+            Assert.IsNotNull(((ActionDefaultsFacetViaMethod)facet).MethodDelegate);
 
             AssertMethodRemoved(defaultMethod);
         }

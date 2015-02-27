@@ -16,11 +16,21 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;   
 
         public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method); 
         }
+
+        // for testing only 
+        internal Func<object, object[], object> MethodDelegate {
+            get {
+                return methodDelegate;
+            }
+        }
+
 
         #region IImperativeFacet Members
 
@@ -33,7 +43,8 @@ namespace NakedObjects.Meta.Facet {
         public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObject nakedObject) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-            return new Tuple<object, TypeOfDefaultValue>(InvokeUtils.Invoke(method, nakedObject), TypeOfDefaultValue.Explicit);
+            var defaultValue = methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[]{});
+            return new Tuple<object, TypeOfDefaultValue>(defaultValue, TypeOfDefaultValue.Explicit);
         }
 
         protected override string ToStringValues() {

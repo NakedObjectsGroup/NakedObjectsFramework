@@ -210,6 +210,7 @@
     <Compile Include="Resolve\States.cs" />
     <Compile Include="Exception\TransientReferenceException.cs" />
     <Compile Include="Authentication\SimpleSession.cs" />
+    <Compile Include="Util\DelegateUtils.cs" />
     <Compile Include="Util\FeatureSpecUtils.cs" />
     <Compile Include="Exception\InvokeException.cs" />
     <Compile Include="Util\ServiceUtils.cs" />
