@@ -60,6 +60,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
+        public override void ActionMultipleChoicesEnum() {
+            DoActionMultipleChoicesEnum();
+        }
+
+        [TestMethod]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
