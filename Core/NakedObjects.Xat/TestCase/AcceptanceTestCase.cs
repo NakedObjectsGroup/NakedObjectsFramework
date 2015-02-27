@@ -35,8 +35,7 @@ namespace NakedObjects.Xat {
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
         private IPrincipal testPrincipal;
-        private ISession testSession;
-
+      
         static AcceptanceTestCase() {
             Log = LogManager.GetLogger(typeof (AcceptanceTestCase));
         }
@@ -56,11 +55,6 @@ namespace NakedObjects.Xat {
 
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get { return testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager)); }
-        }
-
-        protected virtual ISession TestSession {
-            get { return testSession ?? (testSession = new TestSession(TestPrincipal)); }
-            set { testSession = value; }
         }
 
         protected virtual IPrincipal TestPrincipal {
@@ -290,13 +284,13 @@ namespace NakedObjects.Xat {
             return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
         }
 
-        private static IPrincipal CreatePrincipal(string name, string[] roles) {
-            return new GenericPrincipal(new GenericIdentity(name), roles);
+        private IPrincipal CreatePrincipal(string name, string[] roles) {
+            return (testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles));
         }
 
         protected void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
-            var ts = TestSession as TestSession;
+            var ts = NakedObjectsFramework.Session as TestSession;
             if (ts != null) {
                 ts.ReplacePrincipal(testPrincipal);
             }
@@ -340,7 +334,7 @@ namespace NakedObjects.Xat {
                 MainMenus);
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
+            container.RegisterType<ISession, TestSession>(new PerResolveLifetimeManager());
         }
 
         /// <summary>
