@@ -58,6 +58,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
+        public override void ActionMultipleChoicesEnum() {
+            DoActionMultipleChoicesEnum();
+        }
+
+        //[TestMethod]
         // cannot select options in multiple choive boxes with chrome driver 
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();

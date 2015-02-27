@@ -134,6 +134,25 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
 
+        public void DoActionMultipleChoicesEnum() {
+            Login();
+            br.TogglePopups(true);
+
+            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
+
+            orderNumber.Clear();
+            orderNumber.SendKeys("SO72847" + Keys.Tab);
+
+            var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasonsByCategories button");
+
+            var cats = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories");
+
+            cats.AssertIsEmpty();
+
+            cats.SelectListBoxItems(br, "Marketing", "Promotion");
+            wait.ClickAndWait(".nof-ok", ".nof-objectview");
+        }
+
         public void DoActionConditionalMultipleChoices() {
             Login();
             br.TogglePopups(true);
@@ -537,6 +556,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void ActionChoicesPopup();
 
         public abstract void ActionMultipleChoices();
+
+        public abstract void ActionMultipleChoicesEnum();
 
         public abstract void ActionConditionalMultipleChoices();
 

@@ -86,7 +86,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsChoicesEnabled {
             get {
                 if (!isChoicesEnabled.HasValue) {
-                    isChoicesEnabled = actionParameterSpecImmutable.IsChoicesEnabled;
+                    isChoicesEnabled = !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled;
                 }
                 return isChoicesEnabled.Value;
             }
