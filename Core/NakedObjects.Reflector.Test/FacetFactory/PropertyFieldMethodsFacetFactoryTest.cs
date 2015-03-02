@@ -163,7 +163,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return false;
             }
 
-            public bool HideSecondName(string name) {
+            public bool HideSecondName() {
                 return false;
             }
         }
@@ -181,7 +181,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return false;
             }
 
-            public bool HideSecondName(string name) {
+            public bool HideSecondName() {
                 return false;
             }
         }
@@ -729,14 +729,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDisableMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "FirstName");
-            MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableFirstName", new[] {typeof (string)});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IDisableForContextFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacet);
-            var propertyValidateFacet = (DisableForContextFacet) facet;
-            Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            AssertMethodRemoved(hideMethod);
+            Assert.IsNull(facet);
         }
 
         [TestMethod]
@@ -778,7 +773,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestHideMethodOverridesDefault() {
             PropertyInfo property = FindProperty(typeof (Customer14), "SecondName");
-            MethodInfo hideMethod = FindMethod(typeof (Customer14), "HideSecondName", new[] {typeof (string)});
+            MethodInfo hideMethod = FindMethod(typeof (Customer14), "HideSecondName", new Type [] {});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
@@ -790,7 +785,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestHideMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer13), "SecondName");
-            MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideSecondName", new[] {typeof (string)});
+            MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideSecondName", new Type[]{});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
