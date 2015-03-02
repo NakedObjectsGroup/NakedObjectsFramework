@@ -581,7 +581,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedShift = NakedObjectsFramework.NakedObjectManager.CreateAdapter(shift, null, null);
             INakedObject adaptedTimePeriod = NakedObjectsFramework.NakedObjectManager.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
-            FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), DateTime.Now.ToString(), out idToRawvalue);
+            FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), DateTime.Now.AddHours(8).ToString(), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
 
@@ -1105,13 +1105,13 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // fails on server 
+        //[Ignore] // fails on server 
         public void EditInlineSaveValidationOk() {
             EditInlineSaveValidationOk(Employee.DepartmentHistory.First().Shift);
         }
 
         [Test]
-        [Ignore] // fails on server 
+        //[Ignore] // fails on server 
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift);
         }
