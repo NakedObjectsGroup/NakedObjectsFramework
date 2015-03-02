@@ -729,14 +729,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDisableMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "FirstName");
-            MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableFirstName", new[] {typeof (string)});
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IDisableForContextFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacet);
-            var propertyValidateFacet = (DisableForContextFacet) facet;
-            Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            AssertMethodRemoved(hideMethod);
+            Assert.IsNull(facet);
         }
 
         [TestMethod]

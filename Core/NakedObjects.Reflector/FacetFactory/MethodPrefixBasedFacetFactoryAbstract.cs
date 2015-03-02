@@ -156,6 +156,15 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
+        protected void FindAndRemovePropertyDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            MethodInfo method = FindMethod(reflector, type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
+            if (method != null) {
+                methodRemover.RemoveMethod(method);
+                facets.Add(new DisableForContextFacet(method, specification));
+            }
+        }
+
+
         protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
             FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, (Type) null, specification);
         }
