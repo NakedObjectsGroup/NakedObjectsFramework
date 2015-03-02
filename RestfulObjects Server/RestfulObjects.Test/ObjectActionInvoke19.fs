@@ -4149,7 +4149,13 @@ let VerifyGetQueryActionWithError refType oType oid f (api : RestfulObjectsContr
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
           TProperty(JsonPropertyNames.StackTrace, 
-                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
+                    TArray([TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4184,7 +4190,13 @@ let VerifyPostCollectionActionWithError refType oType oid f (api : RestfulObject
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
           TProperty(JsonPropertyNames.StackTrace, 
-                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
+                    TArray([TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4544,7 +4556,13 @@ let VerifyPostQueryActionWithError refType oType oid f (api : RestfulObjectsCont
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
           TProperty(JsonPropertyNames.StackTrace, 
-                    TArray([ TObjectVal(new errorType(" at  in ")) ]))
+                    TArray([TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)

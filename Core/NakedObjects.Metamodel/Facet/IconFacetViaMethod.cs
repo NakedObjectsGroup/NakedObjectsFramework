@@ -16,15 +16,17 @@ namespace NakedObjects.Meta.Facet {
     internal class IconFacetViaMethod : IconFacetAbstract {
         private readonly string iconName; // iconName from attribute
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public IconFacetViaMethod(MethodInfo method, ISpecification holder, string iconName)
             : base(holder) {
             this.method = method;
             this.iconName = iconName;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         public override string GetIconName(INakedObject nakedObject) {
-            return (string) InvokeUtils.Invoke(method, nakedObject);
+            return (string) methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
         }
 
         public override string GetIconName() {

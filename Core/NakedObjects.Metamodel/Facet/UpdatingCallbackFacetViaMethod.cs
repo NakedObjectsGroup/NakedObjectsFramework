@@ -17,10 +17,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class UpdatingCallbackFacetViaMethod : UpdatingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Action<object> updatingDelegate;
 
         public UpdatingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            InvokeUtils.Invoke(method, nakedObject);
+            updatingDelegate.Invoke(nakedObject.GetDomainObject());
         }
 
         protected override string ToStringValues() {

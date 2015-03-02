@@ -19,10 +19,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class HideForContextFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public HideForContextFacet(MethodInfo method, ISpecification holder)
             : base(typeof (IHideForContextFacet), holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IHideForContextFacet Members
@@ -39,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
             if (nakedObject == null) {
                 return null;
             }
-            var isHidden = (bool) InvokeUtils.Invoke(method, nakedObject);
+            var isHidden = (bool) methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
             return isHidden ? Resources.NakedObjects.Hidden : null;
         }
 

@@ -17,10 +17,13 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
+    
 
         public PropertyClearFacetViaClearMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager) {
-            InvokeUtils.Invoke(method, nakedObject);
+            methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
         }
 
         protected override string ToStringValues() {

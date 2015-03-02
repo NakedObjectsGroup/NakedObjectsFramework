@@ -18,10 +18,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, Object[], object> methodDelegate;
 
         public DisableForContextFacet(MethodInfo method, ISpecification holder)
             : base(typeof (IDisableForContextFacet), holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IDisableForContextFacet Members
@@ -36,7 +38,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string DisabledReason(INakedObject nakedObject) {
-            return (string) InvokeUtils.Invoke(method, nakedObject);
+            return (string) methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
         }
 
         #endregion
