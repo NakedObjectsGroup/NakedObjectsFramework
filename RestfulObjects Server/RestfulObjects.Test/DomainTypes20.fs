@@ -19,65 +19,30 @@ open RestTestFunctions
 let getExpected() = 
     let value = 
         TArray
-            ([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.IViewModel") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Redirect.IRedirectedObject") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Services.AbstractFactoryAndRepository") 
-                        RepresentationTypes.DomainType "")
-               
-               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Value.IStreamResource") RepresentationTypes.DomainType ""); 
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.ContributorService") 
-                        RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.Immutable") RepresentationTypes.DomainType ""); 
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimple") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimpleViewModel") 
-                        RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RedirectedObject") RepresentationTypes.DomainType 
-                        "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RestDataRepository") 
-                        RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimple") RepresentationTypes.DomainType "");                    
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimpleEager") RepresentationTypes.DomainType "");    
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAction") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionObject") RepresentationTypes.DomainType 
-                        "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionService") RepresentationTypes.DomainType 
-                        "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAttachments") RepresentationTypes.DomainType "");      
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollection") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithDateTimeKey") RepresentationTypes.DomainType 
-                        "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithError") RepresentationTypes.DomainType "");
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithGetError") RepresentationTypes.DomainType "");                      
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReference") RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithScalars") RepresentationTypes.DomainType "");                                                                                                                                                                                    
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValue") RepresentationTypes.DomainType "") ])
+            ([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.ContributorService") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.Immutable") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimple") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimpleViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RedirectedObject") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RestDataRepository") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimple") RepresentationTypes.DomainType ""); 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimpleEager") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAction") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionObject") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionService") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAttachments") RepresentationTypes.DomainType "") 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollection") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollectionViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithDateTimeKey") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithError") RepresentationTypes.DomainType "");
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithGetError") RepresentationTypes.DomainType "") 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithNestedViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReference") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReferenceViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithScalars") RepresentationTypes.DomainType "");
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValue") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValueViewModel") RepresentationTypes.DomainType "") ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, 
@@ -91,68 +56,30 @@ let getExpected() =
 let getExpectedMT() = 
     let value = 
         TArray
-            ([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.IViewModel") RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.IKeyCodeMapper") RepresentationTypes.DomainType "");
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Redirect.IRedirectedObject") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Services.AbstractFactoryAndRepository") 
-                        RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.Value.IStreamResource") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.ContributorService") 
-                        RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.Immutable") RepresentationTypes.DomainType ""); 
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimple") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimpleViewModel") 
-                        RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RedirectedObject") RepresentationTypes.DomainType 
-                        "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RestDataRepository") 
-                        RepresentationTypes.DomainType "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimple") RepresentationTypes.DomainType "");                    
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimpleEager") RepresentationTypes.DomainType "");    
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAction") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionObject") RepresentationTypes.DomainType 
-                        "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionService") RepresentationTypes.DomainType 
-                        "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAttachments") RepresentationTypes.DomainType "");      
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollection") RepresentationTypes.DomainType "")
-               
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithDateTimeKey") RepresentationTypes.DomainType 
-                        "")
-               
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithError") RepresentationTypes.DomainType "");
-               //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithGetError") RepresentationTypes.DomainType "");                      
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReference") RepresentationTypes.DomainType "")
-               
-               // TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithScalars") RepresentationTypes.DomainType "");                                                                                                                                                                                    
-               TObjectJson
-                   (makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValue") RepresentationTypes.DomainType "") ])
+            ([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.ContributorService") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.Immutable") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimple") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.MostSimpleViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RedirectedObject") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.RestDataRepository") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimple") RepresentationTypes.DomainType ""); 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.VerySimpleEager") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAction") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionObject") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionService") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithActionViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithAttachments") RepresentationTypes.DomainType "") 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollection") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithCollectionViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithDateTimeKey") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithError") RepresentationTypes.DomainType "");
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithGetError") RepresentationTypes.DomainType "") 
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithNestedViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReference") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithReferenceViewModel") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithScalars") RepresentationTypes.DomainType "");
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValue") RepresentationTypes.DomainType "")
+               TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestfulObjects.Test.Data.WithValueViewModel") RepresentationTypes.DomainType "") ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, 
@@ -165,33 +92,32 @@ let getExpectedMT() =
 
 let getExpectedDomainType() = 
     let value = 
-        TArray([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "AbstractFactoryAndRepository") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ContributorService") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IKeyCodeMapper") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "Immutable") RepresentationTypes.DomainType ""); 
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IRedirectedObject") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IStreamResource") RepresentationTypes.DomainType "");
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ITypeCodeMapper") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IViewModel") RepresentationTypes.DomainType "")
+        TArray([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ContributorService") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "Immutable") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "MostSimple") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "MostSimpleViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RedirectedObject") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestDataRepository") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "TestKeyCodeMapper") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "TestTypeCodeMapper") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimple") RepresentationTypes.DomainType ""); 
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimpleEager") RepresentationTypes.DomainType "");                  
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimple") RepresentationTypes.DomainType ""); 
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimpleEager") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAction") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionObject") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionService") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAttachments") RepresentationTypes.DomainType "");  
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionViewModel") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAttachments") RepresentationTypes.DomainType "") 
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithCollection") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithCollectionViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithDateTimeKey") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithError") RepresentationTypes.DomainType "");
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithGetError") RepresentationTypes.DomainType "");                      
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithError") RepresentationTypes.DomainType "");
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithGetError") RepresentationTypes.DomainType "") 
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithNestedViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithReference") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithScalars") RepresentationTypes.DomainType "");                                                                                                                                                                                    
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValue") RepresentationTypes.DomainType "") ])
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithReferenceViewModel") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithScalars") RepresentationTypes.DomainType "");
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValue") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValueViewModel") RepresentationTypes.DomainType "") ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, 
@@ -204,33 +130,32 @@ let getExpectedDomainType() =
 
 let getExpectedDomainTypeMT() = 
     let value = 
-        TArray([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "AbstractFactoryAndRepository") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ContributorService") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IKeyCodeMapper") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "Immutable") RepresentationTypes.DomainType ""); 
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IRedirectedObject") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IStreamResource") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ITypeCodeMapper") RepresentationTypes.DomainType "")
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "IViewModel") RepresentationTypes.DomainType "")
+        TArray([ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "ContributorService") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "Immutable") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "MostSimple") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "MostSimpleViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RedirectedObject") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "RestDataRepository") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "TestKeyCodeMapper") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "TestTypeCodeMapper") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimple") RepresentationTypes.DomainType ""); 
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimpleEager") RepresentationTypes.DomainType "");                  
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimple") RepresentationTypes.DomainType ""); 
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "VerySimpleEager") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAction") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionObject") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionService") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAttachments") RepresentationTypes.DomainType "");  
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithActionViewModel") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithAttachments") RepresentationTypes.DomainType "") 
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithCollection") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithCollectionViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithDateTimeKey") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithError") RepresentationTypes.DomainType "");
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithGetError") RepresentationTypes.DomainType "");                      
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithError") RepresentationTypes.DomainType "");
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithGetError") RepresentationTypes.DomainType "") 
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithNestedViewModel") RepresentationTypes.DomainType "")
                  TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithReference") RepresentationTypes.DomainType "")
-                 //TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithScalars") RepresentationTypes.DomainType "");                                                                                                                                                                                    
-                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValue") RepresentationTypes.DomainType "") ])
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithReferenceViewModel") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithScalars") RepresentationTypes.DomainType "");
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValue") RepresentationTypes.DomainType "")
+                 TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "WithValueViewModel") RepresentationTypes.DomainType "") ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, 

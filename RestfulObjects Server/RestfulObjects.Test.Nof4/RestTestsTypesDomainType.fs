@@ -101,11 +101,9 @@ type Nof4TestsTypeDomainType() =
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
-        [<Ignore>] // temp ignore
         member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore
         member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType x.api
         
         [<Test>]

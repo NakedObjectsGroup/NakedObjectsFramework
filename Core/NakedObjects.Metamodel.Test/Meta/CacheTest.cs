@@ -232,7 +232,7 @@ namespace NakedObjects.Meta.Test {
             BinarySerialize(rc, file);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void BinarySerializeImageTypes() {
             var ss = new[] {typeof (Image)};
             var ns = new[] {typeof (TestService).Namespace};

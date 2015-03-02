@@ -989,7 +989,7 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
-    let oid = oType + "/" + ktc "3"
+    let oid = oType + "/" + ktc "4"
     let disabledValue = 
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
         :: (makePropertyMemberFormal "objects" "ADisabledValue" oid (TObjectVal(103)) false)
@@ -1005,8 +1005,8 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
     
     let expected = 
         [ //TProperty(JsonPropertyNames.DomainType, TObjectVal(oType));
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "3"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("3"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "4"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("4"))
           
           TProperty
               (JsonPropertyNames.Links, 
