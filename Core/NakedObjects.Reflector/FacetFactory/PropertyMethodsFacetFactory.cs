@@ -73,7 +73,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], specification);
             FindAndRemoveHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, property.PropertyType, specification);
             FindDefaultDisableMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], specification);
-            FindAndRemovePropertyDisableMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification);
+            FindAndRemoveDisableMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification);
 
             FacetUtils.AddFacets(facets);
         }

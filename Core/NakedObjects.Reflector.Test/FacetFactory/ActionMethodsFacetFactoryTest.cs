@@ -655,20 +655,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestPickUpDisableMethodSignatureChoice() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer12), "SomeActionFour");
-            MethodInfo hideMethodGood = FindMethod(typeof (Customer12), "DisableSomeActionFour", new[] {typeof (int), typeof (int)});
-            MethodInfo hideMethodBad = FindMethod(typeof (Customer12), "DisableSomeActionFour");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-
-            var facet = Specification.GetFacet<IDisableForContextFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacet);
-            Assert.AreEqual(hideMethodGood, ((IImperativeFacet) facet).GetMethod());
-            Assert.AreNotEqual(hideMethodBad, ((IImperativeFacet) facet).GetMethod());
-        }
-
-        [TestMethod]
         public void TestPickUpHideMethodDifferentSignature() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer10), "SomeActionThree");
             MethodInfo hideMethod = FindMethodIgnoreParms(typeof (Customer10), "HideSomeActionThree");
@@ -1023,7 +1009,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public void SomeActionTwo(int x) {}
 
-            public string DisableSomeActionTwo(int x) {
+            public string DisableSomeActionTwo() {
                 return "";
             }
 
@@ -1034,10 +1020,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
 
             public void SomeActionFour(int x, int y) {}
-
-            public string DisableSomeActionFour(int x, int y) {
-                return "";
-            }
 
             public string DisableSomeActionFour() {
                 return "";
@@ -1051,7 +1033,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public void SomeActionTwo(int x) {}
 
-            public string DisableSomeActionTwo(int x) {
+            public string DisableSomeActionTwo() {
                 return "";
             }
 
