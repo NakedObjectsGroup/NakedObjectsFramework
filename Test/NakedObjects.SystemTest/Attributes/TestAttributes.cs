@@ -102,7 +102,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestMethod]
         public virtual void Contributed() {
-            //var service = (TestServiceContributedAction)GetTestService(typeof(TestServiceContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Contributee>().GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetActions();
@@ -110,19 +109,28 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Contributed Action", actions[0].Name);
+
+            //Test that the actions show up on the TestObject as test actions
+            var testActions = NewTestObject<Contributee>().Actions;
+            Assert.AreEqual(1, testActions.Count());
+            Assert.AreEqual("Contributed Action", testActions[0].Name);
+            
         }
 
         [TestMethod]
         public virtual void CollectionContributed() {
-            var obj = NewTestObject<Contributee2>().GetDomainObject();
+            var testObj = NewTestObject<Contributee2>();
+                var obj = testObj.GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
+            var testActions = testObj.Actions;
 
             Assert.AreEqual(3, actions.Count());
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
             Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
+
         }
 
         [TestMethod]

@@ -677,6 +677,16 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetAction("Disable Prop4");
         }
 
+
+        [TestMethod, Ignore] //Pending #9228
+        public void DisableMethodsWithParamsNotRecognised() {
+            ITestObject obj = NewTestObject<Disable3>();
+            obj.GetAction("Disable Action2");
+            obj.GetAction("Disable Action3");
+            obj.GetAction("Disable Prop7");
+            obj.GetAction("Disable Prop8");
+        }
+
         [TestMethod]
         public void DisableActionDefault() {
             ITestObject obj = NewTestObject<Disable2>();
@@ -799,6 +809,15 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetAction("Hide Prop4");
             obj.GetAction("Hide Do Something Else");
             obj.GetAction("Hide Do Somthing Else");
+        }
+
+        [TestMethod, Ignore] // pending #9228
+        public void HideMethodsWithParamsNotRecognised() {
+            ITestObject obj = NewTestObject<Hide3>();
+            obj.GetAction("Hide Prop8");
+            obj.GetAction("Hide Prop9");
+            obj.GetAction("Hide Action1");
+            obj.GetAction("Hide Action2");
         }
 
         [TestMethod]
@@ -2075,10 +2094,41 @@ namespace NakedObjects.SystemTest.Method {
             return false;
         }
 
-        public void DoSomething() {}
+        public void Action1() {}
 
-        public string DisableDoSomething() {
+        //OK
+        public string DisableAction1() {
             return DisableProp6();
+        }
+
+        public void Action2(string parm1) { }
+
+        //Disable should not take any parms  -  even matching ones
+        public string DisableAction2(string parm1) {
+            return "x";
+        }
+
+        public void Action3() { }
+
+        //Disable should not take any parms  -  even matching ones
+        public string DisableAction3(int parm1) {
+            return "x";
+        }
+
+        [Optionally]
+        public virtual string Prop7 { get; set; }
+
+        //Disable should not take any parms  -  even matching ones
+        public string DisableProp7(string parm1) {
+            return "x";
+        }
+
+        [Optionally]
+        public virtual string Prop8 { get; set; }
+
+        //Disable should not take any parms  -  even matching ones
+        public string DisableProp8(int parm1) {
+            return "x";
         }
     }
 
@@ -2169,13 +2219,13 @@ namespace NakedObjects.SystemTest.Method {
             return Prop4 == "Hide 6";
         }
 
-        public void DoSomething() {}
+        public void DoSomething() { }
 
         public bool HideDoSomething() {
             return HideProp6();
         }
 
-        public void DoSomethingElse() {}
+        public void DoSomethingElse() { }
 
         public bool HideProp7() {
             return false;
@@ -2192,6 +2242,24 @@ namespace NakedObjects.SystemTest.Method {
         public string HideDoSomethingElse() {
             return null;
         }
+
+        public void Action1() { }
+
+        public bool HideAction1(string parm1) { return true; }
+
+        public void Action2(string parm1) { }
+
+        public bool HideAction2(string parm1) { return true; }
+
+        [Optionally]
+        public virtual string Prop8 { get; set; }
+
+        public bool HideProp8(int prop8) { return true; }
+
+        [Optionally]
+        public virtual string Prop9 { get; set; }
+
+        public bool HideProp9(string prop9) { return true; }
     }
 
     #endregion

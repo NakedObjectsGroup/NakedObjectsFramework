@@ -808,7 +808,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public int Count<T>(INakedObject nakedObject, IAssociationSpec field, INakedObjectManager manager) where T : class {
-            if (!nakedObject.ResolveState.IsTransient()) {
+            if (!nakedObject.ResolveState.IsTransient() && !field.ContainsFacet<INotPersistedFacet>()) {
                 using (var dbContext = new DbContext(GetContext(nakedObject).WrappedObjectContext, false)) {
                     // check this is an EF collection 
                     try {
