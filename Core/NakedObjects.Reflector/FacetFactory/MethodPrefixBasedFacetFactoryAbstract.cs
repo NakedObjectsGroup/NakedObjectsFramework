@@ -133,8 +133,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             return type == null ? Type.EmptyTypes : new[] {type};
         }
 
-        protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
-            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), paramTypes);
+        protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new DisableForContextFacet(method, specification));
             }
@@ -148,24 +148,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, (Type) null, specification);
-        }
-
-        protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type collectionType, ISpecification specification) {
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, ParamTypesOrNull(collectionType), specification);
-        }
-
-        protected void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
-            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
+        protected void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new HideForContextFacet(method, specification));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
 
-        protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
-            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
+        protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            MethodInfo method = FindMethod(reflector, type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), Type.EmptyTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
                 facets.Add(new HideForContextFacet(method, specification));

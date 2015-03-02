@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             AddHideForSessionFacetNone(facets, collection);
             AddDisableFacetAlways(facets, collection);
-            FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], collection);
+            FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
             FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
             FacetUtils.AddFacets(facets);
         }

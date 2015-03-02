@@ -468,7 +468,7 @@ namespace Expenses {
                 SendEmailIfPossible(sendEmail, Claimant.EmailAddress, fullMessage);
             }
 
-            public virtual string DisableReturnToClaimant(string message) {
+            public virtual string DisableReturnToClaimant() {
                 return Convert.ToString((((IsSubmitted()) ? null : STATUS_NOT_SUBMITTED)));
             }
 

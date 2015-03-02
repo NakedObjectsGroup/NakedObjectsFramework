@@ -703,20 +703,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestPickUpHideMethodSignatureChoice() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer10), "SomeActionFour");
-            MethodInfo hideMethodGood = FindMethod(typeof (Customer10), "HideSomeActionFour", new[] {typeof (int), typeof (int)});
-            MethodInfo hideMethodBad = FindMethod(typeof (Customer10), "HideSomeActionFour");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-
-            var facet = Specification.GetFacet<IHideForContextFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HideForContextFacet);
-            Assert.AreEqual(hideMethodGood, ((IImperativeFacet) facet).GetMethod());
-            Assert.AreNotEqual(hideMethodBad, ((IImperativeFacet) facet).GetMethod());
-        }
-
-        [TestMethod]
         public void TestProvidesDefaultNameForActionButIgnoresAnyNamedAnnotation() {
             MethodInfo method = FindMethod(typeof (Customer1), "AnActionWithNamedAnnotation");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
@@ -979,7 +965,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public void SomeActionTwo(int x) {}
 
-            public bool HideSomeActionTwo(int x) {
+            public bool HideSomeActionTwo() {
                 return false;
             }
 
@@ -991,10 +977,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public void SomeActionFour(int x, int y) {}
 
-            public bool HideSomeActionFour(int x, int y) {
-                return false;
-            }
-
+        
             public bool HideSomeActionFour() {
                 return false;
             }
@@ -1047,7 +1030,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             public void SomeActionTwo(int x) {}
 
-            public bool HideSomeActionTwo(int x) {
+            public bool HideSomeActionTwo() {
                 return false;
             }
 

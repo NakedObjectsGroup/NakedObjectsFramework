@@ -77,9 +77,9 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             AddHideForSessionFacetNone(facets, action);
             AddDisableForSessionFacetNone(facets, action);
-            FindDefaultHideMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", paramTypes, action);
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
-            FindDefaultDisableMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", paramTypes, action);
+            FindDefaultHideMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", action);
+            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, action);
+            FindDefaultDisableMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", action);
             FindAndRemoveDisableMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, action);
 
             var actionSpecImmutable = action as IActionSpecImmutable;
