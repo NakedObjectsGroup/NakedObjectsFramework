@@ -66,8 +66,8 @@ namespace NakedObjects.SystemTest.Audit {
         [TestInitialize()]
         public void TestInitialize() {
             InitializeNakedObjectsFrameworkOnce();
-            SetUser("sven");
             StartTest();
+            SetUser("sven");
         }
 
         [TestCleanup()]
