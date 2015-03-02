@@ -32,7 +32,7 @@ namespace MvcTestApp.Tests.Helpers {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
 
-        private static readonly bool Writetests = false;
+        private static readonly bool Writetests = true;
         private DummyController controller;
         private ContextMocks mocks;
 
@@ -1535,7 +1535,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "PropertyListEditExclusionsOtherObj");
         }
 
-        [Test, Ignore] //Broken by Stef moving Adapter?
+        [Test]
         public void PropertyListEditInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith("TestInt", "TestCollectionOne").ToString(),
                 "PropertyListEditInclusions");
