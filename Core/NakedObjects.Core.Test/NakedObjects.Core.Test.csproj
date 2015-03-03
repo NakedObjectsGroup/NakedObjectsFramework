@@ -88,6 +88,7 @@
     <Compile Include="persist\CollectionMementoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\CopyUtilsTest.cs" />
+    <Compile Include="util\QueryableUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -19,21 +19,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public DotNetGenericIQueryableFacet(IFacetHolder holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
-
-        private static bool IsOrdered(IQueryable queryable) {
-            Expression expr = queryable.Expression;
-
-            if (expr is MethodCallExpression) {
-                MethodInfo method = (expr as MethodCallExpression).Method;
-                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy");
-            }
-
-            return false;
-        }
-
         protected static IQueryable<T> AsGenericIQueryable(INakedObject collection) {
             var queryable = (IQueryable<T>) collection.Object;
-            return IsOrdered(queryable) ? queryable : queryable.OrderBy(x => "");
+            return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, bool forceEnumerable) {

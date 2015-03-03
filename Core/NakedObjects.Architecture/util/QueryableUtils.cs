@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace NakedObjects.Architecture.Util {
@@ -25,6 +26,20 @@ namespace NakedObjects.Architecture.Util {
             MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Count() == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (object[]) gm.Invoke(null, new object[] {q});
+        }
+
+
+        private static bool IsOrderExpression(Expression expr) {
+            var expression = expr as MethodCallExpression;
+            if (expression != null) {
+                MethodInfo method = expression.Method;
+                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") || expression.Arguments.Any(IsOrderExpression);
+            }
+            return false;
+        }
+
+        public static bool IsOrdered(this IQueryable queryable) {
+            return IsOrderExpression(queryable.Expression);
         }
     }
 }
