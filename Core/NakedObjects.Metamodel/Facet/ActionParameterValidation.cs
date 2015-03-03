@@ -17,10 +17,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
+        private Func<object, object[], object> methodDelegate;
 
         public ActionParameterValidation(MethodInfo method, ISpecification holder)
             : base(typeof (IActionParameterValidationFacet), holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IActionParameterValidationFacet Members
@@ -34,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string InvalidReason(INakedObject target, INakedObject proposedArgument) {
-            return (string) InvokeUtils.Invoke(method, target, new[] {proposedArgument});
+            return (string) methodDelegate(target.GetDomainObject(), new object[] {proposedArgument.GetDomainObject()});
         }
 
         #endregion

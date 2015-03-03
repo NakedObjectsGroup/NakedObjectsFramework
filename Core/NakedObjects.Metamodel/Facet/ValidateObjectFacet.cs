@@ -83,9 +83,11 @@ namespace NakedObjects.Meta.Facet {
         [Serializable]
         public class NakedObjectValidationMethod {
             private readonly MethodInfo method;
+            private Func<object, object[], object> methodDelegate;
 
             public NakedObjectValidationMethod(MethodInfo method) {
                 this.method = method;
+                methodDelegate = DelegateUtils.CreateDelegate(method);
             }
 
             public string Name {
@@ -97,7 +99,7 @@ namespace NakedObjects.Meta.Facet {
             }
 
             public string Execute(INakedObject obj, INakedObject[] parameters) {
-                return InvokeUtils.Invoke(method, obj, parameters) as string;
+                return methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
             }
         }
 

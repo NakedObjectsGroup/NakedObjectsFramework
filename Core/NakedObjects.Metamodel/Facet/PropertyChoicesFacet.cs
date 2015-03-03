@@ -24,6 +24,7 @@ namespace NakedObjects.Meta.Facet {
         private readonly MethodInfo method;
         private readonly string[] parameterNames;
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
+        private Func<object, object[], object> methodDelegate;
 
         public PropertyChoicesFacetx(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof (IPropertyChoicesFacet), holder) {
@@ -31,6 +32,7 @@ namespace NakedObjects.Meta.Facet {
 
             this.parameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -50,7 +52,7 @@ namespace NakedObjects.Meta.Facet {
         public object[] GetChoices(INakedObject inObject, IDictionary<string, INakedObject> parameterNameValues) {
             INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
             try {
-                object options = InvokeUtils.Invoke(method, inObject, parms);
+                object options = methodDelegate(inObject.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
                 var enumerable = options as IEnumerable;
                 if (enumerable != null) {
                     return enumerable.Cast<object>().ToArray();
