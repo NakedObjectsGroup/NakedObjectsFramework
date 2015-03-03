@@ -20,19 +20,21 @@ namespace NakedObjects.Xat {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
         private readonly ILifecycleManager lifecycleManager;
+        private readonly ITransactionManager transactionManager;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodelManager;
         private readonly ITestHasActions owningObject;
         private readonly ISession session;
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager)
-            : this(metamodelManager, session, lifecycleManager, string.Empty, actionSpec, owningObject, factory, manager) {}
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager)
+            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager) {}
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
             SubMenu = contributor;
             this.metamodelManager = metamodelManager;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
+            this.transactionManager = transactionManager;
             this.owningObject = owningObject;
             this.factory = factory;
             this.manager = manager;
@@ -61,19 +63,43 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject InvokeReturnObject(params object[] parameters) {
-            return (ITestObject) DoInvoke(ParsedParameters(parameters));
+            try {
+                transactionManager.StartTransaction();
+                return (ITestObject) DoInvoke(ParsedParameters(parameters));
+            }
+            finally {
+                transactionManager.EndTransaction();
+            }
         }
 
         public ITestCollection InvokeReturnCollection(params object[] parameters) {
-            return (ITestCollection) DoInvoke(ParsedParameters(parameters));
+            try {
+                transactionManager.StartTransaction();
+                return (ITestCollection) DoInvoke(ParsedParameters(parameters));
+            }
+            finally {
+                transactionManager.EndTransaction();
+            }
         }
 
         public void Invoke(params object[] parameters) {
-            DoInvoke(ParsedParameters(parameters));
+            try {
+                transactionManager.StartTransaction();
+                DoInvoke(ParsedParameters(parameters));
+            }
+            finally {
+                transactionManager.EndTransaction();
+            }
         }
 
         public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) {
-            return (ITestCollection) DoInvoke(page, ParsedParameters(parameters));
+            try {
+                transactionManager.StartTransaction();
+                return (ITestCollection) DoInvoke(page, ParsedParameters(parameters));
+            }
+            finally {
+                transactionManager.EndTransaction();
+            }
         }
 
         #endregion
