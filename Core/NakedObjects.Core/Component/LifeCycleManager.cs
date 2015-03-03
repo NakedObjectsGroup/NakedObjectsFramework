@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -28,6 +29,8 @@ namespace NakedObjects.Core.Component {
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
+        private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
+
 
         public LifeCycleManager(
             IMetamodelManager metamodel,
@@ -99,6 +102,10 @@ namespace NakedObjects.Core.Component {
             return nakedObjectManager.AdapterForExistingObject(obj, oid);
         }
 
+        public object CreateNonAdaptedInjectedObject(Type type) {
+            return CreateNotPersistedObject(type, true);
+        }
+
         public virtual INakedObject GetViewModel(IOid oid) {
             return nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
@@ -154,13 +161,19 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("CreateObject: " + spec);
             Type type = TypeUtils.GetType(spec.FullName);
 
-            if (spec.IsViewModel) {
-                object viewModel = Activator.CreateInstance(type);
-                InitDomainObject(viewModel);
-                return viewModel;
-            }
+            return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec) : objectPersistor.CreateObject(spec);
+        }
 
-            return objectPersistor.CreateObject(spec);
+        private object CreateNotPersistedObject(Type type) {
+            object instance = Activator.CreateInstance(type);
+            return InitDomainObject(instance);
+        }
+
+        private object CreateNotPersistedObject(Type type, bool cache) {
+            if (cache) {
+                return nonPersistedObjectCache.ContainsKey(type) ? nonPersistedObjectCache[type] : (nonPersistedObjectCache[type] = CreateNotPersistedObject(type));
+            }
+            return CreateNotPersistedObject(type);
         }
 
         private IOid RestoreGenericOid(string[] encodedData) {
@@ -178,9 +191,10 @@ namespace NakedObjects.Core.Component {
             return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(metamodel, encodedData) : null;
         }
 
-        private void InitDomainObject(object obj) {
+        private object InitDomainObject(object obj) {
             Log.DebugFormat("InitDomainObject: {0}", obj);
             injector.InitDomainObject(obj);
+            return obj;
         }
 
         private void InitInlineObject(object root, object inlineObject) {

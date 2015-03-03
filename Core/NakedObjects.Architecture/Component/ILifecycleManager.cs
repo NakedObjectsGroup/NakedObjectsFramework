@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
@@ -18,6 +19,8 @@ namespace NakedObjects.Architecture.Component {
         INakedObject CreateInstance(IObjectSpec spec);
         INakedObject CreateViewModel(IObjectSpec spec);
         INakedObject RecreateInstance(IOid oid, ITypeSpec spec);
+
+        object CreateNonAdaptedInjectedObject(Type type);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
