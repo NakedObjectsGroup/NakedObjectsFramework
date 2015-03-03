@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -17,10 +18,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public ActionValidationFacet(MethodInfo method, ISpecification holder)
             : base(typeof (IActionValidationFacet), holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IActionValidationFacet Members
@@ -34,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
-            return (string) InvokeUtils.Invoke(method, target, proposedArguments);
+            return (string) methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
         }
 
         #endregion

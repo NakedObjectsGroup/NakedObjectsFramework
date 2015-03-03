@@ -52,5 +52,25 @@ namespace NakedObjects.Core.Util.Query {
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(queryable.Contains(49));
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(queryable.Contains(201));
         }
+
+        [TestMethod]
+        public void TestIsOrdered() {
+            var list = Enumerable.Range(10, 100);
+            var notOrdered = list.AsQueryable();
+            var simpleOrdered = notOrdered.OrderBy(i => "");
+            var thenByOrdered = notOrdered.OrderBy(i => "").ThenBy(i => "");
+            var complexOrdered1 = notOrdered.OrderBy(i => "").Select(i => i.ToString());
+            var complexOrdered2 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
+            var complexOrdered3 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s));
+            var complexOrdered4 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s)).Where(i => i > 50);
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(notOrdered.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(simpleOrdered.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(thenByOrdered.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered1.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered2.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered3.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered4.IsOrdered());
+        }  
     }
 }

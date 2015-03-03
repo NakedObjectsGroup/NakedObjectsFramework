@@ -113,7 +113,7 @@ namespace NakedObjects.Meta.Audit {
         }
 
         private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return lifecycleManager.CreateInstance((IObjectSpec) manager.GetSpecification(auditor)).GetDomainObject<IAuditor>();
+            return lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
         }
 
         private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager, IMetamodelManager manager) {

@@ -17,6 +17,26 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class GenericIEnumerableFacet : CollectionFacetAbstract {
+        internal class IteratorWrapper<T> : IEnumerable<T> {
+            private readonly IEnumerable iterator;
+
+            public IteratorWrapper(IEnumerable iterator) {
+                this.iterator = iterator;
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                // do not convert to Linq - possible issue with EF cast to object 
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var o in iterator) {
+                    yield return (T) o;
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
         public GenericIEnumerableFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
 
@@ -28,7 +48,13 @@ namespace NakedObjects.Meta.Facet {
         }
 
         protected static IEnumerable<T> AsGenericIEnumerable<T>(INakedObject collection) {
-            return (IEnumerable<T>) collection.Object;
+            var objectType = collection.Object.GetType();
+
+            if (objectType.GenericTypeArguments.Count() == 1) {
+                return (ICollection<T>) collection.Object;
+            }
+
+            return new IteratorWrapper<T>((IEnumerable) collection.Object);
         }
 
         public INakedObject PageInternal<T>(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {

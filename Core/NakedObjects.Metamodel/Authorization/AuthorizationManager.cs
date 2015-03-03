@@ -52,7 +52,12 @@ namespace NakedObjects.Meta.Authorization {
             return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
         }
 
-        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager,
+        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) {
+            return lifecycleManager.CreateNonAdaptedInjectedObject(type);
+        }
+
+        private object GetAuthorizer(INakedObject target,
+                                     ILifecycleManager lifecycleManager,
                                      IMetamodelManager manager) {
             Assert.AssertNotNull(target);
 
@@ -69,7 +74,7 @@ namespace NakedObjects.Meta.Authorization {
                                   FirstOrDefault() ??
                               defaultAuthorizer;
 
-            return lifecycleManager.CreateInstance((IObjectSpec) manager.GetSpecification(authorizer)).GetDomainObject();
+            return CreateAuthorizer(authorizer, lifecycleManager);
         }
 
         #region Constructors

@@ -17,10 +17,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private Func<object, object[], object> methodDelegate;
 
         public PropertySetterFacetViaModifyMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override void SetProperty(INakedObject inObject, INakedObject value, ITransactionManager transactionManager) {
-            InvokeUtils.Invoke(method, inObject, new[] {value});
+            methodDelegate(inObject.GetDomainObject(), new[] {value.GetDomainObject()});
         }
 
         protected override string ToStringValues() {

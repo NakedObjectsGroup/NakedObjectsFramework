@@ -101,9 +101,9 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         [TestInitialize()]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            SetUser("sven");
+            InitializeNakedObjectsFrameworkOnce();            
             StartTest();
+            SetUser("sven");
         }
 
         [TestCleanup()]

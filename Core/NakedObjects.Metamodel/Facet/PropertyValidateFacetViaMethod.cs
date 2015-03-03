@@ -16,10 +16,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private Func<object, object[], object> methodDelegate;
 
         public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override string InvalidReason(INakedObject target, INakedObject proposedValue) {
             if (proposedValue != null) {
-                return (string) InvokeUtils.Invoke(method, target, new[] {proposedValue});
+                return (string) methodDelegate(target.GetDomainObject(), new[] {proposedValue.GetDomainObject()});
             }
             return null;
         }
