@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace NakedObjects.Core.Util.Query {
@@ -51,6 +52,19 @@ namespace NakedObjects.Core.Util.Query {
             MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Count() == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (IList) gm.Invoke(null, new object[] {q});
+        }
+
+        private static bool IsOrderExpression(Expression expr) {
+            var expression = expr as MethodCallExpression;
+            if (expression != null) {
+                MethodInfo method = expression.Method;
+                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") || expression.Arguments.Any(IsOrderExpression);
+            }
+            return false;
+        }
+
+        public static bool IsOrdered(this IQueryable queryable) {
+            return IsOrderExpression(queryable.Expression);
         }
     }
 }

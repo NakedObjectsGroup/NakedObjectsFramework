@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Core.Util.Query;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -29,21 +30,9 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        private static bool IsOrdered(IQueryable queryable) {
-            Expression expr = queryable.Expression;
-
-            var expression = expr as MethodCallExpression;
-            if (expression != null) {
-                MethodInfo method = expression.Method;
-                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy");
-            }
-
-            return false;
-        }
-
         protected static IQueryable<T> AsGenericIQueryable<T>(INakedObject collection) {
             var queryable = (IQueryable<T>) collection.Object;
-            return IsOrdered(queryable) ? queryable : queryable.OrderBy(x => "");
+            return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
         }
 
         public INakedObject PageInternal<T>(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
