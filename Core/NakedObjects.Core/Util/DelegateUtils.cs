@@ -40,35 +40,32 @@ namespace NakedObjects.Core.Util {
         }
 
         public static Action<object> CreateCallbackDelegate(MethodInfo method) {
-
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("CallbackHelper", BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo genericHelper = typeof (DelegateUtils).GetMethod("CallbackHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
-            var typeArgs = new List<Type> { method.DeclaringType };
+            var typeArgs = new List<Type> {method.DeclaringType};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.
-            object ret = delegateHelper.Invoke(null, new object[] { method });
+            object ret = delegateHelper.Invoke(null, new object[] {method});
 
             // Cast the result to the right kind of delegate and return it
-            return (Action<object>)ret;
+            return (Action<object>) ret;
         }
 
         public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
-
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo genericHelper = typeof (DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
-            var typeArgs = new List<Type> { method.DeclaringType, method.DeclaringType.GenericTypeArguments.First() };
+            var typeArgs = new List<Type> {method.DeclaringType, method.DeclaringType.GenericTypeArguments.First()};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.
-            object ret = delegateHelper.Invoke(null, new object[] { method });
+            object ret = delegateHelper.Invoke(null, new object[] {method});
 
             // Cast the result to the right kind of delegate and return it
-            return (Func<object, IPrincipal, object, string, bool>)ret;
+            return (Func<object, IPrincipal, object, string, bool>) ret;
         }
-
 
         private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
             var helperName = method.ReturnType == typeof (void) ? "ActionHelper" : "FuncHelper";
@@ -76,7 +73,7 @@ namespace NakedObjects.Core.Util {
             helperName += method.GetParameters().Count();
 
             // First fetch the generic form
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo genericHelper = typeof (DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
             var typeArgs = new List<Type> {targetType};
@@ -95,12 +92,12 @@ namespace NakedObjects.Core.Util {
         // at some point in the future these may be replaced with generated code.  
 
         // ReSharper disable UnusedMember.Local
-        private static Action<object> CallbackHelper<TTarget>(MethodInfo method) where TTarget : class {
+        private static Action<object> CallbackHelper<TTarget>(MethodInfo method) {
             var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);
             return target => action((TTarget) target);
         }
 
-        private static Func<object, object[], object> ActionHelper0<TTarget>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper0<TTarget>(MethodInfo method) {
             var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);
             return (target, param) => {
                 action((TTarget) target);
@@ -108,7 +105,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper1<TTarget, TParam0>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper1<TTarget, TParam0>(MethodInfo method) {
             var action = (Action<TTarget, TParam0>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0]);
@@ -116,7 +113,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper2<TTarget, TParam0, TParam1>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper2<TTarget, TParam0, TParam1>(MethodInfo method) {
             var action = (Action<TTarget, TParam0, TParam1>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1]);
@@ -124,7 +121,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper3<TTarget, TParam0, TParam1, TParam2>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper3<TTarget, TParam0, TParam1, TParam2>(MethodInfo method) {
             var action = (Action<TTarget, TParam0, TParam1, TParam2>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2]);
@@ -132,7 +129,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper4<TTarget, TParam0, TParam1, TParam2, TParam3>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper4<TTarget, TParam0, TParam1, TParam2, TParam3>(MethodInfo method) {
             var action = (Action<TTarget, TParam0, TParam1, TParam2, TParam3>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2, TParam3>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3]);
@@ -140,7 +137,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4>(MethodInfo method) {
             var action = (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4]);
@@ -148,7 +145,7 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, object[], object> ActionHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> ActionHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>(MethodInfo method) {
             var action = (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>), method);
             return (target, param) => {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4], (TParam5) param[5]);
@@ -156,45 +153,46 @@ namespace NakedObjects.Core.Util {
             };
         }
 
-        private static Func<object, IPrincipal, object, string, bool> TypeAuthorizerHelper<TTarget, TAuth>(MethodInfo method) where TTarget : class {
-            var func = (Func<TTarget, IPrincipal, TAuth, string, bool>)Delegate.CreateDelegate(typeof(Func<TTarget, IPrincipal, TAuth, string, bool>), method);
-            return (target, principal, auth, name) => func((TTarget)target, principal, (TAuth)auth, name);
+        private static Func<object, IPrincipal, object, string, bool> TypeAuthorizerHelper<TTarget, TAuth>(MethodInfo method) {
+            var func = (Func<TTarget, IPrincipal, TAuth, string, bool>) Delegate.CreateDelegate(typeof (Func<TTarget, IPrincipal, TAuth, string, bool>), method);
+            return (target, principal, auth, name) => func((TTarget) target, principal, (TAuth) auth, name);
         }
 
-        private static Func<object, object[], object> FuncHelper0<TTarget, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper0<TTarget, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TReturn>), method);
             return (target, param) => func((TTarget) target);
         }
 
-        private static Func<object, object[], object> FuncHelper1<TTarget, TParam0, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper1<TTarget, TParam0, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0]);
         }
 
-        private static Func<object, object[], object> FuncHelper2<TTarget, TParam0, TParam1, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper2<TTarget, TParam0, TParam1, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TParam1, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1]);
         }
 
-        private static Func<object, object[], object> FuncHelper3<TTarget, TParam0, TParam1, TParam2, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper3<TTarget, TParam0, TParam1, TParam2, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2]);
         }
 
-        private static Func<object, object[], object> FuncHelper4<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper4<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3]);
         }
 
-        private static Func<object, object[], object> FuncHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4]);
         }
 
-        private static Func<object, object[], object> FuncHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>(MethodInfo method) where TTarget : class {
+        private static Func<object, object[], object> FuncHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>(MethodInfo method) {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4], (TParam5) param[5]);
         }
+
         // ReSharper restore UnusedMember.Local
     }
 }
