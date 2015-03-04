@@ -114,11 +114,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Architecture">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Architecture.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Async">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Async.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Async.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Attributes">
@@ -126,15 +126,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Bootstrap">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.FWResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
@@ -142,11 +142,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Persistor.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Persistor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
@@ -154,19 +154,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector.DotNet">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Surface">
@@ -182,7 +182,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Xat">
-      <HintPath>..\..\packages\NakedObjects.Xat.6.0.3\lib\net451\NakedObjects.Xat.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Xat.6.0.4\lib\net451\NakedObjects.Xat.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">

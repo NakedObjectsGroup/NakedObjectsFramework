@@ -56,26 +56,26 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="NakedObjects.Architecture">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Architecture.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Async, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Async.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Async.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Bootstrap">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
@@ -83,32 +83,32 @@
     </Reference>
     <Reference Include="NakedObjects.Persistor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Persistor.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Persistor.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Reflector.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Reflector.DotNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.3\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.4\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Xat">
-      <HintPath>..\..\packages\NakedObjects.Xat.6.0.3\lib\net451\NakedObjects.Xat.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Xat.6.0.4\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
