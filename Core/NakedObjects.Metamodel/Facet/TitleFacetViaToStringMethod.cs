@@ -42,10 +42,15 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            if (maskDelegate == null) {
-                return GetTitle(nakedObject, nakedObjectManager);
+            if (maskDelegate != null) {
+                return (string) maskDelegate(nakedObject.GetDomainObject(), new object[] {mask});
             }
-            return (string) maskDelegate(nakedObject.GetDomainObject(), new object[] {mask});
+
+            if (maskMethod != null) {
+                return (string) maskMethod.Invoke(nakedObject.GetDomainObject(), new object[] {mask});
+            }
+
+            return GetTitle(nakedObject, nakedObjectManager);
         }
     }
 
