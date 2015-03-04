@@ -51,6 +51,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer1 {
+            public override string ToString() {
+                return "Some title via ToString";
+            }
             public string ToString(string mask) {
                 return "Some title via ToString";
             }

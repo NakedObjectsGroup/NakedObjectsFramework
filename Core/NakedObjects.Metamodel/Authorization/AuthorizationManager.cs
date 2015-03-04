@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,34 +24,35 @@ namespace NakedObjects.Meta.Authorization {
         private readonly Type[] forFacetTypes = {typeof (IHideForSessionFacet), typeof (IDisableForSessionFacet)};
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
+
 
         #region IAuthorizationManager Members
 
         public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager);
+            Type authType = authorizer.GetType();
 
-            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
-                var nameAuth = (ITypeAuthorizer<object>) authorizer;
+            if (authType.IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
             }
-            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
+            return isVisibleDelegates[authType](authorizer, session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
         public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager);
+            Type authType = authorizer.GetType();
 
-            if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
-                var nameAuth = (ITypeAuthorizer<object>) authorizer;
+            if (authType.IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+                var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
             }
-            return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsEditable", authorizer);
+            return isEditableDelegates[authType](authorizer, session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
         #endregion
-
-        private static object ExecuteOnTypeAuthorizer(ISession session, INakedObject target, IIdentifier identifier, string toInvoke, object authorizer) {
-            return authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
-        }
 
         private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) {
             return lifecycleManager.CreateNonAdaptedInjectedObject(type);
@@ -85,6 +87,8 @@ namespace NakedObjects.Meta.Authorization {
             }
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
                 typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
+                isVisibleDelegates = authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsVisible"))).ToImmutableDictionary();
+                isEditableDelegates = authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsEditable"))).ToImmutableDictionary();
             }
         }
 

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using Common.Logging;
 
 namespace NakedObjects.Core.Util {
@@ -52,6 +53,22 @@ namespace NakedObjects.Core.Util {
             // Cast the result to the right kind of delegate and return it
             return (Action<object>)ret;
         }
+
+        public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
+
+            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
+
+            // Now supply the type arguments
+            var typeArgs = new List<Type> { method.DeclaringType, method.DeclaringType.GenericTypeArguments.First() };
+            var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
+
+            // Now call it. The null argument is because it’s a static method.
+            object ret = delegateHelper.Invoke(null, new object[] { method });
+
+            // Cast the result to the right kind of delegate and return it
+            return (Func<object, IPrincipal, object, string, bool>)ret;
+        }
+
 
         private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
             var helperName = method.ReturnType == typeof (void) ? "ActionHelper" : "FuncHelper";
@@ -137,6 +154,11 @@ namespace NakedObjects.Core.Util {
                 action((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4], (TParam5) param[5]);
                 return null;
             };
+        }
+
+        private static Func<object, IPrincipal, object, string, bool> TypeAuthorizerHelper<TTarget, TAuth>(MethodInfo method) where TTarget : class {
+            var func = (Func<TTarget, IPrincipal, TAuth, string, bool>)Delegate.CreateDelegate(typeof(Func<TTarget, IPrincipal, TAuth, string, bool>), method);
+            return (target, principal, auth, name) => func((TTarget)target, principal, (TAuth)auth, name);
         }
 
         private static Func<object, object[], object> FuncHelper0<TTarget, TReturn>(MethodInfo method) where TTarget : class {
