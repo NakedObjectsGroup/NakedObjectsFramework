@@ -31,10 +31,17 @@ namespace NakedObjects.Meta.Facet {
             return method;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return (tgt, p) => {
+                deletingDelegate(tgt);
+                return null;
+            };
+        }
+
         #endregion
 
         public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            deletingDelegate.Invoke(nakedObject.GetDomainObject());
+            deletingDelegate(nakedObject.GetDomainObject());
         }
 
         protected override string ToStringValues() {

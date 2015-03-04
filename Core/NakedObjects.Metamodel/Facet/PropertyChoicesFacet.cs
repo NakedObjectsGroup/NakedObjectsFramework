@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
         private readonly MethodInfo method;
         private readonly string[] parameterNames;
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
-        private Func<object, object[], object> methodDelegate;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public PropertyChoicesFacetx(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof (IPropertyChoicesFacet), holder) {
@@ -39,6 +39,10 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() {
             return method;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
         }
 
         #endregion

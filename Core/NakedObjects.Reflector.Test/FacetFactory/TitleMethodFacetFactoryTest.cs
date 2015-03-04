@@ -51,7 +51,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer1 {
-            public override string ToString() {
+            public string ToString(string mask) {
                 return "Some title via ToString";
             }
         }
@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
-            MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString");
+            MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString", new []{typeof(string)});
             facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
             Assert.IsNotNull(facet);

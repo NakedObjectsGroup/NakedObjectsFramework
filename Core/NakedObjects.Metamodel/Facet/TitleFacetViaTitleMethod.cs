@@ -31,10 +31,14 @@ namespace NakedObjects.Meta.Facet {
             return method;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
+        }
+
         #endregion
 
         public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            return methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {}) as string;
+            return methodDelegate(nakedObject.GetDomainObject(), new object[] {}) as string;
         }
     }
 

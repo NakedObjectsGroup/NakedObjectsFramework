@@ -15,21 +15,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract, IImperativeFacet {
+    internal class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
         private readonly PropertyInfo property;
 
         public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
             : base(holder) {
             this.property = property;
         }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return property.GetSetMethod();
-        }
-
-        #endregion
 
         public override void SetProperty(INakedObject nakedObject, INakedObject value, ITransactionManager transactionManager) {
             try {

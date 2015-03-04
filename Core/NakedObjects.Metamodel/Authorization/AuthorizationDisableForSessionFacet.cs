@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Authorization {
         }
 
         public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return authorizationManager.IsEditable(session, lifecycleManager, manager, target, identifier)
+            return authorizationManager.IsEditable(session, lifecycleManager, target, identifier)
                 ? null
                 : "Not authorized to edit";
         }

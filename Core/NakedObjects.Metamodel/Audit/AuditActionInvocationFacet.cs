@@ -43,12 +43,12 @@ namespace NakedObjects.Meta.Audit {
         }
 
         public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager, manager);
+            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager);
             return underlyingFacet.Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
         }
 
         public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager, manager);
+            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager);
             return underlyingFacet.Invoke(nakedObject, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager);
         }
     }

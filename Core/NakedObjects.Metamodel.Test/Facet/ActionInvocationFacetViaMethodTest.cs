@@ -33,7 +33,7 @@ namespace NakedObjects.Meta.Test.Facet {
             var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
             Assert.IsNotNull(facet.ActionDelegate, method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
-            Assert.AreEqual(method.Name, facet.ActionDelegate.Invoke(new TestDelegateClass(), parms));
+            Assert.AreEqual(method.Name, facet.ActionDelegate(new TestDelegateClass(), parms));
         }
 
         private void InvokeActionTest(MethodInfo method) {

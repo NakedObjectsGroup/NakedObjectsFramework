@@ -26,8 +26,8 @@ namespace NakedObjects.Meta.Authorization {
 
         #region IAuthorizationManager Members
 
-        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
+        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
+            object authorizer = GetAuthorizer(target, lifecycleManager);
 
             if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
                 var nameAuth = (ITypeAuthorizer<object>) authorizer;
@@ -36,8 +36,8 @@ namespace NakedObjects.Meta.Authorization {
             return (bool) ExecuteOnTypeAuthorizer(session, target, identifier, "IsVisible", authorizer);
         }
 
-        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager, manager);
+        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
+            object authorizer = GetAuthorizer(target, lifecycleManager);
 
             if (authorizer.GetType().IsAssignableFrom(typeof (INamespaceAuthorizer))) {
                 var nameAuth = (ITypeAuthorizer<object>) authorizer;
@@ -56,9 +56,7 @@ namespace NakedObjects.Meta.Authorization {
             return lifecycleManager.CreateNonAdaptedInjectedObject(type);
         }
 
-        private object GetAuthorizer(INakedObject target,
-                                     ILifecycleManager lifecycleManager,
-                                     IMetamodelManager manager) {
+        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
 
             //Look for exact-fit TypeAuthorizer

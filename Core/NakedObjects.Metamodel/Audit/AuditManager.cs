@@ -27,14 +27,13 @@ namespace NakedObjects.Meta.Audit {
         public AuditManager(IAuditConfiguration config) {
             defaultAuditor = config.DefaultAuditor;
             namespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
-
             Validate();
         }
 
         #region IAuditManager Members
 
-        public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+        public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
 
             IPrincipal byPrincipal = session.Principal;
             string memberName = identifier.MemberName;
@@ -47,13 +46,13 @@ namespace NakedObjects.Meta.Audit {
             }
         }
 
-        public void Updated(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+        public void Updated(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
             auditor.ObjectUpdated(session.Principal, nakedObject.GetDomainObject());
         }
 
-        public void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager, manager);
+        public void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
             auditor.ObjectPersisted(session.Principal, nakedObject.GetDomainObject());
         }
 
@@ -96,11 +95,11 @@ namespace NakedObjects.Meta.Audit {
             }
         }
 
-        private IAuditor GetAuditor(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return GetNamespaceAuditorFor(nakedObject, lifecycleManager, manager) ?? GetDefaultAuditor(lifecycleManager, manager);
+        private IAuditor GetAuditor(INakedObject nakedObject, ILifecycleManager lifecycleManager) {
+            return GetNamespaceAuditorFor(nakedObject, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
         }
 
-        private IAuditor GetNamespaceAuditorFor(INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        private IAuditor GetNamespaceAuditorFor(INakedObject target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Spec.FullName;
             Type auditor = namespaceAuditors.
@@ -109,15 +108,15 @@ namespace NakedObjects.Meta.Audit {
                 Select(x => x.Value).
                 FirstOrDefault();
 
-            return auditor != null ? CreateAuditor(auditor, lifecycleManager, manager) : null;
+            return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
         }
 
-        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) {
             return lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
         }
 
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return CreateAuditor(defaultAuditor, lifecycleManager, manager);
+        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) {
+            return CreateAuditor(defaultAuditor, lifecycleManager);
         }
     }
 }

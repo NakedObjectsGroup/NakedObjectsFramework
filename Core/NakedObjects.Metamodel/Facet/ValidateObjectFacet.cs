@@ -83,7 +83,7 @@ namespace NakedObjects.Meta.Facet {
         [Serializable]
         public class NakedObjectValidationMethod {
             private readonly MethodInfo method;
-            private Func<object, object[], object> methodDelegate;
+            private readonly Func<object, object[], object> methodDelegate;
 
             public NakedObjectValidationMethod(MethodInfo method) {
                 this.method = method;

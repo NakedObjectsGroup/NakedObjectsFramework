@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet, IImperativeFacet {
+    internal class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet {
         private readonly PropertyInfo property;
 
         public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
@@ -22,13 +22,6 @@ namespace NakedObjects.Meta.Facet {
             this.property = property;
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return property.GetSetMethod();
-        }
-
-        #endregion
 
         #region IPropertyInitializationFacet Members
 

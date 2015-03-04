@@ -68,10 +68,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof (object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
-                else {
-                    // on object do not use 
-                    toStringMethod = null;
-                }
 
                 MethodInfo maskMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), new[] {typeof (string)});
 
@@ -79,8 +75,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                     methodRemover.RemoveMethod(maskMethod);
                 }
 
-                if (titleFacet == null && toStringMethod != null) {
-                    titleFacet = new TitleFacetViaToStringMethod(toStringMethod, maskMethod, specification);
+                if (titleFacet == null) {
+                    titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification);
                 }
 
                 FacetUtils.AddFacet(titleFacet);

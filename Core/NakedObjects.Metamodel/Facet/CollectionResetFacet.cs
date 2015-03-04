@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
+    internal class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
         private readonly PropertyInfo property;
 
         public CollectionResetFacet(PropertyInfo property, ISpecification holder)
@@ -39,14 +39,6 @@ namespace NakedObjects.Meta.Facet {
             catch (Exception e) {
                 throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Spec.FullName), e);
             }
-        }
-
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return property.GetGetMethod();
         }
 
         #endregion

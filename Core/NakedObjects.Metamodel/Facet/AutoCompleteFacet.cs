@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
     internal class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         protected const int DefaultPageSize = 50;
         private readonly MethodInfo method;
-        private Func<object, object[], object> methodDelegate;
+        private readonly Func<object, object[], object> methodDelegate;
 
         private AutoCompleteFacet(ISpecification holder)
             : base(Type, holder) {}
@@ -65,6 +65,10 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() {
             return method;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
         }
 
         #endregion

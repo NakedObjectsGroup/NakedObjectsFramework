@@ -52,6 +52,10 @@ namespace NakedObjects.Meta.Facet {
             return choicesMethod;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return choicesDelegate;
+        }
+
         #endregion
 
         public override object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {

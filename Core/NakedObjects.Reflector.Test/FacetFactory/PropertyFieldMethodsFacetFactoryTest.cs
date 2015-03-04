@@ -828,8 +828,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPropertyInitializationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IPropertyInitializationFacet);
-            var propertySetterFacet = (PropertyInitializationFacet) facet;
-            Assert.AreEqual(property.GetSetMethod(), propertySetterFacet.GetMethod());
         }
 
         [TestMethod]
@@ -869,8 +867,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
-            Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
         [TestMethod]
@@ -893,8 +889,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaSetterMethod);
-            var propertySetterFacet = (PropertySetterFacetViaSetterMethod) facet;
-            Assert.AreEqual(property.GetSetMethod(), propertySetterFacet.GetMethod());
         }
 
         [TestMethod]

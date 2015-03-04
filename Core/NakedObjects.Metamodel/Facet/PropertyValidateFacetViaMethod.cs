@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
-        private Func<object, object[], object> methodDelegate;
+        private readonly Func<object, object[], object> methodDelegate;
 
         public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
@@ -28,6 +28,10 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() {
             return method;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
         }
 
         #endregion

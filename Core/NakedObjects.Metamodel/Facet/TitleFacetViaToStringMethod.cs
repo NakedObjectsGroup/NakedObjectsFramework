@@ -11,26 +11,28 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
-        private readonly MethodInfo method;
+        private readonly Func<object, object[], object> maskDelegate;
 
-        public TitleFacetViaToStringMethod(MethodInfo method, ISpecification holder)
-            : this(method, null, holder) {}
-
-        public TitleFacetViaToStringMethod(MethodInfo method, MethodInfo maskMethod, ISpecification holder)
+        public TitleFacetViaToStringMethod(MethodInfo maskMethod, ISpecification holder)
             : base(holder) {
-            this.method = method;
             this.maskMethod = maskMethod;
+            maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
         }
 
         #region IImperativeFacet Members
 
         public MethodInfo GetMethod() {
-            return method;
+            return maskMethod;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return maskDelegate;
         }
 
         #endregion
@@ -40,10 +42,10 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            if (maskMethod == null) {
+            if (maskDelegate == null) {
                 return GetTitle(nakedObject, nakedObjectManager);
             }
-            return (string) maskMethod.Invoke(nakedObject.Object, new object[] {mask});
+            return (string) maskDelegate(nakedObject.GetDomainObject(), new object[] {mask});
         }
     }
 

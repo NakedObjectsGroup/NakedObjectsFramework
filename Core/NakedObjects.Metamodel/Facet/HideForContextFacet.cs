@@ -41,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
             if (nakedObject == null) {
                 return null;
             }
-            var isHidden = (bool) methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
+            var isHidden = (bool) methodDelegate(nakedObject.GetDomainObject(), new object[] {});
             return isHidden ? Resources.NakedObjects.Hidden : null;
         }
 
@@ -51,6 +51,10 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() {
             return method;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
         }
 
         #endregion

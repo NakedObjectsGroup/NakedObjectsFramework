@@ -48,6 +48,10 @@ namespace NakedObjects.Meta.Facet {
             return method;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
+        }
+
         #endregion
 
         protected override string ToStringValues() {

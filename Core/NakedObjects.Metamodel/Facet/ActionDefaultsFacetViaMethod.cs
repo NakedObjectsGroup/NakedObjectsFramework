@@ -38,12 +38,16 @@ namespace NakedObjects.Meta.Facet {
             return method;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
+        }
+
         #endregion
 
         public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObject nakedObject) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
-            var defaultValue = methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[]{});
+            var defaultValue = methodDelegate(nakedObject.GetDomainObject(), new object[]{});
             return new Tuple<object, TypeOfDefaultValue>(defaultValue, TypeOfDefaultValue.Explicit);
         }
 

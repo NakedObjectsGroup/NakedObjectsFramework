@@ -77,6 +77,7 @@ namespace NakedObjects.Core.Util {
         // then create a more weakly typed delegate which will call the strongly typed one
         // at some point in the future these may be replaced with generated code.  
 
+        // ReSharper disable UnusedMember.Local
         private static Action<object> CallbackHelper<TTarget>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);
             return target => action((TTarget) target);
@@ -172,5 +173,6 @@ namespace NakedObjects.Core.Util {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>), method);
             return (target, param) => func((TTarget) target, (TParam0) param[0], (TParam1) param[1], (TParam2) param[2], (TParam3) param[3], (TParam4) param[4], (TParam5) param[5]);
         }
+        // ReSharper restore UnusedMember.Local
     }
 }

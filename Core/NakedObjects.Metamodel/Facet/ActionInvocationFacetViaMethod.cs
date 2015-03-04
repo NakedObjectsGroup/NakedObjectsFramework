@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -78,6 +77,10 @@ namespace NakedObjects.Meta.Facet {
             return actionMethod;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return actionDelegate;
+        }
+
         #endregion
 
         public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
@@ -87,7 +90,7 @@ namespace NakedObjects.Meta.Facet {
 
             object result;
             if (actionDelegate != null) {
-                result = actionDelegate.Invoke(inObject.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
+                result = actionDelegate(inObject.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {
                 Log.WarnFormat("Invoking action via reflection as no delegate {0}.{1}", onType, actionMethod);

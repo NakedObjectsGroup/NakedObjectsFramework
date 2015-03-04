@@ -32,10 +32,14 @@ namespace NakedObjects.Meta.Facet {
             return method;
         }
 
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
+        }
+
         #endregion
 
         public override void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager) {
-            methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
+            methodDelegate(nakedObject.GetDomainObject(), new object[] {});
         }
 
         protected override string ToStringValues() {

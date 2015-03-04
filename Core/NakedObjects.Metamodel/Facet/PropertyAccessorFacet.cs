@@ -14,21 +14,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
+    internal class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet {
         private readonly PropertyInfo propertyMethod;
 
         public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
             : base(typeof (IPropertyAccessorFacet), holder) {
             propertyMethod = property;
         }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return propertyMethod.GetGetMethod();
-        }
-
-        #endregion
 
         #region IPropertyAccessorFacet Members
 

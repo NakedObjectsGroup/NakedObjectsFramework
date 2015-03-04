@@ -38,7 +38,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string DisabledReason(INakedObject nakedObject) {
-            return (string) methodDelegate.Invoke(nakedObject.GetDomainObject(), new object[] {});
+            return (string) methodDelegate(nakedObject.GetDomainObject(), new object[] {});
         }
 
         #endregion
@@ -47,6 +47,10 @@ namespace NakedObjects.Meta.Facet {
 
         public MethodInfo GetMethod() {
             return method;
+        }
+
+        public Func<object, object[], object> GetMethodDelegate() {
+            return methodDelegate;
         }
 
         #endregion

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture.Spec;
 
@@ -19,8 +20,14 @@ namespace NakedObjects.Architecture.Facet {
     /// </para>
     public interface IImperativeFacet {
         /// <summary>
-        ///     The <see cref="MethodInfo" /> invoked by this Facet.
+        ///     The <see cref="MethodInfo" /> invoked by this Facet. Use for testing but any invokes should use delegate below
         /// </summary>
         MethodInfo GetMethod();
+
+        /// <summary>
+        /// Delegate around method. Much faster than invoking method via reflective Invoke call
+        /// </summary>
+        /// <returns></returns>
+        Func<object, object[], object> GetMethodDelegate();
     }
 }
