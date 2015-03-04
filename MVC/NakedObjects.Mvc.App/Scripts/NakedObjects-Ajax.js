@@ -1484,7 +1484,10 @@
             var button = getButton(event);
             startSubmitFeedBack(button);
 
-            return getFile($(this).attr("action"), 'POST', null,
+            var formElement = $(this).get()[0];
+            var fd = new FormData(formElement);
+
+            return getFile($(this).attr("action"), 'POST', fd,
                 function(evt) {
                     endSubmitFeedBack();
                     downloadComplete(evt);
