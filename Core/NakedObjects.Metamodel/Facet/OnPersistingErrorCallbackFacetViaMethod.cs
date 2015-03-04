@@ -16,10 +16,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     internal class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
+        private Func<object, object[], object> methodDelegate;
 
         public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #region IImperativeFacet Members
@@ -31,7 +33,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override string Invoke(INakedObject nakedObject, Exception exception) {
-            return (string) InvokeUtils.Invoke(method, nakedObject.Object, new object[] {exception});
+            return (string) methodDelegate(nakedObject.GetDomainObject(), new object[] {exception});
         }
 
         protected override string ToStringValues() {

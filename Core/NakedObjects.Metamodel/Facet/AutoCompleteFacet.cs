@@ -20,6 +20,7 @@ namespace NakedObjects.Meta.Facet {
     internal class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         protected const int DefaultPageSize = 50;
         private readonly MethodInfo method;
+        private Func<object, object[], object> methodDelegate;
 
         private AutoCompleteFacet(ISpecification holder)
             : base(Type, holder) {}
@@ -29,6 +30,7 @@ namespace NakedObjects.Meta.Facet {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             MinLength = minLength;
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         public static Type Type {
@@ -43,7 +45,8 @@ namespace NakedObjects.Meta.Facet {
 
         public object[] GetCompletions(INakedObject inObject, string autoCompleteParm) {
             try {
-                object autoComplete = InvokeUtils.Invoke(method, inObject.GetDomainObject(), new object[] {autoCompleteParm});
+                object autoComplete = methodDelegate(inObject.GetDomainObject(), new object[] { autoCompleteParm });
+
                 var complete = autoComplete as IQueryable;
                 if (complete != null) {
                     return complete.Take(PageSize).ToArray();
