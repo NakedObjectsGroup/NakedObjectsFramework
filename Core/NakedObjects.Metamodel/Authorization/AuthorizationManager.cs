@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Principal;
@@ -22,11 +23,10 @@ namespace NakedObjects.Meta.Authorization {
     public class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;
         private readonly Type[] forFacetTypes = {typeof (IHideForSessionFacet), typeof (IDisableForSessionFacet)};
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
-
 
         #region IAuthorizationManager Members
 
@@ -81,14 +81,29 @@ namespace NakedObjects.Meta.Authorization {
 
         public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration) {
             defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
-            if (defaultAuthorizer == null) throw new InitialisationException("Default Authorizer cannot be null");
+            if (defaultAuthorizer == null) {
+                throw new InitialisationException("Default Authorizer cannot be null");
+            }
+
+            var isVisibleDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>>() {
+                {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible"))}
+            };
+
+            var isEditableDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>>() {
+                {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsEditable"))}
+            };
+
             if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
                 namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
             }
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
+                if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof (ITypeAuthorizer<object>).IsAssignableFrom(t))) {
+                    throw new InitialisationException("Only Default Authorizer can be ITypeAuthorizer<object>");
+                }
+
                 typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
-                isVisibleDelegates = authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsVisible"))).ToImmutableDictionary();
-                isEditableDelegates = authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsEditable"))).ToImmutableDictionary();
+                isVisibleDelegates = isVisibleDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
+                isEditableDelegates = isEditableDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
             }
         }
 
