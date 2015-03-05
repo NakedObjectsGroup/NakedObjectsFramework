@@ -106,6 +106,9 @@ namespace NakedObjects.Web.Mvc.Html {
                     descriptors.Add(descriptor);
                 }
             }
+            if (descriptors.Count == 0) {
+                return null;
+            }
             return CommonHtmlHelper.BuildMenuContainer(descriptors,
                 IdHelper.MenuContainerName,
                 menu.Id,
