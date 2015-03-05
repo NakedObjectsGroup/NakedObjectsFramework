@@ -15,16 +15,6 @@ namespace NakedObjects.Security {
     /// <typeparam name="T">T should be a concrete domain type for a type-specific authorizer; 'Object' for a default authorizer</typeparam>
     public interface ITypeAuthorizer<T> {
         /// <summary>
-        ///     A hook method for invoking (optional) application-specific logic upon initialization. The method need not do anything.
-        /// </summary>
-        void Init();
-
-        /// <summary>
-        ///     A hook method for invoking (optional) application-specific logic upon shut-down. The method need not do anything.
-        /// </summary>
-        void Shutdown();
-
-        /// <summary>
         ///     Called only for properties on an object when user attempts to edit the object
         /// </summary>
         /// <param name="principal">Representation of the user</param>

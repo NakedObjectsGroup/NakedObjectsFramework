@@ -21,12 +21,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AWWebTest {
         #region overhead
 
-        protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax";
+        //protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax";
         protected const string server = @"Saturn\SqlExpress";
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
 
-        //protected const string url = "http://localhost:56696/";
+        protected const string url = "http://localhost:56696/";
         //protected const string server = @".\SQLEXPRESS";
         //protected const string server = @"(localdb)\ProjectsV12";
 

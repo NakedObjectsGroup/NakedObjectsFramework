@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using System.Security.Principal;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using NakedObjects.Core.Configuration;
@@ -16,8 +17,10 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Audit;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Security;
 
 namespace NakedObjects.Test.App {
     public class NakedObjectsRunSettings {
@@ -74,12 +77,44 @@ namespace NakedObjects.Test.App {
             return config;
         }
 
+        public class DefaultAuditor : IAuditor {
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+                // do nothing
+            }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+                // do nothing
+            }
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+                // do nothing
+            }
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+                // do nothing
+            }
+        }
+
+        public class DefaultAuthorizer : ITypeAuthorizer<object> {
+            public void Init() {}
+
+            public void Shutdown() {}
+
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+        }
+
         public static IAuditConfiguration AuditConfig() {
-            return null;
+            return new AuditConfiguration<DefaultAuditor>();
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-            return null;
+            return new AuthorizationConfiguration<DefaultAuthorizer>();
         }
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
