@@ -14,7 +14,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    internal abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
+    public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
         private readonly bool equalByContent;

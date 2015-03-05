@@ -19,7 +19,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    internal class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
+    public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
         private readonly IMetamodel metamodel;
 
         public MenuImpl(IMetamodel metamodel, string name) {

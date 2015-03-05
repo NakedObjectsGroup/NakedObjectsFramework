@@ -16,7 +16,7 @@ using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
+    public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         protected MenuFacetAbstract(ISpecification holder)
             : base(typeof (IMenuFacet), holder) {
             Menu = null;

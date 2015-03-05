@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
+    public abstract class DescribedAsFacetAbstract : SingleStringValueFacetAbstract, IDescribedAsFacet {
         protected DescribedAsFacetAbstract(string valueString, ISpecification holder)
             : base(Type, holder, valueString) {}
 

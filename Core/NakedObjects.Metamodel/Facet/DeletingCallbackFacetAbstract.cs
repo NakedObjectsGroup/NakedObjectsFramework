@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
+    public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
         protected DeletingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

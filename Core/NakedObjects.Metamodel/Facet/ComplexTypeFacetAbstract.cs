@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
+    public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
         protected ComplexTypeFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

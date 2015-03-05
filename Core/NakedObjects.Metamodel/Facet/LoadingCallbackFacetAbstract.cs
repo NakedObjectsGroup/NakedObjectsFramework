@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class LoadingCallbackFacetAbstract : CallbackFacetAbstract, ILoadingCallbackFacet {
+    public abstract class LoadingCallbackFacetAbstract : CallbackFacetAbstract, ILoadingCallbackFacet {
         protected LoadingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

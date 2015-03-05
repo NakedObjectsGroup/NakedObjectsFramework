@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaultsFacet {
+    public abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaultsFacet {
         protected ActionDefaultsFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

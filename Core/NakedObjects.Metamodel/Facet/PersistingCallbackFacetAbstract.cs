@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class PersistingCallbackFacetAbstract : CallbackFacetAbstract, IPersistingCallbackFacet {
+    public abstract class PersistingCallbackFacetAbstract : CallbackFacetAbstract, IPersistingCallbackFacet {
         protected PersistingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

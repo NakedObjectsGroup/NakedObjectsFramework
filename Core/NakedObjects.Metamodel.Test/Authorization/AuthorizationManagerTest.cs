@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -18,6 +19,10 @@ using NakedObjects.Security;
 namespace NakedObjects.Meta.Test.Authorization {
     [TestClass]
     public class AuthorizationManagerTest {
+
+        public class TestClass {}
+
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -30,7 +35,7 @@ namespace NakedObjects.Meta.Test.Authorization {
             var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
 
             config.AddNamespaceAuthorizer<INamespaceAuthorizer>("1");
-            config.AddTypeAuthorizer<object, ITypeAuthorizer<object>>();
+            config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();
 
             // ReSharper disable once UnusedVariable
             var sink = new AuthorizationManager(config);
@@ -58,8 +63,8 @@ namespace NakedObjects.Meta.Test.Authorization {
         public void TestDecorateHideForSessionFacet() {
             var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (object));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (object)}});
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (TestDefaultAuthorizer));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
             var manager = new AuthorizationManager(config.Object);
@@ -82,12 +87,41 @@ namespace NakedObjects.Meta.Test.Authorization {
             Assert.IsInstanceOfType(facet, typeof (AuthorizationHideForSessionFacet));
         }
 
+        public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
+            public void Init() {
+                throw new NotImplementedException();
+            }
+
+            public void Shutdown() {
+                throw new NotImplementedException();
+            }
+
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class TestNamespaceAuthorizer : INamespaceAuthorizer {
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+        }
+    
+
         [TestMethod]
         public void TestDecorateDisableForSessionFacet() {
             var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (object));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (object)}});
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (TestDefaultAuthorizer));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
             var manager = new AuthorizationManager(config.Object);

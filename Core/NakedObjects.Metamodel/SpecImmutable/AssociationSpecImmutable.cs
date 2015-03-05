@@ -13,7 +13,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
+    public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
         private readonly IObjectSpecImmutable returnSpec;
 
         protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)

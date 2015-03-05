@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
+    public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
         protected PropertySetterFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 

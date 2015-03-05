@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
+    public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
         protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}
 

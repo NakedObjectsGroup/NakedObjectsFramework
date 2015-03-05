@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class SingleValueFacetAbstract : FacetAbstract, ISingleValueFacet {
+    public abstract class SingleValueFacetAbstract : FacetAbstract, ISingleValueFacet {
         protected SingleValueFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}
     }

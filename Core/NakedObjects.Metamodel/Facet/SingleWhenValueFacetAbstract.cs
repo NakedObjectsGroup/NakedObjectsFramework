@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
+    public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
         private readonly WhenTo when;
 
         protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)

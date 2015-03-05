@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class ExecutedFacetAbstract : SingleValueFacetAbstract, IExecutedFacet {
+    public abstract class ExecutedFacetAbstract : SingleValueFacetAbstract, IExecutedFacet {
         private readonly Where executedWhere;
 
         protected ExecutedFacetAbstract(Where where, ISpecification holder)

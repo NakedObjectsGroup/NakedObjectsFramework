@@ -24,7 +24,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
+    public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
         private readonly IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
 

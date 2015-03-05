@@ -14,7 +14,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
+    public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
         protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 

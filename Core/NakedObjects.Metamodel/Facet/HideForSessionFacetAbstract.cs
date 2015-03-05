@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
     /// </para>
     /// 
     [Serializable]
-    internal abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
+    public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
         protected HideForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
