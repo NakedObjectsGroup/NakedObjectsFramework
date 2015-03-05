@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.Authorization {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
-            if (authType.IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+            if ((typeof(INamespaceAuthorizer)).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
             }
@@ -98,13 +98,16 @@ namespace NakedObjects.Meta.Authorization {
                 namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
             }
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
-                if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof (ITypeAuthorizer<object>).IsAssignableFrom(t))) {
+                if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
                     throw new InitialisationException("Only Default Authorizer can be ITypeAuthorizer<object>");
                 }
 
                 typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
                 isVisibleDelegates = isVisibleDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsVisible")))).ToImmutableDictionary();
                 isEditableDelegates = isEditableDict.Union(authorizationConfiguration.TypeAuthorizers.Values.ToDictionary(type => type, type => DelegateUtils.CreateTypeAuthorizerDelegate(type.GetMethod("IsEditable")))).ToImmutableDictionary();
+            } else { // default authorizer must be the only TypeAuthorizer
+                isVisibleDelegates = isVisibleDict.ToImmutableDictionary();
+                isEditableDelegates = isEditableDict.ToImmutableDictionary();
             }
         }
 
