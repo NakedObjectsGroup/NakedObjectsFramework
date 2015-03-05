@@ -51,7 +51,7 @@ namespace NakedObjects.Meta.Facet {
             var objectType = collection.Object.GetType();
 
             if (objectType.GenericTypeArguments.Count() == 1) {
-                return (ICollection<T>) collection.Object;
+                return (IEnumerable<T>) collection.Object;
             }
 
             return new IteratorWrapper<T>((IEnumerable) collection.Object);
