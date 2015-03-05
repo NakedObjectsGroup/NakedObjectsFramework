@@ -34,10 +34,11 @@ namespace NakedObjects.Meta.Authorization {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
-            if (authType.IsAssignableFrom(typeof (INamespaceAuthorizer))) {
+            if ((typeof (INamespaceAuthorizer)).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
             }
+            //Must be an ITypeAuthorizer, including default authorizer (ITypeAuthorizer<object>)
             return isVisibleDelegates[authType](authorizer, session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
