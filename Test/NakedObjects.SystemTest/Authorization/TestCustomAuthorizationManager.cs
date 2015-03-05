@@ -35,9 +35,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {
-                    typeof (MyDefaultAuthorizer),
-                    typeof (FooAuthorizer),
-                    typeof (QuxAuthorizer),
                     typeof (QueryableList<Foo>)
                 },
                 new[] {
@@ -102,7 +99,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.InnerException.Message);
+                Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.Message);
             }
         }
 
@@ -114,7 +111,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1", e.InnerException.Message);
+                Assert.AreEqual("QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1", e.Message);
             }
         }
 

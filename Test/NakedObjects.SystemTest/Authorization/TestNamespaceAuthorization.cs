@@ -37,10 +37,10 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {
-                    typeof (MyDefaultAuthorizer),
-                    typeof (MyAppAuthorizer),
-                    typeof (MyCluster1Authorizer),
-                    typeof (MyBar1Authorizer)
+                    typeof (Bar1),
+                    typeof (Bar2),
+                    typeof (Foo1),
+                    typeof (Foo2)
                 },
                 new[] {
                     typeof (SimpleRepository<Bar1>),
@@ -63,7 +63,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.InnerException.Message);
+                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.Message);
             }
 
             //Foo1
@@ -73,7 +73,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.InnerException.Message);
+                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.Message);
             }
 
             //Foo2
@@ -83,7 +83,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (Exception e) {
-                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.InnerException.Message);
+                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.Message);
             }
 
             //Bar2

@@ -638,10 +638,10 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetPropertyByName("Prop4").SetValue("avalue");
             obj.GetPropertyByName("Prop6").SetValue("avalue");
             obj.Save();
-            obj.GetAction("Do Something").AssertIsEnabled();
+            obj.GetAction("Action1").AssertIsEnabled();
 
             obj.GetPropertyByName("Prop4").SetValue("Disable 6");
-            obj.GetAction("Do Something").AssertIsDisabled();
+            obj.GetAction("Action4").AssertIsDisabled();
         }
 
         [TestMethod]
@@ -2129,6 +2129,13 @@ namespace NakedObjects.SystemTest.Method {
         //Disable should not take any parms  -  even matching ones
         public string DisableProp8(int parm1) {
             return "x";
+        }
+
+        public void Action4() { }
+
+      
+        public string DisableAction4() {
+            return "disabled";
         }
     }
 

@@ -89,7 +89,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
                 GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
                 Assert.Fail("Should not get to here");
             } catch (Exception e) {
-                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.InnerException.Message);
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.Message);
             }
 
             SetUser("svenBar", "Bar");
@@ -97,7 +97,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
                 GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
                 Assert.Fail("Should not get to here");
             } catch (Exception e) {
-                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.InnerException.Message);
+                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.Message);
             }
 
             SetUser("svenFoo");
@@ -105,7 +105,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
                 GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
                 Assert.Fail("Should not get to here");
             } catch (Exception e) {
-                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.InnerException.Message);
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.Message);
             }
         }
 
