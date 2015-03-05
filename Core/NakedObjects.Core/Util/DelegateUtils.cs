@@ -65,11 +65,20 @@ namespace NakedObjects.Core.Util {
             return (Action<object>) ret;
         }
 
+        private static Type GetTypeAuthorizerType(Type type) {
+            if (type == null) {
+                return null;
+            }
+
+            return type.Name.StartsWith("ITypeAuthorizer") ? type : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
+        }
+
+
         public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
             MethodInfo genericHelper = typeof (DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
-            var typeArgs = new List<Type> {method.DeclaringType, method.DeclaringType.GenericTypeArguments.First()};
+            var typeArgs = new List<Type> {method.DeclaringType, GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments.First()};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.
