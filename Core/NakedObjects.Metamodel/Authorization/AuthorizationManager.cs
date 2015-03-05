@@ -68,9 +68,9 @@ namespace NakedObjects.Meta.Authorization {
                 Where(ta => ta.Key == fullyQualifiedOfTarget).
                 Select(ta => ta.Value).
                 FirstOrDefault() ??
+                              // already ordered OrderByDescending(x => x.Key.Length).
                               namespaceAuthorizers.
-                                  Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
-                                  OrderByDescending(x => x.Key.Length).
+                                  Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).    
                                   Select(x => x.Value).
                                   FirstOrDefault() ??
                               defaultAuthorizer;
@@ -95,7 +95,7 @@ namespace NakedObjects.Meta.Authorization {
             };
 
             if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
-                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
+                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.OrderByDescending(x => x.Key.Length).ToImmutableDictionary();
             }
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
                 if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
