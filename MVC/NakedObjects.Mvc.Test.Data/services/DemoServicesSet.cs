@@ -27,7 +27,8 @@ namespace Expenses.Services {
                 new RecordActionService(),
                 new DummyMailSender(),
                 new SimpleRepositoryCustomHelperTestClass(),
-                new SimpleRepositoryDescribedCustomHelperTestClass()
+                new SimpleRepositoryDescribedCustomHelperTestClass(),
+                new ServiceWithNoVisibleActions() //Should not be rendered
             };
 
             return services.ToArray();
@@ -41,7 +42,9 @@ namespace Expenses.Services {
                 claimMenu,
                 factory.NewMenu<DummyMailSender>(true),
                 factory.NewMenu<SimpleRepositoryCustomHelperTestClass>(true),
-                factory.NewMenu<SimpleRepositoryDescribedCustomHelperTestClass>(true)
+                factory.NewMenu<SimpleRepositoryDescribedCustomHelperTestClass>(true),
+                factory.NewMenu("Empty"),  //Should not be rendered
+                factory.NewMenu<ServiceWithNoVisibleActions>(true)
             };
         }
     }
@@ -90,5 +93,11 @@ namespace Expenses.Services {
         public override DescribedCustomHelperTestClass FindByKey(int key) {
             return base.FindByKey(key);
         }
+    }
+
+    public class ServiceWithNoVisibleActions {
+
+        [Hidden]
+        public void DoSomething() {}
     }
 }

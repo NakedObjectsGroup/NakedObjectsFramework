@@ -119,6 +119,4 @@ namespace NakedObjects.Mvc.App {
             };
         }
     }
-
-
 }

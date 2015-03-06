@@ -1096,6 +1096,15 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
+        public void ObjectWithNoActions() {
+            ExpenseType exp = NakedObjectsFramework.Persistor.Instances<ExpenseType>().First();
+            mocks.ViewDataContainer.Object.ViewData.Model = exp;
+            string s = mocks.HtmlHelper.Menu(exp).ToString();
+
+            CheckResults("ObjectWithNoActions", s);
+        }
+
+        [Test]
         public void ObjectActionsTestNotContributed1() {
             var nc1 = (NotContributedTestClass1) GetBoundedInstance<NotContributedTestClass1>("NC1Class").GetDomainObject();
             string s = mocks.HtmlHelper.Menu(nc1).ToString();
@@ -1112,7 +1121,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // temp ignore broken by menu changes 
         public void ObjectActionsWithConcurrency() {
             RecordedAction recordedAction = NakedObjectsFramework.Persistor.Instances<RecordedAction>().First();
             string s = mocks.HtmlHelper.Menu(recordedAction).ToString();

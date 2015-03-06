@@ -38,8 +38,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString ObjectMenu(this HtmlHelper html, object domainObject, bool isEdit) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             IMenuImmutable objectMenu = nakedObject.Spec.Menu;
-
-            return html.MenuAsHtml(objectMenu, nakedObject, isEdit);
+            return html.MenuAsHtml(objectMenu, nakedObject, isEdit, true);
         }
 
         /// <summary>
@@ -68,19 +67,19 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString MainMenu(this HtmlHelper html, object service) {
             var menu = GetMenu(html, service);
-            return MenuAsHtml(html, menu, null, false);
+            return html.MenuAsHtml(menu, null, false, false);
         }
 
-        private static MvcHtmlString RenderMainMenus(HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
+        private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ServicesContainerName);
             foreach (IMenuImmutable menu in menus) {
-                tag.InnerHtml += MenuAsHtml(html, menu, null, false);
+                tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
             }
             return MvcHtmlString.Create(tag.ToString());
         }
 
-        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObject nakedObject, bool isEdit) {
+        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObject nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItemImmutable item in menu.MenuItems) {
                 var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
@@ -106,7 +105,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     descriptors.Add(descriptor);
                 }
             }
-            if (descriptors.Count == 0) {
+            if (descriptors.Count == 0 && !defaultToEmptyMenu) {
                 return null;
             }
             return CommonHtmlHelper.BuildMenuContainer(descriptors,

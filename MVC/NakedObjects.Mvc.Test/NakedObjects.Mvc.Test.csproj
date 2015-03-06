@@ -375,6 +375,7 @@
     <Content Include="Generated Html reference files\ObjectActionsWithHints.htm" />
     <Content Include="Generated Html reference files\ObjectEditPropertiesWithHints.htm" />
     <Content Include="Generated Html reference files\ObjectPropertiesWithHints.htm" />
+    <Content Include="Generated Html reference files\ObjectWithNoActions.htm" />
     <Content Include="Generated Html reference files\ObjectWithUploads.htm" />
     <Content Include="Generated Html reference files\ParameterEditForCollection.htm" />
     <Content Include="Generated Html reference files\ObjectForEnumerable.htm" />
