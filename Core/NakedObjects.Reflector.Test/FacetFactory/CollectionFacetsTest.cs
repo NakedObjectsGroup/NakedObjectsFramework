@@ -367,42 +367,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
 
-        //[TestMethod]
-        //public void GenericEnumerableInit() {
-        //    var testCollection = new List<string> {"element1", "element2"};
-        //    var testCollection1 = new[] {"element2", "element3"};
-        //    var testCollectionFacet = new GenericIEnumerableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericEnumerableInitAllEmpty() {
-        //    var testCollection = new List<string>();
-        //    var testCollection1 = new string[] {};
-        //    var testCollectionFacet = new GenericIEnumerableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericEnumerableInitEmpty() {
-        //    var testCollection = new List<string>();
-        //    var testCollection1 = new[] {"element2", "element3"};
-        //    var testCollectionFacet = new GenericIEnumerableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericEnumerableInitToEmpty() {
-        //    var testCollection = new List<string> {"element1", "element2"};
-        //    var testCollection1 = new string[] {};
-        //    var testCollectionFacet = new GenericIEnumerableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
         [TestMethod]
         public void GenericEnumerablePage() {
             var testCollection = new List<string> {"element1", "element2"};
@@ -442,42 +406,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
-
-        //[TestMethod]
-        //public void GenericQueryableInit() {
-        //    IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-        //    IQueryable<string> testCollection1 = new[] {"element2", "element3"}.AsQueryable();
-        //    var testCollectionFacet = new GenericIQueryableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericQueryableInitAllEmpty() {
-        //    IQueryable<string> testCollection = new List<string>().AsQueryable();
-        //    IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
-        //    var testCollectionFacet = new GenericIQueryableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericQueryableInitEmpty() {
-        //    IQueryable<string> testCollection = new List<string>().AsQueryable();
-        //    var testCollection1 = new[] {"element2", "element3"};
-        //    var testCollectionFacet = new GenericIQueryableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
-
-        //[TestMethod]
-        //public void GenericQueryableInitToEmpty() {
-        //    IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-        //    IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
-        //    var testCollectionFacet = new GenericIQueryableFacet(specification);
-        //    INakedObject testAdaptedCollection = AdapterFor(testCollection);
-        //    Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
-        //}
 
         [TestMethod]
         public void GenericQueryablePage() {

@@ -82,7 +82,6 @@ namespace NakedObjects.Meta.Test {
         [DataType(DataType.Password)]
         public virtual string TestString { get; set; }
 
-        //[System.ComponentModel.DataAnnotations.Range(0, 100)]
         public virtual int? TestInt { get; set; }
         public virtual DateTime TestDateTime { get; set; }
         public virtual TestEnum TestEnum { get; set; }
@@ -188,38 +187,6 @@ namespace NakedObjects.Meta.Test {
             CompareCaches(cache, newCache);
         }
 
-        //public void XmlSerialize(ReflectorConfiguration rc, string file) {
-        //    IUnityContainer container = GetContainer();
-
-        //    container.RegisterInstance<IReflectorConfiguration>(rc);
-
-        //    var reflector = container.Resolve<IReflector>();
-        //    reflector.Reflect();
-        //    var cache = container.Resolve<ISpecificationCache>();
-
-        //    var f1 =
-        //       cache.AllSpecifications().SelectMany(s => s.Fields)
-        //           .Select(s => s.Spec)
-        //           .Where(s => s != null)
-        //           .OfType<OneToOneAssociationSpecImmutable>()
-        //           .SelectMany(s => s.GetFacets())
-        //           .Select(f => f.GetType().FullName)
-        //           .Distinct();
-
-        //    foreach (var f in f1) {
-        //        //Console.WriteLine(" field facet  {0}", f);
-        //    }
-
-        //    cache.Serialize(file, new NetDataContractSerializer());
-
-        //    // and roundtrip 
-
-        //    container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new PerResolveLifetimeManager(),
-        //        new InjectionConstructor(file,  new NetDataContractSerializer()));
-        //    var newCache = container.Resolve<ISpecificationCache>();
-        //    CompareCaches(cache, newCache);
-        //}
-
         [TestMethod]
         public void BinarySerializeIntTypes() {
             var ss = new[] {typeof (int)};
@@ -252,14 +219,6 @@ namespace NakedObjects.Meta.Test {
             string file = Path.Combine(testDir, "metadataba.bin");
             BinarySerialize(rc, file);
         }
-
-        //[TestMethod]
-        //public void XmlSerializeBaTypes() {
-
-        //    var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
-        //    const string file = @"c:\testmetadata\metadataimg.xml";
-        //    XmlSerialize(rc, file);
-        //}
 
         [TestMethod]
         public void BinarySerializeEnumTypes() {
