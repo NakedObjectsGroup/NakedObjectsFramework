@@ -121,7 +121,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeActionParmsReturn() {
             Login();
-            br.TogglePopups(false);
+
             FindProduct("BK-M68S-42");
             br.ClickAction("Product-BestSpecialOffer").GetField("Product-BestSpecialOffer-Quantity").TypeText("12", br);
             //br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // workaround for not picking up ok click 
@@ -130,25 +130,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("Volume Discount 11 to 14");
         }
 
-        public abstract void InvokeActionParmsReturnPopup();
+        public abstract void ShowActionParmsReturn();
 
-        public void DoInvokeActionParmsReturnPopup() {
+        public void DoShowActionParmsReturn() {
             Login();
-            br.TogglePopups(true);
-            FindProduct("BK-M68S-42");
-            br.ClickAction("Product-BestSpecialOffer").GetField("Product-BestSpecialOffer-Quantity").TypeText("12", br);
-            //br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // workaround for not picking up ok click 
-            br.ClickOk();
 
-            br.AssertContainsObjectView();
-            br.AssertPageTitleEquals("Volume Discount 11 to 14");
-        }
-
-        public abstract void ShowActionParmsReturnPopup();
-
-        public void DoShowActionParmsReturnPopup() {
-            Login();
-            br.TogglePopups(true);
             FindProduct("BK-M68S-42");
             br.ClickAction("Product-BestSpecialOffer").GetField("Product-BestSpecialOffer-Quantity").TypeText("12", br);
             br.ClickApply();
@@ -162,23 +148,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeActionOnViewModel() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsObjectView();
-            br.ClickAction("Store-QuickOrder");
-            br.AssertPageTitleEquals("AW00000546");
-            br.ClickAction("QuickOrderForm-AddDetail");
-            br.GetField("QuickOrderForm-AddDetail-Number").TypeText("33", br);
-            br.ClickAction("QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct");
-            br.ClickOk();
-            Assert.IsTrue(br.Title.StartsWith("33 x "));
-        }
 
-        public abstract void InvokeActionOnViewModelPopup();
-
-        public void DoInvokeActionOnViewModelPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000546");
             br.AssertContainsObjectView();
             br.ClickAction("Store-QuickOrder");
@@ -194,34 +164,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeActionOnViewModelReturnCollection() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsObjectView();
-            br.ClickAction("Store-QuickOrder");
-            br.AssertPageTitleEquals("AW00000546");
-            br.ClickAction("QuickOrderForm-AddDetail");
-            br.GetField("QuickOrderForm-AddDetail-Number").TypeText("33", br);
-            br.ClickAction("QuickOrderForm-AddDetail-Product-ProductRepository-FindProductByNumber");
-            br.GetField("ProductRepository-FindProductByNumber-Number").TypeText("LN-5818", br);
-            br.ClickOk();
-            br.ClickOk();
-            br.ClickAction("QuickOrderForm-AddDetail");
-            br.GetField("QuickOrderForm-AddDetail-Number").TypeText("33", br);
-            br.ClickAction("QuickOrderForm-AddDetail-Product-ProductRepository-FindProductByNumber");
-            br.GetField("ProductRepository-FindProductByNumber-Number").TypeText("RW-R820", br);
-            br.ClickOk();
-            br.ClickOk();
 
-            br.ClickAction("QuickOrderForm-GetOrders");
-
-            br.AssertPageTitleEquals("2 Order Lines");
-        }
-
-        public abstract void InvokeActionOnViewModelReturnCollectionPopup();
-
-        public void DoInvokeActionOnViewModelReturnCollectionPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000546");
             br.AssertContainsObjectView();
             br.ClickAction("Store-QuickOrder");
@@ -249,18 +192,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeActionParmsMandatory() {
             Login();
-            br.TogglePopups(false);
-            FindProduct("BK-M68S-42");
-            br.ClickAction("Product-BestSpecialOffer");
-            br.ClickOk();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
-        }
 
-        public abstract void InvokeActionParmsMandatoryPopup();
-
-        public void DoInvokeActionParmsMandatoryPopup() {
-            Login();
-            br.TogglePopups(true);
             FindProduct("BK-M68S-42");
             br.ClickAction("Product-BestSpecialOffer");
             br.ClickOk();
@@ -271,22 +203,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeActionParmsInvalid() {
             Login();
-            br.TogglePopups(true);
-            FindProduct("BK-M68S-42");
-            br.ClickAction("Product-BestSpecialOffer");
-            br.GetField("Product-BestSpecialOffer-Quantity").TypeText("not a number", br);
-            br.WaitForAjaxComplete();
-            //br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // workaround for not picking up ok click 
-            br.ClickOk();
 
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
-        }
-
-        public abstract void InvokeActionParmsInvalidPopup();
-
-        public void DoInvokeActionParmsInvalidPopup() {
-            Login();
-            br.TogglePopups(false);
             FindProduct("BK-M68S-42");
             br.ClickAction("Product-BestSpecialOffer").GetField("Product-BestSpecialOffer-Quantity").TypeText("not a number", br);
             br.FindElement(By.CssSelector("#body")).BrowserSpecificClick(br); // workaround for not picking up ok click 
@@ -317,34 +234,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void InvokeContributedActionParmsReturn();
 
         public void DoInvokeContributedActionParmsReturn() {
-            Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
-
-            br.ClickAction("Store-SearchForOrders");
-
-            br.GetField("OrderContributedActions-SearchForOrders-Customer").AssertObjectHasTitle("Field Trip Store, AW00000546");
-
-            br.GetField("OrderContributedActions-SearchForOrders-FromDate").TypeText("01/01/2003", br);
-            br.GetField("OrderContributedActions-SearchForOrders-FromDate").AppendText(Keys.Escape, br);
-
-            br.GetField("OrderContributedActions-SearchForOrders-ToDate").TypeText("12/12/2003", br);
-            br.GetField("OrderContributedActions-SearchForOrders-ToDate").AppendText(Keys.Escape, br);
-            br.WaitForAjaxComplete();
-
-            br.ClickOk();
-
-            br.AssertPageTitleEquals("4 Sales Orders");
-        }
-
-        public abstract void InvokeContributedActionParmsReturnPopup();
-
-        public void DoInvokeContributedActionParmsReturnPopup() {
             bool useEsc = GetType() == typeof (ObjectViewAndActionTestsChrome);
             string esc = useEsc ? Keys.Escape : "";
 
             Login();
-            br.TogglePopups(true);
+
             FindCustomerByAccountNumber("AW00000546");
 
             br.ClickAction("Store-SearchForOrders");
@@ -367,24 +261,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoCancelActionDialog() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
 
-            br.ClickAction("Store-SearchForOrders");
-
-            br.AssertPageTitleEquals("Search For Orders");
-
-            br.ClickCancel();
-
-            br.AssertContainsObjectView();
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
-        }
-
-        public abstract void CancelActionDialogPopup();
-
-        public void DoCancelActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000546");
 
             br.ClickAction("Store-SearchForOrders");
@@ -413,21 +290,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoRemoveFromActionDialog() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
-            br.ClickAction("Store-CreateNewOrder");
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
 
-            br.FindElement(By.CssSelector("button[title=Remove]")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
-        }
-
-        public abstract void RemoveFromActionDialogPopup();
-
-        public void DoRemoveFromActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000546");
             br.ClickAction("Store-CreateNewOrder");
             br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
@@ -441,20 +304,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoRecentlyViewedOnActionDialog() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000547");
-            br.ClickAction("Store-CreateNewOrder");
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
-            br.FindElement(By.CssSelector("button[title='Recently Viewed']")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
-        }
 
-        public abstract void RecentlyViewedOnActionDialogPopup();
-
-        public void DoRecentlyViewedOnActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000547");
             br.ClickAction("Store-CreateNewOrder");
             br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
@@ -467,23 +317,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoRecentlyViewedOnActionDialogWithSelect() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000546");
-            FindCustomerByAccountNumber("AW00000547");
-            br.ClickAction("Store-CreateNewOrder");
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
-            br.FindElement(By.CssSelector("button[title='Recently Viewed']")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElements(By.CssSelector("button[title='Select']")).First().BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
-        }
 
-        public abstract void RecentlyViewedOnActionDialogWithSelectPopup();
-
-        public void DoRecentlyViewedOnActionDialogWithSelectPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000546");
             FindCustomerByAccountNumber("AW00000547");
             br.ClickAction("Store-CreateNewOrder");
@@ -499,22 +333,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoActionFindOnActionDialog() {
             Login();
-            br.TogglePopups(false);
-            FindCustomerByAccountNumber("AW00000547");
-            br.ClickAction("Store-CreateNewOrder");
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
-            br.FindElement(By.Id("Store-CreateNewOrder-Customer-CustomerRepository-FindCustomerByAccountNumber")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("CustomerRepository-FindCustomerByAccountNumber-AccountNumber").TypeText("AW00000546", br);
-            br.ClickOk();
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
-        }
 
-        public abstract void ActionFindOnActionDialogPopup();
-
-        public void DoActionFindOnActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             FindCustomerByAccountNumber("AW00000547");
             br.ClickAction("Store-CreateNewOrder");
             br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
@@ -529,30 +348,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoNewObjectOnActionDialog() {
             Login();
-            br.TogglePopups(false);
-            br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
-            br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
 
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            br.GetField("Product-SellStartDate").TypeText("1/1/2020", br);
-            br.GetField("Product-StandardCost").TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElements(By.CssSelector("button[title='Select']")).First().BrowserSpecificClick(br);
-            br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product")).AssertInputValueEquals("test ");
-        }
-
-        public abstract void NewObjectOnActionDialogPopup();
-
-        public void DoNewObjectOnActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
             br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
             br.WaitForAjaxComplete();
@@ -577,23 +373,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoAutoCompleteOnActionDialog() {
             Login();
-            br.TogglePopups(false);
-            br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
 
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").Clear();
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").SendKeys("HL");
-            br.WaitForAjaxComplete();
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").SendKeys(Keys.ArrowDown);
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").SendKeys(Keys.ArrowDown);
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").SendKeys(Keys.Tab);
-            br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product").AssertInputValueEquals("HL Hub");
-        }
-
-        public abstract void AutoCompleteOnActionDialogPopup();
-
-        public void DoAutoCompleteOnActionDialogPopup() {
-            Login();
-            br.TogglePopups(true);
             br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
 
             br.GetField("WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete").Clear();
@@ -609,30 +389,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoNewObjectOnActionDialogFailMandatory() {
             Login();
-            br.TogglePopups(false);
-            br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
-            br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
 
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            //br.GetField("Product-SellStartDate").TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
-            br.GetField("Product-StandardCost").TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
-            Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
-        }
-
-        public abstract void NewObjectOnActionDialogFailMandatoryPopup();
-
-        public void DoNewObjectOnActionDialogFailMandatoryPopup() {
-            Login();
-            br.TogglePopups(true);
             br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
             br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
             br.WaitForAjaxComplete();
@@ -656,30 +413,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoNewObjectOnActionDialogFailInvalid() {
             Login();
-            br.TogglePopups(false);
-            br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
-            br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
 
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            br.GetField("Product-SellStartDate").TypeText("1" + Keys.Escape, br); // invalid
-            br.GetField("Product-StandardCost").TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
-            Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
-        }
-
-        public abstract void NewObjectOnActionDialogFailInvalidPopup();
-
-        public void DoNewObjectOnActionDialogFailInvalidPopup() {
-            Login();
-            br.TogglePopups(true);
             br.ClickAction("WorkOrderRepository-CreateNewWorkOrder");
             br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
             br.WaitForAjaxComplete();

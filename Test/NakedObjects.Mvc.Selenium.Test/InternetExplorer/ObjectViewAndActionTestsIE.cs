@@ -54,13 +54,8 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         }
 
         //[TestMethod]
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        //[TestMethod]
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
+        public override void ShowActionParmsReturn() {
+            DoShowActionParmsReturn();
         }
 
         //[TestMethod]
@@ -69,18 +64,8 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         }
 
         //[TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
-        //[TestMethod]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        //[TestMethod]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
         }
 
         //[TestMethod]
@@ -91,16 +76,6 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         //[TestMethod]
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
-        }
-
-        //[TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        //[TestMethod]
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
         }
 
         //[TestMethod]
@@ -119,18 +94,8 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         }
 
         //[TestMethod]
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        //[TestMethod]
         public override void CancelActionDialog() {
             DoCancelActionDialog();
-        }
-
-        //[TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
         }
 
         //[TestMethod]
@@ -141,11 +106,6 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         //[TestMethod]
         public override void RemoveFromActionDialog() {
             DoRemoveFromActionDialog();
-        }
-
-        //[TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
         }
 
         //[TestMethod]
@@ -181,41 +141,6 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         //[TestMethod]
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
-        }
-
-        //[TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        //[TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        //[TestMethod]
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
         }
     }
 }

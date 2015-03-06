@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -333,7 +332,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 1);
 
-          
             Assert.AreEqual("20 Sales Orders", br.GetTabbedHistory().FindElement(By.TagName("a")).Text);
 
             br.ClickClearOthers(0);
@@ -543,7 +541,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.GetTabbedHistory().FindElements(By.TagName("a")).Count == 2);
             br.AssertPageTitleEquals("20 Sales Orders");
-
         }
 
         #region abstract

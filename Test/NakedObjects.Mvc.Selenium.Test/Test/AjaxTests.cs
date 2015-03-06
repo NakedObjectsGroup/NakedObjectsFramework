@@ -48,7 +48,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Order Quantity must be > 0", error.Text);
         }
 
-        private void DoRemoteValidationParameter() {
+        public void DoRemoteValidationParameter() {
+            Login();
             // click find product by number and wait for product number input 
             var pn = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
 
@@ -75,19 +76,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Quantity must be > 0", error.Text);
         }
 
-        public void DoRemoteValidationParameterNoPopup() {
+        public void DoActionChoices() {
             Login();
-            br.TogglePopups(false);
-            DoRemoteValidationParameter();
-        }
-
-        public void DoRemoteValidationParameterPopup() {
-            Login();
-            br.TogglePopups(true);
-            DoRemoteValidationParameter();
-        }
-
-        private void DoActionChoices() {
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
             orderNumber.Clear();
@@ -103,21 +93,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
 
-        public void DoActionChoicesNoPopup() {
-            Login();
-            br.TogglePopups(false);
-            DoActionChoices();
-        }
-
-        public void DoActionChoicesPopup() {
-            Login();
-            br.TogglePopups(true);
-            DoActionChoices();
-        }
-
         public void DoActionMultipleChoices() {
             Login();
-            br.TogglePopups(false);
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
@@ -136,7 +113,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoActionMultipleChoicesEnum() {
             Login();
-            br.TogglePopups(true);
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
@@ -155,7 +131,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoActionConditionalMultipleChoices() {
             Login();
-            br.TogglePopups(true);
 
             var categories = wait.ClickAndWait("#ProductRepository-FindProductsByCategory button", "#ProductRepository-FindProductsByCategory-Categories");
 
@@ -213,28 +188,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Page 2 of 2", pageNo.Text);
         }
 
-        public void DoActionMultipleChoicesValidateFail() {
-            Login();
-            br.TogglePopups(false);
-
-            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
-
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO47185" + Keys.Tab);
-
-            var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasons button");
-
-            var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasons-Reasons");
-
-            reason.AssertIsEmpty();
-
-            reason.SelectListBoxItems(br, "Review");
-
-            var error = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasons-Reasons .field-validation-error");
-
-            Assert.AreEqual("Review already exists in Sales Reasons", error.Text);
-        }
-
         private void DoActionValidateFail() {
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
@@ -279,15 +232,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Thread.Sleep(1000);
         }
 
-        public void DoActionCrossValidateFailNoPopup() {
+        public void DoActionCrossValidateFail() {
             Login();
-            br.TogglePopups(false);
-            DoActionValidateFail();
-        }
-
-        public void DoActionCrossValidateFailPopup() {
-            Login();
-            br.TogglePopups(true);
             DoActionValidateFail();
 
             SetDates("1/6/2013", "30/6/2013");
@@ -326,26 +272,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(0, errors.Count, "No errors expected");
         }
 
-        public void DoActionMultipleChoicesPopup() {
+        public void DoActionMultipleChoicesDefaults() {
             Login();
-            br.TogglePopups(true);
-            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
-
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
-
-            var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasons button");
-            var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasons-Reasons");
-
-            reason.AssertIsEmpty();
-
-            reason.SelectListBoxItems(br, "Price", "Other");
-            wait.ClickAndWait(".nof-ok", ".nof-objectview");
-        }
-
-        public void DoActionMultipleChoicesPopupDefaults() {
-            Login();
-            br.TogglePopups(true);
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
@@ -359,9 +287,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(2, comments.FindElements(By.CssSelector("option[selected=selected]")).Count());
         }
 
-        public void DoActionMultipleChoicesPopupValidateFail() {
+        public void DoActionMultipleChoicesValidateFail() {
             Login();
-            br.TogglePopups(true);
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
@@ -379,7 +306,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Review already exists in Sales Reasons", valMsg.Text);
         }
 
-        private void DoActionChoicesEnum() {
+        public void DoActionChoicesEnum() {
+            Login();
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
             orderNumber.Clear();
@@ -393,21 +321,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
 
-        public void DoActionMultipleChoicesNoPopupEnum() {
+        public void DoActionMultipleChoicesConditionalEnum() {
             Login();
-            br.TogglePopups(false);
-            DoActionChoicesEnum();
-        }
-
-        public void DoActionMultipleChoicesPopupEnum() {
-            Login();
-            br.TogglePopups(true);
-            DoActionChoicesEnum();
-        }
-
-        public void DoActionMultipleChoicesPopupConditionalEnum() {
-            Login();
-            br.TogglePopups(true);
 
             var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
             var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
@@ -430,7 +345,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
         }
 
-        private void DoActionMultipleChoicesDomainObject() {
+        public void DoActionMultipleChoicesDomainObject() {
+            Login();
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
             orderNumber.Clear();
@@ -444,18 +360,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             reason.SelectListBoxItems(br, "1 x Touring-2000 Blue, 46");
 
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
-        }
-
-        public void DoActionMultipleChoicesNoPopupDomainObject() {
-            Login();
-            br.TogglePopups(false);
-            DoActionMultipleChoicesDomainObject();
-        }
-
-        public void DoActionMultipleChoicesPopupDomainObject() {
-            Login();
-            br.TogglePopups(true);
-            DoActionMultipleChoicesDomainObject();
         }
 
         public void DoClientSideValidation() {
@@ -484,7 +388,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoCanGoBackToDialog() {
             Login();
-            br.TogglePopups(false);
 
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
@@ -500,14 +403,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.Navigate().Back();
 
             wait.Until(wd => wd.FindElement(By.CssSelector("#Store-CreateNewOrder-Dialog")));
-
-            br.TogglePopups(false);
         }
 
         public void DoGoingBackToDialogPreservesEnteredValues() {
             Login();
-
-            br.TogglePopups(false);
 
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
@@ -540,48 +439,31 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             checkBox = br.FindElement(By.CssSelector("#OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input"));
             Assert.IsFalse(checkBox.Selected);
-            br.TogglePopups(false);
         }
 
         #region abstract
 
         public abstract void RemoteValidationProperty();
 
-        public abstract void RemoteValidationParameterNoPopup();
+        public abstract void RemoteValidationParameter();
 
-        public abstract void RemoteValidationParameterPopup();
-
-        public abstract void ActionChoicesNoPopup();
-
-        public abstract void ActionChoicesPopup();
+        public abstract void ActionChoices();
 
         public abstract void ActionMultipleChoices();
-
-        public abstract void ActionMultipleChoicesEnum();
 
         public abstract void ActionConditionalMultipleChoices();
 
         public abstract void ActionMultipleChoicesValidateFail();
 
-        public abstract void ActionCrossValidateFailNoPopup();
+        public abstract void ActionCrossValidateFail();
 
-        public abstract void ActionCrossValidateFailPopup();
+        public abstract void ActionMultipleChoicesDefaults();
 
-        public abstract void ActionMultipleChoicesPopup();
+        public abstract void ActionMultipleChoicesEnum();
 
-        public abstract void ActionMultipleChoicesPopupDefaults();
+        public abstract void ActionMultipleChoicesConditionalEnum();
 
-        public abstract void ActionMultipleChoicesPopupValidateFail();
-
-        public abstract void ActionMultipleChoicesNoPopUpEnum();
-
-        public abstract void ActionMultipleChoicesPopupEnum();
-
-        public abstract void ActionMultipleChoicesPopupConditionalEnum();
-
-        public abstract void ActionMultipleChoicesNoPopUpDomainObject();
-
-        public abstract void ActionMultipleChoicesPopupDomainObject();
+        public abstract void ActionMultipleChoicesDomainObject();
 
         public abstract void ClientSideValidation();
 

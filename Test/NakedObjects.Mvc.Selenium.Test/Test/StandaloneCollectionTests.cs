@@ -16,7 +16,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void ViewStandaloneCollection();
         public abstract void ViewStandaloneCollectionTable();
 
-
         public void DoViewStandaloneCollection() {
             Login();
 
@@ -26,11 +25,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(21, table.FindElements(By.TagName("tr")).Count);
         }
 
-        
-
         public void DoViewStandaloneCollectionTable() {
             Login();
-          
+
             wait.ClickAndWait("#SpecialOfferRepository-CurrentSpecialOffers button", wd => wd.Title == "7 Special Offers");
 
             Assert.AreEqual("Current Special Offers: Query Result: Viewing 7 of 7 Special Offers", br.GetTopObject().Text);

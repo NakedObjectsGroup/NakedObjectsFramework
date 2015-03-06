@@ -54,13 +54,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        //[TestMethod]
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
+        public override void ShowActionParmsReturn() {
+            DoShowActionParmsReturn();
         }
 
         //[TestMethod]
@@ -68,19 +63,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeActionOnViewModel();
         }
 
-        //[TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
         [TestMethod, Ignore]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        [TestMethod, Ignore]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
         }
 
         //[TestMethod]
@@ -89,19 +74,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
+        [Ignore] // still failing  on chrome
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
-        }
-
-        //[TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        //[TestMethod]
-        [Ignore] // still failing  on chrome
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
         }
 
         //[TestMethod]
@@ -115,24 +90,14 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
+        [Ignore] // failing again on chrome
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }
 
         //[TestMethod]
-        [Ignore] // failing again on chrome
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        //[TestMethod]
         public override void CancelActionDialog() {
             DoCancelActionDialog();
-        }
-
-        //[TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
         }
 
         //[TestMethod]
@@ -143,11 +108,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         //[TestMethod]
         public override void RemoveFromActionDialog() {
             DoRemoveFromActionDialog();
-        }
-
-        //[TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
         }
 
         //[TestMethod]
@@ -166,7 +126,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoActionFindOnActionDialog();
         }
 
-        [TestMethod, Ignore]
+        //[TestMethod]
+        [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
@@ -177,52 +138,15 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
+        [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
         //[TestMethod]
+        [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
-        }
-
-        //[TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        [Ignore] // fails randomly on server 
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        //[TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        //[TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        //[TestMethod]
-        [Ignore] // failing again on chrome
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
         }
     }
 }

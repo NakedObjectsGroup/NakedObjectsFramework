@@ -55,13 +55,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod] // intermittent failing on ff only
-        public override void InvokeActionParmsReturnPopup() {
-            DoInvokeActionParmsReturnPopup();
-        }
-
-        [TestMethod] // intermittent failing on ff only
-        public override void ShowActionParmsReturnPopup() {
-            DoShowActionParmsReturnPopup();
+        public override void ShowActionParmsReturn() {
+            DoShowActionParmsReturn();
         }
 
         [TestMethod]
@@ -70,18 +65,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        public override void InvokeActionOnViewModelPopup() {
-            DoInvokeActionOnViewModelPopup();
-        }
-
-        [TestMethod]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
-        }
-
-        [TestMethod]
-        public override void InvokeActionOnViewModelReturnCollectionPopup() {
-            DoInvokeActionOnViewModelReturnCollectionPopup();
         }
 
         [TestMethod]
@@ -95,16 +80,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        public override void InvokeActionParmsMandatoryPopup() {
-            DoInvokeActionParmsMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void InvokeActionParmsInvalidPopup() {
-            DoInvokeActionParmsInvalidPopup();
-        }
-
-        [TestMethod]
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
@@ -114,24 +89,14 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
             DoInvokeContributedActionNoParmsReturnPersistent();
         }
 
-        [TestMethod] //This is repeatedly failing on server, even though it runs fine on RP's machine
+        [TestMethod]
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }
 
         [TestMethod]
-        public override void InvokeContributedActionParmsReturnPopup() {
-            DoInvokeContributedActionParmsReturnPopup();
-        }
-
-        [TestMethod]
         public override void CancelActionDialog() {
             DoCancelActionDialog();
-        }
-
-        [TestMethod]
-        public override void CancelActionDialogPopup() {
-            DoCancelActionDialogPopup();
         }
 
         [TestMethod]
@@ -142,11 +107,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         [TestMethod]
         public override void RemoveFromActionDialog() {
             DoRemoveFromActionDialog();
-        }
-
-        [TestMethod]
-        public override void RemoveFromActionDialogPopup() {
-            DoRemoveFromActionDialogPopup();
         }
 
         [TestMethod]
@@ -182,41 +142,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         [TestMethod]
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogPopup() {
-            DoRecentlyViewedOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void RecentlyViewedOnActionDialogWithSelectPopup() {
-            DoRecentlyViewedOnActionDialogWithSelectPopup();
-        }
-
-        [TestMethod]
-        public override void ActionFindOnActionDialogPopup() {
-            DoActionFindOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogPopup() {
-            DoNewObjectOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void AutoCompleteOnActionDialogPopup() {
-            DoAutoCompleteOnActionDialogPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailMandatoryPopup() {
-            DoNewObjectOnActionDialogFailMandatoryPopup();
-        }
-
-        [TestMethod]
-        public override void NewObjectOnActionDialogFailInvalidPopup() {
-            DoNewObjectOnActionDialogFailInvalidPopup();
         }
     }
 }

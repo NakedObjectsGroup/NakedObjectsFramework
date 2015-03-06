@@ -122,7 +122,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoChangeStringField() {
             Login();
             FindCustomerAndEdit("AW00000072");
-    
+
             br.GetField("Store-Name").AssertInputValueEquals("Outdoor Equipment Store").TypeText("Temporary Name", br);
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.GetField("Store-Name").AssertValueEquals("Temporary Name");

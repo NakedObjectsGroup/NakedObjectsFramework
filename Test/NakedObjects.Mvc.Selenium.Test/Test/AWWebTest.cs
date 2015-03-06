@@ -19,6 +19,32 @@ using OpenQA.Selenium.Chrome;
 namespace NakedObjects.Mvc.Selenium.Test {
     [TestClass]
     public abstract class AWWebTest {
+        #region chrome helper
+
+        protected static string FilePath(string resourcename) {
+            string fileName = resourcename; //.Remove(0, resourcename.IndexOf(".") + 1);
+
+            string newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+            if (File.Exists(newFile)) {
+                File.Delete(newFile);
+            }
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            using (Stream stream = assembly.GetManifestResourceStream("NakedObjects.Mvc.Selenium.Test." + resourcename)) {
+                using (FileStream fileStream = File.Create(newFile, (int) stream.Length)) {
+                    var bytesInStream = new byte[stream.Length];
+                    stream.Read(bytesInStream, 0, bytesInStream.Length);
+                    fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+                }
+            }
+
+            return newFile;
+        }
+
+        #endregion
+
         #region overhead
 
         protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax";
@@ -144,32 +170,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.GetField("SalesRepository-FindSalesPersonByName-LastName").TypeText(lastName, br);
             br.ClickOk();
             br.AssertContainsObjectView();
-        }
-
-        #endregion
-
-        #region chrome helper
-
-        protected static string FilePath(string resourcename) {
-            string fileName = resourcename; //.Remove(0, resourcename.IndexOf(".") + 1);
-
-            string newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-
-            if (File.Exists(newFile)) {
-                File.Delete(newFile);
-            }
-
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            using (Stream stream = assembly.GetManifestResourceStream("NakedObjects.Mvc.Selenium.Test." + resourcename)) {
-                using (FileStream fileStream = File.Create(newFile, (int) stream.Length)) {
-                    var bytesInStream = new byte[stream.Length];
-                    stream.Read(bytesInStream, 0, bytesInStream.Length);
-                    fileStream.Write(bytesInStream, 0, bytesInStream.Length);
-                }
-            }
-
-            return newFile;
         }
 
         #endregion

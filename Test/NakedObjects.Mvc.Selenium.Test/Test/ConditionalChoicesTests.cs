@@ -36,7 +36,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             IWebElement province = br.FindElement(By.CssSelector("#Address-StateProvince"));
 
-            province.AssertIsEmpty(); 
+            province.AssertIsEmpty();
 
             country.SelectDropDownItem("Australia", br);
 

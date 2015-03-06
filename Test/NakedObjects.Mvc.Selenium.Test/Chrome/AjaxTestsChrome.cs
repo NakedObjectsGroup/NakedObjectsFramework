@@ -33,23 +33,13 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
-        public override void RemoteValidationParameterNoPopup() {
-            DoRemoteValidationParameterNoPopup();
+        public override void RemoteValidationParameter() {
+            DoRemoteValidationParameter();
         }
 
         //[TestMethod]
-        public override void RemoteValidationParameterPopup() {
-            DoRemoteValidationParameterPopup();
-        }
-
-        //[TestMethod]
-        public override void ActionChoicesNoPopup() {
-            DoActionChoicesNoPopup();
-        }
-
-        //[TestMethod]
-        public override void ActionChoicesPopup() {
-            DoActionChoicesPopup();
+        public override void ActionChoices() {
+            DoActionChoices();
         }
 
         //[TestMethod]
@@ -69,38 +59,18 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
-        public override void ActionCrossValidateFailNoPopup() {
-            DoActionCrossValidateFailNoPopup();
+        public override void ActionCrossValidateFail() {
+            DoActionCrossValidateFail();
         }
 
         //[TestMethod]
-        public override void ActionCrossValidateFailPopup() {
-            DoActionCrossValidateFailPopup();
+        public override void ActionMultipleChoicesDefaults() {
+            DoActionMultipleChoicesDefaults();
         }
 
         //[TestMethod]
-        public override void ActionMultipleChoicesPopup() {
-            DoActionMultipleChoicesPopup();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesPopupDefaults() {
-            DoActionMultipleChoicesPopupDefaults();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesNoPopUpEnum() {
-            DoActionMultipleChoicesNoPopupEnum();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesPopupEnum() {
-            DoActionMultipleChoicesPopupEnum();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesPopupConditionalEnum() {
-            DoActionMultipleChoicesPopupConditionalEnum();
+        public override void ActionMultipleChoicesConditionalEnum() {
+            DoActionMultipleChoicesConditionalEnum();
         }
 
         //[TestMethod]
@@ -109,18 +79,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         //[TestMethod]
-        public override void ActionMultipleChoicesPopupValidateFail() {
-            DoActionMultipleChoicesPopupValidateFail();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesNoPopUpDomainObject() {
-            DoActionMultipleChoicesNoPopupDomainObject();
-        }
-
-        //[TestMethod]
-        public override void ActionMultipleChoicesPopupDomainObject() {
-            DoActionMultipleChoicesPopupDomainObject();
+        public override void ActionMultipleChoicesDomainObject() {
+            DoActionMultipleChoicesDomainObject();
         }
 
         //[TestMethod]

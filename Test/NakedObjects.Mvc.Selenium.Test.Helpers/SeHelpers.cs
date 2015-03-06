@@ -648,12 +648,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             WaitForAjaxComplete(webDriver, 500);
         }
 
-        public static void TogglePopups(this IWebDriver webDriver, bool on) {
-            var executor = (IJavaScriptExecutor) webDriver;
-            string script = string.Format("nakedObjects.usePopupDialogs = {0}", on ? "true" : "false");
-            executor.ExecuteScript(script);
-        }
-
         public static void WaitForAjaxComplete(this IWebDriver webDriver, int pollingIntervalInMs) {
             if (!RunningAjax) {
                 Thread.Sleep(5000);

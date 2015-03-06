@@ -145,56 +145,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.GetHistory().FindElements(By.TagName("a")).First().Text);
             br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
         }
-
-        //public abstract void DragFromHistory();
-
-        //public void DoDragFromHistory() {
-        //    FindCustomerByAccountNumber("AW00000065");
-        //    IWebElement history = br.GetHistory();
-        //    Assert.IsTrue(history.Button(Find.ByTitle("Clear")).Exists);
-
-        //    // 1st object
-        //    Assert.AreEqual(1, history.Links.Count);
-        //    Assert.AreEqual("Metro Manufacturing, AW00000065", history.Links.First().Text);
-
-        //    // 2nd object
-        //    br.ClickOnObjectLinkInField("Store-SalesPerson");
-        //    Assert.AreEqual(2, history.Links.Count);
-        //    Assert.AreEqual("Metro Manufacturing, AW00000065", history.Links.First().Text);
-        //    Assert.AreEqual("José Saraiva", history.Links.Last().Text);
-
-        //    //Go back to first object
-        //    br.GoBackViaHistoryBy(1);
-        //    br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
-
-        //    // drag sales person 
-        //    var spHistory = history.IWebElements.First();
-        //    var startPosition = br.FindPosition(spHistory);
-
-        //   // br.Eval(@"$('.ui-draggable:first').mousedown()");
-        //    br.Eval(@"$('.ui-draggable:first').trigger({type:'mousedown', which: 1})");
-        //    br.Eval(@"$('.ui-draggable:first').mousemove()"); 
-
-        //    Thread.Sleep(500);
-
-        //    var dropPosition = br.FindPosition(br.GetField("Store-SalesPerson"));
-
-        //    //move down then across
-
-        //    int x = startPosition[0];
-        //    for (; x - dropPosition[0]  > 0; x--) {
-
-        //        string js = string.Format(@"$('.ui-draggable-dragging').mousemove( {{pageX : {0}, pageY : {1} }})", x, startPosition[1]);
-        //        br.Eval(js); 
-        //    }
-
-        //    for (int y = startPosition[1]; dropPosition[1] - y > 0; y++) {
-
-        //        string js = string.Format(@"$('.ui-draggable-dragging').mousemove( {{pageX : {0}, pageY : {1} }})", startPosition[0], y);
-        //        br.Eval(js); 
-        //    }
-
-        //}
     }
 
     // Replaced by tabbed history - keep tests until old history is removed 
