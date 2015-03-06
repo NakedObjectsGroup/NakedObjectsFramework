@@ -73,7 +73,6 @@ namespace NakedObjects.Core.Util {
             return type.Name.StartsWith("ITypeAuthorizer") ? type : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
         }
 
-
         public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
             MethodInfo genericHelper = typeof (DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
@@ -114,6 +113,18 @@ namespace NakedObjects.Core.Util {
             return (T) (tocast ?? default(T));
         }
 
+        private static Func<object, object[], object> WrapException(Func<object, object[], object> func) {
+            return (target, param) => {
+                try {
+                    return func(target, param);
+                }
+                catch (DomainException e) {
+                    // wrap this for compatibility with calls via invoke
+                    throw new NakedObjectDomainException(e.Message, e);
+                }
+            };
+        }
+
         // These are all called via reflection - so do not delete or change name without changing the Invoke above !
         // in each convert the slow MethodInfo into a fast, strongly typed, open delegate
         // then create a more weakly typed delegate which will call the strongly typed one
@@ -127,42 +138,42 @@ namespace NakedObjects.Core.Util {
 
         private static Func<object, object[], object> ActionHelper0<TTarget>(MethodInfo method) {
             var action = (Action<TTarget>) Delegate.CreateDelegate(typeof (Action<TTarget>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target);
                 return null;
-            };
+            });
         }
 
         private static Func<object, object[], object> ActionHelper1<TTarget, TParam0>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget, TParam0>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target, Cast<TParam0>(param[0]));
                 return null;
-            };
+            });
         }
 
         private static Func<object, object[], object> ActionHelper2<TTarget, TParam0, TParam1>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget, TParam0, TParam1>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]));
                 return null;
-            };
+            });
         }
 
         private static Func<object, object[], object> ActionHelper3<TTarget, TParam0, TParam1, TParam2>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget, TParam0, TParam1, TParam2>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]));
                 return null;
-            };
+            });
         }
 
         private static Func<object, object[], object> ActionHelper4<TTarget, TParam0, TParam1, TParam2, TParam3>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget, TParam0, TParam1, TParam2, TParam3>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2, TParam3>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]));
                 return null;
-            };
+            });
         }
 
         private static Func<object, object[], object> ActionHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4>(MethodInfo method) where TTarget : class {
@@ -175,10 +186,10 @@ namespace NakedObjects.Core.Util {
 
         private static Func<object, object[], object> ActionHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>(MethodInfo method) where TTarget : class {
             var action = (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>) Delegate.CreateDelegate(typeof (Action<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5>), method);
-            return (target, param) => {
+            return WrapException((target, param) => {
                 action((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]), Cast<TParam5>(param[5]));
                 return null;
-            };
+            });
         }
 
         private static Func<object, IPrincipal, object, string, bool> TypeAuthorizerHelper<TTarget, TAuth>(MethodInfo method) where TTarget : class {
@@ -188,37 +199,37 @@ namespace NakedObjects.Core.Util {
 
         private static Func<object, object[], object> FuncHelper0<TTarget, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TReturn>), method);
-            return (target, param) => func((TTarget) target);
+            return WrapException((target, param) => func((TTarget) target));
         }
 
         private static Func<object, object[], object> FuncHelper1<TTarget, TParam0, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0])));
         }
 
         private static Func<object, object[], object> FuncHelper2<TTarget, TParam0, TParam1, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TParam1, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1])));
         }
 
         private static Func<object, object[], object> FuncHelper3<TTarget, TParam0, TParam1, TParam2, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2])));
         }
 
         private static Func<object, object[], object> FuncHelper4<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3])));
         }
 
         private static Func<object, object[], object> FuncHelper5<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4])));
         }
 
         private static Func<object, object[], object> FuncHelper6<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>(MethodInfo method) where TTarget : class {
             var func = (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>) Delegate.CreateDelegate(typeof (Func<TTarget, TParam0, TParam1, TParam2, TParam3, TParam4, TParam5, TReturn>), method);
-            return (target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]), Cast<TParam5>(param[5]));
+            return WrapException((target, param) => func((TTarget) target, Cast<TParam0>(param[0]), Cast<TParam1>(param[1]), Cast<TParam2>(param[2]), Cast<TParam3>(param[3]), Cast<TParam4>(param[4]), Cast<TParam5>(param[5])));
         }
 
         // ReSharper restore UnusedMember.Local
