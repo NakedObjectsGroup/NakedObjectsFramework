@@ -807,10 +807,10 @@ namespace RestfulObjects.Mvc {
         private void VerifyNoError(ObjectContextSurface objectContext) {
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                 if (objectContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
-                    throw new BadRequestNOSException("Bad Request", objectContext.VisibleProperties);
+                    throw new BadRequestNOSException("Bad Request", objectContext.VisibleProperties.Cast<ContextSurface>().ToList());
                 }
 
-                throw new BadArgumentsNOSException("Arguments invalid", objectContext.VisibleProperties);
+                throw new BadArgumentsNOSException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextSurface>().ToList());
             }
             if (!string.IsNullOrEmpty(objectContext.Reason)) {
                 if (objectContext.ErrorCause == Cause.WrongType) {
@@ -823,7 +823,7 @@ namespace RestfulObjects.Mvc {
 
         private void VerifyNoPersistError(ObjectContextSurface objectContext, RestControlFlags flags) {
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
-                throw new BadPersistArgumentsException("Arguments invalid", objectContext.VisibleProperties, flags);
+                throw new BadPersistArgumentsException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextSurface>().ToList(), flags);
             }
         }
 

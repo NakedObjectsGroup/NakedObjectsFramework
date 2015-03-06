@@ -6,22 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Value;
-using RestfulObjects.Test.Data;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
+using NakedObjects.Persistor.Entity.Configuration;
+using RestfulObjects.Test.Data;
 
 namespace MvcTestApp {
     public static class NakedObjectsRunSettings {
 
         private static string[] Namespaces {
             get {
-                return new string[] { "MvcTestApp" };
+                return new[] { "MvcTestApp" };
             }
         }
 
