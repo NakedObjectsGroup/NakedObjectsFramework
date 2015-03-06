@@ -4152,10 +4152,7 @@ let VerifyGetQueryActionWithError refType oType oid f (api : RestfulObjectsContr
                     TArray([TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in ")) ]))
+                          ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4193,10 +4190,7 @@ let VerifyPostCollectionActionWithError refType oType oid f (api : RestfulObject
                     TArray([TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in ")) ]))
+                            ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -4559,10 +4553,7 @@ let VerifyPostQueryActionWithError refType oType oid f (api : RestfulObjectsCont
                     TArray([TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in ")) ]))
+                             ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)

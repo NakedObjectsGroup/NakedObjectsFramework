@@ -34,10 +34,7 @@ let Error(api : RestfulObjectsControllerBase) =
                     TArray([TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
                             TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in ")) ]))
+                             ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(new typeType(RepresentationTypes.Error), result.Content.Headers.ContentType)
@@ -62,12 +59,9 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
           TProperty(JsonPropertyNames.StackTrace, 
                    TArray([TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in "));
-                            TObjectVal(new errorType(" at  in ")) ]))
+                           TObjectVal(new errorType(" at  in "));
+                           TObjectVal(new errorType(" at  in "));
+                            ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(new typeType(RepresentationTypes.Error), result.Content.Headers.ContentType)
