@@ -87,15 +87,5 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }
-
-        //[TestMethod]
-        public override void CanGoBackToDialog() {
-            DoCanGoBackToDialog();
-        }
-
-        //[TestMethod]
-        public override void GoingBackToDialogPreservesEnteredValues() {
-            DoGoingBackToDialogPreservesEnteredValues();
-        }
     }
 }

@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
@@ -112,7 +113,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             if (!IsTransient) {
                 string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
                 string error = string.Format("Attempting to make persistent an already persisted object. Existing Key: {0} {1}", ToString(), newKeyString);
-                Assert.AssertTrue(error, IsTransient);
+                throw new NotPersistableException(error);
             }
         }
 

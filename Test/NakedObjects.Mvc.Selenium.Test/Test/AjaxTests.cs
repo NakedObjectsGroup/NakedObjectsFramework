@@ -386,61 +386,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Value is outside the range 1 to 90", valMsg.Text);
         }
 
-        public void DoCanGoBackToDialog() {
-            Login();
-
-            var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
-
-            f.Clear();
-            f.SendKeys("AW00000546" + Keys.Tab);
-
-            var action = wait.ClickAndWait(".nof-ok", "#Store-CreateNewOrder button");
-
-            wait.ClickAndWait(action, "#OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input");
-
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
-
-            br.Navigate().Back();
-
-            wait.Until(wd => wd.FindElement(By.CssSelector("#Store-CreateNewOrder-Dialog")));
-        }
-
-        public void DoGoingBackToDialogPreservesEnteredValues() {
-            Login();
-
-            var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
-
-            f.Clear();
-            f.SendKeys("AW00000546" + Keys.Tab);
-
-            var action = wait.ClickAndWait(".nof-ok", "#Store-CreateNewOrder button");
-
-            var checkBox = wait.ClickAndWait(action, "#OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input");
-            Assert.IsTrue(checkBox.Selected);
-            //OK the action with checkbox checked
-
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
-
-            br.Navigate().Back();
-
-            wait.Until(wd => wd.FindElement(By.CssSelector("#Store-CreateNewOrder-Dialog")));
-
-            checkBox = br.FindElement(By.CssSelector("#OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input"));
-            Assert.IsTrue(checkBox.Selected);
-
-            //Now repeat with checkbox unchecked
-            checkBox.SendKeys(Keys.Space);
-            Assert.IsFalse(checkBox.Selected);
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
-
-            br.Navigate().Back();
-
-            wait.Until(wd => wd.FindElement(By.CssSelector("#Store-CreateNewOrder-Dialog")));
-
-            checkBox = br.FindElement(By.CssSelector("#OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input"));
-            Assert.IsFalse(checkBox.Selected);
-        }
-
         #region abstract
 
         public abstract void RemoteValidationProperty();
@@ -466,10 +411,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void ActionMultipleChoicesDomainObject();
 
         public abstract void ClientSideValidation();
-
-        public abstract void CanGoBackToDialog();
-
-        public abstract void GoingBackToDialogPreservesEnteredValues();
 
         #endregion
     }
