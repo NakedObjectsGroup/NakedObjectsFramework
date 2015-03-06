@@ -51,7 +51,7 @@ namespace NakedObjects.Meta.Component {
 
         #region ISerializable Members
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
             var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
             info.AddValue<SerializedData>("data", data);
         }

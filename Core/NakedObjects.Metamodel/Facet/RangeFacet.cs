@@ -123,7 +123,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ISerializable Members
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
             info.AddValue<IConvertible>("Min", Min);
             info.AddValue<IConvertible>("Max", Max);
             info.AddValue<bool>("IsDateRange", IsDateRange);

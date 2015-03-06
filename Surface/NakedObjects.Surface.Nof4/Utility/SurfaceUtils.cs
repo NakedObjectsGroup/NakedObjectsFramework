@@ -9,11 +9,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public static class SurfaceUtils {

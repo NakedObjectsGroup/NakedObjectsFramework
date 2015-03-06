@@ -11,6 +11,7 @@ namespace NakedObjects.Core {
     /// <summary>
     ///     Indicates that the persistence of an object failed.
     /// </summary>
+    [Serializable]
     public class DisposeFailedException : Exception {
         public DisposeFailedException() {}
 

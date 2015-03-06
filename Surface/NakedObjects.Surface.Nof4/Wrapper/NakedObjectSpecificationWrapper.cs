@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -40,7 +39,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get {
                 var extData = new Dictionary<string, object>();
 
-                var serviceSpec = spec as IServiceSpec;
                 if (spec.ContainsFacet<IPresentationHintFacet>()) {
                     extData[PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
                 }
