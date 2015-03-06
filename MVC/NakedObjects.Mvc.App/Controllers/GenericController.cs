@@ -13,9 +13,9 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
+        public GenericController(INakedObjectsFramework nakedObjectsFramework) : base(nakedObjectsFramework) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
-            //nakedObjectsContext.ContainerInjector.InitDomainObject(this);
+            //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }
 
         [HttpGet]
