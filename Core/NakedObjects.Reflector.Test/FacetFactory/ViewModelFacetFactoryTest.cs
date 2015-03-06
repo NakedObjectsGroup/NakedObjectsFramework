@@ -71,13 +71,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Class2 {
             // ReSharper disable once UnusedMember.Local
             public string[] DeriveKeys() {
-                throw new NotImplementedException();
+                return null;
             }
 
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
             public void PopulateUsingKeys(string[] instanceId) {
-                throw new NotImplementedException();
+                
             }
         }
 
@@ -115,7 +115,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
 
             public bool IsEditView() {
-                throw new NotImplementedException();
+                return false;
             }
 
             #endregion

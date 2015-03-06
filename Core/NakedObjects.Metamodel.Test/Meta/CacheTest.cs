@@ -34,9 +34,7 @@ namespace NakedObjects.Meta.Test {
 
     public class TestWithByteArray : AbstractTestWithByteArray {}
 
-    public class TestService {
-        
-    }
+    public class TestService {}
 
     public class TestSimpleDomainObject {
         private IList<TestSimpleDomainObject> testCollection = new List<TestSimpleDomainObject>();
@@ -360,48 +358,33 @@ namespace NakedObjects.Meta.Test {
                 return GetEnumerator();
             }
 
-            //public void ICollection<T>.Add(T item) {
-            //   wrapped.Add(item);
-            //}
-
-            public void UnionWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void IntersectWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void ExceptWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void SymmetricExceptWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
+            public void UnionWith(IEnumerable<T> other) {}
+            public void IntersectWith(IEnumerable<T> other) {}
+            public void ExceptWith(IEnumerable<T> other) {}
+            public void SymmetricExceptWith(IEnumerable<T> other) {}
 
             public bool IsSubsetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsSupersetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsProperSupersetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsProperSubsetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool Overlaps(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool SetEquals(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool Add(T item) {
@@ -418,15 +401,13 @@ namespace NakedObjects.Meta.Test {
             }
 
             public bool Contains(T item) {
-                throw new NotImplementedException();
+                return false;
             }
 
-            public void CopyTo(T[] array, int arrayIndex) {
-                throw new NotImplementedException();
-            }
+            public void CopyTo(T[] array, int arrayIndex) {}
 
             public bool Remove(T item) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public int Count {

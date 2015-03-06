@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using Common.Logging;
 using NakedObjects.Architecture.Facet;
@@ -46,15 +47,18 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override FileAttachment DoParse(string entry) {
-            throw new NotImplementedException();
+           Trace.Assert(false, "FileAttachment cannot parse: " + entry);
+            return null;
         }
 
         protected override FileAttachment DoParseInvariant(string entry) {
-            throw new NotImplementedException();
+            Trace.Assert(false, "FileAttachment cannot parse invariant: " + entry);
+            return null;
         }
 
         protected override string GetInvariantString(FileAttachment obj) {
-            throw new NotImplementedException();
+            Trace.Assert(false, "FileAttachment cannot get invraiant string");
+            return null;
         }
 
         protected override string DoEncode(FileAttachment fileAttachment) {

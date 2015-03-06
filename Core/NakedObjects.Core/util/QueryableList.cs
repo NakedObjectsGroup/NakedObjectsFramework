@@ -45,12 +45,12 @@ namespace NakedObjects.Core.Util {
 
         [Hidden]
         public object SyncRoot {
-            get { throw new NotImplementedException(); }
+            get { return ((ICollection) wrappedList).SyncRoot; }
         }
 
         [Hidden]
         public bool IsSynchronized {
-            get { throw new NotImplementedException(); }
+            get { return ((ICollection)wrappedList).IsSynchronized; }
         }
 
         [Hidden]
@@ -102,7 +102,7 @@ namespace NakedObjects.Core.Util {
 
         [Hidden]
         public bool IsFixedSize {
-            get { throw new NotImplementedException(); }
+            get { return ((IList)wrappedList).IsFixedSize; }
         }
 
         #endregion

@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public string[] ToShortEncodedStrings() {
-            throw new NotImplementedException();
+            return ToEncodedStrings();
         }
 
         #endregion

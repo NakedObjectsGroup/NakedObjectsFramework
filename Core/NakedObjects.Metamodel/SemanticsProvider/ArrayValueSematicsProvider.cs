@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -47,13 +48,12 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IFromStream Members
 
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
-            if (typeof (T) == typeof (byte)) {
-                var ba = new byte[stream.Length];
-                stream.Position = 0;
-                stream.Read(ba, 0, (int) stream.Length);
-                return ba;
-            }
-            throw new NotImplementedException(string.Format("Cannot parse an array of {0} from stream", typeof (T)));
+            Trace.Assert(typeof (T) == typeof (byte), string.Format("Cannot parse an array of {0} from stream", typeof (T)));
+
+            var ba = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(ba, 0, (int) stream.Length);
+            return ba;
         }
 
         #endregion

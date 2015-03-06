@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using Common.Logging;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -42,41 +42,28 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        #region IImageValueFacet Members
-
-        public System.Drawing.Image GetImage(INakedObject nakedObject) {
-            throw new NotImplementedException();
-        }
-
-        public int GetHeight(INakedObject nakedObject) {
-            throw new NotImplementedException();
-        }
-
-        public int GetWidth(INakedObject nakedObject) {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         public static bool IsAdaptedType(Type type) {
             return type == AdaptedType;
         }
 
         protected override Image DoParse(string entry) {
-            throw new NotImplementedException();
+            Trace.Assert(false, "Image cannot parse: " + entry);
+            return null;
         }
 
         protected override Image DoParseInvariant(string entry) {
-            throw new NotImplementedException();
+            Trace.Assert(false, "Image cannot parse invariant: " + entry);
+            return null;
         }
 
         protected override string GetInvariantString(Image obj) {
-            throw new NotImplementedException();
+            Trace.Assert(false, "Image cannot get invraiant string");
+            return null;
         }
 
         protected override string DoEncode(Image image) {
             Stream stream = image.GetResourceAsStream();
-           
+
             if (stream.Length > int.MaxValue) {
                 throw new ModelException(string.Format("Image is too large size: {0} max: {1} name: {2}", stream.Length, int.MaxValue, image.Name));
             }

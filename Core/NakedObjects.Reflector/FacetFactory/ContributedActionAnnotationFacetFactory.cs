@@ -32,7 +32,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var allParams = member.GetParameters();
-            IEnumerable<ParameterInfo> paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null);
+            var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) return; //Nothing to do
             var facet = new ContributedActionFacet(holder);
             foreach (ParameterInfo p in paramsWithAttribute) {

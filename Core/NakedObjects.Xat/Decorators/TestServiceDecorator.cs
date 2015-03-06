@@ -57,7 +57,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestMenu GetMenu() {
-            throw new NotImplementedException();
+            return wrappedObject.GetMenu();
         }
 
         #endregion

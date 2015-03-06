@@ -297,7 +297,7 @@ namespace NakedObjects.Reflect.Test {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { }, new[] { "System" });
+            var rc = new ReflectorConfiguration(new[] {typeof (SimpleDomainObject)}, new Type[] {}, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -305,7 +305,6 @@ namespace NakedObjects.Reflect.Test {
             reflector.Reflect();
             Assert.AreEqual(19, reflector.AllObjectSpecImmutables.Count());
         }
-
 
         #region Nested type: SetWrapper
 
@@ -326,48 +325,33 @@ namespace NakedObjects.Reflect.Test {
                 return GetEnumerator();
             }
 
-            //public void ICollection<T>.Add(T item) {
-            //   wrapped.Add(item);
-            //}
-
-            public void UnionWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void IntersectWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void ExceptWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
-
-            public void SymmetricExceptWith(IEnumerable<T> other) {
-                throw new NotImplementedException();
-            }
+            public void UnionWith(IEnumerable<T> other) {}
+            public void IntersectWith(IEnumerable<T> other) {}
+            public void ExceptWith(IEnumerable<T> other) {}
+            public void SymmetricExceptWith(IEnumerable<T> other) {}
 
             public bool IsSubsetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsSupersetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsProperSupersetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool IsProperSubsetOf(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool Overlaps(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool SetEquals(IEnumerable<T> other) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public bool Add(T item) {
@@ -384,15 +368,13 @@ namespace NakedObjects.Reflect.Test {
             }
 
             public bool Contains(T item) {
-                throw new NotImplementedException();
+                return false;
             }
 
-            public void CopyTo(T[] array, int arrayIndex) {
-                throw new NotImplementedException();
-            }
+            public void CopyTo(T[] array, int arrayIndex) {}
 
             public bool Remove(T item) {
-                throw new NotImplementedException();
+                return false;
             }
 
             public int Count {
@@ -501,14 +483,11 @@ namespace NakedObjects.Reflect.Test {
             [Key, Title, ConcurrencyCheck]
             public virtual int Id { get; set; }
 
-            public virtual void Action() {
-                
-            }
+            public virtual void Action() {}
 
             public virtual string HideAction() {
                 return null;
             }
         }
-
     }
 }

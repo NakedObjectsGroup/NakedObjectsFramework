@@ -5,15 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Drawing;
-using NakedObjects.Architecture.Adapter;
-
 namespace NakedObjects.Architecture.Facet {
-    public interface IImageValueFacet : IFacet {
-        Image GetImage(INakedObject nakedObject);
-        int GetHeight(INakedObject nakedObject);
-        int GetWidth(INakedObject nakedObject);
-    }
+    public interface IImageValueFacet : IFacet {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

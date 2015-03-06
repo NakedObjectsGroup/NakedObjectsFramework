@@ -23,8 +23,8 @@ namespace NakedObjects.Meta.Authorization {
     public class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;
         private readonly Type[] forFacetTypes = {typeof (IHideForSessionFacet), typeof (IDisableForSessionFacet)};
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
-        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates = ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>>.Empty;
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
+        private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates;
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
         private readonly ImmutableDictionary<string, Type> typeAuthorizers = ImmutableDictionary<string, Type>.Empty;
 

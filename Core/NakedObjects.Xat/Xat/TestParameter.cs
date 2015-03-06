@@ -34,7 +34,7 @@ namespace NakedObjects.Xat {
         }
 
         public string Title {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public ITestNaked[] GetChoices() {

@@ -88,30 +88,23 @@ namespace NakedObjects.Meta.Test.Authorization {
         }
 
         public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
-            public void Init() {
-                throw new NotImplementedException();
-            }
-
-            public void Shutdown() {
-                throw new NotImplementedException();
-            }
-
+           
             public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
+                return true;
             }
 
             public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
+                return true;
             }
         }
 
         public class TestNamespaceAuthorizer : INamespaceAuthorizer {
             public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
+                return true;
             }
 
             public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                throw new NotImplementedException();
+                return true;
             }
         }
     

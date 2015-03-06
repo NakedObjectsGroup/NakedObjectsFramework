@@ -54,6 +54,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public override string ToString() {
                 return "Some title via ToString";
             }
+            // ReSharper disable once UnusedParameter.Local
+            // ReSharper disable once UnusedMember.Local
             public string ToString(string mask) {
                 return "Some title via ToString";
             }

@@ -219,6 +219,8 @@ namespace NakedObjects.Reflect {
             var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
             methods = methods.Except(actions).ToArray();
 
+            // ReSharper disable once ForCanBeConvertedToForeach
+            // kepp for look as actions are nulled out within loop
             for (int i = 0; i < actions.Length; i++) {
                 MethodInfo actionMethod = actions[i];
 
