@@ -1,8 +1,7 @@
 ﻿var nakedObjects = (function () {
 
     var api = {};
-    api.ajaxCount = 0;
-    api.usePopupDialogs = true; 
+    api.ajaxCount = 0; 
     var disabledSubmits;
     var inAjaxLink;
     var updateLocationFlag = false;
@@ -324,7 +323,11 @@
     }
 
     api.bindAjaxError = function () {
-        $(".main-content").ajaxError(function (e, xhr, settings) {
+        $(document).ajaxError(function (e, xhr, settings) {
+            if (xhr.status === 0 && xhr.statusText === 'abort') {
+                // validate has aborted so consume event 
+                return false;
+            }
             // check if we were doing a ajax call - if not ignore - must have been a validate 
             if (endSubmitFeedBack() || endLinkFeedBack()) {
                 safeDecrementAjaxCount();
@@ -549,54 +552,49 @@
 
     function popupDialog(response) {
 
-        if (api.usePopupDialogs) {
+        var popupElement = $("div.popup-dialog");
 
-            var popupElement = $("div.popup-dialog");
+        if (popupElement.length === 0) {
+            $("section.main-content").append("<div class='popup-dialog'></div>");
+            popupElement = $("div.popup-dialog");
 
-            if (popupElement.length === 0) {
-                $("section.main-content").append("<div class='popup-dialog'></div>");
-                popupElement = $("div.popup-dialog");
+            var content = $("form.nof-dialog, form.nof-dialog-file", response);
+            var title = $("div.nof-actionname", response);
+            var errors = $("div.validation-summary-errors", response);
 
-                var content = $("form.nof-dialog, form.nof-dialog-file", response);
-                var title = $("div.nof-actionname", response);
-                var errors = $("div.validation-summary-errors", response);
+            popupElement.attr("title", title.text());
 
-                popupElement.attr("title", title.text());
+            // create new popup with contents from response 
+            popupElement.dialog({
+                open: function () {
 
-                // create new popup with contents from response 
-                popupElement.dialog({
-                    open: function () {                       
-                        
-                        popupElement.append(errors);
-                        popupElement.append(content);
-                     
-                        var okButton = $("div.popup-dialog button.nof-ok");       
-                        
-                        // ok button will close dialog, show will not 
-                        okButton.on("click", function() {
-                            popupElement.attr("data-closing", true);
-                        });
-                        addApplyButton(okButton);
-                    },
-                    close: function() { popupElement.remove(); },
-                    modal: true,
-                    width: 'auto',
-                    height: 'auto'
-                });
+                    popupElement.append(errors);
+                    popupElement.append(content);
 
-                // update initial choices
-                $(popupElement).find(":input").each(api.updateChoices);
+                    var okButton = $("div.popup-dialog button.nof-ok");
 
-            } else {
-                redrawPopupDialog(popupElement, response);
-            }
-          
-            $.validator.unobtrusive.parse(popupElement);
-           
+                    // ok button will close dialog, show will not 
+                    okButton.on("click", function () {
+                        popupElement.attr("data-closing", true);
+                    });
+                    addApplyButton(okButton);
+                },
+                close: function () { popupElement.remove(); },
+                modal: true,
+                width: 'auto',
+                height: 'auto'
+            });
 
-            return true;
+            // update initial choices
+            $(popupElement).find(":input").each(api.updateChoices);
+
+        } else {
+            redrawPopupDialog(popupElement, response);
         }
-        return false;
+
+        $.validator.unobtrusive.parse(popupElement);
+
+        return true;
     }
 
     function replacePageBody(response) {
@@ -1480,7 +1478,10 @@
             var button = getButton(event);
             startSubmitFeedBack(button);
 
-            return getFile($(this).attr("action"), 'POST', null,
+            var formElement = $(this).get()[0];
+            var fd = new FormData(formElement);
+
+            return getFile($(this).attr("action"), 'POST', fd,
                 function(evt) {
                     endSubmitFeedBack();
                     downloadComplete(evt);
