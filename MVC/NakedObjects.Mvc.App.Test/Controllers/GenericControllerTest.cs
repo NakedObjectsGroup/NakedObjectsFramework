@@ -115,7 +115,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private NotPersistedObject NotPersistedObject {
             get {
-                var repo = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
+                var repo = NakedObjectsFramework.GetAdaptedService("SimpleRepository-NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
                 return repo.NewInstance();
             }
         }

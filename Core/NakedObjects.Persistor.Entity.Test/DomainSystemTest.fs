@@ -78,7 +78,7 @@ type DomainSystemTests() =
     
     [<Test>]
     member x.GetService() = 
-        let srService = x.NakedObjectsFramework.ServicesManager.GetService("repository#AdventureWorksModel.ScrapReason")
+        let srService = x.NakedObjectsFramework.ServicesManager.GetService("SimpleRepository-ScrapReason")
         Assert.IsNotNull(srService.Object)
     
     [<Test>]

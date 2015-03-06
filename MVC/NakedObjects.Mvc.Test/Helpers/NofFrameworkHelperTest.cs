@@ -182,8 +182,8 @@ namespace MvcTestApp.Tests.Helpers {
             var s4 = NakedObjectsFramework.GetAdaptedService("RecordActionService");
             var s5 = NakedObjectsFramework.GetAdaptedService("RecordedActionContributedActions");
             var s6 = NakedObjectsFramework.GetAdaptedService("DummyMailSender");
-            var s7 = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
-            var s8 = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
+            var s7 = NakedObjectsFramework.GetAdaptedService("SimpleRepositoryCustomHelperTestClass");
+            var s8 = NakedObjectsFramework.GetAdaptedService("SimpleRepositoryDescribedCustomHelperTestClass");
 
             var s11 = NakedObjectsFramework.GetAdaptedService<EmployeeRepository>();
             var s12 = NakedObjectsFramework.GetAdaptedService<ClaimRepository>();
@@ -209,8 +209,8 @@ namespace MvcTestApp.Tests.Helpers {
             var s34 = NakedObjectsFramework.GetService("RecordActionService");
             var s35 = NakedObjectsFramework.GetService("RecordedActionContributedActions");
             var s36 = NakedObjectsFramework.GetService("DummyMailSender");
-            var s37 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
-            var s38 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
+            var s37 = NakedObjectsFramework.GetService("SimpleRepositoryCustomHelperTestClass");
+            var s38 = NakedObjectsFramework.GetService("SimpleRepositoryDescribedCustomHelperTestClass");
 
             Assert.AreSame(s1, s11);
             Assert.AreSame(s2, s12);

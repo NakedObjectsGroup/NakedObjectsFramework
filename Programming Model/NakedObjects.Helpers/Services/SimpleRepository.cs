@@ -35,14 +35,6 @@ namespace NakedObjects.Services {
         }
 
         /// <summary>
-        ///     Unique identifier for this service
-        /// </summary>
-        [Hidden]
-        public override string Id {
-            get { return "repository#" + typeof (T).FullName; }
-        }
-
-        /// <summary>
         ///     Icon name for service will be same as T.Name
         /// </summary>
         public string IconName() {

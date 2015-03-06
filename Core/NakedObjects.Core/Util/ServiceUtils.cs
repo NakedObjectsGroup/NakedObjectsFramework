@@ -5,16 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Reflection;
+using System.Linq;
 
 namespace NakedObjects.Core.Util {
     public static class ServiceUtils {
         public static string GetId(object obj) {
-            PropertyInfo m = obj.GetType().GetProperty("Id", typeof (string));
-            if (m != null) {
-                return (string) m.GetValue(obj, null);
-            }
-            return obj.GetType().Name;
+            var type = obj.GetType();
+            return type.IsGenericType ? type.GenericTypeArguments.Aggregate(TypeNameUtils.GetShortName(type.Name), (s, t) => s + "-" + t.Name) : type.Name;
         }
     }
 
