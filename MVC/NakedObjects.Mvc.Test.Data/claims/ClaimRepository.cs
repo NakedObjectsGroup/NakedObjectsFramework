@@ -39,7 +39,7 @@ namespace Expenses {
                     .AddAction("ClaimsAwaitingMyApproval");
             }
 
-            [NakedObjectsIgnore]
+            //[NakedObjectsIgnore]
             public virtual IList<Claim> AllClaims() {
                 return Instances<Claim>().ToList();
             }

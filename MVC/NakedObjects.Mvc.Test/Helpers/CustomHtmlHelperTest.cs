@@ -286,21 +286,18 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        //[Ignore] // fails on server
         public void Collections() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc).ToString(), "Collections");
         }
 
         [Test]
-        //[Ignore] // fails on server
         public void CollectionsFormatList() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.ListDisplayFormat).ToString(), "CollectionsFormatList");
         }
 
         [Test]
-        //[Ignore] // fails on server
         public void CollectionsFormatTable() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.TableDisplayFormat).ToString(), "CollectionsFormatTable");

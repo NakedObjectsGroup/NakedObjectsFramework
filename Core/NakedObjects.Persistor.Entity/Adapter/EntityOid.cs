@@ -173,7 +173,6 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         }
 
         // ReSharper disable once NonReadonlyFieldInGetHashCode
-        // investigate making Oid immutable
         public override int GetHashCode() {
             return cachedHashCode;
         }

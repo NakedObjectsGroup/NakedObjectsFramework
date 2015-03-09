@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -84,21 +85,17 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
 
-        [Test, Ignore] // temp ignore pending proper tests 
+        [Test]
         public void AddCollection() {
-            var claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            var claims = new List<Claim> {claim};
-            var claimAdapter = NakedObjectsFramework.GetNakedObject(claim);
+            var claimRepo = NakedObjectsFramework.GetServices().OfType<ClaimRepository>().FirstOrDefault();
+            var claimRepoAdapter = NakedObjectsFramework.GetNakedObject(claimRepo);
+            var claims = claimRepo.AllClaims();
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
-
-            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] {});
+            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimRepoAdapter, claimRepoAdapter.GetActionLeafNode("AllClaims"), new INakedObject[] {});
 
             claimsAdapter.SetATransientOid(mockOid);
-
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claimsAdapter);
-
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claims));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Count() == 1);
+            Assert.IsTrue(((IEnumerable<object>) mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).First()).SequenceEqual(claims));
         }
 
         [Test]
