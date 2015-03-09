@@ -11,8 +11,8 @@ using System.Security.Principal;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Represents a container that the domain objects work within. It provides access to the persistence mechanism
-    ///     and user interface.
+    ///     In a typical Naked Objects application this provides the sole point of contact between the domain model
+    ///     and the framework. An implementation of this container may be injected into any domain object or service.
     /// </summary>
     public interface IDomainObjectContainer {
         /// <summary>
