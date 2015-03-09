@@ -100,7 +100,14 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         private DescribedCustomHelperTestClass DescribedTestClass {
-            get { return (DescribedCustomHelperTestClass) GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object; }
+            get {
+                var no =   GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject;
+                NakedObjectsFramework.TransactionManager.StartTransaction();
+                NakedObjectsFramework.LifecycleManager.MakePersistent(no);
+                NakedObjectsFramework.TransactionManager.EndTransaction();
+                return no.GetDomainObject<DescribedCustomHelperTestClass>();
+
+            }
         }
 
         private NotPersistedTestClass NotPersistedTestClass {
@@ -172,9 +179,15 @@ namespace MvcTestApp.Tests.Helpers {
                 string actionView = GetTestData(resultsFile);
 
                 // ignore keys 
-                const string pattern = "System.Int64;\\d+;";
-                const string replacement = "System.Int64;X;";
+                string pattern = "System.Int64;\\d+;";
+                string replacement = "System.Int64;X;";
                 var rgx = new Regex(pattern);
+                actionView = rgx.Replace(actionView, replacement);
+                s = rgx.Replace(s, replacement);
+
+                pattern = "System.Int32;\\d+;";
+                replacement = "System.Int32;X;";
+                rgx = new Regex(pattern);
                 actionView = rgx.Replace(actionView, replacement);
                 s = rgx.Replace(s, replacement);
 
@@ -217,9 +230,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AutoCompleteParameter() {
-            var testAC = (AutoCompleteTestClass) GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
+            var testAC = (AutoCompleteTestClass)GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
             testAC.TestAutoCompleteProperty = DescribedTestClass;
             testAC.TestAutoCompleteStringProperty = "test2";
+
             IActionSpec action = NakedObjectsFramework.GetNakedObject(testAC).Spec.GetActions().Single(p => p.Id == "TestAutoCompleteAction");
 
             string s = mocks.HtmlHelper.ParameterList(testAC, action).ToString();
@@ -227,15 +241,16 @@ namespace MvcTestApp.Tests.Helpers {
             CheckResults("AutoCompleteParameter", s);
         }
 
-        [Test]
-        [Ignore] // fails on server investigate
+        [Test]      
         public void AutoCompleteParameterWithDefault() {
+          
             var testAC = (AutoCompleteTestClass) GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
+            testAC.TestAutoCompleteProperty = DescribedTestClass;
 
             mocks.ViewDataContainer.Object.ViewData["AutoCompleteTestClass-TestAutoCompleteAction-Parm1-Select"] = NakedObjectsFramework.GetNakedObject(testAC);
             mocks.ViewDataContainer.Object.ViewData["AutoCompleteTestClass-TestAutoCompleteAction-Parm2-Input"] = "test1";
 
-            testAC.TestAutoCompleteProperty = DescribedTestClass;
+            
             testAC.TestAutoCompleteStringProperty = "test2";
             IActionSpec action = NakedObjectsFramework.GetNakedObject(testAC).Spec.GetActions().Single(p => p.Id == "TestAutoCompleteAction");
 
@@ -245,15 +260,16 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // fails on server investigate
+       
         public void AutoCompleteParameterWithExistingValues() {
             var testAC = (AutoCompleteTestClass) GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
+            testAC.TestAutoCompleteProperty = DescribedTestClass;
+            testAC.TestAutoCompleteStringProperty = "test2";
 
             mocks.ViewDataContainer.Object.ViewData.ModelState.SetModelValue("AutoCompleteTestClass-TestAutoCompleteAction-Parm1-Select", new ValueProviderResult(NakedObjectsFramework.GetNakedObject(testAC), null, null));
             mocks.ViewDataContainer.Object.ViewData.ModelState.SetModelValue("AutoCompleteTestClass-TestAutoCompleteAction-Parm2-Input", new ValueProviderResult("test1", null, null));
 
-            testAC.TestAutoCompleteProperty = DescribedTestClass;
-            testAC.TestAutoCompleteStringProperty = "test2";
+          
             IActionSpec action = NakedObjectsFramework.GetNakedObject(testAC).Spec.GetActions().Single(p => p.Id == "TestAutoCompleteAction");
 
             string s = mocks.HtmlHelper.ParameterList(testAC, action).ToString();
@@ -262,7 +278,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        [Ignore] // fails on server investigate
+       
         public void AutoCompleteProperty() {
             var testAC = (AutoCompleteTestClass) GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
             testAC.TestAutoCompleteProperty = DescribedTestClass;
