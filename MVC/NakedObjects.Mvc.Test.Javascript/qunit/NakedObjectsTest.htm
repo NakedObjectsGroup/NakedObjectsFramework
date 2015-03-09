@@ -35,71 +35,104 @@
             });
 
             test("focusOnFirstTextInput", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirst("input", "text");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+
+                setTimeout(function() {
+                    start();
+                    //expect(1);
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstCheckboxInput", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirst("input", "checkbox");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstSelectInput", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirst("select");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstTextAreaInput", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirst("textarea");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstTextInputActionDialog", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirstWithForm("ActionDialog", "OK", "anything");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstTextInputObjectEdit", function () {
+                stop();
                 expect(2);
                 var hadFocus = setupForFocusOnFirstWithForm("ObjectEdit", "Save", "anything");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 nakedObjects.focusOnFirst();
-                ok(hadFocus.test1, "expect test1 to have focus");
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test1, "expect test1 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstTextInputActionDialogError", function () {
+                stop();
                 expect(3);
                 var hadFocus = setupForFocusOnFirstWithForm("ActionDialog", "OK", "input-validation-error");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 equal(hadFocus.test2, false, "don't expect test2 to have focus");
                 nakedObjects.focusOnFirst();
-
-                ok(hadFocus.test2, "expect test2 to have focus");
+                setTimeout(function () {
+                    start();
+                    ok(hadFocus.test2, "expect test2 to have focus");
+                }, 10);
             });
 
             test("focusOnFirstTextInputObjectEditError", function () {
+                stop();
                 expect(3);
                 var hadFocus = setupForFocusOnFirstWithForm("ObjectEdit", "Save", "input-validation-error");
                 equal(hadFocus.test1, false, "don't expect test1 to have focus");
                 equal(hadFocus.test2, false, "don't expect test2 to have focus");
                 nakedObjects.focusOnFirst();
-
-                ok(hadFocus.test2, "expect test2 to have focus");
+                setTimeout(function() {
+                    start();
+                    ok(hadFocus.test2, "expect test2 to have focus");
+                }, 10);
             });
 
             module("checkForEnter Tests");

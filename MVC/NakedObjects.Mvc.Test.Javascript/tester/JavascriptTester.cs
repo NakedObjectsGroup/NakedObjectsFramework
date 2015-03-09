@@ -91,16 +91,21 @@ namespace NakedObjects.Mvc.Test.Javascript {
         }
 
 
-        [TestMethod, Ignore] // failing for unknown reason - investigate later
+        [TestMethod] 
         public void RunFfQUnitTests() {
             using (var ff = new FirefoxDriver()) {
+                // if don't do this focus won't go to element in browser window
+                ff.Keyboard.SendKeys(Keys.Tab);
+                ff.Keyboard.SendKeys(Keys.Tab);
+
                 RunQUnitTests(ff, "ff");
             }
         }
 
-        [TestMethod, Ignore] // failing for unknown reason - investigate later
+        [TestMethod] 
         public void RunIeQUnitTests() {
             using (var ie = new InternetExplorerDriver()) {
+              
                 RunQUnitTests(ie, "ie");
                 ie.Quit();
             }
@@ -121,10 +126,6 @@ namespace NakedObjects.Mvc.Test.Javascript {
             if (!liElements.Any()) {
                 Assert.Fail("No test results");
             }
-
-            //foreach (var liElement in liElements) {
-            //    Assert.IsTrue(liElement.GetAttribute("class") == "pass", liElement.Text);
-            //}
 
             // write a testresults file 
 
