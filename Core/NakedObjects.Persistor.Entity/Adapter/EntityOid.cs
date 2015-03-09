@@ -113,7 +113,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             if (!IsTransient) {
                 string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
                 string error = string.Format("Attempting to make persistent an already persisted object. Existing Key: {0} {1}", ToString(), newKeyString);
-                throw new NotPersistableException(error);
+                //throw new NotPersistableException(error);
             }
         }
 
