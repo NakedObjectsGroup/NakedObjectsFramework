@@ -91,8 +91,6 @@
   <ItemGroup>
     <Compile Include="Chrome\ConditionalChoicesTestsChrome.cs" />
     <Compile Include="Chrome\EnumTestsChrome.cs" />
-    <Compile Include="Chrome\HistoryAndClearTestsChrome.cs" />
-    <Compile Include="Firefox\HistoryAndClearTestsFirefox.cs" />
     <Compile Include="Chrome\ImageAndAttachmentTestsChrome.cs" />
     <Compile Include="Firefox\ImageAndAttachmentTestsFirefox.cs" />
     <Compile Include="Chrome\NonAjaxTestsChrome.cs" />
@@ -111,7 +109,6 @@
     <Compile Include="Firefox\TabbedHistoryAndClearTestsFirefox.cs" />
     <Compile Include="InternetExplorer\TabbedHistoryAndClearTestsIE.cs" />
     <Compile Include="InternetExplorer\ImageAndAttachmentTestsIE.cs" />
-    <Compile Include="InternetExplorer\HistoryAndClearTestsIE.cs" />
     <Compile Include="Chrome\ExceptionTestsChrome.cs" />
     <Compile Include="Firefox\ExceptionTestsFirefox.cs" />
     <Compile Include="InternetExplorer\ExceptionTestsIE.cs" />
@@ -132,7 +129,6 @@
     <Compile Include="TEMPLATE.cs" />
     <Compile Include="Test\ImageAndAttachmentTests.cs" />
     <Compile Include="Test\ExceptionTests.cs" />
-    <Compile Include="Test\HistoryAndClearTests.cs" />
     <Compile Include="Test\ObjectEditTests.cs" />
     <Compile Include="Test\ObjectViewAndActionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

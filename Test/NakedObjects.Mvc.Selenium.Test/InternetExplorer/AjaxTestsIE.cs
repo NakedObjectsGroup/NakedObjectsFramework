@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class AjaxTestsIE : AjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -20,6 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -28,62 +30,62 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RemoteValidationProperty() {
             DoRemoteValidationProperty();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RemoteValidationParameter() {
             DoRemoteValidationParameter();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionChoices() {
             DoActionChoices();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoices() {
             DoActionMultipleChoices();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoicesEnum() {
             DoActionMultipleChoicesEnum();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionCrossValidateFail() {
             DoActionCrossValidateFail();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoicesDefaults() {
             DoActionMultipleChoicesDefaults();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoicesConditionalEnum() {
             DoActionMultipleChoicesConditionalEnum();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }

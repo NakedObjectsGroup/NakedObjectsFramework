@@ -10,7 +10,7 @@ using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class AttributeTestsIE : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -30,17 +30,17 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void PasswordIsObscuredInAnEntryField() {
             DoPasswordIsObscuredInAnEntryField();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void MultiLineInViewMode() {
             DoMultiLineInViewMode();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void MultiLineInEditMode() {
             DoMultiLineInEditMode();
         }

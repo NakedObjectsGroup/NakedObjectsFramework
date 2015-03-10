@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class ConditionalChoicesTestsIE : ConditionalChoicesTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -20,6 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -28,7 +30,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void TestWithoutRelyingOnAjax() {
             DoTestWithoutRelyingOnAjax();
         }

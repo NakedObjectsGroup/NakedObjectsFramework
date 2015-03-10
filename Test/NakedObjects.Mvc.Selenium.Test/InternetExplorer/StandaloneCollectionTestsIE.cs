@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class StandaloneCollectionTestsIE : StandaloneCollectionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -20,6 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -28,62 +30,62 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewStandaloneCollection() {
             DoViewStandaloneCollection();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewStandaloneCollectionTable() {
             DoViewStandaloneCollectionTable();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewStandaloneCollectionDefaultToTable() {
             DoViewStandaloneCollectionDefaultToTable();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void SelectDeselectAll() {
             DoSelectDeselectAll();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void SelectAndUnselectIndividually() {
             DoSelectAndUnselectIndividually();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionParmsValidateFail() {
             DoInvokeContributedActionParmsValidateFail();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void PagingWithDefaultPageSize() {
             DoPagingWithDefaultPageSize();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void PagingWithOverriddenPageSize() {
             DoPagingWithOverriddenPageSize();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void PagingWithFormat() {
             DoPagingWithFormat();
         }

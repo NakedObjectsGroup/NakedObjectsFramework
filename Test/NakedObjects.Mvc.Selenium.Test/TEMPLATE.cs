@@ -15,7 +15,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
     // 2. Write all test logic in the abstract class, in the form of an abstract method 
     //    (no annotation) and a corresponding 'Do' method (see comment in class)
     // 3. Make MyTestsIE implement the abstract MyTests class.  Each created method should be
-    //    annotated //[TestMethod] and simply delegate to the inherited 'Do' method.
+    //    annotated [TestMethod] and simply delegate to the inherited 'Do' method.
     //    The following Regex will do this automatically:
     //    Find:     ^{.*}public override void {.*}\n{.*\{}\n{.*}{throw .*}$
     //    Replace:  \1\[TestMethod\]\n\1public override void \2\n\3\n\4Do\2;
@@ -51,7 +51,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             base.CleanUpTest();
         }
 
-        ////[TestMethod]
+        //[TestMethod]
         //public override void Test1()
         //{
         //    DoTest1();

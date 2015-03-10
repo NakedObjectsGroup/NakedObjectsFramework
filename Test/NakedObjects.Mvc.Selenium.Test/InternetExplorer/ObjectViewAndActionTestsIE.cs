@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class ObjectViewAndActionTestsIE : ObjectViewAndActionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -20,6 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -28,117 +30,117 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewTableHeader() {
             DoViewTableHeader();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewViewModel() {
             DoViewViewModel();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionNoParmsNoReturn() {
             DoInvokeActionNoParmsNoReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionParmsReturn() {
             DoInvokeActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ShowActionParmsReturn() {
             DoShowActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionParmsMandatory() {
             DoInvokeActionParmsMandatory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsReturnPersistent() {
             DoInvokeContributedActionNoParmsReturnPersistent();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CancelActionDialog() {
             DoCancelActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void EmptyCollectionDoesNotShowListOrTableButtons() {
             DoEmptyCollectionDoesNotShowListOrTableButtons();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RemoveFromActionDialog() {
             DoRemoveFromActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RecentlyViewedOnActionDialog() {
             DoRecentlyViewedOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RecentlyViewedOnActionDialogWithSelect() {
             DoRecentlyViewedOnActionDialogWithSelect();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }

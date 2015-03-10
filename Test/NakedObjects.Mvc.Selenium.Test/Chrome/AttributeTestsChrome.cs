@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
-    //[TestClass]
+    [TestClass]
     public class AttributeTestsChrome : AttributeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -29,17 +29,17 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void PasswordIsObscuredInAnEntryField() {
             DoPasswordIsObscuredInAnEntryField();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void MultiLineInViewMode() {
             DoMultiLineInViewMode();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void MultiLineInEditMode() {
             DoMultiLineInEditMode();
         }

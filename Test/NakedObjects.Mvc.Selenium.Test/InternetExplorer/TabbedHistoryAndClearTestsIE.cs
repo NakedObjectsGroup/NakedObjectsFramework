@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
-    //[TestClass]
+    [TestClass]
     public class TabbedHistoryAndClearTestsIE : TabbedHistoryAndClearTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -20,6 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new InternetExplorerDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -28,127 +30,127 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CumulativeHistory() {
             DoCumulativeHistory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearSingleItem() {
             DoClearSingleItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearSingleCollectionItem() {
             DoClearSingleCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearActiveItem() {
             DoClearActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CollectionKeepsPage() {
             DoCollectionKeepsPage();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CollectionKeepsFormat() {
             DoCollectionKeepsFormat();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearActiveCollectionItem() {
             DoClearActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearActiveMultipleCollectionItems() {
             DoClearActiveMultipleCollectionItems();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearInActiveItem() {
             DoClearInActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearInActiveCollectionItem() {
             DoClearInActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearInActiveCollectionMultipleItems() {
             DoClearInActiveCollectionMultipleItems();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersSingleItem() {
             DoClearOthersSingleItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersSingleCollectionItem() {
             DoClearOthersSingleCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersActiveItem() {
             DoClearOthersActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersActiveCollectionItem() {
             DoClearOthersActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersInActiveItem() {
             DoClearOthersInActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearOthersInActiveCollectionItem() {
             DoClearOthersInActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllSingleItem() {
             DoClearAllSingleItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllSingleCollectionItem() {
             DoClearAllSingleCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllActiveItem() {
             DoClearAllActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllActiveCollectionItem() {
             DoClearAllActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllInActiveItem() {
             DoClearAllInActiveItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ClearAllInActiveCollectionItem() {
             DoClearAllInActiveCollectionItem();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void TransientObjectsDoNotShowUpInHistory() {
             DoTransientObjectsDoNotShowUpInHistory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CollectionsShowUpInHistory() {
             DoCollectionsShowUpInHistory();
         }

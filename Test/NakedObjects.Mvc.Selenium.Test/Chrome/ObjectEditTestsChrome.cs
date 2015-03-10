@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
-    //[TestClass] 
+    [TestClass] 
     public class ObjectEditTestsChrome : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -19,6 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = InitChromeDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -27,87 +29,87 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void EditPersistedObject() {
             DoEditPersistedObject();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void EditTableHeader() {
             DoEditTableHeader();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CancelButtonOnObjectEdit() {
             DoCancelButtonOnObjectEdit();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void SaveWithNoChanges() {
             DoSaveWithNoChanges();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeStringField() {
             DoChangeStringField();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeDropDownField() {
             DoChangeDropDownField();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaRecentlyViewed() {
             DoChangeReferencePropertyViaRecentlyViewed();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaRemove() {
             DoChangeReferencePropertyViaRemove();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaAFindAction() {
             DoChangeReferencePropertyViaAFindAction();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaNewAction() {
             DoChangeReferencePropertyViaANewAction();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaAutoComplete() {
             DoChangeReferencePropertyViaAutoComplete();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaANewActionFailMandatory() {
             DoChangeReferencePropertyViaANewActionFailMandatory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ChangeReferencePropertyViaANewActionFailInvalid() {
             DoChangeReferencePropertyViaANewActionFailInvalid();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CheckDefaultsOnFindAction() {
             DoCheckDefaultsOnFindAction();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void NoEditButtonWhenNoEditableFields() {
             DoNoEditButtonWhenNoEditableFields();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void Refresh() {
             DoRefresh();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void NoValidationOnTransientUntilSave() {
             DoNoValidationOnTransientUntilSave();
         }

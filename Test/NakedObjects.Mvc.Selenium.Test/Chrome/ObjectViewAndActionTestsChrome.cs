@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
-    //[TestClass]
+    [TestClass]
     public class ObjectViewAndActionTestsChrome : ObjectViewAndActionTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -19,6 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = InitChromeDriver();
+            wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
@@ -27,38 +29,38 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             base.CleanUpTest();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // fails randomly on server 
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewTableHeader() {
             DoViewTableHeader();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ViewViewModel() {
             DoViewViewModel();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionNoParmsNoReturn() {
             DoInvokeActionNoParmsNoReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionParmsReturn() {
             DoInvokeActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ShowActionParmsReturn() {
             DoShowActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
@@ -68,82 +70,82 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeActionOnViewModelReturnCollection();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeActionParmsMandatory() {
             DoInvokeActionParmsMandatory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // still failing  on chrome
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsReturnTransient() {
             DoInvokeContributedActionNoParmsReturnTransient();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void InvokeContributedActionNoParmsReturnPersistent() {
             DoInvokeContributedActionNoParmsReturnPersistent();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // failing again on chrome
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void CancelActionDialog() {
             DoCancelActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void EmptyCollectionDoesNotShowListOrTableButtons() {
             DoEmptyCollectionDoesNotShowListOrTableButtons();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RemoveFromActionDialog() {
             DoRemoveFromActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void RecentlyViewedOnActionDialog() {
             DoRecentlyViewedOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // fails randomly on server 
         public override void RecentlyViewedOnActionDialogWithSelect() {
             DoRecentlyViewedOnActionDialogWithSelect();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Ignore] // failing again on chrome
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
