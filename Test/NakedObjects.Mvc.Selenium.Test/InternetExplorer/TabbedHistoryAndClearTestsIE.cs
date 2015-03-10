@@ -30,7 +30,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             base.CleanUpTest();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void CumulativeHistory() {
             DoCumulativeHistory();
         }

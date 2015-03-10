@@ -16,12 +16,15 @@ using OpenQA.Selenium.IE;
 namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
         // new helpers 
-        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector) {
+        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector, int delay = 0) {
             IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
             return wait.ClickAndWait(action, fieldSelector);
         }
 
-        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, IWebElement action, string fieldSelector) {
+        public static IWebElement ClickAndWait(this SafeWebDriverWait wait, IWebElement action, string fieldSelector, int delay = 0) {
+            if (delay > 0) {
+                Thread.Sleep(delay);
+            }
             action.Click();
             IWebElement field = null;
             wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) != null);
