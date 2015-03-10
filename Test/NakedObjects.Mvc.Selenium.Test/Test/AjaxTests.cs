@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -78,19 +79,31 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoActionChoices() {
             Login();
-            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO63557" + Keys.Tab);
+            // first test so get everything started with a longer timeout
 
-            var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReason button");
+            try {
 
-            var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReason-Reason");
+                wait = new SafeWebDriverWait(br, new TimeSpan(0, 0, 30));
 
-            reason.AssertIsEmpty();
-            reason.SelectDropDownItem("Price", br);
+                var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            wait.ClickAndWait(".nof-ok", ".nof-objectview");
+                orderNumber.Clear();
+                orderNumber.SendKeys("SO63557" + Keys.Tab);
+
+                var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReason button");
+
+                var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReason-Reason");
+
+                reason.AssertIsEmpty();
+                reason.SelectDropDownItem("Price", br);
+
+                wait.ClickAndWait(".nof-ok", ".nof-objectview");
+            }
+            finally {
+                // make sure we put time out back 
+                wait = new SafeWebDriverWait(br, DefaultTimeOut);
+            }
         }
 
         public void DoActionMultipleChoices() {
