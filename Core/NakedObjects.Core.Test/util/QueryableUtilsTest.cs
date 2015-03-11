@@ -22,6 +22,12 @@ namespace NakedObjects.Core.util {
             var complexOrdered2 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
             var complexOrdered3 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s));
             var complexOrdered4 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s)).Where(i => i > 50);
+            var distinctNotOrdered = list.AsQueryable().Distinct();
+            var distinctNotOrdered1 = list.AsQueryable().OrderBy(i => "").Distinct();
+            var distinctNotOrdered2 = list.AsQueryable().OrderBy(i => "").Distinct().Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
+            var distinctOrdered = list.AsQueryable().Distinct().OrderBy(i => "");
+            var distinctOrdered1 = list.AsQueryable().OrderBy(i => "").Distinct().OrderBy(i => "");
+            var distinctOrdered2 = list.AsQueryable().Distinct().OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
 
             Assert.IsFalse(notOrdered.IsOrdered());
             Assert.IsTrue(simpleOrdered.IsOrdered());
@@ -30,6 +36,14 @@ namespace NakedObjects.Core.util {
             Assert.IsTrue(complexOrdered2.IsOrdered());
             Assert.IsTrue(complexOrdered3.IsOrdered());
             Assert.IsTrue(complexOrdered4.IsOrdered());
+
+            Assert.IsFalse(distinctNotOrdered.IsOrdered());
+            Assert.IsFalse(distinctNotOrdered1.IsOrdered());
+            Assert.IsFalse(distinctNotOrdered2.IsOrdered());
+
+            Assert.IsTrue(distinctOrdered.IsOrdered());
+            Assert.IsTrue(distinctOrdered1.IsOrdered());
+            Assert.IsTrue(distinctOrdered2.IsOrdered());
         }
     }
 }
