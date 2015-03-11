@@ -44,7 +44,7 @@ namespace MvcTestApp.Tests.Controllers {
             get {
                 List<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes().Where(t => t.IsPublic && t.Namespace == "AdventureWorksModel").ToList();
 
-                allTypes.AddRange(new Type[] {
+                allTypes.AddRange(new[] {
                     typeof (NotPersistedObject),
                     typeof (CustomerDashboard),
                     typeof (Customer[]),
@@ -98,19 +98,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Employee TransientEmployee {
-            get { return AdapterUtils.GetDomainObject<Employee>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Employee)))); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
         }
 
         private Vendor TransientVendor {
-            get { return AdapterUtils.GetDomainObject<Vendor>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor)))); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
         }
 
         private Shift TransientShift {
-            get { return AdapterUtils.GetDomainObject<Shift>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift)))); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
         }
 
         private Individual TransientIndividual {
-            get { return AdapterUtils.GetDomainObject<Individual>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Individual)))); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
         }
 
         private NotPersistedObject NotPersistedObject {
@@ -209,7 +209,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Store TransientStore {
-            get { return AdapterUtils.GetDomainObject<Store>(NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store)))); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
         #region Setup/Teardown
@@ -293,7 +293,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
+            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
 
@@ -555,22 +555,33 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInViewDataDictionary(result, "DepartmentHistory", "table");
         }
 
-        public void EditSaveValidationOk(Vendor vendor) {
+        public void EditSaveValidationOk(Vendor vendor, bool saveAndClose = false) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
             INakedObject adaptedVendor = NakedObjectsFramework.NakedObjectManager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
 
+            if (saveAndClose) {
+                const string sac = "SaveAndClose=True";
+                objectModel.SaveAndClose = sac;
+            }
+
             NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
-                var result = (ViewResult) controller.Edit(objectModel, form);
+                var actionResult = controller.Edit(objectModel, form);
 
-                foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
-                    Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
-                    Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
+                if (saveAndClose) {
+                    Assert.IsInstanceOf<RedirectToRouteResult>(actionResult);
                 }
-                AssertIsDetailsViewOf<Vendor>(result);
+                else {
+                    var result = (ViewResult) actionResult;
+                    foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
+                        Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
+                        Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
+                    }
+                    AssertIsDetailsViewOf<Vendor>(result);
+                }
             }
             finally {
                 NakedObjectsFramework.TransactionManager.EndTransaction();
@@ -643,9 +654,9 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.Edit(objectModel, form);
 
             //Assert.Greater(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors.Count(), 0);
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, AdapterUtils.GetObjectSpec(nakedObject).GetProperty("Contact"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.GetObjectSpec().GetProperty("Contact"))].Errors.Any());
             //Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors[0].ErrorMessage, "Mandatory");
-            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, AdapterUtils.GetObjectSpec(nakedObject).GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
+            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.GetObjectSpec().GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
 
             AssertIsEditViewOf<Individual>(result);
         }
@@ -826,7 +837,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void ActionAsFindParmsForActionUpdatesViewState(bool testValue) {
             IActionSpec action = GetAction(OrderContrib, "CreateNewOrder");
 
-            IActionSpec findByName = AdapterUtils.GetActionLeafNode(CustomerRepo, "FindStoreByName");
+            IActionSpec findByName = CustomerRepo.GetActionLeafNode("FindStoreByName");
             string data = "contextObjectId=" + OrderContribId +
                           "&spec=AdventureWorksModel.Store" +
                           "&propertyName=cust" +
@@ -1030,7 +1041,7 @@ namespace MvcTestApp.Tests.Controllers {
             IDictionary<string, string> idToRawvalue;
             IObjectSpec ccSpec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (CreditCard));
             INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
-            AdapterUtils.GetDomainObject<CreditCard>(cc).Creator = new TestCreator();
+            cc.GetDomainObject<CreditCard>().Creator = new TestCreator();
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2020", out idToRawvalue);
 
@@ -1191,7 +1202,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Redisplay = "editMode=true"
             };
 
-            var form = new FormCollection {};
+            var form = new FormCollection();
 
             GetTestService("Customers");
 
@@ -1318,8 +1329,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        public void EditSaveValidationOkForTransient() {
-            EditSaveValidationOk(TransientVendor);
+        public void EditSaveAndCloseValidationOkForTransient() {
+            EditSaveValidationOk(TransientVendor, true);
         }
 
         [Test]
@@ -1517,14 +1528,12 @@ namespace MvcTestApp.Tests.Controllers {
                 Id = id
             };
 
-            var form = new FormCollection();
+            var form = new FormCollection {{"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0"}, {"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0"}};
 
-            form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0");
-            form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
-            IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasons");
+            IActionSpec action = order.GetActionLeafNode("AddNewSalesReasons");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
@@ -1551,7 +1560,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             INakedObject order = NakedObjectsFramework.NakedObjectManager.CreateAdapter(Order, null, null);
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
-            IActionSpec action = AdapterUtils.GetActionLeafNode(order, "AddNewSalesReasonsByCategories");
+            IActionSpec action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
@@ -2046,7 +2055,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Redisplay = "editMode=false"
             };
 
-            var form = new FormCollection {};
+            var form = new FormCollection();
 
             GetTestService("Customers");
 
@@ -2171,7 +2180,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
+            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
 
