@@ -35,7 +35,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoEditPersistedObject();
         }
 
-        [TestMethod]
+       // [TestMethod]
         public override void EditTableHeader() {
             DoEditTableHeader();
         }

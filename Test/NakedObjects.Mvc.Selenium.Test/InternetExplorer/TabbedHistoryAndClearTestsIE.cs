@@ -60,7 +60,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoCollectionKeepsFormat();
         }
 
-        [TestMethod]
+       // [TestMethod]
         public override void ClearActiveCollectionItem() {
             DoClearActiveCollectionItem();
         }
@@ -80,7 +80,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoClearInActiveCollectionItem();
         }
 
-        [TestMethod]
+       // [TestMethod]
         public override void ClearInActiveCollectionMultipleItems() {
             DoClearInActiveCollectionMultipleItems();
         }
