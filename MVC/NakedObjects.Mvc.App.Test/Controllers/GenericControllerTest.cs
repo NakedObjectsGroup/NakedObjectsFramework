@@ -588,6 +588,32 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
+        public void EditApplyActionValidationOk(Vendor vendor) {
+            string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
+            INakedObject adaptedVendor = NakedObjectsFramework.NakedObjectManager.CreateAdapter(vendor, null, null);
+            IDictionary<string, string> idToRawvalue;
+            FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
+
+            const string invokeAction = "targetActionId=CreateNewContact";
+            objectModel.InvokeAction = invokeAction;
+
+            NakedObjectsFramework.TransactionManager.StartTransaction();
+            try {
+                var actionResult = controller.Edit(objectModel, form);
+
+                var result = (ViewResult) actionResult;
+                foreach (KeyValuePair<string, string> kvp in idToRawvalue) {
+                    Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
+                    Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
+                }
+                AssertIsSetAfterTransactionViewOf<Contact>(result);
+            }
+            finally {
+                NakedObjectsFramework.TransactionManager.EndTransaction();
+            }
+        }
+
         public void EditInlineSaveValidationOk(Shift shift, int i) {
             INakedObject adaptedShift = NakedObjectsFramework.NakedObjectManager.CreateAdapter(shift, null, null);
             INakedObject adaptedTimePeriod = NakedObjectsFramework.NakedObjectManager.CreateAdapter(shift.Times, null, null);
@@ -1326,6 +1352,11 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void EditSaveValidationOk() {
             EditSaveValidationOk(Vendor);
+        }
+
+        [Test]
+        public void EditApplyActionValidationOk() {
+            EditApplyActionValidationOk(Vendor);
         }
 
         [Test]
