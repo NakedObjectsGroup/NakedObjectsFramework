@@ -29,7 +29,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             base.CleanUpTest();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }

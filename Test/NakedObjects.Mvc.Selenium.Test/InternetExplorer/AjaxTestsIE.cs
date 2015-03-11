@@ -85,7 +85,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoActionMultipleChoicesValidateFail();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ClientSideValidation() {
             DoClientSideValidation();
         }

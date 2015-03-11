@@ -63,6 +63,12 @@ namespace NakedObjects.Core.Util.Query {
             var complexOrdered2 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
             var complexOrdered3 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s));
             var complexOrdered4 = notOrdered.OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).OfType<string>().Select(s => int.Parse(s)).Where(i => i > 50);
+            var distinctNotOrdered = list.AsQueryable().Distinct();
+            var distinctNotOrdered1 = list.AsQueryable().OrderBy(i => "").Distinct();
+            var distinctNotOrdered2 = list.AsQueryable().OrderBy(i => "").Distinct().Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
+            var distinctOrdered = list.AsQueryable().Distinct().OrderBy(i => "");
+            var distinctOrdered1 = list.AsQueryable().OrderBy(i => "").Distinct().OrderBy(i => "");
+            var distinctOrdered2 = list.AsQueryable().Distinct().OrderBy(i => "").Select(i => i.ToString()).Where(s => s.Length > 0).Select(s => int.Parse(s));
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(notOrdered.IsOrdered());
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(simpleOrdered.IsOrdered());
@@ -71,6 +77,14 @@ namespace NakedObjects.Core.Util.Query {
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered2.IsOrdered());
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered3.IsOrdered());
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(complexOrdered4.IsOrdered());
-        }  
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(distinctNotOrdered.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(distinctNotOrdered1.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(distinctNotOrdered2.IsOrdered());
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(distinctOrdered.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(distinctOrdered1.IsOrdered());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(distinctOrdered2.IsOrdered());
+        }
     }
 }

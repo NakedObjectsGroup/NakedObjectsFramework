@@ -58,7 +58,7 @@ namespace NakedObjects.Core.Util.Query {
             var expression = expr as MethodCallExpression;
             if (expression != null) {
                 MethodInfo method = expression.Method;
-                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") || expression.Arguments.Any(IsOrderExpression);
+                return !method.Name.StartsWith("Distinct") && (method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") ||  expression.Arguments.Any(IsOrderExpression));
             }
             return false;
         }

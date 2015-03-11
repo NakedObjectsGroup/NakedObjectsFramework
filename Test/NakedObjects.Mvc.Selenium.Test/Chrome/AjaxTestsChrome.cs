@@ -54,7 +54,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoActionMultipleChoicesEnum();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
