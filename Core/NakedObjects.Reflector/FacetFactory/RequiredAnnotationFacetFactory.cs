@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public class RequiredAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RequiredAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<RequiredAttribute>();

@@ -205,7 +205,7 @@ namespace NakedObjects.Reflect {
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
-                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
+                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties);
                 specs.Add(referenceProperty);
             }
 
@@ -242,7 +242,7 @@ namespace NakedObjects.Reflect {
                     var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
 
                     // Process facets on the action & parameters
-                    FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Action);
+                    FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions);
                     for (int l = 0; l < actionParams.Length; l++) {
                         FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
                     }

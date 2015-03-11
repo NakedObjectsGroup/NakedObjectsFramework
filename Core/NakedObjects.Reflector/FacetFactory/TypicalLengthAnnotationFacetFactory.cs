@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypicalLengthAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();

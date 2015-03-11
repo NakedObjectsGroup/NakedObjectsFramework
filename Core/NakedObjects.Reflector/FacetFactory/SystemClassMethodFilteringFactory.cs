@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (SystemClassMethodFilteringFactory));
 
         public SystemClassMethodFilteringFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Action) {}
+            : base(numericOrder, FeatureType.Actions) {}
 
         #region IMethodFilteringFacetFactory Members
 

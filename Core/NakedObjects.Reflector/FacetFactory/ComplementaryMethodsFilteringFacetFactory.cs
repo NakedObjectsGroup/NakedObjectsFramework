@@ -52,7 +52,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// </summary>
         /// <param name="numericOrder"></param>
         public ComplementaryMethodsFilteringFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Action) {}
+            : base(numericOrder, FeatureType.Actions) {}
 
         #region IMethodFilteringFacetFactory Members
 

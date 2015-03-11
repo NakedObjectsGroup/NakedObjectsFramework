@@ -102,10 +102,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Property));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Action));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameter));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
 
         [TestMethod]

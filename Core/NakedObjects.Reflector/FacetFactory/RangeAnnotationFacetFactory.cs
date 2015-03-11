@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
         public RangeAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 
         private static void Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();

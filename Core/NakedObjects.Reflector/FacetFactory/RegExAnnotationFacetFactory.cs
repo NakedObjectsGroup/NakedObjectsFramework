@@ -20,7 +20,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RegExAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();

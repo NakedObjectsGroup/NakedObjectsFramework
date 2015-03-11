@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </para>
     public class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
         public MandatoryDefaultFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             FacetUtils.AddFacet(Create(specification));

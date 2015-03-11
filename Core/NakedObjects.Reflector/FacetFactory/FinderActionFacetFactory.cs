@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public FinderActionFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Action) {}
+            : base(numericOrder, FeatureType.Actions) {}
 
         private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();

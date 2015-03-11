@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PasswordAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DataTypeAttribute>();

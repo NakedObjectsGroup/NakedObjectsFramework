@@ -40,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionMethodsFacetFactory));
 
         public ActionMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ActionsAndParameters) {}
+            : base(numericOrder, FeatureType.ActionsAndActionParameters) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

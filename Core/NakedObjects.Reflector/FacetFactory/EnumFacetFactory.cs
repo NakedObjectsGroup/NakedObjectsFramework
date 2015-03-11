@@ -22,7 +22,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public class EnumFacetFactory : FacetFactoryAbstract {
         public EnumFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();

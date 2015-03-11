@@ -135,7 +135,7 @@ namespace NakedObjects.Reflect {
         }
 
         public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) {
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
+            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
                 facetFactory.ProcessParams(reflector, method, paramNum, specification);
             }
         }

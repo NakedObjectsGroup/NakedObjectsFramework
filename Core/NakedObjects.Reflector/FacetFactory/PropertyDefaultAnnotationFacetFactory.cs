@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PropertyDefaultAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Property) {}
+            : base(numericOrder, FeatureType.Properties) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DefaultValueAttribute>();

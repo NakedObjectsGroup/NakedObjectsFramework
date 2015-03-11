@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PotencyAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Action) {}
+            : base(numericOrder, FeatureType.Actions) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 

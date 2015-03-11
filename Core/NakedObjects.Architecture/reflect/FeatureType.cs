@@ -15,19 +15,19 @@ namespace NakedObjects.Architecture.Reflect {
     public enum FeatureType {
         None = 0,
         Objects = 1,
-        Property = 2,
+        Properties = 2,
         Collections = 4,
-        Action = 8,
-        ActionParameter = 16,
-        ActionsAndParameters = Action | ActionParameter,
-        CollectionsAndActions = Collections | Action,
-        ObjectsAndProperties = Objects | Property,
-        ObjectsPropertiesAndCollections = Objects | Property | Collections,
-        ObjectsPropertiesAndParameters = Objects | Property | ActionParameter,
-        PropertiesAndCollections = Property | Collections,
-        PropertiesAndParameters = Property | ActionParameter,
-        PropertiesCollectionsAndActions = Property | Collections | Action,
-        Everything = Objects | Property | Collections | Action | ActionParameter,
-        EverythingButParameters = Objects | Property | Collections | Action
+        Actions = 8,
+        ActionParameters = 16,
+        ActionsAndActionParameters = Actions | ActionParameters,
+        CollectionsAndActions = Collections | Actions,
+        ObjectsAndProperties = Objects | Properties,
+        ObjectsPropertiesAndCollections = Objects | Properties | Collections,
+        ObjectsPropertiesAndActionParameters = Objects | Properties | ActionParameters,
+        PropertiesAndCollections = Properties | Collections,
+        PropertiesAndActionParameters = Properties | ActionParameters,
+        PropertiesCollectionsAndActions = Properties | Collections | Actions,
+        Everything = Objects | Properties | Collections | Actions | ActionParameters,
+        EverythingButActionParameters = Objects | Properties | Collections | Actions
     }
 }

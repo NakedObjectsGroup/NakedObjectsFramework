@@ -27,7 +27,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ContributedActionAnnotationFacetFactory));
 
         public ContributedActionAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Action) {}
+            : base(numericOrder, FeatureType.Actions) {}
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var allParams = member.GetParameters();
