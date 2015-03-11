@@ -64,13 +64,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
 
-        static EntityObjectStore() {
-            MaximumCommitCycles = 10;
-            RollBackOnError = true;
-            EnforceProxies = true;
-            IsInitializedCheck = () => true;
-        }
-
         internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
             this.metamodelManager = metamodelManager;
             this.session = session;
@@ -101,11 +94,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             Reset();
         }
 
-        public static bool EnforceProxies { get; set; }
-        public static bool RollBackOnError { get; set; }
-        public static int MaximumCommitCycles { get; set; }
-        public static Func<bool> IsInitializedCheck { get; set; }
-        public static bool RequireExplicitAssociationOfTypes { get; set; }
+        private static bool EnforceProxies { get; set; }
+        private bool RollBackOnError { get; set; }
+        // set is internally visible for testing
+        internal static int MaximumCommitCycles { get; set; }
+        private Func<bool> IsInitializedCheck { get; set; }
+        internal static bool RequireExplicitAssociationOfTypes { get; private set; }
 
         #region for testing only
 
@@ -460,7 +454,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private static void RollBackContext(LocalContext context) {
+        private  void RollBackContext(LocalContext context) {
             if (RollBackOnError) {
                 ObjectContext wContext = context.WrappedObjectContext;
                 wContext.DetectChanges();
