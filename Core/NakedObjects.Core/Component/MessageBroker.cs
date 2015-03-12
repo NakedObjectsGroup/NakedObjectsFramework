@@ -10,21 +10,21 @@ using System.Linq;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class MessageBroker : IMessageBroker {
+    public sealed class MessageBroker : IMessageBroker {
         private readonly List<string> messages = new List<string>();
         private readonly List<string> warnings = new List<string>();
 
         #region IMessageBroker Members
 
-        public virtual string[] PeekMessages {
+        public string[] PeekMessages {
             get { return messages.ToArray(); }
         }
 
-        public virtual string[] PeekWarnings {
+        public string[] PeekWarnings {
             get { return warnings.ToArray(); }
         }
 
-        public virtual string[] Messages {
+        public string[] Messages {
             get {
                 string[] messageArray = messages.ToArray();
                 ClearMessages();
@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public virtual string[] Warnings {
+        public string[] Warnings {
             get {
                 string[] warningArray = warnings.ToArray();
                 ClearWarnings();
@@ -40,7 +40,7 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public virtual void EnsureEmpty() {
+        public void EnsureEmpty() {
             if (warnings.Count > 0) {
                 throw new InvalidStateException("Message broker still has warnings: " + warnings.Aggregate((s, t) => s + t + "; "));
             }
@@ -49,19 +49,19 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public virtual void AddWarning(string message) {
+        public void AddWarning(string message) {
             warnings.Add(message);
         }
 
-        public virtual void AddMessage(string message) {
+        public void AddMessage(string message) {
             messages.Add(message);
         }
 
-        public virtual void ClearMessages() {
+        public void ClearMessages() {
             messages.Clear();
         }
 
-        public virtual void ClearWarnings() {
+        public void ClearWarnings() {
             warnings.Clear();
         }
 

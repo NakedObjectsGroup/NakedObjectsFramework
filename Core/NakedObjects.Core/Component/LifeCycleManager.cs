@@ -21,7 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
-    public class LifeCycleManager : ILifecycleManager {
+    public sealed class LifeCycleManager : ILifecycleManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (LifeCycleManager));
         private readonly IContainerInjector injector;
         private readonly IMetamodelManager metamodel;
@@ -69,7 +69,7 @@ namespace NakedObjects.Core.Component {
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>
-        public virtual INakedObject CreateInstance(IObjectSpec spec) {
+        public INakedObject CreateInstance(IObjectSpec spec) {
             Log.DebugFormat("CreateInstance of: {0}", spec);
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
@@ -88,7 +88,7 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        public virtual INakedObject RecreateInstance(IOid oid, ITypeSpec spec) {
+        public INakedObject RecreateInstance(IOid oid, ITypeSpec spec) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
             INakedObject adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
@@ -106,7 +106,7 @@ namespace NakedObjects.Core.Component {
             return CreateNotPersistedObject(type, true);
         }
 
-        public virtual INakedObject GetViewModel(IOid oid) {
+        public INakedObject GetViewModel(IOid oid) {
             return nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
 

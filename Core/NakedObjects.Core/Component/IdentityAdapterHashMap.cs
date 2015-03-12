@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class IdentityAdapterHashMap : IIdentityAdapterMap {
+    public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private static readonly ILog Log;
         private readonly IDictionary<IOid, INakedObject> adapters;
 
@@ -29,35 +29,35 @@ namespace NakedObjects.Core.Component {
 
         #region IIdentityAdapterMap Members
 
-        public virtual void Add(IOid oid, INakedObject adapter) {
+        public void Add(IOid oid, INakedObject adapter) {
             adapters[oid] = adapter;
 
             // log after so that adapter is in map if required by ToString
             Log.DebugFormat("Add {0} as {1}", oid, adapter);
         }
 
-        public virtual INakedObject GetAdapter(IOid oid) {
+        public INakedObject GetAdapter(IOid oid) {
             if (adapters.ContainsKey(oid)) {
                 return adapters[oid];
             }
             return null;
         }
 
-        public virtual bool IsIdentityKnown(IOid oid) {
+        public bool IsIdentityKnown(IOid oid) {
             return adapters.ContainsKey(oid);
         }
 
-        public virtual IEnumerator<IOid> GetEnumerator() {
+        public IEnumerator<IOid> GetEnumerator() {
             return adapters.Keys.GetEnumerator();
         }
 
-        public virtual void Remove(IOid oid) {
+        public void Remove(IOid oid) {
             Log.DebugFormat("Remove {0}", oid);
 
             adapters.Remove(oid);
         }
 
-        public virtual void Reset() {
+        public void Reset() {
             Log.Debug("Reset");
 
             adapters.Clear();

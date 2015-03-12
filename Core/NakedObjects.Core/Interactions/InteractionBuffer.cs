@@ -9,20 +9,20 @@ using System.Text;
 using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Core.Interactions {
-    internal class InteractionBuffer : IInteractionBuffer {
+    public sealed class InteractionBuffer : IInteractionBuffer {
         private readonly StringBuilder buf = new StringBuilder();
 
         #region IInteractionBuffer Members
 
-        public virtual bool IsNotEmpty {
+        public bool IsNotEmpty {
             get { return !IsEmpty; }
         }
 
-        public virtual bool IsEmpty {
+        public bool IsEmpty {
             get { return buf.Length == 0; }
         }
 
-        public virtual void Append(string reason) {
+        public void Append(string reason) {
             if (reason == null) {
                 return;
             }

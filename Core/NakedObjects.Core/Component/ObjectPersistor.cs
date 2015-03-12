@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Component {
     /// This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is 
     /// the store specific portion of the logic. 
     /// </summary>
-    public class ObjectPersistor : IObjectPersistor {
+    public sealed class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
@@ -42,17 +42,17 @@ namespace NakedObjects.Core.Component {
 
         #region IObjectPersistor Members
 
-        public virtual IQueryable<T> Instances<T>() where T : class {
+        public IQueryable<T> Instances<T>() where T : class {
             Log.DebugFormat("Instances<T> of: {0}", typeof (T));
             return GetInstances<T>();
         }
 
-        public virtual IQueryable Instances(Type type) {
+        public IQueryable Instances(Type type) {
             Log.DebugFormat("Instances of: {0}", type);
             return GetInstances(type);
         }
 
-        public virtual IQueryable Instances(IObjectSpec spec) {
+        public IQueryable Instances(IObjectSpec spec) {
             Log.DebugFormat("Instances of: {0}", spec);
             return GetInstances(spec);
         }

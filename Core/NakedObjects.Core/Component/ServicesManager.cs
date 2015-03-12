@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class ServicesManager : IServicesManager {
+    public sealed class ServicesManager : IServicesManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
@@ -47,7 +47,7 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public virtual INakedObject GetService(string id) {
+        public INakedObject GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
             return Services.Where(service => id.Equals(ServiceUtils.GetId(service))).Select(service => manager.GetServiceAdapter(service)).FirstOrDefault();
         }
@@ -56,12 +56,12 @@ namespace NakedObjects.Core.Component {
             return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
         }
 
-        public virtual INakedObject[] GetServices() {
+        public INakedObject[] GetServices() {
             Log.Debug("GetServices");
             return Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
+        public INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
             Log.DebugFormat("GetServicesWithVisibleActions");
             return Services.
                 Select(service => manager.GetServiceAdapter(service)).

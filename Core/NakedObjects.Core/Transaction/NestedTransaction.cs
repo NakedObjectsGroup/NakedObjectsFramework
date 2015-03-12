@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {
-    internal class NestedTransaction : ITransaction {
+    public sealed class NestedTransaction : ITransaction {
         private static readonly ILog Log;
         private readonly IObjectStore objectStore;
         private bool complete;
@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Transaction {
 
         #region ITransaction Members
 
-        public virtual void Abort() {
+        public void Abort() {
             Log.InfoFormat("abort transaction {0}", this);
             if (complete) {
                 throw new TransactionException("Transaction already complete; cannot abort");
@@ -35,7 +35,7 @@ namespace NakedObjects.Core.Transaction {
             complete = true;
         }
 
-        public virtual void Commit() {
+        public void Commit() {
             Log.Info("commit transaction " + this);
             if (complete) {
                 throw new TransactionException("Transaction already complete; cannot commit");
@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Transaction {
             complete = true;
         }
 
-        public virtual bool Flush() {
+        public bool Flush() {
             Log.Info("flush transaction " + this);
             return false;
         }

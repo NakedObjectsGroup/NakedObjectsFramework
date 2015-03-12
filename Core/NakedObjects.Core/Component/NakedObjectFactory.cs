@@ -11,7 +11,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class NakedObjectFactory {
+    public sealed class NakedObjectFactory {
         private bool isInitialized;
         private ILifecycleManager lifecycleManager;
         private IMetamodelManager metamodelManager;

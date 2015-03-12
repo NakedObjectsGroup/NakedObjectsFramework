@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    internal class PocoAdapter : INakedObject {
+    public sealed class PocoAdapter : INakedObject {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
@@ -28,7 +28,6 @@ namespace NakedObjects.Core.Adapter {
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
         private string defaultTitle;
-        private IOid oid;
         private object poco;
         private ITypeSpec spec;
         private ITypeOfFacet typeOfFacet;
@@ -52,18 +51,18 @@ namespace NakedObjects.Core.Adapter {
             this.lifecycleManager = lifecycleManager;
 
             this.poco = poco;
-            this.oid = oid;
+            this.Oid = oid;
             ResolveState = new ResolveStateMachine(this, session);
             version = new NullVersion();
         }
 
-        protected internal virtual string DefaultTitle {
+        private string DefaultTitle {
             get { return defaultTitle; }
         }
 
         #region INakedObject Members
 
-        public virtual ITypeOfFacet TypeOfFacet {
+        public ITypeOfFacet TypeOfFacet {
             get {
                 if (typeOfFacet == null) {
                     return Spec.GetFacet<ITypeOfFacet>();
@@ -74,20 +73,20 @@ namespace NakedObjects.Core.Adapter {
             set { typeOfFacet = value; }
         }
 
-        public virtual object Object {
+        public object Object {
             get { return poco; }
         }
 
         /// <summary>
         ///     Returns the name of the icon to use to represent this object
         /// </summary>
-        public virtual string IconName() {
+        public string IconName() {
             return Spec.GetIconName(this);
         }
 
         public IResolveStateMachine ResolveState { get; private set; }
 
-        public virtual ITypeSpec Spec {
+        public ITypeSpec Spec {
             get {
                 if (spec == null) {
                     spec = metamodel.GetSpecification(Object.GetType());
@@ -97,11 +96,11 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public virtual IVersion Version {
+        public IVersion Version {
             get { return version; }
         }
 
-        public virtual IVersion OptimisticLock {
+        public IVersion OptimisticLock {
             set {
                 if (ShouldSetVersion(value)) {
                     version = value;
@@ -115,7 +114,7 @@ namespace NakedObjects.Core.Adapter {
         ///     mechanism. If either of the above provides null as the title then this method will return a title
         ///     relating to the name of the object type, e.g. "A Customer", "A Product".
         /// </summary>
-        public virtual string TitleString() {
+        public string TitleString() {
             try {
                 if (Spec.IsCollection && !Spec.IsParseable) {
                     return CollectionTitleString(Spec.GetFacet<ICollectionFacet>());
@@ -128,7 +127,7 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public virtual string InvariantString() {
+        public string InvariantString() {
             return Spec.GetInvariantString(this);
         }
 
@@ -137,7 +136,7 @@ namespace NakedObjects.Core.Adapter {
         ///     component such as an object store). This method allows the adapter to be kept while the domain object
         ///     is replaced.
         /// </summary>
-        public virtual void ReplacePoco(object obj) {
+        public void ReplacePoco(object obj) {
             poco = obj;
         }
 
@@ -175,30 +174,22 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void SetATransientOid(IOid newOid) {
-            if (oid != null) {
-                Log.InfoFormat("Overwriting oid {0} with {1}", oid, newOid);
+            if (Oid != null) {
+                Log.InfoFormat("Overwriting oid {0} with {1}", Oid, newOid);
             }
 
             Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
-            oid = newOid;
+            Oid = newOid;
         }
 
-        public virtual void CheckLock(IVersion otherVersion) {
+        public void CheckLock(IVersion otherVersion) {
             if (version != null && version.IsDifferent(otherVersion)) {
                 Log.Info("concurrency conflict on " + this + " (" + otherVersion + ")");
                 throw new ConcurrencyException(this);
             }
         }
 
-        public virtual IOid Oid {
-            get { return oid; }
-            protected set {
-                if (value == null) {
-                    throw new NullReferenceException();
-                }
-                oid = value;
-            }
-        }
+        public IOid Oid { get; private set; }
 
         public void LoadAnyComplexTypes() {
             if (Spec is IServiceSpec ||

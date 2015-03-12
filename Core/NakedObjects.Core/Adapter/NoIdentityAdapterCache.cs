@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter {
-    public class NoIdentityAdapterCache : INoIdentityAdapterCache {
+    public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
         private readonly Dictionary<object, INakedObject> adapters = new Dictionary<object, INakedObject>();
 
         #region INoIdentityAdapterCache Members

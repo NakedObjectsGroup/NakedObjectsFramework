@@ -18,7 +18,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    internal class CollectionMemento : IEncodedToStrings, ICollectionMemento {
+    public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {
         #region ParameterType enum
 
         public enum ParameterType {

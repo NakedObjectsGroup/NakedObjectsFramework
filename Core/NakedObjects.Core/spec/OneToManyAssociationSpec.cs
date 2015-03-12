@@ -17,7 +17,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    internal class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
+    public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
         private readonly IObjectSpec elementSpec;
         private readonly bool isASet;
         private readonly IObjectPersistor persistor;
@@ -56,7 +56,7 @@ namespace NakedObjects.Core.Spec {
             return Count(inObject) == 0;
         }
 
-        public virtual int Count(INakedObject inObject) {
+        public int Count(INakedObject inObject) {
             return persistor.CountField(inObject, Id);
         }
 

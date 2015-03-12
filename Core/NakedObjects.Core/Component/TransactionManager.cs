@@ -12,7 +12,7 @@ using NakedObjects.Core.Transaction;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class TransactionManager : ITransactionManager {
+    public sealed class TransactionManager : ITransactionManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (TransactionManager));
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
@@ -36,7 +36,7 @@ namespace NakedObjects.Core.Component {
 
         #region ITransactionManager Members
 
-        public virtual void StartTransaction() {
+        public void StartTransaction() {
             if (transaction == null) {
                 transaction = new NestedTransaction(objectStore);
                 transactionLevel = 0;
@@ -46,14 +46,14 @@ namespace NakedObjects.Core.Component {
             transactionLevel++;
         }
 
-        public virtual bool FlushTransaction() {
+        public bool FlushTransaction() {
             if (transaction != null) {
                 return transaction.Flush();
             }
             return false;
         }
 
-        public virtual void AbortTransaction() {
+        public void AbortTransaction() {
             if (transaction != null) {
                 transaction.Abort();
                 transaction = null;
@@ -62,12 +62,12 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public virtual void UserAbortTransaction() {
+        public void UserAbortTransaction() {
             AbortTransaction();
             userAborted = true;
         }
 
-        public virtual void EndTransaction() {
+        public void EndTransaction() {
             transactionLevel--;
             if (transactionLevel == 0) {
                 Transaction.Commit();

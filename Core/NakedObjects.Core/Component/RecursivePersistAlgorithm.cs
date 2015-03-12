@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Component {
     /// <summary>
     /// Recursively walk the object's fields and collections persisting them.  
     /// </summary>
-    public class RecursivePersistAlgorithm : IPersistAlgorithm {
+    public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RecursivePersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Component {
 
         #region IPersistAlgorithm Members
 
-        public virtual void MakePersistent(INakedObject nakedObject) {
+        public void MakePersistent(INakedObject nakedObject) {
             if (nakedObject.Spec.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
@@ -54,7 +54,7 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public virtual string Name {
+        public string Name {
             get { return "Simple Bottom Up Persistence Walker"; }
         }
 

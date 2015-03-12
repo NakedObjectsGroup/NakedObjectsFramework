@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
-    internal class AggregateOid : IEncodedToStrings, IAggregateOid {
+    public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
         private readonly string fieldName;
         private readonly IMetamodelManager metamodel;
         private readonly IOid parentOid;
@@ -43,23 +43,23 @@ namespace NakedObjects.Core.Adapter {
 
         #region IAggregateOid Members
 
-        public virtual IOid ParentOid {
+        public IOid ParentOid {
             get { return parentOid; }
         }
 
-        public virtual string FieldName {
+        public string FieldName {
             get { return fieldName; }
         }
 
-        public virtual IOid Previous {
+        public IOid Previous {
             get { return null; }
         }
 
-        public virtual bool IsTransient {
+        public bool IsTransient {
             get { return parentOid.IsTransient; }
         }
 
-        public virtual void CopyFrom(IOid oid) {
+        public void CopyFrom(IOid oid) {
             Trace.Assert(false, "CopyFRom not supported on Aggregate oid");
         }
 
@@ -67,7 +67,7 @@ namespace NakedObjects.Core.Adapter {
             get { return metamodel.GetSpecification(typeName); }
         }
 
-        public virtual bool HasPrevious {
+        public bool HasPrevious {
             get { return false; }
         }
 

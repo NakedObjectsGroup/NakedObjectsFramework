@@ -18,7 +18,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    internal abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
+    public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         private readonly INakedObjectManager manager;
         private readonly IObjectSpec returnSpec;
 

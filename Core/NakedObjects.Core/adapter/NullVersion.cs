@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter {
-    public class NullVersion : IVersion, IEncodedToStrings {
+    public sealed class NullVersion : IVersion, IEncodedToStrings {
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -24,11 +24,11 @@ namespace NakedObjects.Core.Adapter {
 
         #region IVersion Members
 
-        public virtual string User {
+        public string User {
             get { return ""; }
         }
 
-        public virtual DateTime? Time {
+        public DateTime? Time {
             get { return DateTime.Now; }
         }
 
@@ -36,7 +36,7 @@ namespace NakedObjects.Core.Adapter {
             get { return null; }
         }
 
-        public virtual bool IsDifferent(IVersion version) {
+        public bool IsDifferent(IVersion version) {
             return !Equals(version);
         }
 
@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Adapter {
             return Digest != digest;
         }
 
-        public virtual string AsSequence() {
+        public string AsSequence() {
             return "";
         }
 
@@ -54,7 +54,7 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        public virtual IVersion Next(string user, DateTime time) {
+        public IVersion Next(string user, DateTime time) {
             throw new UnexpectedCallException();
         }
 

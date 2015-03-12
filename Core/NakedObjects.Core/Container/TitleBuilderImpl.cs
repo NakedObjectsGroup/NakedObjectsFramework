@@ -9,7 +9,7 @@ using System;
 using System.Text;
 
 namespace NakedObjects.Core.Container {
-    internal class TitleBuilderImpl : ITitleBuilder {
+    public sealed class TitleBuilderImpl : ITitleBuilder {
         private const string Space = " ";
         private StringBuilder Title { get; set; }
         private IDomainObjectContainer Container { get; set; }

@@ -9,7 +9,7 @@ namespace NakedObjects.Core.Reflect {
     /// <summary>
     ///     An instance of this type is used to allow something
     /// </summary>
-    public class Allow : ConsentAbstract {
+    public sealed class Allow : ConsentAbstract {
         /// <summary>
         ///     An Allow object with no reason
         /// </summary>
