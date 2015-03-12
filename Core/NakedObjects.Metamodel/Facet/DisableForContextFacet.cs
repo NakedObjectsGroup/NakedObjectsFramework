@@ -16,7 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
+    public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
         private readonly Func<object, Object[], object> methodDelegate;
 
@@ -28,12 +28,12 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public virtual string Disables(IInteractionContext ic) {
+        public string Disables(IInteractionContext ic) {
             INakedObject target = ic.Target;
             return DisabledReason(target);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 

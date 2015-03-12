@@ -15,7 +15,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
+    public sealed class OneToManyAssociationSpecImmutable : AssociationSpecImmutable, IOneToManyAssociationSpecImmutable {
         private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly Type defaultElementType;
         private readonly IObjectSpecImmutable ownerSpec;

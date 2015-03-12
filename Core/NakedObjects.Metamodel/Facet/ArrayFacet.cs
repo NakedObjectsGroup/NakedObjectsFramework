@@ -12,7 +12,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ArrayFacet : CollectionFacet {
+    public sealed class ArrayFacet : CollectionFacet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}
 

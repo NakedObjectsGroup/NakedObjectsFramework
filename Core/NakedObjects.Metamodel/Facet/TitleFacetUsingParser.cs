@@ -14,7 +14,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
+    public sealed class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         private readonly IValueSemanticsProvider<T> parser;
 
         public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)

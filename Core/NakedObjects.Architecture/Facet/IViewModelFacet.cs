@@ -6,14 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
     ///     Indicates that class is a view model
     /// </summary>
     public interface IViewModelFacet : IFacet {
-        string[] Derive(INakedObject nakedObject);
-        void Populate(string[] keys, INakedObject nakedObject);
+        string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
+        void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
         bool IsEditView(INakedObject nakedObject);
     }
 }

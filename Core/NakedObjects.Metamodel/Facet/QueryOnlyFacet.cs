@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
+    public sealed class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
         public QueryOnlyFacet(ISpecification holder)
             : base(typeof (IQueryOnlyFacet), holder) {}
     }

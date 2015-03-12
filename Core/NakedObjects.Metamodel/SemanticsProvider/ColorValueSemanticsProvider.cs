@@ -16,7 +16,7 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    internal class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
+    public sealed class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IColorValueFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 4;

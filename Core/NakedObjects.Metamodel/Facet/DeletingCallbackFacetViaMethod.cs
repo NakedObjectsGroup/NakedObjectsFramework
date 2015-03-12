@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
+    public sealed class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
         private readonly Action<object> deletingDelegate;
         private readonly MethodInfo method;
 

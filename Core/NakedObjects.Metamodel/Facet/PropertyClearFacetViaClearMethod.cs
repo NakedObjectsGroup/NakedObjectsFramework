@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
+    public sealed class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
     

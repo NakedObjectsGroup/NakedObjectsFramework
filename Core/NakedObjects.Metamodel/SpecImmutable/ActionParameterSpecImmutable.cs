@@ -16,7 +16,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
+    public sealed class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
         private readonly IIdentifier identifier;
 

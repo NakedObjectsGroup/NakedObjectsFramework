@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class NullableFacetAlways : FacetAbstract, INullableFacet {
+    public sealed class NullableFacetAlways : FacetAbstract, INullableFacet {
         public NullableFacetAlways(ISpecification holder) : base(typeof (INullableFacet), holder) {}
     }
 }

@@ -147,7 +147,7 @@ namespace NakedObjects.Core.Component {
             }
 
             if (!vmoid.IsFinal) {
-                vmoid.UpdateKeys(nakedObject.Spec.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
+                vmoid.UpdateKeys(nakedObject.Spec.GetFacet<IViewModelFacet>().Derive(nakedObject, nakedObjectManager, injector), true);
             }
         }
 
@@ -206,7 +206,7 @@ namespace NakedObjects.Core.Component {
             string[] keys = oid.Keys;
             var spec = (IObjectSpec) oid.Spec;
             INakedObject vm = CreateViewModel(spec);
-            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm);
+            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, nakedObjectManager, injector);
             nakedObjectManager.UpdateViewModel(vm, keys);
             return vm;
         }

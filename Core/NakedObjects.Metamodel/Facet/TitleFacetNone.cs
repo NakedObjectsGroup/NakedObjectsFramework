@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class TitleFacetNone : TitleFacetAbstract {
+    public sealed class TitleFacetNone : TitleFacetAbstract {
         public TitleFacetNone(ISpecification holder)
             : base(holder) {}
 

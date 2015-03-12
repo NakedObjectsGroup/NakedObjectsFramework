@@ -12,7 +12,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
     [Serializable]
-    internal class SerializedData {
+    public sealed class SerializedData {
         public IList<string> SpecKeys { get; set; }
         public IList<ITypeSpecImmutable> SpecValues { get; set; }
         public IList<IMenuImmutable> MenuValues { get; set; }

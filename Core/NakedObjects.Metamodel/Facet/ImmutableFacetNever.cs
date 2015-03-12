@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ImmutableFacetNever : ImmutableFacetAbstract {
+    public sealed class ImmutableFacetNever : ImmutableFacetAbstract {
         public ImmutableFacetNever(ISpecification holder)
             : base(WhenTo.Never, holder) {}
 

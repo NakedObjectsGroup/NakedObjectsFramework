@@ -11,7 +11,7 @@ namespace NakedObjects.Meta.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    internal class NamedAndDescribedSpecification : Specification, INamedAndDescribed {
+    public sealed class NamedAndDescribedSpecification : Specification, INamedAndDescribed {
         private readonly string description;
         private readonly string name;
 
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Spec {
             get { return name; }
         }
 
-        public virtual string Description {
+        public string Description {
             get { return description; }
         }
 

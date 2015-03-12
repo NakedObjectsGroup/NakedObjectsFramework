@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
+    public sealed class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
         public PropertyValidateFacetDefault(ISpecification holder)
             : base(typeof (IPropertyValidateFacet), holder) {}
 

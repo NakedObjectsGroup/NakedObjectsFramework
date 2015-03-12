@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class AjaxFacet : MarkerFacetAbstract, IAjaxFacet {
+    public sealed class AjaxFacet : MarkerFacetAbstract, IAjaxFacet {
         public AjaxFacet(ISpecification holder)
             : base(Type, holder) {}
 

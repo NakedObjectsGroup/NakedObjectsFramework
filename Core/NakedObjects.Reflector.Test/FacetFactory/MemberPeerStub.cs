@@ -9,15 +9,24 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable {
+    internal class MemberPeerStub : Specification, IMemberSpecImmutable {
+        private readonly string description;
+        private readonly string name;
+
         public MemberPeerStub(string name)
-            : base(name) {}
+            : this(name, null) {}
+
+        public MemberPeerStub(string name, string description) {
+            this.name = name;
+            this.description = description;
+        }
 
         public MemberPeerStub Spec {
             get { return this; }
@@ -35,6 +44,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         public override IIdentifier Identifier {
             get { return new IdentifierNull(this); }
+        }
+
+        #endregion
+
+        #region INamedAndDescribed Members
+
+        public string Name {
+            get { return name; }
+        }
+
+        public string Description {
+            get { return description; }
         }
 
         #endregion

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
+    public sealed class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
         public IdempotentFacet(ISpecification holder)
             : base(typeof (IIdempotentFacet), holder) {}
     }

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PluralFacetInferred : PluralFacetAbstract {
+    public sealed class PluralFacetInferred : PluralFacetAbstract {
         public PluralFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}
     }

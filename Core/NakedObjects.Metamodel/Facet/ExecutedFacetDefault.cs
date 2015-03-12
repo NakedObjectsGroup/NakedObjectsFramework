@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ExecutedFacetDefault : ExecutedFacetAbstract {
+    public sealed class ExecutedFacetDefault : ExecutedFacetAbstract {
         public ExecutedFacetDefault(ISpecification holder)
             : base(Where.Default, holder) {}
     }

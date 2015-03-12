@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
+    public sealed class ObjectSpecImmutable : TypeSpecImmutable, IObjectSpecBuilder {
         public ObjectSpecImmutable(Type type) : base(type) {}
 
         #region ISerializable

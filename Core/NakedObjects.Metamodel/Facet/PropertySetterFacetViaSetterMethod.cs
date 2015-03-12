@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
+    public sealed class PropertySetterFacetViaSetterMethod : PropertySetterFacetAbstract {
         private readonly PropertyInfo property;
 
         public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)

@@ -15,7 +15,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    internal class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
+    public sealed class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IEnumValueFacet {
         private const bool EqualBycontent = true;
         private const bool Immutable = true;
         private const int TypicalLengthConst = 11;

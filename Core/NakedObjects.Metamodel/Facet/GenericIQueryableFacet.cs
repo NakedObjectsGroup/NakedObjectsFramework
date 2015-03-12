@@ -17,7 +17,7 @@ using NakedObjects.Core.Util.Query;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class GenericIQueryableFacet : CollectionFacetAbstract {
+    public sealed class GenericIQueryableFacet : CollectionFacetAbstract {
         public GenericIQueryableFacet(ISpecification holder)
             : this(holder, false) {}
 
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        protected static IQueryable<T> AsGenericIQueryable<T>(INakedObject collection) {
+        private static IQueryable<T> AsGenericIQueryable<T>(INakedObject collection) {
             var queryable = (IQueryable<T>) collection.Object;
             return queryable.IsOrdered() ? queryable : queryable.OrderBy(x => "");
         }

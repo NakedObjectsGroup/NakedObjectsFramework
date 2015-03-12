@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class RegExFacet : FacetAbstract, IRegExFacet {
+    public sealed class RegExFacet : FacetAbstract, IRegExFacet {
         private readonly string failureMessage;
         private readonly string formatPattern;
         private readonly bool isCaseSensitive;
@@ -63,11 +63,11 @@ namespace NakedObjects.Meta.Facet {
             return !Pattern.IsMatch(text);
         }
 
-        public virtual string FailureMessage {
+        public string FailureMessage {
             get { return failureMessage; }
         }
 
-        public virtual string Invalidates(IInteractionContext ic) {
+        public string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (proposedArgument == null) {
                 return null;
@@ -80,7 +80,7 @@ namespace NakedObjects.Meta.Facet {
             return failureMessage ?? Resources.NakedObjects.InvalidEntry;
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
         }
 

@@ -14,7 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
+    public sealed class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate; 
 

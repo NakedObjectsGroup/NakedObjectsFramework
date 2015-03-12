@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class MaxLengthFacetZero : MaxLengthFacetAbstract {
+    public sealed class MaxLengthFacetZero : MaxLengthFacetAbstract {
         private const int NoLimit = 0;
 
         public MaxLengthFacetZero(ISpecification holder)

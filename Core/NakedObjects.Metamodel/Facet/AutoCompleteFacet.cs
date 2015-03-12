@@ -17,8 +17,8 @@ using NakedObjects.Core.Util.Query;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
-        protected const int DefaultPageSize = 50;
+    public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
+        private const int DefaultPageSize = 50;
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
             get { return typeof (IAutoCompleteFacet); }
         }
 
-        public int PageSize { get; protected set; }
+        public int PageSize { get; private set; }
 
         #region IAutoCompleteFacet Members
 

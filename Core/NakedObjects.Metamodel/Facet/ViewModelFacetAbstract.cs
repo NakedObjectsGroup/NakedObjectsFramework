@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
@@ -18,8 +19,8 @@ namespace NakedObjects.Meta.Facet {
 
         #region IViewModelFacet Members
 
-        public abstract string[] Derive(INakedObject nakedObject);
-        public abstract void Populate(string[] keys, INakedObject nakedObject);
+        public abstract string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
+        public abstract void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
 
         public virtual bool IsEditView(INakedObject nakedObject) {
             return false;

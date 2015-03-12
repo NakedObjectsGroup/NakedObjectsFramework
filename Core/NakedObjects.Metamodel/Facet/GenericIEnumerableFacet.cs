@@ -16,8 +16,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class GenericIEnumerableFacet : CollectionFacetAbstract {
-        internal class IteratorWrapper<T> : IEnumerable<T> {
+    public sealed class GenericIEnumerableFacet : CollectionFacetAbstract {
+        public sealed class IteratorWrapper<T> : IEnumerable<T> {
             private readonly IEnumerable iterator;
 
             public IteratorWrapper(IEnumerable iterator) {
@@ -47,7 +47,7 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        protected static IEnumerable<T> AsGenericIEnumerable<T>(INakedObject collection) {
+        private static IEnumerable<T> AsGenericIEnumerable<T>(INakedObject collection) {
             var objectType = collection.Object.GetType();
 
             if (objectType.GenericTypeArguments.Count() == 1) {

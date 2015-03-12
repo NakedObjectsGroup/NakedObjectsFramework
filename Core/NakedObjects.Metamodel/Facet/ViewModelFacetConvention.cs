@@ -7,28 +7,26 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ViewModelFacetConvention : ViewModelFacetAbstract {
+    public sealed class ViewModelFacetConvention : ViewModelFacetAbstract {
         public ViewModelFacetConvention(ISpecification holder)
             : base(Type, holder) {}
-
-        protected ViewModelFacetConvention(Type type, ISpecification holder)
-            : base(type, holder) {}
 
         private static Type Type {
             get { return typeof (IViewModelFacet); }
         }
 
-        public override string[] Derive(INakedObject nakedObject) {
+        public override string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
             return nakedObject.GetDomainObject<IViewModel>().DeriveKeys();
         }
 
-        public override void Populate(string[] keys, INakedObject nakedObject) {
+        public override void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
             nakedObject.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
         }
     }

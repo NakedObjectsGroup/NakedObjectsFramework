@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
+    public sealed class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
         private readonly IFromStream fromStream;
 
         public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)

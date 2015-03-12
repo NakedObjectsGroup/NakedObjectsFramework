@@ -15,16 +15,18 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class CollectionFacet : CollectionFacetAbstract {
+    public class CollectionFacet : CollectionFacetAbstract {
         public CollectionFacet(ISpecification holder)
             : base(holder, false) {}
 
-        public override bool IsQueryable {
-            get { return false; }
-        }
+       
 
         protected static IList AsCollection(INakedObject collection) {
             return (IList) collection.Object;
+        }
+
+        public override bool IsQueryable {
+            get { return false; }
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ImmutableFacetAnnotation : ImmutableFacetImpl {
+    public sealed class ImmutableFacetAnnotation : ImmutableFacetImpl {
         public ImmutableFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}
     }

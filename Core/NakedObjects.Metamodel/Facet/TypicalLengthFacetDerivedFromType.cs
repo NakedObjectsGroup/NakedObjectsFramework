@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
+    public sealed class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
         public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)
             : base(typicalLengthFacet.Value, holder) {}
     }

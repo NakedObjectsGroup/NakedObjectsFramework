@@ -13,7 +13,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Authorization {
     [Serializable]
-    internal class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
+    public sealed class AuthorizationHideForSessionFacet : HideForSessionFacetAbstract {
         private readonly IAuthorizationManager authorizationManager;
         private readonly IIdentifier identifier;
 

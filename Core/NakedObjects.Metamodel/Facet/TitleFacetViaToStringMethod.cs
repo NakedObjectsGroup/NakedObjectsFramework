@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
+    public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
         private readonly Func<object, object[], object> maskDelegate;
 

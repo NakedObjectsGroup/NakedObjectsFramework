@@ -16,7 +16,7 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
+    public sealed class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
         public HiddenFacet(WhenTo when, ISpecification holder)
             : base(typeof (IHiddenFacet), holder, when) {}
 
@@ -44,11 +44,11 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public virtual string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 

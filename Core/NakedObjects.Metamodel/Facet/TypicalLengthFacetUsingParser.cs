@@ -12,7 +12,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
+    public sealed class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
         private readonly IValueSemanticsProvider<T> parser;
 
         public TypicalLengthFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)

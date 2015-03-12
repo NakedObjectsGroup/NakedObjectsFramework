@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
+    public sealed class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
         private readonly object value;
 
         public PropertyDefaultFacetAnnotation(object value, ISpecification holder)

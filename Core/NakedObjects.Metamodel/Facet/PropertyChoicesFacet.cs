@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PropertyChoicesFacetx : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
+    public sealed class PropertyChoicesFacetx : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
         private readonly MethodInfo method;
         private readonly string[] parameterNames;
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;

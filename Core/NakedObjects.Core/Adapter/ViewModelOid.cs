@@ -80,6 +80,13 @@ namespace NakedObjects.Core.Adapter {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
+        public void UpdateKeys(string[] newKeys, bool final) {
+            previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
+            Keys = newKeys; // after old key is saved ! 
+            IsFinal = final;
+            CacheState();
+        }
+
         #endregion
 
         private void CacheState() {
@@ -90,13 +97,6 @@ namespace NakedObjects.Core.Adapter {
             object keys = Keys.Aggregate((s, t) => s + ":" + t);
 
             cachedToString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
-        }
-
-        public void UpdateKeys(string[] newKeys, bool final) {
-            previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
-            Keys = newKeys; // after old key is saved ! 
-            IsFinal = final;
-            CacheState();
         }
 
         #region Object Overrides

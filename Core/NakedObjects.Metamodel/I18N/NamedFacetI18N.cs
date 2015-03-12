@@ -13,7 +13,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.I18N {
     [Serializable]
-    internal class NamedFacetI18N : NamedFacetAbstract {
+    public sealed class NamedFacetI18N : NamedFacetAbstract {
         public NamedFacetI18N(string valueString, ISpecification holder)
             : base(valueString, holder) {
             ShortName = TypeNameUtils.GetShortName(valueString);

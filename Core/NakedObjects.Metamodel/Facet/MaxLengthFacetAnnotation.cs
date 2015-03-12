@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class MaxLengthFacetAnnotation : MaxLengthFacetAbstract {
+    public sealed class MaxLengthFacetAnnotation : MaxLengthFacetAbstract {
         public MaxLengthFacetAnnotation(int value, ISpecification holder)
             : base(value, holder) {}
     }

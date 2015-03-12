@@ -10,5 +10,6 @@ namespace NakedObjects.Architecture.Adapter {
         string TypeName { get; }
         string[] Keys { get; }
         bool IsFinal { get; }
+        void UpdateKeys(string[] newKeys, bool final);
     }
 }

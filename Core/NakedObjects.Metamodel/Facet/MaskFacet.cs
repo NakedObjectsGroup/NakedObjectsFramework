@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
+    public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
         public MaskFacet(string value, ISpecification holder)
             : base(typeof (IMaskFacet), holder, value) {}
 
@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
             return false;
         }
 
-        public virtual string Invalidates(IInteractionContext ic) {
+        public string Invalidates(IInteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;
             if (DoesNotMatch(proposedArgument)) {
                 return string.Format(Resources.NakedObjects.MaskMismatch, proposedArgument.TitleString(), Value);
@@ -34,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return new InvalidMaskException(ic, Invalidates(ic));
         }
 

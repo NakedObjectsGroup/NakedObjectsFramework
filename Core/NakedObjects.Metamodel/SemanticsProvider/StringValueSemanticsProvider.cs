@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    internal class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
+    public sealed class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
         private const string DefaultValueConst = null;
         private const bool EqualByContent = true;
         private const bool Immutable = true;

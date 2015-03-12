@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
+    public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly bool isMultiple;

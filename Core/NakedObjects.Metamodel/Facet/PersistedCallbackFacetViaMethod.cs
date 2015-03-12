@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
+    public sealed class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
         private readonly Action<object> persistedDelegate;
         private readonly MethodInfo method;
 

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class MultiLineFacetAnnotation : MultiLineFacetAbstract {
+    public sealed class MultiLineFacetAnnotation : MultiLineFacetAbstract {
         public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
             : base(numberOfLines, width, holder) {}
     }

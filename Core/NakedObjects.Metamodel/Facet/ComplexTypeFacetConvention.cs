@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
+    public sealed class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
         public ComplexTypeFacetConvention(ISpecification holder)
             : base(holder) {}
     }

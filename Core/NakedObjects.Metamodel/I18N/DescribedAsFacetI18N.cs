@@ -11,7 +11,7 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.I18N {
     [Serializable]
-    internal class DescribedAsFacetI18N : DescribedAsFacetAbstract {
+    public sealed class DescribedAsFacetI18N : DescribedAsFacetAbstract {
         public DescribedAsFacetI18N(string valueString, ISpecification holder)
             : base(valueString, holder) {}
     }

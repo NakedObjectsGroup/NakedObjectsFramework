@@ -15,7 +15,7 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    internal class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
+    public sealed class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {

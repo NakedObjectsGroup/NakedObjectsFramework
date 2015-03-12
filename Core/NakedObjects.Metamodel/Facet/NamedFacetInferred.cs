@@ -12,7 +12,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class NamedFacetInferred : NamedFacetAbstract {
+    public sealed class NamedFacetInferred : NamedFacetAbstract {
         public NamedFacetInferred(string value, ISpecification holder)
             : base(value, holder) {
             ShortName = TypeNameUtils.GetShortName(value);

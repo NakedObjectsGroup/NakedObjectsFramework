@@ -14,13 +14,13 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
+    public sealed class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
         public BoundedFacet(ISpecification holder)
             : base(typeof (IBoundedFacet), holder) {}
 
         #region IBoundedFacet Members
 
-        public virtual string Disables(IInteractionContext ic) {
+        public string Disables(IInteractionContext ic) {
             if (!ic.TypeEquals(InteractionType.ObjectPersist)) {
                 return null;
             }
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             return DisabledReason(target);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return new DisabledException(ic, Disables(ic));
         }
 

@@ -13,7 +13,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
+    public sealed class AuthorizationDisableForSessionFacet : DisableForSessionFacetAbstract {
         private readonly string[] roles;
         private readonly string[] users;
 

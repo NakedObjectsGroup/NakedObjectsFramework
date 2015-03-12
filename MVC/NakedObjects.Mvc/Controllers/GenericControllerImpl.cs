@@ -134,6 +134,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             throw new NotImplementedException(controlData.SubAction.ToString());
         }
 
+        // Not clear that this is ever called
         [HttpGet]
         public virtual ActionResult Action(ObjectAndControlData controlData) {
             return View("ActionDialog", new FindViewModel {

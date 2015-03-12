@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
+    public sealed class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
@@ -27,11 +27,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionParameterValidationFacet Members
 
-        public virtual string Invalidates(IInteractionContext ic) {
+        public string Invalidates(IInteractionContext ic) {
             return InvalidReason(ic.Target, ic.ProposedArgument);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
+        public Exception CreateExceptionFor(IInteractionContext ic) {
             return new ActionArgumentsInvalidException(ic, Invalidates(ic));
         }
 

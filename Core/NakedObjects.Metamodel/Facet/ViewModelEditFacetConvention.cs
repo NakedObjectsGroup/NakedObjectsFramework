@@ -7,16 +7,26 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ViewModelEditFacetConvention : ViewModelFacetConvention {
+    public sealed class ViewModelEditFacetConvention : ViewModelFacetAbstract {
         public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) {}
 
         private static Type Type {
             get { return typeof (IViewModelFacet); }
+        }
+
+        public override string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
+            return nakedObject.GetDomainObject<IViewModel>().DeriveKeys();
+        }
+
+        public override void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
+            nakedObject.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
         }
 
         public override bool IsEditView(INakedObject nakedObject) {

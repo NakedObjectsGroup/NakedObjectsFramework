@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    internal class MenuAction : IMenuActionImmutable {
+    public sealed class MenuAction : IMenuActionImmutable {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
             Action = actionSpec;
             Name = renamedTo ?? actionSpec.Name;

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    internal class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
+    public sealed class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
         public ServiceSpecImmutable(Type type) : base(type) {}
         // The special constructor is used to deserialize values. 
         public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}

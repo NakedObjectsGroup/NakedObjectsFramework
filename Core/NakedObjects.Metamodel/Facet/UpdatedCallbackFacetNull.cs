@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
+    public sealed class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
         public UpdatedCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 

@@ -18,7 +18,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
+    public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateObjectFacet));
 
         public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)

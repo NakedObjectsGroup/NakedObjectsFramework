@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class GenericCollectionFacet : CollectionFacetAbstract {
+    public sealed class GenericCollectionFacet : CollectionFacetAbstract {
         public GenericCollectionFacet(ISpecification holder)
             : base(holder, false) {}
 
@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        protected static ICollection<T> AsGenericCollection<T>(INakedObject collection) {
+        private static ICollection<T> AsGenericCollection<T>(INakedObject collection) {
             return (ICollection<T>) collection.Object;
         }
 

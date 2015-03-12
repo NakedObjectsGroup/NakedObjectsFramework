@@ -12,8 +12,8 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class ImmutableFacetImpl : ImmutableFacetAbstract {
-        public ImmutableFacetImpl(WhenTo when, ISpecification holder)
+    public abstract class ImmutableFacetImpl : ImmutableFacetAbstract {
+        protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 
         public override string DisabledReason(INakedObject target) {

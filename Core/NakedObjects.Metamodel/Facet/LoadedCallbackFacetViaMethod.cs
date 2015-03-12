@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    internal class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
+    public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
         private readonly Action<object> loadedDelegate;
         private readonly MethodInfo method;
 

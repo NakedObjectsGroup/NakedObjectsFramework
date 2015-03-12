@@ -142,7 +142,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
-            string[] key = facet.Derive(value);
+            string[] key = facet.Derive(value, null, null);
 
             Assert.AreEqual(2, key.Length);
             Assert.AreEqual(testClass.Value1, key[0]);
@@ -211,7 +211,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             INakedObject value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
-            facet.Populate(keys, value);
+            facet.Populate(keys, value, null, null);
 
             Assert.AreEqual(keys[0], testClass.Value1);
             Assert.AreEqual(keys[1], testClass.Value2);
