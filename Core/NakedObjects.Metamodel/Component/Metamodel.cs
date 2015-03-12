@@ -15,7 +15,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Component {
     [Serializable]
-    public class Metamodel : IMetamodelBuilder {
+    public sealed class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
         private readonly ISpecificationCache cache;
         private readonly IClassStrategy classStrategy;
@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Component {
 
         #region IMetamodelBuilder Members
 
-        public virtual ITypeSpecImmutable[] AllSpecifications {
+        public ITypeSpecImmutable[] AllSpecifications {
             get { return cache.AllSpecifications(); }
         }
 

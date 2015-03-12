@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects Framework itself.
     /// </summary>
-    public class FallbackFacetFactory : FacetFactoryAbstract {
+    public sealed class FallbackFacetFactory : FacetFactoryAbstract {
         public FallbackFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) {}
 

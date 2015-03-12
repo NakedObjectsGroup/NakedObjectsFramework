@@ -17,7 +17,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class CallbackMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class CallbackMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.DeletedMethod,
             PrefixesAndRecognisedMethods.DeletingMethod,

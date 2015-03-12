@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
+    public sealed class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
         public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)

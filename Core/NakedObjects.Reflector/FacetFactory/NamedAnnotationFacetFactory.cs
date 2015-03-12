@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NamedAnnotationFacetFactory));
         private Type currentType;
         private IList<string> namesScratchPad = new List<string>();

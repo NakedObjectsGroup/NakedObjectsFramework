@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PasswordAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 

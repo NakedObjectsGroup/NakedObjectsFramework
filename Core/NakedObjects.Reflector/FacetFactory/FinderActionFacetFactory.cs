@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Creates an <see cref="IFinderActionFacet" /> based on the presence of an
     ///     <see cref="FinderActionAttribute" /> annotation
     /// </summary>
-    public class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public FinderActionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Actions) {}
 

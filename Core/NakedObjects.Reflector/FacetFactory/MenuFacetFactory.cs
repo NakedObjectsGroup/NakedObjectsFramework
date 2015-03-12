@@ -15,7 +15,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class MenuFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class MenuFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
 
         static MenuFacetFactory() {

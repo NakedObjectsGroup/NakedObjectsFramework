@@ -13,7 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public sealed class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public LongValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {

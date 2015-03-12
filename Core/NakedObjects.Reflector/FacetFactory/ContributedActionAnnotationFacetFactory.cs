@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
-    public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ContributedActionAnnotationFacetFactory));
 
         public ContributedActionAnnotationFacetFactory(int numericOrder)

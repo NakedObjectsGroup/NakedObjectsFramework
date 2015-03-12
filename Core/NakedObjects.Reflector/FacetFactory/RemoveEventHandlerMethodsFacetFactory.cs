@@ -17,7 +17,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Removes any calls to <c>Init</c>
     /// </summary>
-    public class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveEventHandlerMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

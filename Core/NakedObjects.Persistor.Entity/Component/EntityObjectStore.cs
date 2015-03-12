@@ -34,7 +34,7 @@ using NakedObjects.Persistor.Entity.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {
-    public class EntityObjectStore : IObjectStore {
+    public sealed class EntityObjectStore : IObjectStore {
         #region Delegates
 
         public delegate INakedObject CreateAdapterDelegate(IOid oid, object domainObject);
@@ -772,7 +772,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             command.Execute();
         }
 
-        protected static void ExecuteCommands(IPersistenceCommand[] commands) {
+        private static void ExecuteCommands(IPersistenceCommand[] commands) {
             commands.ForEach(command => command.Execute());
         }
 

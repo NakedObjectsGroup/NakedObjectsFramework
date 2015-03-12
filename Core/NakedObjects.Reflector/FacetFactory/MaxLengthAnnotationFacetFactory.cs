@@ -17,7 +17,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MaxLengthAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 

@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeMarkerFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

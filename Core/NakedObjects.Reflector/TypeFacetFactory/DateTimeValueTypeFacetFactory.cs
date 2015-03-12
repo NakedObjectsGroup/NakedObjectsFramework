@@ -13,7 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+    public sealed class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DateTimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {

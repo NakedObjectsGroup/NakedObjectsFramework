@@ -16,7 +16,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     /// This factory filters out properties on system types. So for example 'Length' will not show up when displaying a string.
     /// </summary>
-    public class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
+    public sealed class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (SystemClassPropertyFilteringFactory));
 
         public SystemClassPropertyFilteringFactory(int numericOrder)

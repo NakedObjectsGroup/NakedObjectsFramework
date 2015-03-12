@@ -16,7 +16,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Adapter {
-    internal class EntityOid : IEncodedToStrings, IEntityOid {
+    public sealed  class EntityOid : IEncodedToStrings, IEntityOid {
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;

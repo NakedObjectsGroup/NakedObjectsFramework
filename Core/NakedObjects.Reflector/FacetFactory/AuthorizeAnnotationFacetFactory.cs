@@ -17,7 +17,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Security;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
         public AuthorizeAnnotationFacetFactory(int numericOrder)

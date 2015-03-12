@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Component {
     [Serializable]
-    public class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
+    public sealed class ImmutableInMemorySpecCache : ISpecificationCache, ISerializable, IDeserializationCallback {
         private readonly SerializedData tempData;
         private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
         private ImmutableDictionary<string, ITypeSpecImmutable> specs = ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
@@ -51,7 +51,7 @@ namespace NakedObjects.Meta.Component {
 
         #region ISerializable Members
 
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
             var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
             info.AddValue<SerializedData>("data", data);
         }
@@ -68,19 +68,19 @@ namespace NakedObjects.Meta.Component {
             }
         }
 
-        public virtual ITypeSpecImmutable GetSpecification(string key) {
+        public ITypeSpecImmutable GetSpecification(string key) {
             return specs.ContainsKey(key) ? specs[key] : null;
         }
 
-        public virtual void Cache(string key, ITypeSpecImmutable spec) {
+        public void Cache(string key, ITypeSpecImmutable spec) {
             specs = specs.Add(key, spec);
         }
 
-        public virtual void Clear() {
+        public void Clear() {
             specs = specs.Clear();
         }
 
-        public virtual ITypeSpecImmutable[] AllSpecifications() {
+        public ITypeSpecImmutable[] AllSpecifications() {
             return specs.Values.ToArray();
         }
 

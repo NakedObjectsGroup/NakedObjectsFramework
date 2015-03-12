@@ -17,7 +17,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MultiLineAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 

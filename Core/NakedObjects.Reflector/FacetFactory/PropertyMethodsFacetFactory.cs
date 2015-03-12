@@ -22,7 +22,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
+    public sealed class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (PropertyMethodsFacetFactory));
 
         private static readonly string[] FixedPrefixes = {

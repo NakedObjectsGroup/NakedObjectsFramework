@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
-    public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PotencyAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Actions) {}
 

@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {PrefixesAndRecognisedMethods.IconNameMethod};
 
         public IconMethodFacetFactory(int numericOrder)

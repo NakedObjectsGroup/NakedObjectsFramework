@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     which don't require mandatory semantics will potentially replace these where the
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
-    public class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
         public MandatoryDefaultFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 

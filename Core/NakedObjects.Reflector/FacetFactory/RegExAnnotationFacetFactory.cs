@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RegExAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 

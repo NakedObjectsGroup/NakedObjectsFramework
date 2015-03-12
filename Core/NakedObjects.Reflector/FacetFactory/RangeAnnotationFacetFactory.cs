@@ -18,7 +18,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
         public RangeAnnotationFacetFactory(int numericOrder)

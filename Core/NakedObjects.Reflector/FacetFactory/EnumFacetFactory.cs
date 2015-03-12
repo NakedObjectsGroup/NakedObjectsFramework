@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class EnumFacetFactory : FacetFactoryAbstract {
+    public sealed class EnumFacetFactory : FacetFactoryAbstract {
         public EnumFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 

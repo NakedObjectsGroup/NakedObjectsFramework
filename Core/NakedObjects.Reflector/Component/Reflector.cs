@@ -24,7 +24,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
-    public class Reflector : IReflector {
+    public sealed class Reflector : IReflector {
         private static readonly ILog Log;
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
@@ -80,7 +80,7 @@ namespace NakedObjects.Reflect.Component {
             get { return metamodel; }
         }
 
-        public virtual ITypeSpecBuilder[] AllObjectSpecImmutables {
+        public ITypeSpecBuilder[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
         }
 
@@ -92,12 +92,12 @@ namespace NakedObjects.Reflect.Component {
             }
         }
 
-        public virtual ITypeSpecBuilder LoadSpecification(Type type) {
+        public ITypeSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             return (ITypeSpecBuilder) metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 
-        public virtual T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
+        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
             return (T) LoadSpecification(type);
         }
 

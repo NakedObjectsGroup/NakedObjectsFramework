@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Adapter {
             this.lifecycleManager = lifecycleManager;
 
             this.poco = poco;
-            this.Oid = oid;
+            Oid = oid;
             ResolveState = new ResolveStateMachine(this, session);
             version = new NullVersion();
         }

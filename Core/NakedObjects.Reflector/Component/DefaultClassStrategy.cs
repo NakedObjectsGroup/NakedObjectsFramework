@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Component {
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class DefaultClassStrategy : IClassStrategy {
+    public sealed class DefaultClassStrategy : IClassStrategy {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
         // only intended for use during initial reflection
@@ -33,7 +33,7 @@ namespace NakedObjects.Reflect.Component {
 
         #region IClassStrategy Members
 
-        public virtual bool IsTypeToBeIntrospected(Type type) {
+        public bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflect.Component {
                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
         }
 
-        public virtual Type GetType(Type type) {
+        public Type GetType(Type type) {
             Type returnType = FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }

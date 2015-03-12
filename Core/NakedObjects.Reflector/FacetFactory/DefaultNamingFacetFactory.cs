@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class DefaultNamingFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class DefaultNamingFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
         public DefaultNamingFacetFactory(int numericOrder)

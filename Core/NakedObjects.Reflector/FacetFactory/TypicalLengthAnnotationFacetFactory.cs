@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypicalLengthAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 

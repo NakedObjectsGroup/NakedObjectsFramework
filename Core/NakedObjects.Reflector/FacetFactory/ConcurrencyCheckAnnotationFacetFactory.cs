@@ -17,7 +17,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ConcurrencyCheckAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) {}
 

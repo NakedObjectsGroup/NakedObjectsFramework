@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
+    public sealed class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.AutoCompletePrefix,
             PrefixesAndRecognisedMethods.ParameterDefaultPrefix,

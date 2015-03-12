@@ -15,7 +15,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
         public PropertyValidateDefaultFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) {}
 

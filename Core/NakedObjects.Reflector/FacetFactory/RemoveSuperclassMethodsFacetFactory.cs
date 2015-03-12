@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <para>
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
-    public class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
+    public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
         private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)

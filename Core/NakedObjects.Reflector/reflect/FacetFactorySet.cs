@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect {
-    internal class FacetFactorySet : IFacetFactorySet {
+    public sealed class FacetFactorySet : IFacetFactorySet {
         private readonly IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
 
         /// <summary>

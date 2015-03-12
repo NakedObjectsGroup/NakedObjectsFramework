@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <para>
     ///     Does not add any <see cref="IFacet" />s
     /// </para>
-    public class IteratorFilteringFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class IteratorFilteringFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
 
         static IteratorFilteringFacetFactory() {

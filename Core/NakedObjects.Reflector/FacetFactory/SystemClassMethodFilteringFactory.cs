@@ -16,7 +16,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     /// This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a string.
     /// </summary>
-    public class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
+    public sealed class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (SystemClassMethodFilteringFactory));
 
         public SystemClassMethodFilteringFactory(int numericOrder)

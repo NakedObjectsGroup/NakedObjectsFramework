@@ -17,7 +17,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TableViewAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.CollectionsAndActions) {}
 

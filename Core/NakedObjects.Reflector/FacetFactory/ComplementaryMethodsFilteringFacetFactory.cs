@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
+    public sealed class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ComplementaryMethodsFilteringFacetFactory));
 
         private static readonly string[] PropertyPrefixes = {

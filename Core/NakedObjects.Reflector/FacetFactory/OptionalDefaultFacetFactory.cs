@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     This is an alternative to <see cref="MandatoryDefaultFacetFactory" />. Which works the same way but
     ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
     /// </para>
-    public class OptionalDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class OptionalDefaultFacetFactory : FacetFactoryAbstract {
         public OptionalDefaultFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
 

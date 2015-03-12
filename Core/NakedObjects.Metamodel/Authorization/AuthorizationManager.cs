@@ -20,7 +20,7 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
     [Serializable]
-    public class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
+    public sealed class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;
         private readonly Type[] forFacetTypes = {typeof (IHideForSessionFacet), typeof (IDisableForSessionFacet)};
         private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
@@ -111,7 +111,7 @@ namespace NakedObjects.Meta.Authorization {
             }
         }
 
-        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
+        public IFacet Decorate(IFacet facet, ISpecification holder) {
             Type facetType = facet.FacetType;
             ISpecification specification = facet.Specification;
             IIdentifier identifier = holder.Identifier;
@@ -126,7 +126,7 @@ namespace NakedObjects.Meta.Authorization {
             return facet;
         }
 
-        public virtual Type[] ForFacetTypes {
+        public Type[] ForFacetTypes {
             get { return forFacetTypes; }
         }
 

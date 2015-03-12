@@ -17,7 +17,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect {
-    internal class FacetDecoratorSet : IFacetDecoratorSet {
+    public sealed class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
         public FacetDecoratorSet(IFacetDecorator[] decorators) {
@@ -33,7 +33,7 @@ namespace NakedObjects.Reflect {
 
         #region IFacetDecoratorSet Members
 
-        public virtual void DecorateAllHoldersFacets(ISpecification holder) {
+        public void DecorateAllHoldersFacets(ISpecification holder) {
             if (facetDecorators.Any()) {
                 foreach (Type facetType in holder.FacetTypes) {
                     DecorateFacet(facetType, holder);

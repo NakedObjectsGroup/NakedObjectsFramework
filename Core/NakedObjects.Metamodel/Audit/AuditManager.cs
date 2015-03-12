@@ -19,7 +19,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Audit {
     [Serializable]
-    public class AuditManager : IFacetDecorator, IAuditManager {
+    public sealed class AuditManager : IFacetDecorator, IAuditManager {
         private readonly Type defaultAuditor;
         private readonly Type[] forFacetTypes = {typeof (IActionInvocationFacet), typeof (IUpdatedCallbackFacet), typeof (IPersistedCallbackFacet)};
         private readonly ImmutableDictionary<string, Type> namespaceAuditors;
@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.Audit {
 
         #region IFacetDecorator Members
 
-        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
+        public IFacet Decorate(IFacet facet, ISpecification holder) {
             if (facet.FacetType == typeof (IActionInvocationFacet)) {
                 return new AuditActionInvocationFacet((IActionInvocationFacet) facet, this);
             }
@@ -76,7 +76,7 @@ namespace NakedObjects.Meta.Audit {
             return facet;
         }
 
-        public virtual Type[] ForFacetTypes {
+        public Type[] ForFacetTypes {
             get { return forFacetTypes; }
         }
 

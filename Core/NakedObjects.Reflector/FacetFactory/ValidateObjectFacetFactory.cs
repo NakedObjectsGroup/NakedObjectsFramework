@@ -21,7 +21,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateObjectFacetFactory));
 
         private static readonly string[] FixedPrefixes = {

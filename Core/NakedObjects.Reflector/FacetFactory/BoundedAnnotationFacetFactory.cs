@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class BoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class BoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public BoundedAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

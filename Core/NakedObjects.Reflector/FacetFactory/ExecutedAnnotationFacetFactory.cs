@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Creates an <see cref="IExecutedFacet" /> based on the presence of an
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
-    public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ExecutedAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Actions) {}
 

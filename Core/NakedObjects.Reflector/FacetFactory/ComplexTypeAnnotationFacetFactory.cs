@@ -17,7 +17,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ComplexTypeAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

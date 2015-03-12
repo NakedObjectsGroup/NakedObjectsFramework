@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class ValidateProgrammaticUpdatesAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ValidateProgrammaticUpdatesAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ValidateProgrammaticUpdatesAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

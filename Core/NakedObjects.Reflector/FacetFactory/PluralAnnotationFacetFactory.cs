@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class PluralAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class PluralAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PluralAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 

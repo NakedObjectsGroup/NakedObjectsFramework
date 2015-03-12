@@ -19,7 +19,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
+    public sealed class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {
             PrefixesAndRecognisedMethods.ClearPrefix,
             PrefixesAndRecognisedMethods.ModifyPrefix

@@ -16,7 +16,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
-    public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
+    public sealed class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
         public EagerlyAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.EverythingButActionParameters) {}
 
