@@ -20,7 +20,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    internal class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
+    public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
         private bool? isFindMenuEnabled;
@@ -96,14 +96,14 @@ namespace NakedObjects.Core.Spec {
             return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
         }
 
-        public virtual void InitAssociation(INakedObject inObject, INakedObject associate) {
+        public void InitAssociation(INakedObject inObject, INakedObject associate) {
             var initializerFacet = GetFacet<IPropertyInitializationFacet>();
             if (initializerFacet != null) {
                 initializerFacet.InitProperty(inObject, associate);
             }
         }
 
-        public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
+        public IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
             if (reference != null && !reference.Spec.IsOfType(ReturnSpec)) {
                 return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
             }
@@ -143,7 +143,7 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public virtual void SetAssociation(INakedObject inObject, INakedObject associate) {
+        public void SetAssociation(INakedObject inObject, INakedObject associate) {
             INakedObject currentValue = GetAssociation(inObject);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {

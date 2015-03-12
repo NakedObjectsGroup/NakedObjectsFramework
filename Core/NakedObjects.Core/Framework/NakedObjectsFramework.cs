@@ -10,7 +10,7 @@ using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
-    public class NakedObjectsFramework : INakedObjectsFramework {
+    public sealed class NakedObjectsFramework : INakedObjectsFramework {
         private readonly IContainerInjector containerInjector;
         private readonly IFrameworkResolver frameworkResolver;
         private readonly ILifecycleManager lifecycleManager;

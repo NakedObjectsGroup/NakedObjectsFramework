@@ -14,7 +14,7 @@ using NakedObjects.Core.Container;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class DomainObjectContainerInjector : IContainerInjector {
+    public sealed class DomainObjectContainerInjector : IContainerInjector {
         private readonly List<Type> serviceTypes;
         private IDomainObjectContainer container;
         private bool initialized;

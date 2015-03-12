@@ -16,7 +16,7 @@ using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class MetamodelManager : IMetamodelManager {
+    public sealed class MetamodelManager : IMetamodelManager {
         private readonly IDictionary<ITypeSpecImmutable, ITypeSpec> localCache = new Dictionary<ITypeSpecImmutable, ITypeSpec>();
         private readonly IMetamodel metamodel;
         private readonly SpecFactory specFactory;
@@ -31,7 +31,7 @@ namespace NakedObjects.Core.Component {
 
         #region IMetamodelManager Members
 
-        public virtual ITypeSpec[] AllSpecs {
+        public ITypeSpec[] AllSpecs {
             get { return Metamodel.AllSpecifications.Select(s => specFactory.CreateTypeSpec(s)).ToArray(); }
         }
 

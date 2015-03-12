@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class BatchRunner : IBatchRunner {
+    public sealed class BatchRunner : IBatchRunner {
         private readonly INakedObjectsFramework framework;
 
         public BatchRunner(INakedObjectsFramework framework) {
@@ -19,7 +19,7 @@ namespace NakedObjects.Core.Component {
 
         #region IBatchRunner Members
 
-        public virtual void Run(IBatchStartPoint batchStartPoint) {
+        public void Run(IBatchStartPoint batchStartPoint) {
             framework.ContainerInjector.InitDomainObject(batchStartPoint);
             StartTransaction();
             batchStartPoint.Execute();
@@ -28,11 +28,11 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        protected void StartTransaction() {
+        private void StartTransaction() {
             framework.TransactionManager.StartTransaction();
         }
 
-        protected void EndTransaction() {
+        private void EndTransaction() {
             framework.TransactionManager.EndTransaction();
         }
     }

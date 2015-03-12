@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
-    internal class ObjectSpec : TypeSpec, IObjectSpec {
+    public sealed class ObjectSpec : TypeSpec, IObjectSpec {
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
@@ -31,7 +31,7 @@ namespace NakedObjects.Core.Spec {
 
         #region IObjectSpec Members
 
-        public virtual IAssociationSpec[] Properties {
+        public IAssociationSpec[] Properties {
             get { return objectFields ?? (objectFields = InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray()); }
         }
 

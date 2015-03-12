@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
+    public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
         private readonly DateTime time;
         private readonly string user;
         private readonly object version;

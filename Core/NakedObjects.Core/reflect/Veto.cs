@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Core.Reflect {
-    public class Veto : ConsentAbstract {
+    public sealed class Veto : ConsentAbstract {
         /// <summary>
         ///     A Veto object with no reason
         /// </summary>

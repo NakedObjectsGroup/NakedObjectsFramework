@@ -15,7 +15,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class IdentityMapImpl : IIdentityMap {
+    public sealed class IdentityMapImpl : IIdentityMap {
         private static readonly ILog Log = LogManager.GetLogger(typeof (IdentityMapImpl));
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly IOidGenerator oidGenerator;
@@ -34,17 +34,17 @@ namespace NakedObjects.Core.Component {
 
         #region IIdentityMap Members
 
-        public virtual IEnumerator<INakedObject> GetEnumerator() {
+        public IEnumerator<INakedObject> GetEnumerator() {
             return pocoAdapterMap.GetEnumerator();
         }
 
-        public virtual void Reset() {
+        public void Reset() {
             identityAdapterMap.Reset();
             pocoAdapterMap.Reset();
             unloadedObjects.Clear();
         }
 
-        public virtual void AddAdapter(INakedObject nakedObject) {
+        public void AddAdapter(INakedObject nakedObject) {
             Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObject);
             object obj = nakedObject.Object;
             Assert.AssertFalse("POCO Map already contains object", obj, pocoAdapterMap.ContainsObject(obj));
@@ -66,7 +66,7 @@ namespace NakedObjects.Core.Component {
             nakedObject.LoadAnyComplexTypes();
         }
 
-        public virtual void MadePersistent(INakedObject adapter) {
+        public void MadePersistent(INakedObject adapter) {
             IOid oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
@@ -85,7 +85,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("Made persistent {0}; was {1}", adapter, oid.Previous);
         }
 
-        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
+        public void UpdateViewModel(INakedObject adapter, string[] keys) {
             IOid oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
@@ -102,7 +102,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
         }
 
-        public virtual void Unloaded(INakedObject nakedObject) {
+        public void Unloaded(INakedObject nakedObject) {
             Log.DebugFormat("Unload: {0}", nakedObject);
  
             // If an object is unloaded while its poco still exist then accessing that poco via the reflector will
@@ -117,18 +117,18 @@ namespace NakedObjects.Core.Component {
             pocoAdapterMap.Remove(nakedObject);
         }
 
-        public virtual INakedObject GetAdapterFor(object domainObject) {
+        public INakedObject GetAdapterFor(object domainObject) {
             Assert.AssertNotNull("can't get an adapter for null", this, domainObject);
             return pocoAdapterMap.GetObject(domainObject);
         }
 
-        public virtual INakedObject GetAdapterFor(IOid oid) {
+        public INakedObject GetAdapterFor(IOid oid) {
             Assert.AssertNotNull("OID should not be null", this, oid);
             ProcessChangedOid(oid);
             return identityAdapterMap.GetAdapter(oid);
         }
 
-        public virtual bool IsIdentityKnown(IOid oid) {
+        public bool IsIdentityKnown(IOid oid) {
             Assert.AssertNotNull("OID should not be null", oid);
             ProcessChangedOid(oid);
             return identityAdapterMap.IsIdentityKnown(oid);

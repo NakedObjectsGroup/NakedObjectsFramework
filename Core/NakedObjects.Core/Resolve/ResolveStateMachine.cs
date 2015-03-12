@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Resolve;
 [assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
 namespace NakedObjects.Core.Resolve {
-    internal class ResolveStateMachine : IResolveStateMachine {
+    public sealed class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 
         public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s);
@@ -63,103 +63,103 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: DestroyEvent
 
-        internal class DestroyEvent : IResolveEvent {}
+        public sealed class DestroyEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndPartResolvingEvent
 
-        internal class EndPartResolvingEvent : IResolveEvent {}
+        public sealed class EndPartResolvingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndPartSetupEvent
 
-        internal class EndPartSetupEvent : IResolveEvent {}
+        public sealed class EndPartSetupEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndResolvingEvent
 
-        internal class EndResolvingEvent : IResolveEvent {}
+        public sealed class EndResolvingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndSerializingEvent
 
-        internal class EndSerializingEvent : IResolveEvent {}
+        public sealed class EndSerializingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndSetupEvent
 
-        internal class EndSetupEvent : IResolveEvent {}
+        public sealed class EndSetupEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: EndUpdatingEvent
 
-        internal class EndUpdatingEvent : IResolveEvent {}
+        public sealed class EndUpdatingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: InitializeAggregateEvent
 
-        internal class InitializeAggregateEvent : IResolveEvent {}
+        public sealed class InitializeAggregateEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: InitializePersistentEvent
 
-        internal class InitializePersistentEvent : IResolveEvent {}
+        public sealed class InitializePersistentEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: InitializeTransientEvent
 
-        internal class InitializeTransientEvent : IResolveEvent {}
+        public sealed class InitializeTransientEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: ResetEvent
 
-        internal class ResetEvent : IResolveEvent {}
+        public sealed class ResetEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartPartResolvingEvent
 
-        internal class StartPartResolvingEvent : IResolveEvent {}
+        public sealed class StartPartResolvingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartPartSetupEvent
 
-        internal class StartPartSetupEvent : IResolveEvent {}
+        public sealed class StartPartSetupEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartResolvingEvent
 
-        internal class StartResolvingEvent : IResolveEvent {}
+        public sealed class StartResolvingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartSerializingEvent
 
-        internal class StartSerializingEvent : IResolveEvent {}
+        public sealed class StartSerializingEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartSetupEvent
 
-        internal class StartSetupEvent : IResolveEvent {}
+        public sealed class StartSetupEvent : IResolveEvent {}
 
         #endregion
 
         #region Nested type: StartUpdatingEvent
 
-        internal class StartUpdatingEvent : IResolveEvent {}
+        public sealed class StartUpdatingEvent : IResolveEvent {}
 
         #endregion
 
@@ -169,7 +169,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: AggregatedState
 
-        internal class AggregatedState : ResolveState, IResolveState {
+        public sealed class AggregatedState : ResolveState, IResolveState {
             #region IResolveState Members
 
             public override string Name {
@@ -187,7 +187,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: DestroyedState
 
-        internal class DestroyedState : ResolveState, IResolveState {
+        public sealed class DestroyedState : ResolveState, IResolveState {
             public DestroyedState() {
                 InitialiseEventMap();
             }
@@ -204,7 +204,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndResolvingEvent] = (no, rsm, s) => this;
             }
         }
@@ -213,7 +213,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: GhostState
 
-        internal class GhostState : ResolveState, IResolveState {
+        public sealed class GhostState : ResolveState, IResolveState {
             public GhostState() {
                 InitialiseEventMap();
             }
@@ -230,7 +230,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
                 EventMap[Events.StartPartResolvingEvent] = (no, rsm, s) => States.ResolvingPartState;
                 EventMap[Events.StartResolvingEvent] = (no, rsm, s) => {
@@ -248,7 +248,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: NewState
 
-        internal class NewState : ResolveState, IResolveState {
+        public sealed class NewState : ResolveState, IResolveState {
             public NewState() {
                 InitialiseEventMap();
             }
@@ -265,7 +265,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.InitializeTransientEvent] = (no, rsm, s) => States.TransientState;
                 EventMap[Events.InitializePersistentEvent] = (no, rsm, s) => States.GhostState;
                 EventMap[Events.InitializeAggregateEvent] = (no, rsm, s) => {
@@ -280,7 +280,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: PartResolvedState
 
-        internal class PartResolvedState : ResolveState, IResolveState {
+        public sealed class PartResolvedState : ResolveState, IResolveState {
             public PartResolvedState() {
                 InitialiseEventMap();
             }
@@ -297,7 +297,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
                 EventMap[Events.StartPartResolvingEvent] = (no, rsm, s) => States.ResolvingPartState;
                 EventMap[Events.StartResolvingEvent] = (no, rsm, s) => States.ResolvingState;
@@ -312,7 +312,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: ResolveState
 
-        internal abstract class ResolveState {
+        public abstract class ResolveState {
             private readonly IDictionary<IResolveEvent, EventHandler> eventMap;
 
             protected ResolveState() {
@@ -352,7 +352,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: ResolvedState
 
-        internal class ResolvedState : ResolveState, IResolveState {
+        public sealed class ResolvedState : ResolveState, IResolveState {
             public ResolvedState() {
                 InitialiseEventMap();
             }
@@ -369,7 +369,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.DestroyEvent] = (no, rsm, s) => States.DestroyedState;
                 EventMap[Events.StartUpdatingEvent] = (no, rsm, s) => States.UpdatingState;
                 EventMap[Events.StartSerializingEvent] = (no, rsm, s) => States.SerializingResolvedState;
@@ -383,7 +383,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: ResolvingPartState
 
-        internal class ResolvingPartState : ResolveState, IResolveState {
+        public sealed class ResolvingPartState : ResolveState, IResolveState {
             public ResolvingPartState() {
                 InitialiseEventMap();
             }
@@ -400,7 +400,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndPartResolvingEvent] = (no, rsm, s) => States.PartResolvedState;
                 EventMap[Events.EndResolvingEvent] = (no, rsm, s) => States.ResolvedState;
                 EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.PartResolvedState;
@@ -412,7 +412,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: ResolvingState
 
-        internal class ResolvingState : ResolveState, IResolveState {
+        public sealed class ResolvingState : ResolveState, IResolveState {
             public ResolvingState() {
                 InitialiseEventMap();
             }
@@ -429,7 +429,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndResolvingEvent] = (no, rsm, s) => {
                     Loaded(no, rsm, s);
                     return States.ResolvedState;
@@ -444,7 +444,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: SerializingGhostState
 
-        internal class SerializingGhostState : ResolveState, IResolveState {
+        public sealed class SerializingGhostState : ResolveState, IResolveState {
             public SerializingGhostState() {
                 InitialiseEventMap();
             }
@@ -461,7 +461,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.GhostState;
             }
         }
@@ -470,7 +470,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: SerializingPartResolvedState
 
-        internal class SerializingPartResolvedState : ResolveState, IResolveState {
+        public sealed class SerializingPartResolvedState : ResolveState, IResolveState {
             public SerializingPartResolvedState() {
                 InitialiseEventMap();
             }
@@ -487,7 +487,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.PartResolvedState;
             }
         }
@@ -496,7 +496,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: SerializingResolvedState
 
-        internal class SerializingResolvedState : ResolveState, IResolveState {
+        public sealed class SerializingResolvedState : ResolveState, IResolveState {
             public SerializingResolvedState() {
                 InitialiseEventMap();
             }
@@ -513,7 +513,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.ResolvedState;
             }
         }
@@ -522,7 +522,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: SerializingTransientState
 
-        internal class SerializingTransientState : ResolveState, IResolveState {
+        public sealed class SerializingTransientState : ResolveState, IResolveState {
             public SerializingTransientState() {
                 InitialiseEventMap();
             }
@@ -539,7 +539,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndSerializingEvent] = (no, rsm, s) => States.TransientState;
                 EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.TransientState;
                 EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.TransientState;
@@ -550,7 +550,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: TransientState
 
-        internal class TransientState : ResolveState, IResolveState {
+        public sealed class TransientState : ResolveState, IResolveState {
             public TransientState() {
                 InitialiseEventMap();
             }
@@ -567,7 +567,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.StartResolvingEvent] = (no, rsm, s) => States.ResolvingState;
                 EventMap[Events.StartSerializingEvent] = (no, rsm, s) => States.SerializingTransientState;
                 EventMap[Events.StartSetupEvent] = (no, rsm, s) => States.SerializingTransientState;
@@ -579,7 +579,7 @@ namespace NakedObjects.Core.Resolve {
 
         #region Nested type: UpdatingState
 
-        internal class UpdatingState : ResolveState, IResolveState {
+        public sealed class UpdatingState : ResolveState, IResolveState {
             public UpdatingState() {
                 InitialiseEventMap();
             }
@@ -596,7 +596,7 @@ namespace NakedObjects.Core.Resolve {
 
             #endregion
 
-            protected void InitialiseEventMap() {
+            private void InitialiseEventMap() {
                 EventMap[Events.EndUpdatingEvent] = (no, rsm, s) => States.ResolvedState;
                 EventMap[Events.EndSetupEvent] = (no, rsm, s) => States.ResolvedState;
                 EventMap[Events.EndPartSetupEvent] = (no, rsm, s) => States.ResolvedState;

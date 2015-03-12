@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Component {
     /// Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single object or each 
     /// object in the collection to the store.
     /// </summary>
-    public class FlatPersistAlgorithm : IPersistAlgorithm {
+    public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
         private static readonly ILog Log = LogManager.GetLogger(typeof (FlatPersistAlgorithm));
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;

@@ -19,7 +19,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public class NakedObjectManager : INakedObjectManager {
+    public sealed class NakedObjectManager : INakedObjectManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectManager));
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
@@ -91,11 +91,11 @@ namespace NakedObjects.Core.Component {
             identityMap.AddAdapter(nakedObject);
         }
 
-        public virtual void MadePersistent(INakedObject nakedObject) {
+        public void MadePersistent(INakedObject nakedObject) {
             identityMap.MadePersistent(nakedObject);
         }
 
-        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
+        public void UpdateViewModel(INakedObject adapter, string[] keys) {
             identityMap.UpdateViewModel(adapter, keys);
         }
 

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
-    internal class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
+    public sealed class OneToOneActionParameter : ActionParameterSpec, IOneToOneActionParameterSpec {
         private bool? isFindMenuEnabled;
 
         public OneToOneActionParameter(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)

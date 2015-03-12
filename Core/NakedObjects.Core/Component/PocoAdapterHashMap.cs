@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class PocoAdapterHashMap : IPocoAdapterMap {
+    public sealed class PocoAdapterHashMap : IPocoAdapterMap {
         private static readonly ILog Log = LogManager.GetLogger(typeof (PocoAdapterHashMap));
         private readonly IDictionary<object, INakedObject> domainObjects;
 
@@ -22,41 +22,41 @@ namespace NakedObjects.Core.Component {
 
         #region IPocoAdapterMap Members
 
-        public virtual void Add(object obj, INakedObject adapter) {
+        public void Add(object obj, INakedObject adapter) {
             domainObjects[obj] = adapter;
 
             // log at end so that if ToString needs adapters they're in maps. 
             Log.DebugFormat("Add instance of {0} as {1}", obj.GetType().FullName, adapter);
         }
 
-        public virtual bool ContainsObject(object obj) {
+        public bool ContainsObject(object obj) {
             return domainObjects.ContainsKey(obj);
         }
 
-        public virtual IEnumerator<INakedObject> GetEnumerator() {
+        public IEnumerator<INakedObject> GetEnumerator() {
             return domainObjects.Values.GetEnumerator();
         }
 
-        public virtual INakedObject GetObject(object obj) {
+        public INakedObject GetObject(object obj) {
             if (ContainsObject(obj)) {
                 return domainObjects[obj];
             }
             return null;
         }
 
-        public virtual void Reset() {
+        public void Reset() {
             Log.Debug("Reset");
 
             domainObjects.Clear();
         }
 
-        public virtual void Shutdown() {
+        public void Shutdown() {
             Log.Debug("Shutdown");
 
             domainObjects.Clear();
         }
 
-        public virtual void Remove(INakedObject nakedObject) {
+        public void Remove(INakedObject nakedObject) {
             Log.DebugFormat("Remove {0}", nakedObject);
 
             domainObjects.Remove(nakedObject.Object);

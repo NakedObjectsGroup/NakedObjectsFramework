@@ -23,7 +23,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
-    internal class ActionSpec : MemberSpecAbstract, IActionSpec {
+    public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly SpecFactory memberFactory;
@@ -57,7 +57,7 @@ namespace NakedObjects.Core.Spec {
             get { return actionSpecImmutable.GetFacet<IActionInvocationFacet>(); }
         }
 
-        public virtual IActionSpec[] Actions {
+        public IActionSpec[] Actions {
             get { return new IActionSpec[0]; }
         }
 
@@ -71,7 +71,7 @@ namespace NakedObjects.Core.Spec {
             get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
         }
 
-        public virtual ITypeSpec OnSpec {
+        public ITypeSpec OnSpec {
             get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
         }
 
@@ -83,11 +83,11 @@ namespace NakedObjects.Core.Spec {
             get { return actionSpecImmutable.Identifier; }
         }
 
-        public virtual int ParameterCount {
+        public int ParameterCount {
             get { return actionSpecImmutable.Parameters.Length; }
         }
 
-        public virtual Where ExecutedWhere {
+        public Where ExecutedWhere {
             get {
                 if (!executedWhere.HasValue) {
                     executedWhere = GetFacet<IExecutedFacet>().ExecutedWhere();
@@ -96,7 +96,7 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public virtual bool IsContributedMethod {
+        public bool IsContributedMethod {
             get { return actionSpecImmutable.IsContributedMethod; }
         }
 
@@ -109,7 +109,7 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
@@ -121,7 +121,7 @@ namespace NakedObjects.Core.Spec {
             return result;
         }
 
-        public virtual INakedObject RealTarget(INakedObject target) {
+        public INakedObject RealTarget(INakedObject target) {
             if (target == null) {
                 return FindService();
             }
@@ -146,14 +146,14 @@ namespace NakedObjects.Core.Spec {
             return actionSpecImmutable.GetFacets();
         }
 
-        public virtual IActionParameterSpec[] Parameters {
+        public IActionParameterSpec[] Parameters {
             get { return parametersSpec; }
         }
 
         /// <summary>
         ///     Returns true if the represented action returns something, else returns false
         /// </summary>
-        public virtual bool HasReturn {
+        public bool HasReturn {
             get {
                 if (!hasReturn.HasValue) {
                     hasReturn = ReturnSpec != null;
@@ -166,7 +166,7 @@ namespace NakedObjects.Core.Spec {
         /// <summary>
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
-        public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
             IInteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
