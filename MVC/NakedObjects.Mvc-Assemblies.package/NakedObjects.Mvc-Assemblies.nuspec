@@ -12,7 +12,7 @@
     <description>This is the package used to upgrade an existing NakedObjects.Mvc project. It updates the assemblies, and adds a .zip of other files that might need to be merged with your own changes. (If you are starting from scratch, install NakedObjects.Mvc-FreshInstall)</description>
     <tags>naked objects nakedobjects asp.net mvc ddd domain driven design</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[6.0.4, 7)" />
+      <dependency id="NakedObjects.Core" version="[6.0.5, 7)" />
       <dependency id="Microsoft.Aspnet.Mvc" version="[5.2.2, 6.0)" />
       <dependency id="Microsoft.Owin" version="3.0" />
       <dependency id="Microsoft.AspNet.Web.Optimization" version="[1.1.3, 2.0)" />
