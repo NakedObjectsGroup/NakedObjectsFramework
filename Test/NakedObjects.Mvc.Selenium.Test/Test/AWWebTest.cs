@@ -148,6 +148,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
 
+        protected void FindEmployeeByLastName(string lastName) {
+            Find("#EmployeeRepository-FindEmployeeByName button", "#EmployeeRepository-FindEmployeeByName-LastName-Input", lastName);
+        }
+
         protected void FindCustomerByAccountNumber(string accountNumber) {
             Find("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input", accountNumber);
         }

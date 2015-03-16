@@ -306,15 +306,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoRemoveFromActionDialog() {
             Login();
-
-            FindCustomerByAccountNumber("AW00000546");
-
-            var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
-            obj.AssertObjectHasTitle("Field Trip Store, AW00000546");
-
-            br.FindElement(By.CssSelector("button[title=Remove]")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
+            var randomEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-RandomEmployee");
+            wait.ClickAndWait(randomEmployee, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
+            var error = wait.ClickAndWait("button[title=Remove]", "span.field-validation-error");
+            error.AssertTextEquals("Mandatory");
         }
 
         public abstract void RecentlyViewedOnActionDialog();
@@ -322,14 +317,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoRecentlyViewedOnActionDialog() {
             Login();
 
-            FindCustomerByAccountNumber("AW00000547");
+            FindEmployeeByLastName("Gubbels");
 
-            var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
-            obj.AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
+            var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
+            wait.ClickAndWait(recentlyViewed, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("button[title='Recently Viewed']")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Gubbels");
         }
 
         public abstract void RecentlyViewedOnActionDialogWithSelect();

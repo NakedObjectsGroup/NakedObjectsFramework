@@ -8,7 +8,6 @@
 using System;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using System.Linq;
 
 namespace NakedObjects.Reflect {
     /// <summary>

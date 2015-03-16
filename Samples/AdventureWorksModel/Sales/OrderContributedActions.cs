@@ -131,7 +131,7 @@ namespace AdventureWorksModel {
         [MemberOrder(12), PageSize(10)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public IQueryable<SalesOrderHeader> SearchForOrders(
-            [ContributedAction(subMenu)] [Optionally] Customer customer,
+            [ContributedAction(subMenu)] Customer customer,
             [Optionally] [Mask("d")] DateTime? fromDate,
             [Optionally] [Mask("d")] DateTime? toDate) {
             IQueryable<SalesOrderHeader> query = Instances<SalesOrderHeader>();

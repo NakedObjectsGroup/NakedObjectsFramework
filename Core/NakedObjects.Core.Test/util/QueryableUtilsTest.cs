@@ -54,8 +54,10 @@ namespace NakedObjects.Core.Util.Query {
         }
 
         [TestMethod]
+        // ReSharper disable PossibleMultipleEnumeration
         public void TestIsOrdered() {
             var list = Enumerable.Range(10, 100);
+
             var notOrdered = list.AsQueryable();
             var simpleOrdered = notOrdered.OrderBy(i => "");
             var thenByOrdered = notOrdered.OrderBy(i => "").ThenBy(i => "");
@@ -86,5 +88,7 @@ namespace NakedObjects.Core.Util.Query {
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(distinctOrdered1.IsOrdered());
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(distinctOrdered2.IsOrdered());
         }
+
+        // ReSharper restore PossibleMultipleEnumeration
     }
 }

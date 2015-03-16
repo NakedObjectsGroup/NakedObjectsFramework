@@ -264,10 +264,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Actions
 
-        public static IWebDriver ClickOk(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "OK");
-        }
-
         public static IWebDriver ClickApply(this IWebDriver webDriver) {
             return ClickSingleGenericButton(webDriver, "Apply");
         }
@@ -309,11 +305,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         public static IWebDriver ClickTable(this IWebDriver webDriver) {
             return ClickSingleGenericButton(webDriver, "Table");
-        }
-
-        private static void ScrollTo(this IWebDriver webDriver, IWebElement element) {
-            string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) webDriver).ExecuteScript(script);
         }
 
         private static IWebDriver ClickSingleGenericButton(this IWebDriver webDriver, string title) {

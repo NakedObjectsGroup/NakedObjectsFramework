@@ -32,8 +32,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("Current Special Offers: Query Result: Viewing 7 of 7 Special Offers", br.GetTopObject().Text);
 
-            br.FindElement(By.ClassName("nof-table")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
+            wait.ClickAndWait(".nof-table", ".nof-collection-table"); 
 
             IWebElement table = br.FindElement(By.ClassName("SpecialOffer"));
 
