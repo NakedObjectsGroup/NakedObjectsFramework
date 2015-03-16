@@ -62,9 +62,9 @@ namespace NakedObjects.Persistor.Entity.Component {
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
-        private IContainerInjector injector;
+        private IDomainObjectInjector injector;
 
-        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
+        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager) {
             this.metamodelManager = metamodelManager;
             this.session = session;
             this.injector = injector;
@@ -80,7 +80,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             loadSpecification = metamodelManager.GetSpecification;
         }
 
-        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
+        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager)
             : this(metamodel, session, injector, nakedObjectManager) {
             config.AssertSetup();
             this.oidGenerator = oidGenerator;
@@ -103,7 +103,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region for testing only
 
-        public void SetupForTesting(IContainerInjector containerInjector,
+        public void SetupForTesting(IDomainObjectInjector domainObjectInjector,
                                     CreateAdapterDelegate createAdapterDelegate,
                                     ReplacePocoDelegate replacePocoDelegate,
                                     RemoveAdapterDelegate removeAdapterDelegate,
@@ -111,7 +111,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                                     Action<INakedObject> handleLoadedTest,
                                     EventHandler savingChangeshandler,
                                     Func<Type, IObjectSpec> loadSpecificationHandler) {
-            injector = containerInjector;
+            injector = domainObjectInjector;
             createAdapter = createAdapterDelegate;
             replacePoco = replacePocoDelegate;
             removeAdapter = removeAdapterDelegate;
@@ -143,7 +143,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     object complexObject = pi.GetValue(adapter.Object, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
                     InjectParentIntoChild(adapter.Object, complexObject);
-                    injector.InitDomainObject(complexObject);
+                    injector.InjectInto(complexObject);
                     createAggregatedAdapter(adapter, pi, complexObject);
                 }
             }
@@ -339,13 +339,13 @@ namespace NakedObjects.Persistor.Entity.Component {
                 throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
             }
             object domainObject = Activator.CreateInstance(type);
-            injector.InitDomainObject(domainObject);
+            injector.InjectInto(domainObject);
 
             if (EntityFrameworkKnowsType(type)) {
                 foreach (PropertyInfo pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
                     object complexObject = pi.GetValue(domainObject, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
-                    injector.InitDomainObject(complexObject);
+                    injector.InjectInto(complexObject);
                 }
             }
             return domainObject;
@@ -688,7 +688,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             CheckProxies(domainObject);
             IOid oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
             INakedObject nakedObject = createAdapter(oid, domainObject);
-            injector.InitDomainObject(nakedObject.Object);
+            injector.InjectInto(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
             nakedObject.UpdateVersion(session, nakedObjectManager);
 

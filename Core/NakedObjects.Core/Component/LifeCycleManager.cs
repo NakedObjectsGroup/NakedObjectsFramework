@@ -23,7 +23,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (LifeCycleManager));
-        private readonly IContainerInjector injector;
+        private readonly IDomainObjectInjector injector;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectPersistor objectPersistor;
@@ -36,7 +36,7 @@ namespace NakedObjects.Core.Component {
             IMetamodelManager metamodel,
             IPersistAlgorithm persistAlgorithm,
             IOidGenerator oidGenerator,
-            IContainerInjector injector,
+            IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
             INakedObjectManager nakedObjectManager
             ) {
@@ -192,14 +192,14 @@ namespace NakedObjects.Core.Component {
         }
 
         private object InitDomainObject(object obj) {
-            Log.DebugFormat("InitDomainObject: {0}", obj);
-            injector.InitDomainObject(obj);
+            Log.DebugFormat("InjectInto: {0}", obj);
+            injector.InjectInto(obj);
             return obj;
         }
 
         private void InitInlineObject(object root, object inlineObject) {
-            Log.DebugFormat("InitInlineObject root: {0} inlineObject: {1}", root, inlineObject);
-            injector.InitInlineObject(root, inlineObject);
+            Log.DebugFormat("InjectIntoInline root: {0} inlineObject: {1}", root, inlineObject);
+            injector.InjectIntoInline(root, inlineObject);
         }
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {

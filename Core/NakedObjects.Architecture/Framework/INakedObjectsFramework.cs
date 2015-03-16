@@ -22,7 +22,7 @@ namespace NakedObjects {
         IObjectPersistor Persistor { get; }
         IReflector Reflector { get; }
         IMetamodelManager MetamodelManager { get; }
-        IContainerInjector ContainerInjector { get; }
+        IDomainObjectInjector DomainObjectInjector { get; }
         ITransactionManager TransactionManager { get; }
         IFrameworkResolver FrameworkResolver { get; }
     }

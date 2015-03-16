@@ -25,10 +25,10 @@ open NakedObjects.Persistor.Entity.Component
 
 
 let injectedObjects = new List<Object>()
-let mockInjector = new Mock<IContainerInjector>()
+let mockInjector = new Mock<IDomainObjectInjector>()
 let testInjector = mockInjector.Object
 
-mockInjector.Setup(fun x -> x.InitDomainObject(It.IsAny<obj>())).Callback<obj> (fun o -> injectedObjects.Add o) |> ignore
+mockInjector.Setup(fun x -> x.InjectInto(It.IsAny<obj>())).Callback<obj> (fun o -> injectedObjects.Add o) |> ignore
 
 let mockNakedObjectSpecification = new Mock<IObjectSpec>()
 let testNakedObjectSpecification = mockNakedObjectSpecification.Object

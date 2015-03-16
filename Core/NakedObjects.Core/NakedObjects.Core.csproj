@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\ConcurrencyCheckVersion.cs" />
+    <Compile Include="Component\DomainObjectContainerInjector.cs" />
     <Compile Include="Component\FlatPersistAlgorithm.cs" />
     <Compile Include="Component\IdentityAdapterHashMap.cs" />
     <Compile Include="Async\AsyncService.cs" />
@@ -161,7 +162,6 @@
     <Compile Include="Exception\DisabledException.cs" />
     <Compile Include="Exception\DisposeFailedException.cs" />
     <Compile Include="Container\DomainObjectContainer.cs" />
-    <Compile Include="Component\DomainObjectContainerInjector.cs" />
     <Compile Include="Container\Methods.cs" />
     <Compile Include="Exception\FindObjectException.cs" />
     <Compile Include="Exception\HiddenException.cs" />

@@ -193,7 +193,7 @@
     <Compile Include="Facet\IUnsignedLongValueFacet.cs" />
     <Compile Include="Facet\IUnsignedShortValueFacet.cs" />
     <Compile Include="Adapter\IVersion.cs" />
-    <Compile Include="Component\IContainerInjector.cs" />
+    <Compile Include="Component\IDomainObjectInjector.cs" />
     <Compile Include="Component\IMessageBroker.cs" />
     <Compile Include="Component\IObjectStore.cs" />
     <Compile Include="Component\IPersistAlgorithm.cs" />

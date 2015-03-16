@@ -13,8 +13,8 @@ namespace NakedObjects.Architecture.Facet {
     ///     Indicates that class is a view model
     /// </summary>
     public interface IViewModelFacet : IFacet {
-        string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
-        void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector);
+        string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector);
+        void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector);
         bool IsEditView(INakedObject nakedObject);
     }
 }

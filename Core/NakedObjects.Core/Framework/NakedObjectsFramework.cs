@@ -11,7 +11,7 @@ using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
     public sealed class NakedObjectsFramework : INakedObjectsFramework {
-        private readonly IContainerInjector containerInjector;
+        private readonly IDomainObjectInjector domainObjectInjector;
         private readonly IFrameworkResolver frameworkResolver;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMessageBroker messageBroker;
@@ -31,7 +31,7 @@ namespace NakedObjects.Service {
                                      IObjectPersistor persistor,
                                      IReflector reflector,
                                      IMetamodelManager metamodelManagerManager,
-                                     IContainerInjector containerInjector,
+                                     IDomainObjectInjector domainObjectInjector,
                                      NakedObjectFactory nakedObjectFactory,
                                      SpecFactory memberFactory,
                                      ITransactionManager transactionManager,
@@ -44,18 +44,18 @@ namespace NakedObjects.Service {
             this.persistor = persistor;
             this.reflector = reflector;
             this.metamodelManagerManager = metamodelManagerManager;
-            this.containerInjector = containerInjector;
+            this.domainObjectInjector = domainObjectInjector;
             this.transactionManager = transactionManager;
             this.frameworkResolver = frameworkResolver;
-            containerInjector.Framework = this;
+            domainObjectInjector.Framework = this;
             memberFactory.Initialize(this);
             nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager);
         }
 
         #region INakedObjectsFramework Members
 
-        public IContainerInjector ContainerInjector {
-            get { return containerInjector; }
+        public IDomainObjectInjector DomainObjectInjector {
+            get { return domainObjectInjector; }
         }
 
         public ITransactionManager TransactionManager {

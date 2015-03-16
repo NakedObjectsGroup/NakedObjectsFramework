@@ -14,7 +14,7 @@ using NakedObjects.Core.Container;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
-    public sealed class DomainObjectContainerInjector : IContainerInjector {
+    public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
         private readonly List<Type> serviceTypes;
         private IDomainObjectContainer container;
         private bool initialized;
@@ -31,17 +31,17 @@ namespace NakedObjects.Core.Component {
                 if (services == null) {
                     services = serviceTypes.Select(Activator.CreateInstance).ToList();
                     services.Add(Framework);
-                    services.ForEach(InitDomainObject);
+                    services.ForEach(InjectInto);
                 }
                 return services;
             }
         }
 
-        #region IContainerInjector Members
+        #region IDomainObjectInjector Members
 
         public INakedObjectsFramework Framework { private get; set; }
 
-        public void InitDomainObject(object obj) {
+        public void InjectInto(object obj) {
             Initialize();
             Assert.AssertNotNull("no container", container);
             Assert.AssertNotNull("no services", Services);
@@ -49,7 +49,7 @@ namespace NakedObjects.Core.Component {
             Methods.InjectServices(obj, Services.ToArray());
         }
 
-        public void InitInlineObject(object root, object inlineObject) {
+        public void InjectIntoInline(object root, object inlineObject) {
             Initialize();
             Assert.AssertNotNull("no root object", root);
             Methods.InjectRoot(root, inlineObject);

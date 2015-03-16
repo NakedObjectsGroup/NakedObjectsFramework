@@ -18,12 +18,12 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Component {
     public sealed class ServicesManager : IServicesManager {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ServicesManager));
-        private readonly IContainerInjector injector;
+        private readonly IDomainObjectInjector injector;
         private readonly INakedObjectManager manager;
         private readonly List<object> services;
         private bool servicesInit;
 
-        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
+        public ServicesManager(IDomainObjectInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
             Assert.AssertNotNull(injector);
             Assert.AssertNotNull(manager);
             Assert.AssertNotNull(config);
@@ -37,7 +37,7 @@ namespace NakedObjects.Core.Component {
         private IList<object> Services {
             get {
                 if (!servicesInit) {
-                    services.ForEach(s => injector.InitDomainObject(s));
+                    services.ForEach(s => injector.InjectInto(s));
                     servicesInit = true;
                 }
 

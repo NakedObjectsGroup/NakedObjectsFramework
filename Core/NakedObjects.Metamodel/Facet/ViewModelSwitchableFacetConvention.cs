@@ -22,11 +22,11 @@ namespace NakedObjects.Meta.Facet {
             get { return typeof (IViewModelFacet); }
         }
 
-        public override string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
+        public override string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
             return nakedObject.GetDomainObject<IViewModel>().DeriveKeys();
         }
 
-        public override void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IContainerInjector injector) {
+        public override void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
             nakedObject.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
         }
 

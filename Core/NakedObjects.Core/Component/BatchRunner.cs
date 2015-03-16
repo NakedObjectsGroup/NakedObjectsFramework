@@ -20,7 +20,7 @@ namespace NakedObjects.Core.Component {
         #region IBatchRunner Members
 
         public void Run(IBatchStartPoint batchStartPoint) {
-            framework.ContainerInjector.InitDomainObject(batchStartPoint);
+            framework.DomainObjectInjector.InjectInto(batchStartPoint);
             StartTransaction();
             batchStartPoint.Execute();
             EndTransaction();

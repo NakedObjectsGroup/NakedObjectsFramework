@@ -104,7 +104,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             INakedObject wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.ContainerInjector);
+                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
             }
             else {
                 PropertyInfo[] keyPropertyInfo = nakedObjectForKey.GetKeys();
@@ -150,7 +150,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         protected object GetViewModel(string[] keys, IObjectSpec spec) {
             try {
                 INakedObject viewModel = framework.LifecycleManager.CreateViewModel(spec);
-                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.ContainerInjector);
+                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector);
                 return viewModel.Object;
             }
             catch (Exception e) {

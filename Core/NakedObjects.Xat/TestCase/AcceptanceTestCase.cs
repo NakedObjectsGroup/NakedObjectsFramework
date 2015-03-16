@@ -131,7 +131,7 @@ namespace NakedObjects.Xat {
             NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
         }
 
-        private void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
+        private void InstallFixtures(ITransactionManager transactionManager, IDomainObjectInjector injector, object[] newFixtures) {
             foreach (var fixture in newFixtures) {
                 InstallFixture(transactionManager, injector, fixture);
             }
@@ -176,8 +176,8 @@ namespace NakedObjects.Xat {
             }
         }
 
-        private void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, object fixture) {
-            injector.InitDomainObject(fixture);
+        private void InstallFixture(ITransactionManager transactionManager, IDomainObjectInjector injector, object fixture) {
+            injector.InjectInto(fixture);
 
             // first, install any child fixtures (if this is a composite.
             var childFixtures = GetFixtures(fixture);
@@ -207,7 +207,7 @@ namespace NakedObjects.Xat {
             if (NakedObjectsContext == null) {
                 NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ContainerInjector, Fixtures);
+            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
         }
 
         protected ITestService GetTestService(Type type) {

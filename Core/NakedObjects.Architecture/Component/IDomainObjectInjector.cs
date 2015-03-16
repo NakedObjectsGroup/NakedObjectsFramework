@@ -10,15 +10,15 @@ namespace NakedObjects.Architecture.Component {
     /// Service that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
     /// domain objects and services when they are instantiated.
     /// </summary>
-    public interface IContainerInjector {
+    public interface IDomainObjectInjector {
         INakedObjectsFramework Framework { set; }
 
         /// <summary>
         ///     Among other things, will inject all services into the object
         /// </summary>
-        void InitDomainObject(object obj);
+        void InjectInto(object obj);
 
-        void InitInlineObject(object root, object inlineObject);
+        void InjectIntoInline(object root, object inlineObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

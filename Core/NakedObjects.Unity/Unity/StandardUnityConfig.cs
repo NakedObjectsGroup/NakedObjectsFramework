@@ -35,7 +35,7 @@ namespace NakedObjects.Unity {
             where T : LifetimeManager, new() {
             container.RegisterType<INakedObjectAdapterMap, NakedObjectAdapterHashMap>(new T(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new T(), new InjectionConstructor(10));
-            container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new T());
+            container.RegisterType<IDomainObjectInjector, DomainObjectContainerInjector>(new T());
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new T());
             container.RegisterType<IPersistAlgorithm, FlatPersistAlgorithm>(new T());
             container.RegisterType<IObjectStore, EntityObjectStore>(new T());
