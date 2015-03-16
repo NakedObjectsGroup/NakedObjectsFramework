@@ -59,12 +59,8 @@ namespace NakedObjects.Unity {
         public static void RegisterStandardFacetFactories(IUnityContainer container) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
             for (int i = 0; i < factoryTypes.Count(); i++) {
-                RegisterFacetFactory(factoryTypes[i], container, i);
+                UnityConfigHelpers.RegisterFacetFactory(factoryTypes[i], container, i);
             }
-        }
-
-        public static void RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-            container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
     }
 }

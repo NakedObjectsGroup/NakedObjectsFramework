@@ -115,5 +115,6 @@ namespace NakedObjects.Reflect {
         public static int StandardIndexOf(Type factory) {
             return Array.FindIndex(StandardFacetFactories(), x => x == factory);
         }
+
     }
 }
