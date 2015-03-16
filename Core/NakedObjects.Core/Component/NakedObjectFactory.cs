@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Component {
         public INakedObject CreateAdapter(object obj, IOid oid) {
             Assert.AssertTrue(isInitialized);
 
-            return new PocoAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
+            return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }
 }

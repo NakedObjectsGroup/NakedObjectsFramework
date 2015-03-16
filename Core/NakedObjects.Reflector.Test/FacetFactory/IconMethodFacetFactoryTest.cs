@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
             ISession session = new Mock<ISession>().Object;
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
-            return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
+            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
 
         #region Setup/Teardown

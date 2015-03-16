@@ -33,7 +33,7 @@ namespace NakedObjects.Architecture.Component {
         void DestroyObject(INakedObject nakedObject);
         object CreateObject(ITypeSpec spec);
         IEnumerable GetBoundedSet(IObjectSpec spec);
-        void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
+        void LoadComplexTypes(INakedObject adapter, bool isGhost);
         void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
     }
 }

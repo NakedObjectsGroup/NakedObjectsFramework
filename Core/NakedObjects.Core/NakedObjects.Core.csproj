@@ -148,9 +148,9 @@
     <Compile Include="Component\IdentityMapImpl.cs" />
     <Compile Include="Adapter\INoIdentityAdapterCache.cs" />
     <Compile Include="Adapter\NoIdentityAdapterCache.cs" />
-    <Compile Include="Component\PocoAdapterHashMap.cs" />
+    <Compile Include="Component\NakedObjectAdapterHashMap.cs" />
     <Compile Include="Adapter\NullVersion.cs" />
-    <Compile Include="Adapter\PocoAdapter.cs" />
+    <Compile Include="Adapter\NakedObjectAdapter.cs" />
     <Compile Include="Adapter\StringDecoderHelper.cs" />
     <Compile Include="Adapter\StringEncoderHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

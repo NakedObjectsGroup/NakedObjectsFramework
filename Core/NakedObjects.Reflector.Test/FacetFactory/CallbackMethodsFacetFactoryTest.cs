@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
             IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
-            return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
+            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
 
         [TestMethod]

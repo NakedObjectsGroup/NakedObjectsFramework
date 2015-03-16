@@ -12,15 +12,15 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public sealed class PocoAdapterHashMap : IPocoAdapterMap {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (PocoAdapterHashMap));
+    public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectAdapterHashMap));
         private readonly IDictionary<object, INakedObject> domainObjects;
 
-        public PocoAdapterHashMap(int capacity) {
+        public NakedObjectAdapterHashMap(int capacity) {
             domainObjects = new Dictionary<object, INakedObject>(capacity);
         }
 
-        #region IPocoAdapterMap Members
+        #region INakedObjectAdapterMap Members
 
         public void Add(object obj, INakedObject adapter) {
             domainObjects[obj] = adapter;

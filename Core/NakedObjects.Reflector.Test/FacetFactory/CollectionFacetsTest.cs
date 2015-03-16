@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, manager, obj, oid);
+            return new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, manager, obj, oid);
         }
 
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {

@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected INakedObject CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
 
-            return new PocoAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
+            return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
         }
 
         public virtual void TestParseNull() {

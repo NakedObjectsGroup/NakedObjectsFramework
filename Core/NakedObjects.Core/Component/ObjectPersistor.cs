@@ -209,8 +209,8 @@ namespace NakedObjects.Core.Component {
             return new object[] {};
         }
 
-        public void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost) {
-            objectStore.LoadComplexTypes(pocoAdapter, isGhost);
+        public void LoadComplexTypes(INakedObject adapter, bool isGhost) {
+            objectStore.LoadComplexTypes(adapter, isGhost);
         }
 
         #endregion

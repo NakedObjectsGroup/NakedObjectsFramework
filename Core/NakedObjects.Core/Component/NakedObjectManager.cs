@@ -160,23 +160,23 @@ namespace NakedObjects.Core.Component {
         }
 
         private INakedObject AdapterForNoIdentityObject(object domainObject) {
-            INakedObject pocoAdapter = adapterCache.GetAdapter(domainObject);
+            INakedObject adapter = adapterCache.GetAdapter(domainObject);
 
-            if (pocoAdapter == null) {
-                pocoAdapter = NewAdapterForKnownObject(domainObject, null);
-                NewTransientsResolvedState(pocoAdapter);
-                adapterCache.AddAdapter(pocoAdapter);
+            if (adapter == null) {
+                adapter = NewAdapterForKnownObject(domainObject, null);
+                NewTransientsResolvedState(adapter);
+                adapterCache.AddAdapter(adapter);
             }
 
-            return pocoAdapter;
+            return adapter;
         }
 
         private INakedObject AdapterForExistingObject(object domainObject, ITypeSpec spec) {
             return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
         }
 
-        private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
-            pocoAdapter.ResolveState.Handle(pocoAdapter.Spec.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
+        private static void NewTransientsResolvedState(INakedObject adapter) {
+            adapter.ResolveState.Handle(adapter.Spec.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
         }
 
         private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {

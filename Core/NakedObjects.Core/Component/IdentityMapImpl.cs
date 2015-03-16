@@ -19,35 +19,35 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (IdentityMapImpl));
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly IOidGenerator oidGenerator;
-        private readonly IPocoAdapterMap pocoAdapterMap;
+        private readonly INakedObjectAdapterMap nakedObjectAdapterMap;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
 
-        public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap) {
+        public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, INakedObjectAdapterMap nakedObjectAdapterMap) {
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityAdapterMap);
-            Assert.AssertNotNull(pocoAdapterMap);
+            Assert.AssertNotNull(nakedObjectAdapterMap);
 
             this.oidGenerator = oidGenerator;
             this.identityAdapterMap = identityAdapterMap;
-            this.pocoAdapterMap = pocoAdapterMap;
+            this.nakedObjectAdapterMap = nakedObjectAdapterMap;
         }
 
         #region IIdentityMap Members
 
         public IEnumerator<INakedObject> GetEnumerator() {
-            return pocoAdapterMap.GetEnumerator();
+            return nakedObjectAdapterMap.GetEnumerator();
         }
 
         public void Reset() {
             identityAdapterMap.Reset();
-            pocoAdapterMap.Reset();
+            nakedObjectAdapterMap.Reset();
             unloadedObjects.Clear();
         }
 
         public void AddAdapter(INakedObject nakedObject) {
             Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObject);
             object obj = nakedObject.Object;
-            Assert.AssertFalse("POCO Map already contains object", obj, pocoAdapterMap.ContainsObject(obj));
+            Assert.AssertFalse("POCO Map already contains object", obj, nakedObjectAdapterMap.ContainsObject(obj));
 
             if (unloadedObjects.ContainsKey(obj)) {
                 string msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
@@ -55,7 +55,7 @@ namespace NakedObjects.Core.Component {
             }
 
             if (nakedObject.Spec.IsObject) {
-                pocoAdapterMap.Add(obj, nakedObject);
+                nakedObjectAdapterMap.Add(obj, nakedObject);
             }
             // order is important - add to identity map after poco map 
             identityAdapterMap.Add(nakedObject.Oid, nakedObject);
@@ -79,7 +79,7 @@ namespace NakedObjects.Core.Component {
             adapter.ResolveState.Handle(Events.StartResolvingEvent);
             adapter.ResolveState.Handle(Events.EndResolvingEvent);
 
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
+            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", nakedObjectAdapterMap.GetObject(adapter.Object) == adapter);
             Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
             identityAdapterMap.Add(oid, adapter);
             Log.DebugFormat("Made persistent {0}; was {1}", adapter, oid.Previous);
@@ -96,7 +96,7 @@ namespace NakedObjects.Core.Component {
 
             ((ViewModelOid) adapter.Oid).UpdateKeys(keys, false);
 
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
+            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", nakedObjectAdapterMap.GetObject(adapter.Object) == adapter);
             Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
             identityAdapterMap.Add(oid, adapter);
             Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
@@ -106,7 +106,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("Unload: {0}", nakedObject);
  
             // If an object is unloaded while its poco still exist then accessing that poco via the reflector will
-            // create a different PocoAdapter and no OID will exist to identify - hence the adapter will appear as
+            // create a different NakedObjectAdapter and no OID will exist to identify - hence the adapter will appear as
             // transient and will no longer be usable as a persistent object
 
             Log.DebugFormat("Removed loaded object {0}", nakedObject);
@@ -114,12 +114,12 @@ namespace NakedObjects.Core.Component {
             if (oid != null) {
                 identityAdapterMap.Remove(oid);
             }
-            pocoAdapterMap.Remove(nakedObject);
+            nakedObjectAdapterMap.Remove(nakedObject);
         }
 
         public INakedObject GetAdapterFor(object domainObject) {
             Assert.AssertNotNull("can't get an adapter for null", this, domainObject);
-            return pocoAdapterMap.GetObject(domainObject);
+            return nakedObjectAdapterMap.GetObject(domainObject);
         }
 
         public INakedObject GetAdapterFor(IOid oid) {

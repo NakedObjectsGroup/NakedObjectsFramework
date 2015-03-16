@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public sealed class PocoAdapter : INakedObject {
+    public sealed class NakedObjectAdapter : INakedObject {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
@@ -33,11 +33,11 @@ namespace NakedObjects.Core.Adapter {
         private ITypeOfFacet typeOfFacet;
         private IVersion version;
 
-        static PocoAdapter() {
-            Log = LogManager.GetLogger(typeof (PocoAdapter));
+        static NakedObjectAdapter() {
+            Log = LogManager.GetLogger(typeof (NakedObjectAdapter));
         }
 
-        public PocoAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
+        public NakedObjectAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
 

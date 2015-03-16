@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Service for mapping between POCO domain objects and their (INakedObject) adaptors
     /// </summary>
-    public interface IPocoAdapterMap : IEnumerable<INakedObject> {
+    public interface INakedObjectAdapterMap : IEnumerable<INakedObject> {
         void Add(object obj, INakedObject adapter);
         bool ContainsObject(object obj);
         INakedObject GetObject(object obj);

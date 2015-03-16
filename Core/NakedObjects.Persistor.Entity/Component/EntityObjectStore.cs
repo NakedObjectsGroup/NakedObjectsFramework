@@ -137,14 +137,14 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region IObjectStore Members
 
-        public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
-            if (EntityFrameworkKnowsType(nakedObject.Object.GetEntityProxiedType())) {
-                foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetEntityProxiedType())) {
-                    object complexObject = pi.GetValue(nakedObject.Object, null);
+        public void LoadComplexTypes(INakedObject adapter, bool parentIsGhost) {
+            if (EntityFrameworkKnowsType(adapter.Object.GetEntityProxiedType())) {
+                foreach (PropertyInfo pi in GetContext(adapter).GetComplexMembers(adapter.Object.GetEntityProxiedType())) {
+                    object complexObject = pi.GetValue(adapter.Object, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
-                    InjectParentIntoChild(nakedObject.Object, complexObject);
+                    InjectParentIntoChild(adapter.Object, complexObject);
                     injector.InitDomainObject(complexObject);
-                    createAggregatedAdapter(nakedObject, pi, complexObject);
+                    createAggregatedAdapter(adapter, pi, complexObject);
                 }
             }
         }
