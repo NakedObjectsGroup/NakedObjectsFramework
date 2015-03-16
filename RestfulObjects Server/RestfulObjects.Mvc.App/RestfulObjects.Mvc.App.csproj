@@ -178,6 +178,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AccessControlExposeHeadersHandler.cs" />
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
+    <None Include="App_Start\RestfulObjectsConfig.cs.pp" />
     <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
