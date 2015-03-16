@@ -56,11 +56,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoViewStandaloneCollectionDefaultToTable() {
             Login();
-            br.ClickAction("EmployeeRepository-ListAllDepartments");
+
+            var table  = wait.ClickAndWait("#EmployeeRepository-ListAllDepartments button", ".Department");
+
             br.AssertPageTitleEquals("16 Departments");
             Assert.AreEqual("List All Departments: Query Result: Viewing 16 of 16 Departments", br.GetTopObject().Text);
 
-            IWebElement table = br.FindElement(By.ClassName("Department"));
+           // IWebElement table = br.FindElement(By.ClassName("Department"));
 
             Assert.AreEqual(17, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(3, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
@@ -71,7 +73,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoSelectDeselectAll() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
 
             Assert.AreEqual(0, CountCheckedBoxes(coll));
 
@@ -84,14 +88,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         private static int CountCheckedBoxes(IWebElement coll) {
-            return coll.FindElements(By.CssSelector("input[type=checkbox]")).Where(x => x.GetAttribute("id").StartsWith("checkbox") && x.Selected).Count();
+            return coll.FindElements(By.CssSelector("input[type=checkbox]")).Count(x => x.GetAttribute("id").StartsWith("checkbox") && x.Selected);
         }
 
         public abstract void SelectAndUnselectIndividually();
 
         public void DoSelectAndUnselectIndividually() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
 
             coll.GetRow(1).CheckRow(br);
             coll.GetRow(3).CheckRow(br);
@@ -108,7 +113,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeContributedActionNoParmsNoReturn() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
 
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(1, 6)));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(2, 6)));
@@ -117,11 +124,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             coll.GetRow(1).CheckRow(br);
             coll.GetRow(3).CheckRow(br);
 
-            br.ClickAction("ObjectQuery-SalesOrderHeader-CommentAsUsersUnhappy");
+            wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-CommentAsUsersUnhappy", wd => wd.Title == "20 Sales Orders");
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            coll = wait.ClickAndWait(table, ".nof-collection-table");
 
-            coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
             Assert.AreEqual("User unhappy", coll.TextContentsOfCell(1, 6));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(2, 6)));
             Assert.AreEqual("User unhappy", coll.TextContentsOfCell(3, 6));
@@ -131,20 +138,25 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeContributedActionParmsNoReturn() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
+
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(7, 6)));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(8, 6)));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(9, 6)));
 
             coll.GetRow(7).CheckRow(br);
             coll.GetRow(9).CheckRow(br);
-            br.ClickAction("ObjectQuery-SalesOrderHeader-AppendComment");
-            br.GetField("OrderContributedActions-AppendComment-CommentToAppend").TypeText("Foo", br);
-            br.ClickOk();
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            var comment = wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-AppendComment", "#OrderContributedActions-AppendComment-CommentToAppend-Input");
+            comment.Clear();
+            comment.SendKeys("Foo" + Keys.Tab);
 
-            coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "20 Sales Orders");   
+
+            table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            coll = wait.ClickAndWait(table, ".nof-collection-table");
+
             Assert.AreEqual("Foo", coll.TextContentsOfCell(7, 6));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(8, 6)));
             Assert.AreEqual("Foo", coll.TextContentsOfCell(9, 6));
@@ -154,34 +166,36 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoInvokeContributedActionParmsValidateFail() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
 
             coll.GetRow(7).CheckRow(br);
             coll.GetRow(9).CheckRow(br);
-            br.ClickAction("ObjectQuery-SalesOrderHeader-AppendComment");
-            br.GetField("OrderContributedActions-AppendComment-CommentToAppend").TypeText("fail", br);
-            br.ClickOk();
 
-            br.FindElement(By.CssSelector(".validation-summary-errors li")).AssertTextEquals("For test purposes the comment 'fail' fails validation");
+            var comment = wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-AppendComment", "#OrderContributedActions-AppendComment-CommentToAppend-Input");
+            comment.Clear();
+            comment.SendKeys("fail" + Keys.Tab);
+
+            var error = wait.ClickAndWait(".nof-ok", ".validation-summary-errors li");
+
+            error.AssertTextEquals("For test purposes the comment 'fail' fails validation");
 
             br.FindElement(By.CssSelector("[name=Details]")).AssertTextEquals("2 Sales Orders");
 
-            br.FindElement(By.CssSelector("[name=Details]")).Click();
-            br.WaitForAjaxComplete();
-
-            br.AssertPageTitleEquals("2 Sales Orders");
+            wait.ClickAndWait("[name=Details]", wd => wd.Title == "2 Sales Orders");
         }
 
         public abstract void InvokeContributedActionNoSelections();
 
         public void DoInvokeContributedActionNoSelections() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
 
-            br.ClickAction("ObjectQuery-SalesOrderHeader-AppendComment");
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            wait.ClickAndWait(table, ".nof-collection-table");
 
-            br.AssertPageTitleEquals("20 Sales Orders");
-
+            wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-AppendComment", wd => wd.Title == "20 Sales Orders");
+         
             Thread.Sleep(5000);
 
             br.FindElement(By.ClassName("Nof-Warnings")).AssertTextEquals("No objects selected");
@@ -191,7 +205,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoPagingWithDefaultPageSize() {
             Login();
-            IWebElement coll = br.ClickAction("OrderRepository-HighestValueOrders").ClickTable().GetStandaloneTable();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
+
             br.AssertPageTitleEquals("20 Sales Orders");
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.GetTopObject().Text);
 
@@ -235,10 +252,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoPagingWithOverriddenPageSize() {
             Login();
-            br.ClickAction("CustomerRepository-FindStoreByName");
-            br.GetField("CustomerRepository-FindStoreByName-Name").TypeText("a", br);
-            br.ClickOk();
-            IWebElement coll = br.GetStandaloneList();
+
+            var name = wait.ClickAndWait("#CustomerRepository-FindStoreByName button", "#CustomerRepository-FindStoreByName-Name-Input");
+            name.Clear();
+            name.SendKeys("a" + Keys.Tab);
+
+            var coll = wait.ClickAndWait(".nof-ok", ".nof-collection-list");
+
             br.AssertPageTitleEquals("2 Stores");
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.GetTopObject().Text);
             IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
@@ -281,10 +301,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoPagingWithFormat() {
             Login();
-            br.ClickAction("CustomerRepository-FindStoreByName");
-            br.GetField("CustomerRepository-FindStoreByName-Name").TypeText("a", br);
-            br.ClickOk();
-            IWebElement coll = br.GetStandaloneList();
+        
+
+            var name = wait.ClickAndWait("#CustomerRepository-FindStoreByName button", "#CustomerRepository-FindStoreByName-Name-Input");
+            name.Clear();
+            name.SendKeys("a" + Keys.Tab);
+
+            var coll = wait.ClickAndWait(".nof-ok", ".nof-collection-list");
             br.AssertPageTitleEquals("2 Stores");
 
             // list has 2 columns 

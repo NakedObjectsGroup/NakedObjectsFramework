@@ -16,11 +16,14 @@ using OpenQA.Selenium.IE;
 namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
         // new helpers 
+
+        // Find then click action and wait unitil field selector returns an element 
         public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector, int delay = 0) {
             IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
             return wait.ClickAndWait(action, fieldSelector);
         }
 
+        // Click action and wait unitil field selector returns an element 
         public static IWebElement ClickAndWait(this SafeWebDriverWait wait, IWebElement action, string fieldSelector, int delay = 0) {
             if (delay > 0) {
                 Thread.Sleep(delay);
@@ -32,11 +35,32 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             return field;
         }
 
+
+        // Find then click action and wait until field selector stops returning an element 
+        public static void ClickAndWaitGone(this SafeWebDriverWait wait, string actionSelector, string fieldSelector, int delay = 0) {
+            IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
+            wait.ClickAndWaitGone(action, fieldSelector);
+        }
+
+        // Click action and wait until field selector stops returning an element 
+        public static void ClickAndWaitGone(this SafeWebDriverWait wait, IWebElement action, string fieldSelector, int delay = 0) {
+            if (delay > 0) {
+                Thread.Sleep(delay);
+            }
+            action.Click();
+            IWebElement field = null;
+            wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) == null);
+            Assert.IsNull(field);
+        }
+
+
+        // find then click action then wait until f returns true
         public static void ClickAndWait(this SafeWebDriverWait wait, string actionSelector, Func<IWebDriver, bool> f) {
             IWebElement action = wait.Driver.FindElement(By.CssSelector(actionSelector));
             wait.ClickAndWait(action, f);
         }
 
+        // click action then wait until f returns true
         public static void ClickAndWait(this SafeWebDriverWait wait, IWebElement action, Func<IWebDriver, bool> f) {
             action.Click();
             wait.Until(f);
@@ -240,25 +264,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Actions
 
-        public static IWebDriver ClickAction(this IWebDriver webDriver, string actionId) {
-            GetAction(webDriver, actionId).BrowserSpecificClick(webDriver);
-            webDriver.WaitForAjaxComplete();
-            return webDriver;
-        }
-
-        public static IWebElement GetAction(this IWebDriver webDriver, string actionId) {
-            IWebElement element = webDriver.FindElement(By.Id(actionId));
-            if (element.TagName.ToLower() == "button") {
-                return element;
-            }
-            return element.FindElement(By.Name("InvokeAction"));
-        }
-
-        public static void AssertActionIsDisabled(this IWebDriver webDriver, string actionId, string withMessage) {
-            IWebElement div = webDriver.FindElement(By.Id(actionId));
-            Assert.AreEqual(withMessage, div.GetAttribute("title"));
-        }
-
         public static IWebDriver ClickOk(this IWebDriver webDriver) {
             return ClickSingleGenericButton(webDriver, "OK");
         }
@@ -414,19 +419,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         public static IWebElement TypeText(this IWebElement field, string text, IWebDriver br, bool repeat = true) {
             IWebElement textField = GetTextField(field);
-            try {
-                textField.Clear();
-                textField.SendKeys(text);
-            }
-            catch (WebDriverException) {
-                if (repeat) {
-                    // try again might be flakey
-                    Thread.Sleep(1000);
-                    return textField.TypeText(text, br, false);
-                }
-                throw;
-            }
-
+            textField.Clear();
+            textField.SendKeys(text);
             return field;
         }
 

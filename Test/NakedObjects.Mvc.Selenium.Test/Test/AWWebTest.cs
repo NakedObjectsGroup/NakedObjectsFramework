@@ -141,35 +141,27 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Thread.Sleep(5000);
         }
 
+        protected void Find(string actionSelector, string fieldSelector, string value) {
+            var field = wait.ClickAndWait(actionSelector, fieldSelector);
+            field.Clear();
+            field.SendKeys(value + Keys.Tab);
+            wait.ClickAndWait(".nof-ok", ".nof-objectview");
+        }
+
         protected void FindCustomerByAccountNumber(string accountNumber) {
-            br.ClickAction("CustomerRepository-FindCustomerByAccountNumber");
-            IWebElement f = br.GetField("CustomerRepository-FindCustomerByAccountNumber-AccountNumber");
-            f.TypeText(accountNumber, br);
-            f.Click();
-            // f.TypeText(Keys.Tab, br);
-            br.ClickOk();
-            br.AssertContainsObjectView();
+            Find("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input", accountNumber);
         }
 
         protected void FindOrder(string orderNumber) {
-            br.ClickAction("OrderRepository-FindOrder");
-            br.GetField("OrderRepository-FindOrder-OrderNumber").TypeText(orderNumber, br);
-            br.ClickOk();
-            br.AssertContainsObjectView();
+            Find("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input", orderNumber);
         }
 
         protected void FindProduct(string productNumber) {
-            br.ClickAction("ProductRepository-FindProductByNumber");
-            br.GetField("ProductRepository-FindProductByNumber-Number").TypeText(productNumber, br);
-            br.ClickOk();
-            br.AssertContainsObjectView();
+            Find("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input", productNumber);
         }
 
         protected void FindSalesPerson(string lastName) {
-            br.ClickAction("SalesRepository-FindSalesPersonByName");
-            br.GetField("SalesRepository-FindSalesPersonByName-LastName").TypeText(lastName, br);
-            br.ClickOk();
-            br.AssertContainsObjectView();
+            Find("#SalesRepository-FindSalesPersonByName button", "#SalesRepository-FindSalesPersonByName-LastName-Input", lastName);
         }
 
         #endregion

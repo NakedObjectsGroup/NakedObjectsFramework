@@ -21,7 +21,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("FR-M94B-38");
             br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
-            IWebElement photoField = br.GetField("Product-Photo");
+            IWebElement photoField = br.FindElement(By.CssSelector("#Product-Photo"));
 
             IWebElement alink = photoField.FindElement(By.CssSelector("a"));
             Assert.AreEqual(Path.Combine(url, "Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo"),

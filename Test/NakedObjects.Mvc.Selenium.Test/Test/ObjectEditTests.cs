@@ -38,10 +38,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
                 string m = e.Message;
             }
             //Test modifiable field
-            br.GetField("Store-Name").AssertIsModifiable();
+            br.FindElement(By.CssSelector("#Store-Name")).AssertIsModifiable();
 
             //Test unmodifiable field
-            br.GetField("Store-AccountNumber").AssertIsUnmodifiable();
+            br.FindElement(By.CssSelector("#Store-AccountNumber")).AssertIsUnmodifiable();
 
             Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
@@ -123,18 +123,18 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerAndEdit("AW00000072");
 
-            br.GetField("Store-Name").AssertInputValueEquals("Outdoor Equipment Store").TypeText("Temporary Name", br);
+            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store").TypeText("Temporary Name", br);
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.GetField("Store-Name").AssertValueEquals("Temporary Name");
+            br.FindElement(By.CssSelector("#Store-Name")).AssertValueEquals("Temporary Name");
         }
 
         public void DoChangeDropDownField() {
             Login();
             FindCustomerAndEdit("AW00000073");
 
-            br.GetField("Store-SalesTerritory").AssertSelectedDropDownItemIs("Northwest").SelectDropDownItem("C", br);
+            br.FindElement(By.CssSelector("#Store-SalesTerritory")).AssertSelectedDropDownItemIs("Northwest").SelectDropDownItem("C", br);
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.GetField("Store-SalesTerritory").AssertObjectHasTitle("Central");
+            br.FindElement(By.CssSelector("#Store-SalesTerritory")).AssertObjectHasTitle("Central");
         }
 
         public void DoChangeReferencePropertyViaRecentlyViewed() {
@@ -142,121 +142,129 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             FindSalesPerson("Ito");
             FindCustomerByAccountNumber("AW00000074");
-            br.GetField("Store-SalesPerson").AssertObjectHasTitle("David Campbell");
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("David Campbell");
 
             br.ClickEdit();
             br.AssertElementExists(By.ClassName("nof-menu"));
             br.ClickRecentlyViewed("Store-SalesPerson");
             br.SelectFinderOption("Store-SalesPerson", "Shu Ito");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.GetField("Store-SalesPerson").AssertObjectHasTitle("Shu Ito");
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Shu Ito");
         }
 
         public void DoChangeReferencePropertyViaRemove() {
             Login();
             FindCustomerByAccountNumber("AW00000076");
-            br.GetField("Store-SalesPerson").AssertObjectHasTitle("Jillian Carson");
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Jillian Carson");
 
             br.ClickEdit();
             br.AssertElementExists(By.ClassName("nof-menu"));
             br.ClickRemove("Store-SalesPerson");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.GetField("Store-SalesPerson").AssertIsEmpty();
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertIsEmpty();
         }
 
         public void DoChangeReferencePropertyViaAFindAction() {
             Login();
             FindCustomerByAccountNumber("AW00000075");
-            br.GetField("Store-SalesPerson").AssertObjectHasTitle("Jillian Carson");
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Jillian Carson");
 
-            br.ClickEdit();
-            br.ClickFinderAction("Store-SalesPerson", "Store-SalesPerson-SalesRepository-FindSalesPersonByName");
-            br.GetField("SalesRepository-FindSalesPersonByName-LastName").TypeText("Vargas", br);
-            br.ClickOk();
-            wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.GetField("Store-SalesPerson").AssertObjectHasTitle("Garrett Vargas");
+            var finder = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson-SalesRepository-FindSalesPersonByName");
+            var lastName = wait.ClickAndWait(finder, "#SalesRepository-FindSalesPersonByName-LastName-Input");
+
+            lastName.Clear();
+            lastName.SendKeys("Vargas" + Keys.Tab);
+
+            var save = wait.ClickAndWait(".nof-ok", ".nof-save");
+
+            wait.ClickAndWait(save, ".nof-objectview");
+            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Garrett Vargas");
         }
 
         public void DoChangeReferencePropertyViaANewAction() {
             Login();
-            br.ClickAction("WorkOrderRepository-RandomWorkOrder");
-            br.ClickEdit();
-            br.FindElement(By.Id("WorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
 
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            br.GetField("Product-SellStartDate").TypeText("1/1/2020", br);
-            br.GetField("Product-SellStartDate").AppendText(Keys.Escape, br);
-            br.GetField("Product-StandardCost").TypeText("1", br);
+            var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
+            var newProduct = wait.ClickAndWait(edit, "#WorkOrder-Product-ProductRepository-NewProduct");
 
-            IWebElement saveButton = br.FindElement(By.CssSelector("button[name='InvokeActionAsSave']"));
-            saveButton.FocusClick(br);
-            br.WaitForAjaxComplete();
-            saveButton.BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElements(By.CssSelector("button[title='Select']")).First().BrowserSpecificClick(br);
-            br.FindElement(By.Id("WorkOrder-Product")).AssertInputValueEquals("test ");
+            wait.ClickAndWait(newProduct, "#Product-Name-Input");
+
+            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
+            br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
+            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
+
+            var select = wait.ClickAndWait("button[name='InvokeActionAsSave']", "button[title='Select']");
+            var product = wait.ClickAndWait(select, "#WorkOrder-Product");
+
+            product.AssertInputValueEquals("test ");
         }
 
         public void DoChangeReferencePropertyViaAutoComplete() {
             Login();
-            br.ClickAction("WorkOrderRepository-RandomWorkOrder");
-            br.ClickEdit();
-            br.GetField("WorkOrder-Product-Select-AutoComplete").Clear();
-            br.GetField("WorkOrder-Product-Select-AutoComplete").SendKeys("HL");
+
+            var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
+            wait.ClickAndWait(edit, "#WorkOrder-Product-Select-AutoComplete");
+
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).Clear();
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys("HL");
             br.WaitForAjaxComplete();
-            br.GetField("WorkOrder-Product-Select-AutoComplete").SendKeys(Keys.ArrowDown);
-            br.GetField("WorkOrder-Product-Select-AutoComplete").SendKeys(Keys.ArrowDown);
-            br.GetField("WorkOrder-Product-Select-AutoComplete").SendKeys(Keys.Tab);
-            br.GetField("WorkOrder-Product").AssertInputValueEquals("HL Crankset");
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
+            br.FindElement(By.CssSelector("#WorkOrder-Product")).AssertInputValueEquals("HL Crankset");
         }
 
         public void DoChangeReferencePropertyViaANewActionFailMandatory() {
             Login();
-            br.ClickAction("WorkOrderRepository-RandomWorkOrder");
-            br.ClickEdit();
-            br.FindElement(By.Id("WorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
 
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            //br.GetField("Product-SellStartDate").TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
-            br.GetField("Product-StandardCost").TypeText("1", br);
+            var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
+            var newProduct = wait.ClickAndWait(edit, "#WorkOrder-Product-ProductRepository-NewProduct");
+
+            wait.ClickAndWait(newProduct, "#Product-Name-Input");
+
+            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
+
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
+            //br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
+            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
             br.ClickSave();
             br.WaitForAjaxComplete();
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
-            Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
+            Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
         public void DoChangeReferencePropertyViaANewActionFailInvalid() {
             Login();
-            br.ClickAction("WorkOrderRepository-RandomWorkOrder");
-            br.ClickEdit();
-            br.FindElement(By.Id("WorkOrder-Product-ProductRepository-NewProduct")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.GetField("Product-Name").TypeText("test", br);
-            br.GetField("Product-ProductNumber").TypeText("test", br);
-            br.GetField("Product-ListPrice").TypeText("10", br);
 
-            br.GetField("Product-SafetyStockLevel").TypeText("1", br);
-            br.GetField("Product-ReorderPoint").TypeText("1", br);
-            br.GetField("Product-DaysToManufacture").TypeText("1", br);
-            br.GetField("Product-SellStartDate").TypeText("1/1/2020", br);
-            br.GetField("Product-SellStartDate").AppendText(Keys.Escape, br);
-            br.GetField("Product-StandardCost").TypeText("test", br); // invalid
+            var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
+            var newProduct = wait.ClickAndWait(edit, "#WorkOrder-Product-ProductRepository-NewProduct");
+
+            wait.ClickAndWait(newProduct, "#Product-Name-Input");
+
+            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
+            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
+
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
+            br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
+            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("test", br); // invalid
             br.ClickSave();
             br.WaitForAjaxComplete();
             br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
-            Assert.AreEqual("test", br.GetField("Product-Name-Input").GetAttribute("value"));
+            Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
         public void DoCheckDefaultsOnFindAction() {
@@ -266,8 +274,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.ClickFinderAction("SalesOrderHeader-CurrencyRate", "SalesOrderHeader-CurrencyRate-OrderContributedActions-FindRate");
 
-            br.GetField("OrderContributedActions-FindRate-Currency").AssertInputValueEquals("US Dollar");
-            br.GetField("OrderContributedActions-FindRate-Currency1").AssertInputValueEquals("Euro");
+            br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency")).AssertInputValueEquals("US Dollar");
+            br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency1")).AssertInputValueEquals("Euro");
         }
 
         public void DoNoEditButtonWhenNoEditableFields() {
@@ -290,8 +298,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoNoValidationOnTransientUntilSave() {
             Login();
             FindCustomerByAccountNumber("AW00000532");
-            br.ClickAction("Store-CreateNewOrder");
-            br.ClickOk();
+
+            var ok = wait.ClickAndWait("#Store-CreateNewOrder button", ".nof-ok");
+            wait.ClickAndWait(ok, "#SalesOrderHeader-ShipDate-Input");
 
             br.FindElement(By.Id("SalesOrderHeader-ShipDate")).TypeText(DateTime.Now.AddDays(-1).ToShortDateString(), br);
             br.FindElement(By.Id("SalesOrderHeader-Status")).SelectDropDownItem("Approved", br);

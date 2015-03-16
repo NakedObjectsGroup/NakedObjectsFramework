@@ -53,7 +53,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             status.SelectDropDownItem("Cancelled", br);
 
-            status = wait.ClickAndWait(".nof-save", ".nof-objectview #SalesOrderHeader-Status div.nof-value");
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
+
+            status = br.FindElement(By.CssSelector("#SalesOrderHeader-Status div.nof-value"));
 
             Assert.AreEqual("Cancelled", status.Text);
         }

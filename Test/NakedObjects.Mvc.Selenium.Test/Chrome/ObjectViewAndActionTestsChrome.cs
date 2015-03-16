@@ -150,5 +150,10 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }
+
+        [TestMethod]
+        public override void ExpandAndCollapseNestedObject() {
+           DoExpandAndCollapseNestedObject();
+        }
     }
 }

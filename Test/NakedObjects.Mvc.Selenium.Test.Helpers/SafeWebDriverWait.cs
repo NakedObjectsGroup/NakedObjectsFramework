@@ -31,7 +31,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
                 try {
                     return condition(d);
                 }
-                catch (NoSuchElementException) {}
+                catch {}
                 return default(TResult);
             });
         }

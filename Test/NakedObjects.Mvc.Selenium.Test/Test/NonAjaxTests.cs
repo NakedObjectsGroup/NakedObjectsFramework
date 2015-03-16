@@ -23,7 +23,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("LW-1000");
             br.ClickEdit();
-            IWebElement days = br.GetField("Product-DaysToManufacture");
+            IWebElement days = br.FindElement(By.CssSelector("#Product-DaysToManufacture"));
             days.AssertInputValueEquals("0");
             days.TypeText("100", br);
             days.AppendText(Keys.Tab, br);
