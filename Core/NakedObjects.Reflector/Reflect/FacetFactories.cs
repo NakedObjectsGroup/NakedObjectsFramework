@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
+using System.Linq;
 
 namespace NakedObjects.Reflect {
     /// <summary>
@@ -109,6 +110,10 @@ namespace NakedObjects.Reflect {
                 typeof (CollectionFacetFactory),
                 typeof (MenuFacetFactory)
             };
+        }
+
+        public static int StandardIndexOf(Type factory) {
+            return Array.FindIndex(StandardFacetFactories(), x => x == factory);
         }
     }
 }

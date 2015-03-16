@@ -63,7 +63,7 @@ namespace NakedObjects.Unity {
             }
         }
 
-        private static void RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
+        public static void RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
             container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
     }
