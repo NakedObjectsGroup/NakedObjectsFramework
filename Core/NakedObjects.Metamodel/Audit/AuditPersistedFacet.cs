@@ -23,9 +23,9 @@ namespace NakedObjects.Meta.Audit {
             manager = auditManager;
         }
 
-        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            manager.Persisted(nakedObject, session, lifecycleManager);
-            underlyingFacet.Invoke(nakedObject, session, lifecycleManager, metamodelManager);
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+            manager.Persisted(nakedObjectAdapter, session, lifecycleManager);
+            underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
         }
     }
 }

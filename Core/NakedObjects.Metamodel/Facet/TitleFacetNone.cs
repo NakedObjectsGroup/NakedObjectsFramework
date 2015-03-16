@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
             return null;
         }
     }

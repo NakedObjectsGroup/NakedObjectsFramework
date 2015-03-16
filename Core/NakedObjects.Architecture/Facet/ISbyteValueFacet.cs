@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ISbyteValueFacet : IFacet {
-        SByte SByteValue(INakedObject nakedObject);
+        SByte SByteValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

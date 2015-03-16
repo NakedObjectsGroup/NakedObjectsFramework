@@ -12,25 +12,25 @@ using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.Core.Util {
     public static class CollectionMementoHelper {
-        public static bool IsPaged(this INakedObject nakedObject) {
-            var oid = nakedObject.Oid as ICollectionMemento;
+        public static bool IsPaged(this INakedObjectAdapter nakedObjectAdapter) {
+            var oid = nakedObjectAdapter.Oid as ICollectionMemento;
             return oid != null && oid.IsPaged;
         }
 
-        public static bool IsNotQueryable(this INakedObject nakedObject) {
-            var oid = nakedObject.Oid as ICollectionMemento;
+        public static bool IsNotQueryable(this INakedObjectAdapter nakedObjectAdapter) {
+            var oid = nakedObjectAdapter.Oid as ICollectionMemento;
             return oid != null && oid.IsNotQueryable;
         }
 
-        public static void SetNotQueryable(this INakedObject nakedObject, bool isNotQueryable) {
-            var oid = nakedObject.Oid as ICollectionMemento;
+        public static void SetNotQueryable(this INakedObjectAdapter nakedObjectAdapter, bool isNotQueryable) {
+            var oid = nakedObjectAdapter.Oid as ICollectionMemento;
             if (oid != null) {
                 oid.IsNotQueryable = isNotQueryable;
             }
         }
 
         // for test purposes only 
-        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters) {
+        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters) {
             return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, target, actionSpec, parameters);
         }
 

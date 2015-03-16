@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IDoubleFloatingPointValueFacet : IFacet {
-        double DoubleValue(INakedObject nakedObject);
+        double DoubleValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

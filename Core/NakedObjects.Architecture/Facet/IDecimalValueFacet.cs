@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IDecimalValueFacet : IFacet {
-        decimal DecimalValue(INakedObject nakedObject);
+        decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

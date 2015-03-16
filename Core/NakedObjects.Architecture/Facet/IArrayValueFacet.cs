@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IArrayValueFacet<out T> : IFacet {
-        T[] ArrayValue(INakedObject nakedObject);
+        T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

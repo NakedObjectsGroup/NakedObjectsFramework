@@ -29,7 +29,7 @@ namespace NakedObjects.Xat {
 
         #region ITestHasActions Members
 
-        public INakedObject NakedObject { get; set; }
+        public INakedObjectAdapter NakedObject { get; set; }
 
         public ITestAction[] Actions {
             get { return NakedObject.Spec.GetActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
@@ -125,5 +125,5 @@ namespace NakedObjects.Xat {
         }
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

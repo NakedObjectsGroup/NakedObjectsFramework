@@ -11,6 +11,6 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IFromStreamFacet : IFacet {
-        INakedObject ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager);
+        INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager);
     }
 }

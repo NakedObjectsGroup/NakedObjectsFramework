@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return AppropriateView(controlData, nextNakedObject);
         }
 
-        private ActionResult View(INakedObject nakedObject) {
+        private ActionResult View(INakedObjectAdapter nakedObject) {
             string viewName = nakedObject.IsViewModelEditView() ? "ViewModel" : "ObjectView";
             return View(viewName, nakedObject.Object);
         }

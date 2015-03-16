@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Xat {
     internal class TestValue : ITestValue {
-        public TestValue(INakedObject nakedObject) {
-            NakedObject = nakedObject;
+        public TestValue(INakedObjectAdapter nakedObjectAdapter) {
+            NakedObject = nakedObjectAdapter;
         }
 
         #region ITestValue Members
@@ -19,10 +19,10 @@ namespace NakedObjects.Xat {
             get { return NakedObject.TitleString(); }
         }
 
-        public INakedObject NakedObject { get; private set; }
+        public INakedObjectAdapter NakedObject { get; private set; }
 
         #endregion
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

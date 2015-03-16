@@ -37,8 +37,8 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            return methodDelegate(nakedObject.GetDomainObject(), new object[] {}) as string;
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
+            return methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {}) as string;
         }
     }
 

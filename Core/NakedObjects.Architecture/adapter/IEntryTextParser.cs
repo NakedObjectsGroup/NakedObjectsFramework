@@ -10,13 +10,13 @@ namespace NakedObjects.Architecture.Adapter {
         /// <summary>
         ///     Parses a text entry made by a user and sets the domain object's value
         /// </summary>
-        INakedObject ParseTextEntry(INakedObject original, string text);
+        INakedObjectAdapter ParseTextEntry(INakedObjectAdapter original, string text);
 
         /// <summary>
         ///     Returns the title to display this object with, which is usually got from the
-        ///     wrapped <see cref="INakedObject.Object" /> domain object
+        ///     wrapped <see cref="INakedObjectAdapter.Object" /> domain object
         /// </summary>
-        string TitleString(INakedObject nakedObject);
+        string TitleString(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

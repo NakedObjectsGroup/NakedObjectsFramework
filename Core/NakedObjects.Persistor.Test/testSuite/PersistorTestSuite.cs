@@ -45,7 +45,7 @@ namespace NakedObjects.Persistor.TestSuite {
             get { return framework.MetamodelManager; }
         }
 
-        private INakedObject AdapterFor(object domainObject) {
+        private INakedObjectAdapter AdapterFor(object domainObject) {
             return framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
         }
 
@@ -171,7 +171,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return pet;
         }
 
-        private INakedObject Save(object toSave) {
+        private INakedObjectAdapter Save(object toSave) {
             TransactionManager.StartTransaction();
             var adapterForToSave = AdapterFor(toSave);
             LifecycleManager.MakePersistent(adapterForToSave);
@@ -200,12 +200,12 @@ namespace NakedObjects.Persistor.TestSuite {
             return address;
         }
 
-        private INakedObject GetAdaptedAddress(Person person) {
+        private INakedObjectAdapter GetAdaptedAddress(Person person) {
             var personAdapter = AdapterFor(person);
             return ((IObjectSpec) personAdapter.Spec).GetProperty("Address").GetNakedObject(personAdapter);
         }
 
-        private INakedObject GetAdaptedRelatives(Person person) {
+        private INakedObjectAdapter GetAdaptedRelatives(Person person) {
             TransactionManager.StartTransaction();
             var personAdapter = AdapterFor(person);
             TransactionManager.EndTransaction();

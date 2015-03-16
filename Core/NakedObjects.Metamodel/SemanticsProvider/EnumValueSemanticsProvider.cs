@@ -33,9 +33,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IEnumValueFacet Members
 
-        public string IntegralValue(INakedObject nakedObject) {
-            if (nakedObject.Object is T || TypeUtils.IsIntegralValueForEnum(nakedObject.Object)) {
-                return Convert.ChangeType(nakedObject.Object, Enum.GetUnderlyingType(typeof (T))).ToString();
+        public string IntegralValue(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.Object is T || TypeUtils.IsIntegralValueForEnum(nakedObjectAdapter.Object)) {
+                return Convert.ChangeType(nakedObjectAdapter.Object, Enum.GetUnderlyingType(typeof (T))).ToString();
             }
             return null;
         }

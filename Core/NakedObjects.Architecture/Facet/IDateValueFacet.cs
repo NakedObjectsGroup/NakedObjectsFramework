@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IDateValueFacet : IFacet {
-        DateTime DateValue(INakedObject nakedObject);
+        DateTime DateValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

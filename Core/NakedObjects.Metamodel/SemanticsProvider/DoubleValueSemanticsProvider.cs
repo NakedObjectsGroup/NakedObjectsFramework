@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDoubleFloatingPointValueFacet Members
 
-        public Double DoubleValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<double>();
+        public Double DoubleValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<double>();
         }
 
         #endregion

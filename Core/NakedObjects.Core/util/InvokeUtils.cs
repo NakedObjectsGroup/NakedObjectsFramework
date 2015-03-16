@@ -16,9 +16,9 @@ namespace NakedObjects.Core.Util {
             return Invoke(method, null, parameters);
         }
 
-        public static object Invoke(MethodInfo method, INakedObject nakedObject, INakedObject[] parameters) {
+        public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
             object[] parameterPocos = parameters == null ? new object[] {} : parameters.Select(p => p == null ? null : p.Object).ToArray();
-            return Invoke(method, nakedObject.Object, parameterPocos);
+            return Invoke(method, nakedObjectAdapter.Object, parameterPocos);
         }
 
         public static object Invoke(MethodInfo method, object obj, object[] parameters) {

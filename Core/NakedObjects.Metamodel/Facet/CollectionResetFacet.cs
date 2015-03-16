@@ -30,14 +30,14 @@ namespace NakedObjects.Meta.Facet {
 
         #region ICollectionResetFacet Members
 
-        public void Reset(INakedObject inObject) {
+        public void Reset(INakedObjectAdapter inObjectAdapter) {
             try {
-                var collection = (IList) property.GetValue(inObject.GetDomainObject(), null);
+                var collection = (IList) property.GetValue(inObjectAdapter.GetDomainObject(), null);
                 collection.Clear();
-                property.SetValue(inObject.GetDomainObject(), collection, null);
+                property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
             }
             catch (Exception e) {
-                throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Spec.FullName), e);
+                throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObjectAdapter.Spec.FullName), e);
             }
         }
 

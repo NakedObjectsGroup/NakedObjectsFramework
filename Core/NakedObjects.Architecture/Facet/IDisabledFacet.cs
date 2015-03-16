@@ -20,6 +20,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason why the (feature of the) target object is currently disabled, or <c>null</c> if enabled
         /// </summary>
-        string DisabledReason(INakedObject target);
+        string DisabledReason(INakedObjectAdapter target);
     }
 }

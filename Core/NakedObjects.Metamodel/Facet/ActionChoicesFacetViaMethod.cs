@@ -58,11 +58,11 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
-            INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+            INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
             try {
-                var options = choicesDelegate(nakedObject.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) as IEnumerable;
+                var options = choicesDelegate(nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) as IEnumerable;
                 if (options != null) {
                     return options.Cast<object>().ToArray();
                 }

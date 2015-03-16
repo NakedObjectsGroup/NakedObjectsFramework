@@ -23,6 +23,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The default value for this property in a newly created object
         /// </summary>
-        object GetDefault(INakedObject inObject);
+        object GetDefault(INakedObjectAdapter inObjectAdapter);
     }
 }

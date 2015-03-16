@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core {
     public class ConcurrencyException : ObjectPersistenceException {
-        public ConcurrencyException(INakedObject nakedObject)
-            : this(Resources.NakedObjects.ConcurrencyMessage, nakedObject.Oid) {
-            SourceNakedObject = nakedObject;
+        public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)
+            : this(Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) {
+            SourceNakedObjectAdapter = nakedObjectAdapter;
         }
 
         public ConcurrencyException(string message, IOid source)
@@ -24,7 +24,7 @@ namespace NakedObjects.Core {
             : base(message, cause) {}
 
         public IOid SourceOid { get; private set; }
-        public INakedObject SourceNakedObject { get; set; }
+        public INakedObjectAdapter SourceNakedObjectAdapter { get; set; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

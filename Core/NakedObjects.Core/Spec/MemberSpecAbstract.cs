@@ -104,7 +104,7 @@ namespace NakedObjects.Core.Reflect {
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
-        public virtual bool IsVisible(INakedObject target) {
+        public virtual bool IsVisible(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
         }
@@ -113,7 +113,7 @@ namespace NakedObjects.Core.Reflect {
         ///     Loops over all <see cref="IDisablingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
-        public virtual IConsent IsUsable(INakedObject target) {
+        public virtual IConsent IsUsable(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext
                 .AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);

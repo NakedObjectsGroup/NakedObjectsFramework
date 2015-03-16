@@ -16,12 +16,12 @@ namespace NakedObjects.Meta.Facet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}
 
-        public override void Init(INakedObject collection, INakedObject[] initData) {
+        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
             Array newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
             collection.ReplacePoco(newCollection);
 
             int i = 0;
-            foreach (INakedObject nakedObject in initData) {
+            foreach (INakedObjectAdapter nakedObject in initData) {
                 AsCollection(collection)[i++] = nakedObject.Object;
             }
         }

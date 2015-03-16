@@ -37,8 +37,8 @@ namespace NakedObjects.Meta.Facet {
 
         public abstract bool IsMandatory { get; }
 
-        public virtual bool IsRequiredButNull(INakedObject nakedObject) {
-            return IsMandatory && nakedObject == null;
+        public virtual bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter) {
+            return IsMandatory && nakedObjectAdapter == null;
         }
 
         #endregion

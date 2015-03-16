@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
-    public sealed class NakedObjectAdapter : INakedObject {
+    public sealed class NakedObjectAdapter : INakedObjectAdapter {
         private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
@@ -41,7 +41,7 @@ namespace NakedObjects.Core.Adapter {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
 
-            if (poco is INakedObject) {
+            if (poco is INakedObjectAdapter) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
             }
             this.metamodel = metamodel;
@@ -60,7 +60,7 @@ namespace NakedObjects.Core.Adapter {
             get { return defaultTitle; }
         }
 
-        #region INakedObject Members
+        #region INakedObjectAdapter Members
 
         public ITypeOfFacet TypeOfFacet {
             get {
@@ -146,22 +146,22 @@ namespace NakedObjects.Core.Adapter {
 
             IAssociationSpec[] properties = objectSpec.Properties;
             foreach (IAssociationSpec property in properties) {
-                INakedObject referencedObject = property.GetNakedObject(this);
+                INakedObjectAdapter referencedObjectAdapter = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
                     }
                     var associationSpec = property as IOneToOneAssociationSpec;
                     if (associationSpec != null) {
-                        IConsent valid = associationSpec.IsAssociationValid(this, referencedObject);
+                        IConsent valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
                         if (valid.IsVetoed) {
                             return string.Format(Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
                         }
                     }
                 }
                 if (property is IOneToOneAssociationSpec) {
-                    if (referencedObject != null && referencedObject.ResolveState.IsTransient()) {
-                        string referencedObjectMessage = referencedObject.ValidToPersist();
+                    if (referencedObjectAdapter != null && referencedObjectAdapter.ResolveState.IsTransient()) {
+                        string referencedObjectMessage = referencedObjectAdapter.ValidToPersist();
                         if (referencedObjectMessage != null) {
                             return referencedObjectMessage;
                         }

@@ -44,11 +44,11 @@ namespace NakedObjects.Meta.Facet {
 
         public bool IsDateRange { get; set; }
 
-        public virtual int OutOfRange(INakedObject nakedObject) {
-            if (nakedObject == null) {
+        public virtual int OutOfRange(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter == null) {
                 return 0; //Date fields can contain nulls
             }
-            var origVal = ((IConvertible) nakedObject.Object);
+            var origVal = ((IConvertible) nakedObjectAdapter.Object);
             if (IsSIntegral(origVal)) {
                 return Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null));
             }
@@ -68,7 +68,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual string Invalidates(IInteractionContext ic) {
-            INakedObject proposedArgument = ic.ProposedArgument;
+            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
             if (OutOfRange(proposedArgument) == 0) {
                 return null;
             }

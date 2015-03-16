@@ -35,24 +35,24 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IBooleanValueFacet Members
 
-        public bool IsSet(INakedObject nakedObject) {
-            if (!nakedObject.Exists()) {
+        public bool IsSet(INakedObjectAdapter nakedObjectAdapter) {
+            if (!nakedObjectAdapter.Exists()) {
                 return false;
             }
-            return nakedObject.GetDomainObject<bool>();
+            return nakedObjectAdapter.GetDomainObject<bool>();
         }
 
-        public void Reset(INakedObject nakedObject) {
-            nakedObject.ReplacePoco(false);
+        public void Reset(INakedObjectAdapter nakedObjectAdapter) {
+            nakedObjectAdapter.ReplacePoco(false);
         }
 
-        public void Set(INakedObject nakedObject) {
-            nakedObject.ReplacePoco(true);
+        public void Set(INakedObjectAdapter nakedObjectAdapter) {
+            nakedObjectAdapter.ReplacePoco(true);
         }
 
-        public void Toggle(INakedObject nakedObject) {
-            bool newValue = !(bool) nakedObject.Object;
-            nakedObject.ReplacePoco(newValue);
+        public void Toggle(INakedObjectAdapter nakedObjectAdapter) {
+            bool newValue = !(bool) nakedObjectAdapter.Object;
+            nakedObjectAdapter.ReplacePoco(newValue);
         }
 
         #endregion

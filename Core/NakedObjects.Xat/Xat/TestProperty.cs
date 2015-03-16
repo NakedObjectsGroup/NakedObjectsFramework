@@ -50,7 +50,7 @@ namespace NakedObjects.Xat {
 
         public ITestNaked Content {
             get {
-                INakedObject fieldValue = field.GetNakedObject(owningObject.NakedObject);
+                INakedObjectAdapter fieldValue = field.GetNakedObject(owningObject.NakedObject);
                 if (fieldValue != null && fieldValue.ResolveState.IsResolvable()) {
                     persistor.ResolveImmediately(fieldValue);
                 }
@@ -68,17 +68,17 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = field.GetDefault(owningObject.NakedObject);
+            INakedObjectAdapter defaultValue = field.GetDefault(owningObject.NakedObject);
             return factory.CreateTestNaked(defaultValue);
         }
 
         public ITestNaked[] GetChoices() {
-            INakedObject[] choices = ((IOneToOneAssociationSpec) field).GetChoices(owningObject.NakedObject, null);
+            INakedObjectAdapter[] choices = ((IOneToOneAssociationSpec) field).GetChoices(owningObject.NakedObject, null);
             return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            INakedObject[] completions = ((IOneToOneAssociationSpec) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
+            INakedObjectAdapter[] completions = ((IOneToOneAssociationSpec) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
             return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
@@ -89,16 +89,16 @@ namespace NakedObjects.Xat {
 
             Assert.IsFalse(field.ReturnSpec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
 
-            INakedObject testNakedObject = testObject.NakedObject;
+            INakedObjectAdapter testNakedObjectAdapter = testObject.NakedObject;
 
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
+            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
 
-            INakedObject nakedObject = owningObject.NakedObject;
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
 
             IConsent valid;
             var associationSpec = field as IOneToOneAssociationSpec;
             if (associationSpec != null) {
-                valid = associationSpec.IsAssociationValid(nakedObject, testNakedObject);
+                valid = associationSpec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter);
             }
             else if (field is IOneToManyAssociationSpec) {
                 valid = new Veto("Always disabled");
@@ -108,11 +108,11 @@ namespace NakedObjects.Xat {
             }
 
             LastMessage = valid.Reason;
-            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
 
             var spec = field as IOneToOneAssociationSpec;
             if (spec != null) {
-                spec.SetAssociation(nakedObject, testNakedObject);
+                spec.SetAssociation(nakedObjectAdapter, testNakedObjectAdapter);
             }
 
             return this;
@@ -125,19 +125,19 @@ namespace NakedObjects.Xat {
 
             Assert.IsTrue(field is IOneToManyAssociationSpec, "Cannot remove from non collection");
 
-            INakedObject testNakedObject = testObject.NakedObject;
+            INakedObjectAdapter testNakedObjectAdapter = testObject.NakedObject;
 
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec),
+            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec),
                 string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
 
-            INakedObject nakedObject = owningObject.NakedObject;
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
 
             if (!(field is IOneToManyAssociationSpec)) {
                 throw new UnknownTypeException(field);
             }
             IConsent valid = new Veto("Always disabled");
 
-            Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
             return this;
         }
 
@@ -154,8 +154,8 @@ namespace NakedObjects.Xat {
 
             Assert.IsFalse(field.ReturnSpec.IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
 
-            INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
-            if (nakedObject != null) {
+            INakedObjectAdapter nakedObjectAdapter = field.GetNakedObject(owningObject.NakedObject);
+            if (nakedObjectAdapter != null) {
                 var spec = field as IOneToOneAssociationSpec;
                 if (spec != null) {
                     spec.SetAssociation(owningObject.NakedObject, null);
@@ -172,20 +172,20 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            INakedObject nakedObject = owningObject.NakedObject;
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
             try {
-                field.GetNakedObject(nakedObject);
+                field.GetNakedObject(nakedObjectAdapter);
 
                 var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
 
-                INakedObject newValue = parseableFacet.ParseTextEntry(textEntry, manager);
+                INakedObjectAdapter newValue = parseableFacet.ParseTextEntry(textEntry, manager);
 
-                IConsent consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObject, newValue);
+                IConsent consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, newValue);
                 LastMessage = consent.Reason;
 
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
 
-                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, textEntry.Trim().Equals("") ? null : newValue);
+                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, textEntry.Trim().Equals("") ? null : newValue);
             }
             catch (InvalidEntryException) {
                 Assert.Fail("Entry not recognised " + textEntry);
@@ -198,12 +198,12 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            INakedObject nakedObject = owningObject.NakedObject;
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
             try {
-                IConsent consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObject, null);
+                IConsent consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, null);
                 LastMessage = consent.Reason;
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: 'null' is not valid. Reason: {0}", consent.Reason));
-                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, null);
+                ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, null);
             }
             catch (InvalidEntryException) {
                 Assert.Fail("Null Entry not recognised ");
@@ -239,9 +239,9 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             AssertIsModifiable();
 
-            INakedObject valueObject = field.GetNakedObject(owningObject.NakedObject);
+            INakedObjectAdapter valueObjectAdapter = field.GetNakedObject(owningObject.NakedObject);
 
-            Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
+            Assert.IsNotNull(valueObjectAdapter, "Field '" + Name + "' contains null, but should contain an INakedObjectAdapter object");
             try {
                 var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
                 parseableFacet.ParseTextEntry(text, manager);
@@ -279,13 +279,13 @@ namespace NakedObjects.Xat {
             ResetLastMessage();
 
             Assert.IsFalse(field.ReturnSpec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
-            INakedObject testNakedObject = testObject.NakedObject;
-            Assert.IsTrue(testNakedObject.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
-            INakedObject nakedObject = owningObject.NakedObject;
+            INakedObjectAdapter testNakedObjectAdapter = testObject.NakedObject;
+            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
             IConsent valid;
             var spec = field as IOneToOneAssociationSpec;
             if (spec != null) {
-                valid = spec.IsAssociationValid(nakedObject, testNakedObject);
+                valid = spec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter);
             }
             else if (field is IOneToManyAssociationSpec) {
                 valid = new Veto("Always disabled");
@@ -295,7 +295,7 @@ namespace NakedObjects.Xat {
             }
             LastMessage = valid.Reason;
 
-            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
             return this;
         }
 
@@ -406,11 +406,11 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            INakedObject nakedObject = owningObject.NakedObject;
-            field.GetNakedObject(nakedObject);
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
+            field.GetNakedObject(nakedObjectAdapter);
             var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
             try {
-                INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
+                INakedObjectAdapter newValue = parseableFacet.ParseTextEntry(text, manager);
                 IConsent isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
                 LastMessage = isAssociationValid.Reason;
                 Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
@@ -426,10 +426,10 @@ namespace NakedObjects.Xat {
             AssertIsModifiable();
             ResetLastMessage();
 
-            INakedObject nakedObject = owningObject.NakedObject;
-            field.GetNakedObject(nakedObject);
+            INakedObjectAdapter nakedObjectAdapter = owningObject.NakedObject;
+            field.GetNakedObject(nakedObjectAdapter);
             var parseableFacet = field.ReturnSpec.GetFacet<IParseableFacet>();
-            INakedObject newValue = parseableFacet.ParseTextEntry(text, manager);
+            INakedObjectAdapter newValue = parseableFacet.ParseTextEntry(text, manager);
             IConsent isAssociationValid = ((IOneToOneAssociationSpec) field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;
             Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");

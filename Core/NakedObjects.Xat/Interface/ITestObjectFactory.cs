@@ -23,9 +23,9 @@ namespace NakedObjects.Xat {
         ITestMenu CreateTestMenuMain(IMenuImmutable menu);
         ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
         ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject);
-        ITestCollection CreateTestCollection(INakedObject instances);
-        ITestObject CreateTestObject(INakedObject nakedObject);
-        ITestNaked CreateTestNaked(INakedObject nakedObject);
+        ITestCollection CreateTestCollection(INakedObjectAdapter instances);
+        ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter);
+        ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter);
         ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm);
         ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestHasActions owningObject);
         ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
@@ -34,5 +34,5 @@ namespace NakedObjects.Xat {
         ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

@@ -36,8 +36,8 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string Invoke(INakedObject nakedObject, Exception exception) {
-            return (string)methodDelegate(nakedObject.GetDomainObject(), new object[] { exception });
+        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) {
+            return (string)methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { exception });
         }
 
         protected override string ToStringValues() {

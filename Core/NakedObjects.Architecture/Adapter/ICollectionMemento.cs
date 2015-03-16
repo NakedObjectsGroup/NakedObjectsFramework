@@ -9,13 +9,13 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
     public interface ICollectionMemento : IOid {
-        INakedObject Target { get; }
+        INakedObjectAdapter Target { get; }
         IActionSpec Action { get; }
-        INakedObject[] Parameters { get; }
+        INakedObjectAdapter[] Parameters { get; }
         bool IsPaged { get; set; }
         bool IsNotQueryable { get; set; }
         object[] SelectedObjects { get; }
-        INakedObject RecoverCollection();
+        INakedObjectAdapter RecoverCollection();
         ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged);
     }
 }

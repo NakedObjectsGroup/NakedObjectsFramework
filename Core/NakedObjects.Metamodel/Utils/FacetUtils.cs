@@ -57,8 +57,8 @@ namespace NakedObjects.Meta.Utils {
             facetList.ForEach(AddFacet);
         }
 
-        public static INakedObject[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObject> parameterNameValues) {
-            var parmValues = new List<INakedObject>();
+        public static INakedObjectAdapter[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+            var parmValues = new List<INakedObjectAdapter>();
 
             foreach (string name in parameterNames) {
                 if (parameterNameValues != null && parameterNameValues.ContainsKey(name)) {

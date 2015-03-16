@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     Disable a property, collection or action based on the state of the target <see cref="INakedObject" /> object.
+    ///     Disable a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" /> object.
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to
@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason this object is disabled, or <c>null</c> otherwise
         /// </summary>
-        string DisabledReason(INakedObject nakedObject);
+        string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

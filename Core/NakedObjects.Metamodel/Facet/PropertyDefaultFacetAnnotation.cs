@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        public override object GetDefault(INakedObject inObject) {
+        public override object GetDefault(INakedObjectAdapter inObjectAdapter) {
             return value;
         }
 

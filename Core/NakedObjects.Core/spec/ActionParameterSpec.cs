@@ -159,19 +159,19 @@ namespace NakedObjects.Core.Spec {
             return actionParameterSpecImmutable.GetFacets();
         }
 
-        public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
+        public IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
                 string msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
                 return GetConsent(msg);
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(session, false, parentAction.RealTarget(nakedObject), Identifier, proposedValue);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(session, false, parentAction.RealTarget(nakedObjectAdapter), Identifier, proposedValue);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public virtual IConsent IsUsable(INakedObject target) {
+        public virtual IConsent IsUsable(INakedObjectAdapter target) {
             return Allow.Default;
         }
 
@@ -193,21 +193,21 @@ namespace NakedObjects.Core.Spec {
             return choicesParameters;
         }
 
-        public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
+        public INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
             if (choicesFacet != null) {
-                object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObject), parameterNameValues);
+                object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues);
                 if (enumFacet == null) {
                     return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
 
-                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject), options)).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), options)).ToArray();
             }
 
             if (enumFacet != null) {
-                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
+                return manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter))).ToArray();
             }
 
             if (Spec.IsBoundedSet()) {
@@ -216,24 +216,24 @@ namespace NakedObjects.Core.Spec {
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
                 var elementEnumFacet = ElementSpec.GetFacet<IEnumFacet>();
-                IEnumerable domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObject)) : persistor.Instances(ElementSpec);
+                IEnumerable domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter)) : persistor.Instances(ElementSpec);
                 return manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
             }
 
             return null;
         }
 
-        public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
+        public INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject), autoCompleteParm)).ToArray();
+            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm)).ToArray();
         }
 
-        public INakedObject GetDefault(INakedObject nakedObject) {
-            return GetDefaultValueAndType(nakedObject).Item1;
+        public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) {
+            return GetDefaultValueAndType(nakedObjectAdapter).Item1;
         }
 
-        public TypeOfDefaultValue GetDefaultType(INakedObject nakedObject) {
-            return GetDefaultValueAndType(nakedObject).Item2;
+        public TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) {
+            return GetDefaultValueAndType(nakedObjectAdapter).Item2;
         }
 
         public string Id {
@@ -242,12 +242,12 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
-            if (parentAction.IsContributedMethod && nakedObject != null) {
-                IActionParameterSpec[] matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec)).ToArray();
+        private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
+            if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
+                IActionParameterSpec[] matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
-                    return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);
+                    return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(nakedObjectAdapter, TypeOfDefaultValue.Explicit);
                 }
             }
 
@@ -257,7 +257,7 @@ namespace NakedObjects.Core.Spec {
 
             var defaultsFacet = GetFacet<IActionDefaultsFacet>();
             if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
-                defaultValue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject));
+                defaultValue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObjectAdapter));
             }
 
             if (defaultValue == null) {
@@ -268,11 +268,11 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                object rawValue = nakedObject == null ? null : nakedObject.Object.GetType().IsValueType ? (object) 0 : null;
+                object rawValue = nakedObjectAdapter == null ? null : nakedObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 
-            return new Tuple<INakedObject, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+            return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
         private IConsent GetConsent(string message) {

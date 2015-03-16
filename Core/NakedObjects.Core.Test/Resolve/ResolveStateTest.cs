@@ -37,8 +37,8 @@ namespace NakedObjects.Core.Test.Resolve {
         }
 
         private static IResolveStateMachine NewSm() {
-            var mockAdapter = new Mock<INakedObject>();
-            INakedObject testAdapter = mockAdapter.Object;
+            var mockAdapter = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter testAdapter = mockAdapter.Object;
 
             var mockSpecification = new Mock<IObjectSpec>();
             IObjectSpec testSpecification = mockSpecification.Object;

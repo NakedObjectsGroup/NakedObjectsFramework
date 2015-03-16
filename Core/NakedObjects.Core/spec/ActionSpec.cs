@@ -109,19 +109,19 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
-            Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
-            INakedObject[] parms = RealParameters(nakedObject, parameterSet);
-            INakedObject target = RealTarget(nakedObject);
+        public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
+            Log.DebugFormat("Execute action {0}.{1}", nakedObjectAdapter, Id);
+            INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
+            INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
             var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager);
 
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObject, this, parameterSet));
+                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObjectAdapter, this, parameterSet));
             }
             return result;
         }
 
-        public INakedObject RealTarget(INakedObject target) {
+        public INakedObjectAdapter RealTarget(INakedObjectAdapter target) {
             if (target == null) {
                 return FindService();
             }
@@ -166,33 +166,33 @@ namespace NakedObjects.Core.Spec {
         /// <summary>
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
-        public IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
             IInteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
-                INakedObject[] parms = RealParameters(nakedObject, parameterSet);
+                INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
                 for (int i = 0; i < parms.Length; i++) {
-                    ic = InteractionContext.ModifyingPropParam(Session, false, RealTarget(nakedObject), Identifier, parameterSet[i]);
+                    ic = InteractionContext.ModifyingPropParam(Session, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
-            INakedObject target = RealTarget(nakedObject);
+            INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
             ic = InteractionContext.InvokingAction(Session, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public override IConsent IsUsable(INakedObject target) {
+        public override IConsent IsUsable(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public override bool IsVisible(INakedObject target) {
+        public override bool IsVisible(INakedObjectAdapter target) {
             return base.IsVisible(RealTarget(target));
         }
 
-        public INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet) {
-            return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObject[0]);
+        public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
+            return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObjectAdapter[0]);
         }
 
         #endregion
@@ -201,8 +201,8 @@ namespace NakedObjects.Core.Spec {
             return spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
         }
 
-        private INakedObject FindService() {
-            foreach (INakedObject serviceAdapter in servicesManager.GetServices()) {
+        private INakedObjectAdapter FindService() {
+            foreach (INakedObjectAdapter serviceAdapter in servicesManager.GetServices()) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }

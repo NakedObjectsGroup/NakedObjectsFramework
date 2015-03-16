@@ -31,13 +31,13 @@ namespace NakedObjects.Web.Mvc.Models {
             return Result.GetEnumerator();
         }
 
-        public static ActionResultModel Create(INakedObjectsFramework framework, IActionSpec action, INakedObject nakedObject, int page, int pageSize, string format) {
+        public static ActionResultModel Create(INakedObjectsFramework framework, IActionSpec action, INakedObjectAdapter nakedObject, int page, int pageSize, string format) {
             var result = (IEnumerable) nakedObject.Object;
             Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
             Type armType = armGenericType.MakeGenericType(genericType);
             var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
-            INakedObject noArm = framework.NakedObjectManager.CreateAdapter(arm, null, null);
+            INakedObjectAdapter noArm = framework.NakedObjectManager.CreateAdapter(arm, null, null);
             var currentMemento = (ICollectionMemento) nakedObject.Oid;
             var newMemento = currentMemento.NewSelectionMemento(new object[] {}, false);
             noArm.SetATransientOid(newMemento);

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IUnsignedIntegerValueFacet : IFacet {
-        uint UnsignedIntegerValue(INakedObject nakedObject);
+        uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

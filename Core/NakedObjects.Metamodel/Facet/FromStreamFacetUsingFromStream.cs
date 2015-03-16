@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IFromStreamFacet Members
 
-        public INakedObject ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
+        public INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
             object obj = fromStream.ParseFromStream(stream, mimeType, name);
             return manager.CreateAdapter(obj, null, null);
         }

@@ -30,6 +30,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Whether the provided value is out of range
         /// </summary>
-        int OutOfRange(INakedObject nakedObject);
+        int OutOfRange(INakedObjectAdapter nakedObjectAdapter);
     }
 }

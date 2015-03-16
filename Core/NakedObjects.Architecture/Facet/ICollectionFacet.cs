@@ -14,11 +14,11 @@ namespace NakedObjects.Architecture.Facet {
     public interface ICollectionFacet : IFacet {
         bool IsASet { get; }
         bool IsQueryable { get; }
-        bool Contains(INakedObject collection, INakedObject element);
-        INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
-        IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
-        IQueryable AsQueryable(INakedObject objectRepresentingCollection);
-        void Init(INakedObject collection, INakedObject[] initData);
+        bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
+        INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
+        IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
+        IQueryable AsQueryable(INakedObjectAdapter objectAdapterRepresentingCollection);
+        void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

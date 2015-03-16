@@ -26,6 +26,6 @@ namespace NakedObjects.Architecture.Spec {
         /// <param name="target">
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
-        bool IsVisible(INakedObject target);
+        bool IsVisible(INakedObjectAdapter target);
     }
 }

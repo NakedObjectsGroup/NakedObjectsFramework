@@ -32,25 +32,25 @@ namespace NakedObjects.Core.Component {
 
         #region IPersistAlgorithm Members
 
-        public void MakePersistent(INakedObject nakedObject) {
-            if (nakedObject.Spec.IsCollection) {
-                Log.Info("Persist " + nakedObject);
+        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.Spec.IsCollection) {
+                Log.Info("Persist " + nakedObjectAdapter);
 
-                nakedObject.GetAsEnumerable(manager).ForEach(Persist);
+                nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
 
-                if (nakedObject.ResolveState.IsGhost()) {
-                    nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
-                    nakedObject.ResolveState.Handle(Events.EndResolvingEvent);
+                if (nakedObjectAdapter.ResolveState.IsGhost()) {
+                    nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
+                    nakedObjectAdapter.ResolveState.Handle(Events.EndResolvingEvent);
                 }
             }
             else {
-                if (nakedObject.ResolveState.IsPersistent()) {
-                    throw new NotPersistableException("can't make object persistent as it is already persistent: " + nakedObject);
+                if (nakedObjectAdapter.ResolveState.IsPersistent()) {
+                    throw new NotPersistableException("can't make object persistent as it is already persistent: " + nakedObjectAdapter);
                 }
-                if (nakedObject.Spec.Persistable == PersistableType.Transient) {
-                    throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObject);
+                if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
+                    throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObjectAdapter);
                 }
-                Persist(nakedObject);
+                Persist(nakedObjectAdapter);
             }
         }
 
@@ -60,14 +60,14 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private void Persist(INakedObject nakedObject) {
-            if (nakedObject.ResolveState.IsAggregated() || (nakedObject.ResolveState.IsTransient() && nakedObject.Spec.Persistable != PersistableType.Transient)) {
-                IAssociationSpec[] fields = ((IObjectSpec) nakedObject.Spec).Properties;
-                if (!nakedObject.Spec.IsEncodeable && fields.Length > 0) {
-                    Log.Info("make persistent " + nakedObject);
-                    nakedObject.Persisting();
-                    if (!nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                        manager.MadePersistent(nakedObject);
+        private void Persist(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.ResolveState.IsAggregated() || (nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient)) {
+                IAssociationSpec[] fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
+                if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
+                    Log.Info("make persistent " + nakedObjectAdapter);
+                    nakedObjectAdapter.Persisting();
+                    if (!nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                        manager.MadePersistent(nakedObjectAdapter);
                     }
 
                     foreach (IAssociationSpec field in fields) {
@@ -75,21 +75,21 @@ namespace NakedObjects.Core.Component {
                             continue;
                         }
                         if (field is IOneToManyAssociationSpec) {
-                            INakedObject collection = field.GetNakedObject(nakedObject);
+                            INakedObjectAdapter collection = field.GetNakedObject(nakedObjectAdapter);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObject.Spec.FullName);
+                                throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObjectAdapter.Spec.FullName);
                             }
                             MakePersistent(collection);
                         }
                         else {
-                            INakedObject fieldValue = field.GetNakedObject(nakedObject);
+                            INakedObjectAdapter fieldValue = field.GetNakedObject(nakedObjectAdapter);
                             if (fieldValue == null) {
                                 continue;
                             }
                             Persist(fieldValue);
                         }
                     }
-                    persistor.AddPersistedObject(nakedObject);
+                    persistor.AddPersistedObject(nakedObjectAdapter);
                 }
             }
         }

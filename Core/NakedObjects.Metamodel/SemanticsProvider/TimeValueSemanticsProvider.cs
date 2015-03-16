@@ -38,8 +38,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ITimeValueFacet Members
 
-        public TimeSpan TimeValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<TimeSpan>();
+        public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<TimeSpan>();
         }
 
         #endregion

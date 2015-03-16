@@ -160,14 +160,14 @@ namespace NakedObjects.Meta.SpecImmutable {
             return false;
         }
 
-        public string GetIconName(INakedObject forObject, IMetamodel metamodel) {
+        public string GetIconName(INakedObjectAdapter forObjectAdapter, IMetamodel metamodel) {
             var iconFacet = GetFacet<IIconFacet>();
             string iconName = null;
             if (iconFacet != null) {
-                iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
+                iconName = forObjectAdapter == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObjectAdapter);
             }
             else if (IsCollection && !IsParseable) {
-                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObject, metamodel).GetIconName(null, metamodel);
+                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObjectAdapter, metamodel).GetIconName(null, metamodel);
             }
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;

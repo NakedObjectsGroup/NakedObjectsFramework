@@ -33,29 +33,29 @@ namespace NakedObjects.Core.Component {
             get { return "Entity Framework Persist Algorithm"; }
         }
 
-        public void MakePersistent(INakedObject nakedObject) {
-            if (nakedObject.Spec.IsCollection) {
-                MakeCollectionPersistent(nakedObject);
+        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.Spec.IsCollection) {
+                MakeCollectionPersistent(nakedObjectAdapter);
             }
             else {
-                MakeObjectPersistent(nakedObject);
+                MakeObjectPersistent(nakedObjectAdapter);
             }
         }
 
         #endregion
 
-        public void MakeObjectPersistent(INakedObject nakedObject) {
-            if (nakedObject.ResolveState.IsAggregated() ||
-                nakedObject.ResolveState.IsPersistent() ||
-                nakedObject.Spec.Persistable == PersistableType.Transient ||
-                nakedObject.Spec is IServiceSpec) {
+        public void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter.ResolveState.IsAggregated() ||
+                nakedObjectAdapter.ResolveState.IsPersistent() ||
+                nakedObjectAdapter.Spec.Persistable == PersistableType.Transient ||
+                nakedObjectAdapter.Spec is IServiceSpec) {
                 return;
             }
-            Log.Info("persist " + nakedObject);
-            persistor.AddPersistedObject(nakedObject);
+            Log.Info("persist " + nakedObjectAdapter);
+            persistor.AddPersistedObject(nakedObjectAdapter);
         }
 
-        private void MakeCollectionPersistent(INakedObject collection) {
+        private void MakeCollectionPersistent(INakedObjectAdapter collection) {
             if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
                 return;
             }

@@ -32,28 +32,28 @@ namespace NakedObjects.Meta.Audit {
 
         #region IAuditManager Members
 
-        public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
+        public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
 
             IPrincipal byPrincipal = session.Principal;
             string memberName = identifier.MemberName;
-            if (nakedObject.Spec is IServiceSpec) {
-                string serviceName = nakedObject.Spec.GetTitle(nakedObject);
+            if (nakedObjectAdapter.Spec is IServiceSpec) {
+                string serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
                 auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {
-                auditor.ActionInvoked(byPrincipal, memberName, nakedObject.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
+                auditor.ActionInvoked(byPrincipal, memberName, nakedObjectAdapter.GetDomainObject(), queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
             }
         }
 
-        public void Updated(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
-            auditor.ObjectUpdated(session.Principal, nakedObject.GetDomainObject());
+        public void Updated(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+            auditor.ObjectUpdated(session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
-        public void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObject, lifecycleManager);
-            auditor.ObjectPersisted(session.Principal, nakedObject.GetDomainObject());
+        public void Persisted(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
+            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+            auditor.ObjectPersisted(session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
         #endregion
@@ -95,11 +95,11 @@ namespace NakedObjects.Meta.Audit {
             }
         }
 
-        private IAuditor GetAuditor(INakedObject nakedObject, ILifecycleManager lifecycleManager) {
-            return GetNamespaceAuditorFor(nakedObject, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
+        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
+            return GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
         }
 
-        private IAuditor GetNamespaceAuditorFor(INakedObject target, ILifecycleManager lifecycleManager) {
+        private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Spec.FullName;
 

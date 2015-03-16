@@ -88,14 +88,14 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns the name of an icon to use for the specified object
         /// </summary>
-        string GetIconName(INakedObject forObject);
+        string GetIconName(INakedObjectAdapter forObjectAdapter);
 
         /// <summary>
         ///     Returns the title string for the specified object
         /// </summary>
-        string GetTitle(INakedObject nakedObject);
+        string GetTitle(INakedObjectAdapter nakedObjectAdapter);
 
-        string GetInvariantString(INakedObject nakedObject);
+        string GetInvariantString(INakedObjectAdapter nakedObjectAdapter);
 
         #region Name & Description
 

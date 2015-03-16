@@ -20,7 +20,7 @@ using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
-        private INakedObject nakedObject;
+        private INakedObjectAdapter nakedObject;
         private IActionSpec nakedObjectAction;
 
         public enum SubActionType {
@@ -122,7 +122,7 @@ namespace NakedObjects.Web.Mvc.Models {
             }
         }
 
-        public INakedObject GetNakedObject(INakedObjectsFramework framework) {
+        public INakedObjectAdapter GetNakedObject(INakedObjectsFramework framework) {
             if (nakedObject == null) {
                 nakedObject = framework.GetNakedObjectFromId(Id);
             }

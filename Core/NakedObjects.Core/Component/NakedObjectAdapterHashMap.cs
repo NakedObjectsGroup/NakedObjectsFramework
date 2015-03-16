@@ -14,15 +14,15 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectAdapterHashMap));
-        private readonly IDictionary<object, INakedObject> domainObjects;
+        private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
         public NakedObjectAdapterHashMap(int capacity) {
-            domainObjects = new Dictionary<object, INakedObject>(capacity);
+            domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
         }
 
         #region INakedObjectAdapterMap Members
 
-        public void Add(object obj, INakedObject adapter) {
+        public void Add(object obj, INakedObjectAdapter adapter) {
             domainObjects[obj] = adapter;
 
             // log at end so that if ToString needs adapters they're in maps. 
@@ -33,11 +33,11 @@ namespace NakedObjects.Core.Component {
             return domainObjects.ContainsKey(obj);
         }
 
-        public IEnumerator<INakedObject> GetEnumerator() {
+        public IEnumerator<INakedObjectAdapter> GetEnumerator() {
             return domainObjects.Values.GetEnumerator();
         }
 
-        public INakedObject GetObject(object obj) {
+        public INakedObjectAdapter GetObject(object obj) {
             if (ContainsObject(obj)) {
                 return domainObjects[obj];
             }
@@ -56,10 +56,10 @@ namespace NakedObjects.Core.Component {
             domainObjects.Clear();
         }
 
-        public void Remove(INakedObject nakedObject) {
-            Log.DebugFormat("Remove {0}", nakedObject);
+        public void Remove(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("Remove {0}", nakedObjectAdapter);
 
-            domainObjects.Remove(nakedObject.Object);
+            domainObjects.Remove(nakedObjectAdapter.Object);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

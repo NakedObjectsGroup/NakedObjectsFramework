@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ICallbackWithExceptionFacet Members
 
-        public abstract string Invoke(INakedObject nakedObject, Exception exception);
+        public abstract string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception);
 
         #endregion
     }

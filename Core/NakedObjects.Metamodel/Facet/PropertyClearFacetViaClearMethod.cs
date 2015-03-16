@@ -38,8 +38,8 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager) {
-            methodDelegate(nakedObject.GetDomainObject(), new object[] {});
+        public override void ClearProperty(INakedObjectAdapter nakedObjectAdapter, ITransactionManager transactionManager) {
+            methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {});
         }
 
         protected override string ToStringValues() {

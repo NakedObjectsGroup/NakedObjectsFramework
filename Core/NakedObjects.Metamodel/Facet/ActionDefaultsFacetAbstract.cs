@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionDefaultsFacet Members
 
-        public abstract Tuple<object, TypeOfDefaultValue> GetDefault(INakedObject nakedObject);
+        public abstract Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
         #endregion
     }

@@ -10,14 +10,14 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     Hide a property, collection or action based on the state of the target <see cref="INakedObject" />
+    ///     Hide a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" />
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
     public interface IHideForContextFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(INakedObject nakedObject);
+        string HiddenReason(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

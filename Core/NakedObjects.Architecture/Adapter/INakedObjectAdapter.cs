@@ -11,11 +11,11 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     An INakedObject is an adapter to domain objects. The NOF alsways deals with domain objects via these
+    ///     An INakedObjectAdapter is an adapter to domain objects. The NOF alsways deals with domain objects via these
     ///     adapters. The adapter gives access to the MetamodelManager (INakedObjectSpecification) for the domain object type,
     ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>
-    public interface INakedObject {
+    public interface INakedObjectAdapter {
         /// <summary>
         ///     Returns the adapted domain object, the POCO, that this adapter represents with the NOF
         /// </summary>

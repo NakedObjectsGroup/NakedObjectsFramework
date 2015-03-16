@@ -22,22 +22,22 @@ namespace NakedObjects.Meta.Facet {
             get { return typeof (IViewModelFacet); }
         }
 
-        public override string[] Derive(INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
-            return nakedObject.GetDomainObject<IViewModel>().DeriveKeys();
+        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
+            return nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
         }
 
-        public override void Populate(string[] keys, INakedObject nakedObject, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
-            nakedObject.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
+            nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
         }
 
-        public override bool IsEditView(INakedObject nakedObject) {
-            var target = nakedObject.GetDomainObject<IViewModelSwitchable>();
+        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter) {
+            var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>();
 
             if (target != null) {
                 return target.IsEditView();
             }
 
-            throw new NakedObjectSystemException(nakedObject.Object == null ? "Null domain object" : "Wrong type of domain object: " + nakedObject.Object.GetType().FullName);
+            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null ? "Null domain object" : "Wrong type of domain object: " + nakedObjectAdapter.Object.GetType().FullName);
         }
     }
 }

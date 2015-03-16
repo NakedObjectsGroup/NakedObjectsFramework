@@ -25,6 +25,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <para>
         ///     Should return <c>null</c> if the value is in fact valid.
         /// </para>
-        string InvalidReason(INakedObject targetObject, INakedObject proposedValue);
+        string InvalidReason(INakedObjectAdapter targetObjectAdapter, INakedObjectAdapter proposedValue);
     }
 }

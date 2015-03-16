@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Persist {
     public interface IPersistenceCommand {
         void Execute();
-        INakedObject OnObject();
+        INakedObjectAdapter OnObject();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

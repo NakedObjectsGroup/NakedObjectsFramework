@@ -13,12 +13,12 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ITypeOfFacet : IFacet {
-        Type GetValue(INakedObject collection);
+        Type GetValue(INakedObjectAdapter collection);
 
         /// <summary>
         ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
         ///     <see cref="Value" />
         /// </summary>
-        IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel);
+        IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel);
     }
 }

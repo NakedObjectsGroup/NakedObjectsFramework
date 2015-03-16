@@ -17,7 +17,7 @@ open NakedObjects.Persistor.Entity.Adapter
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with
-    | :? INakedObject as no -> no
+    | :? INakedObjectAdapter as no -> no
     | _ -> ctx.NakedObjectManager.CreateAdapter(obj, null, null)
 
 let IsPersistentObject obj ctx = 

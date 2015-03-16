@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IShortValueFacet Members
 
-        public short ShortValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<short>();
+        public short ShortValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<short>();
         }
 
         #endregion

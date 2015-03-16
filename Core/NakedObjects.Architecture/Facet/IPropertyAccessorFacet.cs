@@ -19,6 +19,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Gets the value of this property from this object
         /// </summary>
-        object GetProperty(INakedObject nakedObject);
+        object GetProperty(INakedObjectAdapter nakedObjectAdapter);
     }
 }

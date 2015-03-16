@@ -138,8 +138,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
+            var mock = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
             string[] key = facet.Derive(value, null, null);
@@ -207,8 +207,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             var testClass = new Class1();
             var keys = new[] {"testValue1", "testValue2"};
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
+            var mock = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
             facet.Populate(keys, value, null, null);

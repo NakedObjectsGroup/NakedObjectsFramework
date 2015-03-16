@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Facet {
         protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 
-        public override string DisabledReason(INakedObject target) {
+        public override string DisabledReason(INakedObjectAdapter target) {
             if (Value == WhenTo.Always) {
                 return string.Format(Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName);
             }

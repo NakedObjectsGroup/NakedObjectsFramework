@@ -12,21 +12,21 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class FeatureSpecUtils {
-        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObject nakedObject, INakedObjectManager manager) {
-            if (nakedObject == null) {
+        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager) {
+            if (nakedObjectAdapter == null) {
                 return "";
             }
             string text = null;
             var regex = memberSpec.GetFacet<IRegExFacet>();
             if (regex != null) {
-                text = regex.Format(nakedObject.TitleString());
+                text = regex.Format(nakedObjectAdapter.TitleString());
             }
             var mask = memberSpec.GetFacet<IMaskFacet>();
             if (mask != null) {
                 var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
-                text = title.GetTitleWithMask(mask.Value, nakedObject, manager);
+                text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, manager);
             }
-            return text ?? (nakedObject.TitleString());
+            return text ?? (nakedObjectAdapter.TitleString());
         }
     }
 }

@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ISbyteValueFacet Members
 
-        public sbyte SByteValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<sbyte>();
+        public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<sbyte>();
         }
 
         #endregion

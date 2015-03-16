@@ -25,9 +25,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyInitializationFacet Members
 
-        public void InitProperty(INakedObject nakedObject, INakedObject value) {
+        public void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value) {
             try {
-                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
+                property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException("Exception executing " + property, e);

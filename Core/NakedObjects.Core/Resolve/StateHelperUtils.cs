@@ -95,7 +95,7 @@ namespace NakedObjects.Core.Resolve {
                    stateMachine.CurrentState is ResolveStateMachine.ResolvedState;
         }
 
-        public static void CheckCanAssociate(this IResolveStateMachine stateMachine, INakedObject associate) {
+        public static void CheckCanAssociate(this IResolveStateMachine stateMachine, INakedObjectAdapter associate) {
             if (stateMachine.IsPersistent() && associate != null && associate.ResolveState.IsTransient()) {
                 throw new TransientReferenceException(string.Format(Resources.NakedObjects.TransientErrorMessage, associate.TitleString()));
             }

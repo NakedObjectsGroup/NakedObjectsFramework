@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
             return iconName;
         }
 
-        public override string GetIconName(INakedObject nakedObject) {
+        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) {
             return iconName;
         }
     }

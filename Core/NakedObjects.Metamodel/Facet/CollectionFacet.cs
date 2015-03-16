@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
        
 
-        protected static IList AsCollection(INakedObject collection) {
+        protected static IList AsCollection(INakedObjectAdapter collection) {
             return (IList) collection.Object;
         }
 
@@ -29,15 +29,15 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
+        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) {
             return AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
         }
 
-        public override IQueryable AsQueryable(INakedObject collection) {
+        public override IQueryable AsQueryable(INakedObjectAdapter collection) {
             return AsCollection(collection).AsQueryable();
         }
 
-        public override void Init(INakedObject collection, INakedObject[] initData) {
+        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
             IList wrappedCollection = AsCollection(collection);
 
             List<object> toAdd = initData.Select(no => no.Object).Where(obj => !wrappedCollection.Contains(obj)).ToList();
@@ -47,11 +47,11 @@ namespace NakedObjects.Meta.Facet {
             toRemove.ForEach(wrappedCollection.Remove);
         }
 
-        public override bool Contains(INakedObject collection, INakedObject element) {
+        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) {
             return AsCollection(collection).Contains(element.Object);
         }
 
-        private IEnumerable PageInternal(int page, int size, INakedObject collection, INakedObjectManager manager) {
+        private IEnumerable PageInternal(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager) {
             int firstIndex = (page - 1)*size;
             for (int index = firstIndex; index < firstIndex + size; index++) {
                 if (index >= AsEnumerable(collection, manager).Count()) {
@@ -61,7 +61,7 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
+        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
             return manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
         }
     }

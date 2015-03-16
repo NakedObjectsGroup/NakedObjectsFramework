@@ -16,10 +16,10 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     internal class TestCollection : ITestCollection {
-        private readonly INakedObject collection;
+        private readonly INakedObjectAdapter collection;
         private readonly IEnumerable<ITestObject> wrappedCollection;
 
-        public TestCollection(INakedObject collection, ITestObjectFactory factory, INakedObjectManager manager) {
+        public TestCollection(INakedObjectAdapter collection, ITestObjectFactory factory, INakedObjectManager manager) {
             this.collection = collection;
             wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
         }
@@ -30,7 +30,7 @@ namespace NakedObjects.Xat {
             get { return collection.TitleString(); }
         }
 
-        public INakedObject NakedObject {
+        public INakedObjectAdapter NakedObject {
             get { return collection; }
         }
 
@@ -70,5 +70,5 @@ namespace NakedObjects.Xat {
         #endregion
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

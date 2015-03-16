@@ -31,7 +31,7 @@ namespace NakedObjects.Architecture.Facet {
         /// <para>
         ///     In the standard Naked Objects Programming Model, this typically corresponds to a method named <c>iconName</c>.
         /// </para>
-        string GetIconName(INakedObject nakedObject);
+        string GetIconName(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     The name of the icon for <i>this class</i> of object.

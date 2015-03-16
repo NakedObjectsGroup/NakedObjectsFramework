@@ -16,11 +16,11 @@ namespace NakedObjects.Persistor.Entity.Util {
     public static class EntityUtils {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityUtils));
 
-        public static void UpdateVersion(this INakedObject nakedObject, ISession session, INakedObjectManager manager) {
-            object versionObject = nakedObject == null ? null : nakedObject.GetVersion(manager);
+        public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
+            object versionObject = nakedObjectAdapter == null ? null : nakedObjectAdapter.GetVersion(manager);
             if (versionObject != null) {
-                nakedObject.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
-                Log.DebugFormat("GetObject: Updating Version {0} on {1}", nakedObject.Version, nakedObject);
+                nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
+                Log.DebugFormat("GetObject: Updating Version {0} on {1}", nakedObjectAdapter.Version, nakedObjectAdapter);
             }
         }
 

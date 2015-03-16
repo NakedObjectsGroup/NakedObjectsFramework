@@ -42,14 +42,14 @@ namespace NakedObjects.Meta.Audit {
             get { return underlyingFacet.OnType; }
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObject, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager);
         }
     }
 }

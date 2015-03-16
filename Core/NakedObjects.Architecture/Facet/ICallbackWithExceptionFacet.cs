@@ -10,6 +10,6 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ICallbackWithExceptionFacet : IFacet {
-        string Invoke(INakedObject nakedObject, Exception exception);
+        string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception);
     }
 }

@@ -30,13 +30,13 @@ namespace NakedObjects.Xat {
             Log = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, ITransactionManager transactionManager)
+        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectAdapter nakedObjectAdapter, ITestObjectFactory factory, ITransactionManager transactionManager)
             : base(factory) {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.transactionManager = transactionManager;
-            Log.DebugFormat("Created test object for {0}", nakedObject);
-            NakedObject = nakedObject;
+            Log.DebugFormat("Created test object for {0}", nakedObjectAdapter);
+            NakedObject = nakedObjectAdapter;
         }
 
         #region ITestObject Members
@@ -173,5 +173,5 @@ namespace NakedObjects.Xat {
         }
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

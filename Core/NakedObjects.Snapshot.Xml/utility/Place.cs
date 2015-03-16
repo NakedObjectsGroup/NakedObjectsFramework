@@ -11,10 +11,10 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class Place {
         private readonly XElement element;
-        private readonly INakedObject nakedObject;
+        private readonly INakedObjectAdapter nakedObjectAdapter;
 
-        public Place(INakedObject nakedObject, XElement element) {
-            this.nakedObject = nakedObject;
+        public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {
+            this.nakedObjectAdapter = nakedObjectAdapter;
             this.element = element;
         }
 
@@ -22,8 +22,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             get { return element; }
         }
 
-        public INakedObject NakedObject {
-            get { return nakedObject; }
+        public INakedObjectAdapter NakedObjectAdapter {
+            get { return nakedObjectAdapter; }
         }
     }
 }

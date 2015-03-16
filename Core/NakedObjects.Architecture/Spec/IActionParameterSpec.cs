@@ -56,12 +56,12 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Whether proposed value for this parameter is valid
         /// </summary>
-        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue);
+        IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
@@ -71,16 +71,16 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Get set of autocompletions for the parameter
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
         /// <summary>
         ///     GetDefault value for parameter
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject);
+        INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     GetDefault type value for parameter
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
+        TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
     }
 }

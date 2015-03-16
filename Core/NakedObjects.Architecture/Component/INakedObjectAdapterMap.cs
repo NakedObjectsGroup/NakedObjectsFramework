@@ -10,15 +10,15 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Service for mapping between POCO domain objects and their (INakedObject) adaptors
+    /// Service for mapping between POCO domain objects and their (INakedObjectAdapter) adaptors
     /// </summary>
-    public interface INakedObjectAdapterMap : IEnumerable<INakedObject> {
-        void Add(object obj, INakedObject adapter);
+    public interface INakedObjectAdapterMap : IEnumerable<INakedObjectAdapter> {
+        void Add(object obj, INakedObjectAdapter adapter);
         bool ContainsObject(object obj);
-        INakedObject GetObject(object obj);
+        INakedObjectAdapter GetObject(object obj);
         void Reset();
         void Shutdown();
-        void Remove(INakedObject nakedObject);
+        void Remove(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

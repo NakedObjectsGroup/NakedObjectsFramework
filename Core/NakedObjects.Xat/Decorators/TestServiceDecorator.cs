@@ -19,7 +19,7 @@ namespace NakedObjects.Xat {
 
         #region ITestService Members
 
-        public INakedObject NakedObject {
+        public INakedObjectAdapter NakedObject {
             get { return wrappedObject.NakedObject; }
         }
 

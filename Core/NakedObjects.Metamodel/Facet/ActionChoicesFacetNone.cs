@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        public override object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             return new object[0];
         }
     }

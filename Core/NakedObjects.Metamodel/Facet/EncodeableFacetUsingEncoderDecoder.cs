@@ -33,15 +33,15 @@ namespace NakedObjects.Meta.Facet {
 
         #region IEncodeableFacet Members
 
-        public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
+        public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) {
             if (EncodedNull.Equals(encodedData)) {
                 return null;
             }
             return manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
         }
 
-        public string ToEncodedString(INakedObject nakedObject) {
-            return nakedObject == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObject.GetDomainObject<T>());
+        public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
         }
 
         #endregion

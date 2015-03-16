@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Container {
             if (persistentObject == null) {
                 throw new ArgumentException(Resources.NakedObjects.DisposeReferenceError);
             }
-            INakedObject adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
+            INakedObjectAdapter adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Container {
         }
 
         public void Persist<T>(ref T transientObject) {
-            INakedObject adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
+            INakedObjectAdapter adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
                 throw new PersistFailedException(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter));
             }
@@ -94,7 +94,7 @@ namespace NakedObjects.Core.Container {
 
         public void ObjectChanged(object obj) {
             if (obj != null) {
-                INakedObject adapter = AdapterFor(obj);
+                INakedObjectAdapter adapter = AdapterFor(obj);
                 Validate(adapter);
                 framework.Persistor.ObjectChanged(adapter, framework.LifecycleManager, framework.MetamodelManager);
             }
@@ -105,13 +105,13 @@ namespace NakedObjects.Core.Container {
         }
 
         public void Refresh(object obj) {
-            INakedObject nakedObject = AdapterFor(obj);
-            framework.Persistor.Refresh(nakedObject);
+            INakedObjectAdapter nakedObjectAdapter = AdapterFor(obj);
+            framework.Persistor.Refresh(nakedObjectAdapter);
             ObjectChanged(obj);
         }
 
         public void Resolve(object parent) {
-            INakedObject adapter = AdapterFor(parent);
+            INakedObjectAdapter adapter = AdapterFor(parent);
             if (adapter.ResolveState.IsResolvable()) {
                 framework.Persistor.ResolveImmediately(adapter);
             }
@@ -145,7 +145,7 @@ namespace NakedObjects.Core.Container {
 
         #endregion
 
-        private void Validate(INakedObject adapter) {
+        private void Validate(INakedObjectAdapter adapter) {
             if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 string state = adapter.ValidToPersist();
                 if (state != null) {
@@ -154,7 +154,7 @@ namespace NakedObjects.Core.Container {
             }
         }
 
-        private INakedObject AdapterFor(object obj) {
+        private INakedObjectAdapter AdapterFor(object obj) {
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 

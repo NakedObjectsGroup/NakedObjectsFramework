@@ -10,15 +10,15 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NoIdentityAdapterCache : INoIdentityAdapterCache {
-        private readonly Dictionary<object, INakedObject> adapters = new Dictionary<object, INakedObject>();
+        private readonly Dictionary<object, INakedObjectAdapter> adapters = new Dictionary<object, INakedObjectAdapter>();
 
         #region INoIdentityAdapterCache Members
 
-        public void AddAdapter(INakedObject adapter) {
+        public void AddAdapter(INakedObjectAdapter adapter) {
             adapters[adapter.Object] = adapter;
         }
 
-        public INakedObject GetAdapter(object domainObject) {
+        public INakedObjectAdapter GetAdapter(object domainObject) {
             if (adapters.ContainsKey(domainObject)) {
                 return adapters[domainObject];
             }

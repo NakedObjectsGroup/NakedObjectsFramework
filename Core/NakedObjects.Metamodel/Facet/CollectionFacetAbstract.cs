@@ -33,16 +33,16 @@ namespace NakedObjects.Meta.Facet {
 
 
         public abstract bool IsQueryable { get; }
-        public abstract bool Contains(INakedObject collection, INakedObject element);
-        public abstract INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
+        public abstract bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element);
+        public abstract INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable);
        
-        public abstract IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
-        public abstract IQueryable AsQueryable(INakedObject collection);
-        public abstract void Init(INakedObject collection, INakedObject[] initData);
+        public abstract IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager);
+        public abstract IQueryable AsQueryable(INakedObjectAdapter collection);
+        public abstract void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData);
 
         #endregion
 
-        protected object Call(string name, INakedObject collection, params object[] pp) {
+        protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
             MethodInfo m = GetType().GetMethod(name);
             Type t = collection.Object.GetType().GenericTypeArguments.First();
 

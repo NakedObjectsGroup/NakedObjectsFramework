@@ -23,6 +23,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Whether the provided string matches the mask
         /// </summary>
-        bool DoesNotMatch(INakedObject nakedObject);
+        bool DoesNotMatch(INakedObjectAdapter nakedObjectAdapter);
     }
 }

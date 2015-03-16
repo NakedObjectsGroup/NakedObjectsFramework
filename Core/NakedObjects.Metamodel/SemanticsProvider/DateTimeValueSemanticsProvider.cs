@@ -37,8 +37,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDateValueFacet Members
 
-        public DateTime DateValue(INakedObject nakedObject) {
-            return nakedObject == null ? Now() : (DateTime) nakedObject.Object;
+        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter == null ? Now() : (DateTime) nakedObjectAdapter.Object;
         }
 
         #endregion

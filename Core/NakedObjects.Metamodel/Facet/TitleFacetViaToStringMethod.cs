@@ -37,20 +37,20 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
-            return nakedObject.Object.ToString();
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
+            return nakedObjectAdapter.Object.ToString();
         }
 
-        public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager nakedObjectManager) {
+        public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
             if (maskDelegate != null) {
-                return (string) maskDelegate(nakedObject.GetDomainObject(), new object[] {mask});
+                return (string) maskDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
             }
 
             if (maskMethod != null) {
-                return (string) maskMethod.Invoke(nakedObject.GetDomainObject(), new object[] {mask});
+                return (string) maskMethod.Invoke(nakedObjectAdapter.GetDomainObject(), new object[] {mask});
             }
 
-            return GetTitle(nakedObject, nakedObjectManager);
+            return GetTitle(nakedObjectAdapter, nakedObjectManager);
         }
     }
 

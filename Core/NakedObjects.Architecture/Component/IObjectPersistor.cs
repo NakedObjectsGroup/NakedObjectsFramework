@@ -20,20 +20,20 @@ namespace NakedObjects.Architecture.Component {
         IQueryable<T> Instances<T>() where T : class;
         IQueryable Instances(Type type);
         IQueryable Instances(IObjectSpec spec);
-        INakedObject LoadObject(IOid oid, IObjectSpec spec);
-        void AddPersistedObject(INakedObject nakedObject);
-        void Reload(INakedObject nakedObject);
-        void ResolveField(INakedObject nakedObject, IAssociationSpec field);
-        void LoadField(INakedObject nakedObject, string field);
-        int CountField(INakedObject nakedObject, string field);
+        INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec);
+        void AddPersistedObject(INakedObjectAdapter nakedObjectAdapter);
+        void Reload(INakedObjectAdapter nakedObjectAdapter);
+        void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field);
+        void LoadField(INakedObjectAdapter nakedObjectAdapter, string field);
+        int CountField(INakedObjectAdapter nakedObjectAdapter, string field);
         PropertyInfo[] GetKeys(Type type);
-        INakedObject FindByKeys(Type type, object[] keys);
-        void Refresh(INakedObject nakedObject);
-        void ResolveImmediately(INakedObject nakedObject);
-        void DestroyObject(INakedObject nakedObject);
+        INakedObjectAdapter FindByKeys(Type type, object[] keys);
+        void Refresh(INakedObjectAdapter nakedObjectAdapter);
+        void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
+        void DestroyObject(INakedObjectAdapter nakedObjectAdapter);
         object CreateObject(ITypeSpec spec);
         IEnumerable GetBoundedSet(IObjectSpec spec);
-        void LoadComplexTypes(INakedObject adapter, bool isGhost);
-        void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
+        void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
+        void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
     }
 }

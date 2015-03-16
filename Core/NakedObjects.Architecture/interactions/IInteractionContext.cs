@@ -44,7 +44,7 @@ namespace NakedObjects.Architecture.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        INakedObject Target { get; }
+        INakedObjectAdapter Target { get; }
 
         /// <summary>
         ///     The identifier of the object or member that is being identified with.
@@ -72,9 +72,9 @@ namespace NakedObjects.Architecture.Interactions {
         ///         cref="Interactions.InteractionType.CollectionRemoveFrom" />
         ///     ;
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
-        ///     to <see cref="INakedObject" />
+        ///     to <see cref="INakedObjectAdapter" />
         /// </para>
-        INakedObject ProposedArgument { get; }
+        INakedObjectAdapter ProposedArgument { get; }
 
         /// <summary>
         ///     The arguments for a proposed action invocation.
@@ -83,7 +83,7 @@ namespace NakedObjects.Architecture.Interactions {
         ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
-        INakedObject[] ProposedArguments { get; }
+        INakedObjectAdapter[] ProposedArguments { get; }
 
         /// <summary>
         ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine

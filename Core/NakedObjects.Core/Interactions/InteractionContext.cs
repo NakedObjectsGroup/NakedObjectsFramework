@@ -22,18 +22,18 @@ namespace NakedObjects.Core.Interactions {
         private readonly IIdentifier id;
         private readonly InteractionType interactionType;
         private readonly bool programmatic;
-        private readonly INakedObject proposedArgument;
-        private readonly INakedObject[] proposedArguments;
+        private readonly INakedObjectAdapter proposedArgument;
+        private readonly INakedObjectAdapter[] proposedArguments;
         private readonly ISession session;
-        private readonly INakedObject target;
+        private readonly INakedObjectAdapter target;
 
         private InteractionContext(InteractionType interactionType,
                                    ISession session,
                                    bool programmatic,
-                                   INakedObject target,
+                                   INakedObjectAdapter target,
                                    IIdentifier id,
-                                   INakedObject proposedArgument,
-                                   INakedObject[] arguments) {
+                                   INakedObjectAdapter proposedArgument,
+                                   INakedObjectAdapter[] arguments) {
             this.interactionType = interactionType;
             this.programmatic = programmatic;
             this.id = id;
@@ -84,7 +84,7 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public INakedObject Target {
+        public INakedObjectAdapter Target {
             get { return target; }
         }
 
@@ -116,9 +116,9 @@ namespace NakedObjects.Core.Interactions {
         ///         cref="Architecture.Interactions.InteractionType.CollectionRemoveFrom" />
         ///     ;
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
-        ///     to <see cref="INakedObject" />
+        ///     to <see cref="INakedObjectAdapter" />
         /// </para>
-        public INakedObject ProposedArgument {
+        public INakedObjectAdapter ProposedArgument {
             get { return proposedArgument; }
         }
 
@@ -129,7 +129,7 @@ namespace NakedObjects.Core.Interactions {
         ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
-        public INakedObject[] ProposedArguments {
+        public INakedObjectAdapter[] ProposedArguments {
             get { return proposedArguments; }
         }
 
@@ -149,7 +149,7 @@ namespace NakedObjects.Core.Interactions {
         /// </summary>
         public static InteractionContext AccessMember(ISession session,
                                                       bool programmatic,
-                                                      INakedObject target,
+                                                      INakedObjectAdapter target,
                                                       IIdentifier memberIdentifier) {
             return new InteractionContext(InteractionType.MemberAccess,
                 session,
@@ -166,9 +166,9 @@ namespace NakedObjects.Core.Interactions {
         /// </summary>
         public static InteractionContext ModifyingPropParam(ISession session,
                                                             bool programmatic,
-                                                            INakedObject target,
+                                                            INakedObjectAdapter target,
                                                             IIdentifier propertyIdentifier,
-                                                            INakedObject proposedArgument) {
+                                                            INakedObjectAdapter proposedArgument) {
             return new InteractionContext(InteractionType.PropertyParamModify,
                 session,
                 programmatic,
@@ -184,9 +184,9 @@ namespace NakedObjects.Core.Interactions {
         /// </summary>
         public static InteractionContext InvokingAction(ISession session,
                                                         bool programmatic,
-                                                        INakedObject target,
+                                                        INakedObjectAdapter target,
                                                         IIdentifier actionIdentifier,
-                                                        INakedObject[] arguments) {
+                                                        INakedObjectAdapter[] arguments) {
             return new InteractionContext(InteractionType.ActionInvoke,
                 session,
                 programmatic,

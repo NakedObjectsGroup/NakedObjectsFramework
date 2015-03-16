@@ -18,16 +18,16 @@ namespace NakedObjects.Web.Mvc.Html {
             Target = otherContext.Target;
         }
 
-        protected ObjectContext(INakedObject target) {
+        protected ObjectContext(INakedObjectAdapter target) {
             Target = target;
         }
 
-        public INakedObject Target { get; set; }
+        public INakedObjectAdapter Target { get; set; }
     }
 
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(ObjectContext otherContext) : base(otherContext) {}
-        protected FeatureContext(INakedObject target) : base(target) {}
+        protected FeatureContext(INakedObjectAdapter target) : base(target) {}
         public abstract IFeatureSpec Feature { get; }
     }
 
@@ -36,7 +36,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(INakedObject target, IAssociationSpec property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(INakedObjectAdapter target, IAssociationSpec property, bool isEdit, PropertyContext parentContext = null)
             : base(target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -44,7 +44,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = parentContext;
         }
 
-        public INakedObject OriginalTarget {
+        public INakedObjectAdapter OriginalTarget {
             get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
         }
 
@@ -56,7 +56,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return Property; }
         }
 
-        public INakedObject GetValue(INakedObjectsFramework framework) {
+        public INakedObjectAdapter GetValue(INakedObjectsFramework framework) {
             return Property.GetNakedObject(Target);
         }
 
@@ -110,13 +110,13 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = otherContext.Action;
         }
 
-        public ActionContext(INakedObject target, IActionSpec action)
+        public ActionContext(INakedObjectAdapter target, IActionSpec action)
             : base(target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(bool embeddedInObject, INakedObject target, IActionSpec action)
+        public ActionContext(bool embeddedInObject, INakedObjectAdapter target, IActionSpec action)
             : base(target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -203,7 +203,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(bool embeddedInObject, INakedObject target, IActionSpec action, IActionParameterSpec parameter, bool isEdit)
+        public ParameterContext(bool embeddedInObject, INakedObjectAdapter target, IActionSpec action, IActionParameterSpec parameter, bool isEdit)
             : base(embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;
@@ -221,7 +221,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public IActionParameterSpec Parameter { get; set; }
 
-        public INakedObject CustomValue { get; set; }
+        public INakedObjectAdapter CustomValue { get; set; }
 
         public override IFeatureSpec Feature {
             get { return Parameter; }

@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHiddenFacet Members
 
-        public string HiddenReason(INakedObject target) {
+        public string HiddenReason(INakedObjectAdapter target) {
             if (Value == WhenTo.Always) {
                 return Resources.NakedObjects.AlwaysHidden;
             }

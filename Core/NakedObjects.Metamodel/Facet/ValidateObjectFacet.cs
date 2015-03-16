@@ -34,16 +34,16 @@ namespace NakedObjects.Meta.Facet {
 
         #region IValidateObjectFacet Members
 
-        public string Validate(INakedObject nakedObject) {
+        public string Validate(INakedObjectAdapter nakedObjectAdapter) {
             foreach (NakedObjectValidationMethod validator in ValidateMethods) {
-                var objectSpec = nakedObject.Spec as IObjectSpec;
+                var objectSpec = nakedObjectAdapter.Spec as IObjectSpec;
                 Trace.Assert(objectSpec != null);
 
                 IAssociationSpec[] matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 
                 if (matches.Count() == validator.ParameterNames.Count()) {
-                    INakedObject[] parameters = matches.Select(s => s.GetNakedObject(nakedObject)).ToArray();
-                    string result = validator.Execute(nakedObject, parameters);
+                    INakedObjectAdapter[] parameters = matches.Select(s => s.GetNakedObject(nakedObjectAdapter)).ToArray();
+                    string result = validator.Execute(nakedObjectAdapter, parameters);
                     if (result != null) return result;
                 }
                 else {
@@ -54,13 +54,13 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public string ValidateParms(INakedObject nakedObject, Tuple<string, INakedObject>[] parms) {
+        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms) {
             foreach (NakedObjectValidationMethod validator in ValidateMethods) {
-                Tuple<string, INakedObject>[] matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != null).ToArray();
+                Tuple<string, INakedObjectAdapter>[] matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != null).ToArray();
 
                 if (matches.Count() == validator.ParameterNames.Count()) {
-                    INakedObject[] parameters = matches.Select(p => p.Item2).ToArray();
-                    string result = validator.Execute(nakedObject, parameters);
+                    INakedObjectAdapter[] parameters = matches.Select(p => p.Item2).ToArray();
+                    string result = validator.Execute(nakedObjectAdapter, parameters);
                     if (result != null) return result;
                 }
                 else {
@@ -98,7 +98,7 @@ namespace NakedObjects.Meta.Facet {
                 get { return method.GetParameters().Select(p => p.Name.ToLower()).ToArray(); }
             }
 
-            public string Execute(INakedObject obj, INakedObject[] parameters) {
+            public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) {
                 return methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
             }
         }

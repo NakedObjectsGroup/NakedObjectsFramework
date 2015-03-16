@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ICallbackFacet Members
 
-        public abstract void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager);
+        public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager);
 
         #endregion
     }

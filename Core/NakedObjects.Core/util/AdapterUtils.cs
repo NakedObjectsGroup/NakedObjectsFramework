@@ -16,56 +16,56 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Core.Util {
     public static class AdapterUtils {
         /// <summary>
-        ///     Safe (returns null if INakedObject is null) getter
+        ///     Safe (returns null if INakedObjectAdapter is null) getter
         /// </summary>
-        public static object GetDomainObject(this INakedObject inObject) {
-            return inObject == null ? null : inObject.Object;
+        public static object GetDomainObject(this INakedObjectAdapter inObjectAdapter) {
+            return inObjectAdapter == null ? null : inObjectAdapter.Object;
         }
 
         /// <summary>
         /// Return spec as object spec if is otherwise null
         /// </summary>
-        /// <param name="nakedObject"></param>
+        /// <param name="nakedObjectAdapter"></param>
         /// <returns></returns>
-        public static IObjectSpec GetObjectSpec(this INakedObject nakedObject) {
-            return nakedObject.Spec as IObjectSpec;
+        public static IObjectSpec GetObjectSpec(this INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.Spec as IObjectSpec;
         }
 
         /// <summary>
         /// Return spec as service spec if is otherwise null
         /// </summary>
-        /// <param name="nakedObject"></param>
+        /// <param name="nakedObjectAdapter"></param>
         /// <returns></returns>
-        public static IServiceSpec GetServiceSpec(this INakedObject nakedObject) {
-            return nakedObject.Spec as IServiceSpec;
+        public static IServiceSpec GetServiceSpec(this INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.Spec as IServiceSpec;
         }
 
         /// <summary>
-        ///     Safe (returns null if INakedObject is null) generic getter
+        ///     Safe (returns null if INakedObjectAdapter is null) generic getter
         /// </summary>
-        public static T GetDomainObject<T>(this INakedObject inObject) {
-            return inObject == null ? default(T) : (T) inObject.Object;
+        public static T GetDomainObject<T>(this INakedObjectAdapter inObjectAdapter) {
+            return inObjectAdapter == null ? default(T) : (T) inObjectAdapter.Object;
         }
 
-        public static bool Exists(this INakedObject nakedObject) {
-            return nakedObject != null && nakedObject.Object != null;
+        public static bool Exists(this INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter != null && nakedObjectAdapter.Object != null;
         }
 
-        public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            ITypeSpec collectionSpec = objectRepresentingCollection.Spec;
+        public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
+            ITypeSpec collectionSpec = objectAdapterRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ICollectionFacet>();
         }
 
-        public static IEnumerable<INakedObject> GetAsEnumerable(this INakedObject objectRepresentingCollection, INakedObjectManager manager) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectRepresentingCollection, manager);
+        public static IEnumerable<INakedObjectAdapter> GetAsEnumerable(this INakedObjectAdapter objectAdapterRepresentingCollection, INakedObjectManager manager) {
+            return objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectAdapterRepresentingCollection, manager);
         }
 
-        public static IQueryable GetAsQueryable(this INakedObject objectRepresentingCollection) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().AsQueryable(objectRepresentingCollection);
+        public static IQueryable GetAsQueryable(this INakedObjectAdapter objectAdapterRepresentingCollection) {
+            return objectAdapterRepresentingCollection.GetCollectionFacetFromSpec().AsQueryable(objectAdapterRepresentingCollection);
         }
 
-        public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            ITypeSpec collectionSpec = objectRepresentingCollection.Spec;
+        public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObjectAdapter objectAdapterRepresentingCollection) {
+            ITypeSpec collectionSpec = objectAdapterRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ITypeOfFacet>();
         }
 
@@ -73,20 +73,20 @@ namespace NakedObjects.Core.Util {
             return new[] {actionSpec};
         }
 
-        public static IActionSpec[] GetActionLeafNodes(this INakedObject nakedObject) {
-            return nakedObject.Spec.GetActionLeafNodes();
+        public static IActionSpec[] GetActionLeafNodes(this INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.Spec.GetActionLeafNodes();
         }
 
         public static IActionSpec[] GetActionLeafNodes(this ITypeSpec spec) {
             return spec.GetActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
-        public static IActionSpec GetActionLeafNode(this INakedObject nakedObject, string actionName) {
-            return nakedObject.GetActionLeafNodes().Single(x => x.Id == actionName);
+        public static IActionSpec GetActionLeafNode(this INakedObjectAdapter nakedObjectAdapter, string actionName) {
+            return nakedObjectAdapter.GetActionLeafNodes().Single(x => x.Id == actionName);
         }
 
-        public static IAssociationSpec GetVersionProperty(this INakedObject nakedObject) {
-            var spec = nakedObject.Spec as IObjectSpec;
+        public static IAssociationSpec GetVersionProperty(this INakedObjectAdapter nakedObjectAdapter) {
+            var spec = nakedObjectAdapter.Spec as IObjectSpec;
             if (spec == null) {
                 return null; // only expect in testing 
             }
@@ -102,11 +102,11 @@ namespace NakedObjects.Core.Util {
                 fullDateTime.Second);
         }
 
-        public static object GetVersion(this INakedObject nakedObject, INakedObjectManager manager) {
-            IAssociationSpec versionProperty = nakedObject.GetVersionProperty();
+        public static object GetVersion(this INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager) {
+            IAssociationSpec versionProperty = nakedObjectAdapter.GetVersionProperty();
 
             if (versionProperty != null) {
-                object version = versionProperty.GetNakedObject(nakedObject).GetDomainObject();
+                object version = versionProperty.GetNakedObject(nakedObjectAdapter).GetDomainObject();
 
                 if (version is DateTime) {
                     return ((DateTime) version).StripMillis();

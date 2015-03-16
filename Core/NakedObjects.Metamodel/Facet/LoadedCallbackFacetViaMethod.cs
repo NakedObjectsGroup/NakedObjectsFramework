@@ -40,8 +40,8 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            loadedDelegate(nakedObject.GetDomainObject());
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+            loadedDelegate(nakedObjectAdapter.GetDomainObject());
         }
 
         protected override string ToStringValues() {

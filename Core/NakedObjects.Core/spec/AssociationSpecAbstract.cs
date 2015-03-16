@@ -69,14 +69,14 @@ namespace NakedObjects.Core.Spec {
         }
 
         public abstract bool IsMandatory { get; }
-        public abstract INakedObject GetNakedObject(INakedObject fromObject);
-        public abstract bool IsEmpty(INakedObject inObject);
+        public abstract INakedObjectAdapter GetNakedObject(INakedObjectAdapter fromObjectAdapter);
+        public abstract bool IsEmpty(INakedObjectAdapter inObjectAdapter);
         public abstract bool IsInline { get; }
-        public abstract INakedObject GetDefault(INakedObject nakedObject);
-        public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
-        public abstract void ToDefault(INakedObject nakedObject);
+        public abstract INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter);
+        public abstract TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
+        public abstract void ToDefault(INakedObjectAdapter nakedObjectAdapter);
 
-        public override IConsent IsUsable(INakedObject target) {
+        public override IConsent IsUsable(INakedObjectAdapter target) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
             if (disabledConsent != null) {
@@ -109,9 +109,9 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        public abstract INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
         public abstract Tuple<string, IObjectSpec>[] GetChoicesParameters();
-        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        public abstract INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();

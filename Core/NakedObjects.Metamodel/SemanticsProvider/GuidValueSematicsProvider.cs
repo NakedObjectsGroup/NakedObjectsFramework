@@ -34,8 +34,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IGuidValueFacet Members
 
-        public Guid GuidValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<Guid>();
+        public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<Guid>();
         }
 
         #endregion

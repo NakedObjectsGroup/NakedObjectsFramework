@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
         /// <para>
         ///     Subclasses should override as required.
         /// </para>
-        public override string InvalidReason(INakedObject inObject, INakedObject nakedParm) {
+        public override string InvalidReason(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter nakedParm) {
             return null;
         }
     }

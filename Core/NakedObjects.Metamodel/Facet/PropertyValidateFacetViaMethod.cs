@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string InvalidReason(INakedObject target, INakedObject proposedValue) {
+        public override string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) {
             if (proposedValue != null) {
                 return (string) methodDelegate(target.GetDomainObject(), new[] {proposedValue.GetDomainObject()});
             }

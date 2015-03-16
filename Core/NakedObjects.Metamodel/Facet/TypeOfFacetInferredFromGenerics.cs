@@ -25,11 +25,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region ITypeOfFacet Members
 
-        public Type GetValue(INakedObject collection) {
+        public Type GetValue(INakedObjectAdapter collection) {
             return collection.Object.GetType().GenericTypeArguments.First();
         }
 
-        public IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel) {
+        public IObjectSpecImmutable GetValueSpec(INakedObjectAdapter collection, IMetamodel metamodel) {
             return (IObjectSpecImmutable) metamodel.GetSpecification(GetValue(collection));
         }
 

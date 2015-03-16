@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override string DisabledReason(INakedObject no) {
+        public override string DisabledReason(INakedObjectAdapter no) {
             return null;
         }
     }

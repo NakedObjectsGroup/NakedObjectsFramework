@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IEnumFacet : IMarkerFacet {
-        object[] GetChoices(INakedObject inObject);
-        object[] GetChoices(INakedObject inObject, object[] choiceValues);
-        string GetTitle(INakedObject inObject);
+        object[] GetChoices(INakedObjectAdapter inObjectAdapter);
+        object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues);
+        string GetTitle(INakedObjectAdapter inObjectAdapter);
     }
 }

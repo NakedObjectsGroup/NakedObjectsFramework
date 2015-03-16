@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private static readonly ILog Log;
-        private readonly IDictionary<IOid, INakedObject> adapters;
+        private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
 
         static IdentityAdapterHashMap() {
             Log = LogManager.GetLogger(typeof (IdentityAdapterHashMap));
@@ -24,19 +24,19 @@ namespace NakedObjects.Core.Component {
             : this(10) {}
 
         public IdentityAdapterHashMap(int capacity) {
-            adapters = new Dictionary<IOid, INakedObject>(capacity);
+            adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 
         #region IIdentityAdapterMap Members
 
-        public void Add(IOid oid, INakedObject adapter) {
+        public void Add(IOid oid, INakedObjectAdapter adapter) {
             adapters[oid] = adapter;
 
             // log after so that adapter is in map if required by ToString
             Log.DebugFormat("Add {0} as {1}", oid, adapter);
         }
 
-        public INakedObject GetAdapter(IOid oid) {
+        public INakedObjectAdapter GetAdapter(IOid oid) {
             if (adapters.ContainsKey(oid)) {
                 return adapters[oid];
             }

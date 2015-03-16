@@ -35,13 +35,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IUnsignedIntegerValueFacet Members
 
-        public uint UnsignedIntegerValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<uint>();
+        public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<uint>();
         }
 
         #endregion
 
-        public object GetDefault(INakedObject inObject) {
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
             return DefaultValueConst;
         }
 

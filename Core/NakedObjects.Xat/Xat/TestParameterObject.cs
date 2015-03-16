@@ -25,7 +25,7 @@ namespace NakedObjects.Xat {
             get { return NakedObject.TitleString(); }
         }
 
-        public INakedObject NakedObject {
+        public INakedObjectAdapter NakedObject {
             get { return manager.CreateAdapter(domainObject, null, null); }
             set { throw new UnexpectedCallException(); }
         }
@@ -33,5 +33,5 @@ namespace NakedObjects.Xat {
         #endregion
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

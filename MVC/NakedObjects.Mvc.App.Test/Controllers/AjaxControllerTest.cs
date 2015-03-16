@@ -105,7 +105,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void TestGetActionChoicesOtherParms(string value) {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnAction";
 
@@ -134,7 +134,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void TestGetActionChoicesOtherParmsMultiple(string value) {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
@@ -163,7 +163,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect(string value) {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
@@ -194,7 +194,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionAutoComplete() {
-            INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
+            INakedObjectAdapter autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
 
             const string actionName = "AnAction";
 
@@ -229,7 +229,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionChoicesDefault() {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnAction";
 
@@ -289,7 +289,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionMultipleChoicesDefault() {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
@@ -319,7 +319,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyAutoComplete() {
-            INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
+            INakedObjectAdapter autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
             object autoCompleteObject = autoCompleteRepo.GetDomainObject<AutoCompleteRepository>().GetAutoCompleteObject();
 
             string id = NakedObjectsFramework.GetObjectId(autoCompleteObject);
@@ -352,7 +352,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyChoicesDefault() {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
             string id = NakedObjectsFramework.GetObjectId(choicesObject);
@@ -376,7 +376,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyChoicesOtherValue() {
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
             string id = NakedObjectsFramework.GetObjectId(choicesObject);
@@ -472,7 +472,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailValueParameter() {
-            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
+            INakedObjectAdapter contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
 
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";
@@ -540,7 +540,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkValueParameter() {
-            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
+            INakedObjectAdapter contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
 
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";

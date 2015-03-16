@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyClearFacet Members
 
-        public abstract void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager);
+        public abstract void ClearProperty(INakedObjectAdapter nakedObjectAdapter, ITransactionManager transactionManager);
 
         #endregion
     }

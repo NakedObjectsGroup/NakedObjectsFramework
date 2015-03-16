@@ -13,7 +13,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     Indicates that this class can be encoded/decoded as a string
     /// </summary>
     public interface IEncodeableFacet {
-        INakedObject FromEncodedString(string encodedData, INakedObjectManager manager);
-        string ToEncodedString(INakedObject nakedObject);
+        INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager);
+        string ToEncodedString(INakedObjectAdapter nakedObjectAdapter);
     }
 }
