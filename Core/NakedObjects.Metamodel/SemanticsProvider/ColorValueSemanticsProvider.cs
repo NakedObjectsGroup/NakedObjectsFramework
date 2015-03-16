@@ -35,17 +35,17 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IColorValueFacet Members
 
-        public int ColorValue(INakedObject nakedObject) {
-            if (nakedObject == null) {
+        public int ColorValue(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter == null) {
                 return 0;
             }
-            var color = (Color) nakedObject.Object;
+            var color = (Color) nakedObjectAdapter.Object;
             return color.ToArgb();
         }
 
         #endregion
 
-        public object GetDefault(INakedObject inObject) {
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
             return DefaultValueConst;
         }
 

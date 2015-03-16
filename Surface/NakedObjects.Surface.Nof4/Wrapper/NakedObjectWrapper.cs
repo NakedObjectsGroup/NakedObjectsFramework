@@ -22,9 +22,9 @@ using NakedObjects.Value;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectWrapper : ScalarPropertyHolder, INakedObjectSurface {
         private readonly INakedObjectsFramework framework;
-        private readonly INakedObject nakedObject;
+        private readonly INakedObjectAdapter nakedObject;
 
-        protected NakedObjectWrapper(INakedObject nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        protected NakedObjectWrapper(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
-        public INakedObject WrappedNakedObject {
+        public INakedObjectAdapter WrappedNakedObject {
             get { return nakedObject; }
         }
 
@@ -126,11 +126,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        public static NakedObjectWrapper Wrap(INakedObject nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public static NakedObjectWrapper Wrap(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface, framework);
         }
 
-        private INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
+        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size) {
             return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, true);
         }
 

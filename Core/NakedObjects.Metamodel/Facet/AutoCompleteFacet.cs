@@ -43,9 +43,9 @@ namespace NakedObjects.Meta.Facet {
 
         public int MinLength { get; private set; }
 
-        public object[] GetCompletions(INakedObject inObject, string autoCompleteParm) {
+        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm) {
             try {
-                object autoComplete = methodDelegate(inObject.GetDomainObject(), new object[] { autoCompleteParm });
+                object autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
 
                 var complete = autoComplete as IQueryable;
                 if (complete != null) {

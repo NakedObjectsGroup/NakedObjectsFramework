@@ -25,16 +25,16 @@ namespace NakedObjects.Meta.Facet {
 
         #region IEnumFacet Members
 
-        public object[] GetChoices(INakedObject inObject) {
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) {
             return Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
         }
 
-        public object[] GetChoices(INakedObject inObject, object[] choiceValues) {
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) {
             return choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
         }
 
-        public string GetTitle(INakedObject inObject) {
-            return ToDisplayName(inObject.Object.ToString());
+        public string GetTitle(INakedObjectAdapter inObjectAdapter) {
+            return ToDisplayName(inObjectAdapter.Object.ToString());
         }
 
         #endregion

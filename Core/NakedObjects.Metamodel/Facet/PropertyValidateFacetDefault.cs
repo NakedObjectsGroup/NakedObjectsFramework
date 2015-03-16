@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public string InvalidReason(INakedObject target, INakedObject proposedValue) {
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) {
             return null;
         }
 

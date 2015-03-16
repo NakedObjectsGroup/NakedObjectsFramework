@@ -59,7 +59,7 @@ namespace NakedObjects.Core.Component {
 
         #region ILifecycleManager Members
 
-        public INakedObject LoadObject(IOid oid, ITypeSpec spec) {
+        public INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", spec);
@@ -69,28 +69,28 @@ namespace NakedObjects.Core.Component {
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>
-        public INakedObject CreateInstance(IObjectSpec spec) {
+        public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
             Log.DebugFormat("CreateInstance of: {0}", spec);
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
             object obj = CreateObject(spec);
-            INakedObject adapter = nakedObjectManager.CreateInstanceAdapter(obj);
+            INakedObjectAdapter adapter = nakedObjectManager.CreateInstanceAdapter(obj);
             InitializeNewObject(adapter);
             return adapter;
         }
 
-        public INakedObject CreateViewModel(IObjectSpec spec) {
+        public INakedObjectAdapter CreateViewModel(IObjectSpec spec) {
             Log.DebugFormat("CreateViewModel of: {0}", spec);
             object viewModel = CreateObject(spec);
-            INakedObject adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
+            INakedObjectAdapter adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
             InitializeNewObject(adapter);
             return adapter;
         }
 
-        public INakedObject RecreateInstance(IOid oid, ITypeSpec spec) {
+        public INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
-            INakedObject adapter = nakedObjectManager.GetAdapterFor(oid);
+            INakedObjectAdapter adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
                 if (!adapter.Spec.Equals(spec)) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", spec.FullName, adapter));
@@ -106,7 +106,7 @@ namespace NakedObjects.Core.Component {
             return CreateNotPersistedObject(type, true);
         }
 
-        public INakedObject GetViewModel(IOid oid) {
+        public INakedObjectAdapter GetViewModel(IOid oid) {
             return nakedObjectManager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
 
@@ -123,31 +123,31 @@ namespace NakedObjects.Core.Component {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        public void MakePersistent(INakedObject nakedObject) {
-            Log.DebugFormat("MakePersistent nakedObject: {0}", nakedObject);
-            if (IsPersistent(nakedObject)) {
-                throw new NotPersistableException("Object already persistent: " + nakedObject);
+        public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("MakePersistent nakedObjectAdapter: {0}", nakedObjectAdapter);
+            if (IsPersistent(nakedObjectAdapter)) {
+                throw new NotPersistableException("Object already persistent: " + nakedObjectAdapter);
             }
-            if (nakedObject.Spec.Persistable == PersistableType.Transient) {
-                throw new NotPersistableException("Object must be kept transient: " + nakedObject);
+            if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
+                throw new NotPersistableException("Object must be kept transient: " + nakedObjectAdapter);
             }
-            ITypeSpec spec = nakedObject.Spec;
+            ITypeSpec spec = nakedObjectAdapter.Spec;
             if (spec is IServiceSpec) {
-                throw new NotPersistableException("Cannot persist services: " + nakedObject);
+                throw new NotPersistableException("Cannot persist services: " + nakedObjectAdapter);
             }
 
-            persistAlgorithm.MakePersistent(nakedObject);
+            persistAlgorithm.MakePersistent(nakedObjectAdapter);
         }
 
-        public void PopulateViewModelKeys(INakedObject nakedObject) {
-            var vmoid = nakedObject.Oid as ViewModelOid;
+        public void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter) {
+            var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
 
             if (vmoid == null) {
-                throw new UnknownTypeException(string.Format("Expect ViewModelOid got {0}", nakedObject.Oid == null ? "null" : nakedObject.Oid.GetType().ToString()));
+                throw new UnknownTypeException(string.Format("Expect ViewModelOid got {0}", nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString()));
             }
 
             if (!vmoid.IsFinal) {
-                vmoid.UpdateKeys(nakedObject.Spec.GetFacet<IViewModelFacet>().Derive(nakedObject, nakedObjectManager, injector), true);
+                vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
             }
         }
 
@@ -202,43 +202,43 @@ namespace NakedObjects.Core.Component {
             injector.InjectIntoInline(root, inlineObject);
         }
 
-        private INakedObject RecreateViewModel(ViewModelOid oid) {
+        private INakedObjectAdapter RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
             var spec = (IObjectSpec) oid.Spec;
-            INakedObject vm = CreateViewModel(spec);
+            INakedObjectAdapter vm = CreateViewModel(spec);
             vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, nakedObjectManager, injector);
             nakedObjectManager.UpdateViewModel(vm, keys);
             return vm;
         }
 
-        private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
-            var spec = parentObject.Spec as IObjectSpec;
+        private void CreateInlineObjects(INakedObjectAdapter parentObjectAdapter, object rootObject) {
+            var spec = parentObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
             foreach (IOneToOneAssociationSpec assoc in spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
                 object inlineObject = CreateObject(assoc.ReturnSpec);
 
                 InitInlineObject(rootObject, inlineObject);
-                INakedObject inlineNakedObject = nakedObjectManager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
-                InitializeNewObject(inlineNakedObject, rootObject);
-                assoc.InitAssociation(parentObject, inlineNakedObject);
+                INakedObjectAdapter inlineNakedObjectAdapter = nakedObjectManager.CreateAggregatedAdapter(parentObjectAdapter, assoc.Id, inlineObject);
+                InitializeNewObject(inlineNakedObjectAdapter, rootObject);
+                assoc.InitAssociation(parentObjectAdapter, inlineNakedObjectAdapter);
             }
         }
 
-        private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
-            var spec = nakedObject.Spec as IObjectSpec;
+        private void InitializeNewObject(INakedObjectAdapter nakedObjectAdapter, object rootObject) {
+            var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
-            spec.Properties.ForEach(field => field.ToDefault(nakedObject));
-            CreateInlineObjects(nakedObject, rootObject);
-            nakedObject.Created();
+            spec.Properties.ForEach(field => field.ToDefault(nakedObjectAdapter));
+            CreateInlineObjects(nakedObjectAdapter, rootObject);
+            nakedObjectAdapter.Created();
         }
 
-        private void InitializeNewObject(INakedObject nakedObject) {
-            InitializeNewObject(nakedObject, nakedObject.GetDomainObject());
+        private void InitializeNewObject(INakedObjectAdapter nakedObjectAdapter) {
+            InitializeNewObject(nakedObjectAdapter, nakedObjectAdapter.GetDomainObject());
         }
 
-        private static bool IsPersistent(INakedObject nakedObject) {
-            Log.DebugFormat("IsPersistent nakedObject: {0}", nakedObject);
-            return nakedObject.ResolveState.IsPersistent();
+        private static bool IsPersistent(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("IsPersistent nakedObjectAdapter: {0}", nakedObjectAdapter);
+            return nakedObjectAdapter.ResolveState.IsPersistent();
         }
     }
 

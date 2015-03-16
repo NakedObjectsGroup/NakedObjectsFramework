@@ -57,7 +57,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             //specification.SetupHasNoIdentity(true);
         }
 
-        protected INakedObject CreateAdapter(object obj) {
+        protected INakedObjectAdapter CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
 
             return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);

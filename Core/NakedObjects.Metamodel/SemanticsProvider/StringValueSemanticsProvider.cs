@@ -34,8 +34,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IStringValueFacet Members
 
-        public string StringValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<string>();
+        public string StringValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<string>();
         }
 
         #endregion

@@ -15,21 +15,21 @@ namespace NakedObjects.Architecture.Component {
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>
     public interface INakedObjectManager {
-        void RemoveAdapter(INakedObject objectToDispose);
-        INakedObject GetAdapterFor(object obj);
-        INakedObject GetAdapterFor(IOid oid);
-        INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version);
-        void ReplacePoco(INakedObject nakedObject, object newDomainObject);
-        INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
-        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
-        void MadePersistent(INakedObject nakedObject);
-        void UpdateViewModel(INakedObject adapter, string[] keys);
-        List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
-        INakedObject GetServiceAdapter(object service);
-        INakedObject GetKnownAdapter(IOid oid);
-        INakedObject CreateViewModelAdapter(IObjectSpec spec, object viewModel);
-        INakedObject CreateInstanceAdapter(object obj);
-        INakedObject AdapterForExistingObject(object domainObject, IOid oid);
+        void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose);
+        INakedObjectAdapter GetAdapterFor(object obj);
+        INakedObjectAdapter GetAdapterFor(IOid oid);
+        INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version);
+        void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject);
+        INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj);
+        INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid);
+        void MadePersistent(INakedObjectAdapter nakedObjectAdapter);
+        void UpdateViewModel(INakedObjectAdapter adapter, string[] keys);
+        List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
+        INakedObjectAdapter GetServiceAdapter(object service);
+        INakedObjectAdapter GetKnownAdapter(IOid oid);
+        INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel);
+        INakedObjectAdapter CreateInstanceAdapter(object obj);
+        INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

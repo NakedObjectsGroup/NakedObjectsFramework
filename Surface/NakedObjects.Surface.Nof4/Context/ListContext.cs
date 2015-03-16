@@ -13,7 +13,7 @@ using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ListContext {
-        public INakedObject[] List { get; set; }
+        public INakedObjectAdapter[] List { get; set; }
         public IObjectSpec ElementType { get; set; }
         public bool IsListOfServices { get; set; }
 

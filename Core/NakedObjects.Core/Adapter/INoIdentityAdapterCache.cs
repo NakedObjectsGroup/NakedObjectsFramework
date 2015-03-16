@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter {
     public interface INoIdentityAdapterCache {
-        void AddAdapter(INakedObject adapter);
-        INakedObject GetAdapter(object domainObject);
+        void AddAdapter(INakedObjectAdapter adapter);
+        INakedObjectAdapter GetAdapter(object domainObject);
         void Reset();
     }
 }

@@ -24,6 +24,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Gets the available autocompletions for this property or parm
         /// </summary>
-        object[] GetCompletions(INakedObject inObject, string autoCompleteParm);
+        object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm);
     }
 }

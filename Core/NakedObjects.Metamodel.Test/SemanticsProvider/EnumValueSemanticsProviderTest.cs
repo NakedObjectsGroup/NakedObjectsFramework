@@ -107,8 +107,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification holder;
         private EnumValueSemanticsProvider<TestEnum> value;
 
-        private static INakedObject MockNakedObject(object toWrap) {
-            var mock = new Mock<INakedObject>();
+        private static INakedObjectAdapter MockNakedObject(object toWrap) {
+            var mock = new Mock<INakedObjectAdapter>();
             mock.Setup(no => no.Object).Returns(toWrap);
             return mock.Object;
         }

@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IIconFacet Members
 
-        public abstract string GetIconName(INakedObject nakedObject);
+        public abstract string GetIconName(INakedObjectAdapter nakedObjectAdapter);
         public abstract string GetIconName();
 
         #endregion

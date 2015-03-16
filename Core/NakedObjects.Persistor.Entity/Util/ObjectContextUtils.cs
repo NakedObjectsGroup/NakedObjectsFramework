@@ -228,8 +228,8 @@ namespace NakedObjects.Persistor.Entity.Util {
             return context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
         }
 
-        public static object[] GetKey(this EntityObjectStore.LocalContext context, INakedObject nakedObject) {
-            return context.GetIdMembers(nakedObject.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObject.GetDomainObject(), null)).ToArray();
+        public static object[] GetKey(this EntityObjectStore.LocalContext context, INakedObjectAdapter nakedObjectAdapter) {
+            return context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
         }
     }
 }

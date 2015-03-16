@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        private INakedObject AdapterFor(object obj) {
+        private INakedObjectAdapter AdapterFor(object obj) {
             ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
             IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
             ISession session = new Mock<ISession>().Object;
@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObject no = AdapterFor(new Customer1());
+            INakedObjectAdapter no = AdapterFor(new Customer1());
             Assert.AreEqual("AttributeName", facet.GetIconName(no));
         }
 
@@ -100,7 +100,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.IsNull(facet.GetIconName());
-            INakedObject no = AdapterFor(new Customer());
+            INakedObjectAdapter no = AdapterFor(new Customer());
             Assert.AreEqual("TestName", facet.GetIconName(no));
         }
 
@@ -121,7 +121,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObject no = AdapterFor(new Customer2());
+            INakedObjectAdapter no = AdapterFor(new Customer2());
             Assert.AreEqual("TestName", facet.GetIconName(no));
         }
     }

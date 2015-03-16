@@ -12,6 +12,6 @@ namespace NakedObjects.Architecture.Resolve {
     public interface IResolveState {
         string Name { get; }
         string Code { get; }
-        IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s);
+        IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s);
     }
 }

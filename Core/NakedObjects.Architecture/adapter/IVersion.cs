@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     Version marks an INakedObject as being a particular version of that object.
+    ///     Version marks an INakedObjectAdapter as being a particular version of that object.
     ///     This is used in concurrency checking.
     /// </summary>
     /// <para>

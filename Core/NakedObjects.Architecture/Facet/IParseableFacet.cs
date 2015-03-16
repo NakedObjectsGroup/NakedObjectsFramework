@@ -16,12 +16,12 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Parses a text entry made by a user and sets the domain object's value.
         /// </summary>
-        INakedObject ParseTextEntry(string text, INakedObjectManager manager);
+        INakedObjectAdapter ParseTextEntry(string text, INakedObjectManager manager);
 
         /// <summary>
         ///     Parses an invariant value and sets the domain objects value
         /// </summary>
-        INakedObject ParseInvariant(string text, INakedObjectManager manager);
+        INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager);
 
         /// <summary>
         ///     A title for the object that is valid but which may be easier to
@@ -34,8 +34,8 @@ namespace NakedObjects.Architecture.Facet {
         ///     <see cref="ITitleFacet" /> as <b>May 2, 2007</b>, but its parseable
         ///     form might be <b>20070502</b>.
         /// </para>
-        string ParseableTitle(INakedObject nakedObject);
+        string ParseableTitle(INakedObjectAdapter nakedObjectAdapter);
 
-        string InvariantString(INakedObject nakedObject);
+        string InvariantString(INakedObjectAdapter nakedObjectAdapter);
     }
 }

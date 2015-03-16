@@ -16,9 +16,9 @@ namespace NakedObjects.Architecture.Component {
     /// be concerned with whether the object already exists in memory, persistently, or both. 
     /// </summary>
     public interface ILifecycleManager {
-        INakedObject CreateInstance(IObjectSpec spec);
-        INakedObject CreateViewModel(IObjectSpec spec);
-        INakedObject RecreateInstance(IOid oid, ITypeSpec spec);
+        INakedObjectAdapter CreateInstance(IObjectSpec spec);
+        INakedObjectAdapter CreateViewModel(IObjectSpec spec);
+        INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec);
 
         object CreateNonAdaptedInjectedObject(Type type);
 
@@ -36,12 +36,12 @@ namespace NakedObjects.Architecture.Component {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        void MakePersistent(INakedObject nakedObject);
+        void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
 
-        void PopulateViewModelKeys(INakedObject nakedObject);
-        INakedObject GetViewModel(IOid oid);
+        void PopulateViewModelKeys(INakedObjectAdapter nakedObjectAdapter);
+        INakedObjectAdapter GetViewModel(IOid oid);
         IOid RestoreOid(string[] encodedData);
-        INakedObject LoadObject(IOid oid, ITypeSpec spec);
+        INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

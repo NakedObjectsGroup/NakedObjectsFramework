@@ -47,21 +47,21 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public INakedObject GetService(string id) {
+        public INakedObjectAdapter GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
             return Services.Where(service => id.Equals(ServiceUtils.GetId(service))).Select(service => manager.GetServiceAdapter(service)).FirstOrDefault();
         }
 
-        public INakedObject GetService(IServiceSpec spec) {
+        public INakedObjectAdapter GetService(IServiceSpec spec) {
             return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
         }
 
-        public INakedObject[] GetServices() {
+        public INakedObjectAdapter[] GetServices() {
             Log.Debug("GetServices");
             return Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
         }
 
-        public INakedObject[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
+        public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
             Log.DebugFormat("GetServicesWithVisibleActions");
             return Services.
                 Select(service => manager.GetServiceAdapter(service)).

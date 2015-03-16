@@ -16,20 +16,20 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
         private ActionParameterValidation facet;
-        private INakedObject target;
+        private INakedObjectAdapter target;
 
         [TestMethod]
         public void Test1() {
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
+            var mock = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter value = mock.Object;
             mock.Setup(no => no.Object).Returns(10);
             Assert.IsNull(facet.InvalidReason(target, value));
         }
 
         [TestMethod]
         public void Test2() {
-            var mock = new Mock<INakedObject>();
-            INakedObject value = mock.Object;
+            var mock = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter value = mock.Object;
             mock.Setup(no => no.Object).Returns(-7);
             Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
         }
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ISpecification holder = new Mock<ISpecification>().Object;
             var customer = new Customer17();
 
-            var mock = new Mock<INakedObject>();
+            var mock = new Mock<INakedObjectAdapter>();
             target = mock.Object;
 
             mock.Setup(no => no.Object).Returns(customer);

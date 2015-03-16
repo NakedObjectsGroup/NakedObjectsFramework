@@ -20,7 +20,7 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
-        private INakedObject booleanNO;
+        private INakedObjectAdapter booleanNO;
         private object booleanObj;
         private ISpecification specification;
         private BooleanValueSemanticsProvider value;

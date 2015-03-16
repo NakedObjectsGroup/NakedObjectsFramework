@@ -34,30 +34,30 @@ namespace NakedObjects.Architecture.Spec {
         bool IsInline { get; }
 
         /// <summary>
-        ///     Returns the <see cref="INakedObject" /> adapting this field's object. This invokes the specified
+        ///     Returns the <see cref="INakedObjectAdapter" /> adapting this field's object. This invokes the specified
         ///     instances accessor method and creates an adapter for the returned value
         /// </summary>
-        INakedObject GetNakedObject(INakedObject target);
+        INakedObjectAdapter GetNakedObject(INakedObjectAdapter target);
 
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject);
+        INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
+        TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     Set the property to its default references or values
         /// </summary>
-        void ToDefault(INakedObject target);
+        void ToDefault(INakedObjectAdapter target);
 
         /// <summary>
         ///     Returns <c>true</c> if this field on the specified object is deemed to be empty, or has no content
         /// </summary>
-        bool IsEmpty(INakedObject inObject);
+        bool IsEmpty(INakedObjectAdapter inObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -17,7 +17,7 @@ namespace NakedObjects.Xat {
 
         #region ITestValue Members
 
-        public INakedObject NakedObject {
+        public INakedObjectAdapter NakedObject {
             get { return wrappedObject.NakedObject; }
         }
 
@@ -28,5 +28,5 @@ namespace NakedObjects.Xat {
         #endregion
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

@@ -28,8 +28,8 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Whether the provided argument exceeds the <see cref="SingleIntValueFacetAbstract.Value" /> maximum length}.
         /// </summary>
-        public virtual bool Exceeds(INakedObject nakedObject) {
-            var str = nakedObject.GetDomainObject() as string;
+        public virtual bool Exceeds(INakedObjectAdapter nakedObjectAdapter) {
+            var str = nakedObjectAdapter.GetDomainObject() as string;
             if (str == null) {
                 return false;
             }
@@ -38,7 +38,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual string Invalidates(IInteractionContext ic) {
-            INakedObject proposedArgument = ic.ProposedArgument;
+            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
             if (!Exceeds(proposedArgument)) {
                 return null;
             }

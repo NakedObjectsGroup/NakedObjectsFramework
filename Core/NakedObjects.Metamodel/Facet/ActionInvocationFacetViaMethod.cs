@@ -83,28 +83,28 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
 
             object result;
             if (actionDelegate != null) {
-                result = actionDelegate(inObject.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
+                result = actionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {
                 Log.WarnFormat("Invoking action via reflection as no delegate {0}.{1}", onType, actionMethod);
-                result = InvokeUtils.Invoke(actionMethod, inObject, parameters);
+                result = InvokeUtils.Invoke(actionMethod, inObjectAdapter, parameters);
             }
 
-            INakedObject adaptedResult = nakedObjectManager.CreateAdapter(result, null, null);
+            INakedObjectAdapter adaptedResult = nakedObjectManager.CreateAdapter(result, null, null);
 
             Log.DebugFormat("Action result {0}", adaptedResult);
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            return Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
+            return Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager);
         }
 
         protected override string ToStringValues() {

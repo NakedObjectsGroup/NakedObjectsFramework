@@ -35,7 +35,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual ActionResult Details(ObjectAndControlData controlData) {
             Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            INakedObject nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+            INakedObjectAdapter nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
             SetNewCollectionFormats(controlData);
             return AppropriateView(controlData, nakedObject);
         }
@@ -54,7 +54,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                               controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            INakedObject nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+            INakedObjectAdapter nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
             SetExistingCollectionFormats(nakedObject, form);
             SetNewCollectionFormats(controlData);
             nakedObject.SetNotQueryable(true);
@@ -75,7 +75,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual ActionResult EditObject(ObjectAndControlData controlData, FormCollection form) {
             Decrypt(form);
             controlData.Form = form;
-            INakedObject nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+            INakedObjectAdapter nakedObject = controlData.GetNakedObject(NakedObjectsContext);
             SetExistingCollectionFormats(nakedObject, form);
 
             if (nakedObject.IsNotPersistent()) {
@@ -175,7 +175,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
-            INakedObject target = NakedObjectsContext.GetNakedObjectFromId(Id);
+            INakedObjectAdapter target = NakedObjectsContext.GetNakedObjectFromId(Id);
             IAssociationSpec assoc = target.GetObjectSpec().Properties.Single(a => a.Id == PropertyId);
             var domainObject = assoc.GetNakedObject(target).GetDomainObject();
 
@@ -190,9 +190,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string targetActionId = controlData.DataDict["targetActionId"];
             string targetObjectId = controlData.DataDict["targetObjectId"];
 
-            INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
+            INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
             if (targetNakedObject.Spec.IsCollection) {
-                INakedObject filteredNakedObject = FilterCollection(targetNakedObject, controlData);
+                INakedObjectAdapter filteredNakedObject = FilterCollection(targetNakedObject, controlData);
                 var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut =
                     filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
@@ -215,11 +215,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {
+        private INakedObjectAdapter Execute(IActionSpec action, INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
             return action.Execute(target, parameterSet);
         }
 
-        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObject nakedObject, IActionSpec action) {
+        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
@@ -238,7 +238,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!action.Parameters.Any()) {
-                return AppropriateView(controlData, Execute(action, nakedObject, new INakedObject[] {}), action);
+                return AppropriateView(controlData, Execute(action, nakedObject, new INakedObjectAdapter[] {}), action);
             }
 
             SetDefaults(nakedObject, action);
@@ -300,7 +300,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = contextAction, PropertyName = propertyName});
         }
 
-        private ActionResult SelectSingleItem(INakedObject nakedObject, IActionSpec action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
+        private ActionResult SelectSingleItem(INakedObjectAdapter nakedObject, IActionSpec action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
             var property = DisplaySingleProperty(controlData, selectedItem);
 
             if (action == null) {
@@ -365,7 +365,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private ActionResult SelectOnAction(ObjectAndControlData controlData) {
             IActionSpec nakedObjectAction = controlData.GetAction(NakedObjectsContext);
-            INakedObject contextNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+            INakedObjectAdapter contextNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
 
             return SelectSingleItem(contextNakedObject, nakedObjectAction, controlData, controlData.DataDict);
         }
@@ -379,11 +379,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string contextActionId = controlData.DataDict["contextActionId"];
             string subEditObjectId = controlData.DataDict["subEditObjectId"];
 
-            INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
-            INakedObject contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
+            INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
+            INakedObjectAdapter contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
             IActionSpec targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
             IActionSpec contextAction = string.IsNullOrEmpty(contextActionId) ? null : NakedObjectsContext.GetActionFromId(contextActionId);
-            INakedObject subEditObject = NakedObjectsContext.GetNakedObjectFromId(subEditObjectId);
+            INakedObjectAdapter subEditObject = NakedObjectsContext.GetNakedObjectFromId(subEditObjectId);
 
             if (ValidateChanges(subEditObject, controlData)) {
                 ApplyChanges(subEditObject, controlData);
@@ -411,16 +411,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
-            INakedObject contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
+            INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
+            INakedObjectAdapter contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
             IActionSpec targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
             IActionSpec contextAction = string.IsNullOrEmpty(contextActionId) ? null : NakedObjectsContext.GetActionFromId(contextActionId);
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
 
             if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
-                IEnumerable<INakedObject> parms = GetParameterValues(targetAction, controlData);
-                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray());
+                IEnumerable<INakedObjectAdapter> parms = GetParameterValues(targetAction, controlData);
+                INakedObjectAdapter result = targetAction.Execute(targetNakedObject, parms.ToArray());
 
                 if (result != null) {
                     IEnumerable resultAsEnumerable = !result.Spec.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
@@ -464,14 +464,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            INakedObject targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
-            INakedObject contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
+            INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
+            INakedObjectAdapter contextNakedObject = FilterCollection(NakedObjectsContext.GetNakedObjectFromId(contextObjectId), controlData);
             IActionSpec targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
             IActionSpec contextAction = string.IsNullOrEmpty(contextActionId) ? null : NakedObjectsContext.GetActionFromId(contextActionId);
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
             if (targetAction.ParameterCount == 0) {
-                INakedObject result = Execute(targetAction, targetNakedObject, new INakedObject[] {});
+                INakedObjectAdapter result = Execute(targetAction, targetNakedObject, new INakedObjectAdapter[] {});
                 IEnumerable resultAsEnumerable = GetResultAsEnumerable(result, contextAction, propertyName);
 
                 if (resultAsEnumerable.Cast<object>().Count() == 1 && result.ResolveState.IsPersistent()) {
@@ -500,7 +500,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             });
         }
 
-        private static IEnumerable GetResultAsEnumerable(INakedObject result, IActionSpec contextAction, string propertyName) {
+        private static IEnumerable GetResultAsEnumerable(INakedObjectAdapter result, IActionSpec contextAction, string propertyName) {
             if (result != null) {
                 if (result.Spec.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
                     return (IEnumerable) result.Object;

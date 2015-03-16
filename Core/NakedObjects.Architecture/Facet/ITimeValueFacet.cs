@@ -10,6 +10,6 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ITimeValueFacet {
-        TimeSpan TimeValue(INakedObject nakedObject);
+        TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter);
     }
 }

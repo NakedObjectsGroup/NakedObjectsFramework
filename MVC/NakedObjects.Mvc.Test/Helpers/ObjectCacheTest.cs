@@ -91,7 +91,7 @@ namespace MvcTestApp.Tests.Helpers {
             var claimRepoAdapter = NakedObjectsFramework.GetNakedObject(claimRepo);
             var claims = claimRepo.AllClaims();
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
-            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimRepoAdapter, claimRepoAdapter.GetActionLeafNode("AllClaims"), new INakedObject[] {});
+            var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimRepoAdapter, claimRepoAdapter.GetActionLeafNode("AllClaims"), new INakedObjectAdapter[] {});
 
             claimsAdapter.SetATransientOid(mockOid);
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claimsAdapter);
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AddNakedObjectToCache() {
-            INakedObject claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
 
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
@@ -193,7 +193,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ClearCache() {
-            INakedObject claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
 
@@ -263,7 +263,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void RemoveNakedObjectFromCache() {
-            INakedObject claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
 
@@ -273,7 +273,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void RemoveNakedObjectFromCacheNotThere() {
-            INakedObject claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(NakedObjectsFramework, claim);
             Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
@@ -302,8 +302,8 @@ namespace MvcTestApp.Tests.Helpers {
             Claim c1 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderBy(c => c.Id).First();
             Claim c2 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First();
 
-            INakedObject claim1 = NakedObjectsFramework.GetNakedObject(c1);
-            INakedObject claim2 = NakedObjectsFramework.GetNakedObject(c2);
+            INakedObjectAdapter claim1 = NakedObjectsFramework.GetNakedObject(c1);
+            INakedObjectAdapter claim2 = NakedObjectsFramework.GetNakedObject(c2);
 
             Assert.AreNotSame(claim1, claim2);
 

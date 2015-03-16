@@ -15,7 +15,7 @@ namespace NakedObjects.Meta.Facet {
         public OnUpdatingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
-        public override string Invoke(INakedObject nakedObject, Exception exception) {
+        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) {
             throw exception;
         }
     }

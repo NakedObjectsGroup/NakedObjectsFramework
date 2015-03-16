@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IParseableFacet Members
 
-        public INakedObject ParseTextEntry(string entry, INakedObjectManager manager) {
+        public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
                 throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
             }
@@ -33,18 +33,18 @@ namespace NakedObjects.Meta.Facet {
             return manager.CreateAdapter(parsed, null, null);
         }
 
-        public INakedObject ParseInvariant(string text, INakedObjectManager manager) {
+        public INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager) {
             object parsed = parser.ParseInvariant(text);
             return manager.CreateAdapter(parsed, null, null);
         }
 
-        public string ParseableTitle(INakedObject nakedObject) {
-            var context = nakedObject.GetDomainObject<T>();
+        public string ParseableTitle(INakedObjectAdapter nakedObjectAdapter) {
+            var context = nakedObjectAdapter.GetDomainObject<T>();
             return parser.EditableTitleOf(context);
         }
 
-        public string InvariantString(INakedObject nakedObject) {
-            var context = nakedObject.GetDomainObject<T>();
+        public string InvariantString(INakedObjectAdapter nakedObjectAdapter) {
+            var context = nakedObjectAdapter.GetDomainObject<T>();
             return parser.InvariantString(context);
         }
 

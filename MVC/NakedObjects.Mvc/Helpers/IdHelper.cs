@@ -175,11 +175,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return MakeId(id, DisplayFormatFieldId);
         }
 
-        public static string GetCollectionItemId(INakedObject owner, IAssociationSpec assoc) {
+        public static string GetCollectionItemId(INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetObjectId(owner) + sep + assoc.Id + sep + "Item";
         }
 
-        public static string GetObjectId(INakedObject owner) {
+        public static string GetObjectId(INakedObjectAdapter owner) {
             string postFix = "";
 
             if (owner.Spec.IsCollection) {
@@ -192,39 +192,39 @@ namespace NakedObjects.Web.Mvc.Html {
             return owner.Spec.ShortName + postFix;
         }
 
-        public static string GetFieldId(INakedObject owner, IAssociationSpec assoc) {
+        public static string GetFieldId(INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetObjectId(owner) + sep + assoc.Id;
         }
 
-        public static string GetInlineFieldId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
+        public static string GetInlineFieldId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
             return parent.Id + sep + GetObjectId(owner) + sep + assoc.Id;
         }
 
-        public static string GetFieldInputId(INakedObject owner, IAssociationSpec assoc) {
+        public static string GetFieldInputId(INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetFieldId(owner, assoc) + sep + InputOrSelect(assoc.ReturnSpec);
         }
 
-        public static string GetFieldAutoCompleteId(string id, INakedObject owner, IAssociationSpec assoc) {
+        public static string GetFieldAutoCompleteId(string id, INakedObjectAdapter owner, IAssociationSpec assoc) {
             return assoc.ReturnSpec.IsParseable ? id : id + sep + autoCompleteName;
         }
 
-        public static string GetInlineFieldInputId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
+        public static string GetInlineFieldInputId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetInlineFieldId(parent, owner, assoc) + sep + InputOrSelect(assoc.ReturnSpec);
         }
 
-        public static string GetConcurrencyFieldInputId(INakedObject owner, IAssociationSpec assoc) {
+        public static string GetConcurrencyFieldInputId(INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetFieldId(owner, assoc) + sep + concurrencyName;
         }
 
-        public static string GetInlineConcurrencyFieldInputId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
+        public static string GetInlineConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
             return GetInlineFieldId(parent, owner, assoc) + sep + concurrencyName;
         }
 
-        public static string GetConcurrencyActionInputId(INakedObject owner, IActionSpec action, IAssociationSpec assoc) {
+        public static string GetConcurrencyActionInputId(INakedObjectAdapter owner, IActionSpec action, IAssociationSpec assoc) {
             return GetActionId(owner, action) + sep + assoc.Id + sep + concurrencyName;
         }
 
-        public static string GetActionId(INakedObject owner, IActionSpec action) {
+        public static string GetActionId(INakedObjectAdapter owner, IActionSpec action) {
             return GetObjectId(owner) + sep + action.Id;
         }
 
@@ -236,7 +236,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return contextNakedObjectId + contextActionName + propertyId + GetObjectId(targetActionContext.Target) + sep + targetActionContext.Action.Id;
         }
 
-        public static string GetActionDialogId(INakedObject owner, IActionSpec action) {
+        public static string GetActionDialogId(INakedObjectAdapter owner, IActionSpec action) {
             return GetObjectId(owner) + sep + action.Id + sep + DialogName;
         }
 
@@ -244,15 +244,15 @@ namespace NakedObjects.Web.Mvc.Html {
             return id.EndsWith(":") ? id : id + ":";
         }
 
-        public static string GetSubMenuId(INakedObject owner, IActionSpec action) {
+        public static string GetSubMenuId(INakedObjectAdapter owner, IActionSpec action) {
             return EnsureEndsWithColon(GetObjectId(owner) + sep + action.Id.Split('.').Last());
         }
 
-        public static string GetSubMenuId(INakedObject owner, INakedObject service) {
+        public static string GetSubMenuId(INakedObjectAdapter owner, INakedObjectAdapter service) {
             return EnsureEndsWithColon(GetObjectId(owner) + sep + service.Spec.ShortName);
         }
 
-        public static string GetFindMenuId(INakedObject nakedObject, IActionSpec action, string propertyName) {
+        public static string GetFindMenuId(INakedObjectAdapter nakedObject, IActionSpec action, string propertyName) {
             string contextActionName = action == null ? "" : sep + action.Id;
             return GetObjectId(nakedObject) + contextActionName + sep + NameUtils.CapitalizeName(propertyName) + sep + FindMenuName;
         }
@@ -270,19 +270,19 @@ namespace NakedObjects.Web.Mvc.Html {
             return parameter.Spec.IsParseable ? id : id + sep + autoCompleteName;
         }
 
-        public static string GetCollectionContainerId(INakedObject collection) {
+        public static string GetCollectionContainerId(INakedObjectAdapter collection) {
             return CollContainerName + sep + collection.Spec.ShortName;
         }
 
-        public static string GetActionContainerId(INakedObject nakedObject) {
+        public static string GetActionContainerId(INakedObjectAdapter nakedObject) {
             return GetObjectId(nakedObject) + sep + ActionsName;
         }
 
-        public static string GetServiceContainerId(INakedObject nakedObject) {
+        public static string GetServiceContainerId(INakedObjectAdapter nakedObject) {
             return GetObjectId(nakedObject);
         }
 
-        public static string GetFieldContainerId(INakedObject nakedObject) {
+        public static string GetFieldContainerId(INakedObjectAdapter nakedObject) {
             return GetObjectId(nakedObject) + sep + PropertyListName;
         }
 
@@ -290,15 +290,15 @@ namespace NakedObjects.Web.Mvc.Html {
             return action.Id + sep + ParamListName;
         }
 
-        public static string GetGenericActionId(INakedObject owner, string type) {
+        public static string GetGenericActionId(INakedObjectAdapter owner, string type) {
             return ActionName + sep + owner.Spec.ShortName + sep + type;
         }
 
-        public static string GetActionLabel(INakedObject nakedObject) {
+        public static string GetActionLabel(INakedObjectAdapter nakedObject) {
             return MvcUi.Actions;
         }
 
-        public static string GetServiceLabel(INakedObject nakedObject) {
+        public static string GetServiceLabel(INakedObjectAdapter nakedObject) {
             return nakedObject.TitleString();
         }
 

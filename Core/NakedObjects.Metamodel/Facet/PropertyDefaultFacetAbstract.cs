@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyDefaultFacet Members
 
-        public abstract object GetDefault(INakedObject nakedObject);
+        public abstract object GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
         #endregion
     }

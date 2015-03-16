@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDecimalValueFacet Members
 
-        public decimal DecimalValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<decimal>();
+        public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<decimal>();
         }
 
         #endregion

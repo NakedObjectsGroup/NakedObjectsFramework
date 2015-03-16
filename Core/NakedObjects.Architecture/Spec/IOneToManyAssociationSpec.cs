@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Return the count of elements in this collection field on the specified object
         /// </summary>
-        int Count(INakedObject nakedObject);
+        int Count(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

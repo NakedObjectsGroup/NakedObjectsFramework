@@ -321,19 +321,19 @@ namespace NakedObjects.Core.Spec {
             return Superclass != null && Superclass.IsOfType(spec);
         }
 
-        public string GetTitle(INakedObject nakedObject) {
+        public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {
             var titleFacet = GetFacet<ITitleFacet>();
-            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObject, nakedObjectManager);
+            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager);
             return title ?? DefaultTitle();
         }
 
-        public string GetInvariantString(INakedObject nakedObject) {
+        public string GetInvariantString(INakedObjectAdapter nakedObjectAdapter) {
             var parser = GetFacet<IParseableFacet>();
-            return parser == null ? null : parser.InvariantString(nakedObject);
+            return parser == null ? null : parser.InvariantString(nakedObjectAdapter);
         }
 
-        public string GetIconName(INakedObject forObject) {
-            return InnerSpec.GetIconName(forObject, metamodelManager.Metamodel);
+        public string GetIconName(INakedObjectAdapter forObjectAdapter) {
+            return InnerSpec.GetIconName(forObjectAdapter, metamodelManager.Metamodel);
         }
 
         #endregion

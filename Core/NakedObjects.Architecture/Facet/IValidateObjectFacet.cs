@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IValidateObjectFacet : IFacet {
-        string Validate(INakedObject nakedObject);
-        string ValidateParms(INakedObject nakedObject, Tuple<string, INakedObject>[] parms);
+        string Validate(INakedObjectAdapter nakedObjectAdapter);
+        string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms);
     }
 }

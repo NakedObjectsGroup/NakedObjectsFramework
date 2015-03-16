@@ -39,7 +39,7 @@ mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false
 //    (fun f -> Assert.IsInstanceOf<IComplexTypeFacet>(f)) |> ignore
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
-let objects = new Dictionary<Object, INakedObject>()
+let objects = new Dictionary<Object, INakedObjectAdapter>()
 
 let mutable updatedCount = 0
 let mutable updatingCount = 0
@@ -47,7 +47,7 @@ let mutable persistedCount = 0
 let mutable persistingCount = 0
 
 let AddAdapter (ob : obj) oid = 
-    let mockNakedObject = new Mock<INakedObject>()
+    let mockNakedObject = new Mock<INakedObjectAdapter>()
     let testNakedObject = mockNakedObject.Object
     let dobj = ob
     
@@ -80,14 +80,14 @@ let GetOrAddAdapterForTest obj oid =
 
 let AdapterForTest (oid : IOid) obj = GetOrAddAdapterForTest obj oid
 let TransientAdapterForTest obj = GetOrAddAdapterForTest obj null
-let ReplacePocoForTest (nakedObject : INakedObject) (o : Object) = ()
-let RemoveAdapterForTest(nakedObject : INakedObject) = ()
-let AggregateAdapterForTest (nakedObject : INakedObject) (prop : PropertyInfo) (obj : Object) : INakedObject = GetOrAddAdapterForTest obj null
-let NotifyUIForTest(nakedObject : INakedObject) = ()
+let ReplacePocoForTest (nakedObject : INakedObjectAdapter) (o : Object) = ()
+let RemoveAdapterForTest(nakedObject : INakedObjectAdapter) = ()
+let AggregateAdapterForTest (nakedObject : INakedObjectAdapter) (prop : PropertyInfo) (obj : Object) : INakedObjectAdapter = GetOrAddAdapterForTest obj null
+let NotifyUIForTest(nakedObject : INakedObjectAdapter) = ()
 let loadSpecificationHandler (t : Type) : IObjectSpec = testNakedObjectSpecification
 
 
-let handleLoadingTest (nakedObject : INakedObject) = 
+let handleLoadingTest (nakedObject : INakedObjectAdapter) = 
     if nakedObject.ResolveState.IsPartResolving() then nakedObject.ResolveState.Handle Events.EndPartResolvingEvent
     else nakedObject.ResolveState.Handle Events.EndResolvingEvent
 
@@ -98,7 +98,7 @@ let setupPersistorForTesting (p : EntityObjectStore) =
     p.SetupForTesting
         (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-         Action<INakedObject>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
+         Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.Reset()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

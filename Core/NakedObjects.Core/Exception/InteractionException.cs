@@ -14,7 +14,7 @@ namespace NakedObjects.Core {
     public abstract class InteractionException : Exception {
         private readonly IIdentifier identifier;
         private readonly InteractionType interactionType;
-        private readonly INakedObject target;
+        private readonly INakedObjectAdapter target;
 
         protected InteractionException(IInteractionContext ic)
             : this(ic, null) {}
@@ -43,7 +43,7 @@ namespace NakedObjects.Core {
         /// <summary>
         ///     The object being interacted with
         /// </summary>
-        public virtual INakedObject Target {
+        public virtual INakedObjectAdapter Target {
             get { return target; }
         }
     }

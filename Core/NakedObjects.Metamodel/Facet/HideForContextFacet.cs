@@ -37,11 +37,11 @@ namespace NakedObjects.Meta.Facet {
             return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 
-        public string HiddenReason(INakedObject nakedObject) {
-            if (nakedObject == null) {
+        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter == null) {
                 return null;
             }
-            var isHidden = (bool) methodDelegate(nakedObject.GetDomainObject(), new object[] {});
+            var isHidden = (bool) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {});
             return isHidden ? Resources.NakedObjects.Hidden : null;
         }
 

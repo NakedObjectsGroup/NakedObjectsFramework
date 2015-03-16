@@ -9,9 +9,9 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Xat {
     public interface ITestNaked {
-        INakedObject NakedObject { get; }
+        INakedObjectAdapter NakedObject { get; }
         string Title { get; }
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

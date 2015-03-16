@@ -33,7 +33,7 @@ namespace NakedObjects.Architecture.Component {
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
         ///     persistence mechanism, and have an new and unique OID assigned to it (by setting the object's
-        ///     <see cref="INakedObject.Oid" />. The object, should also be added to the cache as the object is
+        ///     <see cref="INakedObjectAdapter.Oid" />. The object, should also be added to the cache as the object is
         ///     implicitly 'in use'.
         /// </summary>
         /// <para>
@@ -44,19 +44,19 @@ namespace NakedObjects.Architecture.Component {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        void ExecuteCreateObjectCommand(INakedObject nakedObject);
+        void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     Removes the specified object from the object store. The specified object's data should be removed from
         ///     the persistence mechanism and, if it is cached (which it probably is), removed from the cache also.
         /// </summary>
-        void ExecuteDestroyObjectCommand(INakedObject nakedObject);
+        void ExecuteDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter);
 
         /// <summary>
         ///     Persists the specified object's state. Essentially the data held by the persistence mechanism should be
         ///     updated to reflect the state of the specified objects. 
         /// </summary>
-        void ExecuteSaveObjectCommand(INakedObject nakedObject);
+        void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter);
 
         void EndTransaction();
         IQueryable<T> GetInstances<T>() where T : class;
@@ -76,18 +76,18 @@ namespace NakedObjects.Architecture.Component {
         ///     persistence mechanism and the object recreated (as describe previously). The specified OID should then
         ///     be assigned to the recreated object by settings its OID.
         /// </para>
-        INakedObject GetObject(IOid oid, IObjectSpec hint);
+        INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint);
 
-        void Reload(INakedObject nakedObject);
-        void ResolveField(INakedObject nakedObject, IAssociationSpec field);
-        void ResolveImmediately(INakedObject nakedObject);
+        void Reload(INakedObjectAdapter nakedObjectAdapter);
+        void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field);
+        void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter);
         void Execute(IPersistenceCommand[] commands);
         void StartTransaction();
         PropertyInfo[] GetKeys(Type type);
-        void Refresh(INakedObject nakedObject);
-        int CountField(INakedObject nakedObject, IAssociationSpec associationSpec);
-        INakedObject FindByKeys(Type type, object[] keys);
-        void LoadComplexTypes(INakedObject adapter, bool isGhost);
+        void Refresh(INakedObjectAdapter nakedObjectAdapter);
+        int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec);
+        INakedObjectAdapter FindByKeys(Type type, object[] keys);
+        void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

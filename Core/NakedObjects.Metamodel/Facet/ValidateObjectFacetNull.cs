@@ -22,11 +22,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IValidateObjectFacet Members
 
-        public string Validate(INakedObject nakedObject) {
+        public string Validate(INakedObjectAdapter nakedObjectAdapter) {
             return null;
         }
 
-        public string ValidateParms(INakedObject nakedObject, Tuple<string, INakedObject>[] parms) {
+        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms) {
             return null;
         }
 

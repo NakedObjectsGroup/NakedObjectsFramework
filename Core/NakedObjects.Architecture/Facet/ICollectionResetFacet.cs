@@ -17,6 +17,6 @@ namespace NakedObjects.Architecture.Facet {
     ///     invoking <c>Clear</c> on the collection returned by the accessor method
     /// </para>
     public interface ICollectionResetFacet : IFacet {
-        void Reset(INakedObject inObject);
+        void Reset(INakedObjectAdapter inObjectAdapter);
     }
 }

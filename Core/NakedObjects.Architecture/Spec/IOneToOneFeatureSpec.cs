@@ -29,12 +29,12 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns a list of possible references/values for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
 
         /// <summary>
         ///     Returns a list of possible autocompletions for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
         /// <summary>
         ///     Returns a parameter names and types if the field supports conditional choices

@@ -16,12 +16,12 @@ namespace NakedObjects.Architecture.Component {
         /// <summary>
         ///     Add an adapter for a given oid
         /// </summary>
-        void Add(IOid oid, INakedObject adapter);
+        void Add(IOid oid, INakedObjectAdapter adapter);
 
         /// <summary>
         ///     Get the adapter identified by the specified OID
         /// </summary>
-        INakedObject GetAdapter(IOid oid);
+        INakedObjectAdapter GetAdapter(IOid oid);
 
         /// <summary>
         ///     Determine if an adapter exists for the the specified OID

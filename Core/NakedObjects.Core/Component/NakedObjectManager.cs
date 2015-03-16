@@ -44,28 +44,28 @@ namespace NakedObjects.Core.Component {
 
         #region INakedObjectManager Members
 
-        public void RemoveAdapter(INakedObject objectToDispose) {
-            Log.DebugFormat("RemoveAdapter nakedObject: {0}", objectToDispose);
-            identityMap.Unloaded(objectToDispose);
+        public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) {
+            Log.DebugFormat("RemoveAdapter nakedObjectAdapter: {0}", objectAdapterToDispose);
+            identityMap.Unloaded(objectAdapterToDispose);
         }
 
-        public INakedObject GetAdapterFor(object obj) {
+        public INakedObjectAdapter GetAdapterFor(object obj) {
             Log.DebugFormat("GetAdapterFor: {0}", obj);
             Assert.AssertNotNull("must have a domain object", obj);
-            INakedObject nakedObject = identityMap.GetAdapterFor(obj);
-            if (nakedObject != null && nakedObject.Object != obj) {
-                throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObject);
+            INakedObjectAdapter nakedObjectAdapter = identityMap.GetAdapterFor(obj);
+            if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
+                throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObjectAdapter);
             }
-            return nakedObject;
+            return nakedObjectAdapter;
         }
 
-        public INakedObject GetAdapterFor(IOid oid) {
+        public INakedObjectAdapter GetAdapterFor(IOid oid) {
             Log.DebugFormat("GetAdapterFor oid: {0}", oid);
             Assert.AssertNotNull("must have an OID", oid);
             return identityMap.GetAdapterFor(oid);
         }
 
-        public INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
+        public INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version) {
             Log.DebugFormat("AdapterFor domainObject: {0} oid: {1} version: {2}", domainObject, oid, version);
             if (domainObject == null) {
                 return null;
@@ -83,27 +83,27 @@ namespace NakedObjects.Core.Component {
             return AdapterForExistingObject(domainObject, oid);
         }
 
-        public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
-            Log.DebugFormat("ReplacePoco nakedObject: {0} newDomainOject: {1}", nakedObject, newDomainObject);
-            RemoveAdapter(nakedObject);
-            identityMap.Replaced(nakedObject.Object);
-            nakedObject.ReplacePoco(newDomainObject);
-            identityMap.AddAdapter(nakedObject);
+        public void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject) {
+            Log.DebugFormat("ReplacePoco nakedObjectAdapter: {0} newDomainOject: {1}", nakedObjectAdapter, newDomainObject);
+            RemoveAdapter(nakedObjectAdapter);
+            identityMap.Replaced(nakedObjectAdapter.Object);
+            nakedObjectAdapter.ReplacePoco(newDomainObject);
+            identityMap.AddAdapter(nakedObjectAdapter);
         }
 
-        public void MadePersistent(INakedObject nakedObject) {
-            identityMap.MadePersistent(nakedObject);
+        public void MadePersistent(INakedObjectAdapter nakedObjectAdapter) {
+            identityMap.MadePersistent(nakedObjectAdapter);
         }
 
-        public void UpdateViewModel(INakedObject adapter, string[] keys) {
+        public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) {
             identityMap.UpdateViewModel(adapter, keys);
         }
 
-        public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
+        public INakedObjectAdapter CreateAggregatedAdapter(INakedObjectAdapter parent, string fieldId, object obj) {
             GetAdapterFor(obj);
 
             IOid oid = new AggregateOid(metamodel, parent.Oid, fieldId, obj.GetType().FullName);
-            INakedObject adapterFor = GetAdapterFor(oid);
+            INakedObjectAdapter adapterFor = GetAdapterFor(oid);
             if (adapterFor == null || adapterFor.Object != obj) {
                 if (adapterFor != null) {
                     RemoveAdapter(adapterFor);
@@ -115,39 +115,39 @@ namespace NakedObjects.Core.Component {
             return adapterFor;
         }
 
-        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+        public INakedObjectAdapter NewAdapterForKnownObject(object domainObject, IOid transientOid) {
             return nakedObjectFactory.CreateAdapter(domainObject, transientOid);
         }
 
-        public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
+        public List<INakedObjectAdapter> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
             return (from object domainObject in domainObjects
                 select CreateAdapter(domainObject, null, null)).ToList();
         }
 
-        public INakedObject GetServiceAdapter(object service) {
+        public INakedObjectAdapter GetServiceAdapter(object service) {
             IOid oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
             return AdapterForService(oid, service);
         }
 
-        public INakedObject GetKnownAdapter(IOid oid) {
+        public INakedObjectAdapter GetKnownAdapter(IOid oid) {
             if (identityMap.IsIdentityKnown(oid)) {
                 return GetAdapterFor(oid);
             }
             return null;
         }
 
-        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
+        public INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid) {
             return GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
         }
 
-        public INakedObject CreateInstanceAdapter(object obj) {
-            INakedObject adapter = CreateAdapterForNewObject(obj);
+        public INakedObjectAdapter CreateInstanceAdapter(object obj) {
+            INakedObjectAdapter adapter = CreateAdapterForNewObject(obj);
             NewTransientsResolvedState(adapter);
             return adapter;
         }
 
-        public INakedObject CreateViewModelAdapter(IObjectSpec spec, object viewModel) {
-            INakedObject adapter = CreateAdapterForViewModel(viewModel, spec);
+        public INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel) {
+            INakedObjectAdapter adapter = CreateAdapterForViewModel(viewModel, spec);
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }
@@ -159,8 +159,8 @@ namespace NakedObjects.Core.Component {
             return oidGenerator.CreateOid(typeName, new object[] {0});
         }
 
-        private INakedObject AdapterForNoIdentityObject(object domainObject) {
-            INakedObject adapter = adapterCache.GetAdapter(domainObject);
+        private INakedObjectAdapter AdapterForNoIdentityObject(object domainObject) {
+            INakedObjectAdapter adapter = adapterCache.GetAdapter(domainObject);
 
             if (adapter == null) {
                 adapter = NewAdapterForKnownObject(domainObject, null);
@@ -171,46 +171,46 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        private INakedObject AdapterForExistingObject(object domainObject, ITypeSpec spec) {
+        private INakedObjectAdapter AdapterForExistingObject(object domainObject, ITypeSpec spec) {
             return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
         }
 
-        private static void NewTransientsResolvedState(INakedObject adapter) {
+        private static void NewTransientsResolvedState(INakedObjectAdapter adapter) {
             adapter.ResolveState.Handle(adapter.Spec.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
         }
 
-        private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {
-            INakedObject nakedObject = NewAdapterForKnownObject(domainObject, oid);
-            identityMap.AddAdapter(nakedObject);
+        private INakedObjectAdapter NewAdapterBasedOnOid(object domainObject, IOid oid) {
+            INakedObjectAdapter nakedObjectAdapter = NewAdapterForKnownObject(domainObject, oid);
+            identityMap.AddAdapter(nakedObjectAdapter);
 
-            if (oid is AggregateOid && nakedObject.Spec.IsObject) {
-                nakedObject.ResolveState.Handle(Events.InitializeAggregateEvent);
+            if (oid is AggregateOid && nakedObjectAdapter.Spec.IsObject) {
+                nakedObjectAdapter.ResolveState.Handle(Events.InitializeAggregateEvent);
             }
             else {
-                nakedObject.ResolveState.Handle(oid.IsTransient ? Events.InitializeTransientEvent : Events.InitializePersistentEvent);
+                nakedObjectAdapter.ResolveState.Handle(oid.IsTransient ? Events.InitializeTransientEvent : Events.InitializePersistentEvent);
             }
 
-            return nakedObject;
+            return nakedObjectAdapter;
         }
 
-        private INakedObject NewAdapterForViewModel(object domainObject, ITypeSpec spec) {
+        private INakedObjectAdapter NewAdapterForViewModel(object domainObject, ITypeSpec spec) {
             if (spec.IsViewModel) {
-                INakedObject adapter = CreateAdapterForViewModel(domainObject, (IObjectSpec) spec);
+                INakedObjectAdapter adapter = CreateAdapterForViewModel(domainObject, (IObjectSpec) spec);
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                 return adapter;
             }
             return null;
         }
 
-        private INakedObject NewAdapterForTransient(object domainObject) {
-            INakedObject adapter = CreateAdapterForNewObject(domainObject);
+        private INakedObjectAdapter NewAdapterForTransient(object domainObject) {
+            INakedObjectAdapter adapter = CreateAdapterForNewObject(domainObject);
             NewTransientsResolvedState(adapter);
             return adapter;
         }
 
-        private INakedObject CreateAdapterForViewModel(object viewModel, IObjectSpec spec) {
+        private INakedObjectAdapter CreateAdapterForViewModel(object viewModel, IObjectSpec spec) {
             var oid = new ViewModelOid(metamodel, spec);
-            INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
+            INakedObjectAdapter adapter = NewAdapterForKnownObject(viewModel, oid);
 
             object versionObject = adapter.GetVersion(this);
             if (versionObject != null) {
@@ -223,17 +223,17 @@ namespace NakedObjects.Core.Component {
             return adapter;
         }
 
-        private INakedObject CreateAdapterForNewObject(object domainObject) {
+        private INakedObjectAdapter CreateAdapterForNewObject(object domainObject) {
             IOid transientOid = oidGenerator.CreateTransientOid(domainObject);
-            INakedObject adapter = NewAdapterForKnownObject(domainObject, transientOid);
+            INakedObjectAdapter adapter = NewAdapterForKnownObject(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);
             return adapter;
         }
 
-        private INakedObject AdapterForService(IOid oid, object serv) {
+        private INakedObjectAdapter AdapterForService(IOid oid, object serv) {
             // do not use PersistorUtils here we want to avoid calling into NakedObjectsContext to avoid a stack overflow ! 
-            INakedObject adapter = CreateAdapter(serv, oid, null);
+            INakedObjectAdapter adapter = CreateAdapter(serv, oid, null);
             if (adapter.ResolveState.IsResolvable()) {
                 adapter.ResolveState.Handle(Events.StartResolvingEvent);
                 adapter.ResolveState.Handle(Events.EndResolvingEvent);

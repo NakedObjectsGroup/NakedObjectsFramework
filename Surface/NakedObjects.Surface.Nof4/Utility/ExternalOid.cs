@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+            INakedObjectAdapter service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -101,7 +101,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         protected string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
             string[] keys;
-            INakedObject wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
+            INakedObjectAdapter wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
@@ -149,7 +149,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         protected object GetViewModel(string[] keys, IObjectSpec spec) {
             try {
-                INakedObject viewModel = framework.LifecycleManager.CreateViewModel(spec);
+                INakedObjectAdapter viewModel = framework.LifecycleManager.CreateViewModel(spec);
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector);
                 return viewModel.Object;
             }

@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Facet {
             get { return true; }
         }
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObject nakedObject) {
+        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
             return new Tuple<object, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
         }
     }

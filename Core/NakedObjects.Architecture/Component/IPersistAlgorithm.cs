@@ -14,7 +14,7 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IPersistAlgorithm {
         string Name { get; }
-        void MakePersistent(INakedObject nakedObject);
+        void MakePersistent(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

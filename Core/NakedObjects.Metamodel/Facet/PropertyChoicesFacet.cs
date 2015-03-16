@@ -53,10 +53,10 @@ namespace NakedObjects.Meta.Facet {
             get { return parameterNamesAndTypes; }
         }
 
-        public object[] GetChoices(INakedObject inObject, IDictionary<string, INakedObject> parameterNameValues) {
-            INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+            INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
             try {
-                object options = methodDelegate(inObject.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
+                object options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
                 var enumerable = options as IEnumerable;
                 if (enumerable != null) {
                     return enumerable.Cast<object>().ToArray();

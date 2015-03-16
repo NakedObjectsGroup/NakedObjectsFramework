@@ -151,7 +151,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface GetNakedObject(INakedObjectSurface target) {
-            INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
+            INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
             return NakedObjectWrapper.Wrap(result, Surface, framework);
         }
 
@@ -186,7 +186,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public int Count(INakedObjectSurface target) {
             if (IsCollection) {
-                INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
+                INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
                 return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
             }
             return 0;

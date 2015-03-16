@@ -36,8 +36,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodelManager = metamodelManager;
 
-            INakedObject rootObject = nakedObjectManager.CreateAdapter(obj, null, null);
-            Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
+            INakedObjectAdapter rootObjectAdapter = nakedObjectManager.CreateAdapter(obj, null, null);
+            Log.Debug(".ctor(" + DoLog("rootObj", rootObjectAdapter) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
             Schema = schema;
 
@@ -47,7 +47,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                 XsdElement = XsMetaModel.CreateXsSchemaElement(XsdDocument);
 
-                rootPlace = AppendXml(rootObject);
+                rootPlace = AppendXml(rootObjectAdapter);
             }
             catch (ArgumentException e) {
                 Log.Error("unable to build snapshot", e);
@@ -96,7 +96,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  Taken from the <code>fullyQualifiedClassName</code> (which also is used
         //  as the basis for the <code>targetNamespace</code>.
         //  
-        //  Populated in AppendXml(NakedObject).
+        //  Populated in AppendXml(nakedObjectAdapter).
         public string SchemaLocationFileName { get; private set; }
 
         public string TransformedXml(string transform) {
@@ -128,8 +128,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         // Start a snapshot at the root object, using own namespace manager.
 
-        private static string AndLog(string label, INakedObject nakedObject) {
-            return ", " + DoLog(label, nakedObject);
+        private static string AndLog(string label, INakedObjectAdapter nakedObjectAdapter) {
+            return ", " + DoLog(label, nakedObjectAdapter);
         }
 
         private static string AndLog(string label, Object nakedObject) {
@@ -145,14 +145,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // (Normally this is achieved simply by using AppendXml passing in a new
         // schemaManager - see ToXml() or XmlSnapshot).
 
-        private Place AppendXml(INakedObject nakedObject) {
-            Log.Debug("appendXml(" + DoLog("obj", nakedObject) + "')");
+        private Place AppendXml(INakedObjectAdapter nakedObjectAdapter) {
+            Log.Debug("appendXml(" + DoLog("obj", nakedObjectAdapter) + "')");
 
-            string fullyQualifiedClassName = nakedObject.Spec.FullName;
+            string fullyQualifiedClassName = nakedObjectAdapter.Spec.FullName;
 
             Schema.SetUri(fullyQualifiedClassName); // derive URI from fully qualified name
 
-            Place place = ObjectToElement(nakedObject);
+            Place place = ObjectToElement(nakedObjectAdapter);
 
             XElement element = place.XmlElement;
             var xsElementElement = element.Annotation<XElement>();
@@ -192,8 +192,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // appendXml passing in a rootElement and a new schemaManager - see
         // ToXml() or XmlSnapshot).
 
-        private XElement AppendXml(Place parentPlace, INakedObject childObject) {
-            Log.Debug("appendXml(" + DoLog("parentPlace", parentPlace) + AndLog("childObj", childObject) + ")");
+        private XElement AppendXml(Place parentPlace, INakedObjectAdapter childObjectAdapter) {
+            Log.Debug("appendXml(" + DoLog("parentPlace", parentPlace) + AndLog("childObj", childObjectAdapter) + ")");
 
             XElement parentElement = parentPlace.XmlElement;
             var parentXsElement = parentElement.Annotation<XElement>();
@@ -202,8 +202,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 throw new ArgumentException("parent XML XElement must have snapshot's XML document as its owner");
             }
 
-            Log.Debug("appendXml(Pl, NO): invoking objectToElement() for " + DoLog("childObj", childObject));
-            Place childPlace = ObjectToElement(childObject);
+            Log.Debug("appendXml(Pl, NO): invoking objectToElement() for " + DoLog("childObj", childObjectAdapter));
+            Place childPlace = ObjectToElement(childObjectAdapter);
             XElement childElement = childPlace.XmlElement;
             var childXsElement = childElement.Annotation<XElement>();
 
@@ -216,16 +216,16 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return childElement;
         }
 
-        private bool AppendXmlThenIncludeRemaining(Place parentPlace, INakedObject referencedObject, IList<string> fieldNames,
+        private bool AppendXmlThenIncludeRemaining(Place parentPlace, INakedObjectAdapter referencedObjectAdapter, IList<string> fieldNames,
                                                    string annotation) {
             Log.Debug("appendXmlThenIncludeRemaining(: " + DoLog("parentPlace", parentPlace)
-                      + AndLog("referencedObj", referencedObject) + AndLog("fieldNames", fieldNames) + AndLog("annotation", annotation)
+                      + AndLog("referencedObj", referencedObjectAdapter) + AndLog("fieldNames", fieldNames) + AndLog("annotation", annotation)
                       + ")");
 
-            Log.Debug("appendXmlThenIncludeRemaining(..): invoking appendXml(parentPlace, referencedObject)");
+            Log.Debug("appendXmlThenIncludeRemaining(..): invoking appendXml(parentPlace, referencedObjectAdapter)");
 
-            XElement referencedElement = AppendXml(parentPlace, referencedObject);
-            var referencedPlace = new Place(referencedObject, referencedElement);
+            XElement referencedElement = AppendXml(parentPlace, referencedObjectAdapter);
+            var referencedPlace = new Place(referencedObjectAdapter, referencedElement);
 
             bool includedField = IncludeField(referencedPlace, fieldNames, annotation);
 
@@ -239,8 +239,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return parentElement.Descendants().Where(element => localName.Equals("*") || element.Name.LocalName.Equals(localName));
         }
 
-        public INakedObject GetObject() {
-            return rootPlace.NakedObject;
+        public INakedObjectAdapter GetObject() {
+            return rootPlace.NakedObjectAdapter;
         }
 
         //  return true if able to navigate the complete vector of field names
@@ -250,7 +250,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private bool IncludeField(Place place, IList<string> fieldNames, string annotation) {
             Log.DebugFormat("includeField(: {0})", DoLog("place", place) + AndLog("fieldNames", fieldNames) + AndLog("annotation", annotation));
 
-            INakedObject nakedObject = place.NakedObject;
+            INakedObjectAdapter nakedObjectAdapter = place.NakedObjectAdapter;
             XElement xmlElement = place.XmlElement;
 
             // we use a copy of the path so that we can safely traverse collections
@@ -269,7 +269,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             Log.Debug("includeField(Pl, Vec, Str):" + DoLog("processing field", fieldName) + AndLog("left", "" + fieldNames.Count()));
 
             // locate the field in the object's class
-            var nos = (IObjectSpec) nakedObject.Spec;
+            var nos = (IObjectSpec) nakedObjectAdapter.Spec;
             IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
@@ -294,7 +294,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 NofMetaModel.SetAnnotationAttribute(xmlFieldElement, annotation);
             }
 
-            var fieldPlace = new Place(nakedObject, xmlFieldElement);
+            var fieldPlace = new Place(nakedObjectAdapter, xmlFieldElement);
 
             if (field.ReturnSpec.IsParseable) {
                 Log.Debug("includeField(Pl, Vec, Str): field is value; done");
@@ -304,15 +304,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (oneToOneAssociation != null) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->1");
 
-                INakedObject referencedObject = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObject);
+                INakedObjectAdapter referencedObjectAdapter = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
 
-                if (referencedObject == null) {
+                if (referencedObjectAdapter == null) {
                     return true; // not a failure if the reference was null
                 }
 
-                bool appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObject, fieldNames, annotation);
+                bool appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObjectAdapter, fieldNames, annotation);
 
-                Log.Debug("includeField(Pl, Vec, Str): 1->1: invoked appendXmlThenIncludeRemaining for " + DoLog("referencedObj", referencedObject) + AndLog("returned", "" + appendedXml));
+                Log.Debug("includeField(Pl, Vec, Str): 1->1: invoked appendXmlThenIncludeRemaining for " + DoLog("referencedObj", referencedObjectAdapter) + AndLog("returned", "" + appendedXml));
 
                 return appendedXml;
             }
@@ -320,14 +320,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (oneToManyAssociation != null) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->M");
 
-                INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
+                INakedObjectAdapter collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
 
-                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
+                INakedObjectAdapter[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
 
                 Log.Debug("includeField(Pl, Vec, Str): 1->M: " + DoLog("collection.size", "" + collectionAsEnumerable.Count()));
                 bool allFieldsNavigated = true;
 
-                foreach (INakedObject referencedObject in collectionAsEnumerable) {
+                foreach (INakedObjectAdapter referencedObject in collectionAsEnumerable) {
                     bool appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObject, fieldNames, annotation);
 
                     Log.Debug("includeField(Pl, Vec, Str): 1->M: + invoked appendXmlThenIncludeRemaining for " + DoLog("referencedObj", referencedObject) + AndLog("returned", "" + appendedXml));
@@ -342,8 +342,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return false; // fall through, shouldn't get here but just in case.
         }
 
-        private static string DoLog(string label, INakedObject nakedObject) {
-            return DoLog(label, (nakedObject == null ? "(null)" : nakedObject.TitleString() + "[" + OidOrHashCode(nakedObject) + "]"));
+        private static string DoLog(string label, INakedObjectAdapter nakedObjectAdapter) {
+            return DoLog(label, (nakedObjectAdapter == null ? "(null)" : nakedObjectAdapter.TitleString() + "[" + OidOrHashCode(nakedObjectAdapter) + "]"));
         }
 
         private static string DoLog(string label, object obj) {
@@ -399,14 +399,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return childElement;
         }
 
-        public Place ObjectToElement(INakedObject nakedObject) {
-            Log.Debug("objectToElement(" + DoLog("object", nakedObject) + ")");
+        public Place ObjectToElement(INakedObjectAdapter nakedObjectAdapter) {
+            Log.Debug("objectToElement(" + DoLog("object", nakedObjectAdapter) + ")");
 
-            var nos = (IObjectSpec) nakedObject.Spec;
+            var nos = (IObjectSpec) nakedObjectAdapter.Spec;
 
             Log.Debug("objectToElement(NO): create element and nof:title");
             XElement element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);
-            NofMetaModel.AppendNofTitle(element, nakedObject.TitleString());
+            NofMetaModel.AppendNofTitle(element, nakedObjectAdapter.TitleString());
 
             Log.Debug("objectToElement(NO): create XS element for NOF class");
             XElement xsElement = Schema.CreateXsElementForNofClass(XsdDocument, element, topLevelElementWritten);
@@ -414,9 +414,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             // hack: every element in the XSD schema apart from first needs minimum cardinality setting.
             topLevelElementWritten = true;
 
-            var place = new Place(nakedObject, element);
+            var place = new Place(nakedObjectAdapter, element);
 
-            NofMetaModel.SetAttributesForClass(element, OidOrHashCode(nakedObject));
+            NofMetaModel.SetAttributesForClass(element, OidOrHashCode(nakedObjectAdapter));
 
             IAssociationSpec[] fields = nos.Properties;
             Log.Debug("objectToElement(NO): processing fields");
@@ -466,7 +466,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject value = oneToOneAssociation.GetNakedObject(nakedObject);
+                        INakedObjectAdapter value = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
 
                         // a null value would be a programming error, but we protect
                         // against it anyway
@@ -501,14 +501,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject referencedNakedObject = oneToOneAssociation.GetNakedObject(nakedObject);
+                        INakedObjectAdapter referencedNakedObjectAdapter = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
                         string fullyQualifiedClassName = field.ReturnSpec.FullName;
 
                         // XML
                         NofMetaModel.SetAttributesForReference(xmlReferenceElement, Schema.Prefix, fullyQualifiedClassName);
 
-                        if (referencedNakedObject != null) {
-                            NofMetaModel.AppendNofTitle(xmlReferenceElement, referencedNakedObject.TitleString());
+                        if (referencedNakedObjectAdapter != null) {
+                            NofMetaModel.AppendNofTitle(xmlReferenceElement, referencedNakedObjectAdapter.TitleString());
                         }
                         else {
                             NofMetaModel.SetIsEmptyAttribute(xmlReferenceElement, true);
@@ -527,7 +527,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
+                        INakedObjectAdapter collection = oneToManyAssociation.GetNakedObject(nakedObjectAdapter);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
                         IObjectSpecImmutable referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
@@ -566,10 +566,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return place;
         }
 
-        private static string OidOrHashCode(INakedObject nakedObject) {
-            IOid oid = nakedObject.Oid;
+        private static string OidOrHashCode(INakedObjectAdapter nakedObjectAdapter) {
+            IOid oid = nakedObjectAdapter.Oid;
             if (oid == null) {
-                return "" + nakedObject.GetHashCode();
+                return "" + nakedObjectAdapter.GetHashCode();
             }
             return oid.ToString();
         }

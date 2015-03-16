@@ -32,7 +32,7 @@ namespace NakedObjects.Meta.Facet {
             return new InvalidException(ic, Invalidates(ic));
         }
 
-        public abstract string InvalidReason(INakedObject nakedObject, INakedObject nakedParm);
+        public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
 
         #endregion
     }

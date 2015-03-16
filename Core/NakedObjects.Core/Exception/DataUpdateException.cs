@@ -12,8 +12,8 @@ namespace NakedObjects.Core {
     public class DataUpdateException : ObjectPersistenceException {
         private readonly IOid sourceOid;
 
-        public DataUpdateException(INakedObject nakedObject, IVersion updated)
-            : this(string.Format(Resources.NakedObjects.DataUpdateMessage, nakedObject.Version.User, nakedObject.TitleString(), DateTime.Now.ToLongTimeString(), Environment.NewLine, Environment.NewLine, nakedObject.Version, updated), nakedObject.Oid) {}
+        public DataUpdateException(INakedObjectAdapter nakedObjectAdapter, IVersion updated)
+            : this(string.Format(Resources.NakedObjects.DataUpdateMessage, nakedObjectAdapter.Version.User, nakedObjectAdapter.TitleString(), DateTime.Now.ToLongTimeString(), Environment.NewLine, Environment.NewLine, nakedObjectAdapter.Version, updated), nakedObjectAdapter.Oid) {}
 
         public DataUpdateException(string message, IOid source)
             : base(message) {

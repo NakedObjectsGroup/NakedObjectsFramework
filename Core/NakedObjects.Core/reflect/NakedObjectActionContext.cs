@@ -10,8 +10,8 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Reflect {
     public class NakedObjectActionContext {
-        public INakedObject Target { get; set; }
+        public INakedObjectAdapter Target { get; set; }
         public IActionSpec Action { get; set; }
-        public INakedObject[] Parameters { get; set; }
+        public INakedObjectAdapter[] Parameters { get; set; }
     }
 }

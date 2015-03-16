@@ -37,7 +37,7 @@ namespace NakedObjects.Xat {
         public ISession Session { get; set; }
 
         public ITestService CreateTestService(Object service) {
-            INakedObject no = manager.GetServiceAdapter(service);
+            INakedObjectAdapter no = manager.GetServiceAdapter(service);
             Assert.IsNotNull(no);
             return CreateTestService(no);
         }
@@ -54,26 +54,26 @@ namespace NakedObjects.Xat {
             return new TestMenuItem(item, this, owningObject);
         }
 
-        public ITestCollection CreateTestCollection(INakedObject instances) {
+        public ITestCollection CreateTestCollection(INakedObjectAdapter instances) {
             return new TestCollection(instances, this, manager);
         }
 
-        public ITestObject CreateTestObject(INakedObject nakedObject) {
-            return new TestObject(lifecycleManager, persistor, nakedObject, this, transactionManager);
+        public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) {
+            return new TestObject(lifecycleManager, persistor, nakedObjectAdapter, this, transactionManager);
         }
 
-        public ITestNaked CreateTestNaked(INakedObject nakedObject) {
-            if (nakedObject == null) {
+        public ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter) {
+            if (nakedObjectAdapter == null) {
                 return null;
             }
-            if (nakedObject.Spec.IsParseable) {
-                return CreateTestValue(nakedObject);
+            if (nakedObjectAdapter.Spec.IsParseable) {
+                return CreateTestValue(nakedObjectAdapter);
             }
-            if (nakedObject.Spec.IsObject) {
-                return CreateTestObject(nakedObject);
+            if (nakedObjectAdapter.Spec.IsObject) {
+                return CreateTestObject(nakedObjectAdapter);
             }
-            if (nakedObject.Spec.IsCollection) {
-                return CreateTestCollection(nakedObject);
+            if (nakedObjectAdapter.Spec.IsCollection) {
+                return CreateTestCollection(nakedObjectAdapter);
             }
 
             return null;
@@ -95,7 +95,7 @@ namespace NakedObjects.Xat {
                 throw new Exception("Action is not on a known service");
             }
             var serviceSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
-            INakedObject service = servicesManager.GetService(serviceSpec);
+            INakedObjectAdapter service = servicesManager.GetService(serviceSpec);
             ITestService testService = CreateTestService(service);
             return CreateTestAction(actionSpecImm, testService);
         }
@@ -114,14 +114,14 @@ namespace NakedObjects.Xat {
 
         #endregion
 
-        public ITestService CreateTestService(INakedObject service) {
+        public ITestService CreateTestService(INakedObjectAdapter service) {
             return new TestService(service, this);
         }
 
-        private static ITestValue CreateTestValue(INakedObject nakedObject) {
-            return new TestValue(nakedObject);
+        private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) {
+            return new TestValue(nakedObjectAdapter);
         }
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

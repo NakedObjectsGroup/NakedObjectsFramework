@@ -62,19 +62,19 @@ namespace NakedObjects.Architecture.Spec {
         ///     Determine the real target for this action. If this action represents an object action than the target
         ///     is returned. If this action is on a service then that service will be returned.
         /// </summary>
-        INakedObject RealTarget(INakedObject target);
+        INakedObjectAdapter RealTarget(INakedObjectAdapter target);
 
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters
         /// </summary>
-        INakedObject Execute(INakedObject target, INakedObject[] parameterSet);
+        INakedObjectAdapter Execute(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
 
         /// <summary>
         ///     Whether the provided parameter set is valid
         /// </summary>
-        IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet);
+        IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet);
 
-        INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet);
+        INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

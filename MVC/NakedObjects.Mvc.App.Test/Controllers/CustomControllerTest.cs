@@ -71,7 +71,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return (new object[] {new OrderContributedActions()}); }
         }
 
-        private INakedObject EmployeeRepo {
+        private INakedObjectAdapter EmployeeRepo {
             get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
         }
 

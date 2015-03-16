@@ -18,12 +18,12 @@ namespace NakedObjects.Architecture.Spec {
         ///     affect the specified object, and not any related objects. It should also not be distributed. This is
         ///     strictly for re-initialising the object and not specifying an association, which is only done once.
         /// </summary>
-        void InitAssociation(INakedObject inObject, INakedObject associate);
+        void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 
         /// <summary>
         ///     Determines if the specified reference is valid for setting this field in the specified object
         /// </summary>
-        IConsent IsAssociationValid(INakedObject inObject, INakedObject associate);
+        IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 
         /// <summary>
         ///     Set up the association represented by this field in the specified object with the specified reference -
@@ -31,7 +31,7 @@ namespace NakedObjects.Architecture.Spec {
         ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
         ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
         /// </summary>
-        void SetAssociation(INakedObject inObject, INakedObject associate);
+        void SetAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

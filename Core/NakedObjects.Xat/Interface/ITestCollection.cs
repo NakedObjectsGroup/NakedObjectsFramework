@@ -16,5 +16,5 @@ namespace NakedObjects.Xat {
         ITestCollection AssertIsPersistent();
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

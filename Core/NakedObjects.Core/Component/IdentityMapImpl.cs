@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Component {
 
         #region IIdentityMap Members
 
-        public IEnumerator<INakedObject> GetEnumerator() {
+        public IEnumerator<INakedObjectAdapter> GetEnumerator() {
             return nakedObjectAdapterMap.GetEnumerator();
         }
 
@@ -44,9 +44,9 @@ namespace NakedObjects.Core.Component {
             unloadedObjects.Clear();
         }
 
-        public void AddAdapter(INakedObject nakedObject) {
-            Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObject);
-            object obj = nakedObject.Object;
+        public void AddAdapter(INakedObjectAdapter nakedObjectAdapter) {
+            Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObjectAdapter);
+            object obj = nakedObjectAdapter.Object;
             Assert.AssertFalse("POCO Map already contains object", obj, nakedObjectAdapterMap.ContainsObject(obj));
 
             if (unloadedObjects.ContainsKey(obj)) {
@@ -54,19 +54,19 @@ namespace NakedObjects.Core.Component {
                 throw new TransientReferenceException(msg);
             }
 
-            if (nakedObject.Spec.IsObject) {
-                nakedObjectAdapterMap.Add(obj, nakedObject);
+            if (nakedObjectAdapter.Spec.IsObject) {
+                nakedObjectAdapterMap.Add(obj, nakedObjectAdapter);
             }
             // order is important - add to identity map after poco map 
-            identityAdapterMap.Add(nakedObject.Oid, nakedObject);
+            identityAdapterMap.Add(nakedObjectAdapter.Oid, nakedObjectAdapter);
 
             // log at end so that if ToString needs adapters they're in maps. 
-            Log.DebugFormat("Adding identity for {0}", nakedObject);
+            Log.DebugFormat("Adding identity for {0}", nakedObjectAdapter);
 
-            nakedObject.LoadAnyComplexTypes();
+            nakedObjectAdapter.LoadAnyComplexTypes();
         }
 
-        public void MadePersistent(INakedObject adapter) {
+        public void MadePersistent(INakedObjectAdapter adapter) {
             IOid oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
@@ -85,7 +85,7 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("Made persistent {0}; was {1}", adapter, oid.Previous);
         }
 
-        public void UpdateViewModel(INakedObject adapter, string[] keys) {
+        public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) {
             IOid oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
@@ -102,27 +102,27 @@ namespace NakedObjects.Core.Component {
             Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
         }
 
-        public void Unloaded(INakedObject nakedObject) {
-            Log.DebugFormat("Unload: {0}", nakedObject);
+        public void Unloaded(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("Unload: {0}", nakedObjectAdapter);
  
             // If an object is unloaded while its poco still exist then accessing that poco via the reflector will
             // create a different NakedObjectAdapter and no OID will exist to identify - hence the adapter will appear as
             // transient and will no longer be usable as a persistent object
 
-            Log.DebugFormat("Removed loaded object {0}", nakedObject);
-            IOid oid = nakedObject.Oid;
+            Log.DebugFormat("Removed loaded object {0}", nakedObjectAdapter);
+            IOid oid = nakedObjectAdapter.Oid;
             if (oid != null) {
                 identityAdapterMap.Remove(oid);
             }
-            nakedObjectAdapterMap.Remove(nakedObject);
+            nakedObjectAdapterMap.Remove(nakedObjectAdapter);
         }
 
-        public INakedObject GetAdapterFor(object domainObject) {
+        public INakedObjectAdapter GetAdapterFor(object domainObject) {
             Assert.AssertNotNull("can't get an adapter for null", this, domainObject);
             return nakedObjectAdapterMap.GetObject(domainObject);
         }
 
-        public INakedObject GetAdapterFor(IOid oid) {
+        public INakedObjectAdapter GetAdapterFor(IOid oid) {
             Assert.AssertNotNull("OID should not be null", this, oid);
             ProcessChangedOid(oid);
             return identityAdapterMap.GetAdapter(oid);
@@ -152,13 +152,13 @@ namespace NakedObjects.Core.Component {
         private void ProcessChangedOid(IOid updatedOid) {
             if (updatedOid.HasPrevious) {
                 IOid previousOid = updatedOid.Previous;
-                INakedObject nakedObject = identityAdapterMap.GetAdapter(previousOid);
-                if (nakedObject != null) {
+                INakedObjectAdapter nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
+                if (nakedObjectAdapter != null) {
                     Log.DebugFormat("Updating oid {0} to {1}", previousOid, updatedOid);
                     identityAdapterMap.Remove(previousOid);
-                    IOid oidFromObject = nakedObject.Oid;
+                    IOid oidFromObject = nakedObjectAdapter.Oid;
                     oidFromObject.CopyFrom(updatedOid);
-                    identityAdapterMap.Add(oidFromObject, nakedObject);
+                    identityAdapterMap.Add(oidFromObject, nakedObjectAdapter);
                 }
             }
         }

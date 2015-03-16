@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
         #region IDisabledFacet Members
 
         public virtual string Disables(IInteractionContext ic) {
-            INakedObject target = ic.Target;
+            INakedObjectAdapter target = ic.Target;
             return DisabledReason(target);
         }
 
@@ -33,7 +33,7 @@ namespace NakedObjects.Meta.Facet {
             return new DisabledException(ic, Disables(ic));
         }
 
-        public abstract string DisabledReason(INakedObject nakedObject);
+        public abstract string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
 
         #endregion
     }

@@ -394,7 +394,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
             var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
             FinderAction1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var finderActions = ((IObjectSpec)adapter.Spec).GetFinderActions();
 
             Assert.AreEqual(3, finderActions.Count());

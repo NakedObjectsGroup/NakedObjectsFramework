@@ -55,7 +55,7 @@ namespace NakedObjects.Core.Adapter {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
             Target = target;
             Action = actionSpec;
@@ -77,7 +77,7 @@ namespace NakedObjects.Core.Adapter {
             Target = RestoreObject(targetOid);
             Action = Target.GetActionLeafNode(actionId);
 
-            var parameters = new List<INakedObject>();
+            var parameters = new List<INakedObjectAdapter>();
 
             while (helper.HasNext) {
                 var parmType = helper.GetNextEnum<ParameterType>();
@@ -89,8 +89,8 @@ namespace NakedObjects.Core.Adapter {
                         break;
                     case ParameterType.Object:
                         var oid = (IOid) helper.GetNextEncodedToStrings();
-                        INakedObject nakedObject = RestoreObject(oid);
-                        parameters.Add(nakedObject);
+                        INakedObjectAdapter nakedObjectAdapter = RestoreObject(oid);
+                        parameters.Add(nakedObjectAdapter);
                         break;
                     case ParameterType.ValueCollection:
                         Type vInstanceType;
@@ -112,9 +112,9 @@ namespace NakedObjects.Core.Adapter {
             Parameters = parameters.ToArray();
         }
 
-        public INakedObject Target { get; private set; }
+        public INakedObjectAdapter Target { get; private set; }
         public IActionSpec Action { get; private set; }
-        public INakedObject[] Parameters { get; private set; }
+        public INakedObjectAdapter[] Parameters { get; private set; }
 
         public bool IsPaged { get; set; }
         public bool IsNotQueryable { get; set; }
@@ -132,7 +132,7 @@ namespace NakedObjects.Core.Adapter {
             helper.Add(Action.Id);
             helper.Add(Target.Oid as IEncodedToStrings);
 
-            foreach (INakedObject parameter in Parameters) {
+            foreach (INakedObjectAdapter parameter in Parameters) {
                 if (parameter == null) {
                     helper.Add(ParameterType.Value);
                     helper.Add((object) null);
@@ -197,7 +197,7 @@ namespace NakedObjects.Core.Adapter {
             return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
         }
 
-        private INakedObject RestoreObject(IOid oid) {
+        private INakedObjectAdapter RestoreObject(IOid oid) {
             if (oid.IsTransient) {
                 return lifecycleManager.RecreateInstance(oid, oid.Spec);
             }
@@ -209,17 +209,17 @@ namespace NakedObjects.Core.Adapter {
             return lifecycleManager.LoadObject(oid, oid.Spec);
         }
 
-        public INakedObject RecoverCollection() {
-            INakedObject nakedObject = Action.Execute(Target, Parameters);
+        public INakedObjectAdapter RecoverCollection() {
+            INakedObjectAdapter nakedObjectAdapter = Action.Execute(Target, Parameters);
 
             if (selectedObjects != null) {
-                IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
-                IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-                nakedObject = nakedObjectManager.CreateAdapter(newResult, null, null);
+                IEnumerable<object> selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
+                IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
+                nakedObjectAdapter = nakedObjectManager.CreateAdapter(newResult, null, null);
             }
 
-            nakedObject.SetATransientOid(this);
-            return nakedObject;
+            nakedObjectAdapter.SetATransientOid(this);
+            return nakedObjectAdapter;
         }
     }
 }

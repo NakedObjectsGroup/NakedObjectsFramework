@@ -39,8 +39,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IArrayValueFacet<T> Members
 
-        public T[] ArrayValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<T[]>();
+        public T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<T[]>();
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        public object GetDefault(INakedObject inObject) {
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
             return DefaultValueConst;
         }
 

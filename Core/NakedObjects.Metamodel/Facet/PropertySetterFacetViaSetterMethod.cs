@@ -22,9 +22,9 @@ namespace NakedObjects.Meta.Facet {
             this.property = property;
         }
 
-        public override void SetProperty(INakedObject nakedObject, INakedObject value, ITransactionManager transactionManager) {
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager) {
             try {
-                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
+                property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException("Exception executing " + property, e);

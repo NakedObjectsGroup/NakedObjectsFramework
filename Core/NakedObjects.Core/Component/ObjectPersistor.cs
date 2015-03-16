@@ -57,7 +57,7 @@ namespace NakedObjects.Core.Component {
             return GetInstances(spec);
         }
 
-        public INakedObject LoadObject(IOid oid, IObjectSpec spec) {
+        public INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
 
             Assert.AssertNotNull("needs an OID", oid);
@@ -66,23 +66,23 @@ namespace NakedObjects.Core.Component {
             return objectStore.GetObject(oid, spec);
         }
 
-        public void AddPersistedObject(INakedObject nakedObject) {
-            if (!nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                objectStore.ExecuteCreateObjectCommand(nakedObject);
+        public void AddPersistedObject(INakedObjectAdapter nakedObjectAdapter) {
+            if (!nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                objectStore.ExecuteCreateObjectCommand(nakedObjectAdapter);
             }
         }
 
-        public void Reload(INakedObject nakedObject) {
-            Log.DebugFormat("Reload nakedObject: {0}", nakedObject);
-            objectStore.Reload(nakedObject);
+        public void Reload(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("Reload nakedObjectAdapter: {0}", nakedObjectAdapter);
+            objectStore.Reload(nakedObjectAdapter);
         }
 
-        public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
-            Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
+        public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) {
+            Log.DebugFormat("ResolveField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
             if (field.ReturnSpec.HasNoIdentity) {
                 return;
             }
-            INakedObject reference = field.GetNakedObject(nakedObject);
+            INakedObjectAdapter reference = field.GetNakedObject(nakedObjectAdapter);
             if (reference == null || reference.ResolveState.IsResolved()) {
                 return;
             }
@@ -91,34 +91,34 @@ namespace NakedObjects.Core.Component {
             }
             if (Log.IsInfoEnabled) {
                 // don't log object - its ToString() may use the unresolved field or unresolved collection
-                Log.Info("resolve field " + nakedObject.Spec.ShortName + "." + field.Id + ": " + reference.Spec.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
+                Log.Info("resolve field " + nakedObjectAdapter.Spec.ShortName + "." + field.Id + ": " + reference.Spec.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
             }
-            objectStore.ResolveField(nakedObject, field);
+            objectStore.ResolveField(nakedObjectAdapter, field);
         }
 
-        public void LoadField(INakedObject nakedObject, string field) {
-            var spec = nakedObject.Spec as IObjectSpec;
+        public void LoadField(INakedObjectAdapter nakedObjectAdapter, string field) {
+            var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
 
-            Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
+            Log.DebugFormat("LoadField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
             IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
-            ResolveField(nakedObject, associationSpec);
+            ResolveField(nakedObjectAdapter, associationSpec);
         }
 
-        public int CountField(INakedObject nakedObject, string field) {
-            Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
+        public int CountField(INakedObjectAdapter nakedObjectAdapter, string field) {
+            Log.DebugFormat("CountField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
 
-            var spec = nakedObject.Spec as IObjectSpec;
+            var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
 
             IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
 
-            if (nakedObject.Spec.IsViewModel) {
-                INakedObject collection = associationSpec.GetNakedObject(nakedObject);
+            if (nakedObjectAdapter.Spec.IsViewModel) {
+                INakedObjectAdapter collection = associationSpec.GetNakedObject(nakedObjectAdapter);
                 return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, nakedObjectManager).Count();
             }
 
-            return objectStore.CountField(nakedObject, associationSpec);
+            return objectStore.CountField(nakedObjectAdapter, associationSpec);
         }
 
         public PropertyInfo[] GetKeys(Type type) {
@@ -126,61 +126,61 @@ namespace NakedObjects.Core.Component {
             return objectStore.GetKeys(type);
         }
 
-        public INakedObject FindByKeys(Type type, object[] keys) {
+        public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
             Log.Debug("FindByKeys");
             return objectStore.FindByKeys(type, keys);
         }
 
-        public void Refresh(INakedObject nakedObject) {
-            Log.DebugFormat("Refresh nakedObject: {0}", nakedObject);
-            objectStore.Refresh(nakedObject);
+        public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("Refresh nakedObjectAdapter: {0}", nakedObjectAdapter);
+            objectStore.Refresh(nakedObjectAdapter);
         }
 
-        public void ResolveImmediately(INakedObject nakedObject) {
-            Log.DebugFormat("ResolveImmediately nakedObject: {0}", nakedObject);
-            if (nakedObject.ResolveState.IsResolvable()) {
-                Assert.AssertFalse("only resolve object that is not yet resolved", nakedObject, nakedObject.ResolveState.IsResolved());
-                Assert.AssertTrue("only resolve object that is persistent", nakedObject, nakedObject.ResolveState.IsPersistent());
-                if (nakedObject.Oid is AggregateOid) {
+        public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("ResolveImmediately nakedObjectAdapter: {0}", nakedObjectAdapter);
+            if (nakedObjectAdapter.ResolveState.IsResolvable()) {
+                Assert.AssertFalse("only resolve object that is not yet resolved", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsResolved());
+                Assert.AssertTrue("only resolve object that is persistent", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsPersistent());
+                if (nakedObjectAdapter.Oid is AggregateOid) {
                     return;
                 }
                 if (Log.IsInfoEnabled) {
                     // don't log object - it's ToString() may use the unresolved field, or unresolved collection
-                    Log.Info("resolve immediately: " + nakedObject.Spec.ShortName + " " + nakedObject.ResolveState.CurrentState.Code + " " + nakedObject.Oid);
+                    Log.Info("resolve immediately: " + nakedObjectAdapter.Spec.ShortName + " " + nakedObjectAdapter.ResolveState.CurrentState.Code + " " + nakedObjectAdapter.Oid);
                 }
-                objectStore.ResolveImmediately(nakedObject);
+                objectStore.ResolveImmediately(nakedObjectAdapter);
             }
         }
 
-        public void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel) {
-            Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
-            if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
-                if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                    nakedObject.Updating();
-                    nakedObject.Updated();
+        public void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel) {
+            Log.DebugFormat("ObjectChanged nakedObjectAdapter: {0}", nakedObjectAdapter);
+            if (nakedObjectAdapter.ResolveState.RespondToChangesInPersistentObjects()) {
+                if (nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                    nakedObjectAdapter.Updating();
+                    nakedObjectAdapter.Updated();
                 }
                 else {
-                    ITypeSpec spec = nakedObject.Spec;
-                    if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
+                    ITypeSpec spec = nakedObjectAdapter.Spec;
+                    if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
-                    nakedObject.Updating();
-                    objectStore.ExecuteSaveObjectCommand(nakedObject);
-                    nakedObject.Updated();
+                    nakedObjectAdapter.Updating();
+                    objectStore.ExecuteSaveObjectCommand(nakedObjectAdapter);
+                    nakedObjectAdapter.Updated();
                 }
             }
 
-            if (nakedObject.ResolveState.RespondToChangesInPersistentObjects() ||
-                nakedObject.ResolveState.IsTransient()) { }
+            if (nakedObjectAdapter.ResolveState.RespondToChangesInPersistentObjects() ||
+                nakedObjectAdapter.ResolveState.IsTransient()) { }
         }
 
-        public void DestroyObject(INakedObject nakedObject) {
-            Log.DebugFormat("DestroyObject nakedObject: {0}", nakedObject);
+        public void DestroyObject(INakedObjectAdapter nakedObjectAdapter) {
+            Log.DebugFormat("DestroyObject nakedObjectAdapter: {0}", nakedObjectAdapter);
 
-            nakedObject.Deleting();
-            objectStore.ExecuteDestroyObjectCommand(nakedObject);
-            nakedObject.ResolveState.Handle(Events.DestroyEvent);
-            nakedObject.Deleted();
+            nakedObjectAdapter.Deleting();
+            objectStore.ExecuteDestroyObjectCommand(nakedObjectAdapter);
+            nakedObjectAdapter.ResolveState.Handle(Events.DestroyEvent);
+            nakedObjectAdapter.Deleted();
         }
 
         public object CreateObject(ITypeSpec spec) {
@@ -209,7 +209,7 @@ namespace NakedObjects.Core.Component {
             return new object[] {};
         }
 
-        public void LoadComplexTypes(INakedObject adapter, bool isGhost) {
+        public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) {
             objectStore.LoadComplexTypes(adapter, isGhost);
         }
 

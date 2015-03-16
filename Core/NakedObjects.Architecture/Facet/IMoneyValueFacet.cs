@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IMoneyValueFacet : IFacet {
-        decimal GetAmount(INakedObject nakedObject);
-        string GetCurrencyCode(INakedObject nakedObject);
+        decimal GetAmount(INakedObjectAdapter nakedObjectAdapter);
+        string GetCurrencyCode(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

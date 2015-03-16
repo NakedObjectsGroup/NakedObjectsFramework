@@ -9,10 +9,10 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IBooleanValueFacet : IFacet {
-        bool IsSet(INakedObject nakedObject);
-        void Set(INakedObject nakedObject);
-        void Reset(INakedObject nakedObject);
-        void Toggle(INakedObject nakedObject);
+        bool IsSet(INakedObjectAdapter nakedObjectAdapter);
+        void Set(INakedObjectAdapter nakedObjectAdapter);
+        void Reset(INakedObjectAdapter nakedObjectAdapter);
+        void Toggle(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -39,6 +39,6 @@ namespace NakedObjects.Architecture.Facet {
         ///     If the value has been provided, <i>or</i> if the property or parameter is not required,
         ///     then will return <c>false</c>.
         /// </para>
-        bool IsRequiredButNull(INakedObject nakedObject);
+        bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter);
     }
 }

@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return facetFactory; }
         }
 
-        private INakedObject AdapterFor(object obj) {
+        private INakedObjectAdapter AdapterFor(object obj) {
             ISession session = new Mock<ISession>().Object;
             ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
             IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
@@ -142,7 +142,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(method2, onPersistingErrorCallbackFacetViaMethod.GetMethod());
             AssertMethodsRemoved(new[] {method1, method2});
             // and test exception is passed through (assert in Customer11)
-            INakedObject adapter = AdapterFor(new Customer11());
+            INakedObjectAdapter adapter = AdapterFor(new Customer11());
             onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 
@@ -158,7 +158,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(method1, onUpdatingErrorCallbackFacetViaMethod.GetMethod());
             AssertMethodsRemoved(new[] {method1, method2});
             // and test exception is passed through (assert in Customer11)
-            INakedObject adapter = AdapterFor(new Customer11());
+            INakedObjectAdapter adapter = AdapterFor(new Customer11());
             onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 

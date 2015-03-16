@@ -41,11 +41,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork}).Length);
             Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
 
-            var mock = new Mock<INakedObject>();
-            INakedObject nakedObject = mock.Object;
+            var mock = new Mock<INakedObjectAdapter>();
+            INakedObjectAdapter nakedObjectAdapter = mock.Object;
             mock.Setup(no => no.Object).Returns(Cities.NewYork);
 
-            Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObject));
+            Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObjectAdapter));
         }
 
         #region Nested type: Cities

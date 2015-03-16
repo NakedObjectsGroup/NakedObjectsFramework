@@ -36,8 +36,8 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override object GetDefault(INakedObject inObject) {
-            return methodDelegate(inObject.GetDomainObject(), new object[] {});
+        public override object GetDefault(INakedObjectAdapter inObjectAdapter) {
+            return methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {});
         }
 
         protected override string ToStringValues() {

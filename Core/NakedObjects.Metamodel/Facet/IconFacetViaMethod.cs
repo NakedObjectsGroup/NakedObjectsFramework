@@ -23,8 +23,8 @@ namespace NakedObjects.Meta.Facet {
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
-        public override string GetIconName(INakedObject nakedObject) {
-            return (string) methodDelegate(nakedObject.GetDomainObject(), new object[] {});
+        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) {
+            return (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {});
         }
 
         public override string GetIconName() {

@@ -8,5 +8,5 @@
 namespace NakedObjects.Xat {
     public interface ITestValue : ITestNaked {}
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

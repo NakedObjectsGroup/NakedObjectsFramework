@@ -135,7 +135,7 @@
     <Compile Include="Adapter\IEntityOid.cs" />
     <Compile Include="Adapter\IEntryTextParser.cs" />
     <Compile Include="Adapter\IEncodedToStrings.cs" />
-    <Compile Include="Adapter\INakedObject.cs" />
+    <Compile Include="Adapter\INakedObjectAdapter.cs" />
     <Compile Include="Adapter\IOid.cs" />
     <Compile Include="Adapter\IViewModelOid.cs" />
     <Compile Include="Adapter\PersistableType.cs" />

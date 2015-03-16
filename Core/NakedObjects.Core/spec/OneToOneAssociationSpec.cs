@@ -58,8 +58,8 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public override INakedObject GetNakedObject(INakedObject fromObject) {
-            return GetAssociation(fromObject);
+        public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter fromObjectAdapter) {
+            return GetAssociation(fromObjectAdapter);
         }
 
         public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
@@ -68,7 +68,7 @@ namespace NakedObjects.Core.Spec {
                 propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
         }
 
-        public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
+        public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
@@ -91,69 +91,69 @@ namespace NakedObjects.Core.Spec {
             return null;
         }
 
-        public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm) {
+        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
             return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
         }
 
-        public void InitAssociation(INakedObject inObject, INakedObject associate) {
+        public void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
             var initializerFacet = GetFacet<IPropertyInitializationFacet>();
             if (initializerFacet != null) {
-                initializerFacet.InitProperty(inObject, associate);
+                initializerFacet.InitProperty(inObjectAdapter, associate);
             }
         }
 
-        public IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
+        public IConsent IsAssociationValid(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter reference) {
             if (reference != null && !reference.Spec.IsOfType(ReturnSpec)) {
                 return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, ReturnSpec.SingularName));
             }
 
-            if (!inObject.ResolveState.IsNotPersistent()) {
+            if (!inObjectAdapter.ResolveState.IsNotPersistent()) {
                 if (reference != null && !reference.Spec.IsParseable && reference.ResolveState.IsNotPersistent()) {
                     return GetConsent(Resources.NakedObjects.TransientFieldMessage);
                 }
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObjectAdapter, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObject inObject) {
-            return GetAssociation(inObject) == null;
+        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) {
+            return GetAssociation(inObjectAdapter) == null;
         }
 
         public override bool IsInline {
             get { return ReturnSpec.ContainsFacet(typeof (IComplexTypeFacet)); }
         }
 
-        public override INakedObject GetDefault(INakedObject fromObject) {
-            return GetDefaultObject(fromObject).Item1;
+        public override INakedObjectAdapter GetDefault(INakedObjectAdapter fromObjectAdapter) {
+            return GetDefaultObject(fromObjectAdapter).Item1;
         }
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObject fromObject) {
-            return GetDefaultObject(fromObject).Item2;
+        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter fromObjectAdapter) {
+            return GetDefaultObject(fromObjectAdapter).Item2;
         }
 
-        public override void ToDefault(INakedObject inObject) {
-            INakedObject defaultValue = GetDefault(inObject);
+        public override void ToDefault(INakedObjectAdapter inObjectAdapter) {
+            INakedObjectAdapter defaultValue = GetDefault(inObjectAdapter);
             if (defaultValue != null) {
-                InitAssociation(inObject, defaultValue);
+                InitAssociation(inObjectAdapter, defaultValue);
             }
         }
 
-        public void SetAssociation(INakedObject inObject, INakedObject associate) {
-            INakedObject currentValue = GetAssociation(inObject);
+        public void SetAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
+            INakedObjectAdapter currentValue = GetAssociation(inObjectAdapter);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
-                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, transactionManager);
+                    GetFacet<IPropertyClearFacet>().ClearProperty(inObjectAdapter, transactionManager);
                 }
                 else {
                     var setterFacet = GetFacet<IPropertySetterFacet>();
                     if (setterFacet != null) {
-                        inObject.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObject, associate, transactionManager);
+                        inObjectAdapter.ResolveState.CheckCanAssociate(associate);
+                        setterFacet.SetProperty(inObjectAdapter, associate, transactionManager);
                     }
                 }
             }
@@ -161,26 +161,26 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private INakedObject GetAssociation(INakedObject fromObject) {
-            object obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObject);
+        private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
+            object obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter);
             if (obj == null) {
                 return null;
             }
             var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return Manager.CreateAggregatedAdapter(fromObject, ((IAssociationSpec) this).Id, obj);
+                return Manager.CreateAggregatedAdapter(fromObjectAdapter, ((IAssociationSpec) this).Id, obj);
             }
             return Manager.CreateAdapter(obj, null, null);
         }
 
-        private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
+        private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
             Tuple<object, TypeOfDefaultValue> defaultValue = null;
 
             // Check Facet on property, then facet on type finally fall back on type; 
 
             var defaultsFacet = GetFacet<IPropertyDefaultFacet>();
             if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
-                defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObject), TypeOfDefaultValue.Explicit);
+                defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit);
             }
 
             if (defaultValue == null) {
@@ -191,11 +191,11 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                object rawValue = fromObject == null ? null : fromObject.Object.GetType().IsValueType ? (object) 0 : null;
+                object rawValue = fromObjectAdapter == null ? null : fromObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 
-            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+            return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
         public override string ToString() {

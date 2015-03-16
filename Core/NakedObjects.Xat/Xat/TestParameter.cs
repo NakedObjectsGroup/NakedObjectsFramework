@@ -29,7 +29,7 @@ namespace NakedObjects.Xat {
             get { return parameterSpec.Name; }
         }
 
-        public INakedObject NakedObject {
+        public INakedObjectAdapter NakedObject {
             get { return owningObject.NakedObject; }
         }
 
@@ -46,7 +46,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = parameterSpec.GetDefault(NakedObject);
+            INakedObjectAdapter defaultValue = parameterSpec.GetDefault(NakedObject);
             TypeOfDefaultValue defaultType = parameterSpec.GetDefaultType(NakedObject);
 
             if (defaultValue != null && defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {

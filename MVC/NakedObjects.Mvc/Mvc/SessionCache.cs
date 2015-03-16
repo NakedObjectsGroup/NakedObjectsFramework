@@ -13,12 +13,12 @@ using NakedObjects.Web.Mvc.Html;
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
         public static void AddObjectToSession(this HttpSessionStateBase session, INakedObjectsFramework framework, string key, object domainObject) {
-            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            INakedObjectAdapter nakedObject = framework.GetNakedObject(domainObject);
             session.Add(key, (nakedObject.ResolveState.IsTransient() ? domainObject : framework.GetObjectId(domainObject)));
         }
 
         public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsFramework framework, string key, T domainObject) where T : class {
-            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            INakedObjectAdapter nakedObject = framework.GetNakedObject(domainObject);
             session.Add(key, (nakedObject.ResolveState.IsTransient() ? (object) domainObject : framework.GetObjectId(domainObject)));
         }
 

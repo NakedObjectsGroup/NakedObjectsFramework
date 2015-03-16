@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
             get { return false; }
         }
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObject nakedObject) {
+        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
             return new Tuple<object, TypeOfDefaultValue>(value, TypeOfDefaultValue.Explicit);
         }
 

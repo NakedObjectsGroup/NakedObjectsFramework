@@ -20,20 +20,20 @@ namespace NakedObjects.Core.Resolve {
     public sealed class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 
-        public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s);
+        public delegate IResolveState EventHandler(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s);
 
         #endregion
 
         private readonly List<HistoryEvent> history = new List<HistoryEvent>();
 
-        public ResolveStateMachine(INakedObject owner, ISession session) {
+        public ResolveStateMachine(INakedObjectAdapter owner, ISession session) {
             CurrentState = States.NewState;
             Owner = owner;
             Session = session;
         }
 
         private ISession Session { get; set; }
-        private INakedObject Owner { get; set; }
+        private INakedObjectAdapter Owner { get; set; }
         public bool FullTrace { get; set; }
 
         #region IResolveStateMachine Members
@@ -326,12 +326,12 @@ namespace NakedObjects.Core.Resolve {
                 get { return eventMap; }
             }
 
-            protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s) {
+            protected virtual void Loading(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s) {
                 no.Loading();
                 rsm.AddHistoryNote("Loading");
             }
 
-            protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s) {
+            protected virtual void Loaded(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s) {
                 no.Loaded();
                 rsm.AddHistoryNote("Loaded");
             }
@@ -340,7 +340,7 @@ namespace NakedObjects.Core.Resolve {
                 return string.Format("ResolveState [name={0},code={1}]", Name, Code);
             }
 
-            public IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s) {
+            public IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s) {
                 if (EventMap.ContainsKey(rEvent)) {
                     return EventMap[rEvent](owner, rsm, s);
                 }

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ITestObjectFactory factory) : base(factory) {
+        public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) {
             NakedObject = service;
         }
 
@@ -22,5 +22,5 @@ namespace NakedObjects.Xat {
         #endregion
     }
 
-    // Copyright (c) INakedObject Objects Group Ltd.
+    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
 }

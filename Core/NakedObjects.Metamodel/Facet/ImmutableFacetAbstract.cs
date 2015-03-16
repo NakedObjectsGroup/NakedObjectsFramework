@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
         #region IImmutableFacet Members
 
         public virtual string Disables(IInteractionContext ic) {
-            INakedObject target = ic.Target;
+            INakedObjectAdapter target = ic.Target;
             return DisabledReason(target);
         }
 
@@ -38,6 +38,6 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Hook method for subclasses to override
         /// </summary>
-        public abstract string DisabledReason(INakedObject no);
+        public abstract string DisabledReason(INakedObjectAdapter no);
     }
 }

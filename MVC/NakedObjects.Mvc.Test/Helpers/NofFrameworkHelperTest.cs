@@ -76,7 +76,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ActionsForHelper() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
+            INakedObjectAdapter adapter = NakedObjectsFramework.GetNakedObject(claim);
             IEnumerable<IActionSpec> actions = NakedObjectsFramework.GetActions(adapter);
             Assert.AreEqual(8, actions.Count());
         }
@@ -84,18 +84,18 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void GetCollectionNakedObjectFromId() {
             IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
-            INakedObject no = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
+            INakedObjectAdapter no = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
 
-            INakedObject service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
+            INakedObjectAdapter service = NakedObjectsFramework.ServicesManager.GetService("ClaimRepository");
             IActionSpec action = service.Spec.GetActions().Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
+            INakedObjectAdapter[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, service, action, parms);
             no.SetATransientOid(cm);
 
             string id = NakedObjectsFramework.GetObjectId(no);
 
-            INakedObject no2 = NakedObjectsFramework.GetNakedObjectFromId(id);
+            INakedObjectAdapter no2 = NakedObjectsFramework.GetNakedObjectFromId(id);
 
             List<Claim> claims2 = no2.GetDomainObject<IEnumerable<Claim>>().ToList();
 
@@ -121,7 +121,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var id = NakedObjectsFramework.GetObjectId(claim1);
 
-            INakedObject claim2 = NakedObjectsFramework.GetNakedObjectFromId(objectId);
+            INakedObjectAdapter claim2 = NakedObjectsFramework.GetNakedObjectFromId(objectId);
             Assert.AreSame(claim1, claim2.Object);
         }
 
@@ -142,7 +142,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void GetObjectIdForNakedObjectObject() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
+            INakedObjectAdapter adapter = NakedObjectsFramework.GetNakedObject(claim);
             string id = NakedObjectsFramework.GetObjectId(adapter);
             Assert.AreEqual(id, objectId);
         }

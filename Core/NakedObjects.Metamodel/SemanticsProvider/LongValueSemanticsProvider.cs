@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ILongValueFacet Members
 
-        public long LongValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<long>();
+        public long LongValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<long>();
         }
 
         #endregion

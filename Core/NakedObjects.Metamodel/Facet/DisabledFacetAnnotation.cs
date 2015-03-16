@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}
 
-        public override string DisabledReason(INakedObject target) {
+        public override string DisabledReason(INakedObjectAdapter target) {
             if (Value == WhenTo.Always) {
                 return Resources.NakedObjects.AlwaysDisabled;
             }

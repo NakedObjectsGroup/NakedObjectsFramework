@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.Authorization {
 
         #region IAuthorizationManager Members
 
-        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
+        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.Authorization {
             return isVisibleDelegates[authType](authorizer, session.Principal, target.GetDomainObject(), identifier.MemberName);
         }
 
-        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObject target, IIdentifier identifier) {
+        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier) {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
@@ -59,7 +59,7 @@ namespace NakedObjects.Meta.Authorization {
             return lifecycleManager.CreateNonAdaptedInjectedObject(type);
         }
 
-        private object GetAuthorizer(INakedObject target, ILifecycleManager lifecycleManager) {
+        private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
 
             //Look for exact-fit TypeAuthorizer

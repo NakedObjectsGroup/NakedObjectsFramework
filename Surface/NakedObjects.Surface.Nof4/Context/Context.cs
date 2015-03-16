@@ -13,13 +13,13 @@ namespace NakedObjects.Surface.Nof4.Context {
     public abstract class Context {
         public abstract string Id { get; }
 
-        public INakedObject Target { get; set; }
+        public INakedObjectAdapter Target { get; set; }
 
         public string Reason { get; set; }
 
         public Cause ErrorCause { get; set; }
 
-        public INakedObject ProposedNakedObject { get; set; }
+        public INakedObjectAdapter ProposedNakedObject { get; set; }
 
         public object ProposedValue { get; set; }
 

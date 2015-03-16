@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
             return new ActionArgumentsInvalidException(ic, Invalidates(ic));
         }
 
-        public string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) {
             return (string) methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
         }
 

@@ -13,7 +13,7 @@ using NakedObjects.Redirect;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ObjectContext : Context {
-        public ObjectContext(INakedObject target) {
+        public ObjectContext(INakedObjectAdapter target) {
             Target = target;
         }
 

@@ -117,7 +117,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public static void SetNofCollection(XElement element,
                                             string prefix,
                                             string fullyQualifiedClassName,
-                                            INakedObject collection,
+                                            INakedObjectAdapter collection,
                                             INakedObjectManager manager
             ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
@@ -132,7 +132,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public const string NofMetamodelNsPrefix = "nof";
 
-        // URI representing the namespace of NakedObject framework's metamodel.
+        // URI representing the namespace of nakedObjectAdapter framework's metamodel.
         // The NamespaceManager will not allow any namespaces with this URI to be
         // added.
 

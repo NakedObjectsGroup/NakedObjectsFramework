@@ -31,6 +31,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Gets the available choices for this property
         /// </summary>
-        object[] GetChoices(INakedObject inObject, IDictionary<string, INakedObject> parameterNameValues);
+        object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
     }
 }

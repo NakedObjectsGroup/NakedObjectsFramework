@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IUnsignedLongValueFacet : IFacet {
-        ulong UnsignedLongValue(INakedObject nakedObject);
+        ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

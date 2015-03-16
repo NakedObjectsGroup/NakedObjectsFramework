@@ -68,7 +68,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string Invalidates(IInteractionContext ic) {
-            INakedObject proposedArgument = ic.ProposedArgument;
+            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
             if (proposedArgument == null) {
                 return null;
             }

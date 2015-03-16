@@ -190,7 +190,7 @@ namespace MvcTestApp.Tests.Helpers {
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
 
             var collection = new List<CustomHelperTestClass> {tc};
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
+            INakedObjectAdapter adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             SetupViewData(collection);
@@ -234,7 +234,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionExclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
+            INakedObjectAdapter adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
                 "CollectionWithExclusions");
@@ -243,7 +243,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionExclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
+            INakedObjectAdapter adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout(tc, "TestCollectionOne", "TestInt").ToString(),
                 "CollectionWithExclusions");
@@ -264,7 +264,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionInclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
+            INakedObjectAdapter adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
                 "CollectionWithInclusions");
@@ -273,7 +273,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionInclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
+            INakedObjectAdapter adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith(tc, "TestInt", "TestCollectionOne").ToString(),
                 "CollectionWithInclusions");
@@ -526,7 +526,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DateTimePropertyEdit() {
-            INakedObject adapter = NakedObjectsFramework.GetNakedObject(new NotPersistedTestClass());
+            INakedObjectAdapter adapter = NakedObjectsFramework.GetNakedObject(new NotPersistedTestClass());
 
             SetupViewData(adapter.Object);
             string s = mocks.GetHtmlHelper<NotPersistedTestClass>().ObjectPropertyEdit(y => y.TestDateTime).ToString();
@@ -871,7 +871,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void IntPropertyDefault() {
-            INakedObject adapter = NakedObjectsFramework.GetNakedObject(new CustomHelperTestClass());
+            INakedObjectAdapter adapter = NakedObjectsFramework.GetNakedObject(new CustomHelperTestClass());
 
             SetupViewData(adapter.Object);
             mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-TestIntDefault-Input"] = NakedObjectsFramework.NakedObjectManager.CreateAdapter(0, null, null);

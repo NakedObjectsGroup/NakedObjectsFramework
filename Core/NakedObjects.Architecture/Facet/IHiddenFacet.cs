@@ -20,6 +20,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason why the (feature of the) target object is currently hidden, or <c>null</c> if visible
         /// </summary>
-        string HiddenReason(INakedObject target);
+        string HiddenReason(INakedObjectAdapter target);
     }
 }

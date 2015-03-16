@@ -36,8 +36,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ICharValueFacet Members
 
-        public char CharValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<char>();
+        public char CharValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<char>();
         }
 
         #endregion

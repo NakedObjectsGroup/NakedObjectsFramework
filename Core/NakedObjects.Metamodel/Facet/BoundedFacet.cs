@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
             if (!ic.TypeEquals(InteractionType.ObjectPersist)) {
                 return null;
             }
-            INakedObject target = ic.Target;
+            INakedObjectAdapter target = ic.Target;
             return DisabledReason(target);
         }
 
@@ -34,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public string DisabledReason(INakedObject inObject) {
+        public string DisabledReason(INakedObjectAdapter inObjectAdapter) {
             return Resources.NakedObjects.Bounded;
         }
     }

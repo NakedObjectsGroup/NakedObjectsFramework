@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IUnsignedLongValueFacet Members
 
-        public ulong UnsignedLongValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<ulong>();
+        public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<ulong>();
         }
 
         #endregion

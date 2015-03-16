@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IIntegerValueFacet Members
 
-        public int IntegerValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<int>();
+        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<int>();
         }
 
         #endregion

@@ -71,7 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             return Allow.Default;
         }
 
-        public IConsent IsUsable(INakedObject target) {
+        public IConsent IsUsable(INakedObjectAdapter target) {
             return null;
         }
 
@@ -83,7 +83,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             return false;
         }
 
-        public bool IsVisible(INakedObject target) {
+        public bool IsVisible(INakedObjectAdapter target) {
             return false;
         }
 

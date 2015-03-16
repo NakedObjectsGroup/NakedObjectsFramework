@@ -16,6 +16,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Whether the provided string exceeds the maximum length
         /// </summary>
-        bool Exceeds(INakedObject nakedObject);
+        bool Exceeds(INakedObjectAdapter nakedObjectAdapter);
     }
 }

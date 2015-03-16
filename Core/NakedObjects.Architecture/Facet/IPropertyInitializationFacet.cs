@@ -26,6 +26,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void InitProperty(INakedObject nakedObject, INakedObject nakedValue);
+        void InitProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue);
     }
 }

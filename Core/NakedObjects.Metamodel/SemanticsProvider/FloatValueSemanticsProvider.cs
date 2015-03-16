@@ -35,8 +35,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IFloatingPointValueFacet Members
 
-        public float FloatValue(INakedObject nakedObject) {
-            return nakedObject.GetDomainObject<float>();
+        public float FloatValue(INakedObjectAdapter nakedObjectAdapter) {
+            return nakedObjectAdapter.GetDomainObject<float>();
         }
 
         #endregion
