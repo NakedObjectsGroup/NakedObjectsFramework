@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
@@ -59,12 +58,8 @@ namespace NakedObjects.Unity {
         public static void RegisterStandardFacetFactories(IUnityContainer container) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
             for (int i = 0; i < factoryTypes.Count(); i++) {
-                RegisterFacetFactory(factoryTypes[i], container, i);
+                UnityConfigHelpers.RegisterFacetFactory(factoryTypes[i], container, i);
             }
-        }
-
-        private static void RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-            container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
     }
 }
