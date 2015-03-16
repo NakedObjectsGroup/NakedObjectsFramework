@@ -8,6 +8,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Web.Mvc.Controllers;
+using NakedObjects;
 
 namespace NakedObjects.Mvc.App.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
