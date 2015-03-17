@@ -14,7 +14,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
     public class AjaxTestsFirefox : AjaxTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AjaxTests.InitialiseClass(context);
+            AWWebTest.InitialiseClass(context);
         }
 
         [TestInitialize]

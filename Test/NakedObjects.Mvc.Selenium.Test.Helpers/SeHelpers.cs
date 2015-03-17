@@ -42,14 +42,25 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             wait.ClickAndWaitGone(action, fieldSelector);
         }
 
+        private static IWebElement SafeFunc(Func<IWebElement> f) {
+            try {
+                return f();
+            }
+            catch {
+                return null;
+            }
+        }
+
         // Click action and wait until field selector stops returning an element 
+        // must exist before action is invoked
         public static void ClickAndWaitGone(this SafeWebDriverWait wait, IWebElement action, string fieldSelector, int delay = 0) {
             if (delay > 0) {
                 Thread.Sleep(delay);
             }
+            IWebElement field = wait.Driver.FindElement(By.CssSelector(fieldSelector));
+            Assert.IsNotNull(field);
             action.Click();
-            IWebElement field = null;
-            wait.Until(wd => (field = wd.FindElement(By.CssSelector(fieldSelector))) == null);
+            wait.Until(wd => (field = SafeFunc(() => wd.FindElement(By.CssSelector(fieldSelector)))) == null);
             Assert.IsNull(field);
         }
 

@@ -142,13 +142,18 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             FindSalesPerson("Ito");
             FindCustomerByAccountNumber("AW00000074");
+
+            wait.Until(wd => wd.Title == "Parcel Express Delivery Service, AW00000074");
+
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("David Campbell");
 
-            br.ClickEdit();
-            br.AssertElementExists(By.ClassName("nof-menu"));
-            br.ClickRecentlyViewed("Store-SalesPerson");
-            br.SelectFinderOption("Store-SalesPerson", "Shu Ito");
+            var recentlyViewed = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title='Recently Viewed']");
+
+            var select = wait.ClickAndWait(recentlyViewed, "#Store-SalesPerson [title='Select']:first-of-type");
+            wait.ClickAndWaitGone(select,  "#Store-SalesPerson [title='Select']");
+
             wait.ClickAndWait(".nof-save", ".nof-objectview");
+          
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Shu Ito");
         }
 
@@ -157,9 +162,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindCustomerByAccountNumber("AW00000076");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Jillian Carson");
 
-            br.ClickEdit();
-            br.AssertElementExists(By.ClassName("nof-menu"));
-            br.ClickRemove("Store-SalesPerson");
+            var remove = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title=Remove]");
+
+            wait.ClickAndWaitGone(remove, "#Store-SalesPerson img"); 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertIsEmpty();
         }
@@ -175,9 +180,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             lastName.Clear();
             lastName.SendKeys("Vargas" + Keys.Tab);
 
-            var save = wait.ClickAndWait(".nof-ok", ".nof-save");
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");  
 
-            wait.ClickAndWait(save, ".nof-objectview");
+            wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Garrett Vargas");
         }
 

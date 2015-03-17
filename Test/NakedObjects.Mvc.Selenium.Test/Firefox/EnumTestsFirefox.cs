@@ -14,7 +14,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
     public class EnumTestsFirefox : EnumTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            MyTests.InitialiseClass(context);
+            AWWebTest.InitialiseClass(context);
         }
 
         [TestInitialize]

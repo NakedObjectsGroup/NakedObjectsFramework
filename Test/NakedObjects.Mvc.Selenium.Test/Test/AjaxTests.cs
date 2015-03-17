@@ -15,9 +15,6 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AjaxTests : AWWebTest {
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
-        }
 
         public void DoRemoteValidationProperty() {
             Login();
