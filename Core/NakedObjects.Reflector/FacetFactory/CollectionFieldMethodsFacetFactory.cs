@@ -58,7 +58,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             return CollectionUtils.IsCollection(methodReturnType);
         }
 
-        private static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
+        public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
             return properties.Where(property => property.GetGetMethod() != null &&
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
