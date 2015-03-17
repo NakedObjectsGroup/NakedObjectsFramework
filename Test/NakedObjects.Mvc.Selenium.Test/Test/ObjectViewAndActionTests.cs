@@ -235,7 +235,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("BK-M68S-42");
 
-            var objedit = wait.ClickAndWait("#Product-CreateNewWorkOrder", ".nof-objectedit");
+            var objedit = wait.ClickAndWait("#Product-CreateNewWorkOrder button", ".nof-objectedit");
             br.AssertContainsObjectEditTransient();
             Assert.AreEqual("AdventureWorksModel-WorkOrder", objedit.GetAttribute("id"));
         }
@@ -245,7 +245,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoInvokeContributedActionNoParmsReturnPersistent() {
             Login();
             FindCustomerByAccountNumber("AW00000546");
-            var number = wait.ClickAndWait("#Store-LastOrder", "SalesOrderHeader-SalesOrderNumber-Input");
+            var number = wait.ClickAndWait("#Store-LastOrder button", "#SalesOrderHeader-SalesOrderNumber");
             number.AssertValueEquals("SO69561");
         }
 
@@ -376,12 +376,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020" + Keys.Escape, br);
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
 
-            br.FindElements(By.CssSelector("button[title='Select']")).First().BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.Id("WorkOrderRepository-CreateNewWorkOrder-Product")).AssertInputValueEquals("test-popup ");
+            var select = wait.ClickAndWait(".nof-save", "button[title='Select']:first-of-type");
+            var product = wait.ClickAndWait(select, "#WorkOrderRepository-CreateNewWorkOrder-Product");
+
+            product.AssertInputValueEquals("test-popup ");
         }
 
         public abstract void AutoCompleteOnActionDialog();
