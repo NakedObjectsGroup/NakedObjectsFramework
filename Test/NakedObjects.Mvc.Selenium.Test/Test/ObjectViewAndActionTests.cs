@@ -322,7 +322,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
             wait.ClickAndWait(recentlyViewed, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Gubbels");
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Eric Gubbels");
         }
 
         public abstract void RecentlyViewedOnActionDialogWithSelect();
@@ -330,17 +330,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoRecentlyViewedOnActionDialogWithSelect() {
             Login();
 
-            FindCustomerByAccountNumber("AW00000546");
-            FindCustomerByAccountNumber("AW00000547");
+            FindEmployeeByLastName("Krebs");
+            FindEmployeeByLastName("Gubbels");
 
-            var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
-            obj.AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
+            wait.Until(wd => wd.Title == "Eric Gubbels");
 
-            br.FindElement(By.CssSelector("button[title='Recently Viewed']")).BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElements(By.CssSelector("button[title='Select']")).First().BrowserSpecificClick(br);
-            br.WaitForAjaxComplete();
-            br.FindElement(By.Id("OrderContributedActions-CreateNewOrder-Customer")).AssertObjectHasTitle("Field Trip Store, AW00000546");
+            var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
+            var select = wait.ClickAndWait(recentlyViewed, "button[title='Select']:first-of-type");
+            wait.ClickAndWait(select, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
+
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Peter Krebs");
         }
 
         public abstract void ActionFindOnActionDialog();
@@ -348,19 +347,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoActionFindOnActionDialog() {
             Login();
 
-            FindCustomerByAccountNumber("AW00000547");
+            var findEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindEmployeeByName");
+            var lastName = wait.ClickAndWait(findEmployee, "#EmployeeRepository-FindEmployeeByName-LastName-Input");
 
-            var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
-            obj.AssertObjectHasTitle("Curbside Sporting Goods, AW00000547");
+            lastName.Clear();
+            lastName.SendKeys("Krebs" + Keys.Tab);
 
-            var accountNumber = wait.ClickAndWait("#Store-SearchForOrders-Customer-CustomerRepository-FindCustomerByAccountNumber", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            accountNumber.Clear();
-            accountNumber.SendKeys("AW00000546" + Keys.Tab);
-
-            var customer = wait.ClickAndWait(".nof-ok", "#OrderContributedActions-SearchForOrders-Customer");   
-
-            customer.AssertObjectHasTitle("Field Trip Store, AW00000546");
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Peter Krebs");
         }
 
         public abstract void NewObjectOnActionDialog();
