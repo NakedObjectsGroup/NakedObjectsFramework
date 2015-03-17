@@ -128,9 +128,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             quantity.Clear();
             quantity.SendKeys("12" + Keys.Tab);
 
-            wait.ClickAndWait(".nof-ok", ".nof-objectview");
-
-            br.AssertPageTitleEquals("Volume Discount 11 to 14");
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "Volume Discount 11 to 14");
         }
 
         public abstract void ShowActionParmsReturn();
@@ -183,21 +181,21 @@ namespace NakedObjects.Mvc.Selenium.Test {
             number.SendKeys("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
-            wait.ClickAndWaitGone(".nof-ok", "#QuickOrderForm-AddDetail-Number-Input");
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "1 Order Line");
 
             number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
             number.Clear();
             number.SendKeys("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
-            wait.ClickAndWaitGone(".nof-ok", "#QuickOrderForm-AddDetail-Number-Input");
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "2 Order Lines");
 
             number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
             number.Clear();
             number.SendKeys("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
-            wait.ClickAndWait(".nof-ok", wd => wd.Title.StartsWith("33 x "));
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "3 Order Lines");
 
             wait.ClickAndWait("#QuickOrderForm-GetOrders button", wd => wd.Title == "3 Order Lines");
         }
@@ -317,12 +315,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoRecentlyViewedOnActionDialog() {
             Login();
 
-            FindEmployeeByLastName("Gubbels");
+            FindEmployeeByLastName("Sánchez");
 
             var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
             wait.ClickAndWait(recentlyViewed, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Eric Gubbels");
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Ken Sánchez");
         }
 
         public abstract void RecentlyViewedOnActionDialogWithSelect();
@@ -330,16 +328,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoRecentlyViewedOnActionDialogWithSelect() {
             Login();
 
-            FindEmployeeByLastName("Krebs");
             FindEmployeeByLastName("Gubbels");
+            FindEmployeeByLastName("Krebs");
 
-            wait.Until(wd => wd.Title == "Eric Gubbels");
+            wait.Until(wd => wd.Title == "Peter Krebs");
 
             var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
-            var select = wait.ClickAndWait(recentlyViewed, "button[title='Select']:first-of-type");
+            var select = wait.ClickAndWait(recentlyViewed, "button[title='Select']:last-of-type");
             wait.ClickAndWait(select, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Peter Krebs");
+            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Eric Gubbels");
         }
 
         public abstract void ActionFindOnActionDialog();
