@@ -84,7 +84,7 @@ namespace NakedObjects.SystemTest.Menus {
             menu.AssertItemCountIs(6);
 
             var items = menu.AllItems();
-            items[0].AssertIsAction().AssertNameEquals("Action2");
+            items[0].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[1].AssertIsAction().AssertNameEquals("Renamed1");
             var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
@@ -176,6 +176,7 @@ namespace TestObjectMenu {
 
         public void Action1() { }
 
+        [DisplayName("Action2 Renamed")]
         public void Action2() { }
 
         public void Action3() { }
