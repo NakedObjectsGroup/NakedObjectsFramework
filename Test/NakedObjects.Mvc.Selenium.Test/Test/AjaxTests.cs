@@ -274,7 +274,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(ok, ".validation-summary-errors");
 
             br.AssertPageTitleEquals("No Sales Orders");
-            Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.GetTopObject().Text);
+            Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count == 0);
 
@@ -352,7 +352,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.Until(wd => wd.Title == "20 Products");
 
-            Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
+            Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.FindElement(By.CssSelector(".nof-object")).Text);
         }
 
         public void DoActionMultipleChoicesDomainObject() {

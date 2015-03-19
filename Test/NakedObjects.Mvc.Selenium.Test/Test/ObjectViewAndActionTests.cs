@@ -142,11 +142,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             quantity.Clear();
             quantity.SendKeys("12" + Keys.Tab);
 
-            br.ClickApply();
-
-            br.AssertPageTitleEquals("Volume Discount 11 to 14");
-            br.AssertElementExists(By.CssSelector(".nof-apply")); // dialog still up 
-            br.FindElement(By.CssSelector(".ui-dialog-titlebar-close")).Click();
+            wait.ClickAndWait(".nof-apply", wd => wd.Title == "Volume Discount 11 to 14");
+            wait.ClickAndWaitGone(".ui-dialog-titlebar-close", ".nof-apply");
         }
 
         public abstract void InvokeActionOnViewModel();

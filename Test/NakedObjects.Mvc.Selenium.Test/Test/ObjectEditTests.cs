@@ -242,9 +242,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             //br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
+        
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Mandatory");
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -266,20 +266,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
             br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("test", br); // invalid
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
+
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Invalid Entry");
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
         public void DoCheckDefaultsOnFindAction() {
             Login();
             FindOrder("SO53144");
-            br.ClickEdit();
 
-            br.ClickFinderAction("SalesOrderHeader-CurrencyRate", "SalesOrderHeader-CurrencyRate-OrderContributedActions-FindRate");
+            var finder = wait.ClickAndWait(".nof-edit", "#SalesOrderHeader-CurrencyRate-OrderContributedActions-FindRate");
 
-            br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency")).AssertInputValueEquals("US Dollar");
+            wait.ClickAndWait(finder, wd => wd.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency input")).GetAttribute("value") == "US Dollar");
+
             br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency1")).AssertInputValueEquals("Euro");
         }
 
@@ -312,11 +312,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.Id("SalesOrderHeader-StoreContact")).SelectDropDownItem("Diane Glimp", br);
             br.FindElement(By.Id("SalesOrderHeader-ShipMethod")).SelectDropDownItem("XRQ", br);
             br.FindElement(By.Id("SalesOrderHeader-ShipDate")).AssertNoValidationError();
-            br.ClickSave();
 
-            // not managed to get validation error - perhaps becuase it revalidates and disappears ? 
-            //br.FindElement(By.Id("SalesOrderHeader-ShipDate")).AssertValidationErrorIs("Ship date cannot be before order date");
-            // checj instead we're still on the salesorder edit page 
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error:last-of-type");
+            error.AssertTextEquals("Ship date cannot be before order date");
 
             br.AssertContainsObjectEdit();
         }

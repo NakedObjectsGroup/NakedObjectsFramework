@@ -93,9 +93,6 @@
     <Compile Include="Chrome\EnumTestsChrome.cs" />
     <Compile Include="Chrome\ImageAndAttachmentTestsChrome.cs" />
     <Compile Include="Firefox\ImageAndAttachmentTestsFirefox.cs" />
-    <Compile Include="Chrome\NonAjaxTestsChrome.cs" />
-    <Compile Include="Firefox\NonAjaxTestsFirefox.cs" />
-    <Compile Include="InternetExplorer\NonAjaxTestsIE.cs" />
     <Compile Include="Chrome\ObjectEditTestsChrome.cs" />
     <Compile Include="Firefox\ObjectEditTestsFirefox.cs" />
     <Compile Include="InternetExplorer\ObjectEditTestsIE.cs" />
@@ -124,7 +121,6 @@
     <Compile Include="Test\AWWebTest.cs" />
     <Compile Include="Test\ConditionalChoicesTests.cs" />
     <Compile Include="Test\TabbedHistoryAndClearTests.cs" />
-    <Compile Include="Test\NonAjaxTests.cs" />
     <Compile Include="Test\EnumTests.cs" />
     <Compile Include="TEMPLATE.cs" />
     <Compile Include="Test\ImageAndAttachmentTests.cs" />
