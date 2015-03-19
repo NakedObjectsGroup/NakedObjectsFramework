@@ -208,24 +208,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Actions
 
-      
-
-        public static IWebDriver ClickSave(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Save");
-        }
 
         //Navigation buttons
-        public static IWebDriver ClickFirst(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "First");
-        }
-
-        public static IWebDriver ClickPrevious(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Previous");
-        }
-
-        public static IWebDriver ClickNext(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Next");
-        }
+      
 
         public static IWebDriver ClickLast(this IWebDriver webDriver) {
             return ClickSingleGenericButton(webDriver, "Last");

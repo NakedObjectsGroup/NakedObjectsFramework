@@ -157,13 +157,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
             Assert.AreEqual("Page 1 of 1574", pageNo.Text);
 
-            br.ClickLast();
+            br.FindElement(By.CssSelector("button[title=Last]")).Click();
+
+            wait.ClickAndWait("button[title=Last]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 1574 of 1574");
+
             Assert.AreEqual(2, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElement(By.TagName("a")).Text);
             Assert.AreEqual("5 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Last().Text);
-
-            pageNo = br.FindElement(By.ClassName("nof-page-number"));
-            Assert.AreEqual("Page 1574 of 1574", pageNo.Text);
 
             br.ClickTabLink(0);
             Assert.AreEqual(2, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
