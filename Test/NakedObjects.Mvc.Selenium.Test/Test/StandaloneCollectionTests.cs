@@ -123,14 +123,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             coll.GetRow(1).CheckRow(br);
             coll.GetRow(3).CheckRow(br);
 
-            wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-CommentAsUsersUnhappy", wd => wd.Title == "20 Sales Orders");
+            wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-CommentAsUsersUnhappy", wd => wd.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(1, 6) == "User unhappy");
 
-            table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
-            coll = wait.ClickAndWait(table, ".nof-collection-table");
-
-            Assert.AreEqual("User unhappy", coll.TextContentsOfCell(1, 6));
-            Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(2, 6)));
-            Assert.AreEqual("User unhappy", coll.TextContentsOfCell(3, 6));
+            Assert.IsTrue(string.IsNullOrEmpty(br.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(2, 6)));
+            Assert.AreEqual("User unhappy", br.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(3, 6));
         }
 
         public abstract void InvokeContributedActionParmsNoReturn();
@@ -151,12 +147,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             comment.Clear();
             comment.SendKeys("Foo" + Keys.Tab);
 
-            wait.ClickAndWait(".nof-ok", wd => wd.Title == "20 Sales Orders");   
+            wait.ClickAndWait(".nof-ok", wd =>  wd.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(7, 6) == "Foo");   
 
-            table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
-            coll = wait.ClickAndWait(table, ".nof-collection-table");
-
-            Assert.AreEqual("Foo", coll.TextContentsOfCell(7, 6));
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(8, 6)));
             Assert.AreEqual("Foo", coll.TextContentsOfCell(9, 6));
         }
