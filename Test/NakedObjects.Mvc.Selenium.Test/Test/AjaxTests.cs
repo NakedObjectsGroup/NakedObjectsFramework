@@ -184,18 +184,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             subcategories.SelectListBoxItems(br, "Jerseys", "Shorts", "Socks", "Tights", "Vests");
 
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
-
-            wait.Until(wd => wd.Title == "20 Products");
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "20 Products");
 
             Assert.AreEqual("Find Products By Category: Query Result: Viewing 20 of 25 Products", br.FindElement(By.CssSelector("div.nof-object")).Text);
 
-            br.FindElement(By.CssSelector("button[title=Last]")).Click();
-            wait.Until(wd => wd.Title == "5 Products");
+            wait.ClickAndWait("button[title=Last]", wd => br.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 2");
 
             Assert.AreEqual("Find Products By Category: Query Result: Viewing 5 of 25 Products", br.FindElement(By.CssSelector("div.nof-object")).Text);
-            IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
-            Assert.AreEqual("Page 2 of 2", pageNo.Text);
         }
 
         private void DoActionValidateFail() {

@@ -68,8 +68,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             //Return to View via History
-            br.ClickTabLink(0);
-            br.AssertContainsObjectView();
+        
+            br.FindElement(By.CssSelector(".nof-tab:first-of-type a")).Click();
+            wait.ClickAndWait(".nof-tab:first-of-type a", ".nof-objectview");
         }
 
         public void DoEditTableHeader() {

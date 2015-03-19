@@ -38,7 +38,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).AssertValueEquals("1.50 %");
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.Id("SalesPerson-Actions")).GetAttribute("class"));
-            br.ClickTabLink(0);
+
+            // click history first tab
+            wait.ClickAndWait(".nof-tab:first-of-type a", wd => wd.Title == "Field Trip Store, AW00000546");
 
             // rendered eagerly 
             Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));

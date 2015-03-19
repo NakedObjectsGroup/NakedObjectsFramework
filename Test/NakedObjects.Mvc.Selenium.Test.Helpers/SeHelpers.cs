@@ -402,14 +402,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Collections
 
-        public static IWebElement GetStandaloneTable(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-collection-table"));
-        }
-
-        public static IWebElement GetStandaloneList(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-collection-list"));
-        }
-
         public static IWebElement GetInternalCollection(this IWebDriver webDriver, string collectionId) {
             IWebElement coll = GetField(webDriver, collectionId);
             AssertIsCollection(coll);
