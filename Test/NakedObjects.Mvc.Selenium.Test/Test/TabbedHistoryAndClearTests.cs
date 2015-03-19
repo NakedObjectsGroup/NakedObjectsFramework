@@ -517,20 +517,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             CustomerByAccountNumber("AW00000065");
 
-            Assert.AreEqual(1, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
+            Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history a")).Count);
 
             wait.ClickAndWait("#CustomerRepository-CreateNewStoreCustomer button", ".nof-objectedit");
 
             br.AssertContainsObjectEditTransient();
 
-            Assert.AreEqual(1, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
+            Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history a")).Count);
 
             br.FindElement(By.CssSelector("#Store-Name")).TypeText("Foo Bar", br);
-            br.ClickSave();
 
-            Assert.AreEqual(2, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
-            Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a"))[0].Text);
-            Assert.AreEqual("Foo Bar, AW00029484", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Last().Text);
+            wait.ClickAndWait(".nof-save", wd => wd.FindElements(By.CssSelector(".nof-tabbed-history a")).Count == 2);
+
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab > a")).Text);
+            Assert.AreEqual("Foo Bar, AW00029484", br.FindElement(By.CssSelector(".nof-tabbed-history > .active > a")).Text);
         }
 
         public void DoCollectionsShowUpInHistory() {

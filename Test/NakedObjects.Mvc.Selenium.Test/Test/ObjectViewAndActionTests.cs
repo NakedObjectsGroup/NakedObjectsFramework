@@ -412,9 +412,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //br.FindElement(By.CssSelector("#Product-SellStartDate").TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
 
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Mandatory");
+
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -435,9 +435,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1" + Keys.Escape, br); // invalid
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
+
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Invalid Entry");
+
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
