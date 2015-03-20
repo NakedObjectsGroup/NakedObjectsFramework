@@ -289,11 +289,15 @@ namespace NakedObjects.Meta.Test {
                 return null;
             }
 
-            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public IMenu NewMenu<T>(bool addAllActions, string name = null) {
                 return null;
             }
-
             #endregion
+
+
+            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+                return null;
+            }
         }
 
         #endregion

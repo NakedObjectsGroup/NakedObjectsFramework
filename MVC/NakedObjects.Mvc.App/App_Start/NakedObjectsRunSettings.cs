@@ -115,7 +115,7 @@ namespace NakedObjects.Mvc.App {
                     factory.NewMenu<VendorRepository>(true),
                     factory.NewMenu<PurchaseOrderRepository>(true),
                     factory.NewMenu<WorkOrderRepository>(true),
-                    factory.NewMenu("Empty")
+                    factory.NewMenu<object>(false, "Empty")
             };
         }
     }

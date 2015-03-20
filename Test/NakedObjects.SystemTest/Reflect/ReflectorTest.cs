@@ -394,17 +394,17 @@ namespace NakedObjects.SystemTest.Reflect {
         #region Nested type: NullMenuFactory
 
         public class NullMenuFactory : IMenuFactory {
-            #region IMenuFactory Members
-
             public IMenu NewMenu(string name) {
                 throw new NotImplementedException();
             }
 
-            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public IMenu NewMenu<T>(bool addAllActions, string name = null) {
                 throw new NotImplementedException();
             }
 
-            #endregion
+            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion

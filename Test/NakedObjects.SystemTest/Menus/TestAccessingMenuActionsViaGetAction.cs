@@ -10,7 +10,6 @@ namespace NakedObjects.SystemTest.Menus {
 
     //This class is not testing menus, nor TestMenus, but simply backwards compatibility
     //of GetAction, including with specified subMenu.
-    //access actions via GetAction.
     [TestClass]
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
         #region Setup/Teardown 
@@ -87,11 +86,6 @@ namespace SystemTest.ContributedActions {
 
     public class Foo {
 
-        //public static void Menu(ITypedMenu<Foo> menu) {
-        //    var sub = menu.CreateSubMenu("Sub1");
-        //    sub.AddActionFrom<Foo>("NativeAction");
-        //    menu.AddContributedActions();
-        //}
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -107,8 +101,8 @@ namespace SystemTest.ContributedActions {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        public static void Menu(ITypedMenu<Bar> menu) {
-            menu.CreateSubMenuOfSameType("Sub1");
+        public static void Menu(IMenu menu) {
+            menu.CreateSubMenu("Sub1");
             menu.AddContributedActions();
         }
 

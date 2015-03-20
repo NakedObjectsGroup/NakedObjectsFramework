@@ -27,11 +27,7 @@ namespace NakedObjects.Meta.Facet {
             //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
             //It is not needed for menus to function
             string id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : Spec.ShortName + "-Actions";
-            MethodInfo m = GetType().GetMethod("CreateDefaultMenu").MakeGenericMethod(Spec.Type);
-            // possible spec type is generic in which case invoke would fail without this check
-            if (!m.ContainsGenericParameters) {
-                m.Invoke(this, new object[] {metamodel, GetMenuName(Spec), id});
-            }
+            CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
         }
 
         private string UniqueShortName(ITypeSpecImmutable spec) {
@@ -43,8 +39,8 @@ namespace NakedObjects.Meta.Facet {
             return usn;
         }
 
-        public void CreateDefaultMenu<T>(IMetamodelBuilder metamodel, string menuName, string id) {
-            var menu = new TypedMenu<T>(metamodel, false, menuName) {Id = id};
+        public void CreateDefaultMenu(IMetamodelBuilder metamodel, Type type, string menuName, string id) {
+            var menu = new MenuImpl(metamodel, type, false, menuName) {Id = id};
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();
             Menu = menu;

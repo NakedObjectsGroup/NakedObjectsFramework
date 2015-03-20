@@ -142,7 +142,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Attributes">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc2\lib\net40\NakedObjects.Attributes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Core">
@@ -154,7 +154,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc2\lib\net40\NakedObjects.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Metamodel">
@@ -174,7 +174,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc2\lib\net40\NakedObjects.PMResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector">
@@ -194,7 +194,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc\lib\net40\NakedObjects.Types.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc2\lib\net40\NakedObjects.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Unity">
