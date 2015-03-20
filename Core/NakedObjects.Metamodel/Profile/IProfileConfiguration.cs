@@ -10,8 +10,7 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Meta.Profile {
     public interface IProfileConfiguration {
-        Type DefaultProfiler { get; }
-        Dictionary<string, Type> NamespaceProfilers { get; }
-        void AddNamespaceProfiler<T>(string namespaceCovered) where T : IProfiler;
+        Type Profiler { get; }
+        ISet<ProfileEvent> EventsToProfile { get; }
     }
 }

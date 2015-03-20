@@ -5,28 +5,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Profile {
-    public class ProfileUpdatedFacet : UpdatedCallbackFacetAbstract {
-        private readonly ProfileManager profileManager;
+    [Serializable]
+    public sealed class ProfileUpdatedFacet : UpdatedCallbackFacetAbstract {
+        private readonly IProfileManager profileManager;
         private readonly IUpdatedCallbackFacet underlyingFacet;
 
-        public ProfileUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, ProfileManager profileManager) : base(underlyingFacet.Specification) {
+        public ProfileUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
             this.profileManager = profileManager;
         }
 
         public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            profileManager.Begin(nakedObjectAdapter, session, lifecycleManager);
+            profileManager.Begin(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
             try {
                 underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
             }
             finally {
-                profileManager.End(nakedObjectAdapter, session, lifecycleManager);
+                profileManager.End(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
             }
         }
     }

@@ -5,20 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
-
 namespace NakedObjects.Meta.Profile {
-    public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
-        public ProfileConfiguration() {
-            Profiler = typeof (T);
-        }
-
-        #region IProfileConfiguration Members
-
-        public Type Profiler { get; private set; }
-        public ISet<ProfileEvent> EventsToProfile { get; set; }
-
-        #endregion
+    public enum ProfileEvent {
+        ActionInvocation,
+        Updated,
+        Persisted
     }
 }

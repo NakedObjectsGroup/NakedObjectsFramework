@@ -5,13 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Profile {
-    public class ProfilePersistedFacet : PersistedCallbackFacetAbstract {
+    [Serializable]
+    public sealed class ProfilePersistedFacet : PersistedCallbackFacetAbstract {
         private readonly IProfileManager profileManager;
         private readonly IPersistedCallbackFacet underlyingFacet;
 
@@ -22,12 +24,12 @@ namespace NakedObjects.Meta.Profile {
         }
 
         public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            profileManager.Begin(nakedObjectAdapter, session, lifecycleManager);
+            profileManager.Begin(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
             try {
                 underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
             }
             finally {
-                profileManager.End(nakedObjectAdapter, session, lifecycleManager);
+                profileManager.End(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
             }
         }
     }

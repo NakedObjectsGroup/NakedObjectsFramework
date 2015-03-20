@@ -95,6 +95,7 @@
     <Compile Include="Profile\IProfiler.cs" />
     <Compile Include="Profile\ProfileActionInvocationFacet.cs" />
     <Compile Include="Profile\ProfileConfiguration.cs" />
+    <Compile Include="Profile\ProfileEvent.cs" />
     <Compile Include="Profile\ProfileManager.cs" />
     <Compile Include="Profile\ProfilePersistedFacet.cs" />
     <Compile Include="Profile\ProfileUpdatedFacet.cs" />

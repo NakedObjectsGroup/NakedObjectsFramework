@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -18,32 +18,35 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Profile {
     [Serializable]
     public sealed class ProfileManager : IFacetDecorator, IProfileManager {
-        private readonly Type defaultProfiler;
-        private readonly Type[] forFacetTypes = {typeof (IActionInvocationFacet), typeof (IUpdatedCallbackFacet), typeof (IPersistedCallbackFacet)};
-        private readonly ImmutableDictionary<string, Type> namespaceProfilers;
+        private static readonly IDictionary<ProfileEvent, Type> EventToFacetMap = new Dictionary<ProfileEvent, Type> {
+            {ProfileEvent.ActionInvocation, typeof (IActionInvocationFacet)},
+            {ProfileEvent.Persisted, typeof (IPersistedCallbackFacet)},
+            {ProfileEvent.Updated, typeof (IUpdatedCallbackFacet)}
+        };
+
+        private static readonly IDictionary<Type, Func<IFacet, IProfileManager, IFacet>> FacetToConstructorMap = new Dictionary<Type, Func<IFacet, IProfileManager, IFacet>> {
+            {typeof (IActionInvocationFacet), (f, pm) => new ProfileActionInvocationFacet((IActionInvocationFacet) f, pm)},
+            {typeof (IPersistedCallbackFacet), (f, pm) => new ProfilePersistedFacet((IPersistedCallbackFacet) f, pm)},
+            {typeof (IUpdatedCallbackFacet), (f, pm) => new ProfileUpdatedFacet((IUpdatedCallbackFacet) f, pm)},
+        };
+
+        private readonly Type[] forFacetTypes;
+        private readonly Type profilerType;
 
         public ProfileManager(IProfileConfiguration config) {
-            defaultProfiler = config.DefaultProfiler;
-            namespaceProfilers = config.NamespaceProfilers.OrderByDescending(x => x.Key.Length).ToImmutableDictionary();
-            Validate();
+            profilerType = config.Profiler;
+
+            if (!typeof (IProfiler).IsAssignableFrom(profilerType)) {
+                throw new InitialisationException(profilerType.FullName + " is not an IProfiler");
+            }
+
+            forFacetTypes = config.EventsToProfile.Select(e => EventToFacetMap[e]).ToArray();
         }
 
         #region IFacetDecorator Members
 
         public IFacet Decorate(IFacet facet, ISpecification holder) {
-            if (facet.FacetType == typeof (IActionInvocationFacet)) {
-                return new ProfileActionInvocationFacet((IActionInvocationFacet) facet, this);
-            }
-
-            if (facet.FacetType == typeof (IUpdatedCallbackFacet)) {
-                return new ProfileUpdatedFacet((IUpdatedCallbackFacet) facet, this);
-            }
-
-            if (facet.FacetType == typeof (IPersistedCallbackFacet)) {
-                return new ProfilePersistedFacet((IPersistedCallbackFacet) facet, this);
-            }
-
-            return facet;
+            return forFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this) : facet;
         }
 
         public Type[] ForFacetTypes {
@@ -54,54 +57,18 @@ namespace NakedObjects.Meta.Profile {
 
         #region IProfileManager Members
 
-        public void Begin(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            IProfiler profiler = GetProfiler(nakedObjectAdapter, lifecycleManager);
-            profiler.Begin();
+        public void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
+            GetProfiler(lifecycleManager).Begin(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
         }
 
-        public void End(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            IProfiler profiler = GetProfiler(nakedObjectAdapter, lifecycleManager);
-            profiler.End();
+        public void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
+            GetProfiler(lifecycleManager).End(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
         }
 
         #endregion
 
-        private void ValidateType(Type toValidate) {
-            if (!typeof (IProfiler).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(toValidate.FullName + " is not an IProfiler");
-            }
-        }
-
-        private void Validate() {
-            ValidateType(defaultProfiler);
-            if (namespaceProfilers.Any()) {
-                namespaceProfilers.ForEach(kvp => ValidateType(kvp.Value));
-            }
-        }
-
-        private IProfiler GetProfiler(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
-            return GetNamespaceProfilerFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultProfiler(lifecycleManager);
-        }
-
-        private IProfiler GetNamespaceProfilerFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            Assert.AssertNotNull(target);
-            string fullyQualifiedOfTarget = target.Spec.FullName;
-
-            // already ordered OrderByDescending(x => x.Key.Length).
-            Type profiler = namespaceProfilers.
-                Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
-                Select(x => x.Value).
-                FirstOrDefault();
-
-            return profiler != null ? CreateProfiler(profiler, lifecycleManager) : null;
-        }
-
-        private IProfiler CreateProfiler(Type profiler, ILifecycleManager lifecycleManager) {
-            return lifecycleManager.CreateNonAdaptedInjectedObject(profiler) as IProfiler;
-        }
-
-        private IProfiler GetDefaultProfiler(ILifecycleManager lifecycleManager) {
-            return CreateProfiler(defaultProfiler, lifecycleManager);
+        private IProfiler GetProfiler(ILifecycleManager lifecycleManager) {
+            return lifecycleManager.CreateNonAdaptedInjectedObject(profilerType) as IProfiler;
         }
     }
 }

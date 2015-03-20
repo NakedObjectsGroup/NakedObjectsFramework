@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -12,6 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Profile {
+    [Serializable]
     public class ProfileActionInvocationFacet : ActionInvocationFacetAbstract {
         private readonly IIdentifier identifier;
         private readonly IProfileManager profileManager;
@@ -41,22 +43,22 @@ namespace NakedObjects.Meta.Profile {
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            profileManager.Begin(nakedObjectAdapter, session, lifecycleManager);
+            profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             try {
                 return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager);
             }
             finally {
-                profileManager.End(nakedObjectAdapter, session, lifecycleManager);
+                profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             }
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
-            profileManager.Begin(nakedObjectAdapter, session, lifecycleManager);
+            profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             try {
                 return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager);
             }
             finally {
-                profileManager.End(nakedObjectAdapter, session, lifecycleManager);
+                profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             }
         }
     }

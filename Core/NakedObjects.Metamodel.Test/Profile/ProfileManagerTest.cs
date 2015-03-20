@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -28,8 +27,6 @@ namespace NakedObjects.Meta.Test.Profile {
         public void TestCreateOk() {
             var config = new ProfileConfiguration<IProfiler>();
 
-            config.AddNamespaceProfiler<IProfiler>("namespace");
-
             // ReSharper disable once UnusedVariable
             var sink = new ProfileManager(config);
         }
@@ -38,8 +35,7 @@ namespace NakedObjects.Meta.Test.Profile {
         public void TestCreateWrongDefaultProfilerType() {
             var config = new Mock<IProfileConfiguration>();
 
-            config.Setup(c => c.DefaultProfiler).Returns(typeof (object));
-            config.Setup(c => c.NamespaceProfilers).Returns(new Dictionary<string, Type>());
+            config.Setup(c => c.Profiler).Returns(typeof (object));
 
             try {
                 // ReSharper disable once UnusedVariable
@@ -52,32 +48,14 @@ namespace NakedObjects.Meta.Test.Profile {
             }
         }
 
-        [TestMethod]
-        public void TestCreateWrongNamespaceProfilerType() {
-            var config = new Mock<IProfileConfiguration>();
-            var auditor = new Mock<IProfiler>();
-
-            config.Setup(c => c.DefaultProfiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceProfilers).Returns(new Dictionary<string, Type> {{"", typeof (object)}});
-
-            try {
-                // ReSharper disable once UnusedVariable
-                var sink = new ProfileManager(config.Object);
-                Assert.Fail("Expect exception");
-            }
-            catch (Exception expected) {
-                // pass test
-                Assert.AreEqual("System.Object is not an IProfiler", expected.Message);
-            }
-        }
+    
 
         [TestMethod]
         public void TestDecorateActionInvocationFacet() {
             var config = new Mock<IProfileConfiguration>();
             var auditor = new Mock<IProfiler>();
 
-            config.Setup(c => c.DefaultProfiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceProfilers).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+            config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
 
             var manager = new ProfileManager(config.Object);
 
@@ -104,8 +82,7 @@ namespace NakedObjects.Meta.Test.Profile {
             var config = new Mock<IProfileConfiguration>();
             var auditor = new Mock<IProfiler>();
 
-            config.Setup(c => c.DefaultProfiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceProfilers).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+            config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
 
             var manager = new ProfileManager(config.Object);
 
@@ -132,8 +109,7 @@ namespace NakedObjects.Meta.Test.Profile {
             var config = new Mock<IProfileConfiguration>();
             var auditor = new Mock<IProfiler>();
 
-            config.Setup(c => c.DefaultProfiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceProfilers).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
+            config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
 
             var manager = new ProfileManager(config.Object);
 

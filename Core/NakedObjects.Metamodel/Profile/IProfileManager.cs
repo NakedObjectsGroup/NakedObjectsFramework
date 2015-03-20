@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Meta.Profile {
     public interface IProfileManager {
-        void Begin(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager);
-        void End(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager);
+        void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
+        void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager);
     }
 }
