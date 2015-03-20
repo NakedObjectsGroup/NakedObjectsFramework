@@ -151,6 +151,11 @@
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj">
+      <Name>NakedObjects.Snapshot.Xml.Test.Data</Name>
+      <Project>{80269255-d420-463d-92da-6cd1137c4633}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Snapshot.Xml\NakedObjects.Snapshot.Xml.csproj">
       <Name>NakedObjects.Snapshot.Xml</Name>
       <Project>{3eacb1f7-b711-4adc-86fa-db80724603f3}</Project>
