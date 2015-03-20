@@ -5,12 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Profile {
+    [Serializable]
     public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
         private readonly IProfileManager profileManager;
         private readonly IPropertySetterFacet underlyingFacet;

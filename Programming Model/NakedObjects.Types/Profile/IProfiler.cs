@@ -8,7 +8,7 @@
 using System;
 using System.Security.Principal;
 
-namespace NakedObjects.Meta.Profile {
+namespace NakedObjects.Profile {
     public interface IProfiler {
         void Begin(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);
         void End(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);

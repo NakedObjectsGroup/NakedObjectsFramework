@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Profile {
     public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
