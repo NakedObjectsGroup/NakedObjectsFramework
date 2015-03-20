@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Profile {
     public interface IProfileManager {
