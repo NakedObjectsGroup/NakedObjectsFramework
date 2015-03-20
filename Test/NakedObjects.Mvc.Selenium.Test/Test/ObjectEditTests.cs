@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -27,9 +26,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             //Check basics of edit view
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
-            IWebElement objectView = br.FindElement(By.ClassName("main-content"));
-            //IWebElement titleObject = objectView.FindElement(By.ClassName("nof-object")); // noew disabled for edit view 
-            //Assert.AreEqual("Field Trip Store, AW00000546", titleObject.Text);
             br.AssertElementExists(By.CssSelector("[title=Save]"));
             try {
                 br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
@@ -68,8 +64,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             //Return to View via History
-            br.ClickTabLink(0);
-            br.AssertContainsObjectView();
+
+            br.FindElement(By.CssSelector(".nof-tab:first-of-type a")).Click();
+            wait.ClickAndWait(".nof-tab:first-of-type a", ".nof-objectview");
         }
 
         public void DoEditTableHeader() {
@@ -150,10 +147,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var recentlyViewed = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title='Recently Viewed']");
 
             var select = wait.ClickAndWait(recentlyViewed, "#Store-SalesPerson [title='Select']:first-of-type");
-            wait.ClickAndWaitGone(select,  "#Store-SalesPerson [title='Select']");
+            wait.ClickAndWaitGone(select, "#Store-SalesPerson [title='Select']");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-          
+
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Shu Ito");
         }
 
@@ -164,7 +161,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var remove = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title=Remove]");
 
-            wait.ClickAndWaitGone(remove, "#Store-SalesPerson img"); 
+            wait.ClickAndWaitGone(remove, "#Store-SalesPerson img");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertIsEmpty();
         }
@@ -180,7 +177,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             lastName.Clear();
             lastName.SendKeys("Vargas" + Keys.Tab);
 
-            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");  
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Garrett Vargas");
@@ -242,9 +239,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             //br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
+
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Mandatory");
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -266,20 +263,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
             br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("test", br); // invalid
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
+
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Invalid Entry");
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
         public void DoCheckDefaultsOnFindAction() {
             Login();
             FindOrder("SO53144");
-            br.ClickEdit();
 
-            br.ClickFinderAction("SalesOrderHeader-CurrencyRate", "SalesOrderHeader-CurrencyRate-OrderContributedActions-FindRate");
+            var finder = wait.ClickAndWait(".nof-edit", "#SalesOrderHeader-CurrencyRate-OrderContributedActions-FindRate");
 
-            br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency")).AssertInputValueEquals("US Dollar");
+            wait.ClickAndWait(finder, wd => wd.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency input")).GetAttribute("value") == "US Dollar");
+
             br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency1")).AssertInputValueEquals("Euro");
         }
 
@@ -312,11 +309,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.Id("SalesOrderHeader-StoreContact")).SelectDropDownItem("Diane Glimp", br);
             br.FindElement(By.Id("SalesOrderHeader-ShipMethod")).SelectDropDownItem("XRQ", br);
             br.FindElement(By.Id("SalesOrderHeader-ShipDate")).AssertNoValidationError();
-            br.ClickSave();
 
-            // not managed to get validation error - perhaps becuase it revalidates and disappears ? 
-            //br.FindElement(By.Id("SalesOrderHeader-ShipDate")).AssertValidationErrorIs("Ship date cannot be before order date");
-            // checj instead we're still on the salesorder edit page 
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error:last-of-type");
+            error.AssertTextEquals("Ship date cannot be before order date");
 
             br.AssertContainsObjectEdit();
         }

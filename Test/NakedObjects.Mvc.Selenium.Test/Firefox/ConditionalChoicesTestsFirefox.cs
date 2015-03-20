@@ -13,8 +13,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
     [TestClass]
     public class ConditionalChoicesTestsFirefox : ConditionalChoicesTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
+        public static void InitialiseClass(TestContext context) {
+            Reset(context);
         }
 
         [TestInitialize]

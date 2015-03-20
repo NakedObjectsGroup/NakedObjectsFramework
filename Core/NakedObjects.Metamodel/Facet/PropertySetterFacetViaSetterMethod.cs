@@ -22,13 +22,18 @@ namespace NakedObjects.Meta.Facet {
             this.property = property;
         }
 
-        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager) {
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
             try {
                 property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
                 InvokeUtils.InvocationException("Exception executing " + property, e);
             }
+        }
+
+        public override string PropertyName {
+            get { return property.Name; }
+            protected set {  }
         }
 
         protected override string ToStringValues() {

@@ -21,15 +21,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
     //    Replace:  \1\[TestMethod\]\n\1public override void \2\n\3\n\4Do\2;
     // 4. When IE tests run OK, uncomment the Firefox and/or Chrome classes and repeat step 3
     public abstract class MyTests : AWWebTest {
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
+        public static void InitialiseClass(TestContext context) {
+            Reset(context);
         }
-
-        //public abstract void Test1();
-
-        //protected void DoTest1() { 
-        //  Common test logic here
-        //}
     }
 
     [TestClass]
@@ -48,14 +42,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
-
-        //[TestMethod]
-        //public override void Test1()
-        //{
-        //    DoTest1();
-        //}
     }
 
     [TestClass]
@@ -67,7 +55,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
 
         [TestInitialize]
@@ -93,7 +81,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
     }
 }

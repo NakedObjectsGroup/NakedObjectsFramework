@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Chrome;
@@ -38,7 +37,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).AssertValueEquals("1.50 %");
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.Id("SalesPerson-Actions")).GetAttribute("class"));
-            br.ClickTabLink(0);
+
+            // click history first tab
+            wait.ClickAndWait(".nof-tab:first-of-type a", wd => wd.Title == "Field Trip Store, AW00000546");
 
             // rendered eagerly 
             Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
@@ -142,11 +143,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             quantity.Clear();
             quantity.SendKeys("12" + Keys.Tab);
 
-            br.ClickApply();
-
-            br.AssertPageTitleEquals("Volume Discount 11 to 14");
-            br.AssertElementExists(By.CssSelector(".nof-apply")); // dialog still up 
-            br.FindElement(By.CssSelector(".ui-dialog-titlebar-close")).Click();
+            wait.ClickAndWait(".nof-apply", wd => wd.Title == "Volume Discount 11 to 14");
+            wait.ClickAndWaitGone(".ui-dialog-titlebar-close", ".nof-apply");
         }
 
         public abstract void InvokeActionOnViewModel();
@@ -163,7 +161,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             number.SendKeys("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
-                    
+
             wait.ClickAndWait(".nof-ok", wd => wd.Title.StartsWith("33 x "));
         }
 
@@ -268,7 +266,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //   br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate").AppendText(Keys.Escape, br);
             br.WaitForAjaxComplete();
 
-            wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");   
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }
 
         public abstract void CancelActionDialog();
@@ -364,7 +362,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var newProduct = wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder button", "#WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct");
             wait.ClickAndWait(newProduct, "#Product-Name-Input");
 
-
             br.FindElement(By.CssSelector("#Product-Name")).TypeText("test-popup", br);
             br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test-popup", br);
             br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
@@ -415,9 +412,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //br.FindElement(By.CssSelector("#Product-SellStartDate").TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
 
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Mandatory");
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Mandatory");
+
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -438,9 +435,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1" + Keys.Escape, br); // invalid
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-            br.ClickSave();
-            br.WaitForAjaxComplete();
-            br.FindElement(By.CssSelector("span.field-validation-error")).AssertTextEquals("Invalid Entry");
+
+            var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
+            error.AssertTextEquals("Invalid Entry");
+
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -456,10 +454,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Employee Details:", label.Text);
 
             wait.ClickAndWait("button.nof-minimize", "#Store-SalesPerson-SalesPerson-Employee div.nof-label");
-
-
         }
-
-
     }
 }

@@ -23,7 +23,8 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertySetterFacet Members
 
-        public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, ITransactionManager transactionManager);
+        public abstract void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager);
+        public abstract string PropertyName { get; protected set; }
 
         #endregion
     }

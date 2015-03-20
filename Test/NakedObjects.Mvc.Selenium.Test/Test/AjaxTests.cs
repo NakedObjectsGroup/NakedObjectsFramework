@@ -15,7 +15,6 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AjaxTests : AWWebTest {
-
         public void DoRemoteValidationProperty() {
             Login();
 
@@ -80,7 +79,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // first test so get everything started with a longer timeout
 
             try {
-
                 wait = new SafeWebDriverWait(br, new TimeSpan(0, 0, 30));
 
                 var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
@@ -184,18 +182,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             subcategories.SelectListBoxItems(br, "Jerseys", "Shorts", "Socks", "Tights", "Vests");
 
-            br.FindElement(By.CssSelector(".nof-ok")).Click();
-
-            wait.Until(wd => wd.Title == "20 Products");
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "20 Products");
 
             Assert.AreEqual("Find Products By Category: Query Result: Viewing 20 of 25 Products", br.FindElement(By.CssSelector("div.nof-object")).Text);
 
-            br.FindElement(By.CssSelector("button[title=Last]")).Click();
-            wait.Until(wd => wd.Title == "5 Products");
+            wait.ClickAndWait("button[title=Last]", wd => br.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 2");
 
             Assert.AreEqual("Find Products By Category: Query Result: Viewing 5 of 25 Products", br.FindElement(By.CssSelector("div.nof-object")).Text);
-            IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
-            Assert.AreEqual("Page 2 of 2", pageNo.Text);
         }
 
         private void DoActionValidateFail() {
@@ -248,19 +241,21 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("1/6/2013", "30/6/2013");
 
-            var apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
+            var apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply:enabled")));
+
             apply.Click();
 
-            var errors = wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")));
+            Thread.Sleep(1000);
+
+            var errors = br.FindElements(By.CssSelector(".validation-summary-errors"));
 
             Assert.AreEqual(0, errors.Count, "No errors expected");
 
             SetDates("28/6/2013", "2/6/2013");
 
-            apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
-            apply.Click();
-
-            wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
+            apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply:enabled")));
+           
+            wait.ClickAndWait(apply, wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
 
             var error = wait.Until(wd => wd.FindElement(By.CssSelector(".validation-summary-errors")));
             const string expected = "Action was unsuccessful. Please correct the errors and try again.\r\n'From Date' must be before 'To Date'";
@@ -269,12 +264,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("1/6/2013", "30/6/2013");
 
-            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok:enabled")));
 
             wait.ClickAndWait(ok, ".validation-summary-errors");
 
             br.AssertPageTitleEquals("No Sales Orders");
-            Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.GetTopObject().Text);
+            Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count == 0);
 
@@ -352,7 +347,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.Until(wd => wd.Title == "20 Products");
 
-            Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.GetTopObject().Text);
+            Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.FindElement(By.CssSelector(".nof-object")).Text);
         }
 
         public void DoActionMultipleChoicesDomainObject() {

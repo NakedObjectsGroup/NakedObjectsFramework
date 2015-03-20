@@ -73,6 +73,7 @@
     <Compile Include="Facet\FacetAbstractTest.cs" />
     <Compile Include="I18N\I18NManagerTest.cs" />
     <Compile Include="Meta\CacheTest.cs" />
+    <Compile Include="Profile\ProfileManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SemanticsProvider\BoolValueSemanticsProviderTest.cs" />
     <Compile Include="SemanticsProvider\ByteArrayValueSemanticsProviderTest.cs" />

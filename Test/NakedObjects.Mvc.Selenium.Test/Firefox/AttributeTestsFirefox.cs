@@ -13,8 +13,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
     [TestClass]
     public class AttributeTestsFirefox : AttributeTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWWebTest.InitialiseClass(context);
+        public static void InitialiseClass(TestContext context) {
+            Reset(context);
         }
 
         [TestInitialize]
@@ -25,8 +25,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestCleanup]
-        public override void CleanUpTest() {
-            base.CleanUpTest();
+        public override void CleanUp() {
+            base.CleanUp();
         }
 
         [TestMethod]

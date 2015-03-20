@@ -15,7 +15,7 @@ using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
-        // new helpers 
+        #region new helpers
 
         // Find then click action and wait unitil field selector returns an element 
         public static IWebElement ClickAndWait(this SafeWebDriverWait wait, string actionSelector, string fieldSelector, int delay = 0) {
@@ -77,47 +77,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             wait.Until(f);
         }
 
-        public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
-            if (webDriver is InternetExplorerDriver) {
-                element.SendKeys(Keys.Space);
-            }
-            else {
-                element.Click();
-            }
-            return element;
-        }
+        #endregion
 
-        // to workaround selenium/ie9 issue with clicks not always registering on buttons 
-        public static IWebElement BrowserSpecificClick(this IWebElement element, IWebDriver webDriver, bool repeat = true) {
-            try {
-                if (webDriver is InternetExplorerDriver) {
-                    //element.FindElement(By.XPath("..")).Click(); // click on browser to ensure has focus 
-                    element.SendKeys("\n"); // use enter on button 
-                    //element.Click();
-                }
-                else {
-                    //element.Click();
-                    element.SendKeys("\n"); // use enter on button 
-                }
-            }
-            catch (WebDriverException) {
-                if (repeat) {
-                    // try again might be flakey
-                    Thread.Sleep(1000);
-                    return element.BrowserSpecificClick(webDriver, false);
-                }
-                throw;
-            }
-
-            return element;
-        }
-
-        public static IWebElement FocusClick(this IWebElement element, IWebDriver webDriver) {
-            element.FindElement(By.XPath("..")).Click(); // click on browser to ensure has focus      
-            return element;
-        }
-
-        #region Page level operations
+        #region Asserts
 
         private static IWebDriver AssertContainsElementWithClass(this IWebDriver webDriver, string className) {
             try {
@@ -180,51 +142,26 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             }
         }
 
-        /// <summary>
-        /// Returns the first Div of class 'Object'  -  typically the title object of the page
-        /// </summary>
-        /// <param name="webDriver"></param>
-        /// <returns></returns>
-        public static IWebElement GetTopObject(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-object"));
-        }
-
         #endregion
 
-        #region History
-
-        public static IWebElement GetHistory(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-history"));
+        public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
+            if (webDriver is InternetExplorerDriver) {
+                element.SendKeys(Keys.Space);
+            }
+            else {
+                element.Click();
+            }
+            return element;
         }
 
-        public static IWebDriver GoBackViaHistoryBy(this IWebDriver webDriver, int numberOfObjects) {
-            IWebElement history = webDriver.GetHistory();
-            ReadOnlyCollection<IWebElement> links = history.FindElements(By.TagName("a"));
-            int count = links.Count();
-            links[count - 1 - numberOfObjects].BrowserSpecificClick(webDriver);
-            webDriver.WaitForAjaxComplete();
-            return webDriver;
-        }
-
-        public static IWebDriver ClickClearHistory(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Clear");
-        }
-
-        public static IWebDriver GoHome(this IWebDriver webDriver) {
-            webDriver.FindElement(By.CssSelector("nav a")).Click();
-            return webDriver;
-        }
+        #region Page level operations
 
         #endregion
 
         #region Tabbed History
 
-        public static IWebElement GetTabbedHistory(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-tabbed-history"));
-        }
-
         public static IWebDriver ClickTabLink(this IWebDriver webDriver, int index) {
-            webDriver.FindElements(By.CssSelector(".nof-tab a"))[index].BrowserSpecificClick(webDriver);
+            webDriver.FindElements(By.CssSelector(".nof-tab a"))[index].Click();
             webDriver.WaitForAjaxComplete();
             return webDriver;
         }
@@ -266,43 +203,14 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             return webDriver.ClickClearContextMenu(index, ClearType.ClearAll);
         }
 
-        public static IWebDriver GoToHomePage(this IWebDriver webDriver) {
-            webDriver.FindElement(By.CssSelector("nav a")).Click();
-            return webDriver;
-        }
 
         #endregion
 
         #region Actions
 
-        public static IWebDriver ClickApply(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Apply");
-        }
-
-        public static IWebDriver ClickEdit(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Edit");
-        }
-
-        public static IWebDriver ClickCancel(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Cancel");
-        }
-
-        public static IWebDriver ClickSave(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Save");
-        }
 
         //Navigation buttons
-        public static IWebDriver ClickFirst(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "First");
-        }
-
-        public static IWebDriver ClickPrevious(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Previous");
-        }
-
-        public static IWebDriver ClickNext(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Next");
-        }
+      
 
         public static IWebDriver ClickLast(this IWebDriver webDriver) {
             return ClickSingleGenericButton(webDriver, "Last");
@@ -322,7 +230,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             IWebElement button = webDriver.FindElement(By.CssSelector("button[title=" + title + "]"));
 
             //webDriver.ScrollTo(button);
-            button.BrowserSpecificClick(webDriver);
+            button.Click();
             webDriver.WaitForAjaxComplete();
             return webDriver;
         }
@@ -338,7 +246,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         }
 
         public static IWebDriver ClickOnObjectLinkInField(this IWebDriver webDriver, string fieldId) {
-            webDriver.GetField(fieldId).FindElement(By.TagName("a")).BrowserSpecificClick(webDriver);
+            webDriver.GetField(fieldId).FindElement(By.TagName("a")).Click();
             Thread.Sleep(1000); // hack for unknown error
             webDriver.WaitForAjaxComplete();
             return webDriver;
@@ -439,38 +347,19 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Using the Find menu
 
-        public static IWebElement GetFinderSelections(this IWebElement field) {
-            return field.FindElement(By.TagName("table"));
-        }
+     
 
-        public static IWebElement SelectFinderOption(this IWebDriver webDriver, string fieldId, string name) {
-            IWebElement field = webDriver.GetField(fieldId);
-            IWebElement row = GetFinderSelections(field).FindElements(By.TagName("tr")).Where(x => x.Text.Contains(name)).FirstOrDefault();
-            row.FindElement(By.Name("Selector")).BrowserSpecificClick(webDriver);
-            webDriver.WaitForAjaxComplete();
-            return field;
-        }
+       
 
         public static IWebElement ClickFinderAction(this IWebDriver webDriver, string fieldId, string actionId) {
             IWebElement field = webDriver.GetField(fieldId);
-            field.FindElement(By.Id(actionId)).BrowserSpecificClick(webDriver);
+            field.FindElement(By.Id(actionId)).Click();
             webDriver.WaitForAjaxComplete();
             return field;
         }
 
-        public static IWebElement ClickRemove(this IWebDriver webDriver, string fieldId) {
-            IWebElement field = webDriver.GetField(fieldId);
-            field.FindElement(By.CssSelector("[title=Remove]")).BrowserSpecificClick(webDriver);
-            webDriver.WaitForAjaxComplete();
-            return field;
-        }
+       
 
-        public static IWebElement ClickRecentlyViewed(this IWebDriver webDriver, string fieldId) {
-            IWebElement field = webDriver.GetField(fieldId);
-            field.FindElement(By.CssSelector("[title='Recently Viewed']")).BrowserSpecificClick(webDriver);
-            webDriver.WaitForAjaxComplete();
-            return field;
-        }
 
         #endregion
 
@@ -513,14 +402,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Collections
 
-        public static IWebElement GetStandaloneTable(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-collection-table"));
-        }
-
-        public static IWebElement GetStandaloneList(this IWebDriver webDriver) {
-            return webDriver.FindElement(By.ClassName("nof-collection-list"));
-        }
-
         public static IWebElement GetInternalCollection(this IWebDriver webDriver, string collectionId) {
             IWebElement coll = GetField(webDriver, collectionId);
             AssertIsCollection(coll);
@@ -552,7 +433,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             IWebElement collection = GetInternalCollection(webDriver, collectionId);
             AssertIsCollection(collection);
             IWebElement button = collection.FindElement(By.ClassName(buttonName));
-            button.BrowserSpecificClick(webDriver);
+            button.Click();
             webDriver.WaitForAjaxComplete();
             return collection;
         }
@@ -613,7 +494,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         }
 
         public static void ClickRemove(this IWebElement row, IWebDriver webDriver) {
-            row.FindElement(By.ClassName("nof-remove")).BrowserSpecificClick(webDriver);
+            row.FindElement(By.ClassName("nof-remove")).Click();
         }
 
         #endregion
