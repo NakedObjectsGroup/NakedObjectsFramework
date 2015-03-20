@@ -94,11 +94,11 @@
     <Compile Include="Profile\IProfileManager.cs" />
     <Compile Include="Profile\IProfiler.cs" />
     <Compile Include="Profile\ProfileActionInvocationFacet.cs" />
+    <Compile Include="Profile\ProfileCallbackFacet.cs" />
     <Compile Include="Profile\ProfileConfiguration.cs" />
     <Compile Include="Profile\ProfileEvent.cs" />
     <Compile Include="Profile\ProfileManager.cs" />
-    <Compile Include="Profile\ProfilePersistedFacet.cs" />
-    <Compile Include="Profile\ProfileUpdatedFacet.cs" />
+    <Compile Include="Profile\ProfilePropertySetterFacet.cs" />
     <Compile Include="SemanticsProvider\IFromStream.cs" />
     <Compile Include="SemanticsProvider\IValueSemanticsProvider.cs" />
     <Compile Include="Facet\AuthorizationDisableForSessionFacet.cs" />

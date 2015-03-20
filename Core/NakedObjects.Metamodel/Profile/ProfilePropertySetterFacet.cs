@@ -5,31 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Profile {
-    [Serializable]
-    public sealed class ProfilePersistedFacet : PersistedCallbackFacetAbstract {
+    public sealed class ProfilePropertySetterFacet : PropertySetterFacetAbstract {
         private readonly IProfileManager profileManager;
-        private readonly IPersistedCallbackFacet underlyingFacet;
+        private readonly IPropertySetterFacet underlyingFacet;
 
-        public ProfilePersistedFacet(IPersistedCallbackFacet underlyingFacet, IProfileManager profileManager)
-            : base(underlyingFacet.Specification) {
+        public ProfilePropertySetterFacet(IPropertySetterFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
             this.profileManager = profileManager;
         }
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            profileManager.Begin(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
+        public override void SetProperty(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedValue, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
+            profileManager.Begin(session, ProfileEvent.PropertySet, "", nakedObjectAdapter, lifecycleManager);
             try {
-                underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
+                underlyingFacet.SetProperty(nakedObjectAdapter, nakedValue, transactionManager, session, lifecycleManager);
             }
             finally {
-                profileManager.End(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
+                profileManager.End(session, ProfileEvent.PropertySet, "", nakedObjectAdapter, lifecycleManager);
             }
         }
     }

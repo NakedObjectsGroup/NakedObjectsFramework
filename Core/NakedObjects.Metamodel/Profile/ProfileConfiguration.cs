@@ -10,6 +10,8 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Meta.Profile {
     public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
+        private ISet<ProfileEvent> eventsToProfile = new HashSet<ProfileEvent>();
+
         public ProfileConfiguration() {
             Profiler = typeof (T);
         }
@@ -17,7 +19,11 @@ namespace NakedObjects.Meta.Profile {
         #region IProfileConfiguration Members
 
         public Type Profiler { get; private set; }
-        public ISet<ProfileEvent> EventsToProfile { get; set; }
+
+        public ISet<ProfileEvent> EventsToProfile {
+            get { return eventsToProfile; }
+            set { eventsToProfile = value; }
+        }
 
         #endregion
     }

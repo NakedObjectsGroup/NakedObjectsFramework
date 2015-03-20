@@ -5,30 +5,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Profile {
-    [Serializable]
-    public sealed class ProfileUpdatedFacet : UpdatedCallbackFacetAbstract {
+    public sealed class ProfileCallbackFacet : CallbackFacetAbstract {
+        private readonly ProfileEvent associatedEvent;
         private readonly IProfileManager profileManager;
-        private readonly IUpdatedCallbackFacet underlyingFacet;
+        private readonly ICallbackFacet underlyingFacet;
 
-        public ProfileUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.Specification) {
+        public ProfileCallbackFacet(ProfileEvent associatedEvent, ICallbackFacet underlyingFacet, IProfileManager profileManager) : base(underlyingFacet.FacetType, underlyingFacet.Specification) {
+            this.associatedEvent = associatedEvent;
             this.underlyingFacet = underlyingFacet;
             this.profileManager = profileManager;
         }
 
         public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            profileManager.Begin(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
+            profileManager.Begin(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
             try {
                 underlyingFacet.Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
             }
             finally {
-                profileManager.End(session, ProfileEvent.Updated, "", nakedObjectAdapter, lifecycleManager);
+                profileManager.End(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
             }
         }
     }

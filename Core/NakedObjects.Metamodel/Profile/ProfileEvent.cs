@@ -8,7 +8,15 @@
 namespace NakedObjects.Meta.Profile {
     public enum ProfileEvent {
         ActionInvocation,
+        PropertySet,
+        Created,
+        Deleted,
+        Deleting,
+        Loaded,
+        Loading,
+        Persisted,
+        Persisting,
         Updated,
-        Persisted
+        Updating,
     }
 }

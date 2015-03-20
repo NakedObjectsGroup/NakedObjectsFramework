@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -48,14 +49,14 @@ namespace NakedObjects.Meta.Test.Profile {
             }
         }
 
-    
-
         [TestMethod]
         public void TestDecorateActionInvocationFacet() {
             var config = new Mock<IProfileConfiguration>();
             var auditor = new Mock<IProfiler>();
 
             config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
+
+            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent>() {ProfileEvent.ActionInvocation});
 
             var manager = new ProfileManager(config.Object);
 
@@ -84,6 +85,9 @@ namespace NakedObjects.Meta.Test.Profile {
 
             config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
 
+            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent>() { ProfileEvent.Updated });
+
+
             var manager = new ProfileManager(config.Object);
 
             var testSpec = new Mock<ISpecification>();
@@ -101,7 +105,7 @@ namespace NakedObjects.Meta.Test.Profile {
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (ProfileUpdatedFacet));
+            Assert.IsInstanceOfType(facet, typeof (ProfileCallbackFacet));
         }
 
         [TestMethod]
@@ -110,6 +114,9 @@ namespace NakedObjects.Meta.Test.Profile {
             var auditor = new Mock<IProfiler>();
 
             config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
+
+            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent>() { ProfileEvent.Persisted });
+
 
             var manager = new ProfileManager(config.Object);
 
@@ -128,7 +135,7 @@ namespace NakedObjects.Meta.Test.Profile {
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (ProfilePersistedFacet));
+            Assert.IsInstanceOfType(facet, typeof (ProfileCallbackFacet));
         }
     }
 }

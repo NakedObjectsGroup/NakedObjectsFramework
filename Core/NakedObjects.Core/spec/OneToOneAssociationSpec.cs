@@ -153,7 +153,7 @@ namespace NakedObjects.Core.Spec {
                     var setterFacet = GetFacet<IPropertySetterFacet>();
                     if (setterFacet != null) {
                         inObjectAdapter.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObjectAdapter, associate, transactionManager);
+                        setterFacet.SetProperty(inObjectAdapter, associate, transactionManager, Session, LifecycleManager);
                     }
                 }
             }

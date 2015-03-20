@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager) {
+        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
             methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
         }
 
