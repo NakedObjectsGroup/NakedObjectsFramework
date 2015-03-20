@@ -13,8 +13,12 @@ namespace NakedObjects.Architecture.Menu {
     /// Injected service that provides implementations of IMenu.
     /// </summary>
     public interface IMenuFactory {
-        //Creates a new menu with the defaultType already. If the optional name
+        //Creates a new menu with the Type specified. If the optional name
         //parameter is not specified, then the menu takes its name from the type.
         IMenu NewMenu<T>(bool addAllActions = false, string name = null);
+
+        //Creates a new menu with the Type specified. If the optional name
+        //parameter is not specified, then the menu takes its name from the type.
+        IMenu NewMenu(Type type, bool addAllActions = false, string name = null);
     }
 }

@@ -29,6 +29,10 @@ namespace NakedObjects.Meta.Menu {
             return new MenuImpl(metamodel, typeof(T), addAllActions, name);
         }
 
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+            return new MenuImpl(metamodel, type, addAllActions, name);
+        }
+
         #endregion
     }
 }

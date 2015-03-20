@@ -11,15 +11,15 @@ using System.Data.Entity;
 using System.Linq;
 using TestObjectMenu;
 
-namespace NakedObjects.SystemTest.Menus.Service {
+namespace NakedObjects.SystemTest.Menus.Service2 {
 
     [TestClass]
-    public class TestMainMenus : AbstractSystemTest<MenusDbContext> {
+    public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
         #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestMainMenus());
+            CleanupNakedObjectsFramework(new TestMainMenusConventional());
             Database.Delete(MenusDbContext.DatabaseName);
         }
 
@@ -174,7 +174,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     #region Classes used in test
 
-    public class LocalMainMenus  {
+    public class LocalMainMenus {
 
         public static IMenu[] MainMenus(IMenuFactory factory) {
             var foos = factory.NewMenu<FooService>(true);
@@ -194,7 +194,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             sub2.AddAction("Action0");
 
             var hyb = factory.NewMenu<object>(false, "Hybrid");
-            hyb.Type= typeof(FooService);
+            hyb.Type = typeof(FooService);
             hyb.AddAction("FooAction0");
             hyb.Type = typeof(BarService);
             hyb.AddAction("BarAction0");
@@ -209,6 +209,8 @@ namespace NakedObjects.SystemTest.Menus.Service {
             return new IMenu[] { foos, bars, q, subs, hyb, empty, empty2 };
         }
     }
+
+
 
     public class FooService {
 

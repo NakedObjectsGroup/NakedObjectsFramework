@@ -28,6 +28,7 @@ namespace NakedObjects.Meta.Menu {
             this.metamodel = metamodel;
             this.Type = type;
             Name = name ?? ObjectSpec.GetFacet<INamedFacet>().NaturalName;
+            Id = type.Name;
             if (addAllActions) {
                 AddRemainingNativeActions();
                 AddContributedActions();

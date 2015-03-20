@@ -176,11 +176,12 @@
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
+    <Compile Include="Menus\TestMainMenusConventional.cs" />
     <Compile Include="Menus\TestAccessingMenuActionsViaGetAction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Menus\TestServiceMenus.cs" />
-    <Compile Include="Menus\TestMainMenus.cs" />
+    <Compile Include="Menus\TestMainMenusUsingDelegation.cs" />
     <Compile Include="Menus\TestObjectMenu.cs" />
     <Compile Include="Reflect\ReflectorTest.cs" />
     <Compile Include="util\DateTimeExtensionsTest.cs" />

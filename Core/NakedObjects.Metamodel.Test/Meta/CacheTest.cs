@@ -293,6 +293,11 @@ namespace NakedObjects.Meta.Test {
                 return null;
             }
             #endregion
+
+
+            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+                return null;
+            }
         }
 
         #endregion
