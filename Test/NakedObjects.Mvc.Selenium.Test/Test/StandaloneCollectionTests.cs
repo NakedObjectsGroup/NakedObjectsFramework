@@ -260,8 +260,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("2 Stores");
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
 
-            br.FindElement(By.CssSelector("button[title=Last]")).Click();
-
             wait.ClickAndWait("button[title=Last]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 249 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));

@@ -241,19 +241,21 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("1/6/2013", "30/6/2013");
 
-            var apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
+            var apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply:enabled")));
+
             apply.Click();
 
-            var errors = wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")));
+            Thread.Sleep(1000);
+
+            var errors = br.FindElements(By.CssSelector(".validation-summary-errors"));
 
             Assert.AreEqual(0, errors.Count, "No errors expected");
 
             SetDates("28/6/2013", "2/6/2013");
 
-            apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply")));
-            apply.Click();
-
-            wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
+            apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply:enabled")));
+           
+            wait.ClickAndWait(apply, wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
 
             var error = wait.Until(wd => wd.FindElement(By.CssSelector(".validation-summary-errors")));
             const string expected = "Action was unsuccessful. Please correct the errors and try again.\r\n'From Date' must be before 'To Date'";
@@ -262,7 +264,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             SetDates("1/6/2013", "30/6/2013");
 
-            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok:enabled")));
 
             wait.ClickAndWait(ok, ".validation-summary-errors");
 
