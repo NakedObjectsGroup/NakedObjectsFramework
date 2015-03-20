@@ -90,6 +90,14 @@
     <Compile Include="Facet\MenuFacetViaMethod.cs" />
     <Compile Include="Facet\ValidateObjectFacetNull.cs" />
     <Compile Include="Meta\SerializedData.cs" />
+    <Compile Include="Profile\IProfileConfiguration.cs" />
+    <Compile Include="Profile\IProfileManager.cs" />
+    <Compile Include="Profile\IProfiler.cs" />
+    <Compile Include="Profile\ProfileActionInvocationFacet.cs" />
+    <Compile Include="Profile\ProfileConfiguration.cs" />
+    <Compile Include="Profile\ProfileManager.cs" />
+    <Compile Include="Profile\ProfilePersistedFacet.cs" />
+    <Compile Include="Profile\ProfileUpdatedFacet.cs" />
     <Compile Include="SemanticsProvider\IFromStream.cs" />
     <Compile Include="SemanticsProvider\IValueSemanticsProvider.cs" />
     <Compile Include="Facet\AuthorizationDisableForSessionFacet.cs" />
