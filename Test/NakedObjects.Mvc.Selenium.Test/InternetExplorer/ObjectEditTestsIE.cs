@@ -13,9 +13,9 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
     [TestClass]
     public class ObjectEditTestsIE : ObjectEditTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("IEDriverServer.exe");
-            AWWebTest.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -27,7 +27,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoEditPersistedObject();
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public override void EditTableHeader() {
             DoEditTableHeader();
         }

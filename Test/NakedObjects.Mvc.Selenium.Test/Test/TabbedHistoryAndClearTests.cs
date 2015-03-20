@@ -73,13 +73,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
                 Thread.Sleep(1000);
                 return true;
             });
-            
+
             Assert.AreEqual(4, br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElement(By.TagName("a")).Text);
             Assert.AreEqual("José Saraiva", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a"))[1].Text);
             Assert.AreEqual("Canada", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a"))[2].Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Last().Text);
-
 
             //Go to collection
             wait.ClickAndWait(".nof-tab:last-of-type a", wd => wd.Title == "20 Sales Orders");
@@ -88,8 +87,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("José Saraiva", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a"))[1].Text);
             Assert.AreEqual("Canada", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a"))[2].Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Last().Text);
-
-            
 
             wait.ClickAndWait(".nof-tab:nth-of-type(3) a", wd => wd.Title == "Canada");
 
@@ -246,7 +243,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             // 1st collection
-            wait.ClickAndWait("#ContactRepository-ValidCountries button", wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 1);    
+            wait.ClickAndWait("#ContactRepository-ValidCountries button", wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("12 Country Regions", br.FindElement(By.CssSelector(".nof-tabbed-history")).FindElement(By.TagName("a")).Text);
 
             // 2nd collection
@@ -303,7 +300,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         public void DoClearInActiveCollectionMultipleItems() {
             Login();
-           
+
             wait.ClickAndWait("#ContactRepository-ValidCountries button", wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 1);
 
             // 1st collection 

@@ -15,7 +15,6 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class AjaxTests : AWWebTest {
-
         public void DoRemoteValidationProperty() {
             Login();
 
@@ -80,7 +79,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // first test so get everything started with a longer timeout
 
             try {
-
                 wait = new SafeWebDriverWait(br, new TimeSpan(0, 0, 30));
 
                 var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");

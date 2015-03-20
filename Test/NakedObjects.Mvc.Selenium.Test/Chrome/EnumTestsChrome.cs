@@ -12,9 +12,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
     [TestClass]
     public class EnumTestsChrome : EnumTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("chromedriver.exe");
-            MyTests.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -26,7 +26,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
 
         [TestMethod]

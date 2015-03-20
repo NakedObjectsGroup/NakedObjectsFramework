@@ -17,7 +17,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace NakedObjects.Mvc.Selenium.Test {
-    [TestClass]
     public abstract class AWWebTest {
         #region chrome helper
 
@@ -63,8 +62,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         protected SafeWebDriverWait wait;
         protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 10);
 
-        [ClassInitialize]
-        public static void InitialiseClass(TestContext context) {
+        public static void Reset(TestContext context) {
             try {
                 DatabaseUtils.RestoreDatabase(database, backup, server);
             }
@@ -94,7 +92,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             }
         }
 
-        public virtual void CleanUpTest() {
+        public virtual void CleanUp() {
             if (br != null) {
                 try {
                     br.Manage().Cookies.DeleteAllCookies();
@@ -106,23 +104,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
                     // to suppress error 
                 }
             }
-
-            //KillAllProcesses("iexplore");
-            //KillAllProcesses("firefox");
         }
 
         protected IWebDriver InitChromeDriver() {
-            //const string cacheDir = @"C:\SeleniumTestFolder";
-
             var crOptions = new ChromeOptions();
-
             crOptions.AddArgument(@"--test-type");
-            //crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
-            var cd = new ChromeDriver(crOptions);
-
-            // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
-            //Thread.Sleep(5000);
-            return cd;
+            return new ChromeDriver(crOptions);
         }
 
         #endregion

@@ -13,9 +13,9 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
     [TestClass]
     public class TabbedHistoryAndClearTestsIE : TabbedHistoryAndClearTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("IEDriverServer.exe");
-            AWWebTest.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -27,7 +27,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
 
         //[TestMethod]
@@ -60,7 +60,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoCollectionKeepsFormat();
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public override void ClearActiveCollectionItem() {
             DoClearActiveCollectionItem();
         }
@@ -80,7 +80,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoClearInActiveCollectionItem();
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public override void ClearInActiveCollectionMultipleItems() {
             DoClearInActiveCollectionMultipleItems();
         }

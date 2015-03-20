@@ -9,12 +9,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
-    [TestClass] 
+    [TestClass]
     public class AjaxTestsChrome : AjaxTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("chromedriver.exe");
-            AjaxTests.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -25,8 +25,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         [TestCleanup]
-        public override void CleanUpTest() {
-            base.CleanUpTest();
+        public override void CleanUp() {
+            base.CleanUp();
         }
 
         //[TestMethod]

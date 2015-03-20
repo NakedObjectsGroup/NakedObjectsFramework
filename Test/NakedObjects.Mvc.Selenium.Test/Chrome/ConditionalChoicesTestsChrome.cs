@@ -12,9 +12,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
     [TestClass]
     public class ConditionalChoicesTestsChrome : ConditionalChoicesTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("chromedriver.exe");
-            AWWebTest.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -26,7 +26,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUp();
         }
 
         [TestMethod]

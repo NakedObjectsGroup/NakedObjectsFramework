@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -27,9 +26,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             //Check basics of edit view
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
-            IWebElement objectView = br.FindElement(By.ClassName("main-content"));
-            //IWebElement titleObject = objectView.FindElement(By.ClassName("nof-object")); // noew disabled for edit view 
-            //Assert.AreEqual("Field Trip Store, AW00000546", titleObject.Text);
             br.AssertElementExists(By.CssSelector("[title=Save]"));
             try {
                 br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
@@ -68,7 +64,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             //Return to View via History
-        
+
             br.FindElement(By.CssSelector(".nof-tab:first-of-type a")).Click();
             wait.ClickAndWait(".nof-tab:first-of-type a", ".nof-objectview");
         }
@@ -151,10 +147,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var recentlyViewed = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title='Recently Viewed']");
 
             var select = wait.ClickAndWait(recentlyViewed, "#Store-SalesPerson [title='Select']:first-of-type");
-            wait.ClickAndWaitGone(select,  "#Store-SalesPerson [title='Select']");
+            wait.ClickAndWaitGone(select, "#Store-SalesPerson [title='Select']");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-          
+
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Shu Ito");
         }
 
@@ -165,7 +161,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var remove = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title=Remove]");
 
-            wait.ClickAndWaitGone(remove, "#Store-SalesPerson img"); 
+            wait.ClickAndWaitGone(remove, "#Store-SalesPerson img");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertIsEmpty();
         }
@@ -181,7 +177,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             lastName.Clear();
             lastName.SendKeys("Vargas" + Keys.Tab);
 
-            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");  
+            wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Garrett Vargas");
@@ -243,7 +239,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
             //br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
             br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
-        
+
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
             error.AssertTextEquals("Mandatory");
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Chrome;
@@ -162,7 +161,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             number.SendKeys("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
-                    
+
             wait.ClickAndWait(".nof-ok", wd => wd.Title.StartsWith("33 x "));
         }
 
@@ -267,7 +266,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //   br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate").AppendText(Keys.Escape, br);
             br.WaitForAjaxComplete();
 
-            wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");   
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }
 
         public abstract void CancelActionDialog();
@@ -363,7 +362,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var newProduct = wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder button", "#WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct");
             wait.ClickAndWait(newProduct, "#Product-Name-Input");
 
-
             br.FindElement(By.CssSelector("#Product-Name")).TypeText("test-popup", br);
             br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test-popup", br);
             br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
@@ -456,10 +454,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Employee Details:", label.Text);
 
             wait.ClickAndWait("button.nof-minimize", "#Store-SalesPerson-SalesPerson-Employee div.nof-label");
-
-
         }
-
-
     }
 }

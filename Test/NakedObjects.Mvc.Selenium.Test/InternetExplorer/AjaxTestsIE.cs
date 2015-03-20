@@ -13,9 +13,9 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
     [TestClass]
     public class AjaxTestsIE : AjaxTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public static void InitialiseClass(TestContext context) {
             FilePath("IEDriverServer.exe");
-            AjaxTests.InitialiseClass(context);
+            Reset(context);
         }
 
         [TestInitialize]
@@ -27,7 +27,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            CleanUpTest();
+            CleanUp();
         }
 
         [TestMethod]
