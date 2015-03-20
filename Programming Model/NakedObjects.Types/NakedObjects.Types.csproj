@@ -50,7 +50,6 @@
     <Compile Include="Async\IAsyncService.cs" Condition=" '$(TargetFrameworkVersion)' == 'v4.0' " />
     <Compile Include="Container\IDomainObjectContainer.cs" />
     <Compile Include="Menu\IMenu.cs" />
-    <Compile Include="Menu\ITypedMenu.cs" />
     <Compile Include="Title\ITitleBuilder.cs" />
     <Compile Include="ViewModel\IViewModelSwitchable.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />

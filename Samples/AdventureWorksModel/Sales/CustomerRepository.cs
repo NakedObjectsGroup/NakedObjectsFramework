@@ -25,13 +25,13 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public static void Menu(ITypedMenu<CustomerRepository> menu) {
+        public static void Menu(IMenu menu) {
             menu.AddAction("FindCustomerByAccountNumber");
-            menu.CreateSubMenuOfSameType("Stores")
+            menu.CreateSubMenu("Stores")
                 .AddAction("FindStoreByName")
                 .AddAction("CreateNewStoreCustomer")
                 .AddAction("RandomStore");
-            menu.CreateSubMenuOfSameType("Individuals")
+            menu.CreateSubMenu("Individuals")
                 .AddAction("FindIndividualCustomerByName")
                 .AddAction("CreateNewIndividualCustomer")
                 .AddAction("RandomIndividual");

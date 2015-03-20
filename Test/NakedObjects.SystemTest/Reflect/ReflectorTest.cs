@@ -400,7 +400,7 @@ namespace NakedObjects.SystemTest.Reflect {
                 throw new NotImplementedException();
             }
 
-            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+            public IMenu NewMenu<T>(bool addAllActions, string name = null) {
                 throw new NotImplementedException();
             }
 

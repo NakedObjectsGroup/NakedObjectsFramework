@@ -6,16 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Menu;
+using System;
 
 namespace NakedObjects.Architecture.Menu {
     /// <summary>
     /// Injected service that provides implementations of IMenu.
     /// </summary>
     public interface IMenuFactory {
-        //Creates an empty, un-typed menu, (for which a name must be specified).
-        IMenu NewMenu(string name);
-        //Creates a new menu based on a service of type T. If the optional name
-        //parameter is not specified, then the menu takes its name from the service.
-        ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null);
+        //Creates a new menu with the defaultType already. If the optional name
+        //parameter is not specified, then the menu takes its name from the type.
+        IMenu NewMenu<T>(bool addAllActions = false, string name = null);
     }
 }

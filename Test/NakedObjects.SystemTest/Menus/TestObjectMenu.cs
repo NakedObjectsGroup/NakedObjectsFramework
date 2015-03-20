@@ -13,7 +13,7 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus {
     [TestClass]
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
-                #region Setup/Teardown
+        #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -85,7 +85,7 @@ namespace NakedObjects.SystemTest.Menus {
 
             var items = menu.AllItems();
             items[0].AssertIsAction().AssertNameEquals("Action2 Renamed");
-            items[1].AssertIsAction().AssertNameEquals("Renamed1");
+            items[1].AssertIsAction().AssertNameEquals("Action1");
             var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
@@ -162,13 +162,13 @@ namespace TestObjectMenu {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        public static void Menu(ITypedMenu<Bar> menu) {
+        public static void Menu(IMenu menu) {
             menu.AddAction("Action2");
-            menu.AddAction("Action1", "Renamed1");
-            var sub =menu.CreateSubMenuOfSameType("Sub1");
+            menu.AddAction("Action1");
+            var sub =menu.CreateSubMenu("Sub1");
             sub.AddAction("Action3");
 
-            sub = menu.CreateSubMenuOfSameType("Docs");
+            sub = menu.CreateSubMenu("Docs");
             sub.AddAction("Action4");
             menu.AddRemainingNativeActions();
             menu.AddContributedActions();

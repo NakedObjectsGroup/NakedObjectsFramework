@@ -43,7 +43,7 @@ namespace Expenses.Services {
                 factory.NewMenu<DummyMailSender>(true),
                 factory.NewMenu<SimpleRepositoryCustomHelperTestClass>(true),
                 factory.NewMenu<SimpleRepositoryDescribedCustomHelperTestClass>(true),
-                factory.NewMenu("Empty"),  //Should not be rendered
+                factory.NewMenu<object>(false, "Empty"),  //Should not be rendered
                 factory.NewMenu<ServiceWithNoVisibleActions>(true)
             };
         }

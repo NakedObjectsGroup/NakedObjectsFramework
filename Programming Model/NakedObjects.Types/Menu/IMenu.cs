@@ -1,45 +1,72 @@
-﻿namespace NakedObjects.Menu {
+﻿using System;
+namespace NakedObjects.Menu {
 
     /// <summary>
-    /// Extension of IMenuImmutable that provides methods for building the menu
-    /// during reflection time.
+    /// Provides methods for constructing a menu on a domain object. Implementation of this
+    /// interface will be provided by the framework.
     /// </summary>
     public interface IMenu  {
+
         /// <summary>
         /// Allows the default name for the menu to be over-ridden
+        /// The type on which the actions to be added are defined. Will normally be the
+        /// object on which the Menu is defined, but may be changed to allow actions
+        /// to be added from another service.
         /// </summary>
         /// <param name="name"></param>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu WithMenuName(string name);
 
         /// <summary>
-        /// Allows the id for the menu to be specified or over-ridden
+        /// The type on which the actions to be added are defined. Will normally be the
+        /// object on which the Menu is defined, but may be changed to allow actions
+        /// to be added from another service.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>This menu (for fluent programming)</returns>
+        Type Type { get; set; }
+
+        /// <summary>
+        /// Allows the id for the menu to be specified or over-ridden.
         /// </summary>
         /// <param name="name"></param>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu WithId(string id);
 
         /// <summary>
-        /// Adds specified action as the next menu item
+        /// Add an action from the Type.
         /// </summary>
-        /// <typeparam name="TObject"></typeparam>
         /// <param name="actionName"></param>
         /// <param name="renamedTo"></param>
         /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddActionFrom<TObject>(string actionName, string renamedTo = null);
+        IMenu AddAction(string actionName);
 
-        /// <summary>
-        /// Adds all actions from the service not previously added individually,
-        /// in the order they are specified in the service.
-        /// </summary>
-        /// <typeparam name="TService"></typeparam>
-        /// <returns>This menu (for fluent programming)</returns>
-        IMenu AddAllRemainingActionsFrom<TService>();
-
-        /// <summary>
+         /// <summary>
         /// </summary>
         /// <param name="subMenuName"></param>
-        /// <returns>The new menu, which will already have been added to the hosting menu</returns>
+        /// <returns>The new menu, which will already have been added to the hosting menu. It will
+        /// have the same Type as the super-menu.</returns>
         IMenu CreateSubMenu(string subMenuName);
+
+        /// <summary>
+        /// Finds a previously-created sub menu.  Throws exception if sub-menu of that name does not exist.
+        /// </summary>
+        /// <param name="menuName"></param>
+        /// <returns></returns>
+        IMenu GetSubMenu(string menuName);
+
+        /// <summary>
+        /// Adds all native actions from the Default Type not previously added directly or to a sub-menu.
+        /// </summary>
+        /// <returns>This menu (for fluent programming)</returns>
+        IMenu AddRemainingNativeActions();
+
+        /// <summary>
+        /// Adds all actions contributed to the Default Type.
+        /// Where a sub-menu exists of the correct name, actions will be added to that.
+        /// Will throw an exception if SetDefaultType has not been called.
+        /// </summary>
+        /// <returns></returns>
+        IMenu AddContributedActions();
     }
 }

@@ -15,7 +15,7 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
-    public sealed class TypedMenu<TObject> : MenuImpl, ITypedMenu<TObject> {
+    public sealed class TypedMenu<TObject> : MenuImpl {
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {
@@ -30,17 +30,17 @@ namespace NakedObjects.Meta.Menu {
 
         #region ITypedMenu<TObject> Members
 
-        public ITypedMenu<TObject> AddAction(string actionName, string renamedTo = null) {
+        public IMenu AddAction(string actionName, string renamedTo = null) {
             AddActionFrom<TObject>(actionName, renamedTo);
             return this;
         }
 
-        public ITypedMenu<TObject> AddRemainingNativeActions() {
+        public IMenu AddRemainingNativeActions() {
             AddAllRemainingActionsFrom<TObject>();
             return this;
         }
 
-        public ITypedMenu<TObject> AddContributedActions() {
+        public IMenu AddContributedActions() {
             var spec = GetObjectSpec<TObject>() as IObjectSpecImmutable;
             if (spec != null) {
                 spec.ContributedActions.ForEach(ca => AddContributedAction(ca, spec));
@@ -48,7 +48,7 @@ namespace NakedObjects.Meta.Menu {
             return this;
         }
 
-        public ITypedMenu<TObject> CreateSubMenuOfSameType(string subMenuName) {
+        public IMenu CreateSubMenuOfSameType(string subMenuName) {
             var sub = new TypedMenu<TObject>(Metamodel, false, subMenuName);
             sub.Id += "-" + subMenuName + ":";
             AddMenuItem(sub);

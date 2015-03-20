@@ -28,11 +28,11 @@ namespace Expenses {
         public class ClaimRepository : AbstractFactoryAndRepository {
             public static string CLAIM_DIFFERENTIATOR = " - ";
 
-            public static void Menu(ITypedMenu<ClaimRepository> menu) {
+            public static void Menu(IMenu menu) {
                 menu.AddAction("CreateNewClaim");
-                menu.CreateSubMenuOfSameType("Approve")
+                menu.CreateSubMenu("Approve")
                     .AddAction("ApproveClaims");
-                menu.CreateSubMenuOfSameType("Find")
+                menu.CreateSubMenu("Find")
                     .AddAction("MyRecentClaims")
                     .AddAction("FindMyClaims")
                     .AddAction("FindMyClaimsByEnumStatus")

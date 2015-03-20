@@ -104,7 +104,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             q.AssertItemCountIs(4);
 
             q.AllItems()[0].AssertIsAction().AssertNameEquals("Qux Action0");
-            q.AllItems()[1].AssertIsAction().AssertNameEquals("Action X");
+            q.AllItems()[1].AssertIsAction().AssertNameEquals("Qux Action3");
             q.AllItems()[2].AssertIsAction().AssertNameEquals("Qux Action1");
             q.AllItems()[3].AssertIsAction().AssertNameEquals("Qux Action2");
         }
@@ -167,7 +167,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             q.AssertItemCountIs(4);
 
             q.GetAction("Qux Action0").AssertIsVisible();
-            q.GetAction("Action X").AssertIsInvisible();
+            q.GetAction("Qux Action3").AssertIsInvisible();
         }
 
     }
@@ -182,25 +182,28 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
             var q = factory.NewMenu<QuxService>(false, "Qs");
             q.AddAction("QuxAction0");
-            q.AddAction("QuxAction3", "Action X");
+            q.AddAction("QuxAction3");
             q.AddRemainingNativeActions();
 
             var subs = factory.NewMenu<ServiceWithSubMenus>(false);
-            var sub1 = subs.CreateSubMenuOfSameType("Sub1");
+            var sub1 = subs.CreateSubMenu("Sub1");
             sub1.AddAction("Action1");
             sub1.AddAction("Action3");
-            var sub2 = subs.CreateSubMenuOfSameType("Sub2");
+            var sub2 = subs.CreateSubMenu("Sub2");
             sub2.AddAction("Action2");
             sub2.AddAction("Action0");
 
-            var hyb = factory.NewMenu("Hybrid");
-            hyb.AddActionFrom<FooService>("FooAction0");
-            hyb.AddActionFrom<BarService>("BarAction0");
-            hyb.AddAllRemainingActionsFrom<QuxService>();
+            var hyb = factory.NewMenu<object>(false, "Hybrid");
+            hyb.Type= typeof(FooService);
+            hyb.AddAction("FooAction0");
+            hyb.Type = typeof(BarService);
+            hyb.AddAction("BarAction0");
+            hyb.Type = typeof(QuxService);
+            hyb.AddRemainingNativeActions();
 
-            var empty = factory.NewMenu("Empty");
+            var empty = factory.NewMenu<object>(false, "Empty");
 
-            var empty2 = factory.NewMenu("Empty2");
+            var empty2 = factory.NewMenu<object>(false, "Empty2");
             empty2.CreateSubMenu("Sub");
 
             return new IMenu[] { foos, bars, q, subs, hyb, empty, empty2 };
