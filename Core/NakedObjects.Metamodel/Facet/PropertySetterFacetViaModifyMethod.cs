@@ -19,10 +19,11 @@ namespace NakedObjects.Meta.Facet {
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
-        public PropertySetterFacetViaModifyMethod(MethodInfo method, ISpecification holder)
+        public PropertySetterFacetViaModifyMethod(MethodInfo method, string name, ISpecification holder)
             : base(holder) {
             this.method = method;
             methodDelegate = DelegateUtils.CreateDelegate(method);
+            PropertyName = name;
         }
 
         #region IImperativeFacet Members
@@ -40,6 +41,8 @@ namespace NakedObjects.Meta.Facet {
         public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
             methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
         }
+
+        public override string PropertyName { get; protected set; }
 
         protected override string ToStringValues() {
             return "method=" + method;

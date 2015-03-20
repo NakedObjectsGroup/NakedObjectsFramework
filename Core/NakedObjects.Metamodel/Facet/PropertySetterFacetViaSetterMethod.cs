@@ -31,6 +31,11 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
+        public override string PropertyName {
+            get { return property.Name; }
+            protected set {  }
+        }
+
         protected override string ToStringValues() {
             return "property=" + property;
         }

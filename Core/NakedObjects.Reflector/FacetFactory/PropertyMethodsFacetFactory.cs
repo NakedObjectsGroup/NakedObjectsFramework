@@ -88,7 +88,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ModifyPrefix + capitalizedName, typeof (void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, property));
+                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
             }
         }
 
