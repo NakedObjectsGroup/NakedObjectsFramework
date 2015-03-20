@@ -130,7 +130,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoNewObjectOnActionDialog();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();
         }

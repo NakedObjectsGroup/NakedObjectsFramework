@@ -55,7 +55,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeActionParmsReturn();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ShowActionParmsReturn() {
             DoShowActionParmsReturn();
         }
