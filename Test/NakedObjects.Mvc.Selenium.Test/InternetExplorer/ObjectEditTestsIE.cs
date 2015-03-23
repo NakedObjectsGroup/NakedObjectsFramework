@@ -30,7 +30,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             CleanUp();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void EditPersistedObject() {
             DoEditPersistedObject();
         }
