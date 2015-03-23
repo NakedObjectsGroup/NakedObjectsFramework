@@ -74,6 +74,13 @@ namespace $rootnamespace$ {
 			//return config;
         }
 
+		public static IProfileConfiguration ProfileConfig() {
+            return null;
+			//Example:
+			//var events = new HashSet<ProfileEvent>() { ProfileEvent.ActionInvocation }; //etc
+            //return new ProfileConfiguration<MyProfiler>() { EventsToProfile = events };
+        }
+
 		/// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then

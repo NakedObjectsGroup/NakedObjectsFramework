@@ -18,6 +18,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
+using NakedObjects.Meta.Profile;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -56,6 +57,15 @@ namespace NakedObjects.Mvc.App {
                 container.RegisterType(typeof(IFacetDecorator), typeof(AuthorizationManager), "AuthorizationManager", new ContainerControlledLifetimeManager());
                 container.RegisterInstance(typeof(IAuthorizationConfiguration), NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
             }
+
+            if (NakedObjectsRunSettings.ProfileConfig() != null) {
+                container.RegisterType(typeof(IFacetDecorator), typeof(ProfileManager),
+                  "ProfileManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IProfileConfiguration),
+                   NakedObjectsRunSettings.ProfileConfig(),
+                   new ContainerControlledLifetimeManager());
+            }
+
         }
         #endregion
 

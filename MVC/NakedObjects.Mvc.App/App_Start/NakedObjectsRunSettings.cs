@@ -20,6 +20,8 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using System.Collections.Generic;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
+using NakedObjects.Profile;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -91,6 +93,11 @@ namespace NakedObjects.Mvc.App {
         public static IAuthorizationConfiguration AuthorizationConfig() {
                 return null;
         }
+
+        public static IProfileConfiguration ProfileConfig() {
+            return null;
+        }
+
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
