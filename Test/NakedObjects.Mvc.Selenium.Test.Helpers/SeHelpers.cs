@@ -15,6 +15,16 @@ using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.Helper {
     public static class SeHelpers {
+        public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
+            if (webDriver is InternetExplorerDriver) {
+                element.SendKeys(Keys.Space);
+            }
+            else {
+                element.Click();
+            }
+            return element;
+        }
+
         #region new helpers
 
         // Find then click action and wait unitil field selector returns an element 
@@ -34,7 +44,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             Assert.IsNotNull(field);
             return field;
         }
-
 
         // Find then click action and wait until field selector stops returning an element 
         public static void ClickAndWaitGone(this SafeWebDriverWait wait, string actionSelector, string fieldSelector, int delay = 0) {
@@ -63,7 +72,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             wait.Until(wd => (field = SafeFunc(() => wd.FindElement(By.CssSelector(fieldSelector)))) == null);
             Assert.IsNull(field);
         }
-
 
         // find then click action then wait until f returns true
         public static void ClickAndWait(this SafeWebDriverWait wait, string actionSelector, Func<IWebDriver, bool> f) {
@@ -142,116 +150,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             }
         }
 
-        #endregion
-
-        public static IWebElement BrowserSpecificCheck(this IWebElement element, IWebDriver webDriver) {
-            if (webDriver is InternetExplorerDriver) {
-                element.SendKeys(Keys.Space);
-            }
-            else {
-                element.Click();
-            }
-            return element;
-        }
-
-        #region Page level operations
-
-        #endregion
-
-        #region Tabbed History
-
-        public static IWebDriver ClickTabLink(this IWebDriver webDriver, int index) {
-            webDriver.FindElements(By.CssSelector(".nof-tab a"))[index].Click();
-            webDriver.WaitForAjaxComplete();
-            return webDriver;
-        }
-
-        private enum ClearType {
-            ClearThis,
-            ClearOthers,
-            ClearAll
-        };
-
-        private static IWebDriver ClickClearContextMenu(this IWebDriver webDriver, int index, ClearType clearType) {
-            var tab = webDriver.FindElements(By.CssSelector(".nof-tab"))[index];
-            var loc = (ILocatable) tab;
-            var mouse = ((IHasInputDevices) webDriver).Mouse;
-            mouse.ContextClick(loc.Coordinates);
-            webDriver.WaitForAjaxComplete();
-
-            tab.FindElements(By.CssSelector("li a"))[(int) clearType].Click();
-            webDriver.WaitForAjaxComplete();
-
-            var firstTabImg = webDriver.FindElements(By.CssSelector(".nof-tab img")).FirstOrDefault();
-
-            if (firstTabImg != null) {
-                firstTabImg.Click();
-            }
-
-            return webDriver;
-        }
-
-        public static IWebDriver ClickClearItem(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearThis);
-        }
-
-        public static IWebDriver ClickClearOthers(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearOthers);
-        }
-
-        public static IWebDriver ClickClearAll(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearAll);
-        }
-
-
-        #endregion
-
-        #region Actions
-
-
-        //Navigation buttons
-      
-
-        public static IWebDriver ClickLast(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Last");
-        }
-
-        // Table Format Buttons 
-
-        public static IWebDriver ClickList(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "List");
-        }
-
-        public static IWebDriver ClickTable(this IWebDriver webDriver) {
-            return ClickSingleGenericButton(webDriver, "Table");
-        }
-
-        private static IWebDriver ClickSingleGenericButton(this IWebDriver webDriver, string title) {
-            IWebElement button = webDriver.FindElement(By.CssSelector("button[title=" + title + "]"));
-
-            //webDriver.ScrollTo(button);
-            button.Click();
-            webDriver.WaitForAjaxComplete();
-            return webDriver;
-        }
-
-        #endregion
-
-        #region Fields
-
-        public static IWebElement GetField(this IWebDriver webDriver, string fieldId) {
-            IWebElement field = webDriver.FindElement(By.Id(fieldId));
-            webDriver.WaitForAjaxComplete();
-            return field;
-        }
-
-        public static IWebDriver ClickOnObjectLinkInField(this IWebDriver webDriver, string fieldId) {
-            webDriver.GetField(fieldId).FindElement(By.TagName("a")).Click();
-            Thread.Sleep(1000); // hack for unknown error
-            webDriver.WaitForAjaxComplete();
-            return webDriver;
-        }
-
         public static IWebElement AssertValueEquals(this IWebElement field, string expectedValue) {
             return field.FindElement(By.ClassName("nof-value")).AssertTextEquals(expectedValue);
         }
@@ -327,48 +225,65 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             return field;
         }
 
-        public static IWebElement TypeText(this IWebElement field, string text, IWebDriver br, bool repeat = true) {
-            IWebElement textField = GetTextField(field);
-            textField.Clear();
-            textField.SendKeys(text);
-            return field;
-        }
-
-        private static IWebElement GetTextField(IWebElement field) {
-            string fieldId = field.GetAttribute("id") + "-Input";
-            return field.FindElement(By.Id(fieldId));
-        }
-
-        public static IWebElement AppendText(this IWebElement field, string text, IWebDriver br) {
-            IWebElement textField = GetTextField(field);
-            textField.SendKeys(text);
-            return field;
-        }
-
-        #region Using the Find menu
-
-     
-
-       
-
-        public static IWebElement ClickFinderAction(this IWebDriver webDriver, string fieldId, string actionId) {
-            IWebElement field = webDriver.GetField(fieldId);
-            field.FindElement(By.Id(actionId)).Click();
-            webDriver.WaitForAjaxComplete();
-            return field;
-        }
-
-       
-
-
-        #endregion
-
-        #region Fields with Drop downs
 
         public static IWebElement AssertSelectedDropDownItemIs(this IWebElement field, string expected) {
             Assert.AreEqual(expected, field.FindElements(By.TagName("option")).Where(o => o.GetAttribute("selected") != null).Select(o => o.Text).SingleOrDefault());
             return field;
         }
+
+        #endregion
+
+        #region Tabbed History
+
+        private enum ClearType {
+            ClearThis,
+            ClearOthers,
+            ClearAll
+        };
+
+        private static IWebDriver ClickClearContextMenu(this IWebDriver webDriver, int index, ClearType clearType) {
+            var tab = webDriver.FindElements(By.CssSelector(".nof-tab"))[index];
+            var loc = (ILocatable) tab;
+            var mouse = ((IHasInputDevices) webDriver).Mouse;
+            mouse.ContextClick(loc.Coordinates);
+            webDriver.WaitForAjaxComplete();
+
+            tab.FindElements(By.CssSelector("li a"))[(int) clearType].Click();
+            webDriver.WaitForAjaxComplete();
+
+            var firstTabImg = webDriver.FindElements(By.CssSelector(".nof-tab img")).FirstOrDefault();
+
+            if (firstTabImg != null) {
+                firstTabImg.Click();
+            }
+
+            return webDriver;
+        }
+
+        public static IWebDriver ClickClearItem(this IWebDriver webDriver, int index) {
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearThis);
+        }
+
+        public static IWebDriver ClickClearOthers(this IWebDriver webDriver, int index) {
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearOthers);
+        }
+
+        public static IWebDriver ClickClearAll(this IWebDriver webDriver, int index) {
+            return webDriver.ClickClearContextMenu(index, ClearType.ClearAll);
+        }
+
+        #endregion
+
+        #region Fields
+
+        public static void TypeText(this IWebElement field, string text) {
+            field.Clear();
+            field.SendKeys(text);
+        }
+
+
+        #region Fields with Drop downs
+
 
         public static IWebElement SelectDropDownItem(this IWebElement field, string name, IWebDriver br) {
             field.FindElement(By.TagName("select")).SendKeys(name);
@@ -402,12 +317,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Collections
 
-        public static IWebElement GetInternalCollection(this IWebDriver webDriver, string collectionId) {
-            IWebElement coll = GetField(webDriver, collectionId);
-            AssertIsCollection(coll);
-            return coll;
-        }
-
         private static void AssertIsCollection(IWebElement collection) {
             try {
                 collection.FindElement(By.CssSelector("div.nof-collection-table, div.nof-collection-list, div.nof-collection-summary"));
@@ -430,7 +339,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         }
 
         public static IWebElement ViewAs(this IWebDriver webDriver, string collectionId, string buttonName) {
-            IWebElement collection = GetInternalCollection(webDriver, collectionId);
+            IWebElement collection = webDriver.FindElement(By.Id(collectionId));
             AssertIsCollection(collection);
             IWebElement button = collection.FindElement(By.ClassName(buttonName));
             button.Click();

@@ -199,8 +199,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.ClickTable();
-            br.FindElement(By.ClassName("nof-collection-table"));
+       
+            wait.ClickAndWait("button[title=Table]", ".nof-collection-table");
 
             wait.ClickAndWait(".nof-tabbed-history .nof-tab:first-of-type a", wd => wd.Title == "Metro Manufacturing, AW00000065");
 
@@ -531,7 +531,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history a")).Count);
 
-            br.FindElement(By.CssSelector("#Store-Name")).TypeText("Foo Bar", br);
+            br.FindElement(By.CssSelector("#Store-Name-Input")).TypeText("Foo Bar");
 
             wait.ClickAndWait(".nof-save", wd => wd.FindElements(By.CssSelector(".nof-tabbed-history a")).Count == 2);
 

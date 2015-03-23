@@ -39,27 +39,27 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //Test unmodifiable field
             br.FindElement(By.CssSelector("#Store-AccountNumber")).AssertIsUnmodifiable();
 
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
+            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            IWebElement table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count); //First row is header
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             // Collection Summary
             br.ViewAsSummary("Store-Addresses");
-            IWebElement contents = br.GetInternalCollection("Store-Addresses").FindElement(By.ClassName("nof-object"));
+            IWebElement contents = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.ClassName("nof-object"));
             Assert.AreEqual("1 Customer Address", contents.Text);
 
             // Collection List
             br.ViewAsList("Store-Addresses");
-            Assert.AreEqual("nof-collection-list", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
+            Assert.AreEqual("nof-collection-list", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
 
             // Collection Table
             br.ViewAsTable("Store-Addresses");
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
+            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count); //First row is header
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
@@ -80,8 +80,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             // Collection Table
             //br.ViewAsTable("Product-ProductInventory"); - noew rendered eagerly
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Product-ProductInventory").FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.GetInternalCollection("Product-ProductInventory").FindElement(By.TagName("table"));
+            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            IWebElement table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td")).Count);
@@ -120,7 +120,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerAndEdit("AW00000072");
 
-            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store").TypeText("Temporary Name", br);
+            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store-Input");
+            br.FindElement(By.CssSelector("#Store-Name-Input")).TypeText("Temporary Name");
+
             wait.ClickAndWait(".nof-save", ".nof-objectview");
             br.FindElement(By.CssSelector("#Store-Name")).AssertValueEquals("Temporary Name");
         }
@@ -191,15 +193,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(newProduct, "#Product-Name-Input");
 
-            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
-            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
-            br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
-            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-Name-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ProductNumber-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ListPrice-Input")).TypeText("10");
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-ReorderPoint-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-SellStartDate-Input")).TypeText("1/1/2020");
+            br.FindElement(By.CssSelector("#Product-SellStartDate-Input")).SendKeys(Keys.Escape);
+            br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("1");
 
             var select = wait.ClickAndWait("button[name='InvokeActionAsSave']", "button[title='Select']");
             var product = wait.ClickAndWait(select, "#WorkOrder-Product");
@@ -230,15 +232,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(newProduct, "#Product-Name-Input");
 
-            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
+            br.FindElement(By.CssSelector("#Product-Name-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ProductNumber-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ListPrice-Input")).TypeText("10");
 
-            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
-            //br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
-            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("1", br);
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-ReorderPoint-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture-Input")).TypeText("1");
+            //br.FindElement(By.CssSelector("#Product-SellStartDate-Input")).TypeText(DateTime.Today.AddDays(1).ToShortDateString(), br); - missing mandatory
+            br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("1");
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
             error.AssertTextEquals("Mandatory");
@@ -253,16 +255,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(newProduct, "#Product-Name-Input");
 
-            br.FindElement(By.CssSelector("#Product-Name")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ProductNumber")).TypeText("test", br);
-            br.FindElement(By.CssSelector("#Product-ListPrice")).TypeText("10", br);
+            br.FindElement(By.CssSelector("#Product-Name-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ProductNumber-Input")).TypeText("test");
+            br.FindElement(By.CssSelector("#Product-ListPrice-Input")).TypeText("10");
 
-            br.FindElement(By.CssSelector("#Product-SafetyStockLevel")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-ReorderPoint")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-DaysToManufacture")).TypeText("1", br);
-            br.FindElement(By.CssSelector("#Product-SellStartDate")).TypeText("1/1/2020", br);
-            br.FindElement(By.CssSelector("#Product-SellStartDate")).AppendText(Keys.Escape, br);
-            br.FindElement(By.CssSelector("#Product-StandardCost")).TypeText("test", br); // invalid
+            br.FindElement(By.CssSelector("#Product-SafetyStockLevel-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-ReorderPoint-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-DaysToManufacture-Input")).TypeText("1");
+            br.FindElement(By.CssSelector("#Product-SellStartDate-Input")).TypeText("1/1/2020");
+            br.FindElement(By.CssSelector("#Product-SellStartDate-Input")).SendKeys(Keys.Escape);
+            br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("test"); // invalid
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
             error.AssertTextEquals("Invalid Entry");
@@ -283,9 +285,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoNoEditButtonWhenNoEditableFields() {
             Login();
             FindOrder("SO53144");
-            br.ClickOnObjectLinkInField("SalesOrderHeader-CreditCard");
+
+            wait.ClickAndWaitGone("#SalesOrderHeader-CreditCard a", "[title=Edit]");
             br.AssertPageTitleEquals("**********7212");
-            br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
         }
 
         public void DoRefresh() {
@@ -304,11 +306,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var ok = wait.ClickAndWait("#Store-CreateNewOrder button", ".nof-ok");
             wait.ClickAndWait(ok, "#SalesOrderHeader-ShipDate-Input");
 
-            br.FindElement(By.Id("SalesOrderHeader-ShipDate")).TypeText(DateTime.Now.AddDays(-1).ToShortDateString(), br);
-            br.FindElement(By.Id("SalesOrderHeader-Status")).SelectDropDownItem("Approved", br);
-            br.FindElement(By.Id("SalesOrderHeader-StoreContact")).SelectDropDownItem("Diane Glimp", br);
-            br.FindElement(By.Id("SalesOrderHeader-ShipMethod")).SelectDropDownItem("XRQ", br);
-            br.FindElement(By.Id("SalesOrderHeader-ShipDate")).AssertNoValidationError();
+            br.FindElement(By.CssSelector("#SalesOrderHeader-ShipDate-Input")).TypeText(DateTime.Now.AddDays(-1).ToShortDateString());
+            br.FindElement(By.CssSelector("#SalesOrderHeader-Status")).SelectDropDownItem("Approved", br);
+            br.FindElement(By.CssSelector("#SalesOrderHeader-StoreContact")).SelectDropDownItem("Diane Glimp", br);
+            br.FindElement(By.CssSelector("#SalesOrderHeader-ShipMethod")).SelectDropDownItem("XRQ", br);
+            br.FindElement(By.CssSelector("#SalesOrderHeader-ShipDate")).AssertNoValidationError();
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error:last-of-type");
             error.AssertTextEquals("Ship date cannot be before order date");

@@ -28,15 +28,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreNotEqual("0", qty.GetAttribute("value"));
 
             // enter 0
-            qty.Clear();
-            qty.SendKeys("0" + Keys.Tab);
-
+            qty.TypeText("0" + Keys.Tab);
+        
             // find scrapped qty 
             var scrappedQty = br.FindElement(By.CssSelector("#WorkOrder-ScrappedQty-Input"));
 
             // enter 0 
-            scrappedQty.Clear();
-            scrappedQty.SendKeys("0" + Keys.Tab);
+            scrappedQty.TypeText("0" + Keys.Tab);
 
             // wait for error message 
             var error = wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrder-OrderQty  span.field-validation-error")));
@@ -51,8 +49,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var pn = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
 
             // enter product number 
-            pn.Clear();
-            pn.SendKeys("LW-1000" + Keys.Tab);
+            pn.TypeText("LW-1000" + Keys.Tab);
 
             // click ok and wait for best special offer button 
             var action = wait.ClickAndWait(".nof-ok", "#Product-BestSpecialOffer button");
@@ -64,8 +61,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreNotEqual("0", qty.GetAttribute("value"));
 
             // enter 0
-            qty.Clear();
-            qty.SendKeys("0" + Keys.Tab);
+            qty.TypeText("0" + Keys.Tab);
 
             // wait for error message 
             var error = wait.Until(wd => wd.FindElement(By.CssSelector("#Product-BestSpecialOffer-Quantity  span.field-validation-error")));
@@ -83,8 +79,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
                 var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-                orderNumber.Clear();
-                orderNumber.SendKeys("SO63557" + Keys.Tab);
+                orderNumber.TypeText("SO63557" + Keys.Tab);
 
                 var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReason button");
 
@@ -124,8 +119,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
+            orderNumber.TypeText("SO72847" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasonsByCategories button");
 

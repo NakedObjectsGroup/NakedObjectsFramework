@@ -122,8 +122,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         }
 
         protected void Login(string username, string password) {
-            br.FindElement(By.Id("UserName")).SendKeys(username + Keys.Tab);
-            br.FindElement(By.Id("Password")).SendKeys(password + Keys.Tab);
+            br.FindElement(By.CssSelector("#UserName")).SendKeys(username + Keys.Tab);
+            br.FindElement(By.CssSelector("#Password")).SendKeys(password + Keys.Tab);
             br.FindElement(By.CssSelector("input[type='submit']")).Click();
             Thread.Sleep(5000);
         }

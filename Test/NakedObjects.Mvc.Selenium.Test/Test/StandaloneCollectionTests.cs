@@ -302,8 +302,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
-            br.ClickTable();
-            coll = br.FindElement(By.ClassName("nof-collection-table"));
+            wait.ClickAndWait("button[title=Table]", ".nof-collection-table");
+
             br.AssertPageTitleEquals("1 Store");
 
             // table has 3 columns
@@ -323,8 +323,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual(3, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
-            br.ClickList();
-            coll = br.FindElement(By.ClassName("nof-collection-list"));
+            wait.ClickAndWait("button[title=List]", ".nof-collection-list");
+
             br.AssertPageTitleEquals("2 Stores");
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
