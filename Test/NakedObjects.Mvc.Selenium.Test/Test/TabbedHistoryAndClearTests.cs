@@ -202,20 +202,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.ClickTable();
             br.FindElement(By.ClassName("nof-collection-table"));
 
-            wait.ClickAndWait(".nof-tabbed-history .nof-tab:first-of-type a", wd => wd.Title == "20 Sales Orders");
+            wait.ClickAndWait(".nof-tabbed-history .nof-tab:first-of-type a", wd => wd.Title == "Metro Manufacturing, AW00000065");
 
             Assert.AreEqual(2, br.FindElements(By.CssSelector(".nof-tabbed-history a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            wait.ClickAndWait(".nof-tabbed-history .nof-tab:last-of-type a", wd => wd.Title == "Metro Manufacturing, AW00000065");
+            wait.ClickAndWait(".nof-tabbed-history .nof-tab:last-of-type a", wd => wd.Title == "20 Sales Orders");
 
             br.FindElement(By.ClassName("nof-collection-table"));
             Assert.AreEqual(2, br.FindElements(By.CssSelector(".nof-tabbed-history a")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            br.AssertPageTitleEquals("20 Sales Orders");
         }
 
         public void DoClearActiveCollectionItem() {

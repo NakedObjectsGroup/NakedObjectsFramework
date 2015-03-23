@@ -266,7 +266,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok:enabled")));
 
-            wait.ClickAndWait(ok, ".validation-summary-errors");
+            wait.ClickAndWaitGone(ok, ".nof-ok");
 
             br.AssertPageTitleEquals("No Sales Orders");
             Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
