@@ -14,7 +14,16 @@ using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Profile {
     [Serializable]
-    public sealed class ProfileCallbackFacet : CallbackFacetAbstract {
+    public sealed class ProfileCallbackFacet : CallbackFacetAbstract,
+                                               ICreatedCallbackFacet,
+                                               IDeletedCallbackFacet,
+                                               IDeletingCallbackFacet,
+                                               ILoadedCallbackFacet,
+                                               ILoadingCallbackFacet,
+                                               IPersistedCallbackFacet,
+                                               IPersistingCallbackFacet,
+                                               IUpdatedCallbackFacet,
+                                               IUpdatingCallbackFacet {
         private readonly ProfileEvent associatedEvent;
         private readonly IProfileManager profileManager;
         private readonly ICallbackFacet underlyingFacet;
@@ -25,6 +34,8 @@ namespace NakedObjects.Meta.Profile {
             this.profileManager = profileManager;
         }
 
+        #region ICreatedCallbackFacet Members
+
         public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             profileManager.Begin(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
             try {
@@ -34,5 +45,7 @@ namespace NakedObjects.Meta.Profile {
                 profileManager.End(session, associatedEvent, "", nakedObjectAdapter, lifecycleManager);
             }
         }
+
+        #endregion
     }
 }

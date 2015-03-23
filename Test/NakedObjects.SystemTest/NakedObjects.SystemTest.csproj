@@ -183,6 +183,7 @@
     <Compile Include="Menus\TestServiceMenus.cs" />
     <Compile Include="Menus\TestMainMenusUsingDelegation.cs" />
     <Compile Include="Menus\TestObjectMenu.cs" />
+    <Compile Include="Profile\TestProfileManager.cs" />
     <Compile Include="Reflect\ReflectorTest.cs" />
     <Compile Include="util\DateTimeExtensionsTest.cs" />
     <Compile Include="util\GetTypeFromLoadedAssembliesInternalTest.cs" />
