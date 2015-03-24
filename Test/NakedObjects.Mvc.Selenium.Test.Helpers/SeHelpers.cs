@@ -236,40 +236,39 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         #region Tabbed History
 
         private enum ClearType {
-            ClearThis,
+            ClearThis =1,
             ClearOthers,
             ClearAll
         };
 
-        private static IWebDriver ClickClearContextMenu(this IWebDriver webDriver, int index, ClearType clearType) {
+        private static void ClickClearContextMenu(this SafeWebDriverWait wait, int index, ClearType clearType) {
+            var tabCount = wait.Driver.FindElements(By.CssSelector(".nof-tab")).Count;
+            var newCount = clearType == ClearType.ClearThis ? tabCount - 1 : clearType == ClearType.ClearOthers ? 1 : 0;
+
+            var webDriver = wait.Driver;
             var tab = webDriver.FindElements(By.CssSelector(".nof-tab"))[index];
             var loc = (ILocatable) tab;
             var mouse = ((IHasInputDevices) webDriver).Mouse;
             mouse.ContextClick(loc.Coordinates);
-            webDriver.WaitForAjaxComplete();
 
-            tab.FindElements(By.CssSelector("li a"))[(int) clearType].Click();
-            webDriver.WaitForAjaxComplete();
+            var selector = string.Format(".ui-menu-item:nth-of-type({0}) a", (int)clearType);
 
-            var firstTabImg = webDriver.FindElements(By.CssSelector(".nof-tab img")).FirstOrDefault();
+            wait.Until(wd => wd.FindElement(By.CssSelector(selector)));
 
-            if (firstTabImg != null) {
-                firstTabImg.Click();
-            }
+            wait.ClickAndWait(selector, wd => wd.FindElements(By.CssSelector(".nof-tab")).Count == newCount);
 
-            return webDriver;
         }
 
-        public static IWebDriver ClickClearItem(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearThis);
+        public static void ClickClearItem(this SafeWebDriverWait wait, int index) {
+             wait.ClickClearContextMenu(index, ClearType.ClearThis);
         }
 
-        public static IWebDriver ClickClearOthers(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearOthers);
+        public static void ClickClearOthers(this SafeWebDriverWait wait, int index) {
+             wait.ClickClearContextMenu(index, ClearType.ClearOthers);
         }
 
-        public static IWebDriver ClickClearAll(this IWebDriver webDriver, int index) {
-            return webDriver.ClickClearContextMenu(index, ClearType.ClearAll);
+        public static void ClickClearAll(this SafeWebDriverWait wait, int index) {
+             wait.ClickClearContextMenu(index, ClearType.ClearAll);
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
             FindCustomerByAccountNumber("AW00000065");
-            br.ClickClearAll(0);
+            wait.ClickClearAll(0);
         }
 
         [TestCleanup]
