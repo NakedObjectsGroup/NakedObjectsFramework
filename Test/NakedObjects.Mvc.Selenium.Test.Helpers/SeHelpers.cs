@@ -89,6 +89,23 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Asserts
 
+
+        public static IWebElement AssertSummaryEquals(this IWebElement collection, string expected) {
+            AssertIsCollection(collection);
+            Assert.IsTrue(collection.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
+            Assert.AreEqual(expected, collection.FindElement(By.CssSelector("div.nof-object")).Text);
+            return collection;
+        }
+
+        private static void AssertIsCollection(IWebElement collection) {
+            try {
+                collection.FindElement(By.CssSelector("div.nof-collection-table, div.nof-collection-list, div.nof-collection-summary"));
+            }
+            catch (NoSuchElementException) {
+                Assert.Fail("Selected Div is not a Collection");
+            }
+        }
+
         private static IWebDriver AssertContainsElementWithClass(this IWebDriver webDriver, string className) {
             try {
                 webDriver.FindElement(By.ClassName(className));
@@ -252,11 +269,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             mouse.ContextClick(loc.Coordinates);
 
             var selector = string.Format(".ui-menu-item:nth-of-type({0}) a", (int)clearType);
-
             wait.Until(wd => wd.FindElement(By.CssSelector(selector)));
-
             wait.ClickAndWait(selector, wd => wd.FindElements(By.CssSelector(".nof-tab")).Count == newCount);
-
         }
 
         public static void ClickClearItem(this SafeWebDriverWait wait, int index) {
@@ -280,9 +294,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             field.SendKeys(text);
         }
 
+        #endregion
 
         #region Fields with Drop downs
-
 
         public static IWebElement SelectDropDownItem(this IWebElement field, string name, IWebDriver br) {
             field.FindElement(By.TagName("select")).SendKeys(name);
@@ -305,53 +319,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
                 kb.ReleaseKey(Keys.Control);
             }
             select.SendKeys(Keys.Tab);
-            br.WaitForAjaxComplete();
 
             return field;
         }
 
         #endregion
-
-        #endregion
-
-        #region Collections
-
-        private static void AssertIsCollection(IWebElement collection) {
-            try {
-                collection.FindElement(By.CssSelector("div.nof-collection-table, div.nof-collection-list, div.nof-collection-summary"));
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail("Selected Div is not a Collection");
-            }
-        }
-
-        public static IWebElement ViewAsTable(this IWebDriver webDriver, string collectionId) {
-            return ViewAs(webDriver, collectionId, "nof-table");
-        }
-
-        public static IWebElement ViewAsList(this IWebDriver webDriver, string collectionId) {
-            return ViewAs(webDriver, collectionId, "nof-list");
-        }
-
-        public static IWebElement ViewAsSummary(this IWebDriver webDriver, string collectionId) {
-            return ViewAs(webDriver, collectionId, "nof-summary");
-        }
-
-        public static IWebElement ViewAs(this IWebDriver webDriver, string collectionId, string buttonName) {
-            IWebElement collection = webDriver.FindElement(By.Id(collectionId));
-            AssertIsCollection(collection);
-            IWebElement button = collection.FindElement(By.ClassName(buttonName));
-            button.Click();
-            webDriver.WaitForAjaxComplete();
-            return collection;
-        }
-
-        public static IWebElement AssertSummaryEquals(this IWebElement collection, string expected) {
-            AssertIsCollection(collection);
-            Assert.IsTrue(collection.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
-            Assert.AreEqual(expected, collection.FindElement(By.CssSelector("div.nof-object")).Text);
-            return collection;
-        }
 
         public static IWebElement CheckAll(this IWebElement collection, IWebDriver br) {
             IWebElement all = collection.FindElement(By.Id("checkboxAll"));
@@ -375,34 +347,24 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         public static IWebElement GetRow(this IWebElement collection, int row) {
             IWebElement table = collection.FindElement(By.TagName("table"));
             int rowNumber = row;
-            //if (collection.Div(Find.ByClass("Collection-List")).Exists) {
-            //    rowNumber--; //Table rows numbered from zero; not necessary for table view as row zero is the header
-            //}
+      
             ReadOnlyCollection<IWebElement> rows = table.FindElements(By.TagName("tr"));
             Assert.IsTrue(rowNumber >= 0 && rowNumber <= rows.Count - 1, "Row number is out of range for table");
             return rows.ElementAt(rowNumber);
         }
 
         public static IWebElement CheckRow(this IWebElement row, IWebDriver br) {
-            IWebElement box = CheckBox(row);
+            IWebElement box = row.FindElement(By.CssSelector("input[type=checkbox]"));
             Assert.IsFalse(box.Selected, "Box is already checked");
             box.BrowserSpecificCheck(br);
             return row;
         }
 
         public static IWebElement UnCheckRow(this IWebElement row, IWebDriver br) {
-            IWebElement box = CheckBox(row);
+            IWebElement box = row.FindElement(By.CssSelector("input[type=checkbox]"));
             Assert.IsTrue(box.Selected, "Box is not checked");
             box.BrowserSpecificCheck(br);
             return row;
-        }
-
-        private static IWebElement CheckBox(IWebElement row) {
-            return row.FindElement(By.CssSelector("input[type=checkbox]"));
-        }
-
-        public static void ClickRemove(this IWebElement row, IWebDriver webDriver) {
-            row.FindElement(By.ClassName("nof-remove")).Click();
         }
 
         #endregion
@@ -422,38 +384,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #endregion
 
-        #endregion
 
-        #region Waiting for AJAX (2)
-
-        static SeHelpers() {
-            RunningAjax = true; // default to true
-        }
-
-        public static bool RunningAjax { get; set; }
-
-        public static void WaitForAjaxComplete(this IWebDriver webDriver) {
-            WaitForAjaxComplete(webDriver, 500);
-        }
-
-        public static void WaitForAjaxComplete(this IWebDriver webDriver, int pollingIntervalInMs) {
-            if (!RunningAjax) {
-                Thread.Sleep(5000);
-                return;
-            }
-
-            Thread.Sleep(pollingIntervalInMs);
-            while (true) {
-                var executor = (IJavaScriptExecutor) webDriver;
-
-                if (executor.ExecuteScript("return typeof nakedObjects").Equals("undefined") || executor.ExecuteScript("return nakedObjects.ajaxCount").Equals(0L)) {
-                    break;
-                }
-
-                Thread.Sleep(pollingIntervalInMs/10);
-            }
-        }
-
-        #endregion
+       
     }
 }

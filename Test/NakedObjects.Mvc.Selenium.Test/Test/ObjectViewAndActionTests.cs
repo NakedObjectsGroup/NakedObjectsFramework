@@ -44,18 +44,21 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             // Collection Summary
-            br.ViewAsSummary("Store-Addresses");
+            wait.ClickAndWait("#Store-Addresses .nof-summary", "#Store-Addresses .nof-collection-summary");
+
             br.FindElement(By.CssSelector("#Store-Addresses")).AssertSummaryEquals("1 Customer Address");
 
             // Collection List
-            br.ViewAsList("Store-Addresses");
+            wait.ClickAndWait("#Store-Addresses .nof-list", "#Store-Addresses .nof-collection-list");
+
             Assert.AreEqual("nof-collection-list", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
 
             // Collection Table
-            br.ViewAsTable("Store-Addresses");
+            wait.ClickAndWait("#Store-Addresses .nof-table", "#Store-Addresses .nof-collection-table");
+
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
@@ -256,12 +259,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             obj.AssertObjectHasTitle("Field Trip Store, AW00000546");
 
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003");
-            //  br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate").AppendText(Keys.Escape, br);
-
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText("12/12/2003" + Keys.Escape);
-            //   br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate").AppendText(Keys.Escape, br);
-            br.WaitForAjaxComplete();
-
+          
             wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }
 
@@ -383,11 +382,15 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).Clear();
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys("HL");
-            br.WaitForAjaxComplete();
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product")).AssertInputValueEquals("HL Hub");
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product input")).GetAttribute("value") == "HL Hub");
+
         }
 
         public abstract void NewObjectOnActionDialogFailMandatory();

@@ -45,19 +45,23 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             // Collection Summary
-            br.ViewAsSummary("Store-Addresses");
+            wait.ClickAndWait("#Store-Addresses .nof-summary", "#Store-Addresses .nof-collection-summary");
+
             IWebElement contents = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.ClassName("nof-object"));
             Assert.AreEqual("1 Customer Address", contents.Text);
 
             // Collection List
-            br.ViewAsList("Store-Addresses");
+            wait.ClickAndWait("#Store-Addresses .nof-list", "#Store-Addresses .nof-collection-list");
+
             Assert.AreEqual("nof-collection-list", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
 
             // Collection Table
-            br.ViewAsTable("Store-Addresses");
+
+            wait.ClickAndWait("#Store-Addresses .nof-table", "#Store-Addresses .nof-collection-table");
+
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count); //First row is header
@@ -79,7 +83,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(edit, ".nof-objectedit");
 
             // Collection Table
-            //br.ViewAsTable("Product-ProductInventory"); - noew rendered eagerly
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
@@ -120,7 +123,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerAndEdit("AW00000072");
 
-            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store-Input");
+            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store");
             br.FindElement(By.CssSelector("#Store-Name-Input")).TypeText("Temporary Name");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
@@ -217,11 +220,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).Clear();
             br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys("HL");
-            br.WaitForAjaxComplete();
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
             br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
             br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
             br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
-            br.FindElement(By.CssSelector("#WorkOrder-Product")).AssertInputValueEquals("HL Crankset");
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrder-Product input")).GetAttribute("value") == "HL Crankset");
         }
 
         public void DoChangeReferencePropertyViaANewActionFailMandatory() {
@@ -295,8 +301,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindCustomerAndEdit("AW00000071");
 
             br.Navigate().Refresh();
-            br.WaitForAjaxComplete();
-            br.AssertContainsObjectEdit();
+            wait.Until(wd => wd.FindElement(By.CssSelector(".nof-objectedit")));
         }
 
         public void DoNoValidationOnTransientUntilSave() {
