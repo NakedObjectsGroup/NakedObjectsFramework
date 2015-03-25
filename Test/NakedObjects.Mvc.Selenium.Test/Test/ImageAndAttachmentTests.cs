@@ -20,7 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoViewImage() {
             Login();
             FindProduct("FR-M94B-38");
-            br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
+            Assert.AreEqual("HL Mountain Frame - Black, 38", br.Title);
             var photoField = br.FindElement(By.CssSelector("#Product-Photo"));
 
             var alink = photoField.FindElement(By.CssSelector("a"));
@@ -36,19 +36,19 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoDownloadImage() {
             Login();
             FindProduct("FR-M94B-38");
-            br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
+            Assert.AreEqual("HL Mountain Frame - Black, 38", br.Title);
             var photoLink = br.FindElement(By.CssSelector("#Product-Photo a"));
 
             photoLink.Click();
 
-            br.AssertPageTitleEquals("(GIF Image, 240 × 149 pixels)");
+            Assert.AreEqual("(GIF Image, 240 × 149 pixels)", br.Title);
             Assert.IsTrue(br.Url.StartsWith("blob"));
         }
 
         public void DoUploadImage() {
             Login();
             FindProduct("FR-M94B-38");
-            br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
+            Assert.AreEqual("HL Mountain Frame - Black, 38", br.Title);
 
             var fileinput = wait.ClickAndWait("#Product-AddOrChangePhoto button", "#Product-AddOrChangePhoto-NewImage-Input");
 

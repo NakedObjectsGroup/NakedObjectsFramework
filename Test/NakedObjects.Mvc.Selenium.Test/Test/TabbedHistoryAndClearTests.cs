@@ -17,8 +17,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         private void CustomerByAccountNumber(string accountNumber) {
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
-            f.Clear();
-            f.SendKeys(accountNumber + Keys.Tab);
+            f.TypeText(accountNumber + Keys.Tab);
 
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
@@ -106,7 +105,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearItem(0);
             br.AssertElementDoesNotExist(By.CssSelector(".nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearSingleCollectionItem() {
@@ -120,7 +119,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearItem(0);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearActiveItem() {
@@ -140,7 +139,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.Until(wd => wd.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count == 1);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab a")).Text);
 
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.Title);
         }
 
         public void DoCollectionKeepsPage() {
@@ -182,7 +181,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             pageNo = br.FindElement(By.ClassName("nof-page-number"));
             Assert.AreEqual("Page 1574 of 1574", pageNo.Text);
 
-            br.AssertPageTitleEquals("5 Sales Orders");
+            Assert.AreEqual("5 Sales Orders", br.Title);
         }
 
         public void DoCollectionKeepsFormat() {
@@ -213,7 +212,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         public void DoClearActiveCollectionItem() {
@@ -234,7 +233,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.Until(wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
 
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.Title);
         }
 
         public void DoClearActiveMultipleCollectionItems() {
@@ -253,7 +252,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.Until(wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 1);
             Assert.AreEqual("12 Country Regions", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
 
-            br.AssertPageTitleEquals("12 Country Regions");
+            Assert.AreEqual("12 Country Regions", br.Title);
         }
 
         public void DoClearInActiveItem() {
@@ -273,7 +272,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("José Saraiva", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("José Saraiva");
+            Assert.AreEqual("José Saraiva", br.Title);
         }
 
         public void DoClearInActiveCollectionItem() {
@@ -293,7 +292,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         public void DoClearInActiveCollectionMultipleItems() {
@@ -313,7 +312,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         public void DoClearOthersSingleItem() {
@@ -327,7 +326,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickClearOthers(0);
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab a")).Text);
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.Title);
         }
 
         public void DoClearOthersSingleCollectionItem() {
@@ -339,7 +338,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickClearOthers(0);
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab a")).Text);
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         public void DoClearOthersActiveItem() {
@@ -359,7 +358,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("José Saraiva", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
 
-            br.AssertPageTitleEquals("José Saraiva");
+            Assert.AreEqual("José Saraiva", br.Title);
         }
 
         public void DoClearOthersActiveCollectionItem() {
@@ -379,7 +378,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("20 Sales Orders", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:first-of-type a")).Text);
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         public void DoClearOthersInActiveItem() {
@@ -399,7 +398,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.Title);
         }
 
         public void DoClearOthersInActiveCollectionItem() {
@@ -419,7 +418,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
             Assert.AreEqual("Metro Manufacturing, AW00000065", br.FindElement(By.CssSelector(".nof-tabbed-history .nof-tab:last-of-type a")).Text);
 
-            br.AssertPageTitleEquals("Metro Manufacturing, AW00000065");
+            Assert.AreEqual("Metro Manufacturing, AW00000065", br.Title);
         }
 
         public void DoClearAllSingleItem() {
@@ -432,7 +431,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(0);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearAllSingleCollectionItem() {
@@ -442,7 +441,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(0);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearAllActiveItem() {
@@ -460,7 +459,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(1);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearAllActiveCollectionItem() {
@@ -478,7 +477,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(1);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearAllInActiveItem() {
@@ -496,7 +495,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(0);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoClearAllInActiveCollectionItem() {
@@ -514,7 +513,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickClearAll(0);
             br.AssertElementDoesNotExist(By.ClassName("nof-tabbed-history"));
-            br.AssertPageTitleEquals("Home Page");
+            Assert.AreEqual("Home Page", br.Title);
         }
 
         public void DoTransientObjectsDoNotShowUpInHistory() {
@@ -543,7 +542,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(1, br.FindElements(By.CssSelector(".nof-tabbed-history .nof-tab")).Count);
 
             wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.FindElement(By.CssSelector(".nof-tabbed-history")).FindElements(By.TagName("a")).Count == 2);
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
         }
 
         #region abstract

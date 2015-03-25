@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
 
@@ -23,39 +25,38 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
-            f.Clear();
-            f.SendKeys("AW00000546" + Keys.Tab);
+            f.TypeText("AW00000546" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#Store-CreateNewAddress button");
 
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
 
             var country = wait.ClickAndWait(action, "#Address-CountryRegion");
 
-            country.AssertIsEmpty();
+            Assert.AreEqual(0, country.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             var province = br.FindElement(By.CssSelector("#Address-StateProvince"));
 
-            province.AssertIsEmpty();
+            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             country.SelectDropDownItem("Australia", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             province = br.FindElement(By.CssSelector("#Address-StateProvince"));
-            province.AssertIsEmpty();
+            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
             province.SelectDropDownItem("Queensland", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             country = br.FindElement(By.CssSelector("#Address-CountryRegion"));
-            country.AssertIsEmpty();
+            Assert.AreEqual(0, country.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
             country.SelectDropDownItem("United Kingdom", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             province = br.FindElement(By.CssSelector("#Address-StateProvince"));
-            province.AssertIsEmpty();
+            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
             province.SelectDropDownItem("England", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();

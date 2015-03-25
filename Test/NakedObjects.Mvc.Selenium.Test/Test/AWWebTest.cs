@@ -130,8 +130,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         protected void Find(string actionSelector, string fieldSelector, string value) {
             var field = wait.ClickAndWait(actionSelector, fieldSelector);
-            field.Clear();
-            field.SendKeys(value + Keys.Tab);
+            field.TypeText(value + Keys.Tab);
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
         }
 

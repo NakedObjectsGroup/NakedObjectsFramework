@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -14,8 +15,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
     public abstract class ObjectEditTests : AWWebTest {
         private void FindCustomerAndEdit(string custId) {
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
-            f.Clear();
-            f.SendKeys(custId + Keys.Tab);
+            f.TypeText(custId + Keys.Tab);
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
             wait.ClickAndWait(edit, ".nof-objectedit");
         }
@@ -25,7 +25,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindCustomerAndEdit("AW00000546");
 
             //Check basics of edit view
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
             br.AssertElementExists(By.CssSelector("[title=Save]"));
             try {
                 br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
@@ -33,11 +33,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             catch (Exception e) {
                 var m = e.Message;
             }
+
             //Test modifiable field
-            br.FindElement(By.CssSelector("#Store-Name")).AssertIsModifiable();
+            IWebElement storeName = br.FindElement(By.CssSelector("#Store-Name"));
+            Assert.AreEqual(1, storeName.FindElements(By.TagName("input")).Count);
+            Assert.AreEqual(storeName.GetAttribute("id") + "-Input", storeName.FindElement(By.TagName("input")).GetAttribute("id"));
 
             //Test unmodifiable field
-            br.FindElement(By.CssSelector("#Store-AccountNumber")).AssertIsUnmodifiable();
+            Assert.AreEqual(0, br.FindElement(By.CssSelector("#Store-AccountNumber")).FindElements(By.TagName("input")).Count);
 
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
             var table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
@@ -77,8 +80,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             var f = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
-            f.Clear();
-            f.SendKeys("BK-M38S-46" + Keys.Tab);
+            f.TypeText("BK-M38S-46" + Keys.Tab);
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
             wait.ClickAndWait(edit, ".nof-objectedit");
 
@@ -110,7 +112,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerAndEdit("AW00000546");
             wait.ClickAndWait(".nof-cancel", ".nof-objectview");
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
         }
 
         public void DoSaveWithNoChanges() {
@@ -123,20 +125,21 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerAndEdit("AW00000072");
 
-            br.FindElement(By.CssSelector("#Store-Name")).AssertInputValueEquals("Outdoor Equipment Store");
+            Assert.AreEqual("Outdoor Equipment Store", br.FindElement(By.CssSelector("#Store-Name")).FindElement(By.TagName("input")).GetAttribute("value"));
             br.FindElement(By.CssSelector("#Store-Name-Input")).TypeText("Temporary Name");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.FindElement(By.CssSelector("#Store-Name")).AssertValueEquals("Temporary Name");
+            Assert.AreEqual("Temporary Name", br.FindElement(By.CssSelector("#Store-Name")).FindElement(By.ClassName("nof-value")).Text);
         }
 
         public void DoChangeDropDownField() {
             Login();
             FindCustomerAndEdit("AW00000073");
-
-            br.FindElement(By.CssSelector("#Store-SalesTerritory")).AssertSelectedDropDownItemIs("Northwest").SelectDropDownItem("C", br);
+            var dropdown = br.FindElement(By.CssSelector("#Store-SalesTerritory"));
+            Assert.AreEqual("Northwest", dropdown.FindElements(By.TagName("option")).Where(o => o.GetAttribute("selected") != null).Select(o => o.Text).SingleOrDefault());
+            dropdown.SelectDropDownItem("C", br);
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.FindElement(By.CssSelector("#Store-SalesTerritory")).AssertObjectHasTitle("Central");
+            Assert.AreEqual("Central", br.FindElement(By.CssSelector("#Store-SalesTerritory")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public void DoChangeReferencePropertyViaRecentlyViewed() {
@@ -147,7 +150,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.Until(wd => wd.Title == "Parcel Express Delivery Service, AW00000074");
 
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("David Campbell");
+            Assert.AreEqual("David Campbell", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             var recentlyViewed = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title='Recently Viewed']");
 
@@ -156,36 +159,35 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
 
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Shu Ito");
+            Assert.AreEqual("Shu Ito", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public void DoChangeReferencePropertyViaRemove() {
             Login();
             FindCustomerByAccountNumber("AW00000076");
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Jillian Carson");
+            Assert.AreEqual("Jillian Carson", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             var remove = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson [title=Remove]");
 
             wait.ClickAndWaitGone(remove, "#Store-SalesPerson img");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertIsEmpty();
+            Assert.AreEqual(0, br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
         }
 
         public void DoChangeReferencePropertyViaAFindAction() {
             Login();
             FindCustomerByAccountNumber("AW00000075");
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Jillian Carson");
+            Assert.AreEqual("Jillian Carson", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             var finder = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson-SalesRepository-FindSalesPersonByName");
             var lastName = wait.ClickAndWait(finder, "#SalesRepository-FindSalesPersonByName-LastName-Input");
 
-            lastName.Clear();
-            lastName.SendKeys("Vargas" + Keys.Tab);
+            lastName.TypeText("Vargas" + Keys.Tab);
 
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#Store-SalesPerson-Select-AutoComplete")).GetAttribute("value") == "Garrett Vargas");
 
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            br.FindElement(By.CssSelector("#Store-SalesPerson")).AssertObjectHasTitle("Garrett Vargas");
+            Assert.AreEqual("Garrett Vargas", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public void DoChangeReferencePropertyViaANewAction() {
@@ -209,7 +211,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var select = wait.ClickAndWait("button[name='InvokeActionAsSave']", "button[title='Select']");
             var product = wait.ClickAndWait(select, "#WorkOrder-Product");
 
-            product.AssertInputValueEquals("test ");
+            Assert.AreEqual("test ", product.FindElement(By.TagName("input")).GetAttribute("value"));
         }
 
         public void DoChangeReferencePropertyViaAutoComplete() {
@@ -218,8 +220,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var edit = wait.ClickAndWait("#WorkOrderRepository-RandomWorkOrder button", ".nof-edit");
             wait.ClickAndWait(edit, "#WorkOrder-Product-Select-AutoComplete");
 
-            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).Clear();
-            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).SendKeys("HL");
+            br.FindElement(By.CssSelector("#WorkOrder-Product-Select-AutoComplete")).TypeText("HL");
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
@@ -249,7 +250,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("1");
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
-            error.AssertTextEquals("Mandatory");
+            Assert.AreEqual("Mandatory", error.Text);
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -273,7 +274,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("test"); // invalid
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
-            error.AssertTextEquals("Invalid Entry");
+            Assert.AreEqual("Invalid Entry", error.Text);
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
 
@@ -285,7 +286,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(finder, wd => wd.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency input")).GetAttribute("value") == "US Dollar");
 
-            br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency1")).AssertInputValueEquals("Euro");
+            Assert.AreEqual("Euro", br.FindElement(By.CssSelector("#OrderContributedActions-FindRate-Currency1")).FindElement(By.TagName("input")).GetAttribute("value"));
         }
 
         public void DoNoEditButtonWhenNoEditableFields() {
@@ -293,7 +294,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindOrder("SO53144");
 
             wait.ClickAndWaitGone("#SalesOrderHeader-CreditCard a", "[title=Edit]");
-            br.AssertPageTitleEquals("**********7212");
+            Assert.AreEqual("**********7212", br.Title);
         }
 
         public void DoRefresh() {
@@ -318,9 +319,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#SalesOrderHeader-ShipDate")).AssertNoValidationError();
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error:last-of-type");
-            error.AssertTextEquals("Ship date cannot be before order date");
+            Assert.AreEqual("Ship date cannot be before order date", error.Text);
 
-            br.AssertContainsObjectEdit();
+            br.AssertContainsElementWithClass("nof-objectedit");
         }
 
         #region abstract 

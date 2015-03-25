@@ -57,7 +57,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var table = wait.ClickAndWait("#EmployeeRepository-ListAllDepartments button", ".Department");
 
-            br.AssertPageTitleEquals("16 Departments");
+            Assert.AreEqual("16 Departments", br.Title);
             Assert.AreEqual("List All Departments: Query Result: Viewing 16 of 16 Departments", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             Assert.AreEqual(17, table.FindElements(By.TagName("tr")).Count);
@@ -142,8 +142,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var append = wait.Until(wd => wd.FindElement(By.CssSelector("#ObjectQuery-SalesOrderHeader-AppendComment")));
             var comment = wait.ClickAndWait(append, "#OrderContributedActions-AppendComment-CommentToAppend-Input");
-            comment.Clear();
-            comment.SendKeys("Foo" + Keys.Tab);
+            comment.TypeText("Foo" + Keys.Tab);
 
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(7, 6) == "Foo");
 
@@ -165,14 +164,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             coll.GetRow(9).CheckRow(br);
 
             var comment = wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-AppendComment", "#OrderContributedActions-AppendComment-CommentToAppend-Input");
-            comment.Clear();
-            comment.SendKeys("fail" + Keys.Tab);
+            comment.TypeText("fail" + Keys.Tab);
 
             var error = wait.ClickAndWait(".nof-ok", ".validation-summary-errors li");
 
-            error.AssertTextEquals("For test purposes the comment 'fail' fails validation");
+            Assert.AreEqual("For test purposes the comment 'fail' fails validation", error.Text);
 
-            br.FindElement(By.CssSelector("[name=Details]")).AssertTextEquals("2 Sales Orders");
+            Assert.AreEqual("2 Sales Orders", br.FindElement(By.CssSelector("[name=Details]")).Text);
 
             wait.ClickAndWait("[name=Details]", wd => wd.Title == "2 Sales Orders");
         }
@@ -195,7 +193,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
             var coll = wait.ClickAndWait(table, ".nof-collection-table");
 
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             var pageNo = br.FindElement(By.ClassName("nof-page-number"));
@@ -209,7 +207,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=Next]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 1574");
 
             coll = br.FindElement(By.ClassName("nof-collection-table"));
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             Assert.AreEqual("SO47441", coll.TextContentsOfCell(1, 1));
@@ -220,7 +218,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=Last]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 1574 of 1574");
 
             coll = br.FindElement(By.ClassName("nof-collection-table"));
-            br.AssertPageTitleEquals("5 Sales Orders");
+            Assert.AreEqual("5 Sales Orders", br.Title);
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 5 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             Assert.AreEqual("SO52682", coll.TextContentsOfCell(1, 1));
@@ -229,7 +227,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=Previous]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 1573 of 1574");
 
             coll = br.FindElement(By.ClassName("nof-collection-table"));
-            br.AssertPageTitleEquals("20 Sales Orders");
+            Assert.AreEqual("20 Sales Orders", br.Title);
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             Assert.AreEqual("SO59092", coll.TextContentsOfCell(1, 1));
@@ -242,12 +240,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             var name = wait.ClickAndWait("#CustomerRepository-FindStoreByName button", "#CustomerRepository-FindStoreByName-Name-Input");
-            name.Clear();
-            name.SendKeys("a" + Keys.Tab);
+            name.TypeText("a" + Keys.Tab);
 
             var coll = wait.ClickAndWait(".nof-ok", ".nof-collection-list");
 
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
             var pageNo = br.FindElement(By.ClassName("nof-page-number"));
             Assert.AreEqual("Page 1 of 249", pageNo.Text);
@@ -257,19 +254,19 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=Next]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             wait.ClickAndWait("button[title=Last]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 249 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));
-            br.AssertPageTitleEquals("1 Store");
+            Assert.AreEqual("1 Store", br.Title);
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 1 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             wait.ClickAndWait("button[title=Previous]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 248 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
         }
 
@@ -279,11 +276,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             var name = wait.ClickAndWait("#CustomerRepository-FindStoreByName button", "#CustomerRepository-FindStoreByName-Name-Input");
-            name.Clear();
-            name.SendKeys("a" + Keys.Tab);
+            name.TypeText("a" + Keys.Tab);
 
             var coll = wait.ClickAndWait(".nof-ok", ".nof-collection-list");
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
 
             // list has 2 columns 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
@@ -291,20 +287,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=Next]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
             wait.ClickAndWait("button[title=Last]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 249 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-list"));
-            br.AssertPageTitleEquals("1 Store");
+            Assert.AreEqual("1 Store", br.Title);
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
             wait.ClickAndWait("button[title=Table]", ".nof-collection-table");
 
-            br.AssertPageTitleEquals("1 Store");
+            Assert.AreEqual("1 Store", br.Title);
 
             // table has 3 columns
             Assert.AreEqual(3, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
@@ -312,20 +308,20 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("button[title=First]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 1 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-table"));
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
 
             Assert.AreEqual(3, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
             wait.ClickAndWait("button[title=Next]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 249");
 
             coll = br.FindElement(By.ClassName("nof-collection-table"));
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
 
             Assert.AreEqual(3, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
 
             wait.ClickAndWait("button[title=List]", ".nof-collection-list");
 
-            br.AssertPageTitleEquals("2 Stores");
+            Assert.AreEqual("2 Stores", br.Title);
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
         }

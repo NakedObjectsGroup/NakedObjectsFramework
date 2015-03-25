@@ -24,12 +24,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO67861" + Keys.Tab);
+            orderNumber.TypeText("SO67861" + Keys.Tab);
 
             var status = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-Status .nof-value");
             Assert.AreEqual("Shipped", status.Text);
-            br.AssertPageTitleEquals("SO67861");
+            Assert.AreEqual("SO67861", br.Title);
         }
 
         public abstract void EditEnumProperty();
@@ -39,8 +38,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO67862" + Keys.Tab);
+            orderNumber.TypeText("SO67862" + Keys.Tab);
 
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
             wait.ClickAndWait(edit, "#SalesOrderHeader-Status-Input");

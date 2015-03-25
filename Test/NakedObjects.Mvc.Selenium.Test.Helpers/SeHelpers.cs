@@ -106,7 +106,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             }
         }
 
-        private static IWebDriver AssertContainsElementWithClass(this IWebDriver webDriver, string className) {
+        public static IWebDriver AssertContainsElementWithClass(this IWebDriver webDriver, string className) {
             try {
                 webDriver.FindElement(By.ClassName(className));
             }
@@ -115,14 +115,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             }
 
             return webDriver;
-        }
-
-        public static IWebDriver AssertContainsObjectView(this IWebDriver webDriver) {
-            return webDriver.AssertContainsElementWithClass("nof-objectview");
-        }
-
-        public static IWebDriver AssertContainsObjectEdit(this IWebDriver webDriver) {
-            return webDriver.AssertContainsElementWithClass("nof-objectedit");
         }
 
         public static IWebDriver AssertContainsObjectEditTransient(this IWebDriver webDriver) {
@@ -138,11 +130,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
                 Assert.Fail();
             }
 
-            return webDriver;
-        }
-
-        public static IWebDriver AssertPageTitleEquals(this IWebDriver webDriver, string expectedTitle) {
-            Assert.AreEqual(expectedTitle, webDriver.Title);
             return webDriver;
         }
 
@@ -165,31 +152,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
                 //Should be NoSuchElementException, but this doesn't work on Firefox
                 //As expected; test is OK
             }
-        }
-
-        public static IWebElement AssertValueEquals(this IWebElement field, string expectedValue) {
-            return field.FindElement(By.ClassName("nof-value")).AssertTextEquals(expectedValue);
-        }
-
-        public static IWebElement AssertTextEquals(this IWebElement field, string expectedValue) {
-            Assert.AreEqual(expectedValue, field.Text);
-            return field;
-        }
-
-        public static IWebElement AssertInputValueEquals(this IWebElement field, string expectedValue) {
-            Assert.AreEqual(expectedValue, field.FindElement(By.TagName("input")).GetAttribute("value"));
-            return field;
-        }
-
-        public static IWebElement AssertInputValueNotEquals(this IWebElement field, string expectedValue) {
-            Assert.AreNotEqual(expectedValue, field.FindElement(By.TagName("input")).GetAttribute("value"));
-            return field;
-        }
-
-        public static IWebElement AssertIsEmpty(this IWebElement field) {
-            ReadOnlyCollection<IWebElement> links = field.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a"));
-            Assert.AreEqual(0, links.Count());
-            return field;
         }
 
         public static IWebElement AssertHasMandatoryIndicator(this IWebElement field) {
@@ -222,29 +184,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             catch (NoSuchElementException) {
                 // expected  
             }
-            return field;
-        }
-
-        public static IWebElement AssertObjectHasTitle(this IWebElement field, string expectedTitle) {
-            string actual = field.FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text;
-            Assert.AreEqual(expectedTitle, actual);
-            return field;
-        }
-
-        public static IWebElement AssertIsModifiable(this IWebElement field) {
-            Assert.AreEqual(1, field.FindElements(By.TagName("input")).Count);
-            Assert.AreEqual(field.GetAttribute("id") + "-Input", field.FindElement(By.TagName("input")).GetAttribute("id"));
-            return field;
-        }
-
-        public static IWebElement AssertIsUnmodifiable(this IWebElement field) {
-            Assert.AreEqual(0, field.FindElements(By.TagName("input")).Count);
-            return field;
-        }
-
-
-        public static IWebElement AssertSelectedDropDownItemIs(this IWebElement field, string expected) {
-            Assert.AreEqual(expected, field.FindElements(By.TagName("option")).Where(o => o.GetAttribute("selected") != null).Select(o => o.Text).SingleOrDefault());
             return field;
         }
 

@@ -84,7 +84,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
                 var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReason-Reason");
 
-                reason.AssertIsEmpty();
+                Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
                 reason.SelectDropDownItem("Price", br);
 
                 wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -100,14 +100,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
+            orderNumber.TypeText("SO72847" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasons button");
 
             var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasons-Reasons");
 
-            reason.AssertIsEmpty();
+            Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             reason.SelectListBoxItems(br, "Price", "Other");
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -124,7 +123,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var cats = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories");
 
-            cats.AssertIsEmpty();
+            Assert.AreEqual(0, cats.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             cats.SelectListBoxItems(br, "Marketing", "Promotion");
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -135,11 +134,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var categories = wait.ClickAndWait("#ProductRepository-FindProductsByCategory button", "#ProductRepository-FindProductsByCategory-Categories");
 
-            categories.AssertIsEmpty();
+            Assert.AreEqual(0, categories.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             var subcategories = br.FindElement(By.CssSelector("#ProductRepository-FindProductsByCategory-Subcategories"));
 
-            subcategories.AssertIsEmpty();
+            Assert.AreEqual(0, subcategories.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             wait.Until(wd => subcategories.FindElements(By.TagName("option")).Count >= 4);
 
@@ -187,8 +186,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         private void DoActionValidateFail() {
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
-            f.Clear();
-            f.SendKeys("AW00000546" + Keys.Tab);
+            f.TypeText("AW00000546" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#Store-SearchForOrders button");
 
@@ -204,26 +202,19 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         private void SetDates(IWebElement action, string fromDate, string toDate) {
             var from = wait.ClickAndWait(action, "#OrderContributedActions-SearchForOrders-FromDate-Input");
-
-            from.Clear();
-            from.SendKeys(fromDate + Keys.Tab);
-
+            from.TypeText(fromDate + Keys.Tab);
             var to = br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input"));
-
-            to.Clear();
-            to.SendKeys(toDate + Keys.Tab);
+            to.TypeText(toDate + Keys.Tab);
         }
 
         private void SetDates(string fromDate, string toDate) {
             var from = br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input"));
 
-            from.Clear();
-            from.SendKeys(fromDate + Keys.Tab);
+            from.TypeText(fromDate + Keys.Tab);
 
             var to = br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input"));
 
-            to.Clear();
-            to.SendKeys(toDate + Keys.Tab);
+            to.TypeText(toDate + Keys.Tab);
 
             Thread.Sleep(1000);
         }
@@ -261,7 +252,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWaitGone(ok, ".nof-ok");
 
-            br.AssertPageTitleEquals("No Sales Orders");
+            Assert.AreEqual("No Sales Orders", br.Title);
             Assert.AreEqual("Search For Orders: Query Result: Viewing 0 of 0 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count == 0);
@@ -275,8 +266,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
+            orderNumber.TypeText("SO72847" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddStandardComments button");
             var comments = wait.ClickAndWait(action, "#SalesOrderHeader-AddStandardComments-Comments");
@@ -290,8 +280,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO47185" + Keys.Tab);
+            orderNumber.TypeText("SO47185" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasons button");
             var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasons-Reasons");
@@ -308,8 +297,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
+            orderNumber.TypeText("SO72847" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddNewSalesReasonsByCategories button");
 
@@ -325,8 +313,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
             var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
 
-            productLine.AssertIsEmpty();
-            productClass.AssertIsEmpty();
+            Assert.AreEqual(0, productLine.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, productClass.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
             // unselect defaults 
             productLine.SelectListBoxItems(br, "M", "S");
             productClass.SelectListBoxItems(br, "H");
@@ -347,13 +335,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
-            orderNumber.Clear();
-            orderNumber.SendKeys("SO72847" + Keys.Tab);
+            orderNumber.TypeText("SO72847" + Keys.Tab);
 
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-RemoveDetails button");
             var reason = wait.ClickAndWait(action, "#SalesOrderHeader-RemoveDetails-DetailsToRemove");
 
-            reason.AssertIsEmpty();
+            Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
 
             reason.SelectListBoxItems(br, "1 x Touring-2000 Blue, 46");
 
@@ -366,8 +353,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var pn = wait.ClickAndWait("#ProductRepository-FindProductByNumber button", "#ProductRepository-FindProductByNumber-Number-Input");
 
             // enter product number 
-            pn.Clear();
-            pn.SendKeys("LW-1000" + Keys.Tab);
+            pn.TypeText("LW-1000" + Keys.Tab);
 
             // click ok and wait for best special offer button 
             var edit = wait.ClickAndWait(".nof-ok", ".nof-edit");
@@ -376,8 +362,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("0", days.GetAttribute("value"));
 
-            days.Clear();
-            days.SendKeys("100" + Keys.Tab);
+            days.TypeText("100" + Keys.Tab);
 
             var valMsg = wait.Until(wd => wd.FindElement(By.CssSelector("#Product-DaysToManufacture .field-validation-error")));
 

@@ -18,19 +18,19 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoViewPersistedObject() {
             Login();
             FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsObjectView();
+            br.AssertContainsElementWithClass("nof-objectview");
 
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
 
-            br.FindElement(By.CssSelector("#Store-Name")).AssertValueEquals("Field Trip Store");
+            Assert.AreEqual("Field Trip Store", br.FindElement(By.CssSelector("#Store-Name")).FindElement(By.ClassName("nof-value")).Text);
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
             br.AssertElementDoesNotExist(By.CssSelector("[title=Save]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.CssSelector("#Store-Actions")).GetAttribute("class"));
 
             wait.ClickAndWait("#Store-SalesPerson a", wd => wd.Title == "Linda Mitchell");
 
-            br.AssertContainsObjectView();
-            br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).AssertValueEquals("1.50 %");
+            br.AssertContainsElementWithClass("nof-objectview");
+            Assert.AreEqual("1.50 %", br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).FindElement(By.ClassName("nof-value")).Text);
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.CssSelector("#SalesPerson-Actions")).GetAttribute("class"));
 
@@ -70,7 +70,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoViewTableHeader() {
             Login();
             FindProduct("BK-M38S-46");
-            br.AssertContainsObjectView();
+            br.AssertContainsElementWithClass("nof-objectview");
 
             // Collection Table
 
@@ -112,8 +112,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindOrder("SO59000");
             wait.ClickAndWait("#SalesOrderHeader-Recalculate", wd => true);
             Thread.Sleep(2000);
-            br.AssertContainsObjectView();
-            br.AssertPageTitleEquals("SO59000");
+            br.AssertContainsElementWithClass("nof-objectview");
+            Assert.AreEqual("SO59000", br.Title);
             //No verification that method has actually run - only that it hasn't changed the view!
         }
 
@@ -125,8 +125,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindProduct("BK-M68S-42");
 
             var quantity = wait.ClickAndWait("#Product-BestSpecialOffer button", "#Product-BestSpecialOffer-Quantity-Input");
-            quantity.Clear();
-            quantity.SendKeys("12" + Keys.Tab);
+            quantity.TypeText("12" + Keys.Tab);
 
             wait.ClickAndWait(".nof-ok", wd => wd.Title == "Volume Discount 11 to 14");
         }
@@ -139,8 +138,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindProduct("BK-M68S-42");
 
             var quantity = wait.ClickAndWait("#Product-BestSpecialOffer button", "#Product-BestSpecialOffer-Quantity-Input");
-            quantity.Clear();
-            quantity.SendKeys("12" + Keys.Tab);
+            quantity.TypeText("12" + Keys.Tab);
 
             wait.ClickAndWait(".nof-apply", wd => wd.Title == "Volume Discount 11 to 14");
             wait.ClickAndWaitGone(".ui-dialog-titlebar-close", ".nof-apply");
@@ -152,12 +150,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsObjectView();
+            br.AssertContainsElementWithClass("nof-objectview");
             wait.ClickAndWait("#Store-QuickOrder button", wd => wd.Title == "AW00000546");
 
             var number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
-            number.Clear();
-            number.SendKeys("33" + Keys.Tab);
+            number.TypeText("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
 
@@ -181,15 +178,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "1 Order Line");
 
             number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
-            number.Clear();
-            number.SendKeys("33" + Keys.Tab);
+            number.TypeText("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "2 Order Lines");
 
             number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
-            number.Clear();
-            number.SendKeys("33" + Keys.Tab);
+            number.TypeText("33" + Keys.Tab);
 
             wait.ClickAndWait("#QuickOrderForm-AddDetail-Product-ProductRepository-RandomProduct", "#QuickOrderForm-AddDetail-Product img");
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#QuickOrderForm-PropertyList .nof-object")).Text == "3 Order Lines");
@@ -206,7 +201,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var ok = wait.ClickAndWait("#Product-BestSpecialOffer button", ".nof-ok");
             var error = wait.ClickAndWait(ok, "span.field-validation-error");
-            error.AssertTextEquals("Mandatory");
+            Assert.AreEqual("Mandatory", error.Text);
         }
 
         public abstract void InvokeActionParmsInvalid();
@@ -217,11 +212,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindProduct("BK-M68S-42");
 
             var quantity = wait.ClickAndWait("#Product-BestSpecialOffer button", "#Product-BestSpecialOffer-Quantity-Input");
-            quantity.Clear();
-            quantity.SendKeys("not a number" + Keys.Tab);
+            quantity.TypeText("not a number" + Keys.Tab);
 
             var error = wait.ClickAndWait(".nof-ok", "span.field-validation-error");
-            error.AssertTextEquals("Invalid Entry");
+            Assert.AreEqual("Invalid Entry", error.Text);
         }
 
         public abstract void InvokeContributedActionNoParmsReturnTransient();
@@ -241,7 +235,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindCustomerByAccountNumber("AW00000546");
             var number = wait.ClickAndWait("#Store-LastOrder button", "#SalesOrderHeader-SalesOrderNumber");
-            number.AssertValueEquals("SO69561");
+            Assert.AreEqual("SO69561", number.FindElement(By.ClassName("nof-value")).Text);
         }
 
         public abstract void InvokeContributedActionParmsReturn();
@@ -256,7 +250,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
 
-            obj.AssertObjectHasTitle("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", obj.FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003");
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText("12/12/2003" + Keys.Escape);
@@ -273,13 +267,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var obj = wait.ClickAndWait("#Store-SearchForOrders button", "#OrderContributedActions-SearchForOrders-Customer");
 
-            obj.AssertObjectHasTitle("Field Trip Store, AW00000546");
+            Assert.AreEqual("Field Trip Store, AW00000546", obj.FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             //br.ClickCancel();
             br.FindElement(By.CssSelector(".ui-dialog-titlebar-close")).Click();
 
-            br.AssertContainsObjectView();
-            br.AssertPageTitleEquals("Field Trip Store, AW00000546");
+            br.AssertContainsElementWithClass("nof-objectview");
+            Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
         }
 
         public abstract void EmptyCollectionDoesNotShowListOrTableButtons();
@@ -300,7 +294,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var randomEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-RandomEmployee");
             wait.ClickAndWait(randomEmployee, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
             var error = wait.ClickAndWait("button[title=Remove]", "span.field-validation-error");
-            error.AssertTextEquals("Mandatory");
+            Assert.AreEqual("Mandatory", error.Text);
         }
 
         public abstract void RecentlyViewedOnActionDialog();
@@ -313,7 +307,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var recentlyViewed = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "button[title='Recently Viewed']");
             wait.ClickAndWait(recentlyViewed, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Ken Sánchez");
+            Assert.AreEqual("Ken Sánchez", br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public abstract void RecentlyViewedOnActionDialogWithSelect();
@@ -330,7 +324,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var select = wait.ClickAndWait(recentlyViewed, "button[title='Select']:last-of-type");
             wait.ClickAndWait(select, wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Eric Gubbels");
+            Assert.AreEqual("Eric Gubbels", br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public abstract void ActionFindOnActionDialog();
@@ -341,12 +335,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var findEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindEmployeeByName");
             var lastName = wait.ClickAndWait(findEmployee, "#EmployeeRepository-FindEmployeeByName-LastName-Input");
 
-            lastName.Clear();
-            lastName.SendKeys("Krebs" + Keys.Tab);
+            lastName.TypeText("Krebs" + Keys.Tab);
 
             wait.ClickAndWait(".nof-ok", wd => wd.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee .nof-object a")).Text.Trim().Length > 0);
 
-            br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).AssertObjectHasTitle("Peter Krebs");
+            Assert.AreEqual("Peter Krebs", br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
         public abstract void NewObjectOnActionDialog();
@@ -370,7 +363,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var select = wait.ClickAndWait(".nof-save", "button[title='Select']:first-of-type");
             var product = wait.ClickAndWait(select, "#WorkOrderRepository-CreateNewWorkOrder-Product");
 
-            product.AssertInputValueEquals("test-popup ");
+            Assert.AreEqual("test-popup ", product.FindElement(By.TagName("input")).GetAttribute("value"));
         }
 
         public abstract void AutoCompleteOnActionDialog();
@@ -380,8 +373,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder button", "#WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct");
 
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).Clear();
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys("HL");
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).TypeText("HL");
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
@@ -411,7 +403,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("1");
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
-            error.AssertTextEquals("Mandatory");
+            Assert.AreEqual("Mandatory", error.Text);
 
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }
@@ -435,7 +427,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Product-StandardCost-Input")).TypeText("1");
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error");
-            error.AssertTextEquals("Invalid Entry");
+            Assert.AreEqual("Invalid Entry", error.Text);
 
             Assert.AreEqual("test", br.FindElement(By.CssSelector("#Product-Name-Input")).GetAttribute("value"));
         }

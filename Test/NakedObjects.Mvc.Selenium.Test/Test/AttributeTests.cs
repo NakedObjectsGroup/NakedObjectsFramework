@@ -32,8 +32,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var f = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
 
             // enter account number 
-            f.Clear();
-            f.SendKeys("AW00000206" + Keys.Tab);
+            f.TypeText("AW00000206" + Keys.Tab);
 
             // click on OK and wait for Formatted Demographics field
             var demog = wait.ClickAndWait(".nof-dialog .nof-ok", "#Store-FormattedDemographics div.multiline");
@@ -47,8 +46,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var f = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
 
             // enter order number 
-            f.Clear();
-            f.SendKeys("SO63557" + Keys.Tab);
+            f.TypeText("SO63557" + Keys.Tab);
 
             // click on OK and wait for Comment field
             wait.ClickAndWait(".nof-dialog .nof-ok", "#SalesOrderHeader-Comment");
