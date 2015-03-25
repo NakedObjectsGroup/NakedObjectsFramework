@@ -19,14 +19,30 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
 
         [TestInitialize]
         public virtual void InitializeTest() {
+            FilePath("testimage.jpg");
             br = new FirefoxDriver();
             wait = new SafeWebDriverWait(br, DefaultTimeOut);
             br.Navigate().GoToUrl(url);
         }
 
-        [TestMethod, Ignore]
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            CleanUp();
+        }
+
+        [TestMethod]
         public override void ViewImage() {
             DoViewImage();
+        }
+
+        [TestMethod]
+        public  void DownloadImage() {
+            DoDownloadImage();
+        }
+
+        [TestMethod]
+        public void ZzUploadImage() {
+            DoUploadImage();
         }
     }
 }

@@ -151,6 +151,9 @@
     <EmbeddedResource Include="chromedriver.exe" />
     <EmbeddedResource Include="IEDriverServer.exe" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="testimage.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>copy "$(ProjectDir)chromedriver.exe" "$(TargetDir)chromedriver.exe"</PreBuildEvent>
