@@ -1,7 +1,6 @@
 ﻿var nakedObjects = (function () {
 
     var api = {};
-    api.ajaxCount = 0; 
     var disabledSubmits;
     var inAjaxLink;
     var updateLocationFlag = false;
@@ -10,14 +9,6 @@
 
     var fileUploadTimeOut = 60 * 1000; // one minute 
     var tempStoreQuota = 1024 * 1024 * 1024; // One Gigabyte
-
-    function safeDecrementAjaxCount() {
-        if (api.ajaxCount > 0) {
-            api.ajaxCount--;
-        } else {
-            api.ajaxCount = 0; 
-        }
-    }
 
     api.executeAndCloseButtonQueryOnlyText = "OK"; //Recommended alternative label:  "Go"
     api.executeWithoutClosingButtonText = "Apply";    //Recommended alternative label:  "Show"
@@ -106,7 +97,6 @@
 
     api.clearHistory = function () {
 
-        api.ajaxCount++;
         $.post($(this).attr("action"), $(this).serialize(), function (response) {
 
             // check attribute value exists for ie8 support no need ie9+ and ff/chrome
@@ -120,8 +110,6 @@
             }
 
             bindToNewHtml(false);
-        }).always(function () {
-            safeDecrementAjaxCount();
         });
         
         return false;
@@ -129,15 +117,12 @@
     
     api.clearTabbedHistory = function () {
 
-        api.ajaxCount++;
         $.post($(this).attr("action"), $(this).serialize(), function (response) {
 
             handleLoginForm(response);
             replacePageBody(response);
             replaceFormValues();
             bindToNewHtml(true);
-        }).always(function () {
-            safeDecrementAjaxCount();
         });
         
         return false;
@@ -145,8 +130,6 @@
 
 
     api.clearHistoryItem = function () {
-
-        api.ajaxCount++;
         
         // if clearing active tab redraw otherwise just remove tab from history 
 
@@ -158,7 +141,7 @@
             api.cacheAllFormValues();
         }
 
-        $.post($(this).attr("action"), $(this).serialize(), function (response) {
+        $.post($(this).attr("action"), $(this).serialize(), function(response) {
 
             if (clearingActive) {
                 handleLoginForm(response);
@@ -168,23 +151,18 @@
             } else {
                 replace(".nof-tabbed-history", response);
                 drawHistoryMenus();
-            }    
-        }).fail(function (jqXHR) {
+            }
+        }).fail(function(jqXHR) {
             var response = jqXHR.responseText;
             if (response) {
                 replacePageBody(response);
-                
             }
-        }).always(function () {
-            safeDecrementAjaxCount();
         });
         
         return false;
     };
 
     api.clearHistoryOthers = function () {
-
-        api.ajaxCount++;
 
         var alreadyActive = false;
         var tab = $(this).closest(".nof-tab");
@@ -195,20 +173,18 @@
             api.cacheAllFormValues();
         }
 
-        $.post($(this).attr("action"), $(this).serialize(), function (response) {
+        $.post($(this).attr("action"), $(this).serialize(), function(response) {
 
             if (alreadyActive) {
                 // just redraw history
                 replace(".nof-tabbed-history", response);
                 drawHistoryMenus();
-            } else {          
+            } else {
                 handleLoginForm(response);
                 replacePageBody(response);
                 replaceFormValues();
                 bindToNewHtml(true);
             }
-        }).always(function () {
-            safeDecrementAjaxCount();
         });
         
         return false;
@@ -329,9 +305,7 @@
                 return false;
             }
             // check if we were doing a ajax call - if not ignore - must have been a validate 
-            if (endSubmitFeedBack() || endLinkFeedBack()) {
-                safeDecrementAjaxCount();
-            }
+            if (endSubmitFeedBack() || endLinkFeedBack()) {}
             errorDialog('Ajax Error', "Error in: " + settings.url + " \n" + "error:\n" + xhr.responseText);
         });
     };
@@ -366,12 +340,10 @@
 
 
     api.redisplayInlineProperty = function (event) {
-        api.ajaxCount++;
 
         var button = getButton(event);
 
         if (!button || button.name !== "Redisplay") {
-            safeDecrementAjaxCount();
             return true;
         }
 
@@ -411,7 +383,6 @@
             }
         }).always(function () {
             endSubmitFeedBack();
-            safeDecrementAjaxCount();
         });
 
         return false;
@@ -425,12 +396,10 @@
 
 
     api.redisplayProperty = function (event) {
-        api.ajaxCount++;
 
         var button = getButton(event);
 
         if (!button || button.name !== "Redisplay") {
-            safeDecrementAjaxCount();
             return true;
         }
 
@@ -466,7 +435,6 @@
             }
         }).always(function () {
             endSubmitFeedBack();
-            safeDecrementAjaxCount();
         });
 
         return false;
@@ -778,14 +746,12 @@
     }
 
     api.updateChoices = function () {
-        api.ajaxCount++;
 
         var choicesData = $(this).closest("div[data-choices]");
 
         var selects = choicesData.find("select");
 
         if (choicesData.length == 0 || selects.length == 0) {
-            safeDecrementAjaxCount();
             return true;
         }
 
@@ -799,7 +765,6 @@
 
         if (!parmsString || ($.inArray($(this).attr('id'), parms) === -1 && $.inArray($(this).attr('id'), encParms) === -1)) {
             // not monitoring this field so return
-            safeDecrementAjaxCount();
             return true;
         }
 
@@ -838,9 +803,9 @@
         }
 
         $.ajaxSetup({ cache: false });
-        $.getJSON(url, inData, function (data) {
+        $.getJSON(url, inData, function(data) {
 
-            selects.each(function () {
+            selects.each(function() {
 
                 var id = $(this).attr("id");
 
@@ -882,10 +847,7 @@
                     }
                 }
             });
-        
-        }).always(function () {
-          
-            safeDecrementAjaxCount();
+
         });
 
         return true; // ie8 needs two tabs to leave field otherwise  
@@ -913,8 +875,6 @@
             return setFile($(this), button);
         }
         
-        api.ajaxCount++;
-
         // cache before disabled
         api.cacheAllFormValues();
         startSubmitFeedBack(button);
@@ -961,7 +921,6 @@
             }
         }).always(function () {
             endSubmitFeedBack();
-            safeDecrementAjaxCount();
         });
         
         return false;
@@ -973,12 +932,10 @@
     }
 
     api.isValid = function (draggable, droppable) {
-        api.ajaxCount++;
 
         var url = droppable.attr("data-validate");
 
         if (!url) {
-            safeDecrementAjaxCount();
             return;
         }
 
@@ -1005,7 +962,6 @@
             }
         }).always(function () {
             endSubmitFeedBack();
-            safeDecrementAjaxCount();
         });
     };
 
@@ -1073,7 +1029,6 @@
 
     function setupAutoComplete(index, item) {
         var sourceHandler = function (request, response) {
-            api.ajaxCount++;
 
             var inData = {};
 
@@ -1082,10 +1037,8 @@
 
 
             $.ajaxSetup({ cache: false });
-            $.getJSON(url, inData, function (data) {
+            $.getJSON(url, inData, function(data) {
                 response(data);
-            }).always(function () {     
-                safeDecrementAjaxCount();
             });
             return true;
         };
@@ -1232,7 +1185,6 @@
     }
 
     function updatePage(doc, updateLink) {
-        api.ajaxCount++;
         $.ajaxSetup({ cache: false });
         var link = doc.attr("href");
 
@@ -1247,7 +1199,6 @@
                 $(".main-content").html(cachedPage);
                 replaceFormValues();
                 bindToNewHtml(updateLink);
-                safeDecrementAjaxCount();
                 return false;
             }
         }
@@ -1268,7 +1219,6 @@
             }
         }).always(function () {
             endLinkFeedBack();
-            safeDecrementAjaxCount();
         });
         
         return false;
