@@ -17,7 +17,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var err = wait.ClickAndWait("#CustomerRepository-ThrowDomainException button", ".error h2");
 
-            string text = err.Text;
+            var text = err.Text;
             Assert.AreEqual("An exception was thrown within the application code", text);
         }
     }

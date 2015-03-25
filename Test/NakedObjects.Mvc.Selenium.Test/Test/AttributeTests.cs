@@ -20,7 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // validate is a password field 
             Assert.AreEqual("password", pwdField.GetAttribute("type"));
 
-            IWebElement ordField = br.FindElement(By.CssSelector("#CustomerRepository-CreateNewIndividualCustomer-FirstName-Input"));
+            var ordField = br.FindElement(By.CssSelector("#CustomerRepository-CreateNewIndividualCustomer-FirstName-Input"));
             // validate first name is not a password field 
             Assert.AreEqual("text", ordField.GetAttribute("type"));
         }
@@ -67,7 +67,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var f2 = wait.ClickAndWait(".nof-save", "#SalesOrderHeader-Comment div.multiline");
 
             // validate comment value 
-            string txt = f2.Text;
+            var txt = f2.Text;
             Assert.IsTrue(txt.StartsWith("Line 1"));
             Assert.IsTrue(txt.EndsWith("Line 2"));
         }

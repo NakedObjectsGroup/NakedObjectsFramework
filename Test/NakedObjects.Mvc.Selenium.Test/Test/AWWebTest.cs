@@ -21,18 +21,18 @@ namespace NakedObjects.Mvc.Selenium.Test {
         #region chrome helper
 
         protected static string FilePath(string resourcename) {
-            string fileName = resourcename; //.Remove(0, resourcename.IndexOf(".") + 1);
+            var fileName = resourcename; //.Remove(0, resourcename.IndexOf(".") + 1);
 
-            string newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
             if (File.Exists(newFile)) {
                 File.Delete(newFile);
             }
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream("NakedObjects.Mvc.Selenium.Test." + resourcename)) {
-                using (FileStream fileStream = File.Create(newFile, (int) stream.Length)) {
+            using (var stream = assembly.GetManifestResourceStream("NakedObjects.Mvc.Selenium.Test." + resourcename)) {
+                using (var fileStream = File.Create(newFile, (int) stream.Length)) {
                     var bytesInStream = new byte[stream.Length];
                     stream.Read(bytesInStream, 0, bytesInStream.Length);
                     fileStream.Write(bytesInStream, 0, bytesInStream.Length);
@@ -77,8 +77,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         private static void KillAllProcesses(string name) {
             try {
-                Process[] processes = Process.GetProcessesByName(name);
-                foreach (Process p in processes) {
+                var processes = Process.GetProcessesByName(name);
+                foreach (var p in processes) {
                     try {
                         p.Kill();
                     }

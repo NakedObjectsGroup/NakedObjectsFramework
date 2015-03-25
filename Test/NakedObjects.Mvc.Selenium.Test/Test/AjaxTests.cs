@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +28,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             // enter 0
             qty.TypeText("0" + Keys.Tab);
-        
+
             // find scrapped qty 
             var scrappedQty = br.FindElement(By.CssSelector("#WorkOrder-ScrappedQty-Input"));
 
@@ -138,13 +137,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             categories.AssertIsEmpty();
 
-            IWebElement subcategories = br.FindElement(By.CssSelector("#ProductRepository-FindProductsByCategory-Subcategories"));
+            var subcategories = br.FindElement(By.CssSelector("#ProductRepository-FindProductsByCategory-Subcategories"));
 
             subcategories.AssertIsEmpty();
 
             wait.Until(wd => subcategories.FindElements(By.TagName("option")).Count >= 4);
 
-            ReadOnlyCollection<IWebElement> options = subcategories.FindElements(By.TagName("option"));
+            var options = subcategories.FindElements(By.TagName("option"));
             Assert.AreEqual(4, subcategories.FindElements(By.TagName("option")).Count);
 
             Assert.IsTrue(options.Any(we => we.Text == ""));
@@ -248,7 +247,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             SetDates("28/6/2013", "2/6/2013");
 
             apply = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-apply:enabled")));
-           
+
             wait.ClickAndWait(apply, wd => wd.FindElements(By.CssSelector(".validation-summary-errors")).Count > 0);
 
             var error = wait.Until(wd => wd.FindElement(By.CssSelector(".validation-summary-errors")));

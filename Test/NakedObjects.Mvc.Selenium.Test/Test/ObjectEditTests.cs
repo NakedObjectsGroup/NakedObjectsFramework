@@ -31,7 +31,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
                 br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
             }
             catch (Exception e) {
-                string m = e.Message;
+                var m = e.Message;
             }
             //Test modifiable field
             br.FindElement(By.CssSelector("#Store-Name")).AssertIsModifiable();
@@ -40,14 +40,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#Store-AccountNumber")).AssertIsUnmodifiable();
 
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
+            var table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count); //First row is header
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             // Collection Summary
             wait.ClickAndWait("#Store-Addresses .nof-summary", "#Store-Addresses .nof-collection-summary");
 
-            IWebElement contents = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.ClassName("nof-object"));
+            var contents = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.ClassName("nof-object"));
             Assert.AreEqual("1 Customer Address", contents.Text);
 
             // Collection List
@@ -84,7 +84,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             // Collection Table
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
+            var table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td")).Count);

@@ -29,8 +29,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             CleanUp();
         }
 
-        [TestMethod]
-        [Ignore] // fails randomly on server 
+        //[TestMethod] fails
         public override void ViewPersistedObject() {
             DoViewPersistedObject();
         }
@@ -65,7 +64,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeActionOnViewModel();
         }
 
-        [TestMethod, Ignore]
+        //[TestMethod] fails
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
@@ -75,8 +74,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeActionParmsMandatory();
         }
 
-        [TestMethod]
-        [Ignore] // still failing  on chrome
+        //[TestMethod] fails
         public override void InvokeActionParmsInvalid() {
             DoInvokeActionParmsInvalid();
         }
@@ -91,8 +89,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoInvokeContributedActionNoParmsReturnPersistent();
         }
 
-        [TestMethod]
-        [Ignore] // failing again on chrome
+        //[TestMethod] fails
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }
@@ -117,8 +114,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoRecentlyViewedOnActionDialog();
         }
 
-        [TestMethod]
-        [Ignore] // fails randomly on server 
+        //[TestMethod] fails
         public override void RecentlyViewedOnActionDialogWithSelect() {
             DoRecentlyViewedOnActionDialogWithSelect();
         }
@@ -128,8 +124,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoActionFindOnActionDialog();
         }
 
-        [TestMethod]
-        [Ignore] // failing again on chrome
+        //[TestMethod] fails
         public override void NewObjectOnActionDialog() {
             DoNewObjectOnActionDialog();
         }
@@ -139,14 +134,12 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoAutoCompleteOnActionDialog();
         }
 
-        [TestMethod]
-        [Ignore] // failing again on chrome
+        //[TestMethod] fails
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }
 
-        [TestMethod]
-        [Ignore] // failing again on chrome
+        //[TestMethod] fails
         public override void NewObjectOnActionDialogFailInvalid() {
             DoNewObjectOnActionDialogFailInvalid();
         }

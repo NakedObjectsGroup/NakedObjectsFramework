@@ -20,7 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait("#OrderRepository-HighestValueOrders button", wd => wd.Title == "20 Sales Orders");
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
-            IWebElement table = br.FindElement(By.ClassName("SalesOrderHeader"));
+            var table = br.FindElement(By.ClassName("SalesOrderHeader"));
             Assert.AreEqual(21, table.FindElements(By.TagName("tr")).Count);
         }
 
@@ -33,7 +33,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWait(".nof-table", ".nof-collection-table");
 
-            IWebElement table = br.FindElement(By.ClassName("SpecialOffer"));
+            var table = br.FindElement(By.ClassName("SpecialOffer"));
 
             Assert.AreEqual(8, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
@@ -198,9 +198,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertPageTitleEquals("20 Sales Orders");
             Assert.AreEqual("Highest Value Orders: Query Result: Viewing 20 of 31465 Sales Orders", br.FindElement(By.CssSelector(".nof-object")).Text);
 
-            IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
+            var pageNo = br.FindElement(By.ClassName("nof-page-number"));
             Assert.AreEqual("Page 1 of 1574", pageNo.Text);
-            IWebElement total = br.FindElement(By.ClassName("nof-total-count"));
+            var total = br.FindElement(By.ClassName("nof-total-count"));
             Assert.AreEqual("Total of 31465 Sales Orders", total.Text);
 
             Assert.AreEqual("SO51131", coll.TextContentsOfCell(1, 1));
@@ -249,9 +249,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.AssertPageTitleEquals("2 Stores");
             Assert.AreEqual("Find Store By Name: Query Result: Viewing 2 of 497 Stores", br.FindElement(By.CssSelector(".nof-object")).Text);
-            IWebElement pageNo = br.FindElement(By.ClassName("nof-page-number"));
+            var pageNo = br.FindElement(By.ClassName("nof-page-number"));
             Assert.AreEqual("Page 1 of 249", pageNo.Text);
-            IWebElement total = br.FindElement(By.ClassName("nof-total-count"));
+            var total = br.FindElement(By.ClassName("nof-total-count"));
             Assert.AreEqual("Total of 497 Stores", total.Text);
 
             wait.ClickAndWait("button[title=Next]", wd => wd.FindElement(By.CssSelector(".nof-page-number")).Text == "Page 2 of 249");

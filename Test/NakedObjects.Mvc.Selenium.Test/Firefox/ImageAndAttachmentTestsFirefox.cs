@@ -36,7 +36,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        public  void DownloadImage() {
+        public void DownloadImage() {
             DoDownloadImage();
         }
 

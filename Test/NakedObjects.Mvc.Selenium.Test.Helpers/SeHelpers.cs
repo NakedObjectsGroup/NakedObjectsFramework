@@ -325,6 +325,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #endregion
 
+        #region checkboxes
+
         public static IWebElement CheckAll(this IWebElement collection, IWebDriver br) {
             IWebElement all = collection.FindElement(By.Id("checkboxAll"));
             Assert.IsFalse(all.Selected, "Box is already checked");
@@ -341,6 +343,8 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
             Thread.Sleep(1000); // for javascript to run 
             return collection;
         }
+
+        #endregion
 
         #region Row-based operations
 
@@ -383,8 +387,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
         }
 
         #endregion
-
-
-       
+     
     }
 }

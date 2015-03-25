@@ -21,14 +21,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertContainsObjectView();
 
             br.AssertPageTitleEquals("Field Trip Store, AW00000546");
-        
+
             br.FindElement(By.CssSelector("#Store-Name")).AssertValueEquals("Field Trip Store");
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
             br.AssertElementDoesNotExist(By.CssSelector("[title=Save]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.CssSelector("#Store-Actions")).GetAttribute("class"));
 
             wait.ClickAndWait("#Store-SalesPerson a", wd => wd.Title == "Linda Mitchell");
-     
+
             br.AssertContainsObjectView();
             br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).AssertValueEquals("1.50 %");
             br.AssertElementExists(By.CssSelector("[title=Edit]"));
@@ -39,7 +39,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             // rendered eagerly 
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
+            var table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
@@ -73,9 +73,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.AssertContainsObjectView();
 
             // Collection Table
-         
+
             Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            IWebElement table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
+            var table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td")).Count);
@@ -247,8 +247,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void InvokeContributedActionParmsReturn();
 
         public void DoInvokeContributedActionParmsReturn() {
-            bool useEsc = GetType() == typeof (ObjectViewAndActionTestsChrome);
-            string esc = useEsc ? Keys.Escape : "";
+            var useEsc = GetType() == typeof (ObjectViewAndActionTestsChrome);
+            var esc = useEsc ? Keys.Escape : "";
 
             Login();
 
@@ -260,7 +260,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003");
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText("12/12/2003" + Keys.Escape);
-          
+
             wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }
 
@@ -287,7 +287,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoEmptyCollectionDoesNotShowListOrTableButtons() {
             Login();
             FindProduct("LW-1000");
-            IWebElement reviews = br.FindElement(By.CssSelector("#Product-ProductReviews"));
+            var reviews = br.FindElement(By.CssSelector("#Product-ProductReviews"));
             reviews.AssertSummaryEquals("No Product Reviews");
             br.AssertElementDoesNotExist(By.CssSelector("div#Product-ProductReviews[title=List]"));
             br.AssertElementDoesNotExist(By.CssSelector("div#Product-ProductReviews[title=Table]"));
@@ -390,7 +390,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
 
             wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product input")).GetAttribute("value") == "HL Hub");
-
         }
 
         public abstract void NewObjectOnActionDialogFailMandatory();

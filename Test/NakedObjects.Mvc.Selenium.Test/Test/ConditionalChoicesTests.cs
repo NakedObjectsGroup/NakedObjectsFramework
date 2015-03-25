@@ -34,7 +34,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             country.AssertIsEmpty();
 
-            IWebElement province = br.FindElement(By.CssSelector("#Address-StateProvince"));
+            var province = br.FindElement(By.CssSelector("#Address-StateProvince"));
 
             province.AssertIsEmpty();
 

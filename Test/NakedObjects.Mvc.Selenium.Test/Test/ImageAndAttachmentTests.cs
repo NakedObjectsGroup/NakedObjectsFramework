@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.IO;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Mvc.Selenium.Test.Helper;
 using OpenQA.Selenium;
@@ -22,13 +21,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("FR-M94B-38");
             br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
-            IWebElement photoField = br.FindElement(By.CssSelector("#Product-Photo"));
+            var photoField = br.FindElement(By.CssSelector("#Product-Photo"));
 
-            IWebElement alink = photoField.FindElement(By.CssSelector("a"));
+            var alink = photoField.FindElement(By.CssSelector("a"));
             Assert.AreEqual(url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
                 alink.GetAttribute("href"));
 
-            IWebElement img = photoField.FindElement(By.CssSelector("img"));
+            var img = photoField.FindElement(By.CssSelector("img"));
             Assert.AreEqual("frame_black_large.gif", img.GetAttribute("alt"));
             Assert.AreEqual(url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
                 img.GetAttribute("src"));
@@ -38,7 +37,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("FR-M94B-38");
             br.AssertPageTitleEquals("HL Mountain Frame - Black, 38");
-            IWebElement photoLink = br.FindElement(By.CssSelector("#Product-Photo a"));
+            var photoLink = br.FindElement(By.CssSelector("#Product-Photo a"));
 
             photoLink.Click();
 
@@ -59,7 +58,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWaitGone(".nof-ok", ".nof-ok");
 
-            IWebElement alink = br.FindElement(By.CssSelector("#Product-Photo a"));
+            var alink = br.FindElement(By.CssSelector("#Product-Photo a"));
             Assert.AreEqual(url + "/Product/GetFile/testimage.jpg?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
                 alink.GetAttribute("href"));
         }
