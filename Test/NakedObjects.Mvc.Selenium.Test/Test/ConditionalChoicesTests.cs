@@ -33,30 +33,30 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var country = wait.ClickAndWait(action, "#Address-CountryRegion");
 
-            Assert.AreEqual(0, country.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, country.FindElements(By.CssSelector(".nof-object a")).Count());
 
             var province = br.FindElement(By.CssSelector("#Address-StateProvince"));
 
-            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, province.FindElements(By.CssSelector(".nof-object a")).Count());
 
             country.SelectDropDownItem("Australia", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             province = br.FindElement(By.CssSelector("#Address-StateProvince"));
-            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, province.FindElements(By.CssSelector(".nof-object a")).Count());
             province.SelectDropDownItem("Queensland", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             country = br.FindElement(By.CssSelector("#Address-CountryRegion"));
-            Assert.AreEqual(0, country.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, country.FindElements(By.CssSelector(".nof-object a")).Count());
             country.SelectDropDownItem("United Kingdom", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();
 
             province = br.FindElement(By.CssSelector("#Address-StateProvince"));
-            Assert.AreEqual(0, province.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, province.FindElements(By.CssSelector(".nof-object a")).Count());
             province.SelectDropDownItem("England", br);
 
             br.FindElement(By.CssSelector(".nof-save")).Click();

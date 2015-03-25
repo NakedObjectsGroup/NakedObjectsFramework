@@ -18,40 +18,41 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoViewPersistedObject() {
             Login();
             FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
 
             Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
 
             Assert.AreEqual("Field Trip Store", br.FindElement(By.CssSelector("#Store-Name")).FindElement(By.ClassName("nof-value")).Text);
-            br.AssertElementExists(By.CssSelector("[title=Edit]"));
+            br.FindElement(By.CssSelector("[title=Edit]"));
             br.AssertElementDoesNotExist(By.CssSelector("[title=Save]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.CssSelector("#Store-Actions")).GetAttribute("class"));
 
             wait.ClickAndWait("#Store-SalesPerson a", wd => wd.Title == "Linda Mitchell");
 
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
             Assert.AreEqual("1.50 %", br.FindElement(By.CssSelector("#SalesPerson-CommissionPct")).FindElement(By.ClassName("nof-value")).Text);
-            br.AssertElementExists(By.CssSelector("[title=Edit]"));
+            br.FindElement(By.CssSelector("[title=Edit]"));
             Assert.AreEqual("nof-menu", br.FindElement(By.CssSelector("#SalesPerson-Actions")).GetAttribute("class"));
 
             // click history first tab
             wait.ClickAndWait(".nof-tab:first-of-type a", wd => wd.Title == "Field Trip Store, AW00000546");
 
             // rendered eagerly 
-            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.FindElements(By.CssSelector("#Store-Addresses div"))[1].GetAttribute("class"));
             var table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
-
             // Collection Summary
             wait.ClickAndWait("#Store-Addresses .nof-summary", "#Store-Addresses .nof-collection-summary");
 
-            br.FindElement(By.CssSelector("#Store-Addresses")).AssertSummaryEquals("1 Customer Address");
+            IWebElement tempQualifier = br.FindElement(By.CssSelector("#Store-Addresses"));
+            Assert.IsTrue(tempQualifier.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
+            Assert.AreEqual("1 Customer Address", tempQualifier.FindElement(By.CssSelector("div.nof-object")).Text);
 
             // Collection List
             wait.ClickAndWait("#Store-Addresses .nof-list", "#Store-Addresses .nof-collection-list");
 
-            Assert.AreEqual("nof-collection-list", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-list", br.FindElements(By.CssSelector("#Store-Addresses div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
@@ -59,7 +60,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             // Collection Table
             wait.ClickAndWait("#Store-Addresses .nof-table", "#Store-Addresses .nof-collection-table");
 
-            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.FindElements(By.CssSelector("#Store-Addresses div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
@@ -70,11 +71,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoViewTableHeader() {
             Login();
             FindProduct("BK-M38S-46");
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
 
             // Collection Table
 
-            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.FindElements(By.CssSelector("#Product-ProductInventory div"))[1].GetAttribute("class"));
             var table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
@@ -112,7 +113,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindOrder("SO59000");
             wait.ClickAndWait("#SalesOrderHeader-Recalculate", wd => true);
             Thread.Sleep(2000);
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
             Assert.AreEqual("SO59000", br.Title);
             //No verification that method has actually run - only that it hasn't changed the view!
         }
@@ -150,7 +151,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             FindCustomerByAccountNumber("AW00000546");
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
             wait.ClickAndWait("#Store-QuickOrder button", wd => wd.Title == "AW00000546");
 
             var number = wait.ClickAndWait("#QuickOrderForm-AddDetail button", "#QuickOrderForm-AddDetail-Number-Input");
@@ -225,7 +226,9 @@ namespace NakedObjects.Mvc.Selenium.Test {
             FindProduct("BK-M68S-42");
 
             var objedit = wait.ClickAndWait("#Product-CreateNewWorkOrder button", ".nof-objectedit");
-            br.AssertContainsObjectEditTransient();
+            IWebElement elem = br.FindElement(By.CssSelector(".nof-objectedit"));
+            var cls = elem.GetAttribute("class");
+            Assert.IsTrue(cls.Contains("nof-objectedit") && cls.Contains("nof-transient") && cls.Replace("nof-transient", "").Replace("nof-objectedit", "").Trim().Length == 0);
             Assert.AreEqual("AdventureWorksModel-WorkOrder", objedit.GetAttribute("id"));
         }
 
@@ -272,7 +275,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             //br.ClickCancel();
             br.FindElement(By.CssSelector(".ui-dialog-titlebar-close")).Click();
 
-            br.AssertContainsElementWithClass("nof-objectview");
+            br.FindElement(By.ClassName("nof-objectview"));
             Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
         }
 
@@ -282,7 +285,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
             FindProduct("LW-1000");
             var reviews = br.FindElement(By.CssSelector("#Product-ProductReviews"));
-            reviews.AssertSummaryEquals("No Product Reviews");
+            Assert.IsTrue(reviews.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
+            Assert.AreEqual("No Product Reviews", reviews.FindElement(By.CssSelector("div.nof-object")).Text);
             br.AssertElementDoesNotExist(By.CssSelector("div#Product-ProductReviews[title=List]"));
             br.AssertElementDoesNotExist(By.CssSelector("div#Product-ProductReviews[title=Table]"));
         }

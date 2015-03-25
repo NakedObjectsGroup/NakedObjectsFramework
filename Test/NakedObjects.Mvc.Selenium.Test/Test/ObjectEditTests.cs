@@ -26,7 +26,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             //Check basics of edit view
             Assert.AreEqual("Field Trip Store, AW00000546", br.Title);
-            br.AssertElementExists(By.CssSelector("[title=Save]"));
+            br.FindElement(By.CssSelector("[title=Save]"));
             try {
                 br.AssertElementDoesNotExist(By.CssSelector("[title=Edit]"));
             }
@@ -40,23 +40,23 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(storeName.GetAttribute("id") + "-Input", storeName.FindElement(By.TagName("input")).GetAttribute("id"));
 
             //Test unmodifiable field
-            Assert.AreEqual(0, br.FindElement(By.CssSelector("#Store-AccountNumber")).FindElements(By.TagName("input")).Count);
+            Assert.AreEqual(0, br.FindElements(By.CssSelector("#Store-AccountNumber input")).Count);
 
-            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
-            var table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
+            Assert.AreEqual("nof-collection-table", br.FindElements(By.CssSelector("#Store-Addresses div"))[1].GetAttribute("class"));
+            var table = br.FindElement(By.CssSelector("#Store-Addresses table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count); //First row is header
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
 
             // Collection Summary
             wait.ClickAndWait("#Store-Addresses .nof-summary", "#Store-Addresses .nof-collection-summary");
 
-            var contents = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.ClassName("nof-object"));
+            var contents = br.FindElement(By.CssSelector("#Store-Addresses .nof-object"));
             Assert.AreEqual("1 Customer Address", contents.Text);
 
             // Collection List
             wait.ClickAndWait("#Store-Addresses .nof-list", "#Store-Addresses .nof-collection-list");
 
-            Assert.AreEqual("nof-collection-list", br.FindElement(By.CssSelector("#Store-Addresses")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-list", br.FindElements(By.CssSelector("#Store-Addresses div"))[1].GetAttribute("class"));
             table = br.FindElement(By.CssSelector("#Store-Addresses")).FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
@@ -85,7 +85,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait(edit, ".nof-objectedit");
 
             // Collection Table
-            Assert.AreEqual("nof-collection-table", br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElements(By.TagName("div"))[1].GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.FindElements(By.CssSelector("#Product-ProductInventory div"))[1].GetAttribute("class"));
             var table = br.FindElement(By.CssSelector("#Product-ProductInventory")).FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
@@ -171,7 +171,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.ClickAndWaitGone(remove, "#Store-SalesPerson img");
             wait.ClickAndWait(".nof-save", ".nof-objectview");
-            Assert.AreEqual(0, br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElements(By.CssSelector(".nof-object a")).Count());
         }
 
         public void DoChangeReferencePropertyViaAFindAction() {
@@ -316,12 +316,18 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#SalesOrderHeader-Status")).SelectDropDownItem("Approved", br);
             br.FindElement(By.CssSelector("#SalesOrderHeader-StoreContact")).SelectDropDownItem("Diane Glimp", br);
             br.FindElement(By.CssSelector("#SalesOrderHeader-ShipMethod")).SelectDropDownItem("XRQ", br);
-            br.FindElement(By.CssSelector("#SalesOrderHeader-ShipDate")).AssertNoValidationError();
+            try {
+                br.FindElement(By.CssSelector("#SalesOrderHeader-ShipDate")).FindElement(By.CssSelector("span.field-validation-error"));
+                Assert.Fail("unexpected validation error");
+            }
+            catch (NoSuchElementException) {
+                // expected  
+            }
 
             var error = wait.ClickAndWait(".nof-save", "span.field-validation-error:last-of-type");
             Assert.AreEqual("Ship date cannot be before order date", error.Text);
 
-            br.AssertContainsElementWithClass("nof-objectedit");
+            br.FindElement(By.ClassName("nof-objectedit"));
         }
 
         #region abstract 

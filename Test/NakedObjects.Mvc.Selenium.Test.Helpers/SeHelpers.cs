@@ -89,60 +89,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
 
         #region Asserts
 
-
-        public static IWebElement AssertSummaryEquals(this IWebElement collection, string expected) {
-            AssertIsCollection(collection);
-            Assert.IsTrue(collection.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
-            Assert.AreEqual(expected, collection.FindElement(By.CssSelector("div.nof-object")).Text);
-            return collection;
-        }
-
-        private static void AssertIsCollection(IWebElement collection) {
-            try {
-                collection.FindElement(By.CssSelector("div.nof-collection-table, div.nof-collection-list, div.nof-collection-summary"));
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail("Selected Div is not a Collection");
-            }
-        }
-
-        public static IWebDriver AssertContainsElementWithClass(this IWebDriver webDriver, string className) {
-            try {
-                webDriver.FindElement(By.ClassName(className));
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail();
-            }
-
-            return webDriver;
-        }
-
-        public static IWebDriver AssertContainsObjectEditTransient(this IWebDriver webDriver) {
-            try {
-                IWebElement elem = webDriver.FindElement(By.ClassName("nof-objectedit"));
-                var cls = elem.GetAttribute("class");
-
-                Assert.IsTrue(cls.Contains("nof-objectedit"));
-                Assert.IsTrue(cls.Contains("nof-transient"));
-                Assert.IsTrue(cls.Replace("nof-transient", "").Replace("nof-objectedit", "").Trim().Length == 0);
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail();
-            }
-
-            return webDriver;
-        }
-
-        public static void AssertElementExists(this IWebDriver webDriver, By by) {
-            try {
-                webDriver.FindElement(by);
-            }
-            catch (WebDriverException) //Should be NoSuchElementException, but this doesn't work on Firefox
-            {
-                Assert.Fail("Element should exist");
-            }
-        }
-
         public static void AssertElementDoesNotExist(this IWebDriver webDriver, By by) {
             try {
                 webDriver.FindElement(by);
@@ -152,39 +98,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Helper {
                 //Should be NoSuchElementException, but this doesn't work on Firefox
                 //As expected; test is OK
             }
-        }
-
-        public static IWebElement AssertHasMandatoryIndicator(this IWebElement field) {
-            try {
-                field.FindElement(By.ClassName("nof-mandatory-field-indicator"));
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail();
-            }
-
-            return field;
-        }
-
-        public static IWebElement AssertValidationErrorIs(this IWebElement field, string error) {
-            try {
-                Assert.AreEqual(error, field.FindElement(By.CssSelector("span.field-validation-error")).Text);
-            }
-            catch (NoSuchElementException) {
-                Assert.Fail();
-            }
-
-            return field;
-        }
-
-        public static IWebElement AssertNoValidationError(this IWebElement field) {
-            try {
-                field.FindElement(By.CssSelector("span.field-validation-error"));
-                Assert.Fail("unexpected validation error");
-            }
-            catch (NoSuchElementException) {
-                // expected  
-            }
-            return field;
         }
 
         #endregion

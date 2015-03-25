@@ -84,7 +84,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
                 var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReason-Reason");
 
-                Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+                Assert.AreEqual(0, reason.FindElements(By.CssSelector(".nof-object a")).Count());
                 reason.SelectDropDownItem("Price", br);
 
                 wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -106,7 +106,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var reason = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasons-Reasons");
 
-            Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, reason.FindElements(By.CssSelector(".nof-object a")).Count());
 
             reason.SelectListBoxItems(br, "Price", "Other");
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -123,7 +123,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var cats = wait.ClickAndWait(action, "#SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories");
 
-            Assert.AreEqual(0, cats.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, cats.FindElements(By.CssSelector(".nof-object a")).Count());
 
             cats.SelectListBoxItems(br, "Marketing", "Promotion");
             wait.ClickAndWait(".nof-ok", ".nof-objectview");
@@ -134,11 +134,11 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var categories = wait.ClickAndWait("#ProductRepository-FindProductsByCategory button", "#ProductRepository-FindProductsByCategory-Categories");
 
-            Assert.AreEqual(0, categories.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, categories.FindElements(By.CssSelector(".nof-object a")).Count());
 
             var subcategories = br.FindElement(By.CssSelector("#ProductRepository-FindProductsByCategory-Subcategories"));
 
-            Assert.AreEqual(0, subcategories.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, subcategories.FindElements(By.CssSelector(".nof-object a")).Count());
 
             wait.Until(wd => subcategories.FindElements(By.TagName("option")).Count >= 4);
 
@@ -313,8 +313,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
             var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
 
-            Assert.AreEqual(0, productLine.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
-            Assert.AreEqual(0, productClass.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, productLine.FindElements(By.CssSelector(".nof-object a")).Count());
+            Assert.AreEqual(0, productClass.FindElements(By.CssSelector(".nof-object a")).Count());
             // unselect defaults 
             productLine.SelectListBoxItems(br, "M", "S");
             productClass.SelectListBoxItems(br, "H");
@@ -340,7 +340,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-RemoveDetails button");
             var reason = wait.ClickAndWait(action, "#SalesOrderHeader-RemoveDetails-DetailsToRemove");
 
-            Assert.AreEqual(0, reason.FindElement(By.ClassName("nof-object")).FindElements(By.TagName("a")).Count());
+            Assert.AreEqual(0, reason.FindElements(By.CssSelector(".nof-object a")).Count());
 
             reason.SelectListBoxItems(br, "1 x Touring-2000 Blue, 46");
 
