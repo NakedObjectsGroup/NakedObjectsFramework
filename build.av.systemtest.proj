@@ -51,6 +51,11 @@
     <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
   </ItemGroup>
+
+  <ItemGroup>
+    <Apps Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
+    <Apps Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
+  </ItemGroup>
    
 
   <Target Name="Init" DependsOnTargets="Config">
@@ -78,6 +83,11 @@
 
   <Target Name="BuildTests" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
     <MSBuild Projects="@(Files)"  Properties="Configuration=%(Configuration.Identity)"/>
+
+    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Test.App.zip" Target="Package"/>
+  
+    <Exec Command='appveyor PushArtifact "NakedObjects.Test.App.zip"'/>
+    
   </Target>
 
   <!--<Target Name="Deploy" DependsOnTargets="BuildTests">
