@@ -22,7 +22,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
-        protected readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
+        private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
         private readonly int number;
