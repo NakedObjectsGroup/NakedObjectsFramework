@@ -678,7 +678,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
 
-        [TestMethod, Ignore] //Pending #9228
+        [TestMethod] //Pending #9228
         public void DisableMethodsWithParamsNotRecognised() {
             ITestObject obj = NewTestObject<Disable3>();
             obj.GetAction("Disable Action2");

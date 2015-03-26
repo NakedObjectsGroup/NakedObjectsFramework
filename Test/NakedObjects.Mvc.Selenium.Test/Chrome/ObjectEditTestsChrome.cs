@@ -89,7 +89,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoChangeReferencePropertyViaANewActionFailMandatory();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void ChangeReferencePropertyViaANewActionFailInvalid() {
             DoChangeReferencePropertyViaANewActionFailInvalid();
         }

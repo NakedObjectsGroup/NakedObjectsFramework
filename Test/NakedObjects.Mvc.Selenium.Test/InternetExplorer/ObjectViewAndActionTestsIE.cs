@@ -90,7 +90,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoInvokeContributedActionNoParmsReturnPersistent();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public override void InvokeContributedActionParmsReturn() {
             DoInvokeContributedActionParmsReturn();
         }

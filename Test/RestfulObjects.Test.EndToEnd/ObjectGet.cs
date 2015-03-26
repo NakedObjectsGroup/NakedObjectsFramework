@@ -72,7 +72,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore 
+        //[Ignore] // temp ignore 
         public void WithScalars() {
             Object(Urls.WithScalars1, "WithScalars");
         }

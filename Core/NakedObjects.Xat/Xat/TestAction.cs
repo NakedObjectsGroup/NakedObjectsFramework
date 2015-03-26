@@ -130,8 +130,10 @@ namespace NakedObjects.Xat {
             try {
                 result = actionSpec.Execute(owningObject.NakedObject, parameterObjectsAdapter);
             }
-            catch (ArgumentException e) {
-                Assert.IsInstanceOfType(e, typeof (ArgumentException));
+            catch (ArgumentException) {
+                Assert.Fail("Invalid Argument(s)");
+            }
+            catch (InvalidCastException) {
                 Assert.Fail("Invalid Argument(s)");
             }
 

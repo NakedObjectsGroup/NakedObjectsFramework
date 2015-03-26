@@ -27,7 +27,8 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMMostSimple + key1, "MostSimpleViewModel", body.ToString(), Methods.Put);
         }
 
-        [TestMethod, Ignore] //Wasn't able to get this running  -  Bad Request  -something not set up right?
+        [TestMethod] //Wasn't able to get this running  -  Bad Request  -something not set up right?
+        [Ignore]
         public void WithReference()
         {
             string simple = Urls.Objects + Urls.MostSimple1;
