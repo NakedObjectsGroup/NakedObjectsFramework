@@ -39,7 +39,7 @@ namespace AdventureWorksModel.Sales {
 
         #endregion
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void AddTo(SalesOrderHeader salesOrder) {
             SalesOrderDetail sod = salesOrder.AddNewDetail(Product, Number);
             Container.Persist(ref sod);

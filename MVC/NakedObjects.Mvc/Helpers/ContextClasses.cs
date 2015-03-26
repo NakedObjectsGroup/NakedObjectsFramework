@@ -214,7 +214,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public bool IsFindMenuEnabled() {
             if (Parameter is IOneToOneActionParameterSpec) {
                 var p = Parameter as IOneToOneActionParameterSpec;
-                return p.IsFindMenuEnabled && (!p.Action.IsContributedMethod || !Target.Spec.IsOfType(p.Spec));
+                return p.IsFindMenuEnabled;
             }
             return false;
         }

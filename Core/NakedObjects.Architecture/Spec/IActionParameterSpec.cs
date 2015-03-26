@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Spec {
         ///     Returns a flag indicating if it can be left unset when the action can be invoked
         /// </summary>
         bool IsMandatory { get; }
-
+        
         /// <summary>
         ///     Returns the zero-based index to this parameter
         /// </summary>

@@ -581,7 +581,7 @@ namespace AdventureWorksModel {
 
         #region CreateNewCreditCard
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void CreatedCardHasBeenSaved(CreditCard card) {
             CreditCard = card;
         }
