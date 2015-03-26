@@ -84,7 +84,7 @@
   <Target Name="BuildTests" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
     <MSBuild Projects="@(Files)"  Properties="Configuration=%(Configuration.Identity)"/>
 
-    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Test.App.zip;Target=Package"/>
+    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Test.App.zip" Targets="Package"/>
   
     <Exec Command='appveyor PushArtifact "NakedObjects.Test.App.zip"'/>
     
