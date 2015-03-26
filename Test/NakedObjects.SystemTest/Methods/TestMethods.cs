@@ -811,7 +811,7 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetAction("Hide Do Somthing Else");
         }
 
-        [TestMethod, Ignore] // pending #9228
+        [TestMethod] // pending #9228
         public void HideMethodsWithParamsNotRecognised() {
             ITestObject obj = NewTestObject<Hide3>();
             obj.GetAction("Hide Prop8");
