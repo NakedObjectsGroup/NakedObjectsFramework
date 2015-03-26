@@ -72,13 +72,11 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
-        //[Ignore] // temp ignore 
         public void WithScalars() {
             Object(Urls.WithScalars1, "WithScalars");
         }
 
         [TestMethod]
-         // fails after contributed action change 
         public void WithAction() {
             Object(Urls.WithActionObject1, "WithAction");
         }

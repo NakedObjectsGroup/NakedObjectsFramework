@@ -218,7 +218,6 @@ namespace NakedObjects.SystemTest.Reflect {
 
         [TestMethod]
         [Ignore] // #9221
-
         public void SerializeAdventureworksByType() {
             // load adventurework
 

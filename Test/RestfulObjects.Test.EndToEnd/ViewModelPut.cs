@@ -27,21 +27,18 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMMostSimple + key1, "MostSimpleViewModel", body.ToString(), Methods.Put);
         }
 
-        [TestMethod] //Wasn't able to get this running  -  Bad Request  -something not set up right?
-        [Ignore]
-        public void WithReference()
-        {
-            string simple = Urls.Objects + Urls.MostSimple1;
-            var simpleJ = new JObject(new JProperty("href", simple));
+        [TestMethod] 
+        public void WithReference() {
+            var simpleJ = new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1))));
 
-            var body = new JObject( 
-                                   new JProperty("AChoicesReference", simpleJ),
-                                   new JProperty("ANullReference", simpleJ),
-                                   new JProperty("AReference", simpleJ),
-                                   new JProperty("AnEagerReference", simpleJ),
-                                   new JProperty("Id", new JObject(new JProperty("value", key1)))
-                                   );
-            Object(Urls.VMWithReference + key1, "WithReference", body.ToString(), Methods.Put);
+            var body = new JObject(
+                new JProperty("AReference", simpleJ),
+                new JProperty("ANullReference", simpleJ),
+                new JProperty("AChoicesReference", simpleJ),
+                new JProperty("AnEagerReference", simpleJ),
+                new JProperty("Id", new JObject(new JProperty("value", key1)))
+                );
+            Object(Urls.VMWithReference + "1-2-2-1", "WithReference", body.ToString(), Methods.Put);
         }
       
      

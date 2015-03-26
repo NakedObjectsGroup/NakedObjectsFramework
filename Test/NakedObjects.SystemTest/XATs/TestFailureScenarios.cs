@@ -75,7 +75,6 @@ namespace NakedObjects.SystemTest.XATs {
         }
 
         [TestMethod]
-        //[Ignore] // temp ignore
         public virtual void InvokeActionWithIncorrectParams() {
             ITestObject obj1 = NewTestObject<Object1>();
             try {
