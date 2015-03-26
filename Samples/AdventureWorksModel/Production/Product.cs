@@ -183,7 +183,8 @@ namespace AdventureWorksModel {
         public virtual string ProductLine { get; set; }
 
         public virtual string[] ChoicesProductLine() {
-            return new[] {"R", "M", "T", "S"};
+            // nchar(2) in database so pad right with space
+            return new[] {"R ", "M ", "T ", "S "};
         }
 
         #endregion
@@ -195,7 +196,8 @@ namespace AdventureWorksModel {
         public virtual string Class { get; set; }
 
         public virtual string[] ChoicesClass() {
-            return new[] {"H", "M", "L"};
+            // nchar(2) in database so pad right with space
+            return new[] {"H ", "M ", "L "};
         }
 
         #endregion
@@ -207,7 +209,8 @@ namespace AdventureWorksModel {
         public virtual string Style { get; set; }
 
         public virtual string[] ChoicesStyle() {
-            return new[] {"U", "M", "W"};
+            // nchar(2) in database so pad right with space
+            return new[] {"U ", "M ", "W "};
         }
 
         #endregion

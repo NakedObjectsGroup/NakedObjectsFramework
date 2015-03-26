@@ -1504,7 +1504,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (choice.Spec.IsParseable) {
-                return existingNakedObjects.Any(no => choice.TitleString() == no.TitleString());
+                return existingNakedObjects.Any(no => choice.TitleString().Trim() == no.TitleString().Trim());
             }
             return existingNakedObjects.Any(no => choice == no);
         }
