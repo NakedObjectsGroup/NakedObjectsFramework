@@ -86,7 +86,7 @@
 
     <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Test.App.zip" Targets="Package"/>
   
-    <Exec Command='appveyor PushArtifact "NakedObjects.Test.App.zip"'/>
+    <Exec Command='appveyor PushArtifact "Test/NakedObjects.Test.App/NakedObjects.Test.App.zip"'/>
     
   </Target>
 
