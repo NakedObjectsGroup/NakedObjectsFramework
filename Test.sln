@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Test.App", "Test\NakedObjects.Test.App\NakedObjects.Test.App.csproj", "{FDD5572A-8ADC-43D7-85E0-5F16D0866FC3}"
 EndProject
@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CF1D41
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.DatabaseHelpers", "Test\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj", "{DDE874EE-B28B-4577-A28A-6D35690D6310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks2012CodeFirstModel", "Samples\AdventureWorks2012CodeFirstModel\AdventureWorks2012CodeFirstModel.csproj", "{457BDC35-3346-4C06-B929-E93FB1C5D0EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,12 @@ Global
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|x86.ActiveCfg = Release|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457BDC35-3346-4C06-B929-E93FB1C5D0EF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
