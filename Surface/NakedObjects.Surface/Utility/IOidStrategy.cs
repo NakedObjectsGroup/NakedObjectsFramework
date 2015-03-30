@@ -8,9 +8,10 @@
 namespace NakedObjects.Surface {
     public interface IOidStrategy {
         INakedObjectsSurface Surface { set; }
-        object GetDomainObjectByOid(LinkObjectId objectId);
-        object GetServiceByServiceName(LinkObjectId serviceName);
-        LinkObjectId GetOid(INakedObjectSurface nakedObject);
+        object GetDomainObjectByOid(ILinkObjectId objectId);
+        object GetServiceByServiceName(ILinkObjectId serviceName);
+        ILinkObjectId GetOid(INakedObjectSurface nakedObject);
+        ILinkObjectId GetOid(string servicename);
 
         INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec);

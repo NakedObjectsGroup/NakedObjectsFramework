@@ -14,7 +14,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class NullRepresentation : Representation {
-        public NullRepresentation() : base(RestControlFlags.DefaultFlags()) {}
+        public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}
 
         public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
             var msg = new HttpResponseMessage {Content = new StringContent("")};

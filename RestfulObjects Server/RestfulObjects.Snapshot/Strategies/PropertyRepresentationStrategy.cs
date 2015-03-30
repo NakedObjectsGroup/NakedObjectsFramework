@@ -19,7 +19,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Strategies {
     [DataContract]
     public class PropertyRepresentationStrategy : MemberRepresentationStrategy {
-        public PropertyRepresentationStrategy(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) :
+        public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) :
             base(req, propertyContext, flags) {}
 
         private void AddPrompt(List<LinkRepresentation> links) {

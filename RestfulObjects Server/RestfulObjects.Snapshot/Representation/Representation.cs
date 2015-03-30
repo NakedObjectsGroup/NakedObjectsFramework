@@ -30,10 +30,12 @@ namespace RestfulObjects.Snapshot.Representations {
         protected string etag;
         protected List<string> warnings = new List<string>();
 
-        public Representation(RestControlFlags flags) {
+        public Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
+            OidStrategy = oidStrategy;
             Flags = flags;
         }
 
+        protected IOidStrategy OidStrategy { get; set; }
         protected RestControlFlags Flags { get; private set; }
 
         private static ModuleBuilder ModuleBuilder { get; set; }
@@ -251,7 +253,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        protected static object GetPropertyValue(HttpRequestMessage req, INakedObjectAssociationSurface property, INakedObjectSurface target, RestControlFlags flags, bool valueOnly = false) {
+        protected object GetPropertyValue(HttpRequestMessage req, INakedObjectAssociationSurface property, INakedObjectSurface target, RestControlFlags flags, bool valueOnly = false) {
             INakedObjectSurface valueNakedObject = property.GetNakedObject(target);
             string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
@@ -263,10 +265,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (valueOnly) {
-                return RefValueRepresentation.Create(new ValueRelType(property, new UriMtHelper(req, valueNakedObject)), flags);
+                return RefValueRepresentation.Create(OidStrategy, new ValueRelType(property, new UriMtHelper(OidStrategy, req, valueNakedObject)), flags);
             }
 
-            var helper = new UriMtHelper(req, property.IsInline() ? target : valueNakedObject);
+            var helper = new UriMtHelper(OidStrategy, req, property.IsInline() ? target : valueNakedObject);
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {

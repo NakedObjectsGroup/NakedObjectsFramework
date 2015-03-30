@@ -12,7 +12,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     public class MapRepresentation : Representation {
         private MediaTypeHeaderValue mediaType;
-        public MapRepresentation() : base(RestControlFlags.DefaultFlags()) {}
+        public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}
 
         public static MapRepresentation Create(params OptionalProperty[] properties) {
             return properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] {}, properties) : new MapRepresentation();

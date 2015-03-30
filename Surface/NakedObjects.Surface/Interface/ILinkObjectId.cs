@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Surface {
-    // todo rework to use DI - Ninject ? 
-    public class OidStrategyHolder {
-        public static IOidStrategy OidStrategy { get; set; }
+    public interface ILinkObjectId {
+        
+        string DomainType { get; set; }
+        string InstanceId { get; set; }
     }
 }

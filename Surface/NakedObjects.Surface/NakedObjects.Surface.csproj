@@ -94,6 +94,7 @@
     <Compile Include="Interface\ArgumentsContext.cs" />
     <Compile Include="Interface\AttachmentContext.cs" />
     <Compile Include="Interface\IConsentSurface.cs" />
+    <Compile Include="Interface\ILinkObjectId.cs" />
     <Compile Include="Interface\INakedObjectSurface.cs" />
     <Compile Include="Interface\INakedObjectActionSurface.cs" />
     <Compile Include="Interface\INakedObjectActionParameterSurface.cs" />
@@ -107,7 +108,6 @@
     <Compile Include="Context\PropertyContextSurface.cs" />
     <Compile Include="Exception\NakedObjectsSurfaceException.cs" />
     <Compile Include="Interface\ISurfaceHolder.cs" />
-    <Compile Include="Interface\LinkObjectId.cs" />
     <Compile Include="Interface\IOidSurface.cs" />
     <Compile Include="Interface\IScalarPropertyHolder.cs" />
     <Compile Include="Interface\IVersionSurface.cs" />
@@ -118,7 +118,6 @@
     <Compile Include="Utility\ILogWrapper.cs" />
     <Compile Include="Utility\IOidStrategy.cs" />
     <Compile Include="Utility\LogWrapper.cs" />
-    <Compile Include="Utility\OidStrategyHolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

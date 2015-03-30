@@ -9,13 +9,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class VersionRepresentation : Representation {
-        private VersionRepresentation(HttpRequestMessage req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags) : base(flags) {
+        private VersionRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(req));
             SetScalars();
             SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(req)));
@@ -61,8 +63,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = new[] {LinkRepresentation.Create(SelfRelType, Flags), LinkRepresentation.Create(homePageRelType, Flags)};
         }
 
-        public static VersionRepresentation Create(HttpRequestMessage req, IDictionary<string, string> capabilities, RestControlFlags flags) {
-            return new VersionRepresentation(req, capabilities, flags);
+        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilities, RestControlFlags flags) {
+            return new VersionRepresentation(oidStrategy, req, capabilities, flags);
         }
     }
 }

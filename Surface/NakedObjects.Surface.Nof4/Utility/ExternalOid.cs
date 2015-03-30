@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Services;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
@@ -34,7 +35,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public INakedObjectsSurface Surface { protected get; set; }
 
-        public object GetDomainObjectByOid(LinkObjectId objectId) {
+        public object GetDomainObjectByOid(ILinkObjectId objectId) {
             Type type = ValidateObjectId(objectId);
             string[] keys = GetKeys(objectId.InstanceId, type);
             object domainObject = GetObject(keys, type);
@@ -46,7 +47,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return domainObject;
         }
 
-        public object GetServiceByServiceName(LinkObjectId oid) {
+        public object GetServiceByServiceName(ILinkObjectId oid) {
             Type type = ValidateServiceId(oid);
             IServiceSpec spec;
             try {
@@ -66,9 +67,13 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
 
-        public LinkObjectId GetOid(INakedObjectSurface nakedObject) {
+        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
             Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
             return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
+        }
+
+        public ILinkObjectId GetOid(string servicename) {
+           return new LinkObjectId(servicename, "");
         }
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
@@ -182,15 +187,15 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetTypeCodeMapper().CodeFromType(type);
         }
 
-        protected Type ValidateServiceId(LinkObjectId objectId) {
+        protected Type ValidateServiceId(ILinkObjectId objectId) {
             return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        protected Type ValidateObjectId(LinkObjectId objectId) {
+        protected Type ValidateObjectId(ILinkObjectId objectId) {
             return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        private Type ValidateId(LinkObjectId objectId, Action onError) {
+        private Type ValidateId(ILinkObjectId objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {
                 throw new BadRequestNOSException();
             }

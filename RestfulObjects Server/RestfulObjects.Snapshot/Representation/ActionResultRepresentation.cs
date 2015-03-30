@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionResultRepresentation : Representation {
-        protected ActionResultRepresentation(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) : base(flags) {
+        protected ActionResultRepresentation(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) : base(oidStrategy, flags) {
             SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(req, actionResult.ActionContext));
             SetResultType(actionResult);
             SetLinks(req, actionResult);

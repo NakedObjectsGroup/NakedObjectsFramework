@@ -18,7 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ParameterRepresentation : Representation {
-        protected ParameterRepresentation(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) : base(flags) {
+        protected ParameterRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SetName(parameter);
             SetExtensions(req, nakedObject, parameter, flags);
             SetLinks(req, nakedObject, parameter);

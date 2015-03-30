@@ -17,7 +17,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ObjectRepresentation : Representation {
-        protected ObjectRepresentation(HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags) : base(flags) {
+        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             var objectUri = new UriMtHelper(req, objectContext.Target);
             SetScalars(objectContext);
             SelfRelType = objectContext.Specification.IsService() ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
@@ -146,7 +147,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(objectContext.Target);
+            ILinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService()) {

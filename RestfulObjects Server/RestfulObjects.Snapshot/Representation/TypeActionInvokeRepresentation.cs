@@ -8,14 +8,16 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class TypeActionInvokeRepresentation : Representation {
-        protected TypeActionInvokeRepresentation(HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) : base(flags) {
-            SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(req, context));
+        protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags)
+            : base(oidStrategy, flags) {
+            SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context));
             SetScalars(context);
             SetLinks(req, context);
             SetExtensions();
@@ -63,8 +65,8 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
 
-        public static TypeActionInvokeRepresentation Create(HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) {
-            return new TypeActionInvokeRepresentation(req, context, flags);
+        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) {
+            return new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);
         }
     }
 }

@@ -6,22 +6,23 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class RefValueRepresentation : Representation {
-        protected RefValueRepresentation(RelType relType, RestControlFlags flags)
-            : base(flags) {
+        protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             Href = relType.GetUri().AbsoluteUri;
         }
 
         [DataMember(Name = JsonPropertyNames.Href)]
         public string Href { get; set; }
 
-        public static RefValueRepresentation Create(RelType relType, RestControlFlags flags) {
-            return new RefValueRepresentation(relType, flags);
+        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) {
+            return new RefValueRepresentation(oidStrategy, relType, flags);
         }
     }
 }

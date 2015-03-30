@@ -8,13 +8,15 @@
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Security.Principal;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class UserRepresentation : Representation {
-        private UserRepresentation(HttpRequestMessage req, IPrincipal user, RestControlFlags flags) : base(flags) {
+        private UserRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SelfRelType = new UserRelType(RelValues.Self, new UriMtHelper(req));
             SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(req)));
             SetScalars(user);
@@ -51,8 +53,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        public static UserRepresentation Create(HttpRequestMessage req, IPrincipal user, RestControlFlags flags) {
-            return new UserRepresentation(req, user, flags);
+        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags) {
+            return new UserRepresentation(oidStrategy, req, user, flags);
         }
     }
 }

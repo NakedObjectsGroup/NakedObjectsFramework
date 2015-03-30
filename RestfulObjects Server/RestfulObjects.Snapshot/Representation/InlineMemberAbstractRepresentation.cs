@@ -16,7 +16,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class InlineMemberAbstractRepresentation : Representation {
-        protected InlineMemberAbstractRepresentation(RestControlFlags flags) : base(flags) {}
+        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) { }
 
         [DataMember(Name = JsonPropertyNames.MemberType)]
         public string MemberType { get; set; }

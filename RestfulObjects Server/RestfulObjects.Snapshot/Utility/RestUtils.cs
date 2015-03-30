@@ -129,12 +129,12 @@ namespace RestfulObjects.Snapshot.Utility {
             return item.Specification.IsParseable() ? value : LinkRepresentation.Create(relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        public static object GetChoiceValue(HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(property, new UriMtHelper(req, item)), flags);
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
+            return GetChoiceValue(item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
-        public static object GetChoiceValue(HttpRequestMessage req, INakedObjectSurface item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(parameter, new UriMtHelper(req, item)), flags);
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
+            return GetChoiceValue(item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static string SafeGetTitle(INakedObjectSurface no) {

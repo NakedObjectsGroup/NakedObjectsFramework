@@ -15,7 +15,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ScalarRepresentation : Representation {
-        protected ScalarRepresentation(HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags) : base(flags) {
+        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SetScalars(objectContext);
             SetLinks(req, objectContext);
             SetExtensions();
@@ -47,8 +48,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        public static ScalarRepresentation Create(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ScalarRepresentation(req, objectContext, flags);
+        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new ScalarRepresentation(oidStrategy, req, objectContext, flags);
         }
     }
 }

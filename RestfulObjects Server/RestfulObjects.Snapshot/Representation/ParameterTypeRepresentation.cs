@@ -17,7 +17,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ParameterTypeRepresentation : Representation {
-        protected ParameterTypeRepresentation(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) : base(flags) {
+        protected ParameterTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SetScalars(parameterTypeContext);
             SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(req, parameterTypeContext));
             SetLinks(req, parameterTypeContext);

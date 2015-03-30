@@ -17,7 +17,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class CollectionValueRepresentation : Representation {
         protected CollectionValueRepresentation(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags)
-            : base(flags) {
+            : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SetValue(propertyContext, req, flags);
             SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(req, propertyContext));

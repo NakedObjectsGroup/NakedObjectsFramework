@@ -17,7 +17,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PropertyTypeRepresentation : MemberTypeRepresentation {
-        protected PropertyTypeRepresentation(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) : base(req, propertyContext, flags) {
+        protected PropertyTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+            : base(oidStrategy, req, propertyContext, flags) {
             SetScalars(propertyContext);
             SetLinks(req, propertyContext);
         }

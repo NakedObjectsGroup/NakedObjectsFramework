@@ -13,25 +13,25 @@ namespace NakedObjects.Surface {
         void Start();
         void End(bool success);
         IPrincipal GetUser();
-        ObjectContextSurface GetService(LinkObjectId serviceName);
+        ObjectContextSurface GetService(ILinkObjectId serviceName);
         ListContextSurface GetServices();
 
         ObjectContextSurface GetObject(INakedObjectSurface nakedObject);
-        ObjectContextSurface GetObject(LinkObjectId objectId);
-        ObjectContextSurface PutObject(LinkObjectId objectId, ArgumentsContext arguments);
-        PropertyContextSurface GetProperty(LinkObjectId objectId, string propertyName);
+        ObjectContextSurface GetObject(ILinkObjectId objectId);
+        ObjectContextSurface PutObject(ILinkObjectId objectId, ArgumentsContext arguments);
+        PropertyContextSurface GetProperty(ILinkObjectId objectId, string propertyName);
 
-        ListContextSurface GetPropertyCompletions(LinkObjectId objectId, string propertyName, ArgumentsContext arguments);
-        ListContextSurface GetParameterCompletions(LinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments);
-        ListContextSurface GetServiceParameterCompletions(LinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments);
+        ListContextSurface GetPropertyCompletions(ILinkObjectId objectId, string propertyName, ArgumentsContext arguments);
+        ListContextSurface GetParameterCompletions(ILinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments);
+        ListContextSurface GetServiceParameterCompletions(ILinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments);
 
-        ActionContextSurface GetServiceAction(LinkObjectId serviceName, string actionName);
-        ActionContextSurface GetObjectAction(LinkObjectId objectId, string actionName);
-        PropertyContextSurface PutProperty(LinkObjectId objectId, string propertyName, ArgumentContext argument);
-        PropertyContextSurface DeleteProperty(LinkObjectId objectId, string propertyName, ArgumentContext argument);
+        ActionContextSurface GetServiceAction(ILinkObjectId serviceName, string actionName);
+        ActionContextSurface GetObjectAction(ILinkObjectId objectId, string actionName);
+        PropertyContextSurface PutProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument);
+        PropertyContextSurface DeleteProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument);
 
-        ActionResultContextSurface ExecuteObjectAction(LinkObjectId objectId, string actionName, ArgumentsContext arguments);
-        ActionResultContextSurface ExecuteServiceAction(LinkObjectId serviceName, string actionName, ArgumentsContext arguments);
+        ActionResultContextSurface ExecuteObjectAction(ILinkObjectId objectId, string actionName, ArgumentsContext arguments);
+        ActionResultContextSurface ExecuteServiceAction(ILinkObjectId serviceName, string actionName, ArgumentsContext arguments);
         ObjectContextSurface GetImage(string imageId);
         INakedObjectSpecificationSurface[] GetDomainTypes();
         INakedObjectSpecificationSurface GetDomainType(string typeName);

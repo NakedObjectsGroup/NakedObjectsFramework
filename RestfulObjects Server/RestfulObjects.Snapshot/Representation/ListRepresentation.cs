@@ -18,8 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ListRepresentation : Representation {
-        protected ListRepresentation(ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : base(flags) {
+        protected ListRepresentation(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             Value = listContext.List.Select(c => CreateObjectLink(req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(req, listContext.ElementType));
             SetLinks(req);
@@ -28,7 +28,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected ListRepresentation(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextSurface actionContext)
-            : base(flags) {
+            : base(oidStrategy, flags) {
             INakedObjectSurface list;
 
             if (flags.PageSize > 0 && objectContext.Target.Count() > flags.PageSize) {
@@ -47,7 +47,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private ListRepresentation(INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
-            : base(flags) {
+            : base(oidStrategy, flags) {
             Value = specs.Select(s => CreateDomainLink(req, s)).ToArray();
             SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(req));
             SetLinks(req);

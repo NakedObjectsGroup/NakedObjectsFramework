@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
         private MediaTypeHeaderValue contentType;
 
         public AttachmentRepresentation(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
-            : base(flags) {
+            : base(oidStrategy, flags) {
             SetContentType(propertyContext);
             SetContentDisposition(propertyContext);
             SetStream(propertyContext);

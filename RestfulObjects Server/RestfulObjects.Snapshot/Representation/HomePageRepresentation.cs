@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using Common.Logging;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -17,7 +18,8 @@ namespace RestfulObjects.Snapshot.Representations {
     public class HomePageRepresentation : Representation {
         private static readonly ILog Log = LogManager.GetLogger(typeof (HomePageRepresentation));
 
-        protected HomePageRepresentation(HttpRequestMessage req, RestControlFlags flags) : base(flags) {
+        protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             Log.DebugFormat("HomePageRepresentation");
             SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(req));
             SetLinks(req);

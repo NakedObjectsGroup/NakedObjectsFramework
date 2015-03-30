@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NakedObjects.Services;
+using NakedObjects.Surface.Nof4.Implementation;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public class DefaultKeyCodeMapper : IKeyCodeMapper {

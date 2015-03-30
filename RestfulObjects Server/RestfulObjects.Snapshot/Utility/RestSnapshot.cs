@@ -25,6 +25,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly IList<string> allowHeaders = new List<string>();
         private readonly ILog logger = LogManager.GetLogger<RestSnapshot>();
         private readonly Action populator;
+        private readonly IOidStrategy oidStrategy;
         private readonly HttpRequestMessage requestMessage;
         private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
 
@@ -35,21 +36,22 @@ namespace RestfulObjects.Snapshot.Utility {
             AcceptHeaderStrict = true;
         }
 
-        private RestSnapshot(HttpRequestMessage req, bool validateAsJson) {
+        private RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, bool validateAsJson) {
+            this.oidStrategy = oidStrategy;
             requestMessage = req;
             if (validateAsJson) {
                 ValidateIncomingMediaTypeAsJson();
             }
         }
 
-        private RestSnapshot(ContextSurface context, HttpRequestMessage req, bool validateAsJson)
-            : this(req, validateAsJson) {
+        private RestSnapshot(IOidStrategy oidStrategy, ContextSurface context, HttpRequestMessage req, bool validateAsJson)
+            : this(oidStrategy, req, validateAsJson) {
             logger.DebugFormat("RestSnapshot:{0}", context.GetType().FullName);
             CheckForRedirection(context, req);
         }
 
-        public RestSnapshot(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-            : this(objectContext, req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+            : this(oidStrategy,objectContext, req, true) {
             populator = () => {
                 this.httpStatusCode = httpStatusCode;
                 representation = ObjectRepresentation.Create(objectContext, req, flags);
@@ -57,16 +59,16 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(actionResultContext, req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,actionResultContext, req, true) {
             populator = () => {
                 representation = ActionResultRepresentation.Create(req, actionResultContext, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:ServicesList");
             populator = () => {
                 representation = ListRepresentation.Create(listContext, req, flags);
@@ -74,8 +76,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:propertyprompt");
             populator = () => {
                 representation = PromptRepresentation.Create(propertyContext, listContext, req, flags);
@@ -83,8 +85,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:parameterprompt");
             populator = () => {
                 representation = PromptRepresentation.Create(parmContext, listContext, req, flags);
@@ -92,8 +94,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value = false)
-            : this(propertyContext, req, false) {
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value = false)
+            : this(oidStrategy,propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
             populator = () => {
                 if (value) {
@@ -107,8 +109,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(PropertyTypeContextSurface propertyTypeContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyTypeContextSurface propertyTypeContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", propertyTypeContext.GetType().FullName);
             populator = () => {
                 representation = MemberTypeRepresentation.Create(req, propertyTypeContext, flags);
@@ -116,16 +118,16 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(ActionContextSurface actionContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(actionContext, req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ActionContextSurface actionContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,actionContext, req, true) {
             populator = () => {
                 representation = ActionRepresentation.Create(req, actionContext, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(ActionTypeContextSurface actionTypeContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ActionTypeContextSurface actionTypeContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", actionTypeContext.GetType().FullName);
 
             populator = () => {
@@ -134,8 +136,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(ParameterTypeContextSurface parameterTypeContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterTypeContextSurface parameterTypeContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", parameterTypeContext.GetType().FullName);
 
             populator = () => {
@@ -144,8 +146,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:Home");
 
             populator = () => {
@@ -154,29 +156,29 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IDictionary<string, string> capabilities, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:Version");
 
             populator = () => {
-                representation = VersionRepresentation.Create(req, capabilities, flags);
+                representation = VersionRepresentation.Create(oidStrategy, req, capabilities, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(IPrincipal user, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:User");
 
 
             populator = () => {
-                representation = UserRepresentation.Create(req, user, flags);
+                representation = UserRepresentation.Create(oidStrategy, req, user, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:TypeList");
 
 
@@ -186,8 +188,8 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(INakedObjectSpecificationSurface spec, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, INakedObjectSpecificationSurface spec, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:DomainType");
 
 
@@ -197,18 +199,18 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(TypeActionInvokeContext typeActionInvokeContext, HttpRequestMessage req, RestControlFlags flags)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", typeActionInvokeContext.GetType().FullName);
 
             populator = () => {
-                representation = TypeActionInvokeRepresentation.Create(req, typeActionInvokeContext, flags);
+                representation = TypeActionInvokeRepresentation.Create(oidStrategy, req, typeActionInvokeContext, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(Exception exception, HttpRequestMessage req)
-            : this(req, true) {
+        public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequestMessage req)
+            : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:Exception");
 
             populator = () => {

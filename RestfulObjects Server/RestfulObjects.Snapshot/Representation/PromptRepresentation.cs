@@ -18,8 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
-        protected PromptRepresentation(PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : base(flags) {
+        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(listContext, propertyContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
@@ -29,7 +29,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected PromptRepresentation(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
-            : base(flags) {
+            : base(oidStrategy, flags) {
             SetScalars(parmContext.Id);
             SetChoices(listContext, parmContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, parmContext));

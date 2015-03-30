@@ -18,7 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class MemberTypeRepresentation : Representation {
-        protected MemberTypeRepresentation(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) : base(flags) {
+        protected MemberTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
             SetExtensions();

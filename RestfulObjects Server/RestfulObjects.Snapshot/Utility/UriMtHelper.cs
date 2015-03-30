@@ -49,19 +49,20 @@ namespace RestfulObjects.Snapshot.Utility {
             DebugLogRequest(req);
         }
 
-        public UriMtHelper(HttpRequestMessage req, INakedObjectSurface nakedObject) : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject) : this(req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
 
-        public UriMtHelper(HttpRequestMessage req, PropertyContextSurface propertyContext) : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext)
+            : this(req) {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
             spec = nakedObject.Specification;
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -74,11 +75,12 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedType = spec.DomainTypeName();
         }
 
-        public UriMtHelper(HttpRequestMessage req, ActionContextSurface actionContext) : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext)
+            : this(req) {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
             spec = nakedObject.Specification;
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -100,13 +102,13 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedType = spec.DomainTypeName();
         }
 
-        public UriMtHelper(HttpRequestMessage req, ParameterContextSurface parameterContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextSurface parameterContext)
             : this(req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
             nakedObject = parameterContext.Target;
             spec = nakedObject.Specification;
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -129,11 +131,11 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        public UriMtHelper(HttpRequestMessage req, TypeActionInvokeContext context)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context)
             : this(req) {
             typeAction = context.Id;
             cachedId = "";
-            cachedType = OidStrategyHolder.OidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
+            cachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
         }
 
         private static void DebugLogRequest(HttpRequestMessage req) {

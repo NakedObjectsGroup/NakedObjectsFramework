@@ -22,7 +22,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         protected readonly HttpRequestMessage req;
         private readonly RelType self;
 
-        protected MemberRepresentationStrategy(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) : base(flags) {
+        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             this.req = req;
             this.propertyContext = propertyContext;
             objectUri = new UriMtHelper(req, propertyContext);

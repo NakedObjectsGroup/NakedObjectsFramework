@@ -17,7 +17,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class DomainTypeRepresentation : Representation {
-        protected DomainTypeRepresentation(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) : base(flags) {
+        protected DomainTypeRepresentation(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) : base(oidStrategy, flags) {
             var helper = new UriMtHelper(req, spec);
             SelfRelType = new DomainTypeRelType(RelValues.Self, helper);
             SetScalars(spec);
