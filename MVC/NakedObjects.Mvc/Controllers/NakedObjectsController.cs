@@ -21,6 +21,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
@@ -29,15 +30,21 @@ using NakedObjects.Web.Mvc.Models;
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
         private readonly INakedObjectsFramework nakedObjectsFramework;
+        private readonly INakedObjectsSurface surface;
 
-        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework) {
+        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface) {
             this.nakedObjectsFramework = nakedObjectsFramework;
+            this.surface = surface;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
         protected INakedObjectsFramework NakedObjectsContext {
             get { return nakedObjectsFramework; }
+        }
+
+        protected INakedObjectsSurface Surface {
+            get { return surface; }
         }
 
         protected void SetControllerName(string name) {

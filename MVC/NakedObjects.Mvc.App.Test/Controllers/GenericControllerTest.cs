@@ -218,7 +218,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework);
+            controller = new GenericController(NakedObjectsFramework, null);
             mocks = new ContextMocks(controller);
         }
 
@@ -2167,7 +2167,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework);
+            controller = new GenericController(NakedObjectsFramework, null);
             mocks = new ContextMocks(controller);
         }
 

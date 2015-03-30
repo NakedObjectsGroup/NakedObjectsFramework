@@ -73,7 +73,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new HomeController(NakedObjectsFramework);
+            controller = new HomeController(NakedObjectsFramework, null);
             mocks = new ContextMocks(controller);
         }
 

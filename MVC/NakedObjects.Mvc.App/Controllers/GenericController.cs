@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
 using NakedObjects;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -13,7 +14,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsFramework) : base(nakedObjectsFramework) {
+        public GenericController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface) : base(nakedObjectsFramework, surface) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }

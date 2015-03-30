@@ -19,11 +19,12 @@ using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public AjaxControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);

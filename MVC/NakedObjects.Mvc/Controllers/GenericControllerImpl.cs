@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
@@ -29,7 +30,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {

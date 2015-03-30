@@ -14,12 +14,13 @@ using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        protected CustomController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions

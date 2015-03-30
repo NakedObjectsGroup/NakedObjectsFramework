@@ -116,6 +116,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-rc3\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Surface">
+      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-rc\lib\net451\NakedObjects.Surface.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-rc2\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
