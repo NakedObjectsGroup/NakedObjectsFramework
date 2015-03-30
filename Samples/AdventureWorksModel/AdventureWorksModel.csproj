@@ -131,14 +131,12 @@
     <Compile Include="Models\Mapping\CurrencyRateMap.cs" />
     <Compile Include="Models\Mapping\CustomerAddressMap.cs" />
     <Compile Include="Models\Mapping\CustomerMap.cs" />
-    <Compile Include="Models\Mapping\DatabaseLogMap.cs" />
     <Compile Include="Models\Mapping\DepartmentMap.cs" />
     <Compile Include="Models\Mapping\DocumentMap.cs" />
     <Compile Include="Models\Mapping\EmployeeAddressMap.cs" />
     <Compile Include="Models\Mapping\EmployeeDepartmentHistoryMap.cs" />
     <Compile Include="Models\Mapping\EmployeeMap.cs" />
     <Compile Include="Models\Mapping\EmployeePayHistoryMap.cs" />
-    <Compile Include="Models\Mapping\ErrorLogMap.cs" />
     <Compile Include="Models\Mapping\IllustrationMap.cs" />
     <Compile Include="Models\Mapping\IndividualMap.cs" />
     <Compile Include="Models\Mapping\JobCandidateMap.cs" />
@@ -178,7 +176,7 @@
     <Compile Include="Models\Mapping\StateProvinceMap.cs" />
     <Compile Include="Models\Mapping\StoreContactMap.cs" />
     <Compile Include="Models\Mapping\StoreMap.cs" />
-    <Compile Include="Models\Mapping\TransactionHistoryArchiveMap.cs" />
+    <Compile Include="Models\Mapping\TimePeriodMap.cs" />
     <Compile Include="Models\Mapping\TransactionHistoryMap.cs" />
     <Compile Include="Models\Mapping\UnitMeasureMap.cs" />
     <Compile Include="Models\Mapping\VendorAddressMap.cs" />

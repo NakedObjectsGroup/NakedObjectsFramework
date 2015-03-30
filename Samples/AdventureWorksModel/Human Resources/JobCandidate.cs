@@ -12,7 +12,12 @@ namespace AdventureWorksModel {
     public class JobCandidate : AWDomainObject {
         public virtual int JobCandidateID { get; set; }
         public virtual string Resume { get; set; }
+
+        #region Employee
+        [NakedObjectsIgnore]
+        public virtual int EmployeeID { get; set; }
         public Employee Employee { get; set; }
+        #endregion
 
         [MemberOrder(99)]
         [Disabled]

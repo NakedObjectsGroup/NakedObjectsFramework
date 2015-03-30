@@ -1,6 +1,5 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using AdventureWorksModel.Models.Mapping;
 
 namespace AdventureWorksModel.Models
 {
@@ -106,9 +105,6 @@ namespace AdventureWorksModel.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new AWBuildVersionMap());
-            modelBuilder.Configurations.Add(new DatabaseLogMap());
-            modelBuilder.Configurations.Add(new ErrorLogMap());
             modelBuilder.Configurations.Add(new DepartmentMap());
             modelBuilder.Configurations.Add(new EmployeeMap());
             modelBuilder.Configurations.Add(new EmployeeAddressMap());
@@ -143,7 +139,6 @@ namespace AdventureWorksModel.Models
             modelBuilder.Configurations.Add(new ProductSubcategoryMap());
             modelBuilder.Configurations.Add(new ScrapReasonMap());
             modelBuilder.Configurations.Add(new TransactionHistoryMap());
-            modelBuilder.Configurations.Add(new TransactionHistoryArchiveMap());
             modelBuilder.Configurations.Add(new UnitMeasureMap());
             modelBuilder.Configurations.Add(new WorkOrderMap());
             modelBuilder.Configurations.Add(new WorkOrderRoutingMap());
@@ -176,23 +171,7 @@ namespace AdventureWorksModel.Models
             modelBuilder.Configurations.Add(new SpecialOfferProductMap());
             modelBuilder.Configurations.Add(new StoreMap());
             modelBuilder.Configurations.Add(new StoreContactMap());
-            modelBuilder.Configurations.Add(new vEmployeeMap());
-            modelBuilder.Configurations.Add(new vEmployeeDepartmentMap());
-            modelBuilder.Configurations.Add(new vEmployeeDepartmentHistoryMap());
-            modelBuilder.Configurations.Add(new vJobCandidateMap());
-            modelBuilder.Configurations.Add(new vJobCandidateEducationMap());
-            modelBuilder.Configurations.Add(new vJobCandidateEmploymentMap());
-            modelBuilder.Configurations.Add(new vAdditionalContactInfoMap());
-            modelBuilder.Configurations.Add(new vStateProvinceCountryRegionMap());
-            modelBuilder.Configurations.Add(new vProductAndDescriptionMap());
-            modelBuilder.Configurations.Add(new vProductModelCatalogDescriptionMap());
-            modelBuilder.Configurations.Add(new vProductModelInstructionMap());
-            modelBuilder.Configurations.Add(new vVendorMap());
-            modelBuilder.Configurations.Add(new vIndividualCustomerMap());
-            modelBuilder.Configurations.Add(new vIndividualDemographicMap());
-            modelBuilder.Configurations.Add(new vSalesPersonMap());
-            modelBuilder.Configurations.Add(new vSalesPersonSalesByFiscalYearMap());
-            modelBuilder.Configurations.Add(new vStoreWithDemographicMap());
+            modelBuilder.Configurations.Add(new TimePeriodMap());
         }
     }
 }

@@ -37,18 +37,18 @@ namespace AdventureWorksModel
             this.ToTable("Employee", "HumanResources");
             this.Property(t => t.EmployeeID).HasColumnName("EmployeeID");
             this.Property(t => t.NationalIDNumber).HasColumnName("NationalIDNumber");
-            this.Property(t => t.ContactID).HasColumnName("ContactID");
+            this.Property(t => t.ContactDetailsID).HasColumnName("ContactID");
             this.Property(t => t.LoginID).HasColumnName("LoginID");
             this.Property(t => t.ManagerID).HasColumnName("ManagerID");
             this.Property(t => t.Title).HasColumnName("Title");
-            this.Property(t => t.BirthDate).HasColumnName("BirthDate");
+            this.Property(t => t.DateOfBirth).HasColumnName("BirthDate");
             this.Property(t => t.MaritalStatus).HasColumnName("MaritalStatus");
             this.Property(t => t.Gender).HasColumnName("Gender");
             this.Property(t => t.HireDate).HasColumnName("HireDate");
-            this.Property(t => t.SalariedFlag).HasColumnName("SalariedFlag");
+            this.Property(t => t.Salaried).HasColumnName("SalariedFlag");
             this.Property(t => t.VacationHours).HasColumnName("VacationHours");
             this.Property(t => t.SickLeaveHours).HasColumnName("SickLeaveHours");
-            this.Property(t => t.CurrentFlag).HasColumnName("CurrentFlag");
+            this.Property(t => t.Current).HasColumnName("CurrentFlag");
             this.Property(t => t.rowguid).HasColumnName("rowguid");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 

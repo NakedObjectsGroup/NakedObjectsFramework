@@ -17,6 +17,9 @@ namespace AdventureWorksModel {
         public virtual string TransactionType { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal ActualCost { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int ProductID { get; set; }
         public Product Product { get; set; }
 
         #region ModifiedDate

@@ -114,6 +114,12 @@ namespace AdventureWorksModel {
         #region SpecialOfferProduct
 
         [Hidden]
+        public virtual int SpecialOfferID { get; set; }
+
+        [Hidden]
+        public virtual int ProductID { get; set; }
+
+        [Hidden]
         public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
 
         #endregion

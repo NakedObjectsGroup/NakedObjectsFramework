@@ -15,7 +15,7 @@ namespace AdventureWorksModel {
     public class StateProvince : AWDomainObject {
         #region StateProvinceID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int StateProvinceID { get; set; }
 
         #endregion
@@ -40,6 +40,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #region CountryRegion
+
+        [NakedObjectsIgnore]
+        public virtual string CountryRegionCode { get; set; }
 
         public virtual CountryRegion CountryRegion { get; set; }
 

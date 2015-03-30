@@ -16,7 +16,7 @@ namespace AdventureWorksModel
             this.Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
             this.Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
             this.Property(t => t.Status).HasColumnName("Status");
-            this.Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            this.Property(t => t.OrderPlacedByID).HasColumnName("EmployeeID");
             this.Property(t => t.VendorID).HasColumnName("VendorID");
             this.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
             this.Property(t => t.OrderDate).HasColumnName("OrderDate");

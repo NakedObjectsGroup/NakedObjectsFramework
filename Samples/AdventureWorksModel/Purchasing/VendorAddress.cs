@@ -20,6 +20,9 @@ namespace AdventureWorksModel {
         [Disabled]
         public virtual Address Address { get; set; }
 
+        [Hidden]
+        public virtual int AddressTypeID { get; set; }
+
         public virtual AddressType AddressType { get; set; }
 
         [Hidden]

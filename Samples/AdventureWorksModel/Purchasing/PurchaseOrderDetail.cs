@@ -53,6 +53,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Product
+        [NakedObjectsIgnore]
+        public int ProductID { get; set; }
 
         [Disabled]
         [MemberOrder(10)]

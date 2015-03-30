@@ -97,6 +97,9 @@ namespace AdventureWorksModel {
         [StringLength(15)]
         public virtual string PostalCode { get; set; }
 
+        [NakedObjectsIgnore]
+        public virtual int StateProvinceID { get; set; }
+
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; set; }
 

@@ -41,11 +41,16 @@ namespace AdventureWorksModel {
         private ICollection<Employee> _directReports = new List<Employee>();
         private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int EmployeeID { get; set; }
+
+        #region Contact
+        [NakedObjectsIgnore]
+        public virtual int ContactDetailsID { get; set; }
 
         [MemberOrder(1)]
         public virtual Contact ContactDetails { get; set; }
+        #endregion
 
         [MemberOrder(10)]
         public virtual string NationalIDNumber { get; set; }

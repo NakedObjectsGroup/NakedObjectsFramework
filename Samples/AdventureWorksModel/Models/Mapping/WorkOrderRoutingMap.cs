@@ -36,9 +36,7 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Location)
-                .WithMany(t => t.WorkOrderRoutings)
-                .HasForeignKey(d => d.LocationID);
+            this.HasRequired(t => t.Location);
             this.HasRequired(t => t.WorkOrder)
                 .WithMany(t => t.WorkOrderRoutings)
                 .HasForeignKey(d => d.WorkOrderID);

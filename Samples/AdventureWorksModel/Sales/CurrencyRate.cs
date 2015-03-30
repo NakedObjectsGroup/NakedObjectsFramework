@@ -11,7 +11,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("currency.png")]
     public class CurrencyRate : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int CurrencyRateID { get; set; }
 
         public virtual DateTime CurrencyRateDate { get; set; }
@@ -20,8 +20,15 @@ namespace AdventureWorksModel {
         public virtual decimal AverageRate { get; set; }
 
         public virtual decimal EndOfDayRate { get; set; }
-        public virtual Currency Currency { get; set; }
-        public virtual Currency Currency1 { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual string FromCurrencyCode { get; set; }
+        public virtual Currency FromCurrency { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual string ToCurrencyCode { get; set; }
+
+        public virtual Currency ToCurrency { get; set; }
 
         #region ModifiedDate
 

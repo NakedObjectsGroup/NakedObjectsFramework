@@ -50,7 +50,7 @@ namespace AdventureWorksModel {
 
         public override void Persisting() {
             if (Customer.IsStore()) {
-                contact = StoreContact.Contact;
+                _contact = StoreContact.Contact;
             }
             base.Persisting();
         }
@@ -139,6 +139,9 @@ namespace AdventureWorksModel {
 
         #region Customer
 
+        [Hidden]
+        public virtual int CustomerID { get; set; }
+
         [Disabled, MemberOrder(2)]
         public virtual Customer Customer { get; set; }
 
@@ -146,14 +149,13 @@ namespace AdventureWorksModel {
 
         #region Contact
 
-        private Contact contact;
-
         [Hidden]
-        public virtual Contact Contact {
-            get { return contact; }
-            set { contact = value; }
-        }
+        public virtual int ContactID { get; set; }
 
+        private Contact _contact;
+        [Hidden]
+        public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
+          
         internal void SetUpContact(Contact value) {
             Contact = value;
             storeContact = FindStoreContactForContact();
@@ -200,6 +202,9 @@ namespace AdventureWorksModel {
 
         #region BillingAddress
 
+        [Hidden]
+        public virtual int BillingAddressID { get; set; }
+
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
@@ -235,6 +240,9 @@ namespace AdventureWorksModel {
 
         #region ShippingAddress
 
+        [Hidden]
+        public virtual int ShippingAddressID { get; set; }
+
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
@@ -258,6 +266,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ShipMethod
+
+        [Hidden]
+        public virtual int ShipMethodID { get; set; }
 
         [MemberOrder(11)]
         public virtual ShipMethod ShipMethod { get; set; }
@@ -366,6 +377,9 @@ namespace AdventureWorksModel {
 
         #region CurrencyRate
 
+        [Hidden]
+        public virtual int? CurrencyRateID { get; set; }
+
         [Optionally]
         [MemberOrder(35)]
         public virtual CurrencyRate CurrencyRate { get; set; }
@@ -385,6 +399,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region CreditCard
+        [Hidden]
+        public virtual int CreditCardID { get; set; }
 
         [Optionally]
         [MemberOrder(42)]
@@ -441,6 +457,9 @@ namespace AdventureWorksModel {
 
         #region SalesPerson
 
+        [Hidden]
+        public virtual int SalesPersonID { get; set; }
+
         [Optionally]
         [MemberOrder(61)]
         public virtual SalesPerson SalesPerson { get; set; }
@@ -453,6 +472,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region SalesTerritory
+        [Hidden]
+        public virtual int SalesTerritoryID { get; set; }
 
         [Optionally]
         [MemberOrder(62)]

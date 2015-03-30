@@ -30,6 +30,9 @@ namespace AdventureWorksModel {
 
         #region ContactType
 
+        [Hidden]
+        public virtual int ContactTypeID { get; set; }
+
         [MemberOrder(1)]
         public virtual ContactType ContactType { get; set; }
 

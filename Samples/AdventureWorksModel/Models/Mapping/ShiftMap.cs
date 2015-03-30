@@ -19,8 +19,6 @@ namespace AdventureWorksModel
             this.ToTable("Shift", "HumanResources");
             this.Property(t => t.ShiftID).HasColumnName("ShiftID");
             this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.StartTime).HasColumnName("StartTime");
-            this.Property(t => t.EndTime).HasColumnName("EndTime");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }

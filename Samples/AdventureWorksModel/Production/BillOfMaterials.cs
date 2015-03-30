@@ -17,8 +17,17 @@ namespace AdventureWorksModel {
         public virtual DateTime? EndDate { get; set; }
         public virtual short BOMLevel { get; set; }
         public virtual decimal PerAssemblyQty { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int ProductAssemblyID { get; set; }
         public virtual Product Product { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int ComponentID { get; set; }
         public virtual Product Product1 { get; set; }
+
+        [NakedObjectsIgnore]
+        public string UnitMeasureCode { get; set; }
         public virtual UnitMeasure UnitMeasure { get; set; }
 
         #region ModifiedDate

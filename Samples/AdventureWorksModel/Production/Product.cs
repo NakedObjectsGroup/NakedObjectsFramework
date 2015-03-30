@@ -138,7 +138,10 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual string Size { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
+        public string SizeUnitMeasureCode { get; set; }
+
+        [NakedObjectsIgnore]
         public virtual UnitMeasure SizeUnit { get; set; }
 
         [DisplayName("Size")]
@@ -150,6 +153,9 @@ namespace AdventureWorksModel {
                 return t.ToString();
             }
         }
+
+        [NakedObjectsIgnore]
+        public string WeightUnitMeasureCode { get; set; }
 
         [Hidden]
         public virtual decimal? Weight { get; set; }
@@ -279,9 +285,14 @@ namespace AdventureWorksModel {
             set { productCategory = value; }
         }
 
+        #region ProductSubcategory
+        [NakedObjectsIgnore]
+        public virtual int ProductSubcategoryID { get; set; }
+
         [Optionally]
         [MemberOrder(12)]
         public virtual ProductSubcategory ProductSubcategory { get; set; }
+        #endregion
 
         public IList<ProductSubcategory> ChoicesProductSubcategory(ProductCategory productCategory) {
             if (productCategory != null) {

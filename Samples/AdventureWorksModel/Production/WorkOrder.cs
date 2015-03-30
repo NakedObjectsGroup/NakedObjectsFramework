@@ -61,6 +61,9 @@ namespace AdventureWorksModel {
 
         #region ScrapReason
 
+        [Hidden]
+        public virtual int ScrapReasonID { get; set; }
+
         [Optionally]
         [MemberOrder(26)]
         public virtual ScrapReason ScrapReason { get; set; }
@@ -117,6 +120,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Product
+        [NakedObjectsIgnore]
+        public virtual int ProductID { get; set; }
 
         [MemberOrder(10), FindMenu]
         public virtual Product Product { get; set; }

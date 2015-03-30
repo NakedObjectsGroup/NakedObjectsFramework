@@ -25,14 +25,10 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Contact)
-                .WithMany(t => t.VendorContacts)
-                .HasForeignKey(d => d.ContactID);
-            this.HasRequired(t => t.ContactType)
-                .WithMany(t => t.VendorContacts)
-                .HasForeignKey(d => d.ContactTypeID);
+            this.HasRequired(t => t.Contact);
+            this.HasRequired(t => t.ContactType);
             this.HasRequired(t => t.Vendor)
-                .WithMany(t => t.VendorContacts)
+                .WithMany(t => t.Contacts)
                 .HasForeignKey(d => d.VendorID);
 
         }

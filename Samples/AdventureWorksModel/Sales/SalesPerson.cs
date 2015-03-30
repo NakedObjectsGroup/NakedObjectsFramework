@@ -59,6 +59,9 @@ namespace AdventureWorksModel {
 
         #region SalesTerritory
 
+        [Hidden]
+        public virtual int SalesTerritoryID { get; set; }
+
         [Optionally]
         [MemberOrder(20)]
         public virtual SalesTerritory SalesTerritory { get; set; }

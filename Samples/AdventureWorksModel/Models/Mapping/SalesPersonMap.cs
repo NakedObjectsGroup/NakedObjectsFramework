@@ -17,7 +17,7 @@ namespace AdventureWorksModel
             // Table & Column Mappings
             this.ToTable("SalesPerson", "Sales");
             this.Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
-            this.Property(t => t.TerritoryID).HasColumnName("TerritoryID");
+            this.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             this.Property(t => t.SalesQuota).HasColumnName("SalesQuota");
             this.Property(t => t.Bonus).HasColumnName("Bonus");
             this.Property(t => t.CommissionPct).HasColumnName("CommissionPct");

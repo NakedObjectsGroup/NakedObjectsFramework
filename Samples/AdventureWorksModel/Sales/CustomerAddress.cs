@@ -14,6 +14,9 @@ namespace AdventureWorksModel {
     public class CustomerAddress : AWDomainObject, IAddressRole {
         #region AddressType
 
+        [NakedObjectsIgnore]   
+        public virtual int AddressTypeID { get; set; }   
+
         [MemberOrder(1)]
         public virtual AddressType AddressType { get; set; }
 

@@ -29,7 +29,6 @@ namespace AdventureWorksModel
             this.HasRequired(t => t.Address);
             this.HasRequired(t => t.AddressType);
             this.HasRequired(t => t.Customer);
-
         }
     }
 }

@@ -34,6 +34,9 @@ namespace AdventureWorksModel {
 
         #region IContactRole Members
 
+        [Hidden]
+        public virtual int ContactTypeID { get; set; }
+
         public virtual ContactType ContactType { get; set; }
 
         #endregion

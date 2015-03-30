@@ -10,10 +10,14 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class SalesTaxRate : AWDomainObject {
+                [NakedObjectsIgnore]
         public virtual int SalesTaxRateID { get; set; }
         public byte TaxType { get; set; }
         public virtual decimal TaxRate { get; set; }
         public virtual string Name { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int StateProvinceID { get; set; }
         public virtual StateProvince StateProvince { get; set; }
 
         #region ModifiedDate and rowguid

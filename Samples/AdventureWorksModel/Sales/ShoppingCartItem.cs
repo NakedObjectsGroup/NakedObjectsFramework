@@ -22,8 +22,13 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual DateTime DateCreated { get; set; }
 
+        #region Product
+        [NakedObjectsIgnore]
+        public virtual int ProductID { get; set; }
+
         [Disabled, MemberOrder(10)]
         public virtual Product Product { get; set; }
+        #endregion
 
         #region ModifiedDate
 

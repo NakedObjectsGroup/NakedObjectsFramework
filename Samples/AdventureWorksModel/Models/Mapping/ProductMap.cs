@@ -50,8 +50,8 @@ namespace AdventureWorksModel
             this.Property(t => t.ProductID).HasColumnName("ProductID");
             this.Property(t => t.Name).HasColumnName("Name");
             this.Property(t => t.ProductNumber).HasColumnName("ProductNumber");
-            this.Property(t => t.MakeFlag).HasColumnName("MakeFlag");
-            this.Property(t => t.FinishedGoodsFlag).HasColumnName("FinishedGoodsFlag");
+            this.Property(t => t.Make).HasColumnName("MakeFlag");
+            this.Property(t => t.FinishedGoods).HasColumnName("FinishedGoodsFlag");
             this.Property(t => t.Color).HasColumnName("Color");
             this.Property(t => t.SafetyStockLevel).HasColumnName("SafetyStockLevel");
             this.Property(t => t.ReorderPoint).HasColumnName("ReorderPoint");
