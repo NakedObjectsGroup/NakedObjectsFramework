@@ -32,8 +32,8 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.FromCurrency);
-            this.HasRequired(t => t.ToCurrency);
+            this.HasRequired(t => t.Currency);
+            this.HasRequired(t => t.Currency1);
 
         }
     }

@@ -23,7 +23,7 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual short DepartmentID { get; set; }
 
         [Title]

@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("memo_point.png")]
     public class PurchaseOrderDetail : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int PurchaseOrderID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int PurchaseOrderDetailID { get; set; }
 
         [MemberOrder(26)]
@@ -64,7 +64,7 @@ namespace AdventureWorksModel {
 
         #region Header
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 
         #endregion

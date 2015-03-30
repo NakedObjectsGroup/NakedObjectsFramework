@@ -17,7 +17,7 @@ namespace AdventureWorksModel {
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
         private ICollection<WorkOrderRouting> _WorkOrderRouting = new List<WorkOrderRouting>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual short LocationID { get; set; }
 
         [Title]

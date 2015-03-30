@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int WorkOrderID { get; set; }
 
         #endregion
@@ -61,7 +61,7 @@ namespace AdventureWorksModel {
 
         #region ScrapReason
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ScrapReasonID { get; set; }
 
         [Optionally]

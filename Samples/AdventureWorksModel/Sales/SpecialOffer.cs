@@ -83,7 +83,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

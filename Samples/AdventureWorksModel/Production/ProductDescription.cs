@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [IconName("information")]
     public class ProductDescription : AWDomainObject {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; set; }
 
         [Title]
@@ -26,7 +26,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

@@ -52,7 +52,7 @@ namespace AdventureWorksModel {
         [MemberOrder(20)]
         public virtual UnitMeasure UnitMeasure { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Vendor Vendor { get; set; }
 
         #region ModifiedDate

@@ -32,7 +32,7 @@ namespace AdventureWorksModel {
 
         #region ProductID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; set; }
 
         #endregion
@@ -135,7 +135,7 @@ namespace AdventureWorksModel {
 
         #region Size & Weight
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string Size { get; set; }
 
         [NakedObjectsIgnore]
@@ -157,10 +157,10 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public string WeightUnitMeasureCode { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual decimal? Weight { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual UnitMeasure WeightUnit { get; set; }
 
         [MemberOrder(17)]
@@ -245,7 +245,7 @@ namespace AdventureWorksModel {
         [Mask("d")]
         public virtual DateTime? DiscontinuedDate { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsDiscontinued() {
             return DiscontinuedDate != null ? DiscontinuedDate.Value < DateTime.Now : false;
         }
@@ -317,7 +317,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion
@@ -363,7 +363,7 @@ namespace AdventureWorksModel {
             set { _ProductInventory = value; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int NumberInStock() {
             return (from obj in ProductInventory
                 select obj).Sum(obj => obj.Quantity);
@@ -376,7 +376,7 @@ namespace AdventureWorksModel {
         private ICollection<SpecialOfferProduct> _SpecialOfferProduct = new List<SpecialOfferProduct>();
         private ProductCategory productCategory;
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct {
             get { return _SpecialOfferProduct; }
             set { _SpecialOfferProduct = value; }
@@ -411,7 +411,7 @@ namespace AdventureWorksModel {
             return null;
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual SpecialOfferProduct BestSpecialOfferProduct(short quantity) {
             //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
             var query = from obj in Container.Instances<SpecialOfferProduct>()

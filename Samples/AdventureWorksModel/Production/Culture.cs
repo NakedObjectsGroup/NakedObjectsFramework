@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Immutable]
     public class Culture : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CultureID { get; set; }
 
         [Title]

@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class ShipMethod : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ShipMethodID { get; set; }
 
         [Title]
@@ -34,7 +34,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

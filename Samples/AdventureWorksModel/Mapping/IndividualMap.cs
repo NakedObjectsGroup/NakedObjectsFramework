@@ -8,23 +8,23 @@ namespace AdventureWorksModel
         public IndividualMap()
         {
             // Primary Key
-            this.HasKey(t => t.CustomerID);
+            this.HasKey(t => t.Id);
 
             // Properties
-            this.Property(t => t.CustomerID)
+            this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
             this.ToTable("Individual", "Sales");
-            this.Property(t => t.CustomerID).HasColumnName("CustomerID");
+            this.Property(t => t.Id).HasColumnName("CustomerID");
             this.Property(t => t.ContactID).HasColumnName("ContactID");
             this.Property(t => t.Demographics).HasColumnName("Demographics");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             this.HasRequired(t => t.Contact);
-            this.HasRequired(t => t.Customer)
-                .WithOptional(t => t.Individual);
+            //this.HasRequired(t => t.Customer)
+            //    .WithOptional(t => t.Individual);
 
         }
     }

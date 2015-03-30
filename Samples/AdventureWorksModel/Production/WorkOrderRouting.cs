@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
         public virtual Location Location { get; set; }
         #endregion
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual WorkOrder WorkOrder { get; set; }
 
         #region ModifiedDate

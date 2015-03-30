@@ -46,7 +46,7 @@ namespace AdventureWorksModel {
 
         #region Demographics
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string Demographics { get; set; }
 
         [DisplayName("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10), TypicalLength(500)]
@@ -57,6 +57,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region SalesPerson
+        [NakedObjectsIgnore]
+        public Nullable<int> SalesPersonID { get; set; }
 
         [Optionally]
         [MemberOrder(40), FindMenu]
@@ -96,7 +98,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

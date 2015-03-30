@@ -19,8 +19,11 @@ namespace AdventureWorksModel {
         [Disabled, Description("xxx")]
         public virtual string AccountNumber { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CustomerType { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int? SalesTerritoryID { get; set; }
 
         [Optionally]
         public virtual SalesTerritory SalesTerritory { get; set; }
@@ -29,7 +32,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
         #endregion
@@ -46,17 +49,17 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string Type() {
             return IsIndividual() ? "Individual" : "Store";
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsIndividual() {
             return CustomerType == "I";
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsStore() {
             return CustomerType == "S";
         }
@@ -65,14 +68,14 @@ namespace AdventureWorksModel {
 
         #region ModifiedDate
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual DateTime CustomerModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid CustomerRowguid { get; set; }
 
         #endregion

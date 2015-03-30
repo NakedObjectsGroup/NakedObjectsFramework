@@ -17,13 +17,13 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int EmployeeID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int AddressID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Employee Employee { get; set; }
 
         [Title, Disabled, MemberOrder(2)]
@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

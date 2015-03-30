@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     public class SalesTerritoryHistory : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesPersonID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int TerritoryID { get; set; }
 
         [MemberOrder(1)]
@@ -53,7 +53,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

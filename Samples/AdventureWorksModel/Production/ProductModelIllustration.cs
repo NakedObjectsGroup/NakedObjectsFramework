@@ -10,10 +10,10 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ProductModelIllustration : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductModelID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int IllustrationID { get; set; }
 
         public virtual Illustration Illustration { get; set; }

@@ -21,7 +21,7 @@ namespace AdventureWorksModel {
 
         #region Store
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Store Store { get; set; }
 
         #endregion
@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
 
         #region ContactType
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ContactTypeID { get; set; }
 
         [MemberOrder(1)]
@@ -52,10 +52,10 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int CustomerID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 
         #endregion

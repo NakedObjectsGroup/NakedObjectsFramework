@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesPersonID { get; set; }
 
         #endregion
@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
 
         #region SalesTerritory
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesTerritoryID { get; set; }
 
         [Optionally]
@@ -104,7 +104,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

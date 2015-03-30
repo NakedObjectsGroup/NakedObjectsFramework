@@ -18,7 +18,7 @@ namespace AdventureWorksModel {
         private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
         private ICollection<VendorContact> _VendorContact = new List<VendorContact>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int VendorID { get; set; }
 
         [MemberOrder(10)]

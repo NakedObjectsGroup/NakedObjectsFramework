@@ -10,7 +10,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ProductReview : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductReviewID { get; set; }
 
         [MemberOrder(1)]

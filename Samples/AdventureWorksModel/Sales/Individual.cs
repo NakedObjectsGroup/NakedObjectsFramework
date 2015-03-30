@@ -14,6 +14,9 @@ namespace AdventureWorksModel {
     public class Individual : Customer {
         #region Contact
 
+        [NakedObjectsIgnore]
+        public virtual int ContactID { get; set; }
+
         [MemberOrder(20)]
         [DisplayName("Name & Contact Details")]
         public virtual Contact Contact { get; set; }
@@ -36,7 +39,7 @@ namespace AdventureWorksModel {
 
         #region Demographics
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string Demographics { get; set; }
 
         [DisplayName("Demographics")]

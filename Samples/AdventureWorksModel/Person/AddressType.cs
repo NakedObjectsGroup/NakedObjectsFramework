@@ -14,7 +14,7 @@ namespace AdventureWorksModel {
     public class AddressType : AWDomainObject {
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int AddressTypeID { get; set; }
 
         #endregion
@@ -34,7 +34,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

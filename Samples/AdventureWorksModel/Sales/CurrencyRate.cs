@@ -23,12 +23,12 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         public virtual string FromCurrencyCode { get; set; }
-        public virtual Currency FromCurrency { get; set; }
+        public virtual Currency Currency { get; set; }
 
         [NakedObjectsIgnore]
         public virtual string ToCurrencyCode { get; set; }
 
-        public virtual Currency ToCurrency { get; set; }
+        public virtual Currency Currency1 { get; set; }
 
         #region ModifiedDate
 

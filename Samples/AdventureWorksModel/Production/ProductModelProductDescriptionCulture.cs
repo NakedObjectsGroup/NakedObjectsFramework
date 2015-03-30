@@ -12,19 +12,19 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Immutable]
     public class ProductModelProductDescriptionCulture : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductModelID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CultureID { get; set; }
 
         public virtual Culture Culture { get; set; }
         public virtual ProductDescription ProductDescription { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ProductModel ProductModel { get; set; }
 
         #region ModifiedDate

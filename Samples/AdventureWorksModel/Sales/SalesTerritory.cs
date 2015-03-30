@@ -17,7 +17,7 @@ namespace AdventureWorksModel {
     public class SalesTerritory : AWDomainObject {
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int TerritoryID { get; set; }
 
         #endregion
@@ -56,7 +56,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

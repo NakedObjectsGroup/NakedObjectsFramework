@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cartons.png")]
     public class ProductInventory : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual short LocationID { get; set; }
 
         [MemberOrder(40)]
@@ -46,7 +46,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

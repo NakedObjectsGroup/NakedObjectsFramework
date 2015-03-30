@@ -17,7 +17,7 @@ namespace AdventureWorksModel {
     public class Contact : AWDomainObject {
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 
         #endregion
@@ -60,7 +60,7 @@ namespace AdventureWorksModel {
         }
 
         [NotPersisted]
-        [Hidden]
+        [NakedObjectsIgnore]
         public AWDomainObject Contactee { get; set; }
 
         [MemberOrder(2)]
@@ -180,14 +180,14 @@ namespace AdventureWorksModel {
 
         #region PasswordHash
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string PasswordHash { get; set; }
 
         #endregion
 
         #region PasswordSalt
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string PasswordSalt { get; set; }
 
         #endregion
@@ -265,7 +265,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion

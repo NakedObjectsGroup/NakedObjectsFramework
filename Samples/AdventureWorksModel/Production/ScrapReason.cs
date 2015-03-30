@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class ScrapReason : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual short ScrapReasonID { get; set; }
 
         [Title]

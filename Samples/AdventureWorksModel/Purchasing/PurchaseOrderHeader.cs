@@ -26,7 +26,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int PurchaseOrderID { get; set; }
 
         #endregion
@@ -87,7 +87,7 @@ namespace AdventureWorksModel {
 
         private static readonly string[] statusLabels = {"Pending", "Approved", "Rejected", "Complete"};
 
-        [Hidden]
+        [NakedObjectsIgnore]
         [MemberOrder(10)]
         public virtual byte Status { get; set; }
 
@@ -97,7 +97,7 @@ namespace AdventureWorksModel {
             get { return statusLabels[Status - 1]; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsPending() {
             return Status == 1;
         }

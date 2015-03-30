@@ -11,14 +11,14 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     public class ProductCostHistory : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; set; }
 
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }
         public virtual decimal StandardCost { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Product Product { get; set; }
 
         #region ModifiedDate

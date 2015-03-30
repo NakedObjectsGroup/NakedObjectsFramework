@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [DisplayName("Reason")]
     [Immutable(WhenTo.OncePersisted)]
     public class SalesOrderHeaderSalesReason : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesOrderID { get; set; }
 
         public virtual int SalesReasonID { get; set; }

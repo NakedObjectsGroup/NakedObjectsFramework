@@ -79,7 +79,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesOrderID { get; set; }
 
         #endregion
@@ -105,32 +105,32 @@ namespace AdventureWorksModel {
             return OrderStatus.InProcess;
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Boolean IsInProcess() {
             return Status.Equals((byte) OrderStatus.InProcess);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Boolean IsApproved() {
             return Status.Equals((byte) OrderStatus.Approved);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsBackOrdered() {
             return Status.Equals((byte) OrderStatus.BackOrdered);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsRejected() {
             return Status.Equals((byte) OrderStatus.Rejected);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsShipped() {
             return Status.Equals((byte) OrderStatus.Shipped);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual bool IsCancelled() {
             return Status.Equals((byte) OrderStatus.Cancelled);
         }
@@ -139,7 +139,7 @@ namespace AdventureWorksModel {
 
         #region Customer
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int CustomerID { get; set; }
 
         [Disabled, MemberOrder(2)]
@@ -149,11 +149,11 @@ namespace AdventureWorksModel {
 
         #region Contact
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 
         private Contact _contact;
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
           
         internal void SetUpContact(Contact value) {
@@ -202,7 +202,7 @@ namespace AdventureWorksModel {
 
         #region BillingAddress
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int BillingAddressID { get; set; }
 
         [MemberOrder(4)]
@@ -240,7 +240,7 @@ namespace AdventureWorksModel {
 
         #region ShippingAddress
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ShippingAddressID { get; set; }
 
         [MemberOrder(10)]
@@ -267,7 +267,7 @@ namespace AdventureWorksModel {
 
         #region ShipMethod
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ShipMethodID { get; set; }
 
         [MemberOrder(11)]
@@ -377,7 +377,7 @@ namespace AdventureWorksModel {
 
         #region CurrencyRate
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int? CurrencyRateID { get; set; }
 
         [Optionally]
@@ -399,7 +399,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region CreditCard
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int CreditCardID { get; set; }
 
         [Optionally]
@@ -457,7 +457,7 @@ namespace AdventureWorksModel {
 
         #region SalesPerson
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesPersonID { get; set; }
 
         [Optionally]
@@ -472,7 +472,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region SalesTerritory
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SalesTerritoryID { get; set; }
 
         [Optionally]
@@ -494,7 +494,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public override Guid rowguid { get; set; }
 
         #endregion
@@ -699,7 +699,7 @@ namespace AdventureWorksModel {
         #region MarkAsShipped
 
         [Description("Indicate that the order has been shipped, specifying the date")]
-        [Hidden]
+        [NakedObjectsIgnore]
         public void MarkAsShipped(DateTime shipDate) {
             Status = (byte) OrderStatus.Shipped;
             ShipDate = shipDate;

@@ -74,7 +74,7 @@ namespace AdventureWorksModel {
             return Instances<Department>();
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Employee CurrentUserAsEmployee() {
             IQueryable<Employee> query = from obj in Instances<Employee>()
                 where obj.LoginID == "adventure-works\\" + Principal.Identity.Name
