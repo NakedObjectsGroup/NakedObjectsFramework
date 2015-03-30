@@ -46,7 +46,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         #region overhead
 
-        protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax";
+        protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax7";
         protected const string server = @"Saturn\SqlExpress";
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
