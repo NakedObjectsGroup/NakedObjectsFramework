@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class ProductListPriceHistoryMap : EntityTypeConfiguration<ProductListPriceHistory>
     {
@@ -23,9 +23,7 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product)
-                .WithMany(t => t.ProductListPriceHistories)
-                .HasForeignKey(d => d.ProductID);
+            this.HasRequired(t => t.Product);
 
         }
     }

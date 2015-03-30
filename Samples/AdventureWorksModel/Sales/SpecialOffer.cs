@@ -10,9 +10,8 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class SpecialOffer : AWDomainObject {
-        //private ICollection<SpecialOfferProduct> _SpecialOfferProduct = new List<SpecialOfferProduct>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; set; }
 
         [MemberOrder(10)]

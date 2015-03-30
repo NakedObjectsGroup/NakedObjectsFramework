@@ -12,7 +12,6 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("information")]
     public class ProductDescription : AWDomainObject {
-        private ICollection<ProductModelProductDescriptionCulture> _ProductModelProductDescriptionCulture = new List<ProductModelProductDescriptionCulture>();
 
         [Hidden]
         public virtual int ProductDescriptionID { get; set; }

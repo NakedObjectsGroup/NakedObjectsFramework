@@ -13,11 +13,14 @@ namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class ProductSubcategory : AWDomainObject {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductSubcategoryID { get; set; }
 
         [Title]
         public virtual string Name { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual int ProductCategoryID { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
 

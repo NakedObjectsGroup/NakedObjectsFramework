@@ -14,10 +14,6 @@ namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class UnitMeasure : AWDomainObject {
-        private ICollection<BillOfMaterials> _BillOfMaterials = new List<BillOfMaterials>();
-        private ICollection<Product> _Product = new List<Product>();
-        private ICollection<Product> _Product1 = new List<Product>();
-        private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
 
         [MemberOrder(10)]
         public virtual string UnitMeasureCode { get; set; }

@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class BillOfMaterialMap : EntityTypeConfiguration<BillOfMaterial>
     {
         public BillOfMaterialMap()
         {
             // Primary Key
-            this.HasKey(t => t.BillOfMaterialsID);
+            this.HasKey(t => t.BillOfMaterialID);
 
             // Properties
             this.Property(t => t.UnitMeasureCode)
@@ -18,7 +18,7 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("BillOfMaterials", "Production");
-            this.Property(t => t.BillOfMaterialsID).HasColumnName("BillOfMaterialsID");
+            this.Property(t => t.BillOfMaterialID).HasColumnName("BillOfMaterialsID");
             this.Property(t => t.ProductAssemblyID).HasColumnName("ProductAssemblyID");
             this.Property(t => t.ComponentID).HasColumnName("ComponentID");
             this.Property(t => t.StartDate).HasColumnName("StartDate");
@@ -29,15 +29,9 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product)
-                .WithMany(t => t.BillOfMaterials)
-                .HasForeignKey(d => d.ComponentID);
-            this.HasOptional(t => t.Product1)
-                .WithMany(t => t.BillOfMaterials1)
-                .HasForeignKey(d => d.ProductAssemblyID);
-            this.HasRequired(t => t.UnitMeasure)
-                .WithMany(t => t.BillOfMaterials)
-                .HasForeignKey(d => d.UnitMeasureCode);
+            this.HasRequired(t => t.Product);
+            this.HasOptional(t => t.Product1);
+            this.HasRequired(t => t.UnitMeasure);
 
         }
     }

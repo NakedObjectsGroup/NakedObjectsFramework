@@ -28,7 +28,10 @@ namespace AdventureWorksModel {
         [MemberOrder(5)]
         public virtual string Comments { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
+        public int ProductID { get; set; }
+
+        [NakedObjectsIgnore]
         public virtual Product Product { get; set; }
 
         #region ModifiedDate

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class StateProvinceMap : EntityTypeConfiguration<StateProvince>
     {
@@ -36,11 +36,9 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.CountryRegion)
-                .WithMany(t => t.StateProvinces)
-                .HasForeignKey(d => d.CountryRegionCode);
+            this.HasRequired(t => t.CountryRegion);
             this.HasRequired(t => t.SalesTerritory)
-                .WithMany(t => t.StateProvinces)
+                .WithMany(t => t.StateProvince)
                 .HasForeignKey(d => d.TerritoryID);
 
         }

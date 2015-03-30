@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class JobCandidateMap : EntityTypeConfiguration<JobCandidate>
     {
@@ -19,9 +19,7 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasOptional(t => t.Employee)
-                .WithMany(t => t.JobCandidates)
-                .HasForeignKey(d => d.EmployeeID);
+            this.HasOptional(t => t.Employee);
 
         }
     }

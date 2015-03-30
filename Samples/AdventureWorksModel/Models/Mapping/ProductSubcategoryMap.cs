@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class ProductSubcategoryMap : EntityTypeConfiguration<ProductSubcategory>
     {
@@ -25,7 +25,7 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.ProductCategory)
-                .WithMany(t => t.ProductSubcategories)
+                .WithMany(t => t.ProductSubcategory)
                 .HasForeignKey(d => d.ProductCategoryID);
 
         }

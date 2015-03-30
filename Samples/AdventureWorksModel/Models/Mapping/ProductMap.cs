@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class ProductMap : EntityTypeConfiguration<Product>
     {
@@ -75,17 +75,11 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasOptional(t => t.ProductModel)
-                .WithMany(t => t.Products)
+                .WithMany(t => t.ProductVariants)
                 .HasForeignKey(d => d.ProductModelID);
-            this.HasOptional(t => t.ProductSubcategory)
-                .WithMany(t => t.Products)
-                .HasForeignKey(d => d.ProductSubcategoryID);
-            this.HasOptional(t => t.UnitMeasure)
-                .WithMany(t => t.Products)
-                .HasForeignKey(d => d.SizeUnitMeasureCode);
-            this.HasOptional(t => t.UnitMeasure1)
-                .WithMany(t => t.Products1)
-                .HasForeignKey(d => d.WeightUnitMeasureCode);
+            this.HasOptional(t => t.ProductSubcategory);
+            this.HasOptional(t => t.SizeUnit);
+            this.HasOptional(t => t.WeightUnit);
 
         }
     }

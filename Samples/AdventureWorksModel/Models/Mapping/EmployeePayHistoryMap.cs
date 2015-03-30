@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class EmployeePayHistoryMap : EntityTypeConfiguration<EmployeePayHistory>
     {
@@ -24,7 +24,7 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.Employee)
-                .WithMany(t => t.EmployeePayHistories)
+                .WithMany(t => t.PayHistory)
                 .HasForeignKey(d => d.EmployeeID);
 
         }

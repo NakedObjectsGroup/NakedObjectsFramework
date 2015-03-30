@@ -9,9 +9,9 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class BillOfMaterials : AWDomainObject {
-        [Hidden]
-        public virtual int BillOfMaterialsID { get; set; }
+    public class BillOfMaterial : AWDomainObject {
+        [NakedObjectsIgnore]
+        public virtual int BillOfMaterialID { get; set; }
 
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }

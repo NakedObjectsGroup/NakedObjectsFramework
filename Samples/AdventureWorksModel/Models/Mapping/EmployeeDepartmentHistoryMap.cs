@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class EmployeeDepartmentHistoryMap : EntityTypeConfiguration<EmployeeDepartmentHistory>
     {
@@ -27,15 +27,11 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Department)
-                .WithMany(t => t.EmployeeDepartmentHistories)
-                .HasForeignKey(d => d.DepartmentID);
+            this.HasRequired(t => t.Department);
             this.HasRequired(t => t.Employee)
-                .WithMany(t => t.EmployeeDepartmentHistories)
+                .WithMany(t => t.DepartmentHistory)
                 .HasForeignKey(d => d.EmployeeID);
-            this.HasRequired(t => t.Shift)
-                .WithMany(t => t.EmployeeDepartmentHistories)
-                .HasForeignKey(d => d.ShiftID);
+            this.HasRequired(t => t.Shift);
 
         }
     }

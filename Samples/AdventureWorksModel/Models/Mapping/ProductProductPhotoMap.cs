@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class ProductProductPhotoMap : EntityTypeConfiguration<ProductProductPhoto>
     {
@@ -26,10 +26,10 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.Product)
-                .WithMany(t => t.ProductProductPhotoes)
+                .WithMany(t => t.ProductProductPhoto)
                 .HasForeignKey(d => d.ProductID);
             this.HasRequired(t => t.ProductPhoto)
-                .WithMany(t => t.ProductProductPhotoes)
+                .WithMany(t => t.ProductProductPhoto)
                 .HasForeignKey(d => d.ProductPhotoID);
 
         }

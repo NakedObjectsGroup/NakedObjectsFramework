@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class ProductModelProductDescriptionCultureMap : EntityTypeConfiguration<ProductModelProductDescriptionCulture>
     {
@@ -30,14 +30,10 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Culture)
-                .WithMany(t => t.ProductModelProductDescriptionCultures)
-                .HasForeignKey(d => d.CultureID);
-            this.HasRequired(t => t.ProductDescription)
-                .WithMany(t => t.ProductModelProductDescriptionCultures)
-                .HasForeignKey(d => d.ProductDescriptionID);
+            this.HasRequired(t => t.Culture);
+            this.HasRequired(t => t.ProductDescription);
             this.HasRequired(t => t.ProductModel)
-                .WithMany(t => t.ProductModelProductDescriptionCultures)
+                .WithMany(t => t.ProductModelProductDescriptionCulture)
                 .HasForeignKey(d => d.ProductModelID);
 
         }

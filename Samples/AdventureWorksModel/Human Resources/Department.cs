@@ -34,20 +34,5 @@ namespace AdventureWorksModel {
         public virtual string GroupName { get; set; }
 
         #endregion
-
-        #region DELETED RELATIONSHIPS
-
-        //public ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistory {
-        //    get {
-
-        //        return _EmployeeDepartmentHistory;
-        //    }
-        //    set {
-        //        _EmployeeDepartmentHistory = value;
-
-        //    }
-        //}
-
-        #endregion
     }
 }

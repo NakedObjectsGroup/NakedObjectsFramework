@@ -47,6 +47,9 @@ namespace AdventureWorksModel {
 
         #region SalesTerritory
 
+        [NakedObjectsIgnore]
+        public int TerritoryID { get; set; }
+
         public virtual SalesTerritory SalesTerritory { get; set; }
 
         #endregion
@@ -67,38 +70,6 @@ namespace AdventureWorksModel {
         public override DateTime ModifiedDate { get; set; }
 
         #endregion
-
-        #endregion
-
-        #region "DELETED RELATIONSHIPS"
-
-        //public ICollection<Address> Address
-        //{
-        //    get
-        //    {
-
-        //        return _Address;
-        //    }
-        //    set
-        //    {
-        //        _Address = value;
-
-        //    }
-        //}
-
-        //public ICollection<SalesTaxRate> SalesTaxRate
-        //{
-        //    get
-        //    {
-
-        //        return _SalesTaxRate;
-        //    }
-        //    set
-        //    {
-        //        _SalesTaxRate = value;
-
-        //    }
-        //}
 
         #endregion
     }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class CurrencyRateMap : EntityTypeConfiguration<CurrencyRate>
     {
@@ -32,12 +32,8 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Currency)
-                .WithMany(t => t.CurrencyRates)
-                .HasForeignKey(d => d.FromCurrencyCode);
-            this.HasRequired(t => t.Currency1)
-                .WithMany(t => t.CurrencyRates1)
-                .HasForeignKey(d => d.ToCurrencyCode);
+            this.HasRequired(t => t.Currency);
+            this.HasRequired(t => t.Currency1);
 
         }
     }

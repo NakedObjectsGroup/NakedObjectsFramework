@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class VendorAddressMap : EntityTypeConfiguration<VendorAddress>
     {
@@ -25,14 +25,10 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Address)
-                .WithMany(t => t.VendorAddresses)
-                .HasForeignKey(d => d.AddressID);
-            this.HasRequired(t => t.AddressType)
-                .WithMany(t => t.VendorAddresses)
-                .HasForeignKey(d => d.AddressTypeID);
+            this.HasRequired(t => t.Address);
+            this.HasRequired(t => t.AddressType);
             this.HasRequired(t => t.Vendor)
-                .WithMany(t => t.VendorAddresses)
+                .WithMany(t => t.Addresses)
                 .HasForeignKey(d => d.VendorID);
 
         }

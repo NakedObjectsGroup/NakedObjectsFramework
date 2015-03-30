@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class EmployeeAddressMap : EntityTypeConfiguration<EmployeeAddress>
     {
@@ -26,11 +26,9 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.Employee)
-                .WithMany(t => t.EmployeeAddresses)
+                .WithMany(t => t.Addresses)
                 .HasForeignKey(d => d.EmployeeID);
-            this.HasRequired(t => t.Address)
-                .WithMany(t => t.EmployeeAddresses)
-                .HasForeignKey(d => d.AddressID);
+            this.HasRequired(t => t.Address);
 
         }
     }

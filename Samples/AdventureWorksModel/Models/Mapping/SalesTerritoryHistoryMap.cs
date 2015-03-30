@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class SalesTerritoryHistoryMap : EntityTypeConfiguration<SalesTerritoryHistory>
     {
@@ -28,11 +28,9 @@ namespace AdventureWorksModel.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.SalesPerson)
-                .WithMany(t => t.SalesTerritoryHistories)
+                .WithMany(t => t.TerritoryHistory)
                 .HasForeignKey(d => d.SalesPersonID);
-            this.HasRequired(t => t.SalesTerritory)
-                .WithMany(t => t.SalesTerritoryHistories)
-                .HasForeignKey(d => d.TerritoryID);
+            this.HasRequired(t => t.SalesTerritory);
 
         }
     }

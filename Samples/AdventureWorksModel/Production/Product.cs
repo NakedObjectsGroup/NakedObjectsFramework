@@ -247,6 +247,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ProductModel
+        [NakedObjectsIgnore]
+        public Nullable<int> ProductModelID { get; set; }
 
         [Optionally]
         [MemberOrder(10)]
@@ -319,7 +321,7 @@ namespace AdventureWorksModel {
 
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
             get { return _ProductProductPhoto; }
             set { _ProductProductPhoto = value; }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdventureWorksModel.Models.Mapping
+namespace AdventureWorksModel
 {
     public class PurchaseOrderHeaderMap : EntityTypeConfiguration<PurchaseOrderHeader>
     {
@@ -28,15 +28,9 @@ namespace AdventureWorksModel.Models.Mapping
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Employee)
-                .WithMany(t => t.PurchaseOrderHeaders)
-                .HasForeignKey(d => d.EmployeeID);
-            this.HasRequired(t => t.ShipMethod)
-                .WithMany(t => t.PurchaseOrderHeaders)
-                .HasForeignKey(d => d.ShipMethodID);
-            this.HasRequired(t => t.Vendor)
-                .WithMany(t => t.PurchaseOrderHeaders)
-                .HasForeignKey(d => d.VendorID);
+            this.HasRequired(t => t.OrderPlacedBy);
+            this.HasRequired(t => t.ShipMethod);
+            this.HasRequired(t => t.Vendor);
 
         }
     }
