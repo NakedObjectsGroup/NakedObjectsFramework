@@ -71,6 +71,7 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="AdventureWorksContext.cs" />
     <Compile Include="AssemblyHook.cs" />
     <Compile Include="AWDomainObject.cs">
       <SubType>Code</SubType>
@@ -89,207 +90,73 @@
     <Compile Include="Human Resources\JobCandidate.cs" />
     <Compile Include="Human Resources\EmployeeRepository.cs" />
     <Compile Include="Human Resources\Shift.cs" />
-    <Compile Include="Models\Mapping\AddressMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\AddressTypeMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\BillOfMaterialMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ContactCreditCardMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ContactMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ContactTypeMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CountryRegionCurrencyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CountryRegionMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CreditCardMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CultureMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CurrencyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CurrencyRateMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CustomerAddressMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\CustomerMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\DepartmentMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\DocumentMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\EmployeeAddressMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\EmployeeDepartmentHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\EmployeeMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\EmployeePayHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\IllustrationMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\IndividualMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\JobCandidateMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\LocationMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductCategoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductCostHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductDescriptionMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductDocumentMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductInventoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductListPriceHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductModelIllustrationMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductModelMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductModelProductDescriptionCultureMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductPhotoMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductProductPhotoMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductReviewMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductSubcategoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ProductVendorMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\PurchaseOrderDetailMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\PurchaseOrderHeaderMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesOrderDetailMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesOrderHeaderMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesOrderHeaderSalesReasonMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesPersonMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesPersonQuotaHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesReasonMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesTaxRateMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesTerritoryHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SalesTerritoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ScrapReasonMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ShiftMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ShipMethodMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\ShoppingCartItemMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SpecialOfferMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\SpecialOfferProductMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\StateProvinceMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\StoreContactMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\StoreMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\TimePeriodMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\TransactionHistoryMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\UnitMeasureMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\VendorAddressMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\VendorContactMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\VendorMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\WorkOrderMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Mapping\WorkOrderRoutingMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Mapping\AddressMap.cs" />
+    <Compile Include="Mapping\AddressTypeMap.cs" />
+    <Compile Include="Mapping\BillOfMaterialMap.cs" />
+    <Compile Include="Mapping\ContactCreditCardMap.cs" />
+    <Compile Include="Mapping\ContactMap.cs" />
+    <Compile Include="Mapping\ContactTypeMap.cs" />
+    <Compile Include="Mapping\CountryRegionCurrencyMap.cs" />
+    <Compile Include="Mapping\CountryRegionMap.cs" />
+    <Compile Include="Mapping\CreditCardMap.cs" />
+    <Compile Include="Mapping\CultureMap.cs" />
+    <Compile Include="Mapping\CurrencyMap.cs" />
+    <Compile Include="Mapping\CurrencyRateMap.cs" />
+    <Compile Include="Mapping\CustomerAddressMap.cs" />
+    <Compile Include="Mapping\CustomerMap.cs" />
+    <Compile Include="Mapping\DepartmentMap.cs" />
+    <Compile Include="Mapping\DocumentMap.cs" />
+    <Compile Include="Mapping\EmployeeAddressMap.cs" />
+    <Compile Include="Mapping\EmployeeDepartmentHistoryMap.cs" />
+    <Compile Include="Mapping\EmployeeMap.cs" />
+    <Compile Include="Mapping\EmployeePayHistoryMap.cs" />
+    <Compile Include="Mapping\IllustrationMap.cs" />
+    <Compile Include="Mapping\IndividualMap.cs" />
+    <Compile Include="Mapping\JobCandidateMap.cs" />
+    <Compile Include="Mapping\LocationMap.cs" />
+    <Compile Include="Mapping\ProductCategoryMap.cs" />
+    <Compile Include="Mapping\ProductCostHistoryMap.cs" />
+    <Compile Include="Mapping\ProductDescriptionMap.cs" />
+    <Compile Include="Mapping\ProductDocumentMap.cs" />
+    <Compile Include="Mapping\ProductInventoryMap.cs" />
+    <Compile Include="Mapping\ProductListPriceHistoryMap.cs" />
+    <Compile Include="Mapping\ProductMap.cs" />
+    <Compile Include="Mapping\ProductModelIllustrationMap.cs" />
+    <Compile Include="Mapping\ProductModelMap.cs" />
+    <Compile Include="Mapping\ProductModelProductDescriptionCultureMap.cs" />
+    <Compile Include="Mapping\ProductPhotoMap.cs" />
+    <Compile Include="Mapping\ProductProductPhotoMap.cs" />
+    <Compile Include="Mapping\ProductReviewMap.cs" />
+    <Compile Include="Mapping\ProductSubcategoryMap.cs" />
+    <Compile Include="Mapping\ProductVendorMap.cs" />
+    <Compile Include="Mapping\PurchaseOrderDetailMap.cs" />
+    <Compile Include="Mapping\PurchaseOrderHeaderMap.cs" />
+    <Compile Include="Mapping\SalesOrderDetailMap.cs" />
+    <Compile Include="Mapping\SalesOrderHeaderMap.cs" />
+    <Compile Include="Mapping\SalesOrderHeaderSalesReasonMap.cs" />
+    <Compile Include="Mapping\SalesPersonMap.cs" />
+    <Compile Include="Mapping\SalesPersonQuotaHistoryMap.cs" />
+    <Compile Include="Mapping\SalesReasonMap.cs" />
+    <Compile Include="Mapping\SalesTaxRateMap.cs" />
+    <Compile Include="Mapping\SalesTerritoryHistoryMap.cs" />
+    <Compile Include="Mapping\SalesTerritoryMap.cs" />
+    <Compile Include="Mapping\ScrapReasonMap.cs" />
+    <Compile Include="Mapping\ShiftMap.cs" />
+    <Compile Include="Mapping\ShipMethodMap.cs" />
+    <Compile Include="Mapping\ShoppingCartItemMap.cs" />
+    <Compile Include="Mapping\SpecialOfferMap.cs" />
+    <Compile Include="Mapping\SpecialOfferProductMap.cs" />
+    <Compile Include="Mapping\StateProvinceMap.cs" />
+    <Compile Include="Mapping\StoreContactMap.cs" />
+    <Compile Include="Mapping\StoreMap.cs" />
+    <Compile Include="Mapping\TimePeriodMap.cs" />
+    <Compile Include="Mapping\TransactionHistoryMap.cs" />
+    <Compile Include="Mapping\UnitMeasureMap.cs" />
+    <Compile Include="Mapping\VendorAddressMap.cs" />
+    <Compile Include="Mapping\VendorContactMap.cs" />
+    <Compile Include="Mapping\VendorMap.cs" />
+    <Compile Include="Mapping\WorkOrderMap.cs" />
+    <Compile Include="Mapping\WorkOrderRoutingMap.cs" />
     <Compile Include="Person\Address.cs" />
     <Compile Include="Person\AddressType.cs" />
     <Compile Include="Person\Contact.cs" />

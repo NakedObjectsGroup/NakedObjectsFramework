@@ -82,7 +82,7 @@ namespace NakedObjects.Mvc.App {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AllPersistedTypesInMainModel);
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }
