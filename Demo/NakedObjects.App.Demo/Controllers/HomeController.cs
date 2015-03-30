@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -9,7 +10,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public HomeController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
 
         public ActionResult Index() {
             return View();

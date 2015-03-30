@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
 using System.Web.UI;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 
 namespace NakedObjects.Test.App.Controllers {
@@ -10,7 +11,7 @@ namespace NakedObjects.Test.App.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-        public AjaxController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public AjaxController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
 
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {

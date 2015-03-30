@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -12,7 +13,7 @@ namespace NakedObjects.Test.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+        public GenericController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {
