@@ -4,13 +4,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/list\"; charset=utf-8; x-ro-element-type=\"Object\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7"
     }
   ],
   "extensions": {},
@@ -20,28 +20,28 @@
       "rel": "urn:org.restfulobjects:rels/service;serviceId=\"RestDataRepository\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"RestDataRepository\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/RestDataRepository"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/RestDataRepository"
     },
     {
       "title": "With Action Service",
       "rel": "urn:org.restfulobjects:rels/service;serviceId=\"WithActionService\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService"
     },
     {
       "title": "Contributor Service",
       "rel": "urn:org.restfulobjects:rels/service;serviceId=\"ContributorService\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"ContributorService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/ContributorService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/ContributorService"
     },
     {
       "title": "Test Type Code Mapper",
       "rel": "urn:org.restfulobjects:rels/service;serviceId=\"TestTypeCodeMapper\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"TestTypeCodeMapper\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/TestTypeCodeMapper"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/TestTypeCodeMapper"
     }
   ]
 }

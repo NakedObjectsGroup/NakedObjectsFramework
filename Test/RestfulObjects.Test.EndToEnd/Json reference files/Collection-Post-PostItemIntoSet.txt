@@ -5,7 +5,7 @@
       "rel": "urn:org.restfulobjects:rels/value;collection=\"SimpleSet\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/MostSimple/1"
     }
   ],
   "id": "SimpleSet",
@@ -14,19 +14,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"VerySimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/collections/SimpleSet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/collections/SimpleSet"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/VerySimple/collections/SimpleSet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/VerySimple/collections/SimpleSet"
     },
     {
       "arguments": {
@@ -35,13 +35,13 @@
       "rel": "urn:org.restfulobjects:rels/add-to;collection=\"SimpleSet\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/collections/SimpleSet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/collections/SimpleSet"
     },
     {
       "rel": "urn:org.restfulobjects:rels/remove-from;collection=\"SimpleSet\"",
       "method": "DELETE",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/collections/SimpleSet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/collections/SimpleSet"
     }
   ],
   "extensions": {

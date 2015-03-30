@@ -7,13 +7,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithAttachments\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAttachments"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithAttachments"
     },
     {
       "arguments": {
@@ -24,7 +24,7 @@
       "rel": "urn:org.restfulobjects:rels/update",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithAttachments\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1"
     }
   ],
   "extensions": {
@@ -45,20 +45,20 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"FileAttachment\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/FileAttachment"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/FileAttachment"
         },
         {
           "title": "afile",
           "rel": "urn:org.restfulobjects:rels/attachment;property=\"FileAttachment\"",
           "method": "GET",
           "type": "application/pdf",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/FileAttachment"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/FileAttachment"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAttachments/properties/FileAttachment"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithAttachments/properties/FileAttachment"
         }
       ],
       "extensions": {
@@ -82,13 +82,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/Id"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAttachments/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithAttachments/properties/Id"
         },
         {
           "arguments": {
@@ -97,7 +97,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/Id"
         }
       ],
       "extensions": {
@@ -119,20 +119,20 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Image\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/Image"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/Image"
         },
         {
           "title": "animage",
           "rel": "urn:org.restfulobjects:rels/attachment;property=\"Image\"",
           "method": "GET",
           "type": "image/jpeg",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/Image"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithAttachments/1/properties/Image"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAttachments/properties/Image"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithAttachments/properties/Image"
         }
       ],
       "extensions": {

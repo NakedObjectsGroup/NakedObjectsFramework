@@ -5,7 +5,7 @@
         "rel": "urn:org.restfulobjects:rels/element-type",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple"
       }
     ],
     "extensions": {},
@@ -14,15 +14,15 @@
         "title": "1",
         "rel": "urn:org.restfulobjects:rels/element",
         "method": "GET",
-        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple\"",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/MostSimple/1"
       },
       {
         "title": "2",
         "rel": "urn:org.restfulobjects:rels/element",
         "method": "GET",
-        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple\"",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/MostSimple/2"
       }
     ]
   },
@@ -31,8 +31,8 @@
       "arguments": {},
       "rel": "self",
       "method": "GET",
-      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8; x-ro-element-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryable/invoke"
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8; x-ro-element-type=\"http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithActionObject/1/actions/AnActionReturnsQueryable/invoke"
     }
   ],
   "extensions": {},

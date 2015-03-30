@@ -7,19 +7,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"VerySimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/Name"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/properties/Name"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/VerySimple/properties/Name"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/VerySimple/properties/Name"
     },
     {
       "arguments": {
@@ -28,13 +28,13 @@
       "rel": "urn:org.restfulobjects:rels/modify;property=\"Name\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/Name"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/properties/Name"
     },
     {
       "rel": "urn:org.restfulobjects:rels/clear;property=\"Name\"",
       "method": "DELETE",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/Name"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/VerySimple/1/properties/Name"
     }
   ],
   "extensions": {

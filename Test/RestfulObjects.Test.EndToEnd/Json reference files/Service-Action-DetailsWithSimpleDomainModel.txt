@@ -14,20 +14,20 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnAction"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnAction"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnAction\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnAction/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnAction/invoke"
     }
   ]
 }

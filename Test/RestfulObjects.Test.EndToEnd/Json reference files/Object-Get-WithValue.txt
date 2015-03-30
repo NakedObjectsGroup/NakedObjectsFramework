@@ -7,13 +7,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithValue\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue"
     },
     {
       "arguments": {
@@ -39,7 +39,7 @@
       "rel": "urn:org.restfulobjects:rels/update",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithValue\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1"
     }
   ],
   "extensions": {
@@ -61,13 +61,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AStringValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AStringValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AStringValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AStringValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AStringValue"
         },
         {
           "arguments": {
@@ -76,13 +76,13 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AStringValue\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AStringValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AStringValue"
         },
         {
           "rel": "urn:org.restfulobjects:rels/clear;property=\"AStringValue\"",
           "method": "DELETE",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AStringValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AStringValue"
         }
       ],
       "extensions": {
@@ -106,13 +106,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"ADateTimeValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/ADateTimeValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/ADateTimeValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/ADateTimeValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/ADateTimeValue"
         },
         {
           "arguments": {
@@ -121,13 +121,13 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"ADateTimeValue\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/ADateTimeValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/ADateTimeValue"
         },
         {
           "rel": "urn:org.restfulobjects:rels/clear;property=\"ADateTimeValue\"",
           "method": "DELETE",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/ADateTimeValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/ADateTimeValue"
         }
       ],
       "extensions": {
@@ -157,13 +157,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AChoicesValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AChoicesValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AChoicesValue"
         },
         {
           "arguments": {
@@ -172,7 +172,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AChoicesValue\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AChoicesValue"
         }
       ],
       "extensions": {
@@ -199,13 +199,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AConditionalChoicesValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AConditionalChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AConditionalChoicesValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AConditionalChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AConditionalChoicesValue"
         },
         {
           "arguments": {
@@ -214,7 +214,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AConditionalChoicesValue\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AConditionalChoicesValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AConditionalChoicesValue"
         },
         {
           "arguments": {
@@ -225,7 +225,7 @@
                   "rel": "describedby",
                   "method": "GET",
                   "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/integer"
+                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/integer"
                 }
               ]
             },
@@ -236,7 +236,7 @@
                   "rel": "describedby",
                   "method": "GET",
                   "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/string"
+                  "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/string"
                 }
               ]
             }
@@ -244,7 +244,7 @@
           "rel": "urn:org.restfulobjects:rels/prompt;property=\"AConditionalChoicesValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/prompt\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AConditionalChoicesValue/prompt"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AConditionalChoicesValue/prompt"
         }
       ],
       "extensions": {
@@ -267,13 +267,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"ADisabledValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/ADisabledValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/ADisabledValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/ADisabledValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/ADisabledValue"
         }
       ],
       "extensions": {
@@ -296,13 +296,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AUserDisabledValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AUserDisabledValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AUserDisabledValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AUserDisabledValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AUserDisabledValue"
         }
       ],
       "extensions": {
@@ -324,13 +324,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AValue"
         },
         {
           "arguments": {
@@ -339,7 +339,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"AValue\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AValue"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/AValue"
         }
       ],
       "extensions": {
@@ -362,13 +362,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/Id"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/Id"
         },
         {
           "arguments": {
@@ -377,7 +377,7 @@
           "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
           "method": "PUT",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/Id"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/1/properties/Id"
         }
       ],
       "extensions": {

@@ -16,32 +16,32 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsScalarNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnActionReturnsScalarNull"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalarNull\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsScalarNull/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnActionReturnsScalarNull/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/string"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/string"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsScalarNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithActionService/actions/AnActionReturnsScalarNull"
     }
   ]
 }
