@@ -12,6 +12,8 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
     public class VendorContact : AWDomainObject, IContactRole {
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int VendorID { get; set; }
 
@@ -28,7 +30,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

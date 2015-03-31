@@ -21,6 +21,8 @@ namespace AdventureWorksModel {
 
         #region Injected Servives
 
+        public IDomainObjectContainer Container { set; protected get; }
+
         public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
 
         public ProductRepository ProductRepository { set; protected get; }
@@ -42,17 +44,15 @@ namespace AdventureWorksModel {
             TotalDue = 0;
         }
 
-        public override void Updating() {
-            base.Updating();
+        public void Updating() {
             const byte increment = 1;
             RevisionNumber += increment;
         }
 
-        public override void Persisting() {
+        public void Persisting() {
             if (Customer.IsStore()) {
                 _contact = StoreContact.Contact;
             }
-            base.Persisting();
         }
 
         public void Loaded() {
@@ -400,7 +400,7 @@ namespace AdventureWorksModel {
 
         #region CreditCard
         [NakedObjectsIgnore]
-        public virtual int CreditCardID { get; set; }
+        public virtual int? CreditCardID { get; set; }
 
         [Optionally]
         [MemberOrder(42)]
@@ -458,7 +458,7 @@ namespace AdventureWorksModel {
         #region SalesPerson
 
         [NakedObjectsIgnore]
-        public virtual int SalesPersonID { get; set; }
+        public virtual int? SalesPersonID { get; set; }
 
         [Optionally]
         [MemberOrder(61)]
@@ -487,15 +487,14 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        [ConcurrencyCheck]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

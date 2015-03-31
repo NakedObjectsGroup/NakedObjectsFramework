@@ -12,6 +12,8 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Immutable]
     public class ProductModelProductDescriptionCulture : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int ProductModelID { get; set; }
 
@@ -31,7 +33,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

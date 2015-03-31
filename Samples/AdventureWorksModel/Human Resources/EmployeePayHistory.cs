@@ -12,6 +12,8 @@ namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     [Immutable(WhenTo.OncePersisted)]
     public class EmployeePayHistory : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
         #region EmployeeID
 
         [NakedObjectsIgnore]
@@ -47,7 +49,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

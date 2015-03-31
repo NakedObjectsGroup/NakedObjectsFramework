@@ -18,6 +18,9 @@ namespace AdventureWorksModel {
     public class Product : AWDomainObject {
         #region Injected Services
 
+        public IDomainObjectContainer Container { set; protected get; }
+
+
         #region Injected: SpecialOfferRepository
 
         public SpecialOfferRepository SpecialOfferRepository { set; protected get; }
@@ -287,12 +290,11 @@ namespace AdventureWorksModel {
 
         #region ProductSubcategory
         [NakedObjectsIgnore]
-        public virtual int ProductSubcategoryID { get; set; }
+        public virtual int? ProductSubcategoryID { get; set; }
 
         [Optionally]
         [MemberOrder(12)]
         public virtual ProductSubcategory ProductSubcategory { get; set; }
-        #endregion
 
         public IList<ProductSubcategory> ChoicesProductSubcategory(ProductCategory productCategory) {
             if (productCategory != null) {
@@ -302,6 +304,7 @@ namespace AdventureWorksModel {
             }
             return new ProductSubcategory[] {}.ToList();
         }
+        #endregion
 
         #endregion
 
@@ -311,14 +314,14 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

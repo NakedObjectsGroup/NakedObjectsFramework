@@ -15,6 +15,7 @@ namespace AdventureWorksModel {
     [IconName("memo.png")]
     public class PurchaseOrderHeader : AWDomainObject {
         #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
 
         #region Injected: EmployeeRepository
 
@@ -43,7 +44,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
@@ -75,8 +76,7 @@ namespace AdventureWorksModel {
             OrderDate = DateTime.Today.Date;
         }
 
-        public override void Updating() {
-            base.Updating();
+        public void Updating() {
             byte increment = 1;
             RevisionNumber += increment;
         }

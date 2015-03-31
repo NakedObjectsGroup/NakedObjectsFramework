@@ -13,6 +13,9 @@ namespace AdventureWorksModel {
     [DisplayName("Reason")]
     [Immutable(WhenTo.OncePersisted)]
     public class SalesOrderHeaderSalesReason : AWDomainObject {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int SalesOrderID { get; set; }
 
@@ -24,7 +27,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

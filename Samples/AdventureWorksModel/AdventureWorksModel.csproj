@@ -201,7 +201,6 @@
     <Compile Include="Purchasing\VendorAddress.cs" />
     <Compile Include="Purchasing\VendorContact.cs" />
     <Compile Include="Purchasing\VendorRepository.cs" />
-    <Compile Include="Sales\AbstractCustomer.cs" />
     <Compile Include="Sales\ContactCreditCard.cs" />
     <Compile Include="Sales\CustomerContributedActions.cs" />
     <Compile Include="Sales\CustomerDashboard.cs" />

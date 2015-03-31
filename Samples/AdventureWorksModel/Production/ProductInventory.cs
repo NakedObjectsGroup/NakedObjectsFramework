@@ -11,6 +11,9 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cartons.png")]
     public class ProductInventory : AWDomainObject {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int ProductID { get; set; }
 
@@ -47,7 +50,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 
@@ -55,7 +58,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

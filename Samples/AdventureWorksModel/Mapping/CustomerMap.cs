@@ -26,8 +26,8 @@ namespace AdventureWorksModel
             this.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             this.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             this.Property(t => t.CustomerType).HasColumnName("CustomerType");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            this.Property(t => t.CustomerRowguid).HasColumnName("rowguid");
+          this.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             this.HasOptional(t => t.SalesTerritory);

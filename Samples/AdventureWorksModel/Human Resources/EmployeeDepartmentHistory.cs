@@ -11,6 +11,8 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     public class EmployeeDepartmentHistory : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int EmployeeID { get; set; }
 
@@ -41,7 +43,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

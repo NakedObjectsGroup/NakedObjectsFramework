@@ -15,6 +15,8 @@ namespace AdventureWorksModel {
     public abstract class Customer : AWDomainObject, IHasIntegerId {
         private ICollection<CustomerAddress> _CustomerAddress = new List<CustomerAddress>();
         public ContactRepository ContactRepository { set; protected get; }
+        public IDomainObjectContainer Container { set; protected get; }
+
 
         [Disabled, Description("xxx")]
         public virtual string AccountNumber { get; set; }
@@ -41,8 +43,7 @@ namespace AdventureWorksModel {
 
         #region Life Cycle Methods
 
-        public override void Persisting() {
-            base.Persisting();
+        public void Persisting() {
             this.CustomerModifiedDate = DateTime.Now;
             this.CustomerRowguid = Guid.NewGuid();
         }

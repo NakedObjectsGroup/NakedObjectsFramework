@@ -15,6 +15,7 @@ namespace AdventureWorksModel {
     [IconName("gear.png")]
     public class WorkOrder : AWDomainObject {
         #region Injected Servives
+        public IDomainObjectContainer Container { set; protected get; }
 
         public ProductRepository ProductRepository { set; protected get; }
 
@@ -55,7 +56,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

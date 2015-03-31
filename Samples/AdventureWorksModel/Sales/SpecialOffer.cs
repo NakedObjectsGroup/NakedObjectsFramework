@@ -10,6 +10,8 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class SpecialOffer : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
 
         [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; set; }
@@ -77,14 +79,14 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

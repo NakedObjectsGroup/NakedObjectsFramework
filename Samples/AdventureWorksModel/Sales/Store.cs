@@ -91,15 +91,14 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        [ConcurrencyCheck]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

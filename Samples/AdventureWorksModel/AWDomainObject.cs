@@ -8,38 +8,34 @@
 using System;
 using System.ComponentModel;
 using NakedObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 // Toplevel domain object
 
 namespace AdventureWorksModel {
-    public abstract class AWDomainObject {
-        #region Injected Services
 
-        public IDomainObjectContainer Container { protected get; set; }
-
-        #endregion
-
-        [DisplayName("Last Modified")]
-        [Hidden(WhenTo.UntilPersisted)]
-        public abstract DateTime ModifiedDate { get; set; }
+    public interface AWDomainObject {
+        //[DisplayName("Last Modified")]
+        //[Hidden(WhenTo.UntilPersisted)]
+        //DateTime ModifiedDate { get; set; }
 
         // Even though the database does not record a rowguid for all classes, it does for so many of them 
         // that it is convenient to implement this at the top of the hierarchy.  Classes that don't need it
         // just won't use it, or persist it. Classes that do need it, will still have to override the 
         // implementation to be recognised by EF.
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        //[NakedObjectsIgnore]
+        //Guid rowguid { get; set; }
 
         #region Life Cycle Methods
 
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Persisting() {
+        //    rowguid = Guid.NewGuid();
+        //    //ModifiedDate = DateTime.Now;
+        //}
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Updating() {
+        //    //ModifiedDate = DateTime.Now;
+        //}
 
         #endregion
     }

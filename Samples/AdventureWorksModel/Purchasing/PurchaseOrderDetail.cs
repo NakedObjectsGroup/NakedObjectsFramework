@@ -11,6 +11,8 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("memo_point.png")]
     public class PurchaseOrderDetail : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
         [NakedObjectsIgnore]
         public virtual int PurchaseOrderID { get; set; }
 
@@ -48,7 +50,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

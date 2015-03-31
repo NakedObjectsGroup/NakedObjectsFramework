@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
+using NakedObjects.Services;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -31,7 +32,7 @@ namespace NakedObjects.Mvc.App {
 
         private static string[] ModelNamespaces {
             get {
-                return AllPersistedTypesInMainModel().Select(t => t.Namespace).Distinct().ToArray();
+                return new string[] {"AdventureWorksModel"};
             }
         }
 
@@ -50,7 +51,7 @@ namespace NakedObjects.Mvc.App {
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
-                    typeof (SimpleEncryptDecrypt)
+                    typeof (SimpleEncryptDecrypt),
                 };
             }
         }

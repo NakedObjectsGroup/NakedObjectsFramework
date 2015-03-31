@@ -10,18 +10,21 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class JobCandidate : AWDomainObject {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
         public virtual int JobCandidateID { get; set; }
         public virtual string Resume { get; set; }
 
         #region Employee
         [NakedObjectsIgnore]
-        public virtual int EmployeeID { get; set; }
+        public virtual int? EmployeeID { get; set; }
         public Employee Employee { get; set; }
         #endregion
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #region Title
 

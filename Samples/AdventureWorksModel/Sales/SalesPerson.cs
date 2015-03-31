@@ -14,6 +14,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("dog.png")]
     public class SalesPerson : AWDomainObject {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+
         #region RecalulateSalesYTD (Action)
 
         [MemberOrder(1)]
@@ -98,14 +102,14 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99), Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

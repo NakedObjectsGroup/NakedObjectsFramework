@@ -15,6 +15,9 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
     public class Contact : AWDomainObject {
+
+        public IDomainObjectContainer Container { set; protected get; }
+
         #region ID
 
         [NakedObjectsIgnore]
@@ -54,8 +57,7 @@ namespace AdventureWorksModel {
 
         #region Life Cycle Methods
 
-        public override void Persisting() {
-            base.Persisting();
+        public void Persisting() {
             CreateSaltAndHash(InitialPassword);
         }
 
@@ -266,7 +268,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 
@@ -274,7 +276,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

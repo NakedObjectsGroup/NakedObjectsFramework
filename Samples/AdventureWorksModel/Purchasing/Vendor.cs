@@ -13,6 +13,8 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
     public class Vendor : AWDomainObject {
+        public IDomainObjectContainer Container { set; protected get; }
+
         private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
         private ICollection<PurchaseOrderHeader> _PurchaseOrderHeader = new List<PurchaseOrderHeader>();
         private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
@@ -66,7 +68,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 

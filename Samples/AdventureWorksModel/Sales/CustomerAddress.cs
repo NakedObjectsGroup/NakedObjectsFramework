@@ -12,6 +12,8 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("house.png"), Description("Use Action menu to add")]
     public class CustomerAddress : AWDomainObject, IAddressRole {
+        public IDomainObjectContainer Container { set; protected get; }
+
         #region AddressType
 
         [NakedObjectsIgnore]   
@@ -59,14 +61,14 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
         [NakedObjectsIgnore]
-        public override Guid rowguid { get; set; }
+        public Guid rowguid { get; set; }
 
         #endregion
 

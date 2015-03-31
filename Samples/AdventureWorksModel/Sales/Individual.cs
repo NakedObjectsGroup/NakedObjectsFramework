@@ -12,6 +12,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("person.png")]
     public class Individual : Customer {
+
         #region Contact
 
         [NakedObjectsIgnore]
@@ -27,7 +28,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        public override DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
