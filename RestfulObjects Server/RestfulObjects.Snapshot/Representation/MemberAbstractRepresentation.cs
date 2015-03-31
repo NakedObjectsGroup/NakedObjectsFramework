@@ -17,7 +17,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class MemberAbstractRepresentation : Representation {
-        protected MemberAbstractRepresentation(MemberRepresentationStrategy strategy) : base(strategy.GetFlags()) {
+        protected MemberAbstractRepresentation(IOidStrategy oidStrategy, MemberRepresentationStrategy strategy)
+            : base(oidStrategy ,strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Links = strategy.GetLinks(false);
@@ -39,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static MemberAbstractRepresentation Create(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
+        public static MemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
             IConsentSurface consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
 
@@ -48,10 +49,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (propertyContext.Property.IsCollection()) {
-                return CollectionRepresentation.Create(req, propertyContext, optionals, flags);
+                return CollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
             }
 
-            return PropertyRepresentation.Create(req, propertyContext, optionals, flags);
+            return PropertyRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
         }
     }
 }

@@ -22,18 +22,18 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(listContext, propertyContext, req);
-            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
-            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target)));
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy,req, propertyContext));
+            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy,req, propertyContext.Target)));
             SetExtensions();
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected PromptRepresentation(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parmContext.Id);
             SetChoices(listContext, parmContext, req);
-            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, parmContext));
-            var helper = new UriMtHelper(req, parmContext.Target);
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, parmContext));
+            var helper = new UriMtHelper(oidStrategy,req, parmContext.Target);
             ObjectRelType parentRelType = parmContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             SetLinks(req, listContext.ElementType, parentRelType);
             SetExtensions();
@@ -53,11 +53,11 @@ namespace RestfulObjects.Snapshot.Representations {
         public object[] Choices { get; set; }
 
         private void SetChoices(ListContextSurface listContext, PropertyContextSurface propertyContext, HttpRequestMessage req) {
-            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(req, c, propertyContext.Property, Flags)).ToArray();
+            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy,req, c, propertyContext.Property, Flags)).ToArray();
         }
 
         private void SetChoices(ListContextSurface listContext, ParameterContextSurface paramContext, HttpRequestMessage req) {
-            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(req, c, paramContext.Parameter, Flags)).ToArray();
+            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy,req, c, paramContext.Parameter, Flags)).ToArray();
         }
 
         private void SetScalars(string id) {
@@ -70,12 +70,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(parentRelType, Flags),
-                LinkRepresentation.Create(SelfRelType, Flags)
+                LinkRepresentation.Create(OidStrategy ,parentRelType, Flags),
+                LinkRepresentation.Create(OidStrategy,SelfRelType, Flags)
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, spec)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
             }
 
             Links = tempLinks.ToArray();
@@ -86,19 +86,19 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        private LinkRepresentation CreateObjectLink(HttpRequestMessage req, INakedObjectSurface no) {
-            var helper = new UriMtHelper(req, no);
+        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface no) {
+            var helper = new UriMtHelper(oidStrategy ,req, no);
             var rt = new ObjectRelType(RelValues.Element, helper);
 
-            return LinkRepresentation.Create(rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+            return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        public static PromptRepresentation Create(PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new PromptRepresentation(propertyContext, listContext, req, flags);
+        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(oidStrategy ,propertyContext, listContext, req, flags);
         }
 
-        public static Representation Create(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new PromptRepresentation(parmContext, listContext, req, flags);
+        public static Representation Create(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(oidStrategy ,parmContext, listContext, req, flags);
         }
     }
 }

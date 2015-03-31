@@ -16,7 +16,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineActionRepresentation(ActionRepresentationStrategy strategy) : base(strategy.GetFlags()) {
+        protected InlineActionRepresentation(IOidStrategy oidStrategy, ActionRepresentationStrategy strategy)
+            : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Action;
             Id = strategy.GetId();
             Parameters = strategy.GetParameters();
@@ -28,16 +29,16 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Parameters)]
         public MapRepresentation Parameters { get; set; }
 
-        public static InlineActionRepresentation Create(HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
+        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
             IConsentSurface consent = actionContext.Action.IsUsable(actionContext.Target);
 
-            var actionRepresentationStrategy = new ActionRepresentationStrategy(req, actionContext, flags);
+            var actionRepresentationStrategy = new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags);
             if (consent.IsVetoed) {
                 var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason)};
-                return CreateWithOptionals<InlineActionRepresentation>(new object[] {actionRepresentationStrategy}, optionals);
+                return CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, actionRepresentationStrategy}, optionals);
             }
 
-            return new InlineActionRepresentation(actionRepresentationStrategy);
+            return new InlineActionRepresentation(oidStrategy, actionRepresentationStrategy);
         }
     }
 }

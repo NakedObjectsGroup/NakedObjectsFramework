@@ -18,8 +18,9 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionResultRepresentation : Representation {
-        protected ActionResultRepresentation(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) : base(oidStrategy, flags) {
-            SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(req, actionResult.ActionContext));
+        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags)
+            : base(oidStrategy, flags) {
+            SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, actionResult.ActionContext));
             SetResultType(actionResult);
             SetLinks(req, actionResult);
             SetExtensions();
@@ -44,7 +45,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ActionResultContextSurface actionResult) {
-            Links = actionResult.ActionContext.Action.IsQueryOnly() ? new[] {LinkRepresentation.Create(SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
+            Links = actionResult.ActionContext.Action.IsQueryOnly() ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
         }
 
         private void SetResultType(ActionResultContextSurface actionResult) {
@@ -78,13 +79,13 @@ namespace RestfulObjects.Snapshot.Representations {
                     }
                     else {
                         var refNos = visibleParamContext.ProposedNakedObject.ToEnumerable().Select(no => no).ToArray();
-                        var refs = refNos.Select(no => RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, no)), Flags)).ToArray();
+                        var refs = refNos.Select(no => RefValueRepresentation.Create(OidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, no)), Flags)).ToArray();
 
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, refs));
                     }
                 }
                 else {
-                    var valueRef = RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, visibleParamContext.ProposedNakedObject)), Flags);
+                    var valueRef = RefValueRepresentation.Create(OidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy ,req, visibleParamContext.ProposedNakedObject)), Flags);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueRef));
                 }
 
@@ -93,7 +94,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return MapRepresentation.Create(optionalProperties.ToArray());
         }
 
-        public static ActionResultRepresentation Create(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) {
+        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) {
             if (actionResult.HasResult) {
                 IRepresentation result;
 
@@ -101,18 +102,18 @@ namespace RestfulObjects.Snapshot.Representations {
                     result = null;
                 }
                 else if (actionResult.Specification.IsParseable()) {
-                    result = ScalarRepresentation.Create(actionResult.Result, req, flags);
+                    result = ScalarRepresentation.Create(oidStrategy ,actionResult.Result, req, flags);
                 }
                 else if (actionResult.Specification.IsObject()) {
-                    result = ObjectRepresentation.Create(actionResult.Result, req, flags);
+                    result = ObjectRepresentation.Create(oidStrategy ,actionResult.Result, req, flags);
                 }
                 else {
-                    result = ListRepresentation.Create(actionResult, req, flags);
+                    result = ListRepresentation.Create(oidStrategy ,actionResult, req, flags);
                 }
 
-                return CreateWithOptionals<ActionResultRepresentation>(new object[] {req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
+                return CreateWithOptionals<ActionResultRepresentation>(new object[] {oidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
             }
-            return new ActionResultRepresentation(req, actionResult, flags);
+            return new ActionResultRepresentation(oidStrategy ,req, actionResult, flags);
         }
     }
 }

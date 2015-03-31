@@ -5,15 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
     public abstract class AbstractStrategy {
-        protected AbstractStrategy(RestControlFlags flags) {
+        protected AbstractStrategy(IOidStrategy oidStrategy, RestControlFlags flags) {
+            OidStrategy = oidStrategy;
             Flags = flags;
         }
 
+        public IOidStrategy OidStrategy { get; set; }
         public RestControlFlags Flags { get; private set; }
 
         public MapRepresentation GetExtensions() {

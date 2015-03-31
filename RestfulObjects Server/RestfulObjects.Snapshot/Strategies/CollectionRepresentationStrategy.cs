@@ -18,7 +18,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         private readonly INakedObjectSurface collection;
 
 
-        public CollectionRepresentationStrategy(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) : base(req, propertyContext, flags) {
+        public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+            : base(oidStrategy ,req, propertyContext, flags) {
             collection = propertyContext.Property.GetNakedObject(propertyContext.Target);
         }
 
@@ -35,7 +36,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: propertyContext.Property.ExtensionData(),
                 returnType: collection.Specification,
-                elementType: propertyContext.ElementSpecification);
+                elementType: propertyContext.ElementSpecification,
+                oidStrategy: OidStrategy);
         }
 
         public LinkRepresentation[] GetValue() {
@@ -43,7 +45,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateValueLink(INakedObjectSurface no) {
-            return LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, no)), Flags,
+            return LinkRepresentation.Create(OidStrategy ,new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, no)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 

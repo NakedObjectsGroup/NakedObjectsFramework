@@ -60,12 +60,12 @@ namespace RestfulObjects.Snapshot.Representations {
             }
             else {
                 Tuple<string, INakedObjectSpecificationSurface>[] parms = parameter.GetChoicesParameters();
-                OptionalProperty[] args = parms.Select(tuple => RestUtils.CreateArgumentProperty(req, tuple, Flags)).ToArray();
+                OptionalProperty[] args = parms.Select(tuple => RestUtils.CreateArgumentProperty(OidStrategy ,req, tuple, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, parameterContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(OidStrategy ,new PromptRelType(new UriMtHelper(OidStrategy ,req, parameterContext)), Flags, opts.ToArray());
         }
 
         private void SetLinks(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter) {
@@ -78,7 +78,7 @@ namespace RestfulObjects.Snapshot.Representations {
                     OwningSpecification = nakedObject.Specification,
                     Parameter = parameter
                 };
-                LinkRepresentation describedBy = LinkRepresentation.Create(new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, parameterTypeContextSurface)), Flags);
+                LinkRepresentation describedBy = LinkRepresentation.Create(OidStrategy ,new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, parameterTypeContextSurface)), Flags);
                 tempLinks.Add(describedBy);
             }
 
@@ -94,7 +94,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (IsUnconditionalChoices(parameter)) {
                 Tuple<INakedObjectSurface, string>[] choices = parameter.GetChoicesAndTitles(nakedObject, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(req, tuple.Item1, parameter, flags), tuple.Item2)).ToArray();
+                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy ,req, tuple.Item1, parameter, flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                 MapRepresentation map = MapRepresentation.Create(op);
@@ -122,7 +122,8 @@ namespace RestfulObjects.Snapshot.Representations {
                     memberOrder: null,
                     customExtensions: custom,
                     returnType: parameter.Specification,
-                    elementType: parameter.ElementType);
+                    elementType: parameter.ElementType,
+                    oidStrategy: OidStrategy);
             }
             else {
                 Extensions = MapRepresentation.Create();
@@ -135,23 +136,23 @@ namespace RestfulObjects.Snapshot.Representations {
                    !parameter.GetChoicesParameters().Any();
         }
 
-        private static LinkRepresentation CreateDefaultLink(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
-            return LinkRepresentation.Create(new DefaultRelType(parameter, new UriMtHelper(req, defaultNakedObject)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
+        private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
+            return LinkRepresentation.Create(oidStrategy ,new DefaultRelType(parameter, new UriMtHelper(oidStrategy ,req, defaultNakedObject)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        private static object CreateDefaultLinks(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
+        private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
             if (defaultNakedObject.Specification.IsCollection()) {
-                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(req, parameter, i, i.TitleString(), flags)).ToArray();
+                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, i, i.TitleString(), flags)).ToArray();
             }
-            return CreateDefaultLink(req, parameter, defaultNakedObject, title, flags);
+            return CreateDefaultLink(oidStrategy, req, parameter, defaultNakedObject, title, flags);
         }
 
-        public static ParameterRepresentation Create(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
             if (parameter.IsChoicesEnabled && !parameter.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = parameter.GetChoices(nakedObject, null);
-                object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(req, c, parameter, flags)).ToArray();
+                object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy ,req, c, parameter, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
@@ -161,16 +162,16 @@ namespace RestfulObjects.Snapshot.Representations {
                     string title = defaultNakedObject.TitleString();
                     object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object);
                     var isValue = defaultNakedObject.Specification.IsParseable() || (defaultNakedObject.Specification.IsCollection() && defaultNakedObject.ElementSpecification.IsParseable());
-                    object defaultValue = isValue ? value : CreateDefaultLinks(req, parameter, defaultNakedObject, title, flags);
+                    object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy ,req, parameter, defaultNakedObject, title, flags);
 
                     optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
                 }
             }
 
             if (optionals.Count == 0) {
-                return new ParameterRepresentation(req, nakedObject, parameter, flags);
+                return new ParameterRepresentation(oidStrategy ,req, nakedObject, parameter, flags);
             }
-            return CreateWithOptionals<ParameterRepresentation>(new object[] {req, nakedObject, parameter, flags}, optionals);
+            return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy ,req, nakedObject, parameter, flags}, optionals);
         }
     }
 }

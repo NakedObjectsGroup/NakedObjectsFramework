@@ -17,6 +17,7 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class UriMtHelper {
+        private readonly IOidStrategy oidStrategy;
         public static Func<HttpRequestMessage, string> GetAuthority;
         public static Func<string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
@@ -37,7 +38,8 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
 
-        public UriMtHelper(HttpRequestMessage req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req) {
+            this.oidStrategy = oidStrategy;
             prefix = new Uri(req.RequestUri.Scheme + "://" + GetAuthority(req));
 
             string applicationPath = GetApplicationPath();
@@ -49,7 +51,7 @@ namespace RestfulObjects.Snapshot.Utility {
             DebugLogRequest(req);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject) : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject) : this(oidStrategy ,req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
             ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
@@ -58,7 +60,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext)
-            : this(req) {
+            : this(oidStrategy ,req) {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
             spec = nakedObject.Specification;
@@ -67,16 +69,16 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedType = oid.DomainType;
         }
 
-        public UriMtHelper(HttpRequestMessage req, PropertyTypeContextSurface propertyContext)
-            : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext)
+            : this(oidStrategy ,req) {
             assoc = propertyContext.Property;
             spec = propertyContext.OwningSpecification;
             cachedId = "";
-            cachedType = spec.DomainTypeName();
+            cachedType = spec.DomainTypeName(oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext)
-            : this(req) {
+            : this(oidStrategy ,req) {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
             spec = nakedObject.Specification;
@@ -85,25 +87,25 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedType = oid.DomainType;
         }
 
-        public UriMtHelper(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext)
-            : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextSurface actionTypeContext)
+            : this(oidStrategy ,req) {
             action = actionTypeContext.ActionContext.Action;
             spec = actionTypeContext.OwningSpecification;
             cachedId = "";
-            cachedType = spec.DomainTypeName();
+            cachedType = spec.DomainTypeName(oidStrategy);
         }
 
-        public UriMtHelper(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext)
-            : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext)
+            : this(oidStrategy ,req) {
             action = parameterTypeContext.Action;
             spec = parameterTypeContext.OwningSpecification;
             param = parameterTypeContext.Parameter;
             cachedId = "";
-            cachedType = spec.DomainTypeName();
+            cachedType = spec.DomainTypeName(oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextSurface parameterContext)
-            : this(req) {
+            : this(oidStrategy ,req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
             nakedObject = parameterContext.Target;
@@ -113,26 +115,26 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedType = oid.DomainType;
         }
 
-        public UriMtHelper(HttpRequestMessage req, INakedObjectSpecificationSurface spec)
-            : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec)
+            : this(oidStrategy, req) {
             this.spec = spec;
             cachedId = "";
-            cachedType = RestUtils.SpecToPredefinedTypeString(spec);
+            cachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
         }
 
-        public UriMtHelper(HttpRequestMessage req, INakedObjectAssociationSurface assoc)
-            : this(req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface assoc)
+            : this(oidStrategy ,req) {
             cachedId = "";
             if (assoc.IsCollection()) {
                 cachedType = assoc.IsASet() ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
             }
             else {
-                cachedType = assoc.Specification.DomainTypeName();
+                cachedType = assoc.Specification.DomainTypeName(oidStrategy);
             }
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context)
-            : this(req) {
+            : this(oidStrategy ,req) {
             typeAction = context.Id;
             cachedId = "";
             cachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
@@ -485,17 +487,17 @@ namespace RestfulObjects.Snapshot.Utility {
 
         private string GetParameterValue(RestControlFlags flags, INakedObjectSpecificationSurface parameterValueSpec) {
             if (flags.SimpleDomainModel) {
-                return RestUtils.SpecToTypeAndFormatString(parameterValueSpec).Item1;
+                return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
             }
             if (flags.FormalDomainModel) {
-                return BuildDomainTypeUri(RestUtils.SpecToPredefinedTypeString(parameterValueSpec)).ToString();
+                return BuildDomainTypeUri(RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy)).ToString();
             }
             return null;
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             INakedObjectSpecificationSurface specToUse = param == null ? spec : param.Specification;
-            string typeName = specToUse == null ? typeof (object).FullName : specToUse.DomainTypeName();
+            string typeName = specToUse == null ? typeof (object).FullName : specToUse.DomainTypeName(oidStrategy);
             string parameterValue = GetParameterValue(flags, typeName);
             mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
         }

@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Representations {
         protected ParameterTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parameterTypeContext);
-            SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(req, parameterTypeContext));
+            SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, parameterTypeContext));
             SetLinks(req, parameterTypeContext);
             SetExtensions();
             SetHeader();
@@ -68,28 +68,28 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext) {
-            var domainTypeUri = new UriMtHelper(req, parameterTypeContext);
+            var domainTypeUri = new UriMtHelper(OidStrategy, req, parameterTypeContext);
 
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(SelfRelType, Flags),
-                LinkRepresentation.Create(new TypeMemberRelType(RelValues.Up, domainTypeUri), Flags),
-                LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, parameterTypeContext.Parameter.Specification)), Flags)
+                LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
+                LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Up, domainTypeUri), Flags),
+                LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, parameterTypeContext.Parameter.Specification)), Flags)
             };
 
             Links = tempLinks.ToArray();
         }
 
 
-        public static ParameterTypeRepresentation Create(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) {
+        public static ParameterTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) {
             if (!parameterTypeContext.Parameter.Specification.IsParseable()) {
-                return new ParameterTypeRepresentation(req, parameterTypeContext, flags);
+                return new ParameterTypeRepresentation(oidStrategy ,req, parameterTypeContext, flags);
             }
             var exts = new Dictionary<string, object>();
             AddStringProperties(parameterTypeContext.Parameter.Specification, parameterTypeContext.Parameter.MaxLength(), parameterTypeContext.Parameter.Pattern(), exts);
 
             OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
 
-            return CreateWithOptionals<ParameterTypeRepresentation>(new object[] {req, parameterTypeContext, flags}, parms);
+            return CreateWithOptionals<ParameterTypeRepresentation>(new object[] {oidStrategy ,req, parameterTypeContext, flags}, parms);
         }
     }
 }

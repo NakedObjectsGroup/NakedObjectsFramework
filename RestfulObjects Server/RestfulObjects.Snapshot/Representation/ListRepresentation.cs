@@ -20,14 +20,14 @@ namespace RestfulObjects.Snapshot.Representations {
     public class ListRepresentation : Representation {
         protected ListRepresentation(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Value = listContext.List.Select(c => CreateObjectLink(req, c)).ToArray();
-            SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(req, listContext.ElementType));
+            Value = listContext.List.Select(c => CreateObjectLink(oidStrategy ,req, c)).ToArray();
+            SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req, listContext.ElementType));
             SetLinks(req);
             SetExtensions();
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected ListRepresentation(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextSurface actionContext)
+        protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextSurface actionContext)
             : base(oidStrategy, flags) {
             INakedObjectSurface list;
 
@@ -39,17 +39,17 @@ namespace RestfulObjects.Snapshot.Representations {
                 list = objectContext.Target;
             }
 
-            Value = list.ToEnumerable().Select(no => CreateObjectLink(req, no)).ToArray();
+            Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy ,req, no)).ToArray();
 
             SetLinks(req, actionContext);
             SetExtensions();
             SetHeader(false);
         }
 
-        private ListRepresentation(INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
+        private ListRepresentation(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Value = specs.Select(s => CreateDomainLink(req, s)).ToArray();
-            SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(req));
+            Value = specs.Select(s => CreateDomainLink(oidStrategy ,req, s)).ToArray();
+            SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
             SetExtensions();
             SetHeader(true);
@@ -69,14 +69,14 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req) {
-            Links = new[] {LinkRepresentation.Create(SelfRelType, Flags), LinkRepresentation.Create(new HomePageRelType(RelValues.Up, new UriMtHelper(req)), Flags)};
+            Links = new[] {LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
         }
 
         private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, spec)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy , new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
             }
 
             Links = tempLinks.ToArray();
@@ -90,31 +90,31 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        private LinkRepresentation CreateObjectLink(HttpRequestMessage req, INakedObjectSurface no) {
-            var helper = new UriMtHelper(req, no);
+        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface no) {
+            var helper = new UriMtHelper(oidStrategy ,req, no);
             ObjectRelType rt = no.Specification.IsService() ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 
-            return LinkRepresentation.Create(rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+            return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        private LinkRepresentation CreateDomainLink(HttpRequestMessage req, INakedObjectSpecificationSurface spec) {
-            return LinkRepresentation.Create(new DomainTypeRelType(new UriMtHelper(req, spec)), Flags);
+        private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec) {
+            return LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
         }
 
-        public static ListRepresentation Create(ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ListRepresentation(listContext, req, flags);
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new ListRepresentation(oidStrategy ,listContext, req, flags);
         }
 
-        public static ListRepresentation Create(ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ListRepresentation(actionResultContext.Result, req, flags, actionResultContext.ActionContext);
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new ListRepresentation(oidStrategy ,actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
 
-        internal static Representation Create(INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags) {
+        internal static Representation Create(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags) {
             // filter out System types
             specs = specs.Where(s => !s.FullName().StartsWith("System.") && !s.FullName().StartsWith("Microsoft.")).ToArray();
             // filter out predefined types
             specs = specs.Where(s => !RestUtils.IsPredefined(s)).ToArray();
-            return new ListRepresentation(specs, req, flags);
+            return new ListRepresentation(oidStrategy ,specs, req, flags);
         }
     }
 }

@@ -17,8 +17,9 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class DomainTypeRepresentation : Representation {
-        protected DomainTypeRepresentation(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) : base(oidStrategy, flags) {
-            var helper = new UriMtHelper(req, spec);
+        protected DomainTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags)
+            : base(oidStrategy, flags) {
+            var helper = new UriMtHelper(oidStrategy, req, spec);
             SelfRelType = new DomainTypeRelType(RelValues.Self, helper);
             SetScalars(spec);
             SetLinks(helper);
@@ -64,7 +65,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(UriMtHelper helper) {
             Links = new List<LinkRepresentation> {
-                LinkRepresentation.Create(SelfRelType, Flags)
+                LinkRepresentation.Create(OidStrategy , SelfRelType, Flags)
                 // temp disable icons 
                 //LinkRepresentation.Create(new IconRelType(helper), Flags) 
             }.ToArray();
@@ -72,7 +73,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(INakedObjectSpecificationSurface spec) {
             Name = spec.FullName();
-            DomainType = spec.DomainTypeName();
+            DomainType = spec.DomainTypeName(OidStrategy);
             FriendlyName = spec.SingularName();
             PluralName = spec.PluralName();
             Description = spec.Description();
@@ -81,10 +82,10 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
             TypeActions = new[] {
-                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSubtypeOf), Flags,
+                LinkRepresentation.Create(OidStrategy,new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
-                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSupertypeOf), Flags,
+                LinkRepresentation.Create(OidStrategy,new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
             };
@@ -95,9 +96,9 @@ namespace RestfulObjects.Snapshot.Representations {
             INakedObjectAssociationSurface[] collections = spec.Properties.Where(p => p.IsCollection()).ToArray();
             INakedObjectActionSurface[] actions = spec.GetActionLeafNodes();
 
-            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Property, new UriMtHelper(req, new PropertyTypeContextSurface {Property = p, OwningSpecification = spec})), Flags));
-            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Collection, new UriMtHelper(req, new PropertyTypeContextSurface {Property = c, OwningSpecification = spec})), Flags));
-            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Action, new UriMtHelper(req, new ActionTypeContextSurface {ActionContext = new ActionContextSurface {Action = a}, OwningSpecification = spec})), Flags));
+            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.Property, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = p, OwningSpecification = spec })), Flags));
+            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Collection, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = c, OwningSpecification = spec })), Flags));
+            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Action, new UriMtHelper(OidStrategy, req, new ActionTypeContextSurface { ActionContext = new ActionContextSurface { Action = a }, OwningSpecification = spec })), Flags));
 
             Members = propertyMembers.Union(collectionMembers).Union(actionMembers).ToArray();
         }
@@ -106,8 +107,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        public static DomainTypeRepresentation Create(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) {
-            return new DomainTypeRepresentation(req, spec, flags);
+        public static DomainTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) {
+            return new DomainTypeRepresentation(oidStrategy ,req, spec, flags);
         }
     }
 }

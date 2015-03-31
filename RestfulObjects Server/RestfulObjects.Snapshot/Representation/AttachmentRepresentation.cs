@@ -18,7 +18,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 
-        public AttachmentRepresentation(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetContentType(propertyContext);
             SetContentDisposition(propertyContext);
@@ -69,8 +69,8 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
 
-        public static Representation Create(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
-            return new AttachmentRepresentation(req, propertyContext, flags);
+        public static Representation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
+            return new AttachmentRepresentation(oidStrategy,req, propertyContext, flags);
         }
     }
 }

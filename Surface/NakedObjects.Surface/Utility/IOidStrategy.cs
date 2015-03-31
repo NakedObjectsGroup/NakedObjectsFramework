@@ -12,6 +12,8 @@ namespace NakedObjects.Surface {
         object GetServiceByServiceName(ILinkObjectId serviceName);
         ILinkObjectId GetOid(INakedObjectSurface nakedObject);
         ILinkObjectId GetOid(string servicename);
+        ILinkObjectId GetOid(string typeName, string instanceId);
+
 
         INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec);

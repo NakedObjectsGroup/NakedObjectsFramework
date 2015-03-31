@@ -18,7 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineCollectionRepresentation(CollectionRepresentationStrategy strategy) : base(strategy.GetFlags()) {
+        protected InlineCollectionRepresentation(IOidStrategy oidStrategy, CollectionRepresentationStrategy strategy)
+            : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Collection;
             Id = strategy.GetId();
             Size = strategy.GetSize();
@@ -30,18 +31,18 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Size)]
         public int Size { get; set; }
 
-        public static InlineCollectionRepresentation Create(HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsEager(propertyContext.Target) && !propertyContext.Target.IsTransient()) {
                 IEnumerable<INakedObjectSurface> collectionItems = propertyContext.Property.GetNakedObject(propertyContext.Target).ToEnumerable();
-                IEnumerable<LinkRepresentation> items = collectionItems.Select(i => LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i))));
+                IEnumerable<LinkRepresentation> items = collectionItems.Select(i => LinkRepresentation.Create(oidStrategy ,new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i))));
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, items.ToArray()));
             }
 
-            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(req, propertyContext, flags);
+            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy ,req, propertyContext, flags);
             if (optionals.Count == 0) {
-                return new InlineCollectionRepresentation(collectionRepresentationStrategy);
+                return new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
             }
-            return CreateWithOptionals<InlineCollectionRepresentation>(new object[] {collectionRepresentationStrategy}, optionals);
+            return CreateWithOptionals<InlineCollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals);
         }
     }
 }

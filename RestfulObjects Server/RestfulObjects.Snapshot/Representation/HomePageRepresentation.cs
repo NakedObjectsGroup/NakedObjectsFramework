@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
         protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Log.DebugFormat("HomePageRepresentation");
-            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(req));
+            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req));
             SetLinks(req);
             SetExtensions();
             SetHeader();
@@ -43,21 +43,21 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req) {
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(SelfRelType, Flags),
-                LinkRepresentation.Create(new UserRelType(new UriMtHelper(req)), Flags),
-                LinkRepresentation.Create(new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(req)), Flags),
-                LinkRepresentation.Create(new VersionRelType(new UriMtHelper(req)), Flags)
+                LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
+                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy ,req)), Flags),
+                LinkRepresentation.Create(OidStrategy,new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy ,req)), Flags),
+                LinkRepresentation.Create(OidStrategy,new VersionRelType(new UriMtHelper(OidStrategy ,req)), Flags)
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new TypesRelType(new UriMtHelper(req)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new TypesRelType(new UriMtHelper(OidStrategy, req)), Flags));
             }
 
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(HttpRequestMessage req, RestControlFlags flags) {
-            return new HomePageRepresentation(req, flags);
+        public static HomePageRepresentation Create(IOidStrategy oidStrategy,  HttpRequestMessage req, RestControlFlags flags) {
+            return new HomePageRepresentation(oidStrategy, req, flags);
         }
     }
 }

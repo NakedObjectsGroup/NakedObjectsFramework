@@ -16,12 +16,12 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class CollectionValueRepresentation : Representation {
-        protected CollectionValueRepresentation(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags)
+        protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SetValue(propertyContext, req, flags);
-            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
-            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target)));
+            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(oidStrategy,req, propertyContext));
+            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy,req, propertyContext.Target)));
             SetExtensions();
             SetHeader(propertyContext.Target);
         }
@@ -40,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetValue(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags) {
             IEnumerable<INakedObjectSurface> collectionItems = propertyContext.Property.GetNakedObject(propertyContext.Target).ToEnumerable();
-            Value = collectionItems.Select(i => LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
+            Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy,new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 
         private void SetScalars(PropertyContextSurface propertyContext) {
@@ -53,13 +53,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, PropertyContextSurface propertyContext, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(parentRelType, Flags),
-                LinkRepresentation.Create(SelfRelType, Flags)
+                LinkRepresentation.Create(OidStrategy,parentRelType, Flags),
+                LinkRepresentation.Create(OidStrategy,SelfRelType, Flags)
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property)), Flags));
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, propertyContext.Property)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, propertyContext.Property.ElementSpecification)), Flags));
             }
 
             Links = tempLinks.ToArray();
@@ -71,8 +71,8 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static CollectionValueRepresentation Create(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new CollectionValueRepresentation(propertyContext, req, flags);
+        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new CollectionValueRepresentation(oidStrategy ,propertyContext, req, flags);
         }
     }
 }

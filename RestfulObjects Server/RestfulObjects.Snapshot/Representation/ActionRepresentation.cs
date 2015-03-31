@@ -15,7 +15,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionRepresentation : Representation {
-        protected ActionRepresentation(ActionRepresentationStrategy strategy) : base(strategy.GetFlags()) {
+        protected ActionRepresentation(IOidStrategy oidStrategy, ActionRepresentationStrategy strategy)
+            : base(oidStrategy ,strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Parameters = strategy.GetParameters();
@@ -41,8 +42,8 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static ActionRepresentation Create(HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
-            return new ActionRepresentation(new ActionRepresentationStrategy(req, actionContext, flags));
+        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
+            return new ActionRepresentation(oidStrategy, new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags));
         }
     }
 }

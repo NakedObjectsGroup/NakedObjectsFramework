@@ -25,7 +25,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         #endregion
 
-        private static MapRepresentation GetMap(HttpRequestMessage req, ContextSurface context, RestControlFlags flags) {
+        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequestMessage req, ContextSurface context, RestControlFlags flags) {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
@@ -37,7 +37,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 value = CreateMap(context, context.ProposedValue);
             }
             else {
-                value = CreateMap(context, RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, context.ProposedNakedObject)), flags));
+                value = CreateMap(context, RefValueRepresentation.Create(oidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, context.ProposedNakedObject)), flags));
             }
             return value;
         }
@@ -50,21 +50,21 @@ namespace RestfulObjects.Snapshot.Representations {
             return Create(opts.ToArray());
         }
 
-        public static MapRepresentation Create(HttpRequestMessage req, ContextSurface context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextSurface context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var objectContextSurface = context as ObjectContextSurface;
             var actionResultContextSurface = context as ActionResultContextSurface;
             MapRepresentation mapRepresentation;
 
 
             if (objectContextSurface != null) {
-                List<OptionalProperty> optionalProperties = objectContextSurface.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(req, c, flags))).ToList();
+                List<OptionalProperty> optionalProperties = objectContextSurface.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
                 if (!string.IsNullOrEmpty(objectContextSurface.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContextSurface.Reason));
                 }
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else if (actionResultContextSurface != null) {
-                List<OptionalProperty> optionalProperties = actionResultContextSurface.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(req, c, flags))).ToList();
+                List<OptionalProperty> optionalProperties = actionResultContextSurface.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
 
                 if (!string.IsNullOrEmpty(actionResultContextSurface.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContextSurface.Reason));
@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else {
-                mapRepresentation = GetMap(req, context, flags);
+                mapRepresentation = GetMap(oidStrategy ,req, context, flags);
             }
 
 
@@ -82,8 +82,8 @@ namespace RestfulObjects.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(HttpRequestMessage req, IList<ContextSurface> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            OptionalProperty[] memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(req, c, flags))).ToArray();
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextSurface> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+            OptionalProperty[] memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToArray();
             INakedObjectSurface target = contexts.First().Target;
             MapRepresentation mapRepresentation;
 
@@ -91,14 +91,14 @@ namespace RestfulObjects.Snapshot.Representations {
                 var tempProperties = new List<OptionalProperty>();
 
                 if (flags.SimpleDomainModel) {
-                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName());
+                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
                     tempProperties.Add(dt);
                 }
 
                 if (flags.FormalDomainModel) {
                     var links = new OptionalProperty(JsonPropertyNames.Links, new[] {
                         Create(new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
-                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(req, target.Specification).GetDomainTypeUri()))
+                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(oidStrategy, req, target.Specification).GetDomainTypeUri()))
                     });
                     tempProperties.Add(links);
                 }

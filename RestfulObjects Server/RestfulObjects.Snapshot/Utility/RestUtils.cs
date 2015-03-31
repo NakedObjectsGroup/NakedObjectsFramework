@@ -50,7 +50,8 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       int? memberOrder,
                                                       IDictionary<string, object> customExtensions,
                                                       INakedObjectSpecificationSurface returnType,
-                                                      INakedObjectSpecificationSurface elementType) {
+                                                      INakedObjectSpecificationSurface elementType, 
+                                                      IOidStrategy oidStrategy) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -81,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
 
             if (returnType != null && !returnType.IsVoid()) {
-                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType);
+                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy);
                 exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
 
                 // blob and clobs are arrays so do this check first so they are not caught be the collection test after. 
@@ -94,7 +95,7 @@ namespace RestfulObjects.Snapshot.Utility {
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
                 else if (returnType.IsCollection()) {
-                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType).Item1);
+                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy).Item1);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName());
                 }
             }
@@ -115,26 +116,26 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
 
-        public static void AddChoices(HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsChoicesEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
-                object[] choicesArray = choices.Select(c => GetChoiceValue(req, c, propertyContext.Property, flags)).ToArray();
+                object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy ,req, c, propertyContext.Property, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
         }
 
-        public static object GetChoiceValue(INakedObjectSurface item, ChoiceRelType relType, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, INakedObjectSurface item, ChoiceRelType relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
             object value = ObjectToPredefinedType(item.Object);
-            return item.Specification.IsParseable() ? value : LinkRepresentation.Create(relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return item.Specification.IsParseable() ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
+            return GetChoiceValue(oidStrategy ,item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
+            return GetChoiceValue(oidStrategy, item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static string SafeGetTitle(INakedObjectSurface no) {
@@ -214,9 +215,9 @@ namespace RestfulObjects.Snapshot.Utility {
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(INakedObjectSpecificationSurface spec) {
+        public static string SpecToPredefinedTypeString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
-            return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName();
+            return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName(oidStrategy);
         }
 
         public static bool IsPredefined(INakedObjectSpecificationSurface spec) {
@@ -224,7 +225,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return pdt.HasValue;
         }
 
-        public static Tuple<string, string> SpecToTypeAndFormatString(INakedObjectSpecificationSurface spec) {
+        public static Tuple<string, string> SpecToTypeAndFormatString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
 
             if (pdt.HasValue) {
@@ -247,11 +248,11 @@ namespace RestfulObjects.Snapshot.Utility {
                         return new Tuple<string, string>(PredefinedType.String.ToRoString(), pdt.Value.ToRoString());
                 }
             }
-            return new Tuple<string, string>(spec.DomainTypeName(), null);
+            return new Tuple<string, string>(spec.DomainTypeName(oidStrategy), null);
         }
 
-        public static string DomainTypeName(this INakedObjectSpecificationSurface spec) {
-            return OidStrategyHolder.OidStrategy.GetLinkDomainTypeBySpecification(spec);
+        public static string DomainTypeName(this INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
+            return oidStrategy.GetLinkDomainTypeBySpecification(spec);
         }
 
         public static bool IsBlobOrClob(INakedObjectSpecificationSurface spec) {
@@ -273,11 +274,11 @@ namespace RestfulObjects.Snapshot.Utility {
                    mediaType == "application/json";
         }
 
-        public static OptionalProperty CreateArgumentProperty(HttpRequestMessage req, Tuple<string, INakedObjectSpecificationSurface> pnt, RestControlFlags flags) {
+        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, INakedObjectSpecificationSurface> pnt, RestControlFlags flags) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, pnt.Item2)), flags));
+                tempLinks.Add(LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(oidStrategy, req, pnt.Item2)), flags));
             }
 
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),

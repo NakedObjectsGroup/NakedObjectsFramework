@@ -50,10 +50,10 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, TypeActionInvokeContext context) {
-            string uri = new DomainTypeRelType(new UriMtHelper(req, context.OtherSpecification)).GetUri().AbsoluteUri;
+            string uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
 
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(SelfRelType,
+                LinkRepresentation.Create(OidStrategy,SelfRelType,
                     Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments,
                         MapRepresentation.Create(new OptionalProperty(context.ParameterId,

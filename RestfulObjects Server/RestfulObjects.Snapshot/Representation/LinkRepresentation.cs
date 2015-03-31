@@ -7,13 +7,15 @@
 
 using System.Linq;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class LinkRepresentation : RefValueRepresentation {
-        protected LinkRepresentation(RelType relType, RestControlFlags flags) : base(relType, flags) {
+        protected LinkRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
+            : base(oidStrategy ,relType, flags) {
             SetScalars(relType);
         }
 
@@ -32,8 +34,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Type = relType.GetMediaType(Flags).ToString();
         }
 
-        public static LinkRepresentation Create(RelType relType, RestControlFlags flags, params OptionalProperty[] properties) {
-            return properties.Any() ? CreateWithOptionals<LinkRepresentation>(new object[] {relType, flags}, properties) : new LinkRepresentation(relType, flags);
+        public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) {
+            return properties.Any() ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties) : new LinkRepresentation(oidStrategy, relType, flags);
         }
     }
 }

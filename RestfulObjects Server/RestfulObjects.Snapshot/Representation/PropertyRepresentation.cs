@@ -16,7 +16,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PropertyRepresentation : MemberAbstractRepresentation {
-        protected PropertyRepresentation(PropertyRepresentationStrategy strategy) : base(strategy) {
+        protected PropertyRepresentation(IOidStrategy oidStrategy, PropertyRepresentationStrategy strategy)
+            : base(oidStrategy ,strategy) {
             HasChoices = strategy.GetHasChoices();
             Links = strategy.GetLinks(false);
             Extensions = strategy.GetExtensions();
@@ -26,13 +27,13 @@ namespace RestfulObjects.Snapshot.Representations {
         public bool HasChoices { get; set; }
 
 
-        public static PropertyRepresentation Create(HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static PropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(req, propertyContext.Property, propertyContext.Target, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy ,req, propertyContext.Property, propertyContext.Target, flags)));
             }
 
-            RestUtils.AddChoices(req, propertyContext, optionals, flags);
-            return CreateWithOptionals<PropertyRepresentation>(new object[] {new PropertyRepresentationStrategy(req, propertyContext, flags)}, optionals);
+            RestUtils.AddChoices(oidStrategy ,req, propertyContext, optionals, flags);
+            return CreateWithOptionals<PropertyRepresentation>(new object[] {oidStrategy, new PropertyRepresentationStrategy(oidStrategy ,req, propertyContext, flags)}, optionals);
         }
     }
 }

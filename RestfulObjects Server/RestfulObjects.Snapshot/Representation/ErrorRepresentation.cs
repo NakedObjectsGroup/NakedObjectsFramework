@@ -9,12 +9,14 @@ using System;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     public class ErrorRepresentation : Representation {
-        public ErrorRepresentation(Exception e) : base(RestControlFlags.DefaultFlags()) {
+        public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
+            : base(oidStrategy ,RestControlFlags.DefaultFlags()) {
             Exception exception = GetInnermostException(e);
             Message = exception.Message;
             StackTrace = exception.StackTrace.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
@@ -46,8 +48,8 @@ namespace RestfulObjects.Snapshot.Representations {
             return GetInnermostException(e.InnerException);
         }
 
-        public static Representation Create(Exception exception) {
-            return new ErrorRepresentation(exception);
+        public static Representation Create(IOidStrategy oidStrategy, Exception exception) {
+            return new ErrorRepresentation(oidStrategy ,exception);
         }
     }
 }

@@ -26,16 +26,16 @@ namespace RestfulObjects.Mvc.Model {
 
         #region IValue Members
 
-        public object GetValue(INakedObjectsSurface surface, UriMtHelper helper) {
-            return GetObjectByHref(internalValue, surface, helper);
+        public object GetValue(INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+            return GetObjectByHref(internalValue, surface, helper, oidStrategy);
         }
 
         #endregion
 
-        private object GetObjectByHref(string href, INakedObjectsSurface surface, UriMtHelper helper) {
+        private object GetObjectByHref(string href, INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
             string[] oids = helper.GetObjectId(href);
             if (oids != null) {
-                var oid = new ILinkObjectId(oids[0], oids[1]);
+                var oid = oidStrategy.GetOid(oids[0], oids[1]);
                 return surface.GetObject(oid).Target.Object;
             }
             string typeName = helper.GetTypeId(href);

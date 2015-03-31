@@ -34,7 +34,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static InlineMemberAbstractRepresentation Create(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
+        public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
             IConsentSurface consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
             if (consent.IsVetoed) {
@@ -42,10 +42,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (propertyContext.Property.IsCollection()) {
-                return InlineCollectionRepresentation.Create(req, propertyContext, optionals, flags);
+                return InlineCollectionRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
             }
 
-            return InlinePropertyRepresentation.Create(req, propertyContext, optionals, flags);
+            return InlinePropertyRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
         }
     }
 }

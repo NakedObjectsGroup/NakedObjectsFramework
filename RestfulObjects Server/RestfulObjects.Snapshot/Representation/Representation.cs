@@ -253,7 +253,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        protected object GetPropertyValue(HttpRequestMessage req, INakedObjectAssociationSurface property, INakedObjectSurface target, RestControlFlags flags, bool valueOnly = false) {
+        protected static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface property, INakedObjectSurface target, RestControlFlags flags, bool valueOnly = false) {
             INakedObjectSurface valueNakedObject = property.GetNakedObject(target);
             string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
@@ -265,17 +265,17 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (valueOnly) {
-                return RefValueRepresentation.Create(OidStrategy, new ValueRelType(property, new UriMtHelper(OidStrategy, req, valueNakedObject)), flags);
+                return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
             }
 
-            var helper = new UriMtHelper(OidStrategy, req, property.IsInline() ? target : valueNakedObject);
+            var helper = new UriMtHelper(oidStrategy, req, property.IsInline() ? target : valueNakedObject);
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(valueNakedObject, req, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(oidStrategy ,valueNakedObject, req, flags)));
             }
 
-            return LinkRepresentation.Create(new ValueRelType(property, helper), flags, optionals.ToArray());
+            return LinkRepresentation.Create(oidStrategy ,new ValueRelType(property, helper), flags, optionals.ToArray());
         }
     }
 }

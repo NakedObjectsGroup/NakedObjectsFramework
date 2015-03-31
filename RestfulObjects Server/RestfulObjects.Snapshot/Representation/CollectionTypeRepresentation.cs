@@ -17,7 +17,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class CollectionTypeRepresentation : MemberTypeRepresentation {
-        protected CollectionTypeRepresentation(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) : base(req, propertyContext, flags) {
+        protected CollectionTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+            : base(oidStrategy, req, propertyContext, flags) {
             SetScalars(propertyContext);
             SetLinks(req, propertyContext);
         }
@@ -31,13 +32,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
-            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property)), Flags));
-            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy ,req, propertyContext.Property)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy ,req, propertyContext.Property.ElementSpecification)), Flags));
             Links = tempLinks.ToArray();
         }
 
-        public new static CollectionTypeRepresentation Create(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
-            return new CollectionTypeRepresentation(req, propertyContext, flags);
+        public new static CollectionTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
+            return new CollectionTypeRepresentation(oidStrategy ,req, propertyContext, flags);
         }
     }
 }

@@ -36,9 +36,9 @@ namespace RestfulObjects.Mvc {
             DefaultPageSize = 20;
         }
 
-        protected RestfulObjectsControllerBase(INakedObjectsSurface surface, IOidStrategy strategy) {
+        protected RestfulObjectsControllerBase(INakedObjectsSurface surface, IOidStrategy oidStrategy) {
             Surface = surface;
-            Strategy = strategy;
+            OidStrategy = oidStrategy;
         }
 
         public static bool IsReadOnly { get; set; }
@@ -63,7 +63,7 @@ namespace RestfulObjects.Mvc {
         }
 
         protected INakedObjectsSurface Surface { get; set; }
-        public IOidStrategy Strategy { get; set; }
+        public IOidStrategy OidStrategy { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
             return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
@@ -456,48 +456,48 @@ namespace RestfulObjects.Mvc {
         #region api
 
         public virtual HttpResponseMessage GetHome(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetUser(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, Surface.GetUser(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetUser(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetServices(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, Surface.GetServices(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetServices(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetVersion(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetDomainTypes(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, Surface.GetDomainTypes().OrderBy(s => s.DomainTypeName()).ToArray(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetDomainTypes().OrderBy(s => s.DomainTypeName(OidStrategy)).ToArray(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetDomainType(string typeName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 HandlePredefinedTypes(typeName);
-                return new RestSnapshot(Strategy, Surface.GetDomainType(typeName), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, Surface.GetDomainType(typeName), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetService(string serviceName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                var oid = Strategy.GetOid(serviceName);
-                return new RestSnapshot(Strategy, Surface.GetService(oid), Request, GetFlags(arguments));
+                var oid = OidStrategy.GetOid(serviceName);
+                return new RestSnapshot(OidStrategy, Surface.GetService(oid), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                var oid = Strategy.GetOid(serviceName);
-                return new RestSnapshot(Strategy, Surface.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
+                var oid = OidStrategy.GetOid(serviceName);
+                return new RestSnapshot(OidStrategy, Surface.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetImage(string imageId, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Strategy, Surface.GetImage(imageId), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetImage(imageId), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
@@ -506,22 +506,26 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessPersistArguments(arguments);
                 ObjectContextSurface context = Surface.Persist(domainType, args.Item1);
                 VerifyNoPersistError(context, args.Item2);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
             });
         }
 
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetObject(new ILinkObjectId(domainType, instanceId)), Request, GetFlags(arguments)));
+
+            return InitAndHandleErrors(() => {
+                var loid = OidStrategy.GetOid(domainType, instanceId);
+                return new RestSnapshot(OidStrategy, Surface.GetObject(loid), Request, GetFlags(arguments));
+            });
         }
 
         public virtual HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false);
                 // TODO enhance surface to return property with completions 
-                var link = new ILinkObjectId(domainType, instanceId);
+                var link = OidStrategy.GetOid(domainType, instanceId);
                 PropertyContextSurface propertyContext = Surface.GetProperty(link, propertyName);
                 ListContextSurface completions = Surface.GetPropertyCompletions(link, propertyName, args.Item1);
-                return SnapshotOrNoContent(new RestSnapshot(propertyContext, completions, Request, args.Item2), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
             });
         }
 
@@ -529,12 +533,12 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false);
                 // TODO enhance surface to return parameter with completions 
-                var link = new ILinkObjectId(domainType, instanceId);
+                var link = OidStrategy.GetOid(domainType, instanceId);
                 ActionContextSurface action = Surface.GetObjectAction(link, actionName);
                 ParameterContextSurface parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
                 ListContextSurface completions = Surface.GetParameterCompletions(link, actionName, parmName, args.Item1);
-                return SnapshotOrNoContent(new RestSnapshot(parm, completions, Request, args.Item2), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
             });
         }
 
@@ -543,12 +547,12 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false);
 
                 // TODO enhance surface to return parameter with completions 
-                var link = new ILinkObjectId(serviceName, "");
+                var link = OidStrategy.GetOid(serviceName);
                 ActionContextSurface action = Surface.GetServiceAction(link, actionName);
                 ListContextSurface completions = Surface.GetServiceParameterCompletions(link, actionName, parmName, args.Item1);
                 ParameterContextSurface parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(parm, completions, Request, args.Item2), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
             });
         }
 
@@ -556,37 +560,37 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, true);
-                ObjectContextSurface context = Surface.PutObject(new ILinkObjectId(domainType, instanceId), args.Item1);
+                ObjectContextSurface context = Surface.PutObject(OidStrategy.GetOid(domainType, instanceId), args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
         public virtual HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                PropertyContextSurface propertyContext = Surface.GetProperty(new ILinkObjectId(domainType, instanceId), propertyName);
+                PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
                 // found but a collection 
                 if (propertyContext.Property.IsCollection()) {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
-                return new RestSnapshot(propertyContext, Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy , propertyContext, Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetPropertyType(string typeName, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    PropertyContextSurface propertyContext = Surface.GetProperty(new ILinkObjectId(domainType, instanceId), propertyName);
+                    PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
 
                     if (propertyContext.Property.IsCollection()) {
-                        return new RestSnapshot(propertyContext, Request, GetFlags(arguments));
+                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
                     }
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
@@ -600,11 +604,11 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetCollectionValue(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    PropertyContextSurface propertyContext = Surface.GetProperty(new ILinkObjectId(domainType, instanceId), propertyName);
+                    PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
 
                     if (propertyContext.Property.IsCollection()) {
-                        return new RestSnapshot(propertyContext, Request, GetFlags(arguments), true);
+                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), true);
                     }
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
@@ -618,7 +622,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetCollectionType(string typeName, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    return new RestSnapshot(Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
+                    return new RestSnapshot( OidStrategy, Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
                 }
                 catch (TypePropertyResourceNotFoundNOSException e) {
                     throw new TypeCollectionResourceNotFoundNOSException(e.ResourceId, e.DomainId);
@@ -627,24 +631,24 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetObjectAction(new ILinkObjectId(domainType, instanceId), actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetObjectAction(OidStrategy.GetOid(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionType(string typeName, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContext, RestControlFlags> args = ProcessArgument(argument);
-                PropertyContextSurface context = Surface.PutProperty(new ILinkObjectId(domainType, instanceId), propertyName, args.Item1);
+                PropertyContextSurface context = Surface.PutProperty(OidStrategy.GetOid(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -652,9 +656,9 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContext, RestControlFlags> args = ProcessDeleteArgument(arguments);
-                PropertyContextSurface context = Surface.DeleteProperty(new ILinkObjectId(domainType, instanceId), propertyName, args.Item1);
+                PropertyContextSurface context = Surface.DeleteProperty(OidStrategy.GetOid(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -670,9 +674,9 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 VerifyActionType(domainType, instanceId, actionName, "GET");
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
-                ActionResultContextSurface context = Surface.ExecuteObjectAction(new ILinkObjectId(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextSurface context = Surface.ExecuteObjectAction(OidStrategy.GetOid(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -680,9 +684,9 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
-                ActionResultContextSurface result = Surface.ExecuteObjectAction(new ILinkObjectId(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextSurface result = Surface.ExecuteObjectAction(OidStrategy.GetOid(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(result, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -691,9 +695,9 @@ namespace RestfulObjects.Mvc {
                 VerifyActionType(domainType, instanceId, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
-                ActionResultContextSurface result = Surface.ExecuteObjectAction(new ILinkObjectId(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextSurface result = Surface.ExecuteObjectAction(OidStrategy.GetOid(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(result, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -701,9 +705,9 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 VerifyActionType(serviceName, actionName, "GET");
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextSurface result = Surface.ExecuteServiceAction(new ILinkObjectId(serviceName, ""), actionName, args.Item1);
+                ActionResultContextSurface result = Surface.ExecuteServiceAction( OidStrategy.GetOid(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(result, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -712,9 +716,9 @@ namespace RestfulObjects.Mvc {
                 VerifyActionType(serviceName, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextSurface result = Surface.ExecuteServiceAction(new ILinkObjectId(serviceName, ""), actionName, args.Item1);
+                ActionResultContextSurface result = Surface.ExecuteServiceAction(OidStrategy.GetOid(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(result, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -722,14 +726,14 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContext, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextSurface result = Surface.ExecuteServiceAction(new ILinkObjectId(serviceName, ""), actionName, args.Item1);
+                ActionResultContextSurface result = Surface.ExecuteServiceAction(OidStrategy.GetOid(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(result, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
         public virtual HttpResponseMessage GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy , GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
         }
 
         #endregion
@@ -846,12 +850,12 @@ namespace RestfulObjects.Mvc {
         }
 
         private void VerifyActionType(string sName, string actionName, string method) {
-            ActionContextSurface context = Surface.GetServiceAction(new ILinkObjectId(sName, ""), actionName);
+            ActionContextSurface context = Surface.GetServiceAction(OidStrategy.GetOid(sName), actionName);
             VerifyActionType(context, method);
         }
 
         private void VerifyActionType(string domainType, string instanceId, string actionName, string method) {
-            ActionContextSurface context = Surface.GetObjectAction(new ILinkObjectId(domainType, instanceId), actionName);
+            ActionContextSurface context = Surface.GetObjectAction(OidStrategy.GetOid(domainType, instanceId), actionName);
             VerifyActionType(context, method);
         }
 
@@ -896,7 +900,7 @@ namespace RestfulObjects.Mvc {
 
         private HttpResponseMessage ErrorMsg(Exception e) {
             Logger.InfoFormat("ErrorMsg - NakedObjectsSurfaceException Msg: {0}", e.Message);
-            return ConfigureMsg(new RestSnapshot(e, Request).Populate());
+            return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
         }
 
         private HttpResponseMessage ConfigureMsg(RestSnapshot snapshot) {
@@ -944,7 +948,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<object, RestControlFlags> ExtractValueAndFlags(SingleValueArgument argument) {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
-                object parm = argument.Value.GetValue(Surface, new UriMtHelper(Request));
+                object parm = argument.Value.GetValue(Surface, new UriMtHelper(OidStrategy ,Request), OidStrategy);
                 return new Tuple<object, RestControlFlags>(parm, GetFlags(argument));
             });
         }
@@ -952,7 +956,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<IDictionary<string, object>, RestControlFlags> ExtractValuesAndFlags(ArgumentMap arguments, bool errorIfNone) {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
-                Dictionary<string, object> dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(Surface, new UriMtHelper(Request)));
+                Dictionary<string, object> dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(Surface, new UriMtHelper(OidStrategy, Request), OidStrategy));
                 return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags(arguments));
             });
         }
@@ -966,7 +970,7 @@ namespace RestfulObjects.Mvc {
 
             INakedObjectSpecificationSurface thisSpecification = Surface.GetDomainType(context.TypeName);
             IValue parameter = arguments.Map[context.ParameterId];
-            object value = parameter.GetValue(Surface, new UriMtHelper(Request));
+            object value = parameter.GetValue(Surface, new UriMtHelper(OidStrategy ,Request), OidStrategy);
             var otherSpecification = (INakedObjectSpecificationSurface) (value is INakedObjectSpecificationSurface ? value : Surface.GetDomainType((string) value));
             context.ThisSpecification = thisSpecification;
             context.OtherSpecification = otherSpecification;
@@ -987,7 +991,7 @@ namespace RestfulObjects.Mvc {
 
         private Tuple<ArgumentsContext, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, string domainType, string instanceId, bool ignoreConcurrency = false) {
             if (!ignoreConcurrency && domainType != null) {
-                ObjectContextSurface contextSurface = Surface.GetObject(new ILinkObjectId(domainType, instanceId));
+                ObjectContextSurface contextSurface = Surface.GetObject(OidStrategy.GetOid(domainType, instanceId));
                 ignoreConcurrency = contextSurface.Specification.IsService() || contextSurface.Specification.IsImmutable(contextSurface.Target);
             }
 

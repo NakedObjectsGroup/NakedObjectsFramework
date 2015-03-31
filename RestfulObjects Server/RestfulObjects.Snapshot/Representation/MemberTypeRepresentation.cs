@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
         protected MemberTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext);
-            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
+            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
             SetExtensions();
             SetHeader();
         }
@@ -60,20 +60,20 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected IList<LinkRepresentation> CreateLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
-            var domainTypeUri = new UriMtHelper(req, propertyContext);
+            var domainTypeUri = new UriMtHelper(OidStrategy, req, propertyContext);
             return new List<LinkRepresentation> {
-                LinkRepresentation.Create(SelfRelType, Flags),
-                LinkRepresentation.Create(new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags)
+                LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
+                LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags)
             };
         }
 
 
-        public static MemberTypeRepresentation Create(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
+        public static MemberTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
             if (propertyContext.Property.IsCollection()) {
-                return CollectionTypeRepresentation.Create(req, propertyContext, flags);
+                return CollectionTypeRepresentation.Create(oidStrategy , req, propertyContext, flags);
             }
 
-            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString(propertyContext.Property.Specification);
+            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString( propertyContext.Property.Specification, oidStrategy);
 
             if (typeAndFormat.Item1 == PredefinedType.String.ToRoString()) {
                 var exts = new Dictionary<string, object>();
@@ -82,11 +82,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
                 OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
 
-                return CreateWithOptionals<PropertyTypeRepresentation>(new object[] {req, propertyContext, flags}, parms);
+                return CreateWithOptionals<PropertyTypeRepresentation>(new object[] {oidStrategy ,req, propertyContext, flags}, parms);
             }
 
 
-            return PropertyTypeRepresentation.Create(req, propertyContext, flags);
+            return PropertyTypeRepresentation.Create(oidStrategy ,req, propertyContext, flags);
         }
     }
 }

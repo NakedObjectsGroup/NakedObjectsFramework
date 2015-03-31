@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Strategies {
     [DataContract]
     public class PropertyRepresentationStrategy : MemberRepresentationStrategy {
         public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) :
-            base(req, propertyContext, flags) {}
+            base(oidStrategy ,req, propertyContext, flags) {}
 
         private void AddPrompt(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
@@ -41,12 +41,12 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
             else {
                 Tuple<string, INakedObjectSpecificationSurface>[] parms = propertyContext.Property.GetChoicesParameters();
-                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(req, pnt, Flags)).ToArray();
+                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy ,req, pnt, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(OidStrategy,new PromptRelType(new UriMtHelper(OidStrategy ,req, propertyContext)), Flags, opts.ToArray());
         }
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
@@ -60,11 +60,11 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateClearLink() {
-            return LinkRepresentation.Create(new MemberRelType(RelValues.Clear, new UriMtHelper(req, propertyContext)) {Method = RelMethod.Delete}, Flags);
+            return LinkRepresentation.Create(OidStrategy ,new MemberRelType(RelValues.Clear, new UriMtHelper(OidStrategy ,req, propertyContext)) {Method = RelMethod.Delete}, Flags);
         }
 
         private LinkRepresentation CreateModifyLink() {
-            return LinkRepresentation.Create(new MemberRelType(RelValues.Modify, new UriMtHelper(req, propertyContext)) {Method = RelMethod.Put}, Flags,
+            return LinkRepresentation.Create(OidStrategy ,new MemberRelType(RelValues.Modify, new UriMtHelper(OidStrategy ,req, propertyContext)) {Method = RelMethod.Put}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
         }
 
@@ -86,7 +86,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             if (IsUnconditionalChoices()) {
                 Tuple<INakedObjectSurface, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
+                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy ,req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                 MapRepresentation map = MapRepresentation.Create(op);
@@ -124,7 +124,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
-                elementType: propertyContext.ElementSpecification );
+                elementType: propertyContext.ElementSpecification,
+                oidStrategy: OidStrategy);
         }
 
         public bool GetHasChoices() {

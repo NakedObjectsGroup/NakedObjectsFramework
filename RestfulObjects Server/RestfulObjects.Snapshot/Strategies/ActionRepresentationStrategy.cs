@@ -21,10 +21,11 @@ namespace RestfulObjects.Snapshot.Strategies {
         private readonly HttpRequestMessage req;
         private readonly RelType self;
 
-        public ActionRepresentationStrategy(HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) : base(oidStrategy, flags) {
+        public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags)
+            : base(oidStrategy, flags) {
             this.req = req;
             this.actionContext = actionContext;
-            self = new MemberRelType(RelValues.Self, new UriMtHelper(req, actionContext));
+            self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, actionContext));
             parameterList = GetParameterList();
         }
 
@@ -46,7 +47,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private ParameterRepresentation GetParameter(INakedObjectActionParameterSurface parameter) {
             INakedObjectSurface nakedObject = actionContext.Target;
-            return ParameterRepresentation.Create(req, nakedObject, parameter, Flags);
+            return ParameterRepresentation.Create(OidStrategy,req, nakedObject, parameter, Flags);
         }
 
         private IEnumerable<ParameterRepresentation> GetParameterList() {
@@ -58,7 +59,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateDetailsLink() {
-            return LinkRepresentation.Create(new MemberRelType(new UriMtHelper(req, actionContext)), Flags);
+            return LinkRepresentation.Create(OidStrategy,new MemberRelType(new UriMtHelper(OidStrategy,req, actionContext)), Flags);
         }
 
         public LinkRepresentation[] GetLinks(bool standalone) {
@@ -91,7 +92,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateActionParamLink(ParameterContextSurface p) {
-            return LinkRepresentation.Create(new ParamTypeRelType(new UriMtHelper(req,
+            return LinkRepresentation.Create(OidStrategy, new ParamTypeRelType(new UriMtHelper(OidStrategy, req,
                 new ParameterTypeContextSurface {
                     Action = actionContext.Action,
                     OwningSpecification = actionContext.Target.Specification,
@@ -101,8 +102,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateDescribedByLink() {
-            return LinkRepresentation.Create(new TypeMemberRelType(RelValues.DescribedBy,
-                new UriMtHelper(req,
+            return LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.DescribedBy,
+                new UriMtHelper(OidStrategy, req,
                     new ActionTypeContextSurface {
                         ActionContext = actionContext,
                         OwningSpecification = actionContext.Target.Specification
@@ -110,21 +111,21 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateElementTypeLink() {
-            return LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionContext.ElementSpecification)), Flags);
+            return LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, actionContext.ElementSpecification)), Flags);
         }
 
         private LinkRepresentation CreateReturnTypeLink() {
-            return LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, actionContext.Specification)), Flags);
+            return LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, actionContext.Specification)), Flags);
         }
 
         private LinkRepresentation CreateUpLink() {
-            var helper = new UriMtHelper(req, actionContext.Target);
+            var helper = new UriMtHelper(OidStrategy, req, actionContext.Target);
             ObjectRelType parentRelType = actionContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
-            return LinkRepresentation.Create(parentRelType, Flags);
+            return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 
         private LinkRepresentation CreateSelfLink() {
-            return LinkRepresentation.Create(self, Flags);
+            return LinkRepresentation.Create(OidStrategy ,self, Flags);
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
@@ -140,14 +141,15 @@ namespace RestfulObjects.Snapshot.Strategies {
                 memberOrder: actionContext.Action.MemberOrder(),
                 customExtensions: actionContext.Action.ExtensionData(),
                 returnType: actionContext.Action.ReturnType,
-                elementType: actionContext.Action.ElementType);
+                elementType: actionContext.Action.ElementType,
+                oidStrategy: OidStrategy);
         }
 
         private LinkRepresentation CreateActionLink() {
             List<OptionalProperty> optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToList();
 
             RelMethod method = GetRelMethod();
-            return LinkRepresentation.Create(new InvokeRelType(new UriMtHelper(req, actionContext)) {Method = method}, Flags,
+            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy , req, actionContext)) {Method = method}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 

@@ -76,6 +76,11 @@ namespace NakedObjects.Surface.Nof4.Utility {
            return new LinkObjectId(servicename, "");
         }
 
+        public ILinkObjectId GetOid(string typeName, string instanceId) {
+            return new LinkObjectId(typeName, instanceId);
+
+        }
+
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
