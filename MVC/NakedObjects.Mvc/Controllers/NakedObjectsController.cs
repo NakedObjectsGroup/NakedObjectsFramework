@@ -31,10 +31,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
         private readonly INakedObjectsFramework nakedObjectsFramework;
         private readonly INakedObjectsSurface surface;
+        private readonly IOidStrategy oidStrategy;
 
-        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface) {
+        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy) {
             this.nakedObjectsFramework = nakedObjectsFramework;
             this.surface = surface;
+            this.oidStrategy = oidStrategy;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
@@ -45,6 +47,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         protected INakedObjectsSurface Surface {
             get { return surface; }
+        }
+
+        protected IOidStrategy OidStrategy {
+            get { return oidStrategy; }
         }
 
         protected void SetControllerName(string name) {

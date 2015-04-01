@@ -14,7 +14,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface) : base(nakedObjectsFramework, surface) {
+        public GenericController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsFramework, surface, oidStrategy) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }
