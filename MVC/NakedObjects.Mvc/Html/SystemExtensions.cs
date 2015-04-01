@@ -30,10 +30,10 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
         public static MvcHtmlString UserMessages(this HtmlHelper html) {
-            string[] messages = (string[]) html.ViewData[IdHelper.NofMessages] ?? new string[0];
-            string[] warnings = (string[]) html.ViewData[IdHelper.NofWarnings] ?? new string[0];
-            return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdHelper.NofMessages) +
-                                        CommonHtmlHelper.UserMessages(warnings, IdHelper.NofWarnings));
+            string[] messages = (string[])html.ViewData[IdConstants.NofMessages] ?? new string[0];
+            string[] warnings = (string[])html.ViewData[IdConstants.NofWarnings] ?? new string[0];
+            return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdConstants.NofMessages) +
+                                        CommonHtmlHelper.UserMessages(warnings, IdConstants.NofWarnings));
         }
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
         public static MvcHtmlString SystemMessages(this HtmlHelper html) {
-            string[] messages = (string[]) html.ViewData[IdHelper.SystemMessages] ?? new string[0];
+            string[] messages = (string[])html.ViewData[IdConstants.SystemMessages] ?? new string[0];
 
-            return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdHelper.NofMessages));
+            return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdConstants.NofMessages));
         }
 
         public static MvcHtmlString History(this HtmlHelper html, object domainObject = null, bool clearAll = false) {
@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString History(this HtmlHelper html, int count, object domainObject = null, bool clearAll = false) {
             if (domainObject != null && !(domainObject is FindViewModel)) {
-                string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
+                string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
                 html.ViewContext.HttpContext.Session.AddToCache(html.Framework(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
             }
 
@@ -70,14 +70,14 @@ namespace NakedObjects.Web.Mvc.Html {
             urls = urls.Skip(skip).ToList();
 
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.HistoryContainerName);
+            tag.AddCssClass(IdConstants.HistoryContainerName);
 
             foreach (string url in urls) {
                 tag.InnerHtml += url;
             }
 
             if (urls.Any()) {
-                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new {clearAll}));
+                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new { clearAll }));
             }
 
             return MvcHtmlString.Create(tag.ToString());
@@ -105,9 +105,9 @@ namespace NakedObjects.Web.Mvc.Html {
                         var parms = id.Substring(id.IndexOf("&")).Split('&');
                         var parmDict = parms.Where(s => s.Contains("=")).Select(p => p.Split('=')).ToDictionary(arr => arr[0], arr => arr[1]);
 
-                        Page = parmDict.ContainsKey(IdHelper.PageKey) ? parmDict[IdHelper.PageKey] : "";
-                        PageSize = parmDict.ContainsKey(IdHelper.PageSizeKey) ? parmDict[IdHelper.PageSizeKey] : "";
-                        Format = parmDict.ContainsKey(IdHelper.FormatKey) ? parmDict[IdHelper.FormatKey] : "";
+                        Page = parmDict.ContainsKey(IdConstants.PageKey) ? parmDict[IdConstants.PageKey] : "";
+                        PageSize = parmDict.ContainsKey(IdConstants.PageSizeKey) ? parmDict[IdConstants.PageSizeKey] : "";
+                        Format = parmDict.ContainsKey(IdConstants.FormatKey) ? parmDict[IdConstants.FormatKey] : "";
                     }
                     else {
                         Id = id;
@@ -131,7 +131,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             public void SetActive() {
                 string existingValue = DivElement.Attribute("class").Value;
-                DivElement.Attribute("class").SetValue(existingValue + " " + IdHelper.ActiveClass);
+                DivElement.Attribute("class").SetValue(existingValue + " " + IdConstants.ActiveClass);
             }
 
             public void AddElement(XElement element) {
@@ -153,21 +153,21 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             private static RouteValueDictionary AddPageData(UrlData entry, RouteValueDictionary rvd) {
-                rvd.Add(IdHelper.PageKey, entry.Page);
-                rvd.Add(IdHelper.PageSizeKey, entry.PageSize);
-                rvd.Add(IdHelper.FormatKey, entry.Format);
+                rvd.Add(IdConstants.PageKey, entry.Page);
+                rvd.Add(IdConstants.PageSizeKey, entry.PageSize);
+                rvd.Add(IdConstants.FormatKey, entry.Format);
 
                 return rvd;
             }
 
             public void AddCloseThis(HtmlHelper html, UrlData nextEntry) {
-                var closeThis = html.ControllerAction("", IdHelper.ClearHistoryItemAction, IdHelper.HomeName, IdHelper.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new {id = Id, nextId = nextEntry.Id}))).ToString();
+                var closeThis = html.ControllerAction("", IdConstants.ClearHistoryItemAction, IdConstants.HomeName, IdConstants.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new { id = Id, nextId = nextEntry.Id }))).ToString();
                 var closeThisElem = XDocument.Parse(closeThis).Element("form");
                 AddElement(closeThisElem);
             }
 
             public void AddCloseOthers(HtmlHelper html) {
-                var closeOthers = html.ControllerAction("", IdHelper.ClearHistoryOthersAction, IdHelper.HomeName, IdHelper.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new {id = Id}))).ToString();
+                var closeOthers = html.ControllerAction("", IdConstants.ClearHistoryOthersAction, IdConstants.HomeName, IdConstants.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new { id = Id }))).ToString();
                 AddElement(ToElement(closeOthers));
             }
 
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             public void AddCloseAll(HtmlHelper html) {
                 const bool clearAll = true;
-                var closeAll = html.ControllerAction("", IdHelper.ClearHistoryAction, IdHelper.HomeName, IdHelper.ClearButtonClass, "", new RouteValueDictionary(new {clearAll})).ToString();
+                var closeAll = html.ControllerAction("", IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new { clearAll })).ToString();
                 AddElement(ToElement(closeAll));
             }
 
@@ -188,7 +188,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             public void AddCancel(HtmlHelper html, UrlData nextEntry) {
-                var cancel = html.ControllerAction(MvcUi.Cancel, IdHelper.CancelAction, IdHelper.HomeName, IdHelper.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new {nextId = nextEntry.Id}))).ToString();
+                var cancel = html.ControllerAction(MvcUi.Cancel, IdConstants.CancelAction, IdConstants.HomeName, IdConstants.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new { nextId = nextEntry.Id }))).ToString();
                 Document = XDocument.Parse(cancel).Element("form").Document;
             }
         }
@@ -198,7 +198,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string newUrl = "";
 
             if (domainObject != null) {
-                newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
+                newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
                 if (!(domainObject is FindViewModel) && !existingUrls.Contains(newUrl)) {
                     html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Framework(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
                 }
@@ -212,7 +212,7 @@ namespace NakedObjects.Web.Mvc.Html {
             urls = urls.Skip(skip).ToList();
 
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.TabbedHistoryContainerName);
+            tag.AddCssClass(IdConstants.TabbedHistoryContainerName);
 
             UrlData[] entries = urls.Select(u => new UrlData(u)).ToArray();
             var newEntry = new UrlData(newUrl);
@@ -277,7 +277,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 domainObject = null;
             }
 
-            string nextUrl = domainObject == null ? "" : html.Tab(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
+            string nextUrl = domainObject == null ? "" : html.Tab(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
 
             UrlData nextEntry;
 

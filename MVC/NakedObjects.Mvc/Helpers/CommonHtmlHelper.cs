@@ -39,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
     internal static class CommonHtmlHelper {
         public static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework) html.ViewData[IdHelper.NoFramework];
+            return (INakedObjectsFramework)html.ViewData[IdConstants.NoFramework];
         }
 
         #region internal api
@@ -50,7 +50,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<ElementDescriptor> viewObjectFields = html.ViewObjectFields(nakedObject, null, filter, order, out anyEditableFields);
             return html.BuildViewContainer(nakedObject,
                 viewObjectFields,
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject),
                 anyEditableFields);
         }
@@ -59,14 +59,14 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(nakedObject, null, filter, order),
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject));
         }
 
         internal static MvcHtmlString Service(this HtmlHelper html, object service) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return BuildMenuContainer(html.ObjectActions(nakedObject, false),
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 IdHelper.GetServiceContainerId(nakedObject),
                 nakedObject.TitleString());
         }
@@ -168,8 +168,8 @@ namespace NakedObjects.Web.Mvc.Html {
             AddAjaxDataUrlsToElementSet(html, nakedObject, fieldSet);
 
             fieldSet.InnerHtml += html.Hidden(IdHelper.GetDisplayFormatId(id), ToNameValuePairs(html.GetDisplayStatuses()));
-            fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdHelper.SaveButtonClass, MvcUi.Save, string.Empty, new RouteValueDictionary());
-            fieldSet.InnerHtml += nakedObject.ResolveState.IsTransient() ? GetSubmitButton(IdHelper.SaveCloseButtonClass, MvcUi.SaveAndClose, IdHelper.SaveAndCloseAction, new RouteValueDictionary(new {close = true} )) : "";
+            fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdConstants.SaveButtonClass, MvcUi.Save, string.Empty, new RouteValueDictionary());
+            fieldSet.InnerHtml += nakedObject.ResolveState.IsTransient() ? GetSubmitButton(IdConstants.SaveCloseButtonClass, MvcUi.SaveAndClose, IdConstants.SaveAndCloseAction, new RouteValueDictionary(new { close = true })) : "";
 
             return MvcHtmlString.Create(fieldSet.ToString());
         }
@@ -220,10 +220,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString BuildParamContainer(this HtmlHelper html, ActionContext actionContext, IEnumerable<ElementDescriptor> elements, string cls, string id) {
             if (actionContext.Action.IsQueryOnly()) {
-                cls += (" " + IdHelper.QueryOnlyClass);
+                cls += (" " + IdConstants.QueryOnlyClass);
             }
             else if (actionContext.Action.IsIdempotent()) {
-                cls += (" " + IdHelper.IdempotentClass);
+                cls += (" " + IdConstants.IdempotentClass);
             }
 
             TagBuilder fieldSet = AddClassAndIdToElementSet(elements, cls, id);
@@ -233,17 +233,19 @@ namespace NakedObjects.Web.Mvc.Html {
             var data = new RouteValueDictionary();
             UpdatePagingValues(html, data);
 
-            fieldSet.InnerHtml += GetSubmitButton(IdHelper.OkButtonClass, MvcUi.OK, "None", data);
+            fieldSet.InnerHtml += GetSubmitButton(IdConstants
+                
+                .OkButtonClass, MvcUi.OK, "None", data);
             return MvcHtmlString.Create(fieldSet.ToString());
         }
 
         private static void UpdatePagingValues(HtmlHelper html, RouteValueDictionary data) {
             int pageSize, maxPage, currentPage, total;
             if (html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
-                string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string) html.ViewData[IdHelper.CollectionFormat] : IdHelper.ListDisplayFormat;
-                data.Add(IdHelper.PageKey, currentPage);
-                data.Add(IdHelper.PageSizeKey, pageSize);
-                data.Add(IdHelper.CollectionFormat, displayType);
+                string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string)html.ViewData[IdConstants.CollectionFormat] : IdConstants.ListDisplayFormat;
+                data.Add(IdConstants.PageKey, currentPage);
+                data.Add(IdConstants.PageSizeKey, pageSize);
+                data.Add(IdConstants.CollectionFormat, displayType);
             }
         }
 
@@ -254,7 +256,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 fieldSet.InnerHtml += ElementDescriptor.BuildElementSet(html.EditObjectFields(nakedObject, null, x => false, null));
 
                 if (anyEditableFields && !nakedObject.Spec.IsAlwaysImmutable()) {
-                    fieldSet.InnerHtml += GetSubmitButton(IdHelper.EditButtonClass, MvcUi.Edit, string.Empty, new RouteValueDictionary());
+                    fieldSet.InnerHtml += GetSubmitButton(IdConstants.EditButtonClass, MvcUi.Edit, string.Empty, new RouteValueDictionary());
                 }
             }
             else {
@@ -273,10 +275,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 menuSet.MergeAttribute("title", MvcUi.NoActionsAvailable);
             }
 
-            menuSet.InnerHtml += WrapInDiv(label, IdHelper.MenuNameLabel);
+            menuSet.InnerHtml += WrapInDiv(label, IdConstants.MenuNameLabel);
 
             TagBuilder fieldSet = ElementDescriptor.BuildElementSet(elements);
-            fieldSet.AddCssClass(IdHelper.ActionListName);
+            fieldSet.AddCssClass(IdConstants.ActionListName);
 
             menuSet.InnerHtml += fieldSet;
 
@@ -289,12 +291,12 @@ namespace NakedObjects.Web.Mvc.Html {
             Func<IAssociationSpec, int> order,
             bool withTitle) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.CollectionTableName);
+            tag.AddCssClass(IdConstants.CollectionTableName);
             return GetStandalone(html, collectionNakedObject, filter, order, tag, withTitle);
         }
 
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectAdapter collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
-            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
+            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
             string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
@@ -302,10 +304,10 @@ namespace NakedObjects.Web.Mvc.Html {
             // can only be standalone and hence page if we have an id 
             tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), collectionNakedObject.Spec.IsQueryable, withTitle);
 
-            return html.WrapInForm(IdHelper.EditObjectAction,
+            return html.WrapInForm(IdConstants.EditObjectAction,
                 html.Framework().GetObjectTypeName(collectionNakedObject.Object),
                 menu + tag,
-                IdHelper.ActionName,
+                IdConstants.ActionName,
                 new RouteValueDictionary(new {id}));
         }
 
@@ -313,7 +315,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter collectionNakedObject,
             Func<IAssociationSpec, int> order) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.CollectionListName);
+            tag.AddCssClass(IdConstants.CollectionListName);
             return GetStandalone(html, collectionNakedObject, x => false, order, tag, true);
         }
 
@@ -436,8 +438,8 @@ namespace NakedObjects.Web.Mvc.Html {
                         type = "hidden",
                         name = id,
                         value = "true",
-                        @class = IdHelper.CheckboxClass,
-                        id = IdHelper.Checkbox + index++
+                        @class = IdConstants.CheckboxClass,
+                        id = IdConstants.Checkbox + index++
                     }),
                 });
             }
@@ -484,7 +486,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string innerHtml = html.Hidden(IdHelper.GetDisplayFormatId(actionName), ToNameValuePairs(GetDisplayStatuses(html))) +
                                GetSubmitButton(classAttribute, linkText, name, routeValues);
 
-            return html.WrapInForm(actionName, controllerName, innerHtml, IdHelper.ActionName, routeValues);
+            return html.WrapInForm(actionName, controllerName, innerHtml, IdConstants.ActionName, routeValues);
         }
 
         internal static MvcHtmlString TransientObjectActionAsString(this HtmlHelper html, string linkText, string actionName, string controllerName) {
@@ -507,12 +509,12 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static ElementDescriptor ActionMenuAsElementDescriptor(this HtmlHelper html, string name, string id, IEnumerable<ElementDescriptor> children) {
             return new ElementDescriptor {
                 TagType = "div",
-                Value = WrapInDiv(name, IdHelper.MenuNameLabel).ToString(),
+                Value = WrapInDiv(name, IdConstants.MenuNameLabel).ToString(),
                 Attributes = new RouteValueDictionary(new {
                     id,
-                    @class = IdHelper.SubMenuName
+                    @class = IdConstants.SubMenuName
                 }),
-                Children = children.WrapInCollection("div", new {@class = IdHelper.SubMenuItemsName})
+                Children = children.WrapInCollection("div", new { @class = IdConstants.SubMenuItemsName })
             };
         }
 
@@ -543,7 +545,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 TagType = "form",
                 Attributes = new RouteValueDictionary(new {
                     id,
-                    @class = IdHelper.ActionName,
+                    @class = IdConstants.ActionName,
                     method = "post",
                     action = html.GenerateUrl(actionName, controllerName, routeValues),
                 }),
@@ -561,12 +563,12 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return new ElementDescriptor {
                 TagType = "form",
-                Value = GetSubmitButton(null, actionLabel, IdHelper.ActionInvokeAction, new RouteValueDictionary(new {action = "action"})).WrapInDivTag(),
+                Value = GetSubmitButton(null, actionLabel, IdConstants.ActionInvokeAction, new RouteValueDictionary(new { action = "action" })).WrapInDivTag(),
                 Attributes = new RouteValueDictionary(new {
                     action = html.GenerateUrl(Action(actionName), controllerName, new RouteValueDictionary(routeValues)),
                     method = "post",
                     id = IdHelper.MakeId(controllerName, actionName),
-                    @class = IdHelper.ActionName
+                    @class = IdConstants.ActionName
                 })
             };
         }
@@ -592,10 +594,10 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetActionSet(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
-            value = WrapInDiv(actionContext.Action.Name, IdHelper.MenuNameLabel).ToString();
+            value = WrapInDiv(actionContext.Action.Name, IdConstants.MenuNameLabel).ToString();
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetSubMenuId(),
-                @class = IdHelper.SubMenuName
+                @class = IdConstants.SubMenuName
             });
             return "div";
         }
@@ -657,7 +659,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 routeValueDictionary = new RouteValueDictionary(new {action = "action"});
             }
 
-            value = (elements + GetSubmitButton(null, actionContext.Action.Name, IdHelper.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
+            value = (elements + GetSubmitButton(null, actionContext.Action.Name, IdConstants.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
 
             attributes = new RouteValueDictionary(new {
                 action = html.GenerateUrl(Action(actionContext.Action.Id), controllerName, new RouteValueDictionary(routeValues)),
@@ -672,7 +674,7 @@ namespace NakedObjects.Web.Mvc.Html {
             const string tagType = "button";
 
             value = actionContext.Action.Name;
-            attributes = html.GetActionAttributes(IdHelper.ActionInvokeAction, actionContext, new ActionContext(actionContext.Target, null), string.Empty);
+            attributes = html.GetActionAttributes(IdConstants.ActionInvokeAction, actionContext, new ActionContext(actionContext.Target, null), string.Empty);
 
             return tagType;
         }
@@ -751,22 +753,22 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             var nameTag = new TagBuilder("div");
-            nameTag.AddCssClass(IdHelper.ActionNameLabel);
+            nameTag.AddCssClass(IdConstants.ActionNameLabel);
             nameTag.SetInnerText(targetActionContext.Action.Name);
 
             TagBuilder parms = ElementDescriptor.BuildElementSet(paramElements);
-            parms.AddCssClass(IdHelper.ParamContainerName);
+            parms.AddCssClass(IdConstants.ParamContainerName);
 
             html.AddAjaxDataUrlsToElementSet(targetActionContext.Target, targetActionContext.Action, parms);
 
             return new ElementDescriptor {
                 TagType = "div",
-                Value = nameTag.ToString() + parms + GetSubmitButton(IdHelper.OkButtonClass,
+                Value = nameTag.ToString() + parms + GetSubmitButton(IdConstants.OkButtonClass,
                     MvcUi.OK,
-                    IdHelper.InvokeFindAction,
+                    IdConstants.InvokeFindAction,
                     html.GetButtonNameValues(targetActionContext, actionContext, null, propertyName)),
                 Attributes = new RouteValueDictionary(new {
-                    @class = IdHelper.ActionDialogName,
+                    @class = IdConstants.ActionDialogName,
                     id = targetActionContext.GetActionDialogId()
                 })
             };
@@ -782,17 +784,17 @@ namespace NakedObjects.Web.Mvc.Html {
             Func<IAssociationSpec, bool> filterCollections = x => x is IOneToOneAssociationSpec;
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject));
             html.AddAjaxDataUrlsToElementSet(nakedObject, elementSet);
 
             return new ElementDescriptor {
                 TagType = "div",
-                Value = html.Object(html.ObjectTitle(nakedObject.Object).ToString(), IdHelper.ViewAction, nakedObject.Object).ToString()
+                Value = html.Object(html.ObjectTitle(nakedObject.Object).ToString(), IdConstants.ViewAction, nakedObject.Object).ToString()
                         + elementSet
-                        + GetSubmitButton(IdHelper.SaveButtonClass,
+                        + GetSubmitButton(IdConstants.SaveButtonClass,
                             MvcUi.Save,
-                            IdHelper.InvokeSaveAction,
+                            IdConstants.InvokeSaveAction,
                             html.GetButtonNameValues(targetActionContext, actionContext, nakedObject, propertyName)),
                 Attributes = new RouteValueDictionary(new {
                     @class = html.ObjectEditClass(nakedObject.Object),
@@ -830,7 +832,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (allActions.Any()) {
                 return BuildMenuContainer(allActions,
-                    IdHelper.MenuContainerName,
+                    IdConstants.MenuContainerName,
                     actionContext.GetFindMenuId(propertyName),
                     MvcUi.Find).ToString();
             }
@@ -868,7 +870,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     int i = index++;
                     string id = "checkbox" + i;
                     string label = GetLabelTag(true, (i + 1).ToString(CultureInfo.InvariantCulture), () => id);
-                    cbTag.InnerHtml += (label + html.CheckBox(html.Framework().GetObjectId(item), defaultChecked, new {id, @class = IdHelper.CheckboxClass}));
+                    cbTag.InnerHtml += (label + html.CheckBox(html.Framework().GetObjectId(item), defaultChecked, new { id, @class = IdConstants.CheckboxClass }));
                     row.InnerHtml += cbTag.ToString();
                 }
 
@@ -905,10 +907,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total);
 
                 var tagFormat = new TagBuilder("div");
-                tagFormat.AddCssClass(IdHelper.CollectionFormatClass);
+                tagFormat.AddCssClass(IdConstants.CollectionFormatClass);
 
-                tagFormat.InnerHtml += GetSubmitButton(IdHelper.ListButtonClass, MvcUi.List, IdHelper.PageAction, new RouteValueDictionary(new {page = currentPage, pageSize, NofCollectionFormat = IdHelper.ListDisplayFormat}));
-                tagFormat.InnerHtml += GetSubmitButton(IdHelper.TableButtonClass, MvcUi.Table, IdHelper.PageAction, new RouteValueDictionary(new {page = currentPage, pageSize, NofCollectionFormat = IdHelper.TableDisplayFormat}));
+                tagFormat.InnerHtml += GetSubmitButton(IdConstants.ListButtonClass, MvcUi.List, IdConstants.PageAction, new RouteValueDictionary(new { page = currentPage, pageSize, NofCollectionFormat = IdConstants.ListDisplayFormat }));
+                tagFormat.InnerHtml += GetSubmitButton(IdConstants.TableButtonClass, MvcUi.Table, IdConstants.PageAction, new RouteValueDictionary(new { page = currentPage, pageSize, NofCollectionFormat = IdConstants.TableDisplayFormat }));
 
                 table.InnerHtml += tagFormat;
             }
@@ -917,8 +919,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 var row1 = new TagBuilder("tr");
                 if (isSelection) {
                     var cbTag = new TagBuilder("th");
-                    cbTag.InnerHtml += html.CheckBox(IdHelper.CheckboxAll, defaultChecked);
-                    cbTag.InnerHtml += GetLabelTag(true, MvcUi.All, () => IdHelper.CheckboxAll);
+                    cbTag.InnerHtml += html.CheckBox(IdConstants.CheckboxAll, defaultChecked);
+                    cbTag.InnerHtml += GetLabelTag(true, MvcUi.All, () => IdConstants.CheckboxAll);
                     row1.InnerHtml += cbTag.ToString();
                 }
 
@@ -943,25 +945,25 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (maxPage > 1) {
                 var tagPaging = new TagBuilder("div");
-                tagPaging.AddCssClass(IdHelper.PagingClass);
+                tagPaging.AddCssClass(IdConstants.PagingClass);
 
                 var tagPageNumber = new TagBuilder("div");
-                tagPageNumber.AddCssClass(IdHelper.PageNumberClass);
+                tagPageNumber.AddCssClass(IdConstants.PageNumberClass);
                 tagPageNumber.InnerHtml += string.Format(MvcUi.PageOf, currentPage, maxPage);
                 tagPaging.InnerHtml += tagPageNumber;
 
                 var tagTotalCount = new TagBuilder("div");
-                tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
+                tagTotalCount.AddCssClass(IdConstants.TotalCountClass);
 
                 IObjectSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().MetamodelManager.Metamodel));
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
                 tagPaging.InnerHtml += tagTotalCount;
-                string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string) html.ViewData[IdHelper.CollectionFormat] : IdHelper.ListDisplayFormat;
+                string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string)html.ViewData[IdConstants.CollectionFormat] : IdConstants.ListDisplayFormat;
 
                 if (currentPage > 1) {
-                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.First, IdHelper.PageAction, new RouteValueDictionary(new {page = 1, pageSize, NofCollectionFormat = displayType}));
-                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Previous, IdHelper.PageAction, new RouteValueDictionary(new {page = currentPage - 1, pageSize, NofCollectionFormat = displayType}));
+                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.First, IdConstants.PageAction, new RouteValueDictionary(new { page = 1, pageSize, NofCollectionFormat = displayType }));
+                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Previous, IdConstants.PageAction, new RouteValueDictionary(new { page = currentPage - 1, pageSize, NofCollectionFormat = displayType }));
                 }
                 else {
                     tagPaging.InnerHtml += GetDisabledButton(null, MvcUi.First);
@@ -969,8 +971,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
 
                 if (currentPage < maxPage) {
-                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Next, IdHelper.PageAction, new RouteValueDictionary(new {page = currentPage + 1, pageSize, NofCollectionFormat = displayType}));
-                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Last, IdHelper.PageAction, new RouteValueDictionary(new {page = maxPage, pageSize, NofCollectionFormat = displayType}));
+                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Next, IdConstants.PageAction, new RouteValueDictionary(new { page = currentPage + 1, pageSize, NofCollectionFormat = displayType }));
+                    tagPaging.InnerHtml += GetSubmitButton(null, MvcUi.Last, IdConstants.PageAction, new RouteValueDictionary(new { page = maxPage, pageSize, NofCollectionFormat = displayType }));
                 }
                 else {
                     tagPaging.InnerHtml += GetDisabledButton(null, MvcUi.Next);
@@ -989,11 +991,11 @@ namespace NakedObjects.Web.Mvc.Html {
             pageSize = 20;
             bool found = false;
 
-            if (html.ViewData.ContainsKey(IdHelper.PagingData)) {
-                var data = (Dictionary<string, int>) html.ViewData[IdHelper.PagingData];
-                currentPage = data[IdHelper.PagingCurrentPage];
-                total = data[IdHelper.PagingTotal];
-                pageSize = data[IdHelper.PagingPageSize];
+            if (html.ViewData.ContainsKey(IdConstants.PagingData)) {
+                var data = (Dictionary<string, int>)html.ViewData[IdConstants.PagingData];
+                currentPage = data[IdConstants.PagingCurrentPage];
+                total = data[IdConstants.PagingTotal];
+                pageSize = data[IdConstants.PagingPageSize];
                 found = true;
             }
 
@@ -1014,10 +1016,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 string link = "{0}";
 
                 if (context.Parameter.Spec.IsCollection) {
-                    link = html.CollectionLink(link, IdHelper.ViewAction, valueNakedObject.Object);
+                    link = html.CollectionLink(link, IdConstants.ViewAction, valueNakedObject.Object);
                 }
                 else if (!context.Parameter.Spec.IsParseable && context.Parameter is IOneToOneActionParameterSpec) {
-                    link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
+                    link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object);
                 }
 
                 string title = html.GetDisplayTitle(context.Parameter, valueNakedObject);
@@ -1040,7 +1042,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 string link = "{0}";
 
                 if (!context.Property.ReturnSpec.IsParseable) {
-                    link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object);
+                    link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object);
                 }
                 value += string.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
             }
@@ -1110,15 +1112,15 @@ namespace NakedObjects.Web.Mvc.Html {
                 string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : string.Empty;
                 bool renderEagerly = RenderEagerly(propertyContext.Property);
 
-                link = html.ObjectLink(link, IdHelper.ViewAction, valueNakedObject.Object) + (inTable ? "" : html.GetObjectDisplayLinks(propertyContext));
+                link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object) + (inTable ? "" : html.GetObjectDisplayLinks(propertyContext));
 
-                if (displayType == IdHelper.MaxDisplayFormat || renderEagerly) {
+                if (displayType == IdConstants.MaxDisplayFormat || renderEagerly) {
                     INakedObjectAdapter inlineNakedObject = propertyContext.GetValue(html.Framework());
                     bool anyEditableFields;
                     TagBuilder elementSet = ElementDescriptor.BuildElementSet(html.ViewObjectFields(inlineNakedObject, propertyContext, x => true, null, out anyEditableFields));
 
                     html.AddAjaxDataUrlsToElementSet(inlineNakedObject, elementSet, propertyContext);
-                    elementSet.AddCssClass(IdHelper.FieldContainerName);
+                    elementSet.AddCssClass(IdConstants.FieldContainerName);
                     elementSet.GenerateId(IdHelper.GetFieldContainerId(inlineNakedObject));
 
                     link = link + html.GetEditButtonIfRequired(anyEditableFields, inlineNakedObject) + elementSet;
@@ -1155,7 +1157,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 !inlineNakedObject.Spec.IsAlwaysImmutable() &&
                 !inlineNakedObject.Spec.IsImmutableOncePersisted() &&
                 !inlineNakedObject.Spec.ContainsFacet<IComplexTypeFacet>()) {
-                return html.ControllerAction(MvcUi.Edit, IdHelper.EditObjectAction, IdHelper.EditButtonClass, inlineNakedObject.Object);
+                    return html.ControllerAction(MvcUi.Edit, IdConstants.EditObjectAction, IdConstants.EditButtonClass, inlineNakedObject.Object);
             }
             return new MvcHtmlString("");
         }
@@ -1189,7 +1191,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
             title = string.IsNullOrEmpty(title) ? (propertyContext.Property.ReturnSpec.IsImage(html.Framework()) ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
 
-            string imageUrl = html.GenerateUrl(IdHelper.GetFileAction + "/" + title.Replace(' ', '_'),
+            string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
                 html.Framework().GetObjectTypeName(propertyContext.Target.Object),
                 new RouteValueDictionary(new {
                     Id = html.Framework().GetObjectId(propertyContext.Target),
@@ -1238,11 +1240,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static IDictionary<string, object> GetDisplayStatuses(this HtmlHelper html) {
             IEnumerable<KeyValuePair<string, object>> status = html.ViewData.Where(kvp => kvp.Value != null &&
-                                                                                          (kvp.Value.Equals(IdHelper.MinDisplayFormat) ||
-                                                                                           kvp.Value.Equals(IdHelper.MaxDisplayFormat) ||
-                                                                                           kvp.Value.Equals(IdHelper.ListDisplayFormat) ||
-                                                                                           kvp.Value.Equals(IdHelper.TableDisplayFormat) ||
-                                                                                           kvp.Value.Equals(IdHelper.SummaryDisplayFormat)));
+                                                                                          (kvp.Value.Equals(IdConstants.MinDisplayFormat) ||
+                                                                                           kvp.Value.Equals(IdConstants.MaxDisplayFormat) ||
+                                                                                           kvp.Value.Equals(IdConstants.ListDisplayFormat) ||
+                                                                                           kvp.Value.Equals(IdConstants.TableDisplayFormat) ||
+                                                                                           kvp.Value.Equals(IdConstants.SummaryDisplayFormat)));
             return status.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
@@ -1258,7 +1260,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetObjectDisplayLinks(this HtmlHelper html, PropertyContext propertyContext) {
             IDictionary<string, object> objectDisplayStatuses = GetDisplayStatuses(html);
 
-            string actionName = propertyContext.IsEdit ? IdHelper.EditObjectAction : IdHelper.ViewAction;
+            string actionName = propertyContext.IsEdit ? IdConstants.EditObjectAction : IdConstants.ViewAction;
 
             if (propertyContext.IsEdit || propertyContext.Target.ResolveState.IsTransient()) {
                 // for the moment no expand and delete on editable views 
@@ -1283,8 +1285,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
             formTag.InnerHtml += html.Hidden(IdHelper.GetDisplayFormatId(objectId), ToNameValuePairs(objectDisplayStatuses));
 
-            formTag.InnerHtml += GetSubmitButton(IdHelper.MinButtonClass, MvcUi.Collapse, IdHelper.RedisplayAction, new RouteValueDictionary {{objectId, IdHelper.MinDisplayFormat}, {"editMode", propertyContext.IsEdit}});
-            formTag.InnerHtml += GetSubmitButton(IdHelper.MaxButtonClass, MvcUi.Expand, IdHelper.RedisplayAction, new RouteValueDictionary {{objectId, IdHelper.MaxDisplayFormat}, {"editMode", propertyContext.IsEdit}});
+            formTag.InnerHtml += GetSubmitButton(IdConstants.MinButtonClass, MvcUi.Collapse, IdConstants.RedisplayAction, new RouteValueDictionary { { objectId, IdConstants.MinDisplayFormat }, { "editMode", propertyContext.IsEdit } });
+            formTag.InnerHtml += GetSubmitButton(IdConstants.MaxButtonClass, MvcUi.Expand, IdConstants.RedisplayAction, new RouteValueDictionary { { objectId, IdConstants.MaxDisplayFormat }, { "editMode", propertyContext.IsEdit } });
 
             formTag.InnerHtml = formTag.InnerHtml.WrapInDivTag();
             return formTag.ToString();
@@ -1294,12 +1296,12 @@ namespace NakedObjects.Web.Mvc.Html {
             IDictionary<string, object> collectionStatuses = GetDisplayStatuses(html);
             string collectionId = propertyContext.GetFieldId();
 
-            string actionName = propertyContext.IsEdit ? IdHelper.EditObjectAction : IdHelper.ViewAction;
+            string actionName = propertyContext.IsEdit ? IdConstants.EditObjectAction : IdConstants.ViewAction;
 
             if (propertyContext.IsEdit || propertyContext.Target.ResolveState.IsTransient()) {
-                return GetSubmitButton(IdHelper.SummaryButtonClass, MvcUi.Summary, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.SummaryDisplayFormat}, {"editMode", propertyContext.IsEdit}}) +
-                       GetSubmitButton(IdHelper.ListButtonClass, MvcUi.List, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.ListDisplayFormat}, {"editMode", propertyContext.IsEdit}}) +
-                       GetSubmitButton(IdHelper.TableButtonClass, MvcUi.Table, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.TableDisplayFormat}, {"editMode", propertyContext.IsEdit}});
+                return GetSubmitButton(IdConstants.SummaryButtonClass, MvcUi.Summary, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.SummaryDisplayFormat }, { "editMode", propertyContext.IsEdit } }) +
+                       GetSubmitButton(IdConstants.ListButtonClass, MvcUi.List, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.ListDisplayFormat }, { "editMode", propertyContext.IsEdit } }) +
+                       GetSubmitButton(IdConstants.TableButtonClass, MvcUi.Table, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.TableDisplayFormat }, { "editMode", propertyContext.IsEdit } });
             }
             var formTag = new TagBuilder("form");
             formTag.MergeAttribute("method", "post");
@@ -1307,9 +1309,9 @@ namespace NakedObjects.Web.Mvc.Html {
 
             formTag.InnerHtml += html.Hidden(IdHelper.GetDisplayFormatId(collectionId), ToNameValuePairs(collectionStatuses));
 
-            formTag.InnerHtml += GetSubmitButton(IdHelper.SummaryButtonClass, MvcUi.Summary, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.SummaryDisplayFormat}, {"editMode", propertyContext.IsEdit}});
-            formTag.InnerHtml += GetSubmitButton(IdHelper.ListButtonClass, MvcUi.List, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.ListDisplayFormat}, {"editMode", propertyContext.IsEdit}});
-            formTag.InnerHtml += GetSubmitButton(IdHelper.TableButtonClass, MvcUi.Table, IdHelper.RedisplayAction, new RouteValueDictionary {{collectionId, IdHelper.TableDisplayFormat}, {"editMode", propertyContext.IsEdit}});
+            formTag.InnerHtml += GetSubmitButton(IdConstants.SummaryButtonClass, MvcUi.Summary, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.SummaryDisplayFormat }, { "editMode", propertyContext.IsEdit } });
+            formTag.InnerHtml += GetSubmitButton(IdConstants.ListButtonClass, MvcUi.List, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.ListDisplayFormat }, { "editMode", propertyContext.IsEdit } });
+            formTag.InnerHtml += GetSubmitButton(IdConstants.TableButtonClass, MvcUi.Table, IdConstants.RedisplayAction, new RouteValueDictionary { { collectionId, IdConstants.TableDisplayFormat }, { "editMode", propertyContext.IsEdit } });
 
             formTag.InnerHtml = formTag.InnerHtml.WrapInDivTag();
             return formTag.ToString();
@@ -1551,7 +1553,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetLabelTag(bool isEdit, string name, Func<string> getInputId) {
             var divTag = new TagBuilder("div");
-            divTag.AddCssClass(IdHelper.Label);
+            divTag.AddCssClass(IdConstants.Label);
 
             if (isEdit) {
                 var labelTag = new TagBuilder("label");
@@ -1615,7 +1617,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 Value = MvcUi.RecentlyViewed,
                 Attributes = new RouteValueDictionary(new {
                     title = MvcUi.RecentlyViewed,
-                    name = IdHelper.FindAction,
+                    name = IdConstants.FindAction,
                     type = "submit",
                     @class = actionContext.GetActionClass(html.Framework()),
                     value = ToNameValuePairs(new {
@@ -1634,9 +1636,9 @@ namespace NakedObjects.Web.Mvc.Html {
                 Value = MvcUi.Remove,
                 Attributes = new RouteValueDictionary(new {
                     title = MvcUi.Remove,
-                    name = IdHelper.SelectAction,
+                    name = IdConstants.SelectAction,
                     type = "submit",
-                    @class = IdHelper.RemoveButtonClass,
+                    @class = IdConstants.RemoveButtonClass,
                     value = ToNameValuePairs(new Dictionary<string, object> {{propertyName, string.Empty}})
                 })
             };
@@ -1677,7 +1679,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetReferenceParameter(this HtmlHelper html, ParameterContext context, string id, string tooltip, IList<ElementDescriptor> childElements, bool addToThis) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ObjectName);
+            tag.AddCssClass(IdConstants.ObjectName);
 
             if (context.IsHidden) {
                 INakedObjectAdapter suggestedItem = html.GetSuggestedItem(id, null);
@@ -1728,7 +1730,7 @@ namespace NakedObjects.Web.Mvc.Html {
             bool readOnly,
             bool noFinder) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ObjectName);
+            tag.AddCssClass(IdConstants.ObjectName);
 
             if (!propertyContext.Property.IsVisible(propertyContext.Target)) {
                 INakedObjectAdapter existingValue = propertyContext.GetValue(html.Framework());
@@ -1790,7 +1792,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter item,
             string id) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ObjectName);
+            tag.AddCssClass(IdConstants.ObjectName);
             string value = html.Framework().GetObjectId(item);
             tag.InnerHtml += html.Hidden(id, value, new {id = string.Empty}).ToString();
             return tag.ToString();
@@ -1807,7 +1809,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetCollectionAsTable(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObjectAdapter collectionNakedObject = propertyContext.GetValue(html.Framework());
             bool any = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Any();
-            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
+            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
             Func<IAssociationSpec, bool> filterFunc;
             Func<IAssociationSpec, int> orderFunc;
@@ -1855,7 +1857,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetCollectionAsList(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObjectAdapter collectionNakedObject = propertyContext.GetValue(html.Framework());
             bool any = collectionNakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Any();
-            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
+            Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
             return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true);
         }
@@ -1865,16 +1867,16 @@ namespace NakedObjects.Web.Mvc.Html {
             bool renderEagerly = RenderEagerly(propertyContext.Property);
 
             var tag = new TagBuilder("div");
-            if (displayType == IdHelper.TableDisplayFormat || (string.IsNullOrWhiteSpace(displayType) && renderEagerly)) {
-                tag.AddCssClass(IdHelper.CollectionTableName);
+            if (displayType == IdConstants.TableDisplayFormat || (string.IsNullOrWhiteSpace(displayType) && renderEagerly)) {
+                tag.AddCssClass(IdConstants.CollectionTableName);
                 tag.InnerHtml += html.GetCollectionAsTable(propertyContext);
             }
-            else if (displayType == IdHelper.ListDisplayFormat) {
-                tag.AddCssClass(IdHelper.CollectionListName);
+            else if (displayType == IdConstants.ListDisplayFormat) {
+                tag.AddCssClass(IdConstants.CollectionListName);
                 tag.InnerHtml += html.GetCollectionAsList(propertyContext);
             }
             else {
-                tag.AddCssClass(IdHelper.CollectionSummaryName);
+                tag.AddCssClass(IdConstants.CollectionSummaryName);
                 tag.InnerHtml += html.GetCollectionAsSummary(propertyContext);
             }
 
@@ -1882,21 +1884,21 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static ElementDescriptor GetSelectionCollection(this HtmlHelper html, INakedObjectAdapter collectionNakedObject, INakedObjectAdapter targetNakedObject, string propertyName) {
-            Func<INakedObjectAdapter, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdHelper.ViewAction, item.Object) + " " +
-                                                                    GetSubmitButton(IdHelper.SelectButtonClass, MvcUi.Select, IdHelper.SelectAction, new RouteValueDictionary(new {id = html.Framework().GetObjectId(targetNakedObject)}) {{propertyName, html.Framework().GetObjectId(item)}}), IdHelper.ObjectName).ToString();
+            Func<INakedObjectAdapter, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdConstants.ViewAction, item.Object) + " " +
+                                                                    GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new { id = html.Framework().GetObjectId(targetNakedObject) }) { { propertyName, html.Framework().GetObjectId(item) } }), IdConstants.ObjectName).ToString();
 
             return new ElementDescriptor {
                 TagType = "div",
                 Value = html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true),
                 Attributes = new RouteValueDictionary(new {
-                    @class = IdHelper.CollectionListName
+                    @class = IdConstants.CollectionListName
                 })
             };
         }
 
         private static string GetCollectionTitle(PropertyContext propertyContext, int count) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ObjectName);
+            tag.AddCssClass(IdConstants.ObjectName);
             tag.MergeAttribute("title", "");
             var coll = propertyContext.Property as IOneToManyAssociationSpec;
             tag.InnerHtml += CollectionUtils.CollectionTitleString(coll.ElementSpec, count);
@@ -1908,11 +1910,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (propertyContext.Property.IsVisible(propertyContext.Target)) {
                 string value = html.GetFieldValue(propertyContext, inTable);
-                string cls = propertyContext.Property.ReturnSpec.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName;
+                string cls = propertyContext.Property.ReturnSpec.IsParseable ? IdConstants.ValueName : IdConstants.ObjectName;
                 var multiLineFacet = propertyContext.Property.GetFacet<IMultiLineFacet>();
 
                 if (multiLineFacet != null && multiLineFacet.NumberOfLines > 1) {
-                    cls += (" " + IdHelper.MultilineDisplayFormat);
+                    cls += (" " + IdConstants.MultilineDisplayFormat);
                 }
 
                 tag.AddCssClass(cls);
@@ -1927,7 +1929,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileParameter(this HtmlHelper html, ParameterContext context, string id, string tooltip) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ValueName);
+            tag.AddCssClass(IdConstants.ValueName);
 
             var fileInput = new TagBuilder("input");
 
@@ -1947,7 +1949,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetTextParameter(this HtmlHelper html, ParameterContext context, string id, string tooltip) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ValueName);
+            tag.AddCssClass(IdConstants.ValueName);
             var htmlAttributes = new RouteValueDictionary(new {title = tooltip});
 
             html.AddClientValidationAttributes(context, htmlAttributes);
@@ -2090,7 +2092,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileProperty(this HtmlHelper html, PropertyContext propertyContext, string id, string tooltip) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ValueName);
+            tag.AddCssClass(IdConstants.ValueName);
 
             var fileInput = new TagBuilder("input");
 
@@ -2110,7 +2112,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetTextField(this HtmlHelper html, PropertyContext propertyContext, string id, string tooltip, bool readOnly) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ValueName);
+            tag.AddCssClass(IdConstants.ValueName);
 
             var htmlAttributes = new RouteValueDictionary(new {title = tooltip});
 
@@ -2359,11 +2361,11 @@ namespace NakedObjects.Web.Mvc.Html {
             string value;
 
             if (propertyContext.Property.ReturnSpec.IsParseable) {
-                tag.AddCssClass(IdHelper.ValueName);
+                tag.AddCssClass(IdConstants.ValueName);
                 value = invariant ? html.GetInvariantValue(propertyContext) : html.GetRawValue(propertyContext);
             }
             else {
-                tag.AddCssClass(IdHelper.ObjectName);
+                tag.AddCssClass(IdConstants.ObjectName);
                 INakedObjectAdapter existingValue = propertyContext.GetValue(html.Framework());
                 value = existingValue == null ? string.Empty : html.Framework().GetObjectId(existingValue);
             }
@@ -2466,7 +2468,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return new ElementDescriptor {
                 TagType = "button",
                 Value = targetActionContext.Action.Name,
-                Attributes = html.GetActionAttributes(IdHelper.ActionFindAction, targetActionContext, actionContext, propertyName)
+                Attributes = html.GetActionAttributes(IdConstants.ActionFindAction, targetActionContext, actionContext, propertyName)
             };
         }
 
@@ -2513,7 +2515,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string Action(string actionName) {
-            return IdHelper.ActionAction + "/" + actionName;
+            return IdConstants.ActionAction + "/" + actionName;
         }
 
         internal static MethodInfo GetAction(this HtmlHelper html, LambdaExpression expression) {

@@ -23,7 +23,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 IdHelper.GetServiceContainerId(nakedObject),
                 nakedObject.TitleString());
         }

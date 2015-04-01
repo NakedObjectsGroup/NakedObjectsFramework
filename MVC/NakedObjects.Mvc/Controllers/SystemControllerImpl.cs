@@ -19,7 +19,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
             Session.ClearCachedObjects(ObjectCache.ObjectFlag.BreadCrumb);
             if (lastObject == null || clearAll) {
-                return RedirectToAction(IdHelper.IndexAction, IdHelper.HomeName);
+                return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
             }
             SetControllerName(lastObject);
             return View(NakedObjectsContext.GetNakedObject(lastObject));
@@ -42,7 +42,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var nextNakedObject = string.IsNullOrEmpty(nextId) ? null : NakedObjectsContext.GetNakedObjectFromId(nextId);
 
             if (nextNakedObject == null) {
-                return RedirectToAction(IdHelper.IndexAction, IdHelper.HomeName);
+                return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
             }
 
             SetNewCollectionFormats(controlData);

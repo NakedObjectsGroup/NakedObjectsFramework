@@ -58,21 +58,21 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get classes for an object view
         /// </summary>
         public static MvcHtmlString ObjectViewClass(this HtmlHelper html, object model) {
-            return MvcHtmlString.Create(IdHelper.ObjectViewName + html.GetPresentationHint(model));
+            return MvcHtmlString.Create(IdConstants.ObjectViewName + html.GetPresentationHint(model));
         }
 
         /// <summary>
         ///     Get classes for an view model edit 
         /// </summary>
         public static MvcHtmlString ViewModelClass(this HtmlHelper html, object model) {
-            return MvcHtmlString.Create(IdHelper.ViewModelName + html.GetPresentationHint(model));
+            return MvcHtmlString.Create(IdConstants.ViewModelName + html.GetPresentationHint(model));
         }
 
         /// <summary>
         ///     Get classes for an object edit
         /// </summary>
         public static MvcHtmlString ObjectEditClass(this HtmlHelper html, object model) {
-            return MvcHtmlString.Create(IdHelper.ObjectEditName + html.GetPresentationHint(model));
+            return MvcHtmlString.Create(IdConstants.ObjectEditName + html.GetPresentationHint(model));
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static string TransientFlag(this HtmlHelper html, object domainObject) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.ResolveState.IsTransient() ? " " + IdHelper.TransientName : "";
+            return nakedObject.ResolveState.IsTransient() ? " " + IdConstants.TransientName : "";
         }
 
         /// <summary>
@@ -128,14 +128,14 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
             string title = nakedObject.Spec.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
-            return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdHelper.ObjectName);
+            return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdConstants.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
             title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
-            return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
+            return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
 
         private static string GetCollectionTitle(INakedObjectAdapter nakedObject, HtmlHelper html) {
@@ -158,7 +158,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display link to object with icon
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, string linkText, string actionName, object model) {
-            return CommonHtmlHelper.WrapInDiv(html.ObjectIconAndLink(linkText, actionName, model), IdHelper.ObjectName);
+            return CommonHtmlHelper.WrapInDiv(html.ObjectIconAndLink(linkText, actionName, model), IdConstants.ObjectName);
         }
 
         public static MvcHtmlString Tab(this HtmlHelper html, string linkText, string actionName, object model) {

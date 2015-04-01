@@ -95,7 +95,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetFieldClass() {
-            return IdHelper.FieldName + GetPresentationHint();
+            return IdConstants.FieldName + GetPresentationHint();
         }
 
         public string GetConcurrencyFieldInputId() {
@@ -182,7 +182,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetActionClass(INakedObjectsFramework framework) {
-            return (IsFileActionNoParms(framework) ? IdHelper.ActionNameFile : IdHelper.ActionName) + GetPresentationHint();
+            return (IsFileActionNoParms(framework) ? IdConstants.ActionNameFile : IdConstants.ActionName) + GetPresentationHint();
         }
 
         public string GetSubMenuId() {
@@ -247,7 +247,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetParameterClass() {
-            return IdHelper.ParamName + GetPresentationHint();
+            return IdConstants.ParamName + GetPresentationHint();
         }
     }
 }

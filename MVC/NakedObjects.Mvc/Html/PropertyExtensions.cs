@@ -198,7 +198,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(tc, new Tuple&lt;string, CustomHtmlHelper.CollectionFormat&gt;("TestCollectionOne", CustomHtmlHelper.CollectionFormat.Table)).ToString(),
         /// </example>
         public static MvcHtmlString PropertyList(this HtmlHelper html, object domainObject, params Tuple<string, CollectionFormat>[] formats) {
-            formats.ForEach(t => html.ViewData[t.Item1] = (t.Item2 == CollectionFormat.Table ? IdHelper.TableDisplayFormat : IdHelper.ListDisplayFormat));
+            formats.ForEach(t => html.ViewData[t.Item1] = (t.Item2 == CollectionFormat.Table ? IdConstants.TableDisplayFormat : IdConstants.ListDisplayFormat));
             return html.PropertyList(domainObject);
         }
 
@@ -346,7 +346,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object domainObject) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return html.BuildEditContainer(nakedObject, html.EditObjectFields(nakedObject, null, x => true, null),
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject));
         }
 
@@ -374,7 +374,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, true),
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject));
         }
 
@@ -393,7 +393,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(contextObject, new ActionContext(true, target, targetAction), propertyName, actionResult, false),
-                IdHelper.FieldContainerName,
+                IdConstants.FieldContainerName,
                 IdHelper.GetFieldContainerId(nakedObject));
         }
 
@@ -486,7 +486,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyListEdit(tc, new Tuple&lt;string, CustomHtmlHelper.CollectionFormat&gt;("TestCollectionOne", CustomHtmlHelper.CollectionFormat.Table)).ToString(),
         /// </example>
         public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object domainObject, params Tuple<string, CollectionFormat>[] formats) {
-            formats.ForEach(t => html.ViewData[t.Item1] = (t.Item2 == CollectionFormat.Table ? IdHelper.TableDisplayFormat : IdHelper.ListDisplayFormat));
+            formats.ForEach(t => html.ViewData[t.Item1] = (t.Item2 == CollectionFormat.Table ? IdConstants.TableDisplayFormat : IdConstants.ListDisplayFormat));
             return html.PropertyListEdit(domainObject);
         }
 

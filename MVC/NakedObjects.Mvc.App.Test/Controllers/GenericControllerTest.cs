@@ -238,9 +238,9 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private static void AssertPagingData(ViewResult result, int currentPage, int pageSize, int pageTotal) {
-            Assert.AreEqual(currentPage, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingCurrentPage]);
-            Assert.AreEqual(pageSize, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingPageSize]);
-            Assert.AreEqual(pageTotal, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingTotal]);
+            Assert.AreEqual(currentPage, ((Dictionary<string, int>)result.ViewData[IdConstants.PagingData])[IdConstants.PagingCurrentPage]);
+            Assert.AreEqual(pageSize, ((Dictionary<string, int>)result.ViewData[IdConstants.PagingData])[IdConstants.PagingPageSize]);
+            Assert.AreEqual(pageTotal, ((Dictionary<string, int>)result.ViewData[IdConstants.PagingData])[IdConstants.PagingTotal]);
         }
 
         private static void AssertIsCollectionViewOf<T>(ViewResult result) {
@@ -543,7 +543,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditRedisplay(Employee employee) {
-            FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
+            FormCollection form = GetForm(new Dictionary<string, string> { { IdConstants.DisplayFormatFieldId, "Addresses=list" } });
             const string redisplay = "DepartmentHistory=table&editMode=True";
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(employee), Redisplay = redisplay};
 
@@ -1176,7 +1176,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void EditObjectKeepTableFormat() {
-            FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list&DepartmentHistory=table"}});
+            FormCollection form = GetForm(new Dictionary<string, string> { { IdConstants.DisplayFormatFieldId, "Addresses=list&DepartmentHistory=table" } });
             var objectModel = new ObjectAndControlData {Id = EmployeeId};
 
             var result = (ViewResult) controller.EditObject(objectModel, form);
@@ -1265,7 +1265,7 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec collectionAssoc = ((IObjectSpec) employeeNakedObject.Spec).Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
-                {IdHelper.DisplayFormatFieldId, "Addresses=list"},
+                {IdConstants.DisplayFormatFieldId, "Addresses=list"},
                 {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsFramework.GetObjectId(report1)},
                 {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsFramework.GetObjectId(report2)}
             };
@@ -2046,7 +2046,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ViewObjectDetailsCancel() {
-            FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
+            FormCollection form = GetForm(new Dictionary<string, string> { { IdConstants.DisplayFormatFieldId, "Addresses=list" } });
             const string cancel = "cancel=cancel";
             var objectModel = new ObjectAndControlData {Id = EmployeeId, Cancel = cancel};
 
@@ -2057,7 +2057,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ViewObjectDetailsCancelTransient() {
-            FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
+            FormCollection form = GetForm(new Dictionary<string, string> { { IdConstants.DisplayFormatFieldId, "Addresses=list" } });
             const string cancel = "cancel=cancel";
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(TransientEmployee), Cancel = cancel};
 
@@ -2067,7 +2067,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ViewObjectDetailsRedisplay() {
-            FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
+            FormCollection form = GetForm(new Dictionary<string, string> { { IdConstants.DisplayFormatFieldId, "Addresses=list" } });
             const string redisplay = "DepartmentHistory=table";
             var objectModel = new ObjectAndControlData {Id = EmployeeId, Redisplay = redisplay};
 

@@ -154,9 +154,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         private void SetupViewData(object model) {
             mocks.ViewDataContainer.Object.ViewData.Model = model;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
         }
 
         private static string GetTestData(string name) {
@@ -501,12 +501,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -522,12 +522,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -543,12 +543,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -568,12 +568,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -589,12 +589,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -614,12 +614,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -676,12 +676,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -697,12 +697,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -718,12 +718,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1307,10 +1307,10 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectForEnumerable() {
             IList<Claim> claims = NakedObjectsFramework.Persistor.Instances<Claim>().Take(2).ToList();
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 2},
-                {IdHelper.PagingTotal, 2}
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = new Dictionary<string, int> {
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 2},
+                {IdConstants.PagingTotal, 2}
             };
             var claimAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims, null, null);
@@ -1327,10 +1327,10 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectForQueryable() {
             IQueryable<Claim> claims = NakedObjectsFramework.Persistor.Instances<Claim>().Take(2);
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 2},
-                {IdHelper.PagingTotal, 2}
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = new Dictionary<string, int> {
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 2},
+                {IdConstants.PagingTotal, 2}
             };
 
             var claimAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(claims.First(), null, null);
@@ -1624,12 +1624,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1645,12 +1645,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1666,12 +1666,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -1691,12 +1691,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1712,12 +1712,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -1737,12 +1737,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             // use FindMyClaims action for TableView
             INakedObjectAdapter claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -1814,12 +1814,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 1}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 1}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1835,12 +1835,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 1},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 1},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1856,12 +1856,12 @@ namespace MvcTestApp.Tests.Helpers {
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
-                {IdHelper.PagingCurrentPage, 2},
-                {IdHelper.PagingPageSize, 1},
-                {IdHelper.PagingTotal, 2}
+                {IdConstants.PagingCurrentPage, 2},
+                {IdConstants.PagingPageSize, 1},
+                {IdConstants.PagingTotal, 2}
             };
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = pagingData;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
@@ -1936,8 +1936,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void UserMessages() {
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofWarnings] = new[] {"Warning1", "Warning2"};
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMessages] = new[] {"Message1", "Message2"};
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofWarnings] = new[] { "Warning1", "Warning2" };
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofMessages] = new[] { "Message1", "Message2" };
 
             string s = mocks.HtmlHelper.UserMessages().ToString();
 

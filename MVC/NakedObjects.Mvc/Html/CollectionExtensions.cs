@@ -19,20 +19,20 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
         #region all
 
-        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, IActionSpec action, string defaultTo = IdHelper.ListDisplayFormat) {
+        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, IActionSpec action, string defaultTo = IdConstants.ListDisplayFormat) {
             bool renderEagerly = CommonHtmlHelper.RenderEagerly(action);
-            string displayType = DefaultFormat(html, renderEagerly ? IdHelper.TableDisplayFormat : defaultTo);
-            return displayType == IdHelper.TableDisplayFormat ? CollectionTableInternal(html, collection, action) : CollectionListInternal(html, collection, action);
+            string displayType = DefaultFormat(html, renderEagerly ? IdConstants.TableDisplayFormat : defaultTo);
+            return displayType == IdConstants.TableDisplayFormat ? CollectionTableInternal(html, collection, action) : CollectionListInternal(html, collection, action);
         }
 
-        public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdHelper.ListDisplayFormat) {
+        public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdConstants.ListDisplayFormat) {
             INakedObjectAdapter adapter = html.Framework().GetNakedObject(domainObject);
             IEnumerable<INakedObjectAdapter> collections = adapter.GetObjectSpec().Properties.OfType<IOneToManyAssociationSpec>().Select(a => a.GetNakedObject(adapter));
             return collections.Select(c => html.Collection(c.GetAsEnumerable(html.Framework().NakedObjectManager), null, defaultTo)).ToArray();
         }
 
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
-            return html.Collection(collection, action, IdHelper.TableDisplayFormat);
+            return html.Collection(collection, action, IdConstants.TableDisplayFormat);
         }
 
         public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
@@ -116,8 +116,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString CollectionTableWithout(this HtmlHelper html, IEnumerable domainObject, params string[] excludingColumns) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            string displayType = DefaultFormat(html, IdHelper.TableDisplayFormat);
-            return displayType == IdHelper.TableDisplayFormat ?
+            string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
+            return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => !excludingColumns.Any(s => s == x.Id), null, true) :
                 html.GetStandaloneList(nakedObject, null);
         }
@@ -163,8 +163,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString CollectionListWithout(this HtmlHelper html, IEnumerable domainObject, params string[] excludingColumns) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            string displayType = DefaultFormat(html, IdHelper.ListDisplayFormat);
-            return displayType == IdHelper.TableDisplayFormat ?
+            string displayType = DefaultFormat(html, IdConstants.ListDisplayFormat);
+            return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => !excludingColumns.Any(s => s == x.Id), null, true) :
                 html.GetStandaloneList(nakedObject, null);
         }
@@ -217,15 +217,15 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString CollectionTableWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            string displayType = DefaultFormat(html, IdHelper.TableDisplayFormat);
-            return displayType == IdHelper.TableDisplayFormat ?
+            string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
+            return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => includingColumns.Any(s => s == x.Id), x => Array.IndexOf(includingColumns, x.Id), true) :
                 html.GetStandaloneList(nakedObject, null);
         }
 
         private static string DefaultFormat(HtmlHelper html, string defaultTo) {
-            string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string) html.ViewData[IdHelper.CollectionFormat] : defaultTo;
-            html.ViewData[IdHelper.CollectionFormat] = displayType; // ensure default value is saved
+            string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string)html.ViewData[IdConstants.CollectionFormat] : defaultTo;
+            html.ViewData[IdConstants.CollectionFormat] = displayType; // ensure default value is saved
             return displayType;
         }
 
@@ -271,8 +271,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString CollectionListWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            string displayType = DefaultFormat(html, IdHelper.ListDisplayFormat);
-            return displayType == IdHelper.TableDisplayFormat ?
+            string displayType = DefaultFormat(html, IdConstants.ListDisplayFormat);
+            return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => includingColumns.Any(s => s == x.Id), x => Array.IndexOf(includingColumns, x.Id), true) :
                 html.GetStandaloneList(nakedObject, null);
         }

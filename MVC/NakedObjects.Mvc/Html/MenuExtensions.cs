@@ -47,12 +47,12 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
-            var mainMenusFromViewData = (IEnumerable) html.ViewData[IdHelper.NofMainMenus];
+            var mainMenusFromViewData = (IEnumerable)html.ViewData[IdConstants.NofMainMenus];
             if (mainMenusFromViewData != null && mainMenusFromViewData.Cast<IMenuImmutable>().Any()) {
                 return RenderMainMenus(html, mainMenusFromViewData.Cast<IMenuImmutable>());
             }
             //Use the MenuServices to derive the menus
-            var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
+            var services = (IEnumerable)html.ViewData[IdConstants.NofServices];
             var mainMenus = new List<IMenuImmutable>();
             foreach (object service in services.Cast<object>()) {
                 var menu = GetMenu(html, service);
@@ -72,7 +72,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
             var tag = new TagBuilder("div");
-            tag.AddCssClass(IdHelper.ServicesContainerName);
+            tag.AddCssClass(IdConstants.ServicesContainerName);
             foreach (IMenuImmutable menu in menus) {
                 tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
             }
@@ -95,7 +95,7 @@ namespace NakedObjects.Web.Mvc.Html {
                         Value = item.Name,
                         Attributes = new RouteValueDictionary(new {
                             @id = id,
-                            @class = IdHelper.ActionName,
+                            @class = IdConstants.ActionName,
                             title = MvcUi.DuplicateAction
                         })
                     };
@@ -109,7 +109,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return null;
             }
             return CommonHtmlHelper.BuildMenuContainer(descriptors,
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 menu.Id,
                 menu.Name);
         }
@@ -178,9 +178,9 @@ namespace NakedObjects.Web.Mvc.Html {
         private static ElementDescriptor SubMenuAsElementDescriptor(
             this HtmlHelper html, IMenuImmutable subMenu, INakedObjectAdapter nakedObject, bool isEdit) {
             string tagType = "div";
-            string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdHelper.MenuNameLabel).ToString();
+            string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdConstants.MenuNameLabel).ToString();
             RouteValueDictionary attributes = new RouteValueDictionary(new {
-                @class = IdHelper.SubMenuName,
+                @class = IdConstants.SubMenuName,
                 @id = subMenu.Id
             });
             var visibleSubMenuItems = subMenu.MenuItems.Select(item => html.MenuItemAsElementDescriptor(item, nakedObject, isEdit));
@@ -189,7 +189,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     TagType = tagType,
                     Value = value,
                     Attributes = attributes,
-                    Children = visibleSubMenuItems.WrapInCollection("div", new {@class = IdHelper.SubMenuItemsName})
+                    Children = visibleSubMenuItems.WrapInCollection("div", new { @class = IdConstants.SubMenuItemsName })
                 };
             }
             else {

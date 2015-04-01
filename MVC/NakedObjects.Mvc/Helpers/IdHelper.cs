@@ -13,8 +13,8 @@ using NakedObjects.Resources;
 using NakedObjects.Util;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public static class IdHelper {
-        private const string sep = "-";
+
+    public static class IdConstants {
 
         // viewdata keys 
         public const string NofMessages = "Nof-Messages";
@@ -110,10 +110,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public const string DisplayFormatFieldId = "displayFormats";
 
-        private const string inputName = "Input";
-        private const string selectName = "Select";
-        private const string concurrencyName = "Concurrency";
-        private const string autoCompleteName = "AutoComplete";
 
         public const string ExecuteFixtureAction = "ExecuteFixture";
         public const string SwitchPerspectiveAction = "SwitchPerspective";
@@ -167,12 +163,24 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string ActiveClass = "active";
        
 
+    }
+
+
+
+    public static class IdHelper {
+        private const string sep = "-";
+
+        private const string inputName = "Input";
+        private const string selectName = "Select";
+        private const string concurrencyName = "Concurrency";
+        private const string autoCompleteName = "AutoComplete";
+
         private static string InputOrSelect(ITypeSpec spec) {
             return (spec.IsParseable ? inputName : selectName);
         }
 
         public static string GetDisplayFormatId(string id) {
-            return MakeId(id, DisplayFormatFieldId);
+            return MakeId(id, IdConstants.DisplayFormatFieldId);
         }
 
         public static string GetCollectionItemId(INakedObjectAdapter owner, IAssociationSpec assoc) {
@@ -237,7 +245,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetActionDialogId(INakedObjectAdapter owner, IActionSpec action) {
-            return GetObjectId(owner) + sep + action.Id + sep + DialogName;
+            return GetObjectId(owner) + sep + action.Id + sep + IdConstants.DialogName;
         }
 
         private static string EnsureEndsWithColon(string id) {
@@ -254,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string GetFindMenuId(INakedObjectAdapter nakedObject, IActionSpec action, string propertyName) {
             string contextActionName = action == null ? "" : sep + action.Id;
-            return GetObjectId(nakedObject) + contextActionName + sep + NameUtils.CapitalizeName(propertyName) + sep + FindMenuName;
+            return GetObjectId(nakedObject) + contextActionName + sep + NameUtils.CapitalizeName(propertyName) + sep + IdConstants.FindMenuName;
         }
 
         public static string GetParameterId(IActionSpec action, IActionParameterSpec parameter) {
@@ -271,11 +279,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetCollectionContainerId(INakedObjectAdapter collection) {
-            return CollContainerName + sep + collection.Spec.ShortName;
+            return IdConstants.CollContainerName + sep + collection.Spec.ShortName;
         }
 
         public static string GetActionContainerId(INakedObjectAdapter nakedObject) {
-            return GetObjectId(nakedObject) + sep + ActionsName;
+            return GetObjectId(nakedObject) + sep + IdConstants.ActionsName;
         }
 
         public static string GetServiceContainerId(INakedObjectAdapter nakedObject) {
@@ -283,15 +291,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetFieldContainerId(INakedObjectAdapter nakedObject) {
-            return GetObjectId(nakedObject) + sep + PropertyListName;
+            return GetObjectId(nakedObject) + sep + IdConstants. PropertyListName;
         }
 
         public static string GetParameterContainerId(IActionSpec action) {
-            return action.Id + sep + ParamListName;
+            return action.Id + sep + IdConstants.ParamListName;
         }
 
         public static string GetGenericActionId(INakedObjectAdapter owner, string type) {
-            return ActionName + sep + owner.Spec.ShortName + sep + type;
+            return IdConstants.ActionName + sep + owner.Spec.ShortName + sep + type;
         }
 
         public static string GetActionLabel(INakedObjectAdapter nakedObject) {

@@ -13,7 +13,7 @@ namespace NakedObjects.App.Demo.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface) : base(nakedObjectsContext, surface) {}
+        public GenericController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {

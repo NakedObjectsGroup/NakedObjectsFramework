@@ -31,10 +31,10 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public string DialogClass(INakedObjectsFramework framework) {
             if (ViewType == ViewTypes.Dialog) {
-                return ContextAction.ReturnSpec.IsFile(framework) ? IdHelper.DialogNameFileClass : IdHelper.DialogNameClass;
+                return ContextAction.ReturnSpec.IsFile(framework) ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
             }
 
-            return IdHelper.EditName;
+            return IdConstants.EditName;
         }
     }
 }

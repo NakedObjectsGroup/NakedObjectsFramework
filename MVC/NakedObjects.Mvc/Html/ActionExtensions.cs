@@ -35,7 +35,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the name for an action on an object
         /// </summary>
         public static MvcHtmlString ObjectActionName(this HtmlHelper html, string name) {
-            return CommonHtmlHelper.WrapInDiv(name, IdHelper.ActionNameLabel);
+            return CommonHtmlHelper.WrapInDiv(name, IdConstants.ActionNameLabel);
         }
 
         private static string GetPresentationHint(IActionSpec action) {
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the classes for an action on an object
         /// </summary>
         public static MvcHtmlString ObjectActionClass(this HtmlHelper html, IActionSpec action) {
-            return MvcHtmlString.Create(IdHelper.ActionAction + GetPresentationHint(action));
+            return MvcHtmlString.Create(IdConstants.ActionAction + GetPresentationHint(action));
         }
 
         #endregion
@@ -92,7 +92,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var targetActionContext = new ActionContext(false, html.Framework().GetNakedObject(targetObject), targetAction);
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
-                IdHelper.ParamContainerName,
+                IdConstants.ParamContainerName,
                 IdHelper.GetParameterContainerId(contextAction));
         }
 
@@ -112,7 +112,7 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static MvcHtmlString ParameterList(this HtmlHelper html, ActionContext actionContext) {
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext),
-                IdHelper.ParamContainerName,
+                IdConstants.ParamContainerName,
                 IdHelper.GetParameterContainerId(actionContext.Action));
         }
 
@@ -190,7 +190,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 IdHelper.GetActionContainerId(nakedObject),
                 IdHelper.GetActionLabel(nakedObject));
         }
@@ -200,8 +200,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Menu(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(false, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.MakeId(name, IdHelper.ActionContainerName),
+                IdConstants.MenuContainerName,
+                IdHelper.MakeId(name, IdConstants.ActionContainerName),
                 name + " " + MvcUi.Actions);
         }
 
@@ -211,7 +211,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 IdHelper.GetActionContainerId(nakedObject),
                 IdHelper.GetActionLabel(nakedObject));
         }
@@ -222,7 +222,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
-                IdHelper.MenuContainerName,
+                IdConstants.MenuContainerName,
                 IdHelper.GetActionContainerId(nakedObject),
                 IdHelper.GetActionLabel(nakedObject));
         }
@@ -232,8 +232,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(true, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.MakeId(name, IdHelper.ActionContainerName),
+                IdConstants.MenuContainerName,
+                IdHelper.MakeId(name, IdConstants.ActionContainerName),
                 name + " " + MvcUi.Actions);
         }
 
@@ -1524,7 +1524,7 @@ namespace NakedObjects.Web.Mvc.Html {
         #region encrypted
 
         private static Tuple<string, string> EncryptValue(HtmlHelper html, string name, string value) {
-            var encryptDecrypt = html.ViewData[IdHelper.NofEncryptDecrypt] as IEncryptDecrypt;
+            var encryptDecrypt = html.ViewData[IdConstants.NofEncryptDecrypt] as IEncryptDecrypt;
             if (encryptDecrypt != null) {
                 return encryptDecrypt.Encrypt(html.ViewContext.HttpContext.Session, name, value);
             }

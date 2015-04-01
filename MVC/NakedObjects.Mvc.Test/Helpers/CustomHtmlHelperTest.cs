@@ -200,9 +200,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         private void SetupViewData(object model) {
             mocks.ViewDataContainer.Object.ViewData.Model = model;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
         }
 
         private void CustomHelperTestCompareDirect(Func<ContextMocks, string> func, string toCompare) {
@@ -294,13 +294,13 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionsFormatList() {
             CustomHelperTestClass tc = TestClass;
-            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.ListDisplayFormat).ToString(), "CollectionsFormatList");
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdConstants.ListDisplayFormat).ToString(), "CollectionsFormatList");
         }
 
         [Test]
         public void CollectionsFormatTable() {
             CustomHelperTestClass tc = TestClass;
-            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdHelper.TableDisplayFormat).ToString(), "CollectionsFormatTable");
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Collections(tc, IdConstants.TableDisplayFormat).ToString(), "CollectionsFormatTable");
         }
 
         [Test]

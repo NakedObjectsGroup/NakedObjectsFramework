@@ -97,7 +97,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CustomEncrypted() {
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
 
             // keys to make test reproduceable 
             byte[] key = GetConstantKey(32);
@@ -143,7 +143,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void Encrypted() {
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
 
             // keys to make test reproduceable 
             byte[] key = GetConstantKey(32);

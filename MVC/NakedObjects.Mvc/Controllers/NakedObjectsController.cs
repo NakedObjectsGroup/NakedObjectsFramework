@@ -63,7 +63,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetServices() {
-            ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            ViewData[IdConstants.NofServices] = NakedObjectsContext.GetServices();
         }
 
         protected void SetMainMenus() {
@@ -71,11 +71,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (!menus.Any()) {
                 menus = nakedObjectsFramework.ServicesManager.GetServices().Select(s => s.Spec.Menu).ToArray();
             }
-            ViewData[IdHelper.NofMainMenus] = menus;
+            ViewData[IdConstants.NofMainMenus] = menus;
         }
 
         protected void SetFramework() {
-            ViewData[IdHelper.NoFramework] = NakedObjectsContext;
+            ViewData[IdConstants.NoFramework] = NakedObjectsContext;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
@@ -103,9 +103,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal ActionResult RedirectHome() {
-            TempData[IdHelper.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
-            TempData[IdHelper.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
-            return RedirectToAction(IdHelper.IndexAction, IdHelper.HomeName);
+            TempData[IdConstants.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
+            TempData[IdConstants.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
+            return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
         internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action = null, string propertyName = null) {
@@ -132,7 +132,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 int collectionSize = collection.Count();
                 if (collectionSize == 1) {
                     // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
-                    ViewData.Remove(IdHelper.PagingData);
+                    ViewData.Remove(IdConstants.PagingData);
                     return View("ObjectView", collection.First());
                 }
 
@@ -144,7 +144,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return View("StandaloneTable", ActionResultModel.Create(NakedObjectsContext, action, nakedObject, page, pageSize, format));
             }
             // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
-            ViewData.Remove(IdHelper.PagingData);
+            ViewData.Remove(IdConstants.PagingData);
 
             if (controlData.DataDict.Values.Contains("max")) {
                 // maximizing an inline object - do not update history
@@ -355,11 +355,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static bool IsFormat(string id) {
-            return id.EndsWith(IdHelper.MinDisplayFormat) ||
-                   id.EndsWith(IdHelper.MaxDisplayFormat) ||
-                   id.EndsWith(IdHelper.ListDisplayFormat) ||
-                   id.EndsWith(IdHelper.SummaryDisplayFormat) ||
-                   id.EndsWith(IdHelper.TableDisplayFormat);
+            return id.EndsWith(IdConstants.MinDisplayFormat) ||
+                   id.EndsWith(IdConstants.MaxDisplayFormat) ||
+                   id.EndsWith(IdConstants.ListDisplayFormat) ||
+                   id.EndsWith(IdConstants.SummaryDisplayFormat) ||
+                   id.EndsWith(IdConstants.TableDisplayFormat);
         }
 
         internal void SetNewCollectionFormats(ObjectAndControlData controlData) {
@@ -368,13 +368,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 formats.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
             else if (!string.IsNullOrWhiteSpace(controlData.Format)) {
-                ViewData[IdHelper.CollectionFormat] = controlData.Format;
+                ViewData[IdConstants.CollectionFormat] = controlData.Format;
             }
         }
 
         internal void SetExistingCollectionFormats(INakedObjectAdapter nakedObject, FormCollection form) {
-            if (form.AllKeys.Any(s => s.EndsWith(IdHelper.DisplayFormatFieldId))) {
-                var id = form.AllKeys.Single(s => s.EndsWith(IdHelper.DisplayFormatFieldId));
+            if (form.AllKeys.Any(s => s.EndsWith(IdConstants.DisplayFormatFieldId))) {
+                var id = form.AllKeys.Single(s => s.EndsWith(IdConstants.DisplayFormatFieldId));
                 var values = form.GetValue(id).AttemptedValue.Split('&').ToDictionary(GetName, GetValue);
                 values.Where(kvp => IsFormat(kvp.Value)).ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
@@ -781,8 +781,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string[] messages = NakedObjectsContext.MessageBroker.Messages;
             string[] warnings = NakedObjectsContext.MessageBroker.Warnings;
 
-            var existingMessages = TempData[IdHelper.NofMessages];
-            var existingWarnings = TempData[IdHelper.NofWarnings];
+            var existingMessages = TempData[IdConstants.NofMessages];
+            var existingWarnings = TempData[IdConstants.NofWarnings];
 
             if (existingMessages is string[] && ((string[]) existingMessages).Length > 0) {
                 messages = ((string[]) existingMessages).Union(messages).ToArray();
@@ -792,12 +792,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 warnings = ((string[]) existingWarnings).Union(warnings).ToArray();
             }
 
-            ViewData.Add(IdHelper.NofMessages, messages);
-            ViewData.Add(IdHelper.NofWarnings, warnings);
+            ViewData.Add(IdConstants.NofMessages, messages);
+            ViewData.Add(IdConstants.NofWarnings, warnings);
         }
 
         internal void SetEncryptDecrypt() {
-            ViewData.Add(IdHelper.NofEncryptDecrypt, EncryptDecryptService);
+            ViewData.Add(IdConstants.NofEncryptDecrypt, EncryptDecryptService);
         }
 
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectAdapter nakedObject) {
@@ -815,11 +815,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 page = GetPage(controlData);
 
                 var pagingData = new Dictionary<string, int> {
-                    {IdHelper.PagingCurrentPage, page},
-                    {IdHelper.PagingPageSize, pageSize},
-                    {IdHelper.PagingTotal, collectionSize}
+                    {IdConstants.PagingCurrentPage, page},
+                    {IdConstants.PagingPageSize, pageSize},
+                    {IdConstants.PagingTotal, collectionSize}
                 };
-                ViewData[IdHelper.PagingData] = pagingData;
+                ViewData[IdConstants.PagingData] = pagingData;
                 return true;
             }
 
@@ -827,15 +827,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static int GetPage(ObjectAndControlData controlData) {
-            if (controlData.DataDict.ContainsKey(IdHelper.PageKey)) {
-                return int.Parse(controlData.DataDict[IdHelper.PageKey]);
+            if (controlData.DataDict.ContainsKey(IdConstants.PageKey)) {
+                return int.Parse(controlData.DataDict[IdConstants.PageKey]);
             }
             return !string.IsNullOrEmpty(controlData.Page) ? int.Parse(controlData.Page) : 1;
         }
 
         internal int GetPageSize(ObjectAndControlData controlData) {
-            if (controlData.DataDict.ContainsKey(IdHelper.PageSizeKey)) {
-                return int.Parse(controlData.DataDict[IdHelper.PageSizeKey]);
+            if (controlData.DataDict.ContainsKey(IdConstants.PageSizeKey)) {
+                return int.Parse(controlData.DataDict[IdConstants.PageSizeKey]);
             }
             if (!string.IsNullOrEmpty(controlData.PageSize)) {
                 return int.Parse(controlData.PageSize);
