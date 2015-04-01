@@ -187,6 +187,7 @@
     <Compile Include="Controllers\SystemControllerImpl.cs" />
     <Compile Include="Helpers\IdConstants.cs" />
     <Compile Include="Helpers\IEncryptDecrypt.cs" />
+    <Compile Include="Helpers\IIdHelper.cs" />
     <Compile Include="Helpers\SimpleEncryptDecrypt.cs" />
     <Compile Include="Html\ActionExtensions.cs" />
     <Compile Include="Html\CollectionExtensions.cs" />

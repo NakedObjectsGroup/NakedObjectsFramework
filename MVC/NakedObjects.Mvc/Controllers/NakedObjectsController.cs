@@ -54,7 +54,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         // todo make this injected
-        protected IdHelper IdHelper {
+        protected IIdHelper IdHelper {
             get { return new IdHelper(); }
         }
 

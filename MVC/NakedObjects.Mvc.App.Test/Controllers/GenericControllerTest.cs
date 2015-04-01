@@ -2165,7 +2165,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
         }
 
-        private IdHelper IdHelper {
+        private IIdHelper IdHelper {
             get {
                 return new IdHelper();
             }

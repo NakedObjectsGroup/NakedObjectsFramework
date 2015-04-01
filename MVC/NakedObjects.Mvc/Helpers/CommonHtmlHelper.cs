@@ -42,7 +42,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return (INakedObjectsFramework)html.ViewData[IdConstants.NoFramework];
         }
 
-        public static IdHelper IdHelper(this HtmlHelper html) {
+        public static IIdHelper IdHelper(this HtmlHelper html) {
             return new IdHelper();
         }
 

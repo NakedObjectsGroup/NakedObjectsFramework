@@ -114,7 +114,7 @@ namespace MvcTestApp.Tests.Helpers {
             get { return new NotPersistedTestClass(); }
         }
 
-        private IdHelper IdHelper { get { return  new IdHelper();} }
+        private IIdHelper IdHelper { get { return  new IdHelper();} }
 
         #region Setup/Teardown
 

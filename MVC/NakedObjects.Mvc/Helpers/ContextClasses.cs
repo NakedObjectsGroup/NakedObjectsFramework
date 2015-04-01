@@ -13,15 +13,15 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Web.Mvc.Html {
-    internal abstract class ObjectContext {
-        protected IdHelper IdHelper { get; set; }
+    public abstract class ObjectContext {
+        protected IIdHelper IdHelper { get; set; }
 
-        protected ObjectContext(IdHelper idHelper ,ObjectContext otherContext) {
+        protected ObjectContext(IIdHelper idHelper ,ObjectContext otherContext) {
             IdHelper = idHelper;
             Target = otherContext.Target;
         }
 
-        protected ObjectContext(IdHelper idHelper ,INakedObjectAdapter target) {
+        protected ObjectContext(IIdHelper idHelper ,INakedObjectAdapter target) {
             IdHelper = idHelper;
             Target = target;
         }
@@ -29,20 +29,20 @@ namespace NakedObjects.Web.Mvc.Html {
         public INakedObjectAdapter Target { get; set; }
     }
 
-    internal abstract class FeatureContext : ObjectContext {
-        protected FeatureContext(IdHelper idHelper ,ObjectContext otherContext) : base(idHelper, otherContext) { }
-        protected FeatureContext(IdHelper idHelper ,INakedObjectAdapter target) : base(idHelper, target) {}
+    public abstract class FeatureContext : ObjectContext {
+        protected FeatureContext(IIdHelper idHelper ,ObjectContext otherContext) : base(idHelper, otherContext) { }
+        protected FeatureContext(IIdHelper idHelper ,INakedObjectAdapter target) : base(idHelper, target) {}
         public abstract IFeatureSpec Feature { get; }
     }
 
     internal class PropertyContext : FeatureContext {
 
-        public PropertyContext(IdHelper idHelper, PropertyContext otherContext)
+        public PropertyContext(IIdHelper idHelper, PropertyContext otherContext)
             : base(idHelper ,otherContext) {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(IdHelper idHelper, INakedObjectAdapter target, IAssociationSpec property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(IIdHelper idHelper, INakedObjectAdapter target, IAssociationSpec property, bool isEdit, PropertyContext parentContext = null)
             : base(idHelper ,target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -109,20 +109,20 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    internal class ActionContext : FeatureContext {
-        public ActionContext(IdHelper idHelper, ActionContext otherContext)
+    public class ActionContext : FeatureContext {
+        public ActionContext(IIdHelper idHelper, ActionContext otherContext)
             : base(idHelper, otherContext) {
             EmbeddedInObject = otherContext.EmbeddedInObject;
             Action = otherContext.Action;
         }
 
-        public ActionContext(IdHelper idHelper, INakedObjectAdapter target, IActionSpec action)
+        public ActionContext(IIdHelper idHelper, INakedObjectAdapter target, IActionSpec action)
             : base(idHelper, target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(IdHelper idHelper, bool embeddedInObject, INakedObjectAdapter target, IActionSpec action)
+        public ActionContext(IIdHelper idHelper, bool embeddedInObject, INakedObjectAdapter target, IActionSpec action)
             : base(idHelper, target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -204,12 +204,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    internal class ParameterContext : ActionContext {
-        public ParameterContext(IdHelper idhelper, ParameterContext otherContext) : base(idhelper, otherContext) {
+    public class ParameterContext : ActionContext {
+        public ParameterContext(IIdHelper idhelper, ParameterContext otherContext) : base(idhelper, otherContext) {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(IdHelper idhelper, bool embeddedInObject, INakedObjectAdapter target, IActionSpec action, IActionParameterSpec parameter, bool isEdit)
+        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, INakedObjectAdapter target, IActionSpec action, IActionParameterSpec parameter, bool isEdit)
             : base(idhelper, embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;

@@ -13,7 +13,7 @@ using NakedObjects.Resources;
 using NakedObjects.Util;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public  class IdHelper {
+    public  class IdHelper : IIdHelper {
         private const string sep = "-";
 
         private const string inputName = "Input";
@@ -82,7 +82,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(owner) + sep + action.Id;
         }
 
-        internal  string GetActionId(ActionContext targetActionContext, ActionContext actionContext, string propertyName) {
+        public  string GetActionId(ActionContext targetActionContext, ActionContext actionContext, string propertyName) {
             string contextActionName = actionContext.Action == null ? "" : actionContext.Action.Id + sep;
             string contextNakedObjectId = actionContext.Target == null || actionContext.Target == targetActionContext.Target ? "" : GetObjectId(actionContext.Target) + sep;
             string propertyId = string.IsNullOrEmpty(propertyName) ? "" : NameUtils.CapitalizeName(propertyName) + sep;
