@@ -20,11 +20,11 @@
             @(Html.ObjectTitle(Model))
             @(Html.ValidationSummary(true, MvcUi.EditError))
             @(Html.UserMessages())
-            @using (Html.BeginForm(IdHelper.EditAction,
+            @using (Html.BeginForm(IdConstants.EditAction,
                 Html.TypeName(Model).ToString(),
                 new {id = Html.GetObjectId(Model).ToString()},
                 FormMethod.Post,
-                new {@class = IdHelper.EditName})) {
+                new { @class = IdConstants.EditName })) {
                 @(Html.PropertyListEdit(Model))
                 @(Html.MenuOnTransient(Model))
             }
