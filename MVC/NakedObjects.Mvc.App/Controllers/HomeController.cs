@@ -14,7 +14,7 @@ namespace NakedObjects.Mvc.App.Controllers {
     public class HomeController : SystemControllerImpl {
         public HomeController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface,  IIdHelper idhelper) : base(nakedObjectsFramework, surface, idhelper) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
-            //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
+            //nakedObjectsFramework.DomainObjectInjector.InjectInto(this);
         }
 
         public ActionResult Index() {
