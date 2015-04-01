@@ -73,7 +73,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private static string GetFieldInputId(INakedObjectAdapter nakedObject, IAssociationSpec property) {
+        private string GetFieldInputId(INakedObjectAdapter nakedObject, IAssociationSpec property) {
             string fieldId;
 
             var aoid = nakedObject.Oid as IAggregateOid;

@@ -212,6 +212,10 @@ namespace MvcTestApp.Tests.Controllers {
             get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
+        private IdHelper IdHelper {
+            get { return new IdHelper();}
+        }
+
         #region Setup/Teardown
 
         [SetUp]
@@ -301,7 +305,7 @@ namespace MvcTestApp.Tests.Controllers {
             return NakedObjectsFramework.GetObjectId(GetBoundedInstance<T>(title).GetDomainObject());
         }
 
-        private static FormCollection GetFormForFindEmployeeByName(INakedObjectAdapter employeeRepo, string firstName, string secondName) {
+        private  FormCollection GetFormForFindEmployeeByName(INakedObjectAdapter employeeRepo, string firstName, string secondName) {
             IActionSpec actionFindEmployeeByname = employeeRepo.Spec.GetActions().Single(a => a.Id == "FindEmployeeByName");
 
             IActionParameterSpec parmFirstName = actionFindEmployeeByname.Parameters[0];
@@ -316,7 +320,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForFindSalesPersonByName(INakedObjectAdapter salesRepo, string firstName, string secondName) {
+        private  FormCollection GetFormForFindSalesPersonByName(INakedObjectAdapter salesRepo, string firstName, string secondName) {
             IActionSpec action = salesRepo.Spec.GetActions().Single(a => a.Id == "FindSalesPersonByName");
 
             IActionParameterSpec parmFirstName = action.Parameters[0];
@@ -331,7 +335,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForFindContactByName(INakedObjectAdapter contactRepo, string firstName, string secondName) {
+        private  FormCollection GetFormForFindContactByName(INakedObjectAdapter contactRepo, string firstName, string secondName) {
             IActionSpec action = contactRepo.Spec.GetActions().Single(a => a.Id == "FindContactByName");
 
             IActionParameterSpec parmFirstName = action.Parameters[0];
@@ -346,7 +350,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForBestSpecialOffer(INakedObjectAdapter productRepo, string quantity) {
+        private  FormCollection GetFormForBestSpecialOffer(INakedObjectAdapter productRepo, string quantity) {
             IActionSpec action = productRepo.Spec.GetActions().Single(a => a.Id == "BestSpecialOffer");
             IActionParameterSpec parmQuantity = action.Parameters[0];
             string idQuantity = IdHelper.GetParameterInputId(action, parmQuantity);
@@ -355,7 +359,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForChangePassword(INakedObjectAdapter contact, string p1, string p2, string p3) {
+        private  FormCollection GetFormForChangePassword(INakedObjectAdapter contact, string p1, string p2, string p3) {
             IActionSpec action = contact.Spec.GetActions().Single(a => a.Id == "ChangePassword");
             IActionParameterSpec pp1 = action.Parameters[0];
             IActionParameterSpec pp2 = action.Parameters[1];
@@ -372,7 +376,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForListProductsBySubCategory(INakedObjectAdapter productRepo, string pscId) {
+        private  FormCollection GetFormForListProductsBySubCategory(INakedObjectAdapter productRepo, string pscId) {
             IActionSpec action = productRepo.Spec.GetActions().Single(a => a.Id == "ListProductsBySubCategory");
             IActionParameterSpec parmPsc = action.Parameters[0];
             string idPsc = IdHelper.GetParameterInputId(action, parmPsc);
@@ -494,7 +498,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private static FormCollection GetFormForCreateNewEmployeeFromContact(IActionSpec action, string contact, out IDictionary<string, string> idToRawValue) {
+        private  FormCollection GetFormForCreateNewEmployeeFromContact(IActionSpec action, string contact, out IDictionary<string, string> idToRawValue) {
             IActionParameterSpec parmContact = action.Parameters[0];
             string idContact = IdHelper.GetParameterInputId(action, parmContact);
             idToRawValue = new Dictionary<string, string> {
@@ -503,7 +507,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private static FormCollection GetFormForCreateNewOrder(IActionSpec action, string cust, bool copy, out IDictionary<string, string> idToRawValue) {
+        private  FormCollection GetFormForCreateNewOrder(IActionSpec action, string cust, bool copy, out IDictionary<string, string> idToRawValue) {
             IActionParameterSpec parmCust = action.Parameters[0];
             IActionParameterSpec parmCopy = action.Parameters[1];
 
@@ -2159,6 +2163,12 @@ namespace MvcTestApp.Tests.Controllers {
 
         private SalesOrderHeader Order {
             get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
+        }
+
+        private IdHelper IdHelper {
+            get {
+                return new IdHelper();
+            }
         }
 
         #region Setup/Teardown

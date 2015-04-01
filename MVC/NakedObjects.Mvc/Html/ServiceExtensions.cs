@@ -24,7 +24,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
-                IdHelper.GetServiceContainerId(nakedObject),
+                html.IdHelper().GetServiceContainerId(nakedObject),
                 nakedObject.TitleString());
         }
 

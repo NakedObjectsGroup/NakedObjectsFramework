@@ -53,6 +53,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             get { return oidStrategy; }
         }
 
+        // todo make this injected
+        protected IdHelper IdHelper {
+            get { return new IdHelper(); }
+        }
+
         protected void SetControllerName(string name) {
             ControllerContext.RouteData.Values["controller"] = name;
         }
@@ -529,7 +534,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private void ValidateOrApplyInlineChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationSpec> assocs, Func<INakedObjectAdapter, ObjectAndControlData, IAssociationSpec, bool> validateOrApply) {
             var form = controlData.Form;
             // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
-            foreach (IAssociationSpec assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
+            foreach (IAssociationSpec assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => IdHelper.KeyPrefixIs(k, a.Id)))) {
                 INakedObjectAdapter inlineNakedObject = assoc.GetNakedObject(nakedObject);
                 if (inlineNakedObject != null) {
                     validateOrApply(inlineNakedObject, controlData, assoc);
@@ -683,11 +688,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private static string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
+        private  string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
             return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) : IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
-        private static string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
+        private  string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) : IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
 

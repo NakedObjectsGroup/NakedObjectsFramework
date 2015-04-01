@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return MvcHtmlString.Create(IdHelper.GetActionDialogId(nakedObject, action));
+            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(nakedObject, action));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpec targetAction,
             string propertyName,
             IEnumerable collection) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction);
+                var actionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(contextObject), contextAction);
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
@@ -79,7 +79,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpec targetAction,
             string propertyName,
             IEnumerable collection) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) {Filter = x => x.Id == propertyName};
+                var actionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
@@ -89,23 +89,23 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.ParameterList(actionContext);
             }
 
-            var targetActionContext = new ActionContext(false, html.Framework().GetNakedObject(targetObject), targetAction);
+            var targetActionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(targetObject), targetAction);
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
                 IdConstants.ParamContainerName,
-                IdHelper.GetParameterContainerId(contextAction));
+                html.IdHelper().GetParameterContainerId(contextAction));
         }
 
         /// <summary>
         ///     Get the parameters of an action for display within a form
         /// </summary>
         public static MvcHtmlString ParameterList(this HtmlHelper html, object context, IActionSpec action) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action);
+            var actionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(context), action);
             return html.ParameterList(actionContext);
         }
 
         public static MvcHtmlString ParameterListWith(this HtmlHelper html, object context, IActionSpec action, string parameterName) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) {Filter = x => x.Id == parameterName};
+            var actionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(context), action) { Filter = x => x.Id == parameterName };
             return html.ParameterList(actionContext);
         }
 
@@ -113,7 +113,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext),
                 IdConstants.ParamContainerName,
-                IdHelper.GetParameterContainerId(actionContext.Action));
+                html.IdHelper().GetParameterContainerId(actionContext.Action));
         }
 
         #endregion
@@ -191,8 +191,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(nakedObject),
+                html.IdHelper().GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Menu(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(false, menuItems),
                 IdConstants.MenuContainerName,
-                IdHelper.MakeId(name, IdConstants.ActionContainerName),
+                html.IdHelper().MakeId(name, IdConstants.ActionContainerName),
                 name + " " + MvcUi.Actions);
         }
 
@@ -212,8 +212,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
                 IdConstants.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(nakedObject),
+                html.IdHelper().GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -223,8 +223,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
                 IdConstants.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(nakedObject),
+                html.IdHelper().GetActionLabel(nakedObject));
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(true, menuItems),
                 IdConstants.MenuContainerName,
-                IdHelper.MakeId(name, IdConstants.ActionContainerName),
+                html.IdHelper().MakeId(name, IdConstants.ActionContainerName),
                 name + " " + MvcUi.Actions);
         }
 
@@ -513,7 +513,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
             IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
             ValidateParamValues(action, paramValues);
-            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
+            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(html.IdHelper(),  nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
         }
 
         private static void ValidateParamValues(IActionSpec action, object paramValues) {
@@ -785,7 +785,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object model, string id) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
             IActionSpec action = nakedObject.Spec.GetActions().Single(a => a.Id == id);
-            return html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
+            return html.ObjectActionOnTransient(new ActionContext(html.IdHelper(), nakedObject, action));
         }
 
         #endregion
@@ -976,7 +976,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object model, string id) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
             IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
-            return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));
+            return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(html.IdHelper(), nakedObject, action));
         }
 
         #endregion

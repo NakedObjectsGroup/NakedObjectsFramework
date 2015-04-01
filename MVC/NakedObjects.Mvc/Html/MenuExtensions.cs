@@ -149,7 +149,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 nakedObject = html.Framework().ServicesManager.GetServices().Single(s => s.Spec == objectSpec);
             }
 
-            var actionContext = new ActionContext(false, nakedObject, actionSpec);
+            var actionContext = new ActionContext(html.IdHelper(), false, nakedObject, actionSpec);
 
             RouteValueDictionary attributes;
             string tagType;
