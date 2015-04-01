@@ -5,16 +5,16 @@ using NakedObjects.Surface;
 namespace NakedObjects.Web.Mvc.Html {
     public interface IIdHelper {
         string GetDisplayFormatId(string id);
-        string GetCollectionItemId(INakedObjectSurface owner, IAssociationSpec assoc);
+        string GetCollectionItemId(INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
         string GetObjectId(INakedObjectSurface owner);
-        string GetFieldId(INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetInlineFieldId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetFieldInputId(INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetFieldAutoCompleteId(string id, INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetInlineFieldInputId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetConcurrencyFieldInputId(INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetInlineConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc);
-        string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, IAssociationSpec assoc);
+        string GetFieldId(INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetInlineFieldId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetFieldInputId(INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetFieldAutoCompleteId(string id, INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetInlineFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetConcurrencyFieldInputId(INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetInlineConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assoc);
+        string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, INakedObjectAssociationSurface assoc);
         string GetActionId(INakedObjectSurface owner, IActionSpec action);
         string GetActionDialogId(INakedObjectSurface owner, IActionSpec action);
         string GetSubMenuId(INakedObjectSurface owner, IActionSpec action);

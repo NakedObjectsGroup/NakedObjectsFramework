@@ -83,16 +83,17 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetFieldInputId() {
-            return ParentContext == null ? IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(Target), Property) : IdHelper.GetInlineFieldInputId(ParentContext.Property, ScaffoldAdapter.Wrap(Target), Property);
+            return ParentContext == null ? IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property)) :
+                IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(ParentContext.Property), ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property));
         }
 
         public string GetAutoCompleteFieldId() {
             // append autocomplete suffix if reference field only to differentiate for hidden input field with actual value 
-            return IdHelper.GetFieldAutoCompleteId(GetFieldInputId(), ScaffoldAdapter.Wrap(Target), Property);
+            return IdHelper.GetFieldAutoCompleteId(GetFieldInputId(), ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property));
         }
 
         public string GetFieldId() {
-            var thisFieldId = IdHelper.GetFieldId(ScaffoldAdapter.Wrap(Target), Property);
+            var thisFieldId = IdHelper.GetFieldId(ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property));
             return ParentContext == null ? thisFieldId : IdHelper.MakeId(ParentContext.GetFieldId(), thisFieldId);
         }
 
@@ -106,7 +107,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetConcurrencyFieldInputId() {
-            return ParentContext == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(Target), Property) : IdHelper.GetInlineConcurrencyFieldInputId(ParentContext.Property, ScaffoldAdapter.Wrap(Target), Property);
+            return ParentContext == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property)) :
+                IdHelper.GetInlineConcurrencyFieldInputId(ScaffoldAssoc.Wrap(ParentContext.Property), ScaffoldAdapter.Wrap(Target), ScaffoldAssoc.Wrap(Property));
         }
     }
 
@@ -172,7 +174,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetConcurrencyActionInputId(IAssociationSpec nakedObjectAssociation) {
-            return IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(Target), Action, nakedObjectAssociation);
+            return IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(Target), Action, ScaffoldAssoc.Wrap(nakedObjectAssociation));
         }
 
         public string GetActionId() {

@@ -32,7 +32,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return MakeId(id, IdConstants.DisplayFormatFieldId);
         }
 
-        public string GetCollectionItemId(INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetCollectionItemId(INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc) assocSurface).WrappedSpec;
             return GetObjectId(owner) + Sep + assoc.Id + Sep + "Item";
         }
 
@@ -51,35 +52,45 @@ namespace NakedObjects.Web.Mvc.Html {
             return owner.Spec.ShortName + postFix;
         }
 
-        public string GetFieldId(INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetFieldId(INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
+
             return GetObjectId(owner) + Sep + assoc.Id;
         }
 
-        public string GetInlineFieldId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetInlineFieldId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
+
             return parent.Id + Sep + GetObjectId(owner) + Sep + assoc.Id;
         }
 
-        public string GetFieldInputId(INakedObjectSurface owner, IAssociationSpec assoc) {
-            return GetFieldId(owner, assoc) + Sep + InputOrSelect(assoc.ReturnSpec);
+        public string GetFieldInputId(INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
+
+            return GetFieldId(owner, assocSurface) + Sep + InputOrSelect(assoc.ReturnSpec);
         }
 
-        public string GetFieldAutoCompleteId(string id, INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetFieldAutoCompleteId(string id, INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
+
             return assoc.ReturnSpec.IsParseable ? id : id + Sep + AutoCompleteName;
         }
 
-        public string GetInlineFieldInputId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc) {
-            return GetInlineFieldId(parent, owner, assoc) + Sep + InputOrSelect(assoc.ReturnSpec);
+        public string GetInlineFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
+
+            return GetInlineFieldId(parent, owner, assocSurface) + Sep + InputOrSelect(assoc.ReturnSpec);
         }
 
-        public string GetConcurrencyFieldInputId(INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetConcurrencyFieldInputId(INakedObjectSurface owner, INakedObjectAssociationSurface assoc) {
             return GetFieldId(owner, assoc) + Sep + ConcurrencyName;
         }
 
-        public string GetInlineConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectSurface owner, IAssociationSpec assoc) {
+        public string GetInlineConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assoc) {
             return GetInlineFieldId(parent, owner, assoc) + Sep + ConcurrencyName;
         }
 
-        public string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, IAssociationSpec assoc) {
+        public string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, INakedObjectAssociationSurface assoc) {
             return GetActionId(owner, action) + Sep + assoc.Id + Sep + ConcurrencyName;
         }
 

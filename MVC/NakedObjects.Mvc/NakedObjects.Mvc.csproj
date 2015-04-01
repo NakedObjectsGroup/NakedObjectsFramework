@@ -189,6 +189,7 @@
     <Compile Include="Helpers\IEncryptDecrypt.cs" />
     <Compile Include="Helpers\IIdHelper.cs" />
     <Compile Include="Helpers\ScaffoldAdapter.cs" />
+    <Compile Include="Helpers\ScaffoldAssoc.cs" />
     <Compile Include="Helpers\SimpleEncryptDecrypt.cs" />
     <Compile Include="Html\ActionExtensions.cs" />
     <Compile Include="Html\CollectionExtensions.cs" />

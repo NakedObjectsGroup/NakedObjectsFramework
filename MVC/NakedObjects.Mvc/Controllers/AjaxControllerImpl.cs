@@ -80,10 +80,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
                 IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-                fieldId = IdHelper.GetInlineFieldInputId(parent, ScaffoldAdapter.Wrap(nakedObject), property);
+                fieldId = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
             }
             else {
-                fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), property);
+                fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
             }
             return fieldId;
         }

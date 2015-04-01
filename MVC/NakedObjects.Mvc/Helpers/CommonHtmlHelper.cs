@@ -395,7 +395,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     SelectMany(p => p.Items(html, nakedObject)).
                     Select(t => new ElementDescriptor {
                         TagType = "div",
-                        Value = html.GetCollectionItem(t.Item2, html.IdHelper().GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), t.Item1))
+                        Value = html.GetCollectionItem(t.Item2, html.IdHelper().GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(t.Item1)))
                     });
 
                 visibleElements = visibleElements.Union(collectionElements);
@@ -1372,7 +1372,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 values = propertyContext.Target.GetObjectSpec().Properties.
                     Where(p => facet.ParameterNamesAndTypes.Select(pnt => pnt.Item1).Contains(p.Id.ToLower())).
                     ToDictionary(p => p.Id.ToLower(),
-                        p => html.GetExistingValue(html.IdHelper().GetFieldInputId(ScaffoldAdapter.Wrap(propertyContext.Target), p),
+                        p => html.GetExistingValue(html.IdHelper().GetFieldInputId(ScaffoldAdapter.Wrap(propertyContext.Target), ScaffoldAssoc.Wrap(p)),
                             new PropertyContext(html.IdHelper(), propertyContext) {
                                 Property = p
                             }));

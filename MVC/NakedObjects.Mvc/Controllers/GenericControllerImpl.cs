@@ -254,7 +254,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private ActionResult InitialAction(ObjectAndControlData controlData) {
             var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
             var nakedObjectAction = controlData.GetAction(NakedObjectsContext);
-            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), nakedObjectAction, y));
+            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), nakedObjectAction, ScaffoldAssoc.Wrap(y)));
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 
@@ -262,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var targetNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
             var targetAction = controlData.GetAction(NakedObjectsContext);
 
-            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), targetAction, y));
+            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), targetAction, ScaffoldAssoc.Wrap(y)));
 
             if (targetNakedObject.IsNotPersistent()) {
                 RefreshTransient(targetNakedObject, controlData.Form);

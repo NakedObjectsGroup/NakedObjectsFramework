@@ -401,9 +401,9 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocT1 = timePeriodSpec.GetProperty("StartTime");
             IAssociationSpec assocT2 = timePeriodSpec.GetProperty("EndTime");
 
-            string idN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(shift), assocN);
-            string idT1 = IdHelper.GetInlineFieldInputId(assocTp, ScaffoldAdapter.Wrap(timePeriod), assocT1);
-            string idT2 = IdHelper.GetInlineFieldInputId(assocTp, ScaffoldAdapter.Wrap(timePeriod), assocT2);
+            string idN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(shift), ScaffoldAssoc.Wrap(assocN));
+            string idT1 = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(assocTp), ScaffoldAdapter.Wrap(timePeriod), ScaffoldAssoc.Wrap(assocT1));
+            string idT2 = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(assocTp), ScaffoldAdapter.Wrap(timePeriod), ScaffoldAssoc.Wrap(assocT2));
 
             idToRawValue = new Dictionary<string, string> {
                 {idN, Guid.NewGuid().ToString()},
@@ -430,12 +430,12 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocAF = nakedObjectSpecification.GetProperty("ActiveFlag");
             IAssociationSpec assocPWSURL = nakedObjectSpecification.GetProperty("PurchasingWebServiceURL");
 
-            string idAN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocAN);
-            string idN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocN);
-            string idCR = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocCR);
-            string idPVS = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocPVS);
-            string idAF = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocAF);
-            string idPWSURL = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), assocPWSURL);
+            string idAN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocAN));
+            string idN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocN));
+            string idCR = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocCR));
+            string idPVS = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocPVS));
+            string idAF = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocAF));
+            string idPWSURL = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(vendor), ScaffoldAssoc.Wrap(assocPWSURL));
 
             idToRawValue = new Dictionary<string, string> {
                 {idAN, accountNumber},
@@ -459,9 +459,9 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
 
-            string idSN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), assocSN);
-            string idSP = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), assocSP);
-            string idMD = IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(store), assocMD);
+            string idSN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSN));
+            string idSP = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSP));
+            string idMD = IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocMD));
 
             idToRawValue = new Dictionary<string, string> {
                 {idSN, storeName},
@@ -484,10 +484,10 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocEM = nakedObjectSpecification.GetProperty("ExpMonth");
             IAssociationSpec assocEY = nakedObjectSpecification.GetProperty("ExpYear");
 
-            string idCT = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), assocCT);
-            string idCN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), assocCN);
-            string idEM = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), assocEM);
-            string idEY = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), assocEY);
+            string idCT = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), ScaffoldAssoc.Wrap(assocCT));
+            string idCN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), ScaffoldAssoc.Wrap(assocCN));
+            string idEM = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), ScaffoldAssoc.Wrap(assocEM));
+            string idEY = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(creditCard), ScaffoldAssoc.Wrap(assocEY));
 
             idToRawValue = new Dictionary<string, string> {
                 {idCT, cardType},
@@ -654,7 +654,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(adaptedVendor), ((IObjectSpec)adaptedVendor.Spec).GetProperty("PreferredVendorStatus"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(adaptedVendor), ScaffoldAssoc.Wrap(((IObjectSpec)adaptedVendor.Spec).GetProperty("PreferredVendorStatus")))].Errors.Any());
             AssertIsEditViewOf<Vendor>(result);
         }
 
@@ -672,7 +672,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(((IObjectSpec)adaptedShift.Spec).GetProperty("Times"), ScaffoldAdapter.Wrap(adaptedTimePeriod), ((IObjectSpec)adaptedTimePeriod.Spec).GetProperty("EndTime"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(((IObjectSpec)adaptedShift.Spec).GetProperty("Times")), ScaffoldAdapter.Wrap(adaptedTimePeriod), ScaffoldAssoc.Wrap(((IObjectSpec)adaptedTimePeriod.Spec).GetProperty("EndTime")))].Errors.Any());
             AssertIsEditViewOf<Shift>(result);
         }
 
@@ -685,9 +685,9 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.Edit(objectModel, form);
 
             //Assert.Greater(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors.Count(), 0);
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), nakedObject.GetObjectSpec().GetProperty("Contact"))].Errors.Any());
+            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(nakedObject.GetObjectSpec().GetProperty("Contact")))].Errors.Any());
             //Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(nakedObject, nakedObject.Spec.GetProperty("Customer"))].Errors[0].ErrorMessage, "Mandatory");
-            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), nakedObject.GetObjectSpec().GetProperty("Contact"))].Errors[0].ErrorMessage, "Mandatory");
+            Assert.AreEqual(result.ViewData.ModelState[IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(nakedObject.GetObjectSpec().GetProperty("Contact")))].Errors[0].ErrorMessage, "Mandatory");
 
             AssertIsEditViewOf<Individual>(result);
         }
@@ -1271,8 +1271,8 @@ namespace MvcTestApp.Tests.Controllers {
 
             var form = new FormCollection {
                 {IdConstants.DisplayFormatFieldId, "Addresses=list"},
-                {IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(employeeNakedObject), collectionAssoc), NakedObjectsFramework.GetObjectId(report1)},
-                {IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(employeeNakedObject), collectionAssoc), NakedObjectsFramework.GetObjectId(report2)}
+                {IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(employeeNakedObject), ScaffoldAssoc.Wrap(collectionAssoc)), NakedObjectsFramework.GetObjectId(report1)},
+                {IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(employeeNakedObject), ScaffoldAssoc.Wrap(collectionAssoc)), NakedObjectsFramework.GetObjectId(report2)}
             };
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(employee), Redisplay = redisplay};
@@ -1571,7 +1571,7 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = order.GetActionLeafNode("AddNewSalesReasons");
 
-            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, assocMD);
+            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, ScaffoldAssoc.Wrap(assocMD));
 
             form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
@@ -1598,7 +1598,7 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
-            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, assocMD);
+            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, ScaffoldAssoc.Wrap(assocMD));
 
             form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
@@ -2207,9 +2207,9 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
 
-            string idSN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), assocSN);
-            string idSP = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), assocSP);
-            string idMD = IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(store), assocMD);
+            string idSN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSN));
+            string idSP = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSP));
+            string idMD = IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocMD));
 
             idToRawValue = new Dictionary<string, string> {
                 {idSN, storeName},
