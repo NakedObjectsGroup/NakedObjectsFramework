@@ -20,6 +20,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
+using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -79,10 +80,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
                 IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-                fieldId = IdHelper.GetInlineFieldInputId(parent, nakedObject, property);
+                fieldId = IdHelper.GetInlineFieldInputId(parent, ScaffoldAdapter.Wrap(nakedObject), property);
             }
             else {
-                fieldId = IdHelper.GetFieldInputId(nakedObject, property);
+                fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), property);
             }
             return fieldId;
         }

@@ -25,6 +25,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
+using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
@@ -55,7 +56,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildViewContainer(nakedObject,
                 viewObjectFields,
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject),
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)),
                 anyEditableFields);
         }
 
@@ -64,14 +65,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(nakedObject, null, filter, order),
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject));
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         internal static MvcHtmlString Service(this HtmlHelper html, object service) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return BuildMenuContainer(html.ObjectActions(nakedObject, false),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetServiceContainerId(nakedObject),
+                html.IdHelper().GetServiceContainerId(ScaffoldAdapter.Wrap(nakedObject)),
                 nakedObject.TitleString());
         }
 
@@ -394,7 +395,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     SelectMany(p => p.Items(html, nakedObject)).
                     Select(t => new ElementDescriptor {
                         TagType = "div",
-                        Value = html.GetCollectionItem(t.Item2, html.IdHelper().GetCollectionItemId(nakedObject, t.Item1))
+                        Value = html.GetCollectionItem(t.Item2, html.IdHelper().GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), t.Item1))
                     });
 
                 visibleElements = visibleElements.Union(collectionElements);
@@ -787,7 +788,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject));
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
             html.AddAjaxDataUrlsToElementSet(nakedObject, elementSet);
 
             return new ElementDescriptor {
@@ -1123,7 +1124,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                     html.AddAjaxDataUrlsToElementSet(inlineNakedObject, elementSet, propertyContext);
                     elementSet.AddCssClass(IdConstants.FieldContainerName);
-                    elementSet.GenerateId(html.IdHelper().GetFieldContainerId(inlineNakedObject));
+                    elementSet.GenerateId(html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(inlineNakedObject)));
 
                     link = link + html.GetEditButtonIfRequired(anyEditableFields, inlineNakedObject) + elementSet;
                 }
@@ -1371,7 +1372,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 values = propertyContext.Target.GetObjectSpec().Properties.
                     Where(p => facet.ParameterNamesAndTypes.Select(pnt => pnt.Item1).Contains(p.Id.ToLower())).
                     ToDictionary(p => p.Id.ToLower(),
-                        p => html.GetExistingValue(html.IdHelper().GetFieldInputId(propertyContext.Target, p),
+                        p => html.GetExistingValue(html.IdHelper().GetFieldInputId(ScaffoldAdapter.Wrap(propertyContext.Target), p),
                             new PropertyContext(html.IdHelper(), propertyContext) {
                                 Property = p
                             }));

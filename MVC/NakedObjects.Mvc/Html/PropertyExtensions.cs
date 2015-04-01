@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
@@ -347,7 +348,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return html.BuildEditContainer(nakedObject, html.EditObjectFields(nakedObject, null, x => true, null),
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject));
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         /// <summary>
@@ -375,7 +376,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, true),
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject));
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         /// <summary>
@@ -394,7 +395,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, false),
                 IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(nakedObject));
+                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         // formats

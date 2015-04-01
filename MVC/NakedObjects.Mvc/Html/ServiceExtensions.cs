@@ -8,6 +8,7 @@
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using System;
+using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
@@ -24,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetServiceContainerId(nakedObject),
+                html.IdHelper().GetServiceContainerId(ScaffoldAdapter.Wrap(nakedObject)),
                 nakedObject.TitleString());
         }
 

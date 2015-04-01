@@ -402,7 +402,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var refItems = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(a => ValidateAssociation(nakedObject, a, dict[a.Id]));
-                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => NakedObjectsContext.GetNakedObjectFromId(dict[a.Id]));
+                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), a), a => NakedObjectsContext.GetNakedObjectFromId(dict[a.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
@@ -670,7 +670,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 foreach (IOneToManyAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>()) {
-                    string name = IdHelper.GetCollectionItemId(nakedObject, assoc);
+                    string name = IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), assoc);
                     ValueProviderResult items = form.GetValue(name);
 
                     if (items != null && assoc.Count(nakedObject) == 0) {
@@ -689,11 +689,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
-            return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) : IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
+            return parent == null ? IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), assoc) : IdHelper.GetInlineFieldInputId(parent, ScaffoldAdapter.Wrap(nakedObject), assoc);
         }
 
         private  string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
-            return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) : IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
+            return parent == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(nakedObject), assoc) : IdHelper.GetInlineConcurrencyFieldInputId(parent, ScaffoldAdapter.Wrap(nakedObject), assoc);
         }
 
         private bool CanPersist(INakedObjectAdapter nakedObject, IEnumerable<IAssociationSpec> usableAndVisibleFields) {
@@ -741,7 +741,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal void SetAssociation(INakedObjectAdapter nakedObject, IOneToOneAssociationSpec oneToOneAssoc, INakedObjectAdapter valueNakedObject, object attemptedValue) {
             IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
-            string key = IdHelper.GetFieldInputId(nakedObject, oneToOneAssoc);
+            string key = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), oneToOneAssoc);
             if (consent.IsAllowed) {
                 oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject);
             }

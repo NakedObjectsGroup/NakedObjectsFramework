@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(nakedObject, action));
+            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), action));
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetActionContainerId(nakedObject),
-                html.IdHelper().GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+                html.IdHelper().GetActionLabel(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         /// <summary>
@@ -212,8 +212,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetActionContainerId(nakedObject),
-                html.IdHelper().GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+                html.IdHelper().GetActionLabel(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         /// <summary>
@@ -223,8 +223,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetActionContainerId(nakedObject),
-                html.IdHelper().GetActionLabel(nakedObject));
+                html.IdHelper().GetActionContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+                html.IdHelper().GetActionLabel(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
         /// <summary>
