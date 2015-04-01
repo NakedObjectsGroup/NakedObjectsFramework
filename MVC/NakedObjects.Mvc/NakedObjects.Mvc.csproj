@@ -185,6 +185,7 @@
     <Compile Include="Controllers\GenericControllerImpl.cs" />
     <Compile Include="Controllers\NakedObjectsController.cs" />
     <Compile Include="Controllers\SystemControllerImpl.cs" />
+    <Compile Include="Helpers\IdConstants.cs" />
     <Compile Include="Helpers\IEncryptDecrypt.cs" />
     <Compile Include="Helpers\SimpleEncryptDecrypt.cs" />
     <Compile Include="Html\ActionExtensions.cs" />
