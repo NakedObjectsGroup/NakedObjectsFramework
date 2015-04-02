@@ -57,6 +57,7 @@ namespace AdventureWorksModel
             this.HasOptional(t => t.Manager)
                 .WithMany(t => t.DirectReports)
                 .HasForeignKey(d => d.ManagerID);
+            this.HasOptional(t => t.SalesPerson).WithRequired(t => t.Employee);
 
         }
     }

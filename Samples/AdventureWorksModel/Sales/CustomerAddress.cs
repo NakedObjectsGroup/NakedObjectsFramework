@@ -39,6 +39,9 @@ namespace AdventureWorksModel {
 
         #region Address
 
+        [NakedObjectsIgnore]
+        public virtual int AddressID { get; set; }
+
         [MemberOrder(2)]
         [Disabled]
         public virtual Address Address { get; set; }
@@ -46,6 +49,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Customer
+
+        [NakedObjectsIgnore]
+        public virtual int CustomerID { get; set; }
 
         [NakedObjectsIgnore]
         public virtual Customer Customer { get; set; }
@@ -57,16 +63,6 @@ namespace AdventureWorksModel {
             t.Append(AddressType).Append(":", Address);
             return t.ToString();
         }
-
-        #region ID
-
-        [NakedObjectsIgnore]
-        public virtual int CustomerID { get; set; }
-
-        [NakedObjectsIgnore]
-        public virtual int AddressID { get; set; }
-
-        #endregion
 
         #region ModifiedDate and rowguid
 

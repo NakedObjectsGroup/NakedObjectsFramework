@@ -19,7 +19,7 @@ namespace AdventureWorksModel {
         #region IViewModel Members
 
         public string[] DeriveKeys() {
-            return Customers.Select(c => c.Id.ToString()).ToArray();
+            return Customers.Select(c => c.CustomerId.ToString()).ToArray();
         }
 
         public void PopulateUsingKeys(string[] instanceId) {
@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
 
             Customers = (from c in Container.Instances<Customer>()
                 from id in ids
-                where c.Id == id
+                where c.CustomerId == id
                 select c).ToList();
         }
 

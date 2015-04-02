@@ -8,7 +8,7 @@ namespace AdventureWorksModel
         public CustomerMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.CustomerId);
 
             // Properties
             this.Property(t => t.AccountNumber)
@@ -22,16 +22,15 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             this.ToTable("Customer", "Sales");
-            this.Property(t => t.Id).HasColumnName("CustomerID");
+            this.Property(t => t.CustomerId).HasColumnName("CustomerID");
             this.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             this.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             this.Property(t => t.CustomerType).HasColumnName("CustomerType");
             this.Property(t => t.CustomerRowguid).HasColumnName("rowguid");
           this.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
 
-            // Relationships
+          // Relationships
           this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
-
         }
     }
 }

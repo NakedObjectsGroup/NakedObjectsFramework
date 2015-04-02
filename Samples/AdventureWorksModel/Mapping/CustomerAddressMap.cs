@@ -28,7 +28,7 @@ namespace AdventureWorksModel
             // Relationships
             this.HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
             this.HasRequired(t => t.AddressType).WithMany().HasForeignKey(t => t.AddressTypeID);
-            this.HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
+            this.HasRequired(t => t.Customer).WithMany(c => c.Addresses).HasForeignKey(t => t.CustomerID);
         }
     }
 }

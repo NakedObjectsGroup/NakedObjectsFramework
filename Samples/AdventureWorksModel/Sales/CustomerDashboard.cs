@@ -13,12 +13,16 @@ namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>
-    public class CustomerDashboard : ViewModel<Customer> {
+    public class CustomerDashboard : IViewModel {
         #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
 
         public OrderContributedActions OrderContributedActions { set; protected get; }
-
         #endregion
+
+       [NakedObjectsIgnore]
+        public virtual Customer Root { get; set; }
+      
 
         public string Name {
             get { return Root.IsIndividual() ? ((Individual) Root).Contact.ToString() : ((Store) Root).Name; }
@@ -31,8 +35,8 @@ namespace AdventureWorksModel {
 
         public decimal TotalOrderValue {
             get {
-                int id = Root.Id;
-                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.Id == id).Sum(x => x.TotalDue);
+                int id = Root.CustomerId;
+                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerId == id).Sum(x => x.TotalDue);
             }
         }
 
@@ -46,6 +50,15 @@ namespace AdventureWorksModel {
             var order = OrderContributedActions.CreateNewOrder(Root, true);
             Container.Persist(ref order);
             return order;
+        }
+
+        public string[] DeriveKeys() {
+            return new[] {Root.CustomerId.ToString() };
+        }
+
+        public void PopulateUsingKeys(string[] keys) {
+            int customerId = int.Parse(keys[0]);
+            Root = Container.Instances<Customer>().Single(c => c.CustomerId == customerId);
         }
     }
 }

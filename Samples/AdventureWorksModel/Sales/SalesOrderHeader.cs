@@ -181,7 +181,7 @@ namespace AdventureWorksModel {
 
         private StoreContact FindStoreContactForContact() {
             IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
-                where obj.Contact.ContactID == Contact.ContactID && obj.Store.Id == Customer.Id
+                where obj.Contact.ContactID == Contact.ContactID && obj.Store.CustomerId == Customer.CustomerId
                 select obj;
 
             return query.FirstOrDefault();
@@ -216,7 +216,7 @@ namespace AdventureWorksModel {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.Id == Customer.Id &&
+                where obj.Customer.CustomerId == Customer.CustomerId &&
                       obj.AddressType.Name == "Billing"
                 select obj.Address;
 
@@ -226,7 +226,7 @@ namespace AdventureWorksModel {
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.Id == Customer.Id
+                where obj.Customer.CustomerId == Customer.CustomerId
                 select obj.Address;
 
             return query.ToList();
@@ -254,7 +254,7 @@ namespace AdventureWorksModel {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.Id == Customer.Id &&
+                where obj.Customer.CustomerId == Customer.CustomerId &&
                       obj.AddressType.Name == "Shipping"
                 select obj.Address;
 

@@ -12,7 +12,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("default.png")]
-    public abstract class Customer : IHasIntegerId {
+    public abstract class Customer {
         #region Injected Services
         public ContactRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
@@ -46,8 +46,7 @@ namespace AdventureWorksModel {
         #region ID
 
         [NakedObjectsIgnore]
-        public virtual int Id { get; set; }
-
+        public virtual int CustomerId { get; set; }
         #endregion
 
         #endregion

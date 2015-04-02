@@ -126,20 +126,15 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate
-
+        [NakedObjectsIgnore]
+        public virtual SalesPerson SalesPerson { get; set; }
+      
         [MemberOrder(99)]
         [Disabled]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
-
-        #region rowguid
-
         [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
-
-        #endregion
 
         #endregion
 
