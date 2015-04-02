@@ -58,7 +58,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(owner) + Sep + assoc.Id;
         }
 
-        public string GetInlineFieldId(INakedObjectAssociationSurface parent, INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+        public string GetInlineFieldId(INakedObjectAssociationSurface parentSurface, INakedObjectSurface owner, INakedObjectAssociationSurface assocSurface) {
+            var parent = ((ScaffoldAssoc)parentSurface).WrappedSpec;
             var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
 
             return parent.Id + Sep + GetObjectId(owner) + Sep + assoc.Id;
@@ -90,7 +91,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetInlineFieldId(parent, owner, assoc) + Sep + ConcurrencyName;
         }
 
-        public string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, INakedObjectAssociationSurface assoc) {
+        public string GetConcurrencyActionInputId(INakedObjectSurface owner, IActionSpec action, INakedObjectAssociationSurface assocSurface) {
+            var assoc = ((ScaffoldAssoc)assocSurface).WrappedSpec;
             return GetActionId(owner, action) + Sep + assoc.Id + Sep + ConcurrencyName;
         }
 
