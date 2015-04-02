@@ -7,6 +7,7 @@
 
 using System.Collections;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {

@@ -22,6 +22,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
@@ -32,11 +33,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private readonly INakedObjectsFramework nakedObjectsFramework;
         private readonly INakedObjectsSurface surface;
         private readonly IOidStrategy oidStrategy;
+        private readonly IIdHelper idHelper;
 
-        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy) {
+        protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, 
+                                         INakedObjectsSurface surface, 
+                                         IOidStrategy oidStrategy, 
+                                         IIdHelper idHelper) {
             this.nakedObjectsFramework = nakedObjectsFramework;
             this.surface = surface;
             this.oidStrategy = oidStrategy;
+            this.idHelper = idHelper;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
@@ -53,9 +59,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             get { return oidStrategy; }
         }
 
-        // todo make this injected
         protected IIdHelper IdHelper {
-            get { return new IdHelper(); }
+            get { return idHelper; }
         }
 
         protected void SetControllerName(string name) {
@@ -81,6 +86,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         protected void SetFramework() {
             ViewData[IdConstants.NoFramework] = NakedObjectsContext;
+            ViewData["IdHelper"] = IdHelper;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {

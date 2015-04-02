@@ -14,6 +14,7 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
@@ -73,7 +74,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new HomeController(NakedObjectsFramework, null, null);
+            controller = new HomeController(NakedObjectsFramework, null, null, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 

@@ -19,6 +19,8 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -78,6 +80,7 @@ namespace MvcTestApp.Tests.Helpers {
         private void SetupViewData() {
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
+            mocks.ViewDataContainer.Object.ViewData["IdHelper"] = new IdHelper();
         }
 
         private static string GetTestData(string name) {

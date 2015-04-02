@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Resources;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {

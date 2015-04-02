@@ -4,6 +4,7 @@
 using System.Web.Mvc;
 using NakedObjects;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -14,7 +15,8 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsFramework, surface, oidStrategy) {
+        public GenericController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idhelper)
+            : base(nakedObjectsFramework, surface, oidStrategy, idhelper) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }

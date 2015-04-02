@@ -10,12 +10,13 @@ using System.Web.UI;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Mvc.App.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-        public AjaxController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsFramework, surface, oidStrategy) {
+        public AjaxController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idhelper) : base(nakedObjectsFramework, surface, oidStrategy, idhelper) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }

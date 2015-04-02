@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {

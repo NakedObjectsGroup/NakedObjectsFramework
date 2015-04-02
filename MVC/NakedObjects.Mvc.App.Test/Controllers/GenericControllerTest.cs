@@ -23,6 +23,8 @@ using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
+using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
@@ -213,7 +215,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
-        private IdHelper IdHelper {
+        private IIdHelper IdHelper {
             get { return new IdHelper();}
         }
 
@@ -223,7 +225,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework, null, null);
+            controller = new GenericController(NakedObjectsFramework, null, null, IdHelper);
             mocks = new ContextMocks(controller);
         }
 
@@ -2178,7 +2180,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework, null, null);
+            controller = new GenericController(NakedObjectsFramework, null, null, IdHelper);
             mocks = new ContextMocks(controller);
         }
 

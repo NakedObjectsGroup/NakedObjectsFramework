@@ -14,6 +14,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Unity;
 
 namespace RestfulObjects.Test.App {
@@ -56,6 +57,8 @@ namespace RestfulObjects.Test.App {
 
             // surface
             container.RegisterType<IOidStrategy, ExternalOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IIdHelper, IdHelper>(new PerResolveLifetimeManager());
+
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
 
             //Externals

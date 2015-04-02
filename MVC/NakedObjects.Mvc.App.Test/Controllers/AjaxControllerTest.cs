@@ -24,6 +24,7 @@ using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -85,7 +86,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
 
             StartTest();
-            controller = new AjaxController(NakedObjectsFramework, null, null);
+            controller = new AjaxController(NakedObjectsFramework, null, null, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -402,7 +403,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void TestJsonp() {
             const string data = "testData";
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null).Jsonp(data, "application/json", Encoding.UTF8);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null, null).Jsonp(data, "application/json", Encoding.UTF8);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -425,7 +426,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void TestJsonpDefaults() {
             const string data = "testData";
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null).Jsonp(data);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null, null).Jsonp(data);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();

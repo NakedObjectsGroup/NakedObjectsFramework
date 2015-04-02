@@ -25,6 +25,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -44,7 +45,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IIdHelper IdHelper(this HtmlHelper html) {
-            return new IdHelper();
+            return (IIdHelper)html.ViewData["IdHelper"];
         }
 
         #region internal api

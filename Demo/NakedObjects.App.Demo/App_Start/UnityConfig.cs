@@ -17,6 +17,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Unity;
 
 namespace NakedObjects.App.Demo {
@@ -41,6 +42,8 @@ namespace NakedObjects.App.Demo {
 
             // surface
             container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+            container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
+
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
 
             //Externals

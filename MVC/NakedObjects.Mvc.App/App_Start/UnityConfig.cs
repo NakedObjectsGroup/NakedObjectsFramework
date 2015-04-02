@@ -19,6 +19,7 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
 using NakedObjects.Meta.Profile;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -42,6 +43,7 @@ namespace NakedObjects.Mvc.App {
 
             // surface
             container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+            container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
 
             //Externals

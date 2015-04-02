@@ -111,6 +111,9 @@
     <Reference Include="NakedObjects.Surface">
       <HintPath>..\..\packages\NakedObjects.Surface.7.1.0-alpha\lib\net451\NakedObjects.Surface.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Surface.Nof4">
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.1.0-alpha\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-alpha\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>

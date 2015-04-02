@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 using NakedObjects.Resources;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {

@@ -111,6 +111,8 @@
     <Compile Include="Interface\IOidSurface.cs" />
     <Compile Include="Interface\IScalarPropertyHolder.cs" />
     <Compile Include="Interface\IVersionSurface.cs" />
+    <Compile Include="Utility\IdConstants.cs" />
+    <Compile Include="Utility\IIdHelper.cs" />
     <Compile Include="Utility\NakedObjectsSurfaceExtensions.cs" />
     <Compile Include="Interface\ScalarProperty.cs" />
     <Compile Include="Interface\ScalarPropertyHolder.cs" />

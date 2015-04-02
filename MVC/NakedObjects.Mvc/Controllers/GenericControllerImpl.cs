@@ -21,6 +21,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
@@ -31,7 +32,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
+        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) { }
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {

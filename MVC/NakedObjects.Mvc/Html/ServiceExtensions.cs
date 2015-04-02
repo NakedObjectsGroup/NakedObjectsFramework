@@ -8,6 +8,7 @@
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using System;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {

@@ -22,6 +22,8 @@ using NakedObjects.DatabaseHelpers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -86,7 +88,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new CustomControllerWrapper(NakedObjectsFramework, null, null);
+            controller = new CustomControllerWrapper(NakedObjectsFramework, null, null, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -214,7 +216,7 @@ namespace MvcTestApp.Tests.Controllers {
         #region Nested type: CustomControllerWrapper
 
         private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
+            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) {}
 
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);
