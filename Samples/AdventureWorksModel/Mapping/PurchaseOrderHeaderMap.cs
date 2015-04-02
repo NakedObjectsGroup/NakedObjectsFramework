@@ -28,9 +28,9 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.OrderPlacedBy);
-            this.HasRequired(t => t.ShipMethod);
-            this.HasRequired(t => t.Vendor);
+            this.HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
+            this.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            this.HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
 
         }
     }

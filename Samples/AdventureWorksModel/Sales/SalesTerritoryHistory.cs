@@ -27,11 +27,15 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
-        public virtual int SalesPersonID { get; set; }
+        #region Title
 
-        [NakedObjectsIgnore]
-        public virtual int TerritoryID { get; set; }
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(SalesPerson).Append(" -", SalesTerritory);
+            return t.ToString();
+        }
+
+        #endregion
 
         [MemberOrder(1)]
         [Mask("d")]
@@ -41,20 +45,19 @@ namespace AdventureWorksModel {
         [Mask("d")]
         public virtual DateTime? EndDate { get; set; }
 
+        #region SalesPerson
+        [NakedObjectsIgnore]
+        public virtual int SalesPersonID { get; set; }
+
         [MemberOrder(3)]
         public virtual SalesPerson SalesPerson { get; set; }
+        #endregion
 
+        #region Sales Territory
+        [NakedObjectsIgnore]
+        public virtual int SalesTerritoryID { get; set; }
         [MemberOrder(4)]
         public virtual SalesTerritory SalesTerritory { get; set; }
-
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(SalesPerson).Append(" -", SalesTerritory);
-            return t.ToString();
-        }
-
         #endregion
 
         #region ModifiedDate and rowguid
@@ -70,7 +73,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 

@@ -63,7 +63,7 @@ namespace AdventureWorksModel {
         #region ShipMethod
 
         [NakedObjectsIgnore]
-        public int ShipMethodID { get; set; }
+        public virtual int ShipMethodID { get; set; }
 
         [MemberOrder(22)]
         public virtual ShipMethod ShipMethod { get; set; }
@@ -72,7 +72,7 @@ namespace AdventureWorksModel {
 
         #region Vendor
         [NakedObjectsIgnore]
-        public int VendorID { get; set; }
+        public virtual int VendorID { get; set; }
 
         [Disabled]
         [MemberOrder(1)]
@@ -141,7 +141,7 @@ namespace AdventureWorksModel {
 
         #region Order Placed By (Employee)
         [NakedObjectsIgnore]
-        public int OrderPlacedByID { get; set; }
+        public virtual int OrderPlacedByID { get; set; }
 
         [MemberOrder(12)]
         public virtual Employee OrderPlacedBy { get; set; }

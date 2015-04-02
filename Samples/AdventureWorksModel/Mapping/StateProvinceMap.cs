@@ -36,7 +36,7 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.CountryRegion);
+            this.HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
             this.HasRequired(t => t.SalesTerritory)
                 .WithMany(t => t.StateProvince)
                 .HasForeignKey(d => d.TerritoryID);

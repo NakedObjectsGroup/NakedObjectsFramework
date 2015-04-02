@@ -23,9 +23,6 @@ namespace AdventureWorksModel
 
             // Relationships
             this.HasRequired(t => t.Contact);
-            //this.HasRequired(t => t.Customer)
-            //    .WithOptional(t => t.Individual);
-
         }
     }
 }

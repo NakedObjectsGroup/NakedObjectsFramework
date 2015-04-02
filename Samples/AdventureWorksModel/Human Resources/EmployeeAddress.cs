@@ -51,7 +51,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 

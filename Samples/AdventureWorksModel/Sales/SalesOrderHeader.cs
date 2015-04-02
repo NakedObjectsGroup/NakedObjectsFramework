@@ -476,7 +476,7 @@ namespace AdventureWorksModel {
 
         #region SalesTerritory
         [NakedObjectsIgnore]
-        public virtual int SalesTerritoryID { get; set; }
+        public virtual int? SalesTerritoryID { get; set; }
 
         [Optionally]
         [MemberOrder(62)]
@@ -497,7 +497,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 

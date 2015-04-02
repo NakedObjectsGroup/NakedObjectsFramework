@@ -10,6 +10,9 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => new { t.SalesOrderID, t.SalesOrderDetailID });
 
+            //Ignores
+            this.Ignore(t => t.Product);
+
             // Properties
             this.Property(t => t.SalesOrderID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
@@ -38,7 +41,7 @@ namespace AdventureWorksModel
             this.HasRequired(t => t.SalesOrderHeader)
                 .WithMany(t => t.Details)
                 .HasForeignKey(d => d.SalesOrderID);
-            this.HasRequired(t => t.SpecialOfferProduct);
+            this.HasRequired(t => t.SpecialOfferProduct).WithMany().HasForeignKey(t => new { t.SpecialOfferID, t.ProductID });
 
         }
     }

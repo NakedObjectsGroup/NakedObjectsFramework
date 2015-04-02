@@ -69,7 +69,7 @@ namespace AdventureWorksModel {
 
         #region SalesPerson
         [NakedObjectsIgnore]
-        public Nullable<int> SalesPersonID { get; set; }
+        public virtual  Nullable<int> SalesPersonID { get; set; }
 
         [Optionally]
         [MemberOrder(40), FindMenu]
@@ -109,7 +109,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 

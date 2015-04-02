@@ -10,6 +10,10 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => t.CreditCardID);
 
+            //Ignores
+            this.Ignore(t => t.Creator);
+            this.Ignore(t => t.ForContact);
+
             // Properties
             this.Property(t => t.CardType)
                 .IsRequired()

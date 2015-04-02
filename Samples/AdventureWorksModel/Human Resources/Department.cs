@@ -23,14 +23,6 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
         #region Properties
 
         [NakedObjectsIgnore]
@@ -42,6 +34,10 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         public virtual string GroupName { get; set; }
+
+        [MemberOrder(99)]
+        [Disabled]
+        public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
     }

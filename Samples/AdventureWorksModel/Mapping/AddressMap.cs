@@ -10,6 +10,11 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => t.AddressID);
 
+            //Ignores
+            this.Ignore(t => t.AddressType);
+            this.Ignore(t => t.ForCustomer);
+            this.Ignore(t => t.CountryRegion);
+
             // Properties
             this.Property(t => t.AddressLine1)
                 .IsRequired()
@@ -38,7 +43,7 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.StateProvince);
+            this.HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t =>t.StateProvinceID);
 
         }
     }

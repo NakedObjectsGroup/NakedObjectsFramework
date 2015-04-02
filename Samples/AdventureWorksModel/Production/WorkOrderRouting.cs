@@ -68,7 +68,7 @@ namespace AdventureWorksModel {
 
         #region Location
         [NakedObjectsIgnore]
-        public virtual int LocationID { get; set; }
+        public virtual short LocationID { get; set; }
 
         [MemberOrder(10)]
         public virtual Location Location { get; set; }

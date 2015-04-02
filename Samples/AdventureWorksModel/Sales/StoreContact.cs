@@ -77,7 +77,7 @@ namespace AdventureWorksModel {
 
         #region ModifiedDate & rowguid
 
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         [MemberOrder(99)]
         [Disabled]

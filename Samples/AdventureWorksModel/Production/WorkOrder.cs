@@ -29,6 +29,16 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+        #region Title
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(Product).Append(StartDate, "d", null);
+            return t.ToString();
+        }
+
+        #endregion
+
         #region ID
 
         [NakedObjectsIgnore]
@@ -71,21 +81,11 @@ namespace AdventureWorksModel {
         #region ScrapReason
 
         [NakedObjectsIgnore]
-        public virtual int ScrapReasonID { get; set; }
+        public virtual short? ScrapReasonID { get; set; }
 
         [Optionally]
         [MemberOrder(26)]
         public virtual ScrapReason ScrapReason { get; set; }
-
-        #endregion
-
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Product).Append(StartDate, "d", null);
-            return t.ToString();
-        }
 
         #endregion
 

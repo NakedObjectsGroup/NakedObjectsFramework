@@ -28,7 +28,7 @@ namespace AdventureWorksModel
 
             // Relationships
             this.HasRequired(t => t.Employee);
-            this.HasOptional(t => t.SalesTerritory);
+            this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }
     }

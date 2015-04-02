@@ -30,7 +30,7 @@ namespace AdventureWorksModel
           this.Property(t => t.CustomerModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasOptional(t => t.SalesTerritory);
+          this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }
     }

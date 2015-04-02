@@ -19,8 +19,7 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasOptional(t => t.Employee);
-
+            this.HasOptional(t => t.Employee).WithMany().HasForeignKey(t => t.EmployeeID);
         }
     }
 }

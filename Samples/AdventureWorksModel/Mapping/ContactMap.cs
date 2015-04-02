@@ -10,6 +10,11 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => t.ContactID);
 
+            //Ignores
+            this.Ignore(t => t.InitialPassword);
+            this.Ignore(t => t.ContactType);
+            this.Ignore(t => t.Contactee);
+
             // Properties
             this.Property(t => t.Title)
                 .HasMaxLength(8);

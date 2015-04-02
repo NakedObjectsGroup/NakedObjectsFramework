@@ -13,6 +13,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("default.png")]
     public abstract class Customer : IHasIntegerId {
+        #region Injected Services
+        public ContactRepository ContactRepository { set; protected get; }
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -24,11 +28,6 @@ namespace AdventureWorksModel {
             CustomerModifiedDate = DateTime.Now;
         }
         #endregion
-
-        private ICollection<CustomerAddress> _CustomerAddress = new List<CustomerAddress>();
-        public ContactRepository ContactRepository { set; protected get; }
-        public IDomainObjectContainer Container { set; protected get; }
-
 
         [Disabled, Description("xxx")]
         public virtual string AccountNumber { get; set; }
@@ -87,6 +86,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Addresses
+        private ICollection<CustomerAddress> _CustomerAddress = new List<CustomerAddress>();
 
         [Disabled, Description("Use Actions")]
         [Eagerly(EagerlyAttribute.Do.Rendering)]

@@ -10,6 +10,9 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => t.SalesOrderID);
 
+            //Ignores
+            this.Ignore(t => t.AddItemsFromCart);
+
             // Properties
             this.Property(t => t.SalesOrderNumber)
                 .IsRequired()
@@ -58,15 +61,15 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.BillingAddress);
-            this.HasRequired(t => t.ShippingAddress);
-            this.HasRequired(t => t.Contact);
-            this.HasRequired(t => t.ShipMethod);
-            this.HasOptional(t => t.CreditCard);
-            this.HasOptional(t => t.CurrencyRate);
-            this.HasRequired(t => t.Customer);
-            this.HasOptional(t => t.SalesPerson);
-            this.HasOptional(t => t.SalesTerritory);
+            this.HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
+            this.HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
+            this.HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
+            this.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            this.HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
+            this.HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
+            this.HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
+            this.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
+            this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }
     }

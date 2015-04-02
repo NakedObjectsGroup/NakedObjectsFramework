@@ -67,7 +67,7 @@ namespace AdventureWorksModel {
 
         #region Product
         [NakedObjectsIgnore]
-        public int ProductID { get; set; }
+        public virtual int ProductID { get; set; }
 
         [Disabled]
         [MemberOrder(10)]

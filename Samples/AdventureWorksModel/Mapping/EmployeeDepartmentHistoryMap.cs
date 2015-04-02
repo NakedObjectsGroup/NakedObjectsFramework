@@ -27,11 +27,11 @@ namespace AdventureWorksModel
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Department);
+            this.HasRequired(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);
             this.HasRequired(t => t.Employee)
                 .WithMany(t => t.DepartmentHistory)
                 .HasForeignKey(d => d.EmployeeID);
-            this.HasRequired(t => t.Shift);
+            this.HasRequired(t => t.Shift).WithMany().HasForeignKey(t => t.ShiftID);
 
         }
     }

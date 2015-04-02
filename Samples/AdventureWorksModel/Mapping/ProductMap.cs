@@ -10,6 +10,10 @@ namespace AdventureWorksModel
             // Primary Key
             this.HasKey(t => t.ProductID);
 
+            //Ignores
+            this.Ignore(t => t.ProductCategory);
+            this.Ignore(t => t.SpecialOffers);
+
             // Properties
             this.Property(t => t.Name)
                 .IsRequired()
@@ -77,10 +81,9 @@ namespace AdventureWorksModel
             this.HasOptional(t => t.ProductModel)
                 .WithMany(t => t.ProductVariants)
                 .HasForeignKey(d => d.ProductModelID);
-            this.HasOptional(t => t.ProductSubcategory);
-            this.HasOptional(t => t.SizeUnit);
-            this.HasOptional(t => t.WeightUnit);
-
+            this.HasOptional(t => t.ProductSubcategory).WithMany().HasForeignKey(t => t.ProductSubcategoryID); ;
+            this.HasOptional(t => t.SizeUnit).WithMany().HasForeignKey(t => t.SizeUnitMeasureCode);
+            this.HasOptional(t => t.WeightUnit).WithMany().HasForeignKey(t => t.WeightUnitMeasureCode);
         }
     }
 }

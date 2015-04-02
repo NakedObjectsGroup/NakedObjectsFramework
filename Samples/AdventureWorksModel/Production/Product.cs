@@ -144,7 +144,7 @@ namespace AdventureWorksModel {
         public virtual string Size { get; set; }
 
         [NakedObjectsIgnore]
-        public string SizeUnitMeasureCode { get; set; }
+        public virtual string SizeUnitMeasureCode { get; set; }
 
         [NakedObjectsIgnore]
         public virtual UnitMeasure SizeUnit { get; set; }
@@ -160,7 +160,7 @@ namespace AdventureWorksModel {
         }
 
         [NakedObjectsIgnore]
-        public string WeightUnitMeasureCode { get; set; }
+        public virtual string WeightUnitMeasureCode { get; set; }
 
         [NakedObjectsIgnore]
         public virtual decimal? Weight { get; set; }
@@ -259,7 +259,7 @@ namespace AdventureWorksModel {
 
         #region ProductModel
         [NakedObjectsIgnore]
-        public Nullable<int> ProductModelID { get; set; }
+        public virtual Nullable<int> ProductModelID { get; set; }
 
         [Optionally]
         [MemberOrder(10)]
@@ -270,14 +270,12 @@ namespace AdventureWorksModel {
             return Container.Instances<ProductModel>().Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
         }
 
-        //public virtual IList<ProductModel> ChoicesProductModel() {
-        //    return Container.Instances<ProductModel>().ToList();
-        //}
-
         #endregion
 
         #region ProductSubcategory
+        private ProductCategory productCategory;
 
+        [NotPersisted]
         [Optionally]
         [MemberOrder(12)]
         public virtual ProductCategory ProductCategory {
@@ -323,7 +321,7 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 
@@ -379,7 +377,6 @@ namespace AdventureWorksModel {
         #region Special Offers
 
         private ICollection<SpecialOfferProduct> _SpecialOfferProduct = new List<SpecialOfferProduct>();
-        private ProductCategory productCategory;
 
         [NakedObjectsIgnore]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct {
@@ -389,7 +386,7 @@ namespace AdventureWorksModel {
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
-        public IList<SpecialOffer> SpecialOffers {
+        public virtual IList<SpecialOffer> SpecialOffers {
             get { return SpecialOfferProduct.Select(n => n.SpecialOffer).Where(so => so != null).ToList(); }
         }
 

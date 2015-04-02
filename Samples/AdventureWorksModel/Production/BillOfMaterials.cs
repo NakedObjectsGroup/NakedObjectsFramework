@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
         public virtual decimal PerAssemblyQty { get; set; }
 
         [NakedObjectsIgnore]
-        public virtual int ProductAssemblyID { get; set; }
+        public virtual int? ProductAssemblyID { get; set; }
         public virtual Product Product { get; set; }
 
         [NakedObjectsIgnore]

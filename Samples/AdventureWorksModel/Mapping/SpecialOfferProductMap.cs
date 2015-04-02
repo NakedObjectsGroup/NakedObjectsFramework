@@ -28,7 +28,7 @@ namespace AdventureWorksModel
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.SpecialOfferProduct)
                 .HasForeignKey(d => d.ProductID);
-            this.HasRequired(t => t.SpecialOffer);
+            this.HasRequired(t => t.SpecialOffer).WithMany().HasForeignKey(t => t.SpecialOfferID);
 
         }
     }

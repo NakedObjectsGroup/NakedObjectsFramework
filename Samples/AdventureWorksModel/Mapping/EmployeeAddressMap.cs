@@ -28,7 +28,7 @@ namespace AdventureWorksModel
             this.HasRequired(t => t.Employee)
                 .WithMany(t => t.Addresses)
                 .HasForeignKey(d => d.EmployeeID);
-            this.HasRequired(t => t.Address);
+            this.HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
 
         }
     }

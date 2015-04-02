@@ -17,8 +17,8 @@ namespace AdventureWorksModel {
         #region Injected Services
         public EmployeeRepository EmployeeRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
-
         #endregion
+
         #region Life Cycle Methods
         public virtual void Persisting() {
             rowguid = Guid.NewGuid();
@@ -29,6 +29,7 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
         #endregion
+        
         #region Title & Icon
 
         public override string ToString() {
@@ -40,11 +41,6 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Properties
-
-        private ICollection<EmployeeAddress> _addresses = new List<EmployeeAddress>();
-        private ICollection<EmployeeDepartmentHistory> _departmentHistory = new List<EmployeeDepartmentHistory>();
-        private ICollection<Employee> _directReports = new List<Employee>();
-        private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
 
         [NakedObjectsIgnore]
         public virtual int EmployeeID { get; set; }
@@ -101,7 +97,7 @@ namespace AdventureWorksModel {
 
         #region Manager
         [NakedObjectsIgnore]
-        public Nullable<int> ManagerID { get; set; }
+        public virtual Nullable<int> ManagerID { get; set; }
 
         [Optionally]
         [MemberOrder(30)]
@@ -113,30 +109,6 @@ namespace AdventureWorksModel {
         }
 
         #endregion
-
-        public virtual ICollection<Employee> DirectReports {
-            get { return _directReports; }
-            set { _directReports = value; }
-        }
-
-        [Disabled]
-        [TableView(true)] //TableView == ListView
-        public virtual ICollection<EmployeeAddress> Addresses {
-            get { return _addresses; }
-            set { _addresses = value; }
-        }
-
-        [TableView(true, "StartDate", "EndDate", "Department", "Shift")]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory {
-            get { return _departmentHistory; }
-            set { _departmentHistory = value; }
-        }
-
-        [TableView(true, "RateChangeDate", "Rate")]
-        public virtual ICollection<EmployeePayHistory> PayHistory {
-            get { return _payHistory; }
-            set { _payHistory = value; }
-        }
 
         #region LoginID
 
@@ -154,10 +126,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #endregion
-
-        #region ModifiedDate and rowguid
-
         #region ModifiedDate
 
         [MemberOrder(99)]
@@ -169,11 +137,47 @@ namespace AdventureWorksModel {
         #region rowguid
 
         [NakedObjectsIgnore]
-        public Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; set; }
 
         #endregion
 
         #endregion
+
+        #region collections
+        private ICollection<Employee> _directReports = new List<Employee>();
+
+        public virtual ICollection<Employee> DirectReports {
+            get { return _directReports; }
+            set { _directReports = value; }
+        }
+
+        private ICollection<EmployeeAddress> _addresses = new List<EmployeeAddress>();
+
+        [Disabled]
+        [TableView(true)]
+        public virtual ICollection<EmployeeAddress> Addresses {
+            get { return _addresses; }
+            set { _addresses = value; }
+        }
+
+        private ICollection<EmployeeDepartmentHistory> _departmentHistory = new List<EmployeeDepartmentHistory>();
+
+        [TableView(true, "StartDate", "EndDate", "Department", "Shift")]
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory {
+            get { return _departmentHistory; }
+            set { _departmentHistory = value; }
+        }
+
+        private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
+
+        [TableView(true, "RateChangeDate", "Rate")]
+        public virtual ICollection<EmployeePayHistory> PayHistory {
+            get { return _payHistory; }
+            set { _payHistory = value; }
+        }
+        #endregion
+
+        #region Actions
 
         #region ChangePayRate (Action)
 
@@ -222,6 +226,7 @@ namespace AdventureWorksModel {
             return current;
         }
 
+        #endregion
         #endregion
     }
 }
