@@ -59,6 +59,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => framework.Session.Principal);
         }
 
+        public IOidStrategy OidStrategy {
+            get { return oidStrategy; }
+        }
+
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
             return MapErrors(() => framework.MetamodelManager.AllSpecs.
                 Where(s => !IsGenericType(s)).

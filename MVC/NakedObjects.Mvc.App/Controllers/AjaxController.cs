@@ -16,7 +16,7 @@ namespace NakedObjects.Mvc.App.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-        public AjaxController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idhelper) : base(nakedObjectsFramework, surface, oidStrategy, idhelper) {
+        public AjaxController(INakedObjectsFramework nakedObjectsFramework, INakedObjectsSurface surface,  IIdHelper idhelper) : base(nakedObjectsFramework, surface, idhelper) {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.ContainerInjector.InitDomainObject(this);
         }

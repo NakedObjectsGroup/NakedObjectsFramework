@@ -32,7 +32,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) { }
+        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface,  IIdHelper idHelper) : base(nakedObjectsContext, surface,  idHelper) { }
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {

@@ -10,10 +10,12 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
@@ -74,7 +76,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new HomeController(NakedObjectsFramework, null, null, new IdHelper());
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            controller = new HomeController(NakedObjectsFramework, mockSurface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 

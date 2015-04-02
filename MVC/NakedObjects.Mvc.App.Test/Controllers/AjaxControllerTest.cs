@@ -24,6 +24,7 @@ using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
@@ -86,7 +87,9 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
 
             StartTest();
-            controller = new AjaxController(NakedObjectsFramework, null, null, new IdHelper());
+
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            controller = new AjaxController(NakedObjectsFramework, mockSurface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -402,8 +405,8 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void TestJsonp() {
             const string data = "testData";
-
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null, null).Jsonp(data, "application/json", Encoding.UTF8);
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, mockSurface, null).Jsonp(data, "application/json", Encoding.UTF8);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -425,8 +428,8 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void TestJsonpDefaults() {
             const string data = "testData";
-
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, null, null, null).Jsonp(data);
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null, mockSurface, null).Jsonp(data);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();

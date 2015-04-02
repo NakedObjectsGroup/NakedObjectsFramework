@@ -36,12 +36,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private readonly IIdHelper idHelper;
 
         protected NakedObjectsController(INakedObjectsFramework nakedObjectsFramework, 
-                                         INakedObjectsSurface surface, 
-                                         IOidStrategy oidStrategy, 
+                                         INakedObjectsSurface surface,
                                          IIdHelper idHelper) {
             this.nakedObjectsFramework = nakedObjectsFramework;
             this.surface = surface;
-            this.oidStrategy = oidStrategy;
+            oidStrategy = surface.OidStrategy;
             this.idHelper = idHelper;
         }
 

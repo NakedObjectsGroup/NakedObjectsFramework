@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -13,7 +14,7 @@ namespace NakedObjects.Test.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
+        public GenericController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {

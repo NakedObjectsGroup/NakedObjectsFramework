@@ -22,7 +22,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) {}
+        protected CustomController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface,  IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions

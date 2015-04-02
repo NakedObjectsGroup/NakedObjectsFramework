@@ -4,6 +4,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 
 namespace NakedObjects.App.Demo.Controllers {
@@ -11,7 +12,7 @@ namespace NakedObjects.App.Demo.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-        public AjaxController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
+        public AjaxController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface,IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
 
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {

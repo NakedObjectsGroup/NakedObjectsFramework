@@ -5,12 +5,13 @@ using System.Web.Mvc;
 using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-        public HomeController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(nakedObjectsContext, surface, oidStrategy) {}
+        public HomeController(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) { }
 
         public ActionResult Index() {
             return View();

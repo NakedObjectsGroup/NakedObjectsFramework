@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
@@ -88,7 +89,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new CustomControllerWrapper(NakedObjectsFramework, null, null, new IdHelper());
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            controller = new CustomControllerWrapper(NakedObjectsFramework, mockSurface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -216,7 +218,7 @@ namespace MvcTestApp.Tests.Controllers {
         #region Nested type: CustomControllerWrapper
 
         private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) {}
+            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
 
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
@@ -23,6 +24,7 @@ using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
@@ -225,7 +227,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework, null, null, IdHelper);
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            controller = new GenericController(NakedObjectsFramework, mockSurface, IdHelper);
             mocks = new ContextMocks(controller);
         }
 
@@ -2180,7 +2183,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            controller = new GenericController(NakedObjectsFramework, null, null, IdHelper);
+            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            controller = new GenericController(NakedObjectsFramework, mockSurface, IdHelper);
             mocks = new ContextMocks(controller);
         }
 

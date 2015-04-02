@@ -13,6 +13,7 @@ namespace NakedObjects.Surface {
         void Start();
         void End(bool success);
         IPrincipal GetUser();
+        IOidStrategy OidStrategy { get; }
         ObjectContextSurface GetService(ILinkObjectId serviceName);
         ListContextSurface GetServices();
 

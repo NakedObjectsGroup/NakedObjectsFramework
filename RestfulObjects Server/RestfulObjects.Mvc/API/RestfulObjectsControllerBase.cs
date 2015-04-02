@@ -36,9 +36,9 @@ namespace RestfulObjects.Mvc {
             DefaultPageSize = 20;
         }
 
-        protected RestfulObjectsControllerBase(INakedObjectsSurface surface, IOidStrategy oidStrategy) {
+        protected RestfulObjectsControllerBase(INakedObjectsSurface surface) {
             Surface = surface;
-            OidStrategy = oidStrategy;
+            OidStrategy = surface.OidStrategy;
         }
 
         public static bool IsReadOnly { get; set; }

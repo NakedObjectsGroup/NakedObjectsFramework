@@ -14,7 +14,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class SystemControllerImpl : NakedObjectsController {
-        protected SystemControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IOidStrategy oidStrategy, IIdHelper idHelper) : base(nakedObjectsContext, surface, oidStrategy, idHelper) {}
+        protected SystemControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface,  IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
 
         public virtual ActionResult ClearHistory(bool clearAll) {
             object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
