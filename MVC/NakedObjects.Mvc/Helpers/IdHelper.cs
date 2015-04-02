@@ -101,12 +101,17 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(owner) + Sep + action.Id;
         }
 
-        public string GetActionId(ActionContext targetActionContext, ActionContext actionContext, string propertyName) {
-            string contextActionName = actionContext.Action == null ? "" : actionContext.Action.Id + Sep;
-            string contextNakedObjectId = actionContext.Target == null || actionContext.Target == targetActionContext.Target ? "" : GetObjectId(ScaffoldAdapter.Wrap(actionContext.Target)) + Sep;
-            string propertyId = string.IsNullOrEmpty(propertyName) ? "" : NameUtils.CapitalizeName(propertyName) + Sep;
+        public string GetActionId(string propertyName, INakedObjectActionSurface actionContextActionSurface, INakedObjectSurface actionContextTargetSurface, INakedObjectSurface targetActionContextTargetSurface, INakedObjectActionSurface targetActionContextActionSurface) {
+            var actionContextAction = actionContextActionSurface == null ? null : ((ScaffoldAction) actionContextActionSurface).WrappedSpec;
+            var actionContextTarget = actionContextTargetSurface == null ? null : ((ScaffoldAdapter) actionContextTargetSurface).WrappedNakedObject;
+            var targetActionContextAction = targetActionContextActionSurface == null ? null : ((ScaffoldAction)targetActionContextActionSurface).WrappedSpec;
+            var targetActionContextTarget = targetActionContextTargetSurface == null ? null : ((ScaffoldAdapter)targetActionContextTargetSurface).WrappedNakedObject;
 
-            return contextNakedObjectId + contextActionName + propertyId + GetObjectId(ScaffoldAdapter.Wrap(targetActionContext.Target)) + Sep + targetActionContext.Action.Id;
+            
+            string contextActionName = actionContextAction == null ? "" : actionContextAction.Id + Sep;
+            string contextNakedObjectId = actionContextTarget == null || actionContextTarget == targetActionContextTarget ? "" : GetObjectId(actionContextTargetSurface) + Sep;
+            string propertyId = string.IsNullOrEmpty(propertyName) ? "" : NameUtils.CapitalizeName(propertyName) + Sep;
+            return contextNakedObjectId + contextActionName + propertyId + GetObjectId(targetActionContextTargetSurface) + Sep + targetActionContextAction.Id;
         }
 
         public string GetActionDialogId(INakedObjectSurface owner, INakedObjectActionSurface actionSurface) {

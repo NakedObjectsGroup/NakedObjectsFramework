@@ -35,6 +35,6 @@ namespace NakedObjects.Web.Mvc.Html {
         string GetMandatoryIndicator();
         string MakeId(params string[] ids);
         bool KeyPrefixIs(string key, string match);
-        string GetActionId(ActionContext targetActionContext, ActionContext actionContext, string propertyName);
+        string GetActionId(string propertyName, INakedObjectActionSurface actionContextAction, INakedObjectSurface actionContextTarget, INakedObjectSurface targetActionContextTarget, INakedObjectActionSurface targetActionContextAction);
     }
 }

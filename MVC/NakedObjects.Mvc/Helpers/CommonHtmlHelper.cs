@@ -2442,9 +2442,14 @@ namespace NakedObjects.Web.Mvc.Html {
             ActionContext targetActionContext,
             ActionContext actionContext,
             string propertyName) {
+            var actionContextAction = actionContext.Action == null ? null : ScaffoldAction.Wrap(actionContext.Action);
+            var actionContextTarget = actionContext.Target == null ? null : ScaffoldAdapter.Wrap(actionContext.Target);
+            var targetActionContextTarget = targetActionContext.Target == null ? null : ScaffoldAdapter.Wrap(targetActionContext.Target);
+            var targetActionContextAction = targetActionContext.Action == null ? null : ScaffoldAction.Wrap(targetActionContext.Action);
+
             return new RouteValueDictionary(new {
                 @class = targetActionContext.GetActionClass(html.Framework()),
-                id = html.IdHelper().GetActionId(targetActionContext, actionContext, propertyName),
+                id = html.IdHelper().GetActionId(propertyName, actionContextAction, actionContextTarget, targetActionContextTarget, targetActionContextAction),
                 name,
                 type = "submit",
                 value = html.GetButtonNameValues(targetActionContext, actionContext, null, propertyName)

@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public abstract class ObjectContext {
+    internal abstract class ObjectContext {
         protected IIdHelper IdHelper { get; set; }
 
         protected ObjectContext(IIdHelper idHelper ,ObjectContext otherContext) {
@@ -30,7 +30,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public INakedObjectAdapter Target { get; set; }
     }
 
-    public abstract class FeatureContext : ObjectContext {
+    internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(IIdHelper idHelper ,ObjectContext otherContext) : base(idHelper, otherContext) { }
         protected FeatureContext(IIdHelper idHelper ,INakedObjectAdapter target) : base(idHelper, target) {}
         public abstract IFeatureSpec Feature { get; }
@@ -112,7 +112,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    public class ActionContext : FeatureContext {
+    internal class ActionContext : FeatureContext {
         public ActionContext(IIdHelper idHelper, ActionContext otherContext)
             : base(idHelper, otherContext) {
             EmbeddedInObject = otherContext.EmbeddedInObject;
@@ -207,7 +207,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    public class ParameterContext : ActionContext {
+    internal class ParameterContext : ActionContext {
         public ParameterContext(IIdHelper idhelper, ParameterContext otherContext) : base(idhelper, otherContext) {
             Parameter = otherContext.Parameter;
         }
