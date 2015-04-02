@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface;
+using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
@@ -389,7 +390,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // contributed action being invoked with multiple parms - populate first that match the target 
                     IActionParameterSpec parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Spec.IsOfType(p.Spec));
                     if (parmToPopulate != null) {
-                        ViewData[IdHelper.GetParameterInputId(action, parmToPopulate)] = NakedObjectsContext.GetObjectId(nakedObject.Object);
+                        ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmToPopulate)] = NakedObjectsContext.GetObjectId(nakedObject.Object);
                     }
                 }
             }

@@ -31,6 +31,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -1404,7 +1405,7 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = adapter.Spec.GetActions().First();
             IActionParameterSpec parm = action.Parameters.First();
 
-            string keyToSelect = IdHelper.GetParameterInputId(action, parm);
+            string keyToSelect = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm);
             INakedObjectAdapter objToSelect = NakedObjectsFramework.GetNakedObject("Expenses.ExpenseClaims.ExpenseType;4;False");
 
             mocks.ViewDataContainer.Object.ViewData.ModelState.SetModelValue(keyToSelect, new ValueProviderResult(objToSelect, null, null));

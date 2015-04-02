@@ -216,7 +216,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 throw new ArgumentException(error);
             }
 
-            string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + html.IdHelper().GetParameterInputId(action, action.Parameters.Single(p => p.Id.ToLower() == t.ToLower())));
+            string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + html.IdHelper().GetParameterInputId(ScaffoldAction.Wrap(action), action.Parameters.Single(p => p.Id.ToLower() == t.ToLower())));
 
             var url = html.GenerateUrl("GetActionChoices", "Ajax", new RouteValueDictionary(new {id = html.Framework().GetObjectId(nakedObject), actionName = action.Id}));
             fieldSet.MergeAttribute("data-choices", url);
@@ -650,7 +650,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 foreach (ParameterContext pc in actionContext.GetParameterContexts(html.Framework())) {
                     if (pc.CustomValue != null) {
-                        html.ViewData[html.IdHelper().GetParameterInputId(actionContext.Action, pc.Parameter)] = pc.CustomValue.Spec.IsParseable ? pc.CustomValue.Object : pc.CustomValue;
+                        html.ViewData[html.IdHelper().GetParameterInputId(ScaffoldAction.Wrap(actionContext.Action), pc.Parameter)] = pc.CustomValue.Spec.IsParseable ? pc.CustomValue.Object : pc.CustomValue;
                     }
                 }
 
@@ -1344,7 +1344,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 values = context.Action.Parameters.
                     Where(p => facet.ParameterNamesAndTypes.Select(pnt => pnt.Item1).Contains(p.Id.ToLower())).
                     ToDictionary(p => p.Id.ToLower(),
-                        p => html.GetParmExistingValue(html.IdHelper().GetParameterInputId(context.Action, p), new ParameterContext(html.IdHelper(), context) {Parameter = p}, false));
+                        p => html.GetParmExistingValue(html.IdHelper().GetParameterInputId(ScaffoldAction.Wrap(context.Action), p), new ParameterContext(html.IdHelper(), context) { Parameter = p }, false));
             }
 
             return html.GetChoicesSet(context, existingValue, values);

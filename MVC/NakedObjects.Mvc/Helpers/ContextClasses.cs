@@ -174,11 +174,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetConcurrencyActionInputId(IAssociationSpec nakedObjectAssociation) {
-            return IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(Target), Action, ScaffoldAssoc.Wrap(nakedObjectAssociation));
+            return IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(Target), ScaffoldAction.Wrap(Action), ScaffoldAssoc.Wrap(nakedObjectAssociation));
         }
 
         public string GetActionId() {
-            return IdHelper.GetActionId(ScaffoldAdapter.Wrap(Target), Action);
+            return IdHelper.GetActionId(ScaffoldAdapter.Wrap(Target), ScaffoldAction.Wrap(Action));
         }
 
         private string GetPresentationHint() {
@@ -195,15 +195,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetSubMenuId() {
-            return IdHelper.GetSubMenuId(ScaffoldAdapter.Wrap(Target), Action);
+            return IdHelper.GetSubMenuId(ScaffoldAdapter.Wrap(Target), ScaffoldAction.Wrap(Action));
         }
 
         public string GetActionDialogId() {
-            return IdHelper.GetActionDialogId(ScaffoldAdapter.Wrap(Target), Action);
+            return IdHelper.GetActionDialogId(ScaffoldAdapter.Wrap(Target), ScaffoldAction.Wrap(Action));
         }
 
         public string GetFindMenuId(string propertyName) {
-            return IdHelper.GetFindMenuId(ScaffoldAdapter.Wrap(Target), Action, propertyName);
+            return IdHelper.GetFindMenuId(ScaffoldAdapter.Wrap(Target), ScaffoldAction.Wrap(Action), propertyName);
         }
     }
 
@@ -239,15 +239,15 @@ namespace NakedObjects.Web.Mvc.Html {
         public bool IsParameterEdit { get; set; }
 
         public string GetParameterInputId() {
-            return IdHelper.GetParameterInputId(Action, Parameter);
+            return IdHelper.GetParameterInputId(ScaffoldAction.Wrap(Action), Parameter);
         }
 
         public string GetParameterAutoCompleteId() {
-            return IdHelper.GetParameterAutoCompleteId(Action, Parameter);
+            return IdHelper.GetParameterAutoCompleteId(ScaffoldAction.Wrap(Action), Parameter);
         }
 
         public string GetParameterId() {
-            return IdHelper.GetParameterId(Action, Parameter);
+            return IdHelper.GetParameterId(ScaffoldAction.Wrap(Action), Parameter);
         }
 
         private string GetPresentationHint() {

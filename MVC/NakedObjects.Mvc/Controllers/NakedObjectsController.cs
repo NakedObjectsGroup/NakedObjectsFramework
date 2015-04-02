@@ -164,11 +164,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
             // all mandatory fields are set. 
             foreach (IActionParameterSpec parm in action.Parameters) {
-                object result = GetRawParameterValue(parm, controlData, IdHelper.GetParameterInputId(action, parm));
+                object result = GetRawParameterValue(parm, controlData, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action) , parm));
                 var stringResult = result as string;
 
                 if (parm.IsMandatory && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
-                    ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), MvcUi.Mandatory);
+                    ModelState.AddModelError(IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm), MvcUi.Mandatory);
                 }
             }
 
@@ -176,19 +176,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ModelState.IsValid) {
                 foreach (IActionParameterSpec parm in action.Parameters) {
                     try {
-                        INakedObjectAdapter valueNakedObject = GetParameterValue(parm, IdHelper.GetParameterInputId(action, parm), controlData);
+                        INakedObjectAdapter valueNakedObject = GetParameterValue(parm, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm), controlData);
 
                         ValidateParameter(action, parm, targetNakedObject, valueNakedObject);
                     }
                     catch (InvalidEntryException) {
-                        ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), MvcUi.InvalidEntry);
+                        ModelState.AddModelError(IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm), MvcUi.InvalidEntry);
                     }
                 }
             }
 
             // check for validity of whole set, including any 'co-validation' involving multiple parameters
             if (ModelState.IsValid) {
-                IEnumerable<INakedObjectAdapter> parms = action.Parameters.Select(p => GetParameterValue(p, IdHelper.GetParameterInputId(action, p), controlData));
+                IEnumerable<INakedObjectAdapter> parms = action.Parameters.Select(p => GetParameterValue(p, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), p), controlData));
 
                 IConsent consent = action.IsParameterSetValid(targetNakedObject, parms.ToArray());
                 if (!consent.IsAllowed) {
@@ -202,7 +202,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public void ValidateParameter(IActionSpec action, IActionParameterSpec parm, INakedObjectAdapter targetNakedObject, INakedObjectAdapter valueNakedObject) {
             IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject);
             if (!consent.IsAllowed) {
-                ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), consent.Reason);
+                ModelState.AddModelError(IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm), consent.Reason);
             }
         }
 
@@ -223,7 +223,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             IActionSpec action = controlData.GetAction(NakedObjectsContext);
             var form = controlData.Form;
             foreach (IActionParameterSpec parm in action.Parameters) {
-                string name = IdHelper.GetParameterInputId(action, parm);
+                string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm);
                 ValueProviderResult vp = form.GetValue(name);
                 string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
 
@@ -307,14 +307,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal IEnumerable<INakedObjectAdapter> GetParameterValues(IActionSpec action, ObjectAndControlData controlData) {
-            return action.Parameters.Select(parm => GetParameterValue(parm, IdHelper.GetParameterInputId(action, parm), controlData));
+            return action.Parameters.Select(parm => GetParameterValue(parm, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm), controlData));
         }
 
         internal void SetContextObjectAsParameterValue(IActionSpec targetAction, INakedObjectAdapter contextNakedObject) {
             if (targetAction.Parameters.Any(p => p.Spec.IsOfType(contextNakedObject.Spec))) {
                 foreach (IActionParameterSpec parm in targetAction.Parameters) {
                     if (parm.Spec.IsOfType(contextNakedObject.Spec)) {
-                        string name = IdHelper.GetParameterInputId(targetAction, parm);
+                        string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(targetAction), parm);
                         AddAttemptedValue(name, contextNakedObject);
                     }
                 }
@@ -393,7 +393,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
                 if (!ignore) {
                     // deliberately not an attempted value so it only gets populated after masking 
-                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Spec.IsParseable ? value.Object : value;
+                    ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm)] = parm.Spec.IsParseable ? value.Object : value;
                 }
             }
         }
@@ -410,7 +410,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetSelectedParameters(IActionSpec action) {
             var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
-                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
+                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), p), p => NakedObjectsContext.GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
@@ -419,7 +419,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, NakedObjectsContext.GetNakedObjectFromId(dict[p.Id])));
-                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => NakedObjectsContext.GetNakedObjectFromId(dict[p.Id]));
+                Dictionary<string, INakedObjectAdapter> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), p), p => NakedObjectsContext.GetNakedObjectFromId(dict[p.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }

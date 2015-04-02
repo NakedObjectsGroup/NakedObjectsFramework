@@ -225,7 +225,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
-                var newForm = new FormCollection {{IdHelper.GetParameterInputId(action, action.Parameters.First()), NakedObjectsContext.GetObjectId(nakedObject)}};
+                var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), action.Parameters.First()), NakedObjectsContext.GetObjectId(nakedObject) } };
 
                 // horrid kludge 
                 var oldForm = controlData.Form;
@@ -254,7 +254,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private ActionResult InitialAction(ObjectAndControlData controlData) {
             var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
             var nakedObjectAction = controlData.GetAction(NakedObjectsContext);
-            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), nakedObjectAction, ScaffoldAssoc.Wrap(y)));
+            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(nakedObjectAction), ScaffoldAssoc.Wrap(y)));
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 
@@ -262,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var targetNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
             var targetAction = controlData.GetAction(NakedObjectsContext);
 
-            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), targetAction, ScaffoldAssoc.Wrap(y)));
+            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(targetAction), ScaffoldAssoc.Wrap(y)));
 
             if (targetNakedObject.IsNotPersistent()) {
                 RefreshTransient(targetNakedObject, controlData.Form);

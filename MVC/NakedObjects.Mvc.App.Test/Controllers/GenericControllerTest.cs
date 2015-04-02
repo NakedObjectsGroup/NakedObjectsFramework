@@ -312,8 +312,8 @@ namespace MvcTestApp.Tests.Controllers {
             IActionParameterSpec parmFirstName = actionFindEmployeeByname.Parameters[0];
             IActionParameterSpec parmSecondName = actionFindEmployeeByname.Parameters[1];
 
-            string idFirstName = IdHelper.GetParameterInputId(actionFindEmployeeByname, parmFirstName);
-            string idSecondName = IdHelper.GetParameterInputId(actionFindEmployeeByname, parmSecondName);
+            string idFirstName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(actionFindEmployeeByname), parmFirstName);
+            string idSecondName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(actionFindEmployeeByname), parmSecondName);
 
             return GetForm(new Dictionary<string, string> {
                 {idFirstName, firstName},
@@ -327,8 +327,8 @@ namespace MvcTestApp.Tests.Controllers {
             IActionParameterSpec parmFirstName = action.Parameters[0];
             IActionParameterSpec parmSecondName = action.Parameters[1];
 
-            string idFirstName = IdHelper.GetParameterInputId(action, parmFirstName);
-            string idSecondName = IdHelper.GetParameterInputId(action, parmSecondName);
+            string idFirstName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmFirstName);
+            string idSecondName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmSecondName);
 
             return GetForm(new Dictionary<string, string> {
                 {idFirstName, firstName},
@@ -342,8 +342,8 @@ namespace MvcTestApp.Tests.Controllers {
             IActionParameterSpec parmFirstName = action.Parameters[0];
             IActionParameterSpec parmSecondName = action.Parameters[1];
 
-            string idFirstName = IdHelper.GetParameterInputId(action, parmFirstName);
-            string idSecondName = IdHelper.GetParameterInputId(action, parmSecondName);
+            string idFirstName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmFirstName);
+            string idSecondName = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmSecondName);
 
             return GetForm(new Dictionary<string, string> {
                 {idFirstName, firstName},
@@ -354,7 +354,7 @@ namespace MvcTestApp.Tests.Controllers {
         private  FormCollection GetFormForBestSpecialOffer(INakedObjectAdapter productRepo, string quantity) {
             IActionSpec action = productRepo.Spec.GetActions().Single(a => a.Id == "BestSpecialOffer");
             IActionParameterSpec parmQuantity = action.Parameters[0];
-            string idQuantity = IdHelper.GetParameterInputId(action, parmQuantity);
+            string idQuantity = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmQuantity);
             return GetForm(new Dictionary<string, string> {
                 {idQuantity, quantity},
             });
@@ -366,9 +366,9 @@ namespace MvcTestApp.Tests.Controllers {
             IActionParameterSpec pp2 = action.Parameters[1];
             IActionParameterSpec pp3 = action.Parameters[2];
 
-            string idP1 = IdHelper.GetParameterInputId(action, pp1);
-            string idP2 = IdHelper.GetParameterInputId(action, pp2);
-            string idP3 = IdHelper.GetParameterInputId(action, pp3);
+            string idP1 = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), pp1);
+            string idP2 = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), pp2);
+            string idP3 = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), pp3);
 
             return GetForm(new Dictionary<string, string> {
                 {idP1, p1},
@@ -380,7 +380,7 @@ namespace MvcTestApp.Tests.Controllers {
         private  FormCollection GetFormForListProductsBySubCategory(INakedObjectAdapter productRepo, string pscId) {
             IActionSpec action = productRepo.Spec.GetActions().Single(a => a.Id == "ListProductsBySubCategory");
             IActionParameterSpec parmPsc = action.Parameters[0];
-            string idPsc = IdHelper.GetParameterInputId(action, parmPsc);
+            string idPsc = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmPsc);
 
             return GetForm(new Dictionary<string, string> {
                 {idPsc, pscId},
@@ -501,7 +501,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private  FormCollection GetFormForCreateNewEmployeeFromContact(IActionSpec action, string contact, out IDictionary<string, string> idToRawValue) {
             IActionParameterSpec parmContact = action.Parameters[0];
-            string idContact = IdHelper.GetParameterInputId(action, parmContact);
+            string idContact = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmContact);
             idToRawValue = new Dictionary<string, string> {
                 {idContact, contact},
             };
@@ -512,8 +512,8 @@ namespace MvcTestApp.Tests.Controllers {
             IActionParameterSpec parmCust = action.Parameters[0];
             IActionParameterSpec parmCopy = action.Parameters[1];
 
-            string idCust = IdHelper.GetParameterInputId(action, parmCust);
-            string idCopy = IdHelper.GetParameterInputId(action, parmCopy);
+            string idCust = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmCust);
+            string idCopy = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmCopy);
 
             idToRawValue = new Dictionary<string, string> {
                 {idCust, cust},
@@ -1571,7 +1571,7 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = order.GetActionLeafNode("AddNewSalesReasons");
 
-            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, ScaffoldAssoc.Wrap(assocMD));
+            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), ScaffoldAction.Wrap(action), ScaffoldAssoc.Wrap(assocMD));
 
             form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
@@ -1598,7 +1598,7 @@ namespace MvcTestApp.Tests.Controllers {
             IAssociationSpec assocMD = ((IObjectSpec) order.Spec).GetProperty("ModifiedDate");
             IActionSpec action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
-            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), action, ScaffoldAssoc.Wrap(assocMD));
+            string idMD = IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(order), ScaffoldAction.Wrap(action), ScaffoldAssoc.Wrap(assocMD));
 
             form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 

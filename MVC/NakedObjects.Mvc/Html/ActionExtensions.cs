@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), action));
+            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
                 IdConstants.ParamContainerName,
-                html.IdHelper().GetParameterContainerId(contextAction));
+                html.IdHelper().GetParameterContainerId(ScaffoldAction.Wrap(contextAction)));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext),
                 IdConstants.ParamContainerName,
-                html.IdHelper().GetParameterContainerId(actionContext.Action));
+                html.IdHelper().GetParameterContainerId(ScaffoldAction.Wrap(actionContext.Action)));
         }
 
         #endregion

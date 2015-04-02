@@ -96,7 +96,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (action != null) {
                 IActionParameterSpec parameter = action.Parameters.Where(p => p.Id.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Single();
-                parmId = IdHelper.GetParameterInputId(action, parameter);
+                parmId = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parameter);
 
                 if (value == null) {
                     value = Request.Params[parmId];
@@ -152,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Decrypt(parms);
 
             foreach (IActionParameterSpec parm in action.Parameters) {
-                string[] values = GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
+                string[] values = GetRawValues(parms, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm));
                 results[parm.Id.ToLower()] = GetValue(values, parm, parm.Spec);
             }
 
@@ -185,7 +185,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
-                    choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
+                    choices[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), p)] = new[] { value, content };
                 }
             }
             return Jsonp(choices);
