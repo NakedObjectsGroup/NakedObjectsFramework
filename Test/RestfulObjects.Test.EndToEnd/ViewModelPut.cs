@@ -28,6 +28,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod] 
+        [Ignore]
         public void WithReference() {
             var simpleJ = new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1))));
 

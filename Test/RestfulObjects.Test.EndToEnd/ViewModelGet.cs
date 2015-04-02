@@ -33,7 +33,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMMostSimple + key1 + JsonRep.SimpleDomainModeAsQueryString, "WithSimpleDomainModel");
         }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+        [TestMethod] 
         public void AttemptWithMalformedDomainModel() {
             string url = Urls.Objects + Urls.VMMostSimple + key1 + JsonRep.DomainModeQueryStringMalformed;
             Helpers.TestResponse(url, null, null, Methods.Get, Codes.SyntacticallyInvalid);
@@ -137,7 +137,6 @@ namespace RestfulObjects.Test.EndToEnd {
         //TODO:  Need tests for accessing the collections on the returned VM
 
         [TestMethod]
-         // fails after contributed action change
         public void WithAction()
         {
             Object(Urls.VMWithAction+1, "WithAction");
@@ -148,8 +147,6 @@ namespace RestfulObjects.Test.EndToEnd {
         {
             Object(Urls.VMWithAction + 1+"/actions/AnActionReturnsNull", "WithAction-ActionDetails");
         }
-
-        //AnActionReturnsNull
 
         [TestMethod]
         public void AttemptWithActionInvalidKey1()

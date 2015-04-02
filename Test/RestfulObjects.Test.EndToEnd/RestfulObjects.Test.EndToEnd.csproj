@@ -343,6 +343,7 @@
     <Content Include="Json reference files\ViewModel-Get-WithSimpleDomainModel.txt" />
     <Content Include="Json reference files\ViewModel-Get-WithValue.txt" />
     <Content Include="Json reference files\ViewModel-Put-MostSimpleViewModel.txt" />
+    <Content Include="Json reference files\ViewModel-Put-WithReference.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
