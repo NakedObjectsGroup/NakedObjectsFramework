@@ -225,7 +225,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
-                var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), action.Parameters.First()), NakedObjectsContext.GetObjectId(nakedObject) } };
+                var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap( action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
 
                 // horrid kludge 
                 var oldForm = controlData.Form;

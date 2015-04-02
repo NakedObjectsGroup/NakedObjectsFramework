@@ -1405,7 +1405,7 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = adapter.Spec.GetActions().First();
             IActionParameterSpec parm = action.Parameters.First();
 
-            string keyToSelect = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parm);
+            string keyToSelect = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm));
             INakedObjectAdapter objToSelect = NakedObjectsFramework.GetNakedObject("Expenses.ExpenseClaims.ExpenseType;4;False");
 
             mocks.ViewDataContainer.Object.ViewData.ModelState.SetModelValue(keyToSelect, new ValueProviderResult(objToSelect, null, null));

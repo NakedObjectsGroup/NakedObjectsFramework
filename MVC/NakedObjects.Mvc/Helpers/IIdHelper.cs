@@ -20,9 +20,9 @@ namespace NakedObjects.Web.Mvc.Html {
         string GetSubMenuId(INakedObjectSurface owner, INakedObjectActionSurface action);
         string GetSubMenuId(INakedObjectSurface owner, INakedObjectSurface service);
         string GetFindMenuId(INakedObjectSurface nakedObject, INakedObjectActionSurface action, string propertyName);
-        string GetParameterId(INakedObjectActionSurface action, IActionParameterSpec parameter);
-        string GetParameterInputId(INakedObjectActionSurface action, IActionParameterSpec parameter);
-        string GetParameterAutoCompleteId(INakedObjectActionSurface action, IActionParameterSpec parameter);
+        string GetParameterId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
+        string GetParameterInputId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
+        string GetParameterAutoCompleteId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
         string GetCollectionContainerId(INakedObjectSurface collection);
         string GetActionContainerId(INakedObjectSurface nakedObject);
         string GetServiceContainerId(INakedObjectSurface nakedObject);

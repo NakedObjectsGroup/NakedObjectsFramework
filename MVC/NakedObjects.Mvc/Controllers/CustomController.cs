@@ -390,7 +390,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // contributed action being invoked with multiple parms - populate first that match the target 
                     IActionParameterSpec parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Spec.IsOfType(p.Spec));
                     if (parmToPopulate != null) {
-                        ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), parmToPopulate)] = NakedObjectsContext.GetObjectId(nakedObject.Object);
+                        ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parmToPopulate))] = NakedObjectsContext.GetObjectId(nakedObject.Object);
                     }
                 }
             }

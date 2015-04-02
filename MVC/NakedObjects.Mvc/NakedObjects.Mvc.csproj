@@ -191,6 +191,7 @@
     <Compile Include="Helpers\ScaffoldAction.cs" />
     <Compile Include="Helpers\ScaffoldAdapter.cs" />
     <Compile Include="Helpers\ScaffoldAssoc.cs" />
+    <Compile Include="Helpers\ScaffoldParm.cs" />
     <Compile Include="Helpers\SimpleEncryptDecrypt.cs" />
     <Compile Include="Html\ActionExtensions.cs" />
     <Compile Include="Html\CollectionExtensions.cs" />

@@ -239,15 +239,15 @@ namespace NakedObjects.Web.Mvc.Html {
         public bool IsParameterEdit { get; set; }
 
         public string GetParameterInputId() {
-            return IdHelper.GetParameterInputId(ScaffoldAction.Wrap(Action), Parameter);
+            return IdHelper.GetParameterInputId(ScaffoldAction.Wrap(Action), ScaffoldParm.Wrap(Parameter));
         }
 
         public string GetParameterAutoCompleteId() {
-            return IdHelper.GetParameterAutoCompleteId(ScaffoldAction.Wrap(Action), Parameter);
+            return IdHelper.GetParameterAutoCompleteId(ScaffoldAction.Wrap(Action), ScaffoldParm.Wrap(Parameter));
         }
 
         public string GetParameterId() {
-            return IdHelper.GetParameterId(ScaffoldAction.Wrap(Action), Parameter);
+            return IdHelper.GetParameterId(ScaffoldAction.Wrap(Action), ScaffoldParm.Wrap(Parameter));
         }
 
         private string GetPresentationHint() {

@@ -136,17 +136,20 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(nakedObject) + contextActionName + Sep + NameUtils.CapitalizeName(propertyName) + Sep + IdConstants.FindMenuName;
         }
 
-        public string GetParameterId(INakedObjectActionSurface actionSurface, IActionParameterSpec parameter) {
+        public string GetParameterId(INakedObjectActionSurface actionSurface, INakedObjectActionParameterSurface parameterSurface) {
+            var parameter = ((ScaffoldParm)parameterSurface).WrappedSpec;
             var action = ((ScaffoldAction) actionSurface).WrappedSpec;
             return action.OnSpec.ShortName + Sep + action.Id + Sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
-        public string GetParameterInputId(INakedObjectActionSurface action, IActionParameterSpec parameter) {
-            return GetParameterId(action, parameter) + Sep + InputOrSelect(parameter.Spec);
+        public string GetParameterInputId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameterSurface) {
+            var parameter = ((ScaffoldParm) parameterSurface).WrappedSpec;
+            return GetParameterId(action, parameterSurface) + Sep + InputOrSelect(parameter.Spec);
         }
 
-        public string GetParameterAutoCompleteId(INakedObjectActionSurface action, IActionParameterSpec parameter) {
-            var id = GetParameterInputId(action, parameter);
+        public string GetParameterAutoCompleteId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameterSurface) {
+            var parameter = ((ScaffoldParm)parameterSurface).WrappedSpec;
+            var id = GetParameterInputId(action, parameterSurface);
             return parameter.Spec.IsParseable ? id : id + Sep + AutoCompleteName;
         }
 
