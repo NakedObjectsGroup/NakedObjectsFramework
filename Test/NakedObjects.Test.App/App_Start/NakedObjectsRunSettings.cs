@@ -24,6 +24,12 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Test.App {
     public class NakedObjectsRunSettings {
+
+        private static string[] ModelNamespaces {
+            get {
+                return new string[] { "AdventureWorksModel" };
+            }
+        }
         
 		private static Type[] Types {
             get {
@@ -35,8 +41,9 @@ namespace NakedObjects.Test.App {
                     typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
+                    typeof (ProductProductPhoto),
                     typeof (ActionResultModelQ<>),
-                    typeof (ActionResultModel<>)
+                    typeof (ActionResultModel<>)                
                 };
             }
         }
@@ -61,19 +68,13 @@ namespace NakedObjects.Test.App {
             }
         }
 
-        private static Type[] AssociatedTypes() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
-        }
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, AssociatedTypes().Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             return config;
         }
 
