@@ -10,7 +10,18 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("gear.png")]
-    public class ProductVendor : AWDomainObject {
+    public class ProductVendor {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int ProductID { get; set; }
 

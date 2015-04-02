@@ -12,9 +12,21 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("trolley_item.png")]
-    public class SalesOrderDetail : AWDomainObject {
-
+    public class SalesOrderDetail {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         #region OrderQty
 

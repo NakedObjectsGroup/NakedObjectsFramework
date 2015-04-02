@@ -13,7 +13,17 @@ namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Bounded]
     [Immutable]
-    public class UnitMeasure : AWDomainObject {
+    public class UnitMeasure {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [MemberOrder(10)]
         public virtual string UnitMeasureCode { get; set; }

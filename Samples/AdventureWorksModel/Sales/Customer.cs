@@ -12,7 +12,19 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("default.png")]
-    public abstract class Customer : AWDomainObject, IHasIntegerId {
+    public abstract class Customer : IHasIntegerId {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            CustomerRowguid = Guid.NewGuid();
+            CustomerModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            CustomerModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         private ICollection<CustomerAddress> _CustomerAddress = new List<CustomerAddress>();
         public ContactRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
@@ -38,15 +50,6 @@ namespace AdventureWorksModel {
         public virtual int Id { get; set; }
 
         #endregion
-
-        #endregion
-
-        #region Life Cycle Methods
-
-        public void Persisting() {
-            this.CustomerModifiedDate = DateTime.Now;
-            this.CustomerRowguid = Guid.NewGuid();
-        }
 
         #endregion
 

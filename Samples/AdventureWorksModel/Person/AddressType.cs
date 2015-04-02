@@ -11,7 +11,18 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
-    public class AddressType : AWDomainObject {
+    public class AddressType {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region ID
 
         [NakedObjectsIgnore]

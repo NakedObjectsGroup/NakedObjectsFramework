@@ -9,7 +9,18 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class BillOfMaterial : AWDomainObject {
+    public class BillOfMaterial  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int BillOfMaterialID { get; set; }
 

@@ -10,7 +10,17 @@ using System.Collections.Generic;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductPhoto : AWDomainObject {
+    public class ProductPhoto  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         private byte[] _LargePhoto = new byte[0];
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];

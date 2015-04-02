@@ -14,7 +14,19 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Bounded]
     [Immutable]
-    public class SalesTerritory : AWDomainObject {
+    public class SalesTerritory {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region ID
 
         [NakedObjectsIgnore]

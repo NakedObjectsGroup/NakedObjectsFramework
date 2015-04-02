@@ -11,8 +11,20 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Immutable]
-    public class ProductModelProductDescriptionCulture : AWDomainObject {
+    public class ProductModelProductDescriptionCulture {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int ProductModelID { get; set; }

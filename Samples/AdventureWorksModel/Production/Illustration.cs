@@ -10,7 +10,18 @@ using System.Collections.Generic;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class Illustration : AWDomainObject {
+    public class Illustration  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         private ICollection<ProductModelIllustration> _ProductModelIllustration = new List<ProductModelIllustration>();
         public virtual int IllustrationID { get; set; }
         public virtual string Diagram { get; set; }

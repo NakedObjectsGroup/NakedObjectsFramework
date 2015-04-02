@@ -11,9 +11,22 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
-    public class StoreContact : AWDomainObject, IContactRole {
-        public IDomainObjectContainer Container { set; protected get; }
+    public class StoreContact : IContactRole {
 
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region Contact
 
         [Disabled, MemberOrder(2)]

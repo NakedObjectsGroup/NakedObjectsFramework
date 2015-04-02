@@ -9,7 +9,18 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductModelIllustration : AWDomainObject {
+    public class ProductModelIllustration  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int ProductModelID { get; set; }
 

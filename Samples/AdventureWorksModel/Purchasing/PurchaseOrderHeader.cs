@@ -13,16 +13,28 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("memo.png")]
-    public class PurchaseOrderHeader : AWDomainObject {
+    public class PurchaseOrderHeader  {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
-
-        #region Injected: EmployeeRepository
-
         public EmployeeRepository EmployeeRepository { set; protected get; }
-
         #endregion
 
+        #region Life Cycle Methods
+        public void Created() {
+            RevisionNumber = 0;
+            Status = 1;
+            OrderDate = DateTime.Today.Date;
+        }
+
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            byte increment = 1;
+            RevisionNumber += increment;
+            ModifiedDate = DateTime.Now;
+        }
         #endregion
 
         #region ID
@@ -65,21 +77,6 @@ namespace AdventureWorksModel {
         [Disabled]
         [MemberOrder(1)]
         public virtual Vendor Vendor { get; set; }
-
-        #endregion
-
-        #region Life Cycle methods
-
-        public void Created() {
-            RevisionNumber = 0;
-            Status = 1;
-            OrderDate = DateTime.Today.Date;
-        }
-
-        public void Updating() {
-            byte increment = 1;
-            RevisionNumber += increment;
-        }
 
         #endregion
 

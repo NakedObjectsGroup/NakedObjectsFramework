@@ -12,7 +12,18 @@ namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Bounded]
     [Immutable]
-    public class ScrapReason : AWDomainObject {
+    public class ScrapReason {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual short ScrapReasonID { get; set; }
 

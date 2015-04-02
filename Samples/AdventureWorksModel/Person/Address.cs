@@ -22,6 +22,17 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region Title
 
         public override string ToString() {

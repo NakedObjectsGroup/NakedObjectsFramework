@@ -11,7 +11,16 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Bounded]
-    public class ContactType : AWDomainObject {
+    public class ContactType {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region ID
 
         [NakedObjectsIgnore]

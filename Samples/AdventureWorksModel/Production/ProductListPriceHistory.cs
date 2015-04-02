@@ -9,7 +9,17 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductListPriceHistory : AWDomainObject {
+    public class ProductListPriceHistory {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         public virtual int ProductID { get; set; }
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }

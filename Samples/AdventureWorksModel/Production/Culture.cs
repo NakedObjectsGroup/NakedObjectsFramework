@@ -12,7 +12,18 @@ namespace AdventureWorksModel {
     [Bounded]
     [IconName("lookup.png")]
     [Immutable]
-    public class Culture : AWDomainObject {
+    public class Culture  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        #endregion
         [NakedObjectsIgnore]
         public virtual string CultureID { get; set; }
 

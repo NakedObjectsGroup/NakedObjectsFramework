@@ -13,6 +13,18 @@ namespace AdventureWorksModel {
     [IconName("person.png")]
     public class Individual : Customer {
 
+        #region Life Cycle Methods
+        public override void Persisting() {
+            base.Persisting();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public override void Updating() {
+            base.Updating();
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region Contact
 
         [NakedObjectsIgnore]

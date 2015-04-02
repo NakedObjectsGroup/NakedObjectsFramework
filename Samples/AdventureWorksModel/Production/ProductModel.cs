@@ -16,7 +16,19 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("information.png")]
-    public class ProductModel : AWDomainObject {
+    public class ProductModel  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         private ICollection<ProductModelIllustration> _ProductModelIllustration = new List<ProductModelIllustration>();
         private ICollection<ProductModelProductDescriptionCulture> _ProductModelProductDescriptionCulture = new List<ProductModelProductDescriptionCulture>();
         private ICollection<Product> _productVariants = new List<Product>();

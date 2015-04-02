@@ -10,7 +10,17 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
-    public class ContactCreditCard : AWDomainObject {
+    public class ContactCreditCard {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 

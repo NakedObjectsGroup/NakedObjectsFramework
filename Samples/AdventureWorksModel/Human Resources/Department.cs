@@ -12,7 +12,17 @@ namespace AdventureWorksModel {
     [IconName("org_chart.png")]
     [Bounded]
     [Immutable]
-    public class Department : AWDomainObject {
+    public class Department  {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region ModifiedDate
 
         [MemberOrder(99)]

@@ -9,7 +9,18 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class CountryRegionCurrency : AWDomainObject {
+    public class CountryRegionCurrency  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         public virtual string CountryRegionCode { get; set; }
         public virtual string CurrencyCode { get; set; }
         public virtual CountryRegion CountryRegion { get; set; }

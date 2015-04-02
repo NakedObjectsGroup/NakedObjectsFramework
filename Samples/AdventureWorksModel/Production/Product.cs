@@ -15,20 +15,22 @@ using NakedObjects.Value;
 
 namespace AdventureWorksModel {
     [IconName("carton.png")]
-    public class Product : AWDomainObject {
+    public class Product  {
         #region Injected Services
-
         public IDomainObjectContainer Container { set; protected get; }
-
-
-        #region Injected: SpecialOfferRepository
-
         public SpecialOfferRepository SpecialOfferRepository { set; protected get; }
-
+        public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
         #endregion
 
-        public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
 
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
         #endregion
 
         #region Properties

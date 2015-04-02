@@ -12,7 +12,18 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [Bounded]
     [IconName("clock.png")]
-    public class Shift : AWDomainObject {
+    public class Shift  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region ID
 
         [NakedObjectsIgnore]

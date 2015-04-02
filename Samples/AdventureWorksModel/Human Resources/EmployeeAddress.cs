@@ -12,8 +12,17 @@ namespace AdventureWorksModel {
     //This class models an association table, and is never viewed directly by the user.
 
     [IconName("house.png")]
-    public class EmployeeAddress : AWDomainObject, IAddressRole {
-        public void Persisted() {}
+    public class EmployeeAddress : IAddressRole {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         #region Properties
 

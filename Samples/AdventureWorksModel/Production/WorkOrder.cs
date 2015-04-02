@@ -13,12 +13,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("gear.png")]
-    public class WorkOrder : AWDomainObject {
+    public class WorkOrder  {
         #region Injected Servives
         public IDomainObjectContainer Container { set; protected get; }
-
         public ProductRepository ProductRepository { set; protected get; }
+        #endregion
 
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
         #endregion
 
         #region ID

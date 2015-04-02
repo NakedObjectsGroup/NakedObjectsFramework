@@ -12,12 +12,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [Immutable(WhenTo.OncePersisted), IconName("id_card.png")]
-    public class CreditCard : AWDomainObject {
-        private ICollection<ContactCreditCard> _ContactCreditCard = new List<ContactCreditCard>();
-        private string _ObfuscatedNumber;
-
+    public class CreditCard {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int CreditCardID { get; set; }
@@ -28,6 +36,8 @@ namespace AdventureWorksModel {
         [Hidden(WhenTo.OncePersisted)]
         [MemberOrder(2)]
         public virtual string CardNumber { get; set; }
+
+        private string _ObfuscatedNumber;
 
         [Hidden(WhenTo.UntilPersisted)]
         [MemberOrder(2)]
@@ -46,6 +56,8 @@ namespace AdventureWorksModel {
 
         [MemberOrder(4)]
         public virtual short ExpYear { get; set; }
+
+        private ICollection<ContactCreditCard> _ContactCreditCard = new List<ContactCreditCard>();
 
         [DisplayName("Contacts")]
         [MemberOrder(5)]

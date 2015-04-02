@@ -10,9 +10,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("house.png")]
-    public class VendorAddress : AWDomainObject, IAddressRole {
+    public class VendorAddress : IAddressRole {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         [NakedObjectsIgnore]
         public virtual int VendorID { get; set; }
 

@@ -12,8 +12,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
-    public class Vendor : AWDomainObject {
+    public class Vendor {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
         private ICollection<PurchaseOrderHeader> _PurchaseOrderHeader = new List<PurchaseOrderHeader>();

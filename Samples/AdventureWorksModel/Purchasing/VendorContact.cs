@@ -11,8 +11,10 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
-    public class VendorContact : AWDomainObject, IContactRole {
+    public class VendorContact : IContactRole {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int VendorID { get; set; }

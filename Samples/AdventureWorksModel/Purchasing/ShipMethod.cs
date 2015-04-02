@@ -12,7 +12,19 @@ namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Bounded]
     [Immutable]
-    public class ShipMethod : AWDomainObject {
+    public class ShipMethod  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int ShipMethodID { get; set; }
 

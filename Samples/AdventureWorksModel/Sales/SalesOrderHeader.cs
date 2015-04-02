@@ -15,9 +15,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [DisplayName("Sales Order")]
     [IconName("trolley.png")]
-    public class SalesOrderHeader : AWDomainObject, ICreditCardCreator {
-        [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
-        public bool AddItemsFromCart { get; set; }
+    public class SalesOrderHeader : ICreditCardCreator {
 
         #region Injected Servives
 
@@ -47,12 +45,7 @@ namespace AdventureWorksModel {
         public void Updating() {
             const byte increment = 1;
             RevisionNumber += increment;
-        }
-
-        public void Persisting() {
-            if (Customer.IsStore()) {
-                _contact = StoreContact.Contact;
-            }
+            ModifiedDate = DateTime.Now;
         }
 
         public void Loaded() {
@@ -73,7 +66,17 @@ namespace AdventureWorksModel {
             }
         }
 
+        public void Persisting() {
+            if (Customer.IsStore()) {
+                _contact = StoreContact.Contact;
+            }
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
         #endregion
+
+        [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
+        public bool AddItemsFromCart { get; set; }
 
         #region Properties
 

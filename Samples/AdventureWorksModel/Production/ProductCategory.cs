@@ -13,7 +13,19 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
-    public class ProductCategory : AWDomainObject {
+    public class ProductCategory  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         private ICollection<ProductSubcategory> _ProductSubcategory = new List<ProductSubcategory>();
 
         [NakedObjectsIgnore]

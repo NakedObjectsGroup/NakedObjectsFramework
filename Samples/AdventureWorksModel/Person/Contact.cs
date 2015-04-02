@@ -14,9 +14,22 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
-    public class Contact : AWDomainObject {
-
+    public class Contact {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            CreateSaltAndHash(InitialPassword);
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         #region ID
 
@@ -48,22 +61,9 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region Injected Services
-
-        // This region should contain properties to hold references to any services required by the
-        // object.  Use the 'injs' shortcut to add a new service.
-
-        #endregion
-
-        #region Life Cycle Methods
-
-        public void Persisting() {
-            CreateSaltAndHash(InitialPassword);
-        }
-
         [NotPersisted]
         [NakedObjectsIgnore]
-        public AWDomainObject Contactee { get; set; }
+        public object Contactee { get; set; }
 
         [MemberOrder(2)]
         [NotPersisted]
@@ -91,8 +91,6 @@ namespace AdventureWorksModel {
         public virtual bool HideContactType() {
             return Container.IsPersistent(this);
         }
-
-        #endregion
 
         #region Name fields
 

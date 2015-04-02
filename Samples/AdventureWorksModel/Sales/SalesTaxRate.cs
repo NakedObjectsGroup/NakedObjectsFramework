@@ -9,8 +9,20 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class SalesTaxRate : AWDomainObject {
-                [NakedObjectsIgnore]
+    public class SalesTaxRate  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
+        [NakedObjectsIgnore]
         public virtual int SalesTaxRateID { get; set; }
         public byte TaxType { get; set; }
         public virtual decimal TaxRate { get; set; }

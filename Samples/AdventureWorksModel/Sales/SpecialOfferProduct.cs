@@ -9,9 +9,22 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class SpecialOfferProduct : AWDomainObject {
-        public IDomainObjectContainer Container { set; protected get; }
+    public class SpecialOfferProduct {
 
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; set; }
 

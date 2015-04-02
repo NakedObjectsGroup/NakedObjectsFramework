@@ -12,7 +12,16 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Bounded]
     [Immutable]
-    public class CountryRegion : AWDomainObject {
+    public class CountryRegion {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region CountryRegionCode
 
         public virtual string CountryRegionCode { get; set; }

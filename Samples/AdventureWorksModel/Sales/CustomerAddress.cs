@@ -11,8 +11,21 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("house.png"), Description("Use Action menu to add")]
-    public class CustomerAddress : AWDomainObject, IAddressRole {
+    public class CustomerAddress : IAddressRole {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         #region AddressType
 

@@ -9,9 +9,20 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class JobCandidate : AWDomainObject {
-
+    public class JobCandidate  {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         public virtual int JobCandidateID { get; set; }
         public virtual string Resume { get; set; }

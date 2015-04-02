@@ -12,7 +12,17 @@ namespace AdventureWorksModel {
     [IconName("lookup.png")]
     [Immutable]
     [Bounded]
-    public class StateProvince : AWDomainObject {
+    public class StateProvince {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region StateProvinceID
 
         [NakedObjectsIgnore]

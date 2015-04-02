@@ -11,8 +11,17 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("information")]
-    public class ProductDescription : AWDomainObject {
+    public class ProductDescription {
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
 
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; set; }
 

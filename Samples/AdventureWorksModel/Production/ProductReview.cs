@@ -9,8 +9,20 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductReview : AWDomainObject {
+    public class ProductReview {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int ProductReviewID { get; set; }

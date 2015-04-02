@@ -10,7 +10,18 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("currency.png")]
-    public class CurrencyRate : AWDomainObject {
+    public class CurrencyRate {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int CurrencyRateID { get; set; }
 

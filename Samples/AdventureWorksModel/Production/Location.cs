@@ -13,7 +13,18 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Bounded]
     [Immutable]
-    public class Location : AWDomainObject {
+    public class Location {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
         private ICollection<WorkOrderRouting> _WorkOrderRouting = new List<WorkOrderRouting>();
 

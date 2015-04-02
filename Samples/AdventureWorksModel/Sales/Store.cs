@@ -16,9 +16,20 @@ namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
     public class Store : Customer {
         #region Injected Servives
-
         public SalesRepository SalesRepository { set; protected get; }
+        #endregion
 
+        #region Life Cycle Methods
+        public override void Persisting() {
+            base.Persisting();
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        public override void Updating() {
+            base.Updating();
+            ModifiedDate = DateTime.Now;
+        }
         #endregion
 
         #region Title

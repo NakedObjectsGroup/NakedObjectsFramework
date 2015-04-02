@@ -12,9 +12,20 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [DisplayName("Reason")]
     [Immutable(WhenTo.OncePersisted)]
-    public class SalesOrderHeaderSalesReason : AWDomainObject {
-
+    public class SalesOrderHeaderSalesReason {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int SalesOrderID { get; set; }

@@ -13,19 +13,22 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("person.png")]
-    public class Employee : AWDomainObject {
+    public class Employee  {
         #region Injected Services
-
-        #region Injected: EmployeeRepository
-
         public EmployeeRepository EmployeeRepository { set; protected get; }
-
-        #endregion
-
         public IDomainObjectContainer Container { set; protected get; }
 
         #endregion
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            rowguid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
 
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region Title & Icon
 
         public override string ToString() {

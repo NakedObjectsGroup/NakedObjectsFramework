@@ -9,7 +9,18 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class TransactionHistory : AWDomainObject {
+    public class TransactionHistory  {
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         public virtual int TransactionID { get; set; }
         public virtual int ReferenceOrderID { get; set; }
         public virtual int ReferenceOrderLineID { get; set; }

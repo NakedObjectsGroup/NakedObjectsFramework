@@ -73,9 +73,6 @@
   <ItemGroup>
     <Compile Include="AdventureWorksContext.cs" />
     <Compile Include="AssemblyHook.cs" />
-    <Compile Include="AWDomainObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Human Resources\TimePeriod.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -10,8 +10,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
-    public class EmployeeDepartmentHistory : AWDomainObject {
+    public class EmployeeDepartmentHistory {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int EmployeeID { get; set; }

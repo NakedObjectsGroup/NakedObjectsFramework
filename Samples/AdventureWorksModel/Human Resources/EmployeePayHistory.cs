@@ -11,8 +11,19 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     [Immutable(WhenTo.OncePersisted)]
-    public class EmployeePayHistory : AWDomainObject {
+    public class EmployeePayHistory {
+        #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
 
         #region EmployeeID
 

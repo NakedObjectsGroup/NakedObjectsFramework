@@ -15,13 +15,7 @@ namespace AdventureWorksModel {
     [DisplayName("Employees")]
     public class EmployeeRepository : AbstractFactoryAndRepository {
         #region Injected Services
-
-        #region Injected: ContactRepository
-
         public ContactRepository ContactRepository { set; protected get; }
-
-        #endregion
-
         #endregion
 
         #region FindEmployeeByName
@@ -47,7 +41,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [QueryOnly]
         public Employee FindEmployeeByNationalIDNumber(string nationalIDNumber) {
-            IQueryable<Employee> query = from obj in Instances<Employee>()
+            IQueryable<Employee> query = from obj in Container.Instances<Employee>()
                 where obj.NationalIDNumber == nationalIDNumber
                 select obj;
 
@@ -57,7 +51,7 @@ namespace AdventureWorksModel {
         #endregion
 
         public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Contact contactDetails) {
-            var _Employee = NewTransientInstance<Employee>();
+            var _Employee = Container.NewTransientInstance<Employee>();
             _Employee.ContactDetails = contactDetails;
             return _Employee;
         }
@@ -71,12 +65,12 @@ namespace AdventureWorksModel {
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, "GroupName")]
         public IQueryable<Department> ListAllDepartments() {
-            return Instances<Department>();
+            return Container.Instances<Department>();
         }
 
         [NakedObjectsIgnore]
         public virtual Employee CurrentUserAsEmployee() {
-            IQueryable<Employee> query = from obj in Instances<Employee>()
+            IQueryable<Employee> query = from obj in Container.Instances<Employee>()
                 where obj.LoginID == "adventure-works\\" + Principal.Identity.Name
                 select obj;
 
