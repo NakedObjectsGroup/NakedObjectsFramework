@@ -20,9 +20,11 @@ using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
+        private static string[] ModelNamespaces {
+            get {
+                return new string[] { "AdventureWorksModel" };
+            }
+        }
 
         private static Type[] Types {
             get {
@@ -55,22 +57,15 @@ namespace NakedObjects.Rest.App.Demo {
             }
         }
 
-        private static Type[] AssociatedTypes() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => (t.BaseType == typeof(AWDomainObject)) && !t.IsAbstract).ToArray();
-        }
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             return config;
         }
-
 
         public static IAuditConfiguration AuditConfig() {
             return null;

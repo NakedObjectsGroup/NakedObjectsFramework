@@ -24,6 +24,12 @@ namespace NakedObjects.App.Demo {
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
+
+        private static string[] ModelNamespaces {
+            get {
+                return new string[] { "AdventureWorksModel" };
+            }
+        }
         /// <summary>
         /// Specify any types that need to be reflected-over by the framework and that
         /// will not be discovered via the services
@@ -63,19 +69,13 @@ namespace NakedObjects.App.Demo {
             }
         }
 
-        private static Type[] AllPersistedTypesInMainModel() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => (t.BaseType == typeof (AWDomainObject)) && !t.IsAbstract).ToArray();
-        }
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AllPersistedTypesInMainModel);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             return config;
         }
 
