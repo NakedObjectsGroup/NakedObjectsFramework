@@ -146,7 +146,6 @@
     <Compile Include="Mapping\StateProvinceMap.cs" />
     <Compile Include="Mapping\StoreContactMap.cs" />
     <Compile Include="Mapping\StoreMap.cs" />
-    <Compile Include="Mapping\TimePeriodMap.cs" />
     <Compile Include="Mapping\TransactionHistoryMap.cs" />
     <Compile Include="Mapping\UnitMeasureMap.cs" />
     <Compile Include="Mapping\VendorAddressMap.cs" />

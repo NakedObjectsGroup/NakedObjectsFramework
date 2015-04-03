@@ -7,11 +7,22 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using NakedObjects;
 
 namespace AdventureWorksModel {
-    //[Value(SemanticsProviderClass = typeof(TimePeriodValueSemanticsProvider))]
-    [ComplexType]
+
     public class TimePeriod {
+
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(StartTime.ToString("hh:mm")).Append(" ~ ").Append(EndTime.ToString("hh:mm"));
+            return t.ToString();
+        }
+      
         public virtual DateTime StartTime { get; set; }
         public virtual DateTime EndTime { get; set; }
     }

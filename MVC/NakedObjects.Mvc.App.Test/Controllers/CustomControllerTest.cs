@@ -99,7 +99,7 @@ namespace MvcTestApp.Tests.Controllers {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingEdmxContext("Model");
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
