@@ -107,7 +107,7 @@ namespace NakedObjects.SystemTest.Reflect {
                 AppDomain.CurrentDomain.GetAssemblies()
                     .Single(a => a.GetName().Name == "AdventureWorksModel")
                     .GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => t.IsPublic && !t.IsAbstract && t.FullName.StartsWith("AdventureWorksModel")).ToArray();
         }
 
         [TestMethod]
