@@ -153,6 +153,7 @@
     <Compile Include="Controllers\ChoicesRepository.cs" />
     <Compile Include="Controllers\AutoCompleteRepository.cs" />
     <Compile Include="Controllers\AutoCompleteObject.cs" />
+    <Compile Include="Controllers\ConcurrencyTest.cs" />
     <Compile Include="Controllers\CustomControllerTest.cs" />
     <Compile Include="Controllers\GenericControllerTest.cs" />
     <Compile Include="Controllers\NotPersistedObject.cs" />
