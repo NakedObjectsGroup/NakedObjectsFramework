@@ -2199,7 +2199,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [TestFixtureSetUp]
         public void SetupTestFixture() {
- /          DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
         }
 
