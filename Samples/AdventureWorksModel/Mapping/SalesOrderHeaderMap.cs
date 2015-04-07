@@ -71,6 +71,9 @@ namespace AdventureWorksModel
             this.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
             this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
+
+            // not mapped 
+            this.Ignore(t => t.StoreContact);
         }
     }
 }

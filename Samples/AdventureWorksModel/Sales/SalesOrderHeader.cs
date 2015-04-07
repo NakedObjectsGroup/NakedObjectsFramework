@@ -170,7 +170,6 @@ namespace AdventureWorksModel {
         private StoreContact storeContact;
 
         [MemberOrder(3)]
-        [NotMapped]
         public virtual StoreContact StoreContact {
             get { return storeContact; }
             set {
