@@ -15,19 +15,15 @@ using WebActivatorEx;
 namespace NakedObjects.Mvc.App {
     public static class NakedObjectsActivator {
         public static void PreStart() {
-            //RestConfig.RestPreStart();           
+            // Add any 'PreStart' custom behaviour required          
         }
 
         public static void PostStart() {
-            // TODO - need to sort this so we still support injection of container and services into controller and views
-
-            //var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.LifecycleManager.GetServices().Select(no => no.Object).ToArray());
-            //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
-            //RestConfig.RestPostStart();
-
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation
             // - that overrides the required NOF behaviour based on the 'Optionally' attribute.
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
+
+            // Add any 'PostStart' custom behaviour required          
         }
     }
 }
