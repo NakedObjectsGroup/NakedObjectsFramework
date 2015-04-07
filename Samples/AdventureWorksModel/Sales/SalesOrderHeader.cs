@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
@@ -169,6 +170,7 @@ namespace AdventureWorksModel {
         private StoreContact storeContact;
 
         [MemberOrder(3)]
+        [NotMapped]
         public virtual StoreContact StoreContact {
             get { return storeContact; }
             set {
