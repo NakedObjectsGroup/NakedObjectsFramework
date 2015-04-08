@@ -13,7 +13,8 @@ namespace AdventureWorksModel
             // Properties
             this.Property(t => t.AccountNumber)
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(10)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed); 
 
             this.Property(t => t.CustomerType)
                 .IsRequired()
