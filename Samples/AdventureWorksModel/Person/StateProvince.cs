@@ -61,7 +61,7 @@ namespace AdventureWorksModel {
         #region SalesTerritory
 
         [NakedObjectsIgnore]
-        public int TerritoryID { get; set; }
+        public virtual int TerritoryID { get; set; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
