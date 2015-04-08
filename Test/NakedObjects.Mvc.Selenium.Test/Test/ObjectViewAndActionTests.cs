@@ -447,7 +447,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("Employee Details:", label.Text);
 
-            wait.ClickAndWait("button.nof-minimize", "#Store-SalesPerson-SalesPerson-Employee div.nof-label");
+            wait.ClickAndWaitGone("button.nof-minimize", "#Store-SalesPerson-SalesPerson-Employee div.nof-label");
         }
     }
 }
