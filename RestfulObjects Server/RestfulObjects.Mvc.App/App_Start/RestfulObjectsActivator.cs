@@ -16,7 +16,6 @@ namespace MvcTestApp {
     public static class RestfulObjectsActivator {
         public static void PreStart() {
             RestfulObjectsConfig.RestPreStart();
-            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
         }
 
         public static void PostStart() {

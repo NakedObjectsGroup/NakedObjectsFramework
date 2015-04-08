@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Reflect.FacetFactory;
 using RestfulObjects.Test.Data;
 
 namespace MvcTestApp {
@@ -34,7 +35,7 @@ namespace MvcTestApp {
 
         private static Type[] Types {
             get {
-                return new Type[] { };
+                return new Type[] { typeof(WithAction) };
             }
         }
 

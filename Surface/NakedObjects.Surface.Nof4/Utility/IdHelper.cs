@@ -9,6 +9,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 
@@ -210,5 +211,21 @@ namespace NakedObjects.Surface.Nof4.Utility {
         public bool KeyPrefixIs(string key, string match) {
             return key.StartsWith(match + Sep);
         }
+
+        public string GetAggregateFieldInputId(INakedObjectSurface nakedObjectSurface, INakedObjectAssociationSurface propertySurface) {
+            string fieldId;
+            INakedObjectAdapter nakedObject = ((dynamic)nakedObjectSurface).WrappedNakedObject;
+
+            var aoid = nakedObject.Oid as IAggregateOid;
+            if (aoid != null) {
+                IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
+                fieldId = GetInlineFieldInputId(new NakedObjectAssociationWrapper(parent, null, null), nakedObjectSurface, propertySurface);
+            }
+            else {
+                fieldId = GetFieldInputId(nakedObjectSurface, propertySurface);
+            }
+            return fieldId;
+        }
+
     }
 }

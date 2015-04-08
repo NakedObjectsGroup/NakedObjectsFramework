@@ -126,6 +126,7 @@
     <Compile Include="Context\ParameterContext.cs" />
     <Compile Include="Context\PropertyContext.cs" />
     <Compile Include="Implementation\LinkObjectId.cs" />
+    <Compile Include="Implementation\MVCObjectId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context\ActionResultContext.cs" />
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Utility\ExternalOid.cs" />
     <Compile Include="Implementation\NakedObjectsSurface.cs" />
     <Compile Include="Utility\IdHelper.cs" />
+    <Compile Include="Utility\MVCOid.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />

@@ -39,5 +39,6 @@ namespace NakedObjects.Surface.Utility {
         string MakeId(params string[] ids);
         bool KeyPrefixIs(string key, string match);
         string GetActionId(string propertyName, INakedObjectActionSurface actionContextAction, INakedObjectSurface actionContextTarget, INakedObjectSurface targetActionContextTarget, INakedObjectActionSurface targetActionContextAction);
+        string GetAggregateFieldInputId(INakedObjectSurface nakedObjectSurface, INakedObjectAssociationSurface propertySurface);
     }
 }
