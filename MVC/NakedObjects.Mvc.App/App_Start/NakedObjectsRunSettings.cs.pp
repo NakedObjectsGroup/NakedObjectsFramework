@@ -22,6 +22,10 @@ namespace $rootnamespace$ {
     // Use this class to configure the application running under Naked Objects
     public class NakedObjectsRunSettings {
 
+	     public static string RestRoot {
+            get { return null; }
+        }
+
 		private static string[] ModelNamespaces { 
             get {
                 return new string[] {}; //Add top-level namespace(s) that cover the domain model

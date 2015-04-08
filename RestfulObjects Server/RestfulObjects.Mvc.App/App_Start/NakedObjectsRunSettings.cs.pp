@@ -11,7 +11,11 @@ using NakedObjects.Persistor.Entity.Configuration;
 
 namespace $rootnamespace$ {
     public class NakedObjectsSettings {
-        
+
+	    public static string RestRoot {
+            get { return ""; }
+        }
+	    
 		private static Type[] Types {
             get {
                 return new Type[] {
