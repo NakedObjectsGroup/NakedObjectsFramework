@@ -29,6 +29,9 @@ namespace NakedObjects.Mvc.App {
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
+        public static string RestRoot {
+            get { return "Rest"; }
+        }
 
         private static string[] ModelNamespaces {
             get {

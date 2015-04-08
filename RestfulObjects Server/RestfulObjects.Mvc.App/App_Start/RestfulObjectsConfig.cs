@@ -12,18 +12,16 @@ using RestfulObjects.Mvc.Media;
 
 namespace MvcTestApp {
     public class RestfulObjectsConfig {
-        public static string RestRoot {
-            get { return ""; }
-        }
+        
 
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {
-            if (RestRoot != null) {
-                RestfulObjectsControllerBase.AddRestRoutes(routes, RestRoot);
+            if (NakedObjectsRunSettings.RestRoot != null) {
+                RestfulObjectsControllerBase.AddRestRoutes(routes, NakedObjectsRunSettings.RestRoot);
             }
         }
 
         public static void RestPostStart() {
-            if (RestRoot != null) {
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 //var restDependencyResolver = new RestDependencyResolver();
                 //GlobalConfiguration.Configuration.DependencyResolver = restDependencyResolver;
 
@@ -35,7 +33,7 @@ namespace MvcTestApp {
         }
 
         public static void RestPreStart() {
-            if (RestRoot != null) {
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 // to make whole application 'read only' 
                 //RestfulObjectsControllerBase.IsReadOnly = true;
 

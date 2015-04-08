@@ -15,6 +15,9 @@ using RestfulObjects.Test.Data;
 
 namespace MvcTestApp {
     public static class NakedObjectsRunSettings {
+        public static string RestRoot {
+            get { return ""; }
+        }
 
         private static string[] Namespaces {
             get {

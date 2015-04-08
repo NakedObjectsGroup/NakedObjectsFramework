@@ -12,18 +12,15 @@ using RestfulObjects.Mvc.Media;
 
 namespace NakedObjects.Mvc.App {
     public class RestfulObjectsConfig {
-        public static string RestRoot {
-            get { return "Rest"; }
-        }
-
+        
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {
-            if (RestRoot != null) {
-                RestfulObjectsControllerBase.AddRestRoutes(routes, RestRoot);
+            if (NakedObjectsRunSettings.RestRoot != null) {
+                RestfulObjectsControllerBase.AddRestRoutes(routes, NakedObjectsRunSettings.RestRoot);
             }
         }
 
         public static void RestPostStart() {
-            if (RestRoot != null) {
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 GlobalConfiguration.Configuration.Formatters.Clear();
                 GlobalConfiguration.Configuration.Formatters.Insert(0, new JsonNetFormatter(null));
                 //GlobalConfiguration.Configuration.MessageHandlers.Add(new AccessControlExposeHeadersHandler());
@@ -32,7 +29,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static void RestPreStart() {
-            if (RestRoot != null) {
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 // to make whole application 'read only' 
                 //RestfulObjectsControllerBase.IsReadOnly = true;
 
