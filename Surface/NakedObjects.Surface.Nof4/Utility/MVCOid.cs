@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface.Nof4.Implementation;
+using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public class MVCOid : IOidStrategy {
@@ -44,8 +45,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
         }
 
-
-        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+        public INakedObjectAdapter GetNakedObjectByOid(ILinkObjectId objectId) {
             var encodedId = objectId.ToString();
 
             if (string.IsNullOrEmpty(encodedId)) {
@@ -69,12 +69,37 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return RestoreObject(framework, oid);
         }
 
+        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+            return GetNakedObjectByOid(objectId).GetDomainObject();
+        }
+
         public object GetServiceByServiceName(ILinkObjectId serviceName) {
             throw new NotImplementedException();
         }
 
-        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            throw new NotImplementedException();
+        public  string GetObjectId(INakedObjectAdapter nakedObject) {
+            if (nakedObject.Spec.IsViewModel) {
+                framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
+            }
+            else if (nakedObject.Oid == null) {
+                return "";
+            }
+
+            return GetObjectId(nakedObject.Oid);
+        }
+
+        private static string Encode(IEncodedToStrings encoder) {
+            return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
+        }
+
+        public  string GetObjectId(IOid oid) {
+            return Encode((IEncodedToStrings)oid);
+        }
+
+        public ILinkObjectId GetOid(INakedObjectSurface nakedObjectSurface) {
+            var nakedObject = ((NakedObjectWrapper) nakedObjectSurface).WrappedNakedObject;
+            var id = GetObjectId(nakedObject);
+            return new MVCObjectId(id);
         }
 
         public ILinkObjectId GetOid(string servicename) {

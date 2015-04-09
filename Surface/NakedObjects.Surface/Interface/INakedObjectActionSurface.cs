@@ -14,5 +14,6 @@ namespace NakedObjects.Surface {
         INakedObjectSpecificationSurface OnType { get; }
         bool IsVisible(INakedObjectSurface nakedObject);
         IConsentSurface IsUsable(INakedObjectSurface nakedObject);
+        bool IsExecutingAsContributed(INakedObjectSurface nakedObject);
     }
 }

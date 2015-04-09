@@ -16,6 +16,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
@@ -122,6 +124,12 @@ namespace NakedObjects.Web.Mvc.Models {
             }
         }
 
+        public INakedObjectSurface GetNakedObject(INakedObjectsSurface surface) {
+            var oid = surface.OidStrategy.GetOid(Id, "");
+            var no = surface.GetObject(oid).Target;
+            return no;
+        }
+
         public INakedObjectAdapter GetNakedObject(INakedObjectsFramework framework) {
             if (nakedObject == null) {
                 nakedObject = framework.GetNakedObjectFromId(Id);
@@ -133,6 +141,31 @@ namespace NakedObjects.Web.Mvc.Models {
 
             return nakedObject;
         }
+
+        public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
+            var no = GetNakedObject(surface);
+            var oid = surface.OidStrategy.GetOid(no);
+
+            var actionContextSurface = surface.GetObjectAction(oid, ActionId);
+
+
+            //INakedObjectActionSurface[] actions;
+            //    if (no.Specification.IsCollection()) {
+            //        var metamodel = framework.MetamodelManager.Metamodel;
+            //        IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+            //        var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+            //        Trace.Assert(elementSpec != null);
+            //        actions = elementSpec.GetCollectionContributedActions();
+            //    }
+            //    else {
+            //        actions = nakedObject.Spec.GetActions();
+            //    }
+            //    nakedObjectAction = actions.Where(a => a.IsUsable(nakedObject).IsAllowed).Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == ActionId);
+
+            return actionContextSurface.Action.IsUsable(no).IsAllowed ? actionContextSurface.Action : null;
+        }
+
+
 
         public IActionSpec GetAction(INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {

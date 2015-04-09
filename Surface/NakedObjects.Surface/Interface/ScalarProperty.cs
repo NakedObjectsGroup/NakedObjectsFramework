@@ -35,6 +35,7 @@ namespace NakedObjects.Surface {
         ExtensionData,
         IsImage,
         IsFileAttachment,
-        AutoCompleteMinLength
+        AutoCompleteMinLength,
+        IsNotPersistent
     }
 }

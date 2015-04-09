@@ -32,6 +32,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
+        public IActionSpec WrappedSpec {
+            get { return action; }
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
         }
@@ -118,6 +122,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
             return new ConsentWrapper(action.IsUsable(((NakedObjectWrapper) nakedObject).WrappedNakedObject));
+        }
+
+        public bool IsExecutingAsContributed(INakedObjectSurface nakedObject) {
+            var targetNakedObject = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
+
+            return action.IsContributedMethod && !action.OnSpec.Equals(targetNakedObject.Spec);
         }
 
         public INakedObjectSpecificationSurface OnType {

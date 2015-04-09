@@ -118,6 +118,59 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
+        internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action = null, string propertyName = null) {
+            if (nakedObject == null) {
+                // no object to go to 
+                // if action on object go to that object. 
+                // if action on collection go to collection 
+                // if action on service go to last object 
+
+                nakedObject = controlData.GetNakedObject(Surface);
+
+                if (nakedObject.Specification.IsService()) {
+                    // TODO
+
+                    //object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
+                    //if (lastObject == null) {
+                    //    return RedirectHome();
+                    //}
+
+                    //nakedObject = NakedObjectsContext.GetNakedObject(lastObject);
+                }
+            }
+
+            if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+                // TODO
+
+                //var collection = nakedObject.GetAsQueryable();
+                //int collectionSize = collection.Count();
+                //if (collectionSize == 1) {
+                //    // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
+                //    ViewData.Remove(IdConstants.PagingData);
+                //    return View("ObjectView", collection.First());
+                //}
+
+                //nakedObject = Page(nakedObject, collectionSize, controlData, nakedObject.IsNotQueryable());
+                //action = action ?? ((ICollectionMemento)nakedObject.Oid).Action;
+                //int page, pageSize;
+                //CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
+                //var format = ViewData["NofCollectionFormat"] as string;
+                //return View("StandaloneTable", ActionResultModel.Create(NakedObjectsContext, action, nakedObject, page, pageSize, format));
+            }
+            // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
+            ViewData.Remove(IdConstants.PagingData);
+
+            if (controlData.DataDict.Values.Contains("max")) {
+                // maximizing an inline object - do not update history
+                ViewData.Add("updateHistory", false);
+            }
+
+            return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
+                View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
+        }
+
+
+
         internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action = null, string propertyName = null) {
             if (nakedObject == null) {
                 // no object to go to 
@@ -164,6 +217,29 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
                 View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
         }
+
+        protected ArgumentsContext Convert(ObjectAndControlData controlData, bool validateOnly = false) {
+            var ac = new ArgumentsContext();
+            ac.ValidateOnly = validateOnly;
+            return ac; 
+        }
+
+        protected ArgumentsContext Convert(INakedObjectSurface[] parameterSet, bool validateOnly = false) {
+            var ac = new ArgumentsContext();
+            ac.ValidateOnly = validateOnly;
+            return ac;
+        }
+
+
+        internal bool ValidateParameters(INakedObjectSurface targetNakedObject, INakedObjectActionSurface action, ObjectAndControlData controlData) {
+            var oid = Surface.OidStrategy.GetOid(targetNakedObject);
+            var name = action.Id;
+
+            var r = Surface.ExecuteObjectAction(oid, name, Convert(controlData, true));
+
+            return string.IsNullOrEmpty(r.Reason);
+        }
+
 
         internal bool ValidateParameters(INakedObjectAdapter targetNakedObject, IActionSpec action, ObjectAndControlData controlData) {
             // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
@@ -390,6 +466,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        internal void SetDefaults(INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
+            foreach (INakedObjectActionParameterSurface parm in action.Parameters) {
+                INakedObjectSurface value = parm.GetDefault(nakedObject);
+                bool isImplicitDefault = !parm.DefaultTypeIsExplicit(nakedObject);
+
+                bool ignore = value == null || (value.Object is DateTime && ((DateTime)value.Object).Ticks == 0) || isImplicitDefault;
+                if (!ignore) {
+                    // deliberately not an attempted value so it only gets populated after masking 
+                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable() ? value.Object : value;
+                }
+            }
+        }
+
         internal void SetDefaults(INakedObjectAdapter nakedObject, IActionSpec action) {
             foreach (IActionParameterSpec parm in action.Parameters) {
                 INakedObjectAdapter value = parm.GetDefault(nakedObject);
@@ -411,6 +500,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
+
+        internal void SetSelectedParameters(INakedObjectActionSurface action) {
+            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
+            if (refItems.Any()) {
+                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => Surface.GetObject(Surface.OidStrategy.GetOid(ValueProvider.GetValue(p.Id).AttemptedValue)).Target);
+                items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
+            }
+        }
+
 
         internal void SetSelectedParameters(IActionSpec action) {
             var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
@@ -449,6 +547,39 @@ namespace NakedObjects.Web.Mvc.Controllers {
             // collection 
             return null;
         }
+
+        internal void CheckConcurrency(INakedObjectSurface nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+            // TODO
+            
+            //var objectSpec = nakedObject.Spec as IObjectSpec;
+            //var concurrencyFields = objectSpec == null ? new List<IAssociationSpec>() : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
+
+            //if (!nakedObject.ResolveState.IsTransient() && concurrencyFields.Any()) {
+            //    IEnumerable<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
+
+            //    foreach (var pair in fieldsAndMatchingValues) {
+            //        if (pair.Item1.ReturnSpec.IsParseable) {
+            //            INakedObjectAdapter currentValue = pair.Item1.GetNakedObject(nakedObject);
+            //            INakedObjectAdapter concurrencyValue = pair.Item1.ReturnSpec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
+
+            //            if (concurrencyValue != null && currentValue != null) {
+            //                if (concurrencyValue.TitleString() != currentValue.TitleString()) {
+            //                    throw new ConcurrencyException(nakedObject);
+            //                }
+            //            }
+            //            else if (concurrencyValue == null && currentValue == null) {
+            //                // OK 
+            //            }
+            //            else {
+            //                throw new ConcurrencyException(nakedObject);
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+
+
 
         internal void CheckConcurrency(INakedObjectAdapter nakedObject, IAssociationSpec parent, ObjectAndControlData controlData, Func<IAssociationSpec, INakedObjectAdapter, IAssociationSpec, string> idFunc) {
             var objectSpec = nakedObject.Spec as IObjectSpec;
@@ -789,6 +920,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action.IsContributedMethod && !action.OnSpec.Equals(targetNakedObject.Spec);
         }
 
+
         internal void SetMessagesAndWarnings() {
             string[] messages = NakedObjectsContext.MessageBroker.Messages;
             string[] warnings = NakedObjectsContext.MessageBroker.Warnings;
@@ -816,6 +948,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (nakedObject.Spec.IsCollection) {
                 int sink1, sink2;
                 CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Count(), out sink1, out sink2);
+            }
+        }
+
+        internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectSurface nakedObject) {
+            if (nakedObject.Specification.IsCollection()) {
+                int sink1, sink2;
+                CurrentlyPaging(controlData, nakedObject.ToEnumerable().Count(), out sink1, out sink2);
             }
         }
 
