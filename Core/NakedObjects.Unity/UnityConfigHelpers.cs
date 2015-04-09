@@ -13,20 +13,18 @@ using NakedObjects.Reflect;
 namespace NakedObjects.Unity {
     public class UnityConfigHelpers {
         public static void RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-            container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
+            container.RegisterType(typeof(IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
         }
 
         public static void RegisterReplacementFacetFactory<TReplacement, TOriginal>(IUnityContainer container)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-            int order = FacetFactories.StandardIndexOf(typeof (TOriginal));
 
-            container.RegisterType<TReplacement>(
+            int order = FacetFactories.StandardIndexOf(typeof(TOriginal));
+            container.RegisterType<IFacetFactory, TReplacement>(
+                typeof(TOriginal).Name,
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order)
-                );
-
-            RegisterFacetFactory(typeof (TReplacement), container, order);
+                new InjectionConstructor(order));
         }
 
         //Helper method to, subsistute a new implementation of a specific facet factory, but where the constructor
@@ -34,22 +32,22 @@ namespace NakedObjects.Unity {
         public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TReplacement, TOriginal>(IUnityContainer container)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-            int order = FacetFactories.StandardIndexOf(typeof (TOriginal));
+            int order = FacetFactories.StandardIndexOf(typeof(TOriginal));
 
             //Register the orginal (standard NOF implementation). Note that although already registered by StandardUnityConfig.RegisterStandardFacetFactories
             //that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
             //PropertyMethodsFacetFactory so doesn't need to be named.
             container.RegisterType<TOriginal>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order)
-                );
+                new InjectionConstructor(0)); //We don't care about the order, because this isn't called as a FacetFactory AS SUCH.
+            //but we still need one for the constructor
 
             // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
             // The original one will be auto-injected into it because of the implementation registered above
             container.RegisterType<IFacetFactory, TReplacement>(
-                typeof (TReplacement).Name, //Following standard pattern for all NOF factories
+                typeof(TOriginal).Name, //Following standard pattern for all NOF factories
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order, typeof (TOriginal)));
+                new InjectionConstructor(order, typeof(TOriginal)));
         }
     }
 }
