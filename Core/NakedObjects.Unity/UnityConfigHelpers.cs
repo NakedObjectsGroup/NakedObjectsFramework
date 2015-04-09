@@ -19,14 +19,12 @@ namespace NakedObjects.Unity {
         public static void RegisterReplacementFacetFactory<TReplacement, TOriginal>(IUnityContainer container)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
+
             int order = FacetFactories.StandardIndexOf(typeof (TOriginal));
-
-            container.RegisterType<TReplacement>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order)
-                );
-
-            RegisterFacetFactory(typeof (TReplacement), container, order);
+            container.RegisterType<IFacetFactory, TReplacement>(
+                typeof(TOriginal).Name, 
+                new ContainerControlledLifetimeManager(), 
+                new InjectionConstructor(order));
         }
 
         //Helper method to, subsistute a new implementation of a specific facet factory, but where the constructor
@@ -41,13 +39,13 @@ namespace NakedObjects.Unity {
             //PropertyMethodsFacetFactory so doesn't need to be named.
             container.RegisterType<TOriginal>(
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order)
-                );
+                new InjectionConstructor(0)); //We don't care about the order, because this isn't called as a FacetFactory AS SUCH.
+             //but we still need one for the constructor
 
             // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
             // The original one will be auto-injected into it because of the implementation registered above
             container.RegisterType<IFacetFactory, TReplacement>(
-                typeof(TReplacement).Name, //Following standard pattern for all NOF factories
+                typeof(TOriginal).Name, //Following standard pattern for all NOF factories
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(order, typeof(TOriginal)));
         }
