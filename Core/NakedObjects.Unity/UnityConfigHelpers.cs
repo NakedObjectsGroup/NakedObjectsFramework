@@ -34,22 +34,22 @@ namespace NakedObjects.Unity {
         public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TReplacement, TOriginal>(IUnityContainer container)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-            int order = FacetFactories.StandardIndexOf(typeof (TOriginal));
+            int order = FacetFactories.StandardIndexOf(typeof(TOriginal));
 
-            //Register the standard NOF implementation. Note that although already registered by StandardUnityConfig.RegisterStandardFacetFactories
-            //that will be as a named impl of IFacetFactory.  This will be the only one registered as the very specific
+            //Register the orginal (standard NOF implementation). Note that although already registered by StandardUnityConfig.RegisterStandardFacetFactories
+            //that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
             //PropertyMethodsFacetFactory so doesn't need to be named.
-            container.RegisterType<TReplacement>(
+            container.RegisterType<TOriginal>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(order)
                 );
 
-            // Now add replacement using the standard pattern but using the same Name and orderNumber as the one we are superseding. 
-            // The old one will be auto-injected into it because of the implementation registered above
+            // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
+            // The original one will be auto-injected into it because of the implementation registered above
             container.RegisterType<IFacetFactory, TReplacement>(
-                typeof (TReplacement).Name, //Following standard pattern for all NOF factories
+                typeof(TReplacement).Name, //Following standard pattern for all NOF factories
                 new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(order, typeof (TOriginal)));
+                new InjectionConstructor(order, typeof(TOriginal)));
         }
     }
 }
