@@ -15,6 +15,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);
         }
 
+        public static bool IsNotPersistent(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsNotPersistent);
+        }
+
         public static string TitleString(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.TitleString);
         }

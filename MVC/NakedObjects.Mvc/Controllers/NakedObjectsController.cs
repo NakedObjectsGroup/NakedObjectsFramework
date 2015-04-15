@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
@@ -116,6 +117,61 @@ namespace NakedObjects.Web.Mvc.Controllers {
             TempData[IdConstants.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
             TempData[IdConstants.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
+        }
+
+        internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action = null, string propertyName = null) {
+            if (nakedObject == null) {
+                // no object to go to 
+                // if action on object go to that object. 
+                // if action on collection go to collection 
+                // if action on service go to last object 
+
+                nakedObject = controlData.GetNakedObject(Surface);
+
+                if (nakedObject.Specification.IsService()) {
+                    object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
+                    if (lastObject == null) {
+                        return RedirectHome();
+                    }
+
+                    var oid = Surface.OidStrategy.GetOid(lastObject);
+                    nakedObject = Surface.GetObject(oid).Target;
+                }
+            }
+
+            if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+                //var collection = nakedObject.GetAsQueryable();
+                int collectionSize = nakedObject.Count();
+                if (collectionSize == 1) {
+                    // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
+                    ViewData.Remove(IdConstants.PagingData);
+                    // is this safe TODO !!
+                    return View("ObjectView", nakedObject.ToEnumerable().First());
+                }
+
+                // TODO hack pending move paging into surface 
+                var no = ((dynamic) nakedObject).WrappedNakedObject;
+
+                no = Page(no, collectionSize, controlData, no.IsNotQueryable());
+                IActionSpec a =  action == null ? null :  ((dynamic) action).WrappedSpec; 
+                a = a ?? ((ICollectionMemento)no.Oid).Action;
+                int page, pageSize;
+                CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
+
+                var format = ViewData["NofCollectionFormat"] as string;
+                return View("StandaloneTable", ActionResultModel.Create(NakedObjectsContext, a, no, page, pageSize, format));
+
+            }
+            // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
+            ViewData.Remove(IdConstants.PagingData);
+
+            if (controlData.DataDict.Values.Contains("max")) {
+                // maximizing an inline object - do not update history
+                ViewData.Add("updateHistory", false);
+            }
+
+            return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
+                View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
         }
 
         internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action = null, string propertyName = null) {
@@ -887,6 +943,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return nakedObject;
         }
+
+        internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
+            // TODO another temp hack
+
+            INakedObjectAdapter no = ((dynamic) nakedObject).WrappedNakedObject;
+
+            no = FilterCollection(no, controlData);
+
+            var oid = Surface.OidStrategy.GetOid(no.GetDomainObject());
+
+            return Surface.GetObject(oid).Target;
+        }
+
+
 
         private INakedObjectAdapter CloneAndPopulateCollection(INakedObjectAdapter nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);

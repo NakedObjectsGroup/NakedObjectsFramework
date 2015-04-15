@@ -63,6 +63,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             get { return oidStrategy; }
         }
 
+        /// <summary>
+        ///  mainly for testing
+        /// </summary>
+        public INakedObjectsFramework Framework {
+            get { return framework; }
+        }
+
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
             return MapErrors(() => framework.MetamodelManager.AllSpecs.
                 Where(s => !IsGenericType(s)).

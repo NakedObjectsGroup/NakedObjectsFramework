@@ -45,7 +45,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
 
-        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+        private INakedObjectAdapter GetAdapterByOid(ILinkObjectId objectId) {
             var encodedId = objectId.ToString();
 
             if (string.IsNullOrEmpty(encodedId)) {
@@ -69,16 +69,31 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return RestoreObject(framework, oid);
         }
 
+
+        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+          return GetAdapterByOid(objectId).GetDomainObject();
+        }
+
         public object GetServiceByServiceName(ILinkObjectId serviceName) {
-            throw new NotImplementedException();
+            return framework.GetNakedObjectFromId(serviceName.ToString()).GetDomainObject();
         }
 
         public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            throw new NotImplementedException();
+            INakedObjectAdapter no = ((dynamic) nakedObject).WrappedNakedObject;
+            var id = framework.GetObjectId(no);
+            return new MVCObjectId(id);
+        }
+
+        public ILinkObjectId GetOid(object domainObject) {
+            var no = framework.GetNakedObject(domainObject);
+            var id = framework.GetObjectId(no);
+            return new MVCObjectId(id);
         }
 
         public ILinkObjectId GetOid(string servicename) {
-            throw new NotImplementedException();
+            var service = framework.ServicesManager.GetService(servicename);
+            var id = framework.GetObjectId(service);
+            return new MVCObjectId(id);
         }
 
         public ILinkObjectId GetOid(string typeName, string instanceId) {

@@ -63,10 +63,11 @@ namespace NakedObjects.Xat {
         }
 
         [Obsolete("Use NakedObjectsFramework")]
-        protected INakedObjectsFramework NakedObjectsContext { get; private set; }
+        protected INakedObjectsFramework NakedObjectsContext { get; set; }
 
-        protected INakedObjectsFramework NakedObjectsFramework {
+        protected virtual INakedObjectsFramework NakedObjectsFramework {
             get { return NakedObjectsContext; }
+            set { NakedObjectsContext = value; }
         }
 
         protected virtual object[] Fixtures {
@@ -127,7 +128,7 @@ namespace NakedObjects.Xat {
             return new IMenu[] {};
         }
 
-        protected void StartTest() {
+        protected virtual void StartTest() {
             NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
         }
 
@@ -148,7 +149,7 @@ namespace NakedObjects.Xat {
             }
         }
 
-        protected void PreInstallFixtures(ITransactionManager transactionManager) {
+        protected virtual void PreInstallFixtures(ITransactionManager transactionManager) {
             fixtureServices = new FixtureServices();
         }
 
@@ -157,12 +158,12 @@ namespace NakedObjects.Xat {
                    fixture.GetType().GetMethod("install", new Type[0]);
         }
 
-        protected object[] GetFixtures(object fixture) {
+        protected virtual object[] GetFixtures(object fixture) {
             var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] {});
             return getFixturesMethod == null ? new object[] {} : (object[]) getFixturesMethod.Invoke(fixture, new object[] {});
         }
 
-        protected void InstallFixture(object fixture) {
+        protected virtual void InstallFixture(object fixture) {
             var property = fixture.GetType().GetProperty("Service");
             SetValue(property, fixture, fixtureServices);
 
@@ -203,21 +204,21 @@ namespace NakedObjects.Xat {
             }
         }
 
-        protected void RunFixtures() {
+        protected virtual void RunFixtures() {
             if (NakedObjectsContext == null) {
                 NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
             InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
         }
 
-        protected ITestService GetTestService(Type type) {
+        protected virtual ITestService GetTestService(Type type) {
             return NakedObjectsFramework.ServicesManager.GetServices().
                 Where(no => type.IsInstanceOfType(no.Object)).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
         }
 
-        protected ITestService GetTestService(string serviceName) {
+        protected virtual ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
                 foreach (var service in NakedObjectsFramework.ServicesManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
@@ -234,7 +235,7 @@ namespace NakedObjects.Xat {
             return servicesCache[serviceName.ToLower()];
         }
 
-        protected ITestMenu GetMainMenu(string menuName) {
+        protected virtual ITestMenu GetMainMenu(string menuName) {
             var mainMenus = NakedObjectsFramework.MetamodelManager.MainMenus();
             if (mainMenus.Any()) {
                 var menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
@@ -252,25 +253,25 @@ namespace NakedObjects.Xat {
             return service.GetMenu();
         }
 
-        protected ITestMenu[] AllMainMenus() {
+        protected virtual ITestMenu[] AllMainMenus() {
             return NakedObjectsFramework.MetamodelManager.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
         }
 
-        protected void AssertMainMenuCountIs(int expected) {
+        protected virtual void AssertMainMenuCountIs(int expected) {
             var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
             Assert.AreEqual(expected, actual);
         }
 
-        protected ITestObject GetBoundedInstance<T>(string title) {
+        protected virtual ITestObject GetBoundedInstance<T>(string title) {
             return GetBoundedInstance(typeof (T), title);
         }
 
-        protected ITestObject GetBoundedInstance(Type type, string title) {
+        protected virtual ITestObject GetBoundedInstance(Type type, string title) {
             var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
-        protected ITestObject GetBoundedInstance(string classname, string title) {
+        protected virtual ITestObject GetBoundedInstance(string classname, string title) {
             var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
@@ -288,7 +289,7 @@ namespace NakedObjects.Xat {
             return (testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles));
         }
 
-        protected void SetUser(string username, params string[] roles) {
+        protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
             var ts = NakedObjectsFramework.Session as TestSession;
             if (ts != null) {
@@ -296,7 +297,7 @@ namespace NakedObjects.Xat {
             }
         }
 
-        protected void SetUser(string username) {
+        protected virtual void SetUser(string username) {
             SetUser(username, new string[] {});
         }
 
@@ -340,7 +341,7 @@ namespace NakedObjects.Xat {
         /// <summary>
         ///     Gets the configured Unity unityContainer.
         /// </summary>
-        protected IUnityContainer GetConfiguredContainer() {
+        protected virtual IUnityContainer GetConfiguredContainer() {
             return unityContainer.Value;
         }
     }

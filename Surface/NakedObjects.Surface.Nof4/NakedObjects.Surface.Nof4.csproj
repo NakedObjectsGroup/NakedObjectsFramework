@@ -112,6 +112,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -133,6 +134,7 @@
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\ExternalOid.cs" />
     <Compile Include="Implementation\NakedObjectsSurface.cs" />
+    <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MVCOid.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />

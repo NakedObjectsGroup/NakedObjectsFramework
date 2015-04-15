@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
@@ -121,6 +122,28 @@ namespace NakedObjects.Web.Mvc.Models {
                 return dataDict;
             }
         }
+
+        public INakedObjectSurface GetNakedObject(INakedObjectsSurface surface) {
+            var link = surface.OidStrategy.GetOid(Id, "");
+
+            INakedObjectSurface nakedObjectSurface;
+            // hack
+            try {
+
+                 nakedObjectSurface = surface.GetObject(link).Target;
+            }
+            catch {
+                nakedObjectSurface = surface.GetService(link).Target;
+            }
+
+            if (nakedObjectSurface == null) {
+                throw new ObjectNotFoundException();
+            }
+
+            return nakedObjectSurface;
+        }
+
+
 
         public INakedObjectAdapter GetNakedObject(INakedObjectsFramework framework) {
             if (nakedObject == null) {

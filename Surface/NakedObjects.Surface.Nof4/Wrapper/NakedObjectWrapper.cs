@@ -140,11 +140,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsTransient;
                 case (ScalarProperty.TitleString):
                     return TitleString();
+                case (ScalarProperty.IsNotPersistent):
+                    return IsNotPersistent();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private object IsNotPersistent() {
+            return nakedObject.IsNotPersistent();
         }
 
         public string TitleString() {

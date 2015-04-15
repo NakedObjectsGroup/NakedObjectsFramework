@@ -16,6 +16,7 @@ using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Moq;
 using MvcTestApp.Tests.Util;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
@@ -23,8 +24,10 @@ using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Service;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
@@ -227,9 +230,16 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            controller = new GenericController(NakedObjectsFramework, mockSurface, IdHelper);
+          
+            controller = new GenericController(NakedObjectsFramework, Surface, IdHelper);
             mocks = new ContextMocks(controller);
+        }
+
+        protected INakedObjectsSurface Surface { get; set; }
+
+        protected override void StartTest() {
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic) Surface).Framework;
         }
 
         #endregion
@@ -239,6 +249,9 @@ namespace MvcTestApp.Tests.Controllers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]

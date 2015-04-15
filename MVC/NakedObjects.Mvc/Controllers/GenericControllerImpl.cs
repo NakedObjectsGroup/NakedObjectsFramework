@@ -34,14 +34,27 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface,  IIdHelper idHelper) : base(nakedObjectsContext, surface,  idHelper) { }
 
+        //[HttpGet]
+        //public virtual ActionResult Details(ObjectAndControlData controlData) {
+        //    Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
+        //                      controlData.SubAction == ObjectAndControlData.SubActionType.None);
+        //    var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+        //    nakedObject = FilterCollection(nakedObject, controlData);
+        //    SetNewCollectionFormats(controlData);
+        //    return AppropriateView(controlData, nakedObject);
+        //}
+
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
             Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            INakedObjectAdapter nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+
+            var nakedObject = controlData.GetNakedObject(Surface);
+            nakedObject = FilterCollection(nakedObject, controlData);
             SetNewCollectionFormats(controlData);
             return AppropriateView(controlData, nakedObject);
         }
+
 
         [HttpGet]
         public virtual ActionResult EditObject(ObjectAndControlData controlData) {
@@ -67,7 +80,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
-                return AppropriateView(controlData, null);
+                return AppropriateView(controlData, (INakedObjectAdapter)null);
             }
             string property = DisplaySingleProperty(controlData, controlData.DataDict);
             return AppropriateView(controlData, nakedObject, null, property);

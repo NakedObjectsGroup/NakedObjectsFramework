@@ -72,6 +72,10 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
         }
 
+        public ILinkObjectId GetOid(object domainObject) {
+            throw new NotImplementedException();
+        }
+
         public ILinkObjectId GetOid(string servicename) {
            return new LinkObjectId(servicename, "");
         }
