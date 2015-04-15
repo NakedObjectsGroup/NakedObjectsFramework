@@ -23,11 +23,6 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
         }
 
-        public static bool IsNotPersistent(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsNotPersistent);
-        }
-
-
         #endregion
 
         #region INakedObjectActionParameterSurface

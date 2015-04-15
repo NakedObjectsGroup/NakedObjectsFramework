@@ -67,7 +67,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
-                return AppropriateView(controlData, (INakedObjectAdapter) null);
+                return AppropriateView(controlData, null);
             }
             string property = DisplaySingleProperty(controlData, controlData.DataDict);
             return AppropriateView(controlData, nakedObject, null, property);
@@ -222,49 +222,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action.Execute(target, parameterSet);
         }
 
-        private INakedObjectSurface Execute(INakedObjectActionSurface action, INakedObjectSurface target, INakedObjectSurface[] parameterSet) {
-            var oid = Surface.OidStrategy.GetOid(target);
-            var name = action.Id;
-
-            return Surface.ExecuteObjectAction(oid, name, Convert(parameterSet)).Result.Target;
-        }
-
-        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
-            if (action.IsExecutingAsContributed(nakedObject) && action.ParameterCount == 1) {
-                // contributed action being invoked with a single parm that is the current target
-                // no dialog - go straight through 
-                var newForm = new FormCollection { { IdHelper.GetParameterInputId(action, action.Parameters.First()), NakedObjectsContext.GetObjectId(nakedObject) } };
-
-                // horrid kludge 
-                var oldForm = controlData.Form;
-                controlData.Form = newForm;
-
-                if (ValidateParameters(nakedObject, action, controlData)) {
-                    return AppropriateView(controlData, Execute(action, nakedObject, new[] { nakedObject }), action);
-                }
-
-                controlData.Form = oldForm;
-                AddAttemptedValues(controlData);
-            }
-
-            if (!action.Parameters.Any()) {
-                return AppropriateView(controlData, Execute(action, nakedObject, new INakedObjectSurface[]{ }), action);
-            }
-
-            SetDefaults(nakedObject, action);
-            // do after any parameters set by contributed action so this takes priority
-            SetSelectedParameters(action);
-            SetPagingValues(controlData, nakedObject);
-            var property = DisplaySingleProperty(controlData, controlData.DataDict);
-
-            // TODO temp hack 
-            var a = ((dynamic) action).WrappedSpec as IActionSpec;
-
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = a, PropertyName = property });
-        }
-
-
-
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
@@ -296,9 +253,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult InitialAction(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(Surface);
-            var nakedObjectAction = controlData.GetAction(Surface);
-            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, nakedObjectAction, y));
+            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+            var nakedObjectAction = controlData.GetAction(NakedObjectsContext);
+            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(nakedObjectAction), ScaffoldAssoc.Wrap(y)));
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 

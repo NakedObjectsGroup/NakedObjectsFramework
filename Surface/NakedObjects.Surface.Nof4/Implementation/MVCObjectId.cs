@@ -11,11 +11,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class MVCObjectId : ILinkObjectId {
         private readonly string id;
-
-        public MVCObjectId(INakedObjectAdapter no) {
-            
-
-        }
+        public MVCObjectId(INakedObjectAdapter no) {}
 
         public MVCObjectId(string id) {
             this.id = id;

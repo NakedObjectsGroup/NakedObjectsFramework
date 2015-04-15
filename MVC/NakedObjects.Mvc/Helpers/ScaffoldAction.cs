@@ -52,10 +52,6 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new System.NotImplementedException();
         }
 
-        public bool IsExecutingAsContributed(INakedObjectSurface nakedObject) {
-            throw new NotImplementedException();
-        }
-
         public INakedObjectSpecificationSurface ReturnType {
             get { throw new System.NotImplementedException(); }
         }
