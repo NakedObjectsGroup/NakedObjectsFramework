@@ -19,6 +19,7 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Test.App;
+using NakedObjects.Test.App.Controllers;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Mvc.App {
@@ -42,9 +43,16 @@ namespace NakedObjects.Mvc.App {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
-            container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+            container.RegisterType<IOidStrategy, ExternalOid>("RestOid", new PerRequestLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerRequestLifetimeManager());
+
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>("RestSurface", new PerRequestLifetimeManager(), new InjectionConstructor(new ResolvedParameter<IOidStrategy>("RestOid"), typeof(INakedObjectsFramework)));
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
+
+            container.RegisterType<RestfulObjectsController, RestfulObjectsController>(new PerResolveLifetimeManager(), new InjectionConstructor(new ResolvedParameter<INakedObjectsSurface>("RestSurface")));
+
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
