@@ -152,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 // TODO hack pending move paging into surface 
                 var no = ((dynamic) nakedObject).WrappedNakedObject;
 
-                no = Page(no, collectionSize, controlData, no.IsNotQueryable());
+                no = Page(no, collectionSize, controlData, CollectionMementoHelper.IsNotQueryable(no));
                 IActionSpec a =  action == null ? null :  ((dynamic) action).WrappedSpec; 
                 a = a ?? ((ICollectionMemento)no.Oid).Action;
                 int page, pageSize;
@@ -438,7 +438,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void SetExistingCollectionFormats(INakedObjectAdapter nakedObject, FormCollection form) {
+        internal void SetExistingCollectionFormats(FormCollection form) {
             if (form.AllKeys.Any(s => s.EndsWith(IdConstants.DisplayFormatFieldId))) {
                 var id = form.AllKeys.Single(s => s.EndsWith(IdConstants.DisplayFormatFieldId));
                 var values = form.GetValue(id).AttemptedValue.Split('&').ToDictionary(GetName, GetValue);
@@ -951,9 +951,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             no = FilterCollection(no, controlData);
 
-            var oid = Surface.OidStrategy.GetOid(no.GetDomainObject());
+            ((dynamic) nakedObject).WrappedNakedObject = no;
 
-            return Surface.GetObject(oid).Target;
+            return nakedObject;
         }
 
 

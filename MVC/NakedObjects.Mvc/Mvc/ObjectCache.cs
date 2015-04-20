@@ -12,6 +12,7 @@ using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
+using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc {
@@ -92,6 +93,7 @@ namespace NakedObjects.Web.Mvc {
             session.RemoveFromCache(framework, nakedObject, flag);
         }
 
+
         public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
             INakedObjectAdapter nakedObject = framework.GetNakedObject(domainObject);
             session.RemoveOthersFromCache(framework, nakedObject, flag);
@@ -103,6 +105,10 @@ namespace NakedObjects.Web.Mvc {
 
         public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectAdapter nakedObject, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveFromCache(framework, nakedObject);
+        }
+
+        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveFromCache(surface, nakedObject);
         }
 
         public static void RemoveFromCache(this HttpSessionStateBase session, string objectId, ObjectFlag flag = ObjectFlag.None) {
@@ -232,6 +238,11 @@ namespace NakedObjects.Web.Mvc {
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             cache.RemoveFromCache(framework.GetObjectId(nakedObject));
         }
+
+        private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+            cache.RemoveFromCache(surface.OidStrategy.GetOid(nakedObject).ToString());
+        }
+
 
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, string objectId) {
             cache.Remove(objectId);

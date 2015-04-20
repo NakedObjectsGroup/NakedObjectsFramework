@@ -22,7 +22,7 @@ using NakedObjects.Value;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectWrapper : ScalarPropertyHolder, INakedObjectSurface {
         private readonly INakedObjectsFramework framework;
-        private readonly INakedObjectAdapter nakedObject;
+        private  INakedObjectAdapter nakedObject;
 
         protected NakedObjectWrapper(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
@@ -37,6 +37,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectAdapter WrappedNakedObject {
             get { return nakedObject; }
+            set { nakedObject = value; } // hack remove
         }
 
         public bool IsTransient {
@@ -142,11 +143,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return TitleString();
                 case (ScalarProperty.IsNotPersistent):
                     return IsNotPersistent();
+                case (ScalarProperty.IsUserPersistable):
+                    return IsUserPersistable();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private object IsUserPersistable() {
+            return nakedObject.Spec.Persistable == PersistableType.UserPersistable;
         }
 
         private object IsNotPersistent() {

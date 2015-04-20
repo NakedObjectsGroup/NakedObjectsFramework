@@ -13,7 +13,7 @@ using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Web.Mvc.Helpers {
     public class ScaffoldAdapter : INakedObjectSurface {
-        private readonly INakedObjectAdapter adapter;
+        private INakedObjectAdapter adapter;
 
         public ScaffoldAdapter(INakedObjectAdapter adapter) {
             this.adapter = adapter;
@@ -21,6 +21,7 @@ namespace NakedObjects.Web.Mvc.Helpers {
 
         public INakedObjectAdapter WrappedNakedObject {
             get { return adapter; }
+            set { adapter = value; }
         }
 
         public static INakedObjectSurface Wrap(INakedObjectAdapter adapter) {
