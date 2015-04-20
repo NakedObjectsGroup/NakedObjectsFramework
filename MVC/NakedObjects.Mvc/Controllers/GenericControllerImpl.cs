@@ -63,33 +63,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        //[HttpPost]
-        //public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
-        //    Decrypt(form);
-        //    controlData.Form = form;
-        //    Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay ||
-        //                      controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
-        //                      controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
-        //                      controlData.SubAction == ObjectAndControlData.SubActionType.None);
-        //    var nakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
-        //    SetExistingCollectionFormats(form);
-        //    SetNewCollectionFormats(controlData);
-
-        //    // TODO temp hack 
-        //    INakedObjectAdapter noa = ((dynamic)nakedObject).WrappedNakedObject;
-        //    noa.SetNotQueryable(true);
-        //    // end hack 
-
-        //    if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient() && nakedObject.IsUserPersistable()) {
-        //        // remove from cache and return to last object 
-        //        Session.RemoveFromCache(Surface, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
-        //        return AppropriateView(controlData, (INakedObjectSurface)null);
-        //    }
-        //    string property = DisplaySingleProperty(controlData, controlData.DataDict);
-        //    return AppropriateView(controlData, nakedObject, null, property);
-        //}
-
-
         [HttpPost]
         public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
             Decrypt(form);
@@ -98,29 +71,84 @@ namespace NakedObjects.Web.Mvc.Controllers {
                               controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            INakedObjectAdapter nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+            var nakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
             SetExistingCollectionFormats(form);
             SetNewCollectionFormats(controlData);
-            nakedObject.SetNotQueryable(true);
 
-            if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel &&
-                nakedObject.ResolveState.IsTransient() &&
-                nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+            // TODO temp hack 
+            INakedObjectAdapter noa = ((dynamic)nakedObject).WrappedNakedObject;
+            noa.SetNotQueryable(true);
+            // end hack 
+
+            if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient() && nakedObject.IsUserPersistable()) {
                 // remove from cache and return to last object 
-                Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
-                return AppropriateView(controlData, (INakedObjectAdapter)null);
+                Session.RemoveFromCache(Surface, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
+                return AppropriateView(controlData, (INakedObjectSurface)null);
             }
             string property = DisplaySingleProperty(controlData, controlData.DataDict);
             return AppropriateView(controlData, nakedObject, null, property);
         }
 
-        // TODO this is confusingly named - either find a better name or split into two functions
+
+        //[HttpPost]
+        //public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
+        //    Decrypt(form);
+        //    controlData.Form = form;
+        //    Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay ||
+        //                      controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
+        //                      controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
+        //                      controlData.SubAction == ObjectAndControlData.SubActionType.None);
+        //    INakedObjectAdapter nakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+        //    SetExistingCollectionFormats(form);
+        //    SetNewCollectionFormats(controlData);
+        //    nakedObject.SetNotQueryable(true);
+
+        //    if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel &&
+        //        nakedObject.ResolveState.IsTransient() &&
+        //        nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+        //        // remove from cache and return to last object 
+        //        Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
+        //        return AppropriateView(controlData, (INakedObjectAdapter)null);
+        //    }
+        //    string property = DisplaySingleProperty(controlData, controlData.DataDict);
+        //    return AppropriateView(controlData, nakedObject, null, property);
+        //}
+
+        //// TODO this is confusingly named - either find a better name or split into two functions
+        //[HttpPost]
+        //public virtual ActionResult EditObject(ObjectAndControlData controlData, FormCollection form) {
+        //    Decrypt(form);
+        //    controlData.Form = form;
+        //    INakedObjectAdapter nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+        //    SetExistingCollectionFormats( form);
+
+        //    if (nakedObject.IsNotPersistent()) {
+        //        RefreshTransient(nakedObject, form);
+        //    }
+
+        //    switch (controlData.SubAction) {
+        //        case (ObjectAndControlData.SubActionType.Action):
+        //            SetNewCollectionFormats(controlData);
+        //            return ActionOnNotPersistentObject(controlData);
+        //        case (ObjectAndControlData.SubActionType.None):
+        //            AddAttemptedValues(nakedObject, controlData);
+        //            return View("ObjectEdit", nakedObject.Object);
+        //        case (ObjectAndControlData.SubActionType.Pager):
+        //            SetNewCollectionFormats(controlData);
+        //            return AppropriateView(controlData, nakedObject);
+        //        case (ObjectAndControlData.SubActionType.Redisplay):
+        //            return Redisplay(controlData);
+        //    }
+        //    Log.ErrorFormat("SubAction handling not implemented in EditObject for {0}", controlData.SubAction.ToString());
+        //    throw new NotImplementedException(controlData.SubAction.ToString());
+        //}
+
         [HttpPost]
         public virtual ActionResult EditObject(ObjectAndControlData controlData, FormCollection form) {
             Decrypt(form);
             controlData.Form = form;
-            INakedObjectAdapter nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-            SetExistingCollectionFormats( form);
+            var nakedObject = controlData.GetNakedObject(Surface);
+            SetExistingCollectionFormats(form);
 
             if (nakedObject.IsNotPersistent()) {
                 RefreshTransient(nakedObject, form);
@@ -131,7 +159,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     SetNewCollectionFormats(controlData);
                     return ActionOnNotPersistentObject(controlData);
                 case (ObjectAndControlData.SubActionType.None):
-                    AddAttemptedValues(nakedObject, controlData);
+                    AddAttemptedValues( controlData);
                     return View("ObjectEdit", nakedObject.Object);
                 case (ObjectAndControlData.SubActionType.Pager):
                     SetNewCollectionFormats(controlData);
@@ -142,6 +170,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Log.ErrorFormat("SubAction handling not implemented in EditObject for {0}", controlData.SubAction.ToString());
             throw new NotImplementedException(controlData.SubAction.ToString());
         }
+
+
 
         [HttpPost]
         public virtual ActionResult Edit(ObjectAndControlData controlData, FormCollection form) {

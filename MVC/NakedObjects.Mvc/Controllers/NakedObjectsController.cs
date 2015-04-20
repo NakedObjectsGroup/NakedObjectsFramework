@@ -701,6 +701,23 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
         }
 
+        internal ArgumentsContext Convert(FormCollection form, bool validateOnly = false) {
+            var ac = new ArgumentsContext {
+                ValidateOnly = validateOnly,
+                Values = form.AllKeys.ToDictionary(k => k, k => form.GetValue(k).RawValue)
+            };
+
+            return ac; 
+        }
+
+        internal void RefreshTransient(INakedObjectSurface nakedObject, FormCollection form, INakedObjectAssociationSurface parent = null) {
+            if (nakedObject.IsTransient()) {
+                var ac = Convert(form);
+                Surface.RefreshObject(nakedObject, ac);
+            }
+        }
+
+
         internal void RefreshTransient(INakedObjectAdapter nakedObject, FormCollection form, IAssociationSpec parent = null) {
             if (nakedObject.Oid.IsTransient) {
                 // use oid to catch transient aggregates 

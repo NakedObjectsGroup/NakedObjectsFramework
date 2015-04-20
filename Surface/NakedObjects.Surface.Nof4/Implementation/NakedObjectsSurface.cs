@@ -88,6 +88,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => GetObjectContext(((NakedObjectWrapper) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
         }
 
+        public ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments) {
+            return MapErrors(() => RefreshObjectInternal(((NakedObjectWrapper)nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
+        }
+
+       
+
         public INakedObjectSpecificationSurface GetDomainType(string typeName) {
             return MapErrors(() => GetSpecificationWrapper(GetDomainTypeInternal(typeName)));
         }
@@ -210,6 +216,110 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             return property;
+        }
+
+        // todo more hacking remove this id stuff 
+        private const string InputName = "Input";
+        private const string SelectName = "Select";
+
+        private string InputOrSelect(ITypeSpec spec) {
+            return (spec.IsParseable ? InputName : SelectName);
+        }
+
+        public string GetObjectId(INakedObjectAdapter owner) {
+         
+            string postFix = "";
+
+            if (owner.Spec.IsCollection) {
+                var elementFacet = owner.Spec.GetFacet<ITypeOfFacet>();
+                var elementType = elementFacet.GetValue(owner);
+
+                postFix = "-" + elementType.Name;
+            }
+
+            return owner.Spec.ShortName + postFix;
+        }
+
+
+        public string GetInlineFieldId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
+           
+
+            return parent.Id + "-" + GetObjectId(owner) + "-" + assoc.Id;
+        }
+
+
+        public string GetFieldId(INakedObjectAdapter owner, IAssociationSpec assoc) {
+
+            return GetObjectId(owner) + "-" + assoc.Id;
+        }
+
+        private string GetInlineFieldInputId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
+            return GetInlineFieldId(parent, owner, assoc) + "-" + InputOrSelect(assoc.ReturnSpec);
+        }
+
+        private string GetFieldInputId(INakedObjectAdapter owner, IAssociationSpec assoc) {
+         
+
+            return GetFieldId(owner, assoc) + "-" + InputOrSelect(assoc.ReturnSpec);
+        }
+
+        private string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
+            return parent == null ? GetFieldInputId(nakedObject, assoc) : GetInlineFieldInputId(parent, nakedObject, assoc);
+        }
+
+        // endremove
+
+        private ObjectContext RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContext arguments, IAssociationSpec parent = null) {
+            var oc = new ObjectContext(nakedObject);
+
+            if (nakedObject.Oid.IsTransient) {
+                // use oid to catch transient aggregates 
+                foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => !p.IsReadOnly)) {
+                    var key = GetFieldInputId(parent, nakedObject, assoc);
+                    object newValue = arguments.Values[key];
+
+                    if (assoc.ReturnSpec.IsParseable) {
+                        try {
+                            var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
+                            INakedObjectAdapter value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue, framework.NakedObjectManager);
+                            oneToOneAssoc.SetAssociation(nakedObject, value);
+                        }
+                        catch (InvalidEntryException) {
+                            //ModelState.AddModelError(name, MvcUi.InvalidEntry);
+                            oc.Reason = "Invalid Entry";
+                            oc.ErrorCause = Cause.Other;
+                        }
+                    }
+                    else if (assoc is IOneToOneAssociationSpec) {
+                        INakedObjectAdapter value = framework.GetNakedObjectFromId((string) newValue);
+                        var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
+                        oneToOneAssoc.SetAssociation(nakedObject, value);
+                    }
+                }
+
+                foreach (IOneToManyAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>()) {
+                   // string name = IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
+                   // ValueProviderResult items = form.GetValue(name);
+
+                    object items = arguments.Values[assoc.Id];
+
+                    if (items != null && assoc.Count(nakedObject) == 0) {
+                        var itemIds = (string[])items;
+                        var values = itemIds.Select(framework.GetNakedObjectFromId).ToArray();
+                        var collection = assoc.GetNakedObject(nakedObject);
+                        collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
+                    }
+                }
+
+                foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => p.IsInline)) {
+                  
+                    
+                    var inlineNakedObject = assoc.GetNakedObject(nakedObject);
+                    RefreshObjectInternal(inlineNakedObject, arguments, assoc);
+                }
+            }
+
+            return oc;
         }
 
 

@@ -18,6 +18,7 @@ namespace NakedObjects.Surface {
         ListContextSurface GetServices();
 
         ObjectContextSurface GetObject(INakedObjectSurface nakedObject);
+        ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments);
         ObjectContextSurface GetObject(ILinkObjectId objectId);
         ObjectContextSurface PutObject(ILinkObjectId objectId, ArgumentsContext arguments);
         PropertyContextSurface GetProperty(ILinkObjectId objectId, string propertyName);
