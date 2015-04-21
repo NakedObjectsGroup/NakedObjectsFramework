@@ -267,47 +267,56 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return parent == null ? GetFieldInputId(nakedObject, assoc) : GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
+        public string GetCollectionItemId(INakedObjectAdapter owner, IAssociationSpec assoc) {
+            return GetObjectId(owner) + "-" + assoc.Id + "-" + "Item";
+        }
+
         // endremove
 
-        private ObjectContext RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContext arguments, IAssociationSpec parent = null) {
+        private ObjectContext 
+            RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContext arguments, IAssociationSpec parent = null) {
             var oc = new ObjectContext(nakedObject);
 
             if (nakedObject.Oid.IsTransient) {
                 // use oid to catch transient aggregates 
                 foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => !p.IsReadOnly)) {
                     var key = GetFieldInputId(parent, nakedObject, assoc);
-                    object newValue = arguments.Values[key];
+                    if (arguments.Values.ContainsKey(key)) {
 
-                    if (assoc.ReturnSpec.IsParseable) {
-                        try {
+                        object newValue = ((string[]) arguments.Values[key]).First();
+
+                        if (assoc.ReturnSpec.IsParseable) {
+                            try {
+                                var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
+                                INakedObjectAdapter value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue, framework.NakedObjectManager);
+                                oneToOneAssoc.SetAssociation(nakedObject, value);
+                            }
+                            catch (InvalidEntryException) {
+                                //ModelState.AddModelError(name, MvcUi.InvalidEntry);
+                                oc.Reason = "Invalid Entry";
+                                oc.ErrorCause = Cause.Other;
+                            }
+                        }
+                        else if (assoc is IOneToOneAssociationSpec) {
+                            INakedObjectAdapter value = framework.GetNakedObjectFromId((string) newValue);
                             var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
-                            INakedObjectAdapter value = assoc.ReturnSpec.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue, framework.NakedObjectManager);
                             oneToOneAssoc.SetAssociation(nakedObject, value);
                         }
-                        catch (InvalidEntryException) {
-                            //ModelState.AddModelError(name, MvcUi.InvalidEntry);
-                            oc.Reason = "Invalid Entry";
-                            oc.ErrorCause = Cause.Other;
-                        }
-                    }
-                    else if (assoc is IOneToOneAssociationSpec) {
-                        INakedObjectAdapter value = framework.GetNakedObjectFromId((string) newValue);
-                        var oneToOneAssoc = ((IOneToOneAssociationSpec) assoc);
-                        oneToOneAssoc.SetAssociation(nakedObject, value);
                     }
                 }
 
                 foreach (IOneToManyAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>()) {
-                   // string name = IdHelper.GetCollectionItemId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
-                   // ValueProviderResult items = form.GetValue(name);
+                   string name = GetCollectionItemId(nakedObject, assoc);
 
-                    object items = arguments.Values[assoc.Id];
+                    if (arguments.Values.ContainsKey(name)) {
 
-                    if (items != null && assoc.Count(nakedObject) == 0) {
-                        var itemIds = (string[])items;
-                        var values = itemIds.Select(framework.GetNakedObjectFromId).ToArray();
-                        var collection = assoc.GetNakedObject(nakedObject);
-                        collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
+                        var items = arguments.Values[name] as string[];
+
+                        if (items != null && assoc.Count(nakedObject) == 0) {
+                            var values = items.Select(framework.GetNakedObjectFromId).ToArray();
+                            var collection = assoc.GetNakedObject(nakedObject);
+                            collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
+                        }
                     }
                 }
 

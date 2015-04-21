@@ -33,6 +33,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
+
+        public IAssociationSpec WrappedSpec { get { return assoc; } }
+
         protected IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
@@ -64,6 +67,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public bool IsObject {
             get { return assoc is IOneToOneAssociationSpec; }
+        }
+
+        public bool IsConcurrency {
+            get { return assoc.ContainsFacet<IConcurrencyCheckFacet>(); }
         }
 
         public int? MaxLength {
@@ -253,6 +260,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return Mask;
                 case (ScalarProperty.AutoCompleteMinLength):
                     return AutoCompleteMinLength;
+                case (ScalarProperty.IsConcurrency):
+                    return IsConcurrency;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:

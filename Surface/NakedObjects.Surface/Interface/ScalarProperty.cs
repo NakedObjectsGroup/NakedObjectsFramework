@@ -37,6 +37,7 @@ namespace NakedObjects.Surface {
         IsFileAttachment,
         AutoCompleteMinLength,
         IsNotPersistent,
-        IsUserPersistable
+        IsUserPersistable,
+        IsConcurrency
     }
 }

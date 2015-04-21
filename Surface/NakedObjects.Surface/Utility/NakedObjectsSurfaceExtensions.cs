@@ -11,6 +11,8 @@ namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
         #region INakedObjectSurface
 
+    
+
         public static bool IsTransient(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);
         }
@@ -150,6 +152,10 @@ namespace NakedObjects.Surface.Utility {
 
         public static int AutoCompleteMinLength(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<int>(ScalarProperty.AutoCompleteMinLength);
+        }
+
+        public static bool IsConcurrency(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsConcurrency);
         }
 
         public static IDictionary<string, object> ExtensionData(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {

@@ -120,7 +120,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //    Decrypt(form);
         //    controlData.Form = form;
         //    INakedObjectAdapter nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-        //    SetExistingCollectionFormats( form);
+        //    SetExistingCollectionFormats(form);
 
         //    if (nakedObject.IsNotPersistent()) {
         //        RefreshTransient(nakedObject, form);
@@ -159,7 +159,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     SetNewCollectionFormats(controlData);
                     return ActionOnNotPersistentObject(controlData);
                 case (ObjectAndControlData.SubActionType.None):
-                    AddAttemptedValues( controlData);
+                    AddAttemptedValuesNew(nakedObject, controlData);
                     return View("ObjectEdit", nakedObject.Object);
                 case (ObjectAndControlData.SubActionType.Pager):
                     SetNewCollectionFormats(controlData);

@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
@@ -155,6 +156,16 @@ namespace NakedObjects.Web.Mvc.Models {
             }
 
             return nakedObject;
+        }
+
+        public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
+            // todo cache
+
+                var no = GetNakedObject(surface);
+             
+                var    actions = no.Specification.GetActionLeafNodes();
+                
+                return  actions.Where(a => a.IsUsable(no).IsAllowed).Where(a => a.IsVisible(no)).SingleOrDefault(a => a.Id == ActionId);
         }
 
         public IActionSpec GetAction(INakedObjectsFramework framework) {

@@ -280,6 +280,37 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return false;
         }
 
+        internal void AddAttemptedValuesNew(ObjectAndControlData controlData) {
+            var action = controlData.GetAction(Surface);
+            var form = controlData.Form;
+            foreach (var parm in action.Parameters) {
+                string name = IdHelper.GetParameterInputId(action, parm);
+                ValueProviderResult vp = form.GetValue(name);
+                string[] values = vp == null ? new string[] { } : (string[])vp.RawValue;
+
+                if (parm.Specification.IsCollection()) {
+                    // handle collection mementos 
+
+                    if (parm.IsChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
+                        var itemSpec = parm.ElementType;
+                        var itemvalues = values.Select(v => itemSpec.IsParseable() ? (object)v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
+
+                        if (itemvalues.Any()) {
+                            AddAttemptedValue(name, NakedObjectsContext.NakedObjectManager.CreateAdapter(itemvalues, null, null));
+                        }
+                    }
+                }
+                else {
+                    string value = values.Any() ? values.First() : "";
+
+                    if (!string.IsNullOrEmpty(value)) {
+                        AddAttemptedValue(name, parm.Specification.IsParseable() ? (object)value : FilterCollection(NakedObjectsContext.GetNakedObjectFromId(value), controlData));
+                    }
+                }
+            }
+        }
+
+        // TODO replace and remove
         internal void AddAttemptedValues(ObjectAndControlData controlData) {
             IActionSpec action = controlData.GetAction(NakedObjectsContext);
             var form = controlData.Form;
@@ -666,6 +697,29 @@ namespace NakedObjects.Web.Mvc.Controllers {
             AddAttemptedValue(key, assoc.ReturnSpec.IsParseable ? (object) newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
         }
 
+        internal void AddAttemptedValuesNew(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
+            foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject) || p.IsConcurrency())) {
+                string name = GetFieldInputId(parent, nakedObject, assoc);
+                string value = GetValueFromForm(controlData, name) as string;
+                if (value != null) {
+                    AddAttemptedValue(name, value);
+                }
+            }
+
+            foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsConcurrency())) {
+                string name = GetConcurrencyFieldInputId(parent, nakedObject, assoc);
+                string value = GetValueFromForm(controlData, name) as string;
+                if (value != null) {
+                    AddAttemptedValue(name, value);
+                }
+            }
+
+            foreach (var assoc in (nakedObject.Specification.Properties.Where(p => p.IsInline()))) {
+                var inlineNakedObject = assoc.GetNakedObject(nakedObject);
+                AddAttemptedValuesNew(inlineNakedObject, controlData, assoc);
+            }
+        }
+
         internal void AddAttemptedValues(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
             foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => (IsUsable(p, nakedObject) && IsVisible(p, nakedObject)) || IsConcurrency(p))) {
                 string name = GetFieldInputId(parent, nakedObject, assoc);
@@ -696,6 +750,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal bool IsVisible(IAssociationSpec assoc, INakedObjectAdapter nakedObject) {
             return assoc.IsVisible(nakedObject);
         }
+
 
         internal bool IsConcurrency(IAssociationSpec assoc) {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
@@ -766,14 +821,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        private string GetFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+            return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) :
+                IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
+        }
+
         private  string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
             return parent == null ? IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) : 
                 IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
         }
 
-        private  string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
-            return parent == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) : 
+        private string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
+            return parent == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) :
                 IdHelper.GetInlineConcurrencyFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
+        }
+
+        private string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+            return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) : 
+                IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
 
         private bool CanPersist(INakedObjectAdapter nakedObject, IEnumerable<IAssociationSpec> usableAndVisibleFields) {
