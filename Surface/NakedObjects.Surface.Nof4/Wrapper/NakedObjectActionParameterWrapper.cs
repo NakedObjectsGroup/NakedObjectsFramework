@@ -31,6 +31,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
+        public IActionParameterSpec WrappedSpec { get { return nakedObjectActionParameter;} }
+
         protected IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();

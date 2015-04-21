@@ -161,11 +161,11 @@ namespace NakedObjects.Web.Mvc.Models {
         public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
             // todo cache
 
-                var no = GetNakedObject(surface);
-             
-                var    actions = no.Specification.GetActionLeafNodes();
-                
-                return  actions.Where(a => a.IsUsable(no).IsAllowed).Where(a => a.IsVisible(no)).SingleOrDefault(a => a.Id == ActionId);
+            var no = GetNakedObject(surface);
+            var id = surface.OidStrategy.GetOid(no);
+            var action = surface.GetObjectAction(id, ActionId).Action;
+
+            return action.IsUsable(no).IsAllowed  ? action : null;
         }
 
         public IActionSpec GetAction(INakedObjectsFramework framework) {

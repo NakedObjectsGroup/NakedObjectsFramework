@@ -179,10 +179,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             controlData.Form = form;
             AddFilesToControlData(controlData);
 
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+            var nakedObject = controlData.GetNakedObject(Surface);
             RefreshTransient(nakedObject, form);
             SetExistingCollectionFormats( form);
-            AddAttemptedValues(nakedObject, controlData);
+            AddAttemptedValuesNew(nakedObject, controlData);
 
             switch (controlData.SubAction) {
                 case (ObjectAndControlData.SubActionType.Find):
@@ -208,6 +208,41 @@ namespace NakedObjects.Web.Mvc.Controllers {
             throw new NotImplementedException(controlData.SubAction.ToString());
         }
 
+        //[HttpPost]
+        //public virtual ActionResult Edit(ObjectAndControlData controlData, FormCollection form) {
+        //    Decrypt(form);
+        //    controlData.Form = form;
+        //    AddFilesToControlData(controlData);
+
+        //    var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+        //    RefreshTransient(nakedObject, form);
+        //    SetExistingCollectionFormats(form);
+        //    AddAttemptedValues(nakedObject, controlData);
+
+        //    switch (controlData.SubAction) {
+        //        case (ObjectAndControlData.SubActionType.Find):
+        //            return Find(controlData);
+        //        case (ObjectAndControlData.SubActionType.Select):
+        //            return Select(controlData);
+        //        case (ObjectAndControlData.SubActionType.ActionAsFind):
+        //            return ActionAsFind(controlData);
+        //        case (ObjectAndControlData.SubActionType.InvokeActionAsFind):
+        //            return InvokeActionAsFind(controlData);
+        //        case (ObjectAndControlData.SubActionType.InvokeActionAsSave):
+        //            return InvokeActionAsSave(controlData);
+        //        case (ObjectAndControlData.SubActionType.Redisplay):
+        //            return Redisplay(controlData);
+        //        case (ObjectAndControlData.SubActionType.None):
+        //            return ApplyEdit(controlData);
+        //        case (ObjectAndControlData.SubActionType.SaveAndClose):
+        //            return ApplyEditAndClose(controlData);
+        //        case (ObjectAndControlData.SubActionType.Action):
+        //            return ApplyEditAction(controlData);
+        //    }
+        //    Log.ErrorFormat("SubAction handling not implemented in Edit for {0}", controlData.SubAction.ToString());
+        //    throw new NotImplementedException(controlData.SubAction.ToString());
+        //}
+
         // Not clear that this is ever called
         [HttpGet]
         public virtual ActionResult Action(ObjectAndControlData controlData) {
@@ -222,7 +257,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Decrypt(form);
             controlData.Form = form;
             AddFilesToControlData(controlData);
-            AddAttemptedValues(controlData);
+            AddAttemptedValuesNew(controlData);
 
             switch (controlData.SubAction) {
                 case (ObjectAndControlData.SubActionType.Find):
@@ -247,6 +282,45 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Log.ErrorFormat("SubAction handling not implemented in Action for {0}", controlData.SubAction.ToString());
             throw new NotImplementedException(controlData.SubAction.ToString());
         }
+
+        //[HttpGet]
+        //public virtual ActionResult Action(ObjectAndControlData controlData) {
+        //    return View("ActionDialog", new FindViewModel {
+        //        ContextObject = controlData.GetNakedObject(NakedObjectsContext).Object,
+        //        ContextAction = controlData.GetAction(NakedObjectsContext)
+        //    });
+        //}
+
+        //[HttpPost]
+        //public virtual ActionResult Action(ObjectAndControlData controlData, FormCollection form) {
+        //    Decrypt(form);
+        //    controlData.Form = form;
+        //    AddFilesToControlData(controlData);
+        //    AddAttemptedValues(controlData);
+
+        //    switch (controlData.SubAction) {
+        //        case (ObjectAndControlData.SubActionType.Find):
+        //            return Find(controlData);
+        //        case (ObjectAndControlData.SubActionType.Select):
+        //            return SelectOnAction(controlData);
+        //        case (ObjectAndControlData.SubActionType.ActionAsFind):
+        //            return ActionAsFind(controlData);
+        //        case (ObjectAndControlData.SubActionType.InvokeActionAsFind):
+        //            return InvokeActionAsFind(controlData);
+        //        case (ObjectAndControlData.SubActionType.InvokeActionAsSave):
+        //            return InvokeActionAsSave(controlData);
+        //        case (ObjectAndControlData.SubActionType.Action):
+        //            return InitialAction(controlData);
+        //        case (ObjectAndControlData.SubActionType.Details):
+        //            return Details(controlData);
+        //        case (ObjectAndControlData.SubActionType.None):
+        //            SetNewCollectionFormats(controlData);
+        //            return ApplyAction(controlData);
+        //    }
+
+        //    Log.ErrorFormat("SubAction handling not implemented in Action for {0}", controlData.SubAction.ToString());
+        //    throw new NotImplementedException(controlData.SubAction.ToString());
+        //}
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObjectAdapter target = NakedObjectsContext.GetNakedObjectFromId(Id);

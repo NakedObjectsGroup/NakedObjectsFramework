@@ -32,6 +32,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
+        public IActionSpec WrappedSpec { get { return action; } }
+
+
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
         }

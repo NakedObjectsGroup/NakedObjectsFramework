@@ -267,6 +267,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        private bool CheckForAndAddCollectionMementoNew(string name, string[] values, ObjectAndControlData controlData) {
+            if (values.Count() == 1) {
+                var oid = Surface.OidStrategy.GetOid(values.First(), "");
+                var nakedObject = Surface.GetObject(oid).Target;
+
+                if (nakedObject != null && nakedObject.IsCollectionMemento()) {
+                    nakedObject = FilterCollection(nakedObject, controlData);
+                    AddAttemptedValue(name, nakedObject);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool CheckForAndAddCollectionMemento(string name, string[] values, ObjectAndControlData controlData) {
             if (values.Count() == 1) {
                 INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(values.First());
@@ -288,10 +302,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ValueProviderResult vp = form.GetValue(name);
                 string[] values = vp == null ? new string[] { } : (string[])vp.RawValue;
 
-                if (parm.Specification.IsCollection()) {
+                if (parm.Specification.IsCollection() && !parm.Specification.IsParseable()) {
                     // handle collection mementos 
 
-                    if (parm.IsChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
+                    if (parm.IsChoicesEnabled || !CheckForAndAddCollectionMementoNew(name, values, controlData)) {
                         var itemSpec = parm.ElementType;
                         var itemvalues = values.Select(v => itemSpec.IsParseable() ? (object)v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 

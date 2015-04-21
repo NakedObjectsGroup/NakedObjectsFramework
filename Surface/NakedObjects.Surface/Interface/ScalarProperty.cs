@@ -38,6 +38,7 @@ namespace NakedObjects.Surface {
         AutoCompleteMinLength,
         IsNotPersistent,
         IsUserPersistable,
-        IsConcurrency
+        IsConcurrency,
+        IsCollectionMemento
     }
 }

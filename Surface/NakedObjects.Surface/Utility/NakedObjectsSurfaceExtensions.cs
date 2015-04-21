@@ -11,7 +11,11 @@ namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
         #region INakedObjectSurface
 
-    
+
+
+        public static bool IsCollectionMemento(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsCollectionMemento);
+        }
 
         public static bool IsTransient(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);

@@ -145,11 +145,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsNotPersistent();
                 case (ScalarProperty.IsUserPersistable):
                     return IsUserPersistable();
+                case (ScalarProperty.IsCollectionMemento):
+                    return IsCollectionMemento();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private bool IsCollectionMemento() {
+            return nakedObject.Oid is ICollectionMemento;
         }
 
         private object IsUserPersistable() {
