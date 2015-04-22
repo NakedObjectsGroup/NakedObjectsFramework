@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -150,6 +151,22 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public Type GetUnderlyingType() {
             return TypeUtils.GetType(spec.FullName);
+        }
+
+        public INakedObjectActionSurface[] GetCollectionContributedActions() {
+            var objectSpec = spec as IObjectSpec;
+            if (objectSpec != null) {
+                return objectSpec.GetCollectionContributedActions().Select(a => new NakedObjectActionWrapper(a, Surface, framework, "")).Cast<INakedObjectActionSurface>().ToArray();
+            }
+            return new INakedObjectActionSurface[] {};
+        }
+
+        public INakedObjectActionSurface[] GetFinderActions() {
+            var objectSpec = spec as IObjectSpec;
+            if (objectSpec != null) {
+                return objectSpec.GetFinderActions().Select(a => new NakedObjectActionWrapper(a, Surface, framework, "")).Cast<INakedObjectActionSurface>().ToArray();
+            }
+            return new INakedObjectActionSurface[] { };
         }
 
         public INakedObjectsSurface Surface { get; set; }

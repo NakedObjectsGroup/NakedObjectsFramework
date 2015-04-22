@@ -244,11 +244,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //}
 
         // Not clear that this is ever called
+        //[HttpGet]
+        //public virtual ActionResult Action(ObjectAndControlData controlData) {
+        //    return View("ActionDialog", new FindViewModel {
+        //        ContextObject = controlData.GetNakedObject(NakedObjectsContext).Object,
+        //        ContextAction = controlData.GetAction(NakedObjectsContext)
+        //    });
+        //}
+
         [HttpGet]
         public virtual ActionResult Action(ObjectAndControlData controlData) {
+            var no = controlData.GetNakedObject(Surface);
+            var action = controlData.GetAction(Surface);
+
             return View("ActionDialog", new FindViewModel {
-                ContextObject = controlData.GetNakedObject(NakedObjectsContext).Object,
-                ContextAction = controlData.GetAction(NakedObjectsContext)
+                ContextObject = no.Object,
+                ContextAction = ((dynamic)action).WrappedSpec
             });
         }
 
@@ -323,9 +334,17 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //}
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
-            INakedObjectAdapter target = NakedObjectsContext.GetNakedObjectFromId(Id);
-            IAssociationSpec assoc = target.GetObjectSpec().Properties.Single(a => a.Id == PropertyId);
-            var domainObject = assoc.GetNakedObject(target).GetDomainObject();
+            //INakedObjectAdapter target = NakedObjectsContext.GetNakedObjectFromId(Id);
+            //IAssociationSpec assoc = target.GetObjectSpec().Properties.Single(a => a.Id == PropertyId);
+            //var domainObject = assoc.GetNakedObject(target).GetDomainObject();
+
+            var oid = Surface.OidStrategy.GetOid(Id, "");
+            var tgt = Surface.GetObject(oid).Target;
+
+            var p = Surface.GetProperty(oid, PropertyId);
+            var domainObject = p.Property.GetNakedObject(tgt).Object;
+
+
 
             return AsFile(domainObject);
         }
@@ -334,38 +353,124 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region private
 
+      
+
+
         private ActionResult ActionOnNotPersistentObject(ObjectAndControlData controlData) {
             string targetActionId = controlData.DataDict["targetActionId"];
             string targetObjectId = controlData.DataDict["targetObjectId"];
 
-            INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
-            if (targetNakedObject.Spec.IsCollection) {
-                INakedObjectAdapter filteredNakedObject = FilterCollection(targetNakedObject, controlData);
-                var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
-                IObjectSpecImmutable elementSpecImmut =
-                    filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
+            var targetNakedObject = GetNakedObjectFromId(targetObjectId);
+            if (targetNakedObject.Specification.IsCollection()) {
+                var filteredNakedObject = FilterCollection(targetNakedObject, controlData);
+                //var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
+                //IObjectSpecImmutable elementSpecImmut =
+                //    filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
 
-                var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                var elementSpec = targetNakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
                 var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
 
-                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any()) {
+                if (!filteredNakedObject.ToEnumerable().Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
+
                 // force any result to not be queryable
-                filteredNakedObject.SetNotQueryable(true);
+                //filteredNakedObject.SetNotQueryable(true);
+                // TODO temp hack 
+                INakedObjectAdapter noa = ((dynamic)filteredNakedObject).WrappedNakedObject;
+                noa.SetNotQueryable(true);
+                // end hack 
+
+
                 return ExecuteAction(controlData, filteredNakedObject, targetAction);
             }
             else {
-                var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
+                var oid = Surface.OidStrategy.GetOid(targetNakedObject);
+                var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
+
+                //var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
                 return ExecuteAction(controlData, targetNakedObject, targetAction);
             }
         }
 
+
+        //private ActionResult ActionOnNotPersistentObject(ObjectAndControlData controlData) {
+        //    string targetActionId = controlData.DataDict["targetActionId"];
+        //    string targetObjectId = controlData.DataDict["targetObjectId"];
+
+        //    INakedObjectAdapter targetNakedObject = NakedObjectsContext.GetNakedObjectFromId(targetObjectId);
+        //    if (targetNakedObject.Spec.IsCollection) {
+        //        INakedObjectAdapter filteredNakedObject = FilterCollection(targetNakedObject, controlData);
+        //        var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
+        //        IObjectSpecImmutable elementSpecImmut =
+        //            filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
+
+        //        var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+        //        Trace.Assert(elementSpec != null);
+        //        var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
+
+        //        if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any()) {
+        //            NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
+        //            return AppropriateView(controlData, targetNakedObject, targetAction);
+        //        }
+        //        // force any result to not be queryable
+        //        filteredNakedObject.SetNotQueryable(true);
+        //        return ExecuteAction(controlData, filteredNakedObject, targetAction);
+        //    }
+        //    else {
+        //        var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
+        //        return ExecuteAction(controlData, targetNakedObject, targetAction);
+        //    }
+        //}
+
         private INakedObjectAdapter Execute(IActionSpec action, INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
             return action.Execute(target, parameterSet);
         }
+
+      
+
+        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
+            if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
+                // contributed action being invoked with a single parm that is the current target
+                //// no dialog - go straight through 
+                //var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
+
+                //// horrid kludge 
+                //var oldForm = controlData.Form;
+                //controlData.Form = newForm;
+
+                //if (ValidateParameters(nakedObject, action, controlData)) {
+                var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                var oid = Surface.OidStrategy.GetOid(nakedObject);
+                var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                return AppropriateView(controlData, result.Target, action);
+                //}
+
+                //controlData.Form = oldForm;
+                //AddAttemptedValues(controlData);
+            }
+
+            if (!action.Parameters.Any()) {
+                var ac = new ArgumentsContext() { Values = new Dictionary<string, object>(), ValidateOnly = false };
+                var oid = Surface.OidStrategy.GetOid(nakedObject);
+                var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
+
+                return AppropriateView(controlData, result.Target, action);
+            }
+
+            SetDefaults(nakedObject, action);
+            // do after any parameters set by contributed action so this takes priority
+            SetSelectedParameters(action);
+            SetPagingValues(controlData, nakedObject);
+            var property = DisplaySingleProperty(controlData, controlData.DataDict);
+
+            // TODO temp hack
+            IActionSpec oldAction = ((dynamic) action).WrappedSpec;
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = oldAction, PropertyName = property });
+        }
+
 
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {

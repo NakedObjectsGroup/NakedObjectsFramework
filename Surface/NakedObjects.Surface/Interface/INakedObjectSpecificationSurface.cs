@@ -16,5 +16,7 @@ namespace NakedObjects.Surface {
         INakedObjectActionSurface[] GetActionLeafNodes();
         bool IsOfType(INakedObjectSpecificationSurface otherSpec);
         Type GetUnderlyingType();
+        INakedObjectActionSurface[] GetCollectionContributedActions();
+        INakedObjectActionSurface[] GetFinderActions();
     }
 }

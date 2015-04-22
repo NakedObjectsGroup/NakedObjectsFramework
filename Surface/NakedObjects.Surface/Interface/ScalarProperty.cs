@@ -39,6 +39,7 @@ namespace NakedObjects.Surface {
         IsNotPersistent,
         IsUserPersistable,
         IsConcurrency,
-        IsCollectionMemento
+        IsCollectionMemento,
+        IsContributed
     }
 }

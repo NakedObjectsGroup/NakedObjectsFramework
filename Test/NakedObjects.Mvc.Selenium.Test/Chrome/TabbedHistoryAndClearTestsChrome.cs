@@ -10,6 +10,7 @@ using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
     [TestClass] //no longer working - investigate later
+    [Ignore]
     public class TabbedHistoryAndClearTestsChrome : TabbedHistoryAndClearTests {
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {

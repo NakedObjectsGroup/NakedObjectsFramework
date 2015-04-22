@@ -159,6 +159,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsQueryOnly;
                 case (ScalarProperty.IsIdempotent):
                     return IsIdempotent;
+                case (ScalarProperty.IsContributed):
+                    return IsContributed;
                 case (ScalarProperty.MemberOrder):
                     return MemberOrder;
                 case (ScalarProperty.ExtensionData):

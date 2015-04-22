@@ -490,6 +490,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 values.Where(kvp => IsFormat(kvp.Value)).ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
+        internal void SetDefaults(INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
+            foreach (var parm in action.Parameters) {
+                var value = parm.GetDefault(nakedObject);
+       
+                var isExplicit = parm.DefaultTypeIsExplicit(nakedObject);
+
+                bool ignore = value == null || (value.Object is DateTime && ((DateTime)value.Object).Ticks == 0) || !isExplicit;
+                if (!ignore) {
+                    // deliberately not an attempted value so it only gets populated after masking 
+                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable() ? value.Object : value;
+                }
+            }
+        }
+
 
         internal void SetDefaults(INakedObjectAdapter nakedObject, IActionSpec action) {
             foreach (IActionParameterSpec parm in action.Parameters) {
@@ -504,6 +518,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        protected INakedObjectSurface GetNakedObjectFromId(string id) {
+            var oid = Surface.OidStrategy.GetOid(id, "");
+            return Surface.GetObject(oid).Target;
+        }
+
         internal void SetSelectedReferences(INakedObjectAdapter nakedObject, IDictionary<string, string> dict) {
             var refItems = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
@@ -512,6 +531,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
+
+        internal void SetSelectedParameters(INakedObjectActionSurface action) {
+            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() &&  !p.Specification.IsParseable()).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
+            if (refItems.Any()) {
+                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
+                items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
+            }
+        }
+
 
         internal void SetSelectedParameters(IActionSpec action) {
             var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
@@ -770,6 +798,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
         }
 
+        
+
         internal ArgumentsContext Convert(FormCollection form, bool validateOnly = false) {
             var ac = new ArgumentsContext {
                 ValidateOnly = validateOnly,
@@ -941,6 +971,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action.IsContributedMethod && !action.OnSpec.Equals(targetNakedObject.Spec);
         }
 
+        internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, INakedObjectSurface targetNakedObject) {
+            return action.IsContributed() && !action.OnType.Equals(targetNakedObject.Specification);
+        }
+
         internal void SetMessagesAndWarnings() {
             string[] messages = NakedObjectsContext.MessageBroker.Messages;
             string[] warnings = NakedObjectsContext.MessageBroker.Warnings;
@@ -962,6 +996,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal void SetEncryptDecrypt() {
             ViewData.Add(IdConstants.NofEncryptDecrypt, EncryptDecryptService);
+        }
+
+        internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectSurface nakedObject) {
+            if (nakedObject.Specification.IsCollection()) {
+                int sink1, sink2;
+                CurrentlyPaging(controlData, nakedObject.Count(), out sink1, out sink2);
+            }
         }
 
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectAdapter nakedObject) {

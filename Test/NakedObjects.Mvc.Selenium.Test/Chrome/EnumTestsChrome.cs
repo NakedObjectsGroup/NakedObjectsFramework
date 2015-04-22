@@ -10,6 +10,7 @@ using NakedObjects.Mvc.Selenium.Test.Helper;
 
 namespace NakedObjects.Mvc.Selenium.Test.Chrome {
     [TestClass]
+    [Ignore]
     public class EnumTestsChrome : EnumTests {
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {

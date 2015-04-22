@@ -98,6 +98,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectActionSurface.GetScalarProperty<bool>(ScalarProperty.IsIdempotent);
         }
 
+        public static bool IsContributed(this INakedObjectActionSurface nakedObjectActionSurface) {
+            return nakedObjectActionSurface.GetScalarProperty<bool>(ScalarProperty.IsContributed);
+        }
+
         public static int MemberOrder(this INakedObjectActionSurface nakedObjectActionSurface) {
             return nakedObjectActionSurface.GetScalarProperty<int>(ScalarProperty.MemberOrder);
         }
