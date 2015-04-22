@@ -150,7 +150,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 // TODO hack pending move paging into surface 
-                var no = ((dynamic) nakedObject).WrappedNakedObject;
+                var no = UnWrap(nakedObject);
 
                 no = Page(no, collectionSize, controlData, CollectionMementoHelper.IsNotQueryable(no));
                 IActionSpec a =  action == null ? null :  ((dynamic) action).WrappedSpec; 
@@ -579,6 +579,44 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return null;
         }
 
+        // todo remove this it's a temp hack
+        private INakedObjectAdapter UnWrap(INakedObjectSurface nakedObject) {
+            return ((dynamic) nakedObject).WrappedNakedObject; 
+        }
+
+
+        internal void CheckConcurrency(INakedObjectSurface nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+            var objectSpec = nakedObject.Specification;
+            var concurrencyFields = objectSpec == null ? new List<INakedObjectAssociationSurface>() : objectSpec.Properties.Where(p => p.IsConcurrency()).ToList();
+
+            if (!nakedObject.IsTransient() && concurrencyFields.Any()) {
+                IEnumerable<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
+
+                foreach (var pair in fieldsAndMatchingValues) {
+                    if (pair.Item1.Specification.IsParseable()) {
+                        var currentValue = pair.Item1.GetNakedObject(nakedObject);
+
+                        // todo revisit this 
+                        //var concurrencyValue = pair.Item1.ReturnSpec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
+
+                        var concurrencyValue = pair.Item2 as string;
+
+                        if (concurrencyValue != null && currentValue != null) {
+                            if (concurrencyValue != currentValue.TitleString()) {
+                                throw new ConcurrencyException(UnWrap(nakedObject));
+                            }
+                        }
+                        else if (concurrencyValue == null && currentValue == null) {
+                            // OK 
+                        }
+                        else {
+                            throw new ConcurrencyException(UnWrap(nakedObject));
+                        }
+                    }
+                }
+            }
+        }
+
         internal void CheckConcurrency(INakedObjectAdapter nakedObject, IAssociationSpec parent, ObjectAndControlData controlData, Func<IAssociationSpec, INakedObjectAdapter, IAssociationSpec, string> idFunc) {
             var objectSpec = nakedObject.Spec as IObjectSpec;
             var concurrencyFields = objectSpec == null ? new List<IAssociationSpec>() : objectSpec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>()).ToList();
@@ -720,6 +758,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 string name = idFunc(parent, nakedObject, assoc);
                 object newValue = GetValueFromForm(controlData, name);
                 yield return new Tuple<IAssociationSpec, object>(assoc, newValue);
+            }
+        }
+
+        private static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
+                                                                                                             INakedObjectAssociationSurface parent,
+                                                                                                             IEnumerable<INakedObjectAssociationSurface> associations,
+                                                                                                             ObjectAndControlData controlData,
+                                                                                                             Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+            foreach (var assoc in associations.Where(a => !a.IsInline())) {
+                string name = idFunc(parent, nakedObject, assoc);
+                object newValue = GetValueFromForm(controlData, name);
+                yield return new Tuple<INakedObjectAssociationSurface, object>(assoc, newValue);
             }
         }
 
@@ -1084,7 +1134,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             // TODO another temp hack
 
-            INakedObjectAdapter no = ((dynamic) nakedObject).WrappedNakedObject;
+            INakedObjectAdapter no = UnWrap(nakedObject);
 
             no = FilterCollection(no, controlData);
 

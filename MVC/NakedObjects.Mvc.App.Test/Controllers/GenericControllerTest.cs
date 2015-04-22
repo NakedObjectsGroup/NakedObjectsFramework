@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
@@ -1744,7 +1745,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsDialogViewOfAction(result, "Create New Order");
             Assert.IsTrue(result.ViewData.ContainsKey("OrderContributedActions-CreateNewOrder-Customer-Select"));
-            Assert.AreEqual(NakedObjectsFramework.GetNakedObject(store), result.ViewData["OrderContributedActions-CreateNewOrder-Customer-Select"]);
+            Assert.AreEqual(NakedObjectsFramework.GetNakedObject(store).Object, ((dynamic) result.ViewData["OrderContributedActions-CreateNewOrder-Customer-Select"]).Object);
         }
 
         [Test]

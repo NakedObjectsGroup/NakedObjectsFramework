@@ -259,7 +259,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return View("ActionDialog", new FindViewModel {
                 ContextObject = no.Object,
-                ContextAction = ((dynamic)action).WrappedSpec
+                ContextAction = ((dynamic)action).WrappedSpec // todo fix hack 
             });
         }
 
@@ -429,7 +429,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action.Execute(target, parameterSet);
         }
 
-      
+        private INakedObjectSurface GetResult(ActionResultContextSurface context) {
+            if (context.HasResult) {
+                return context.Result.Target;
+            }
+            return null;
+        }
 
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
@@ -445,7 +450,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
                 var oid = Surface.OidStrategy.GetOid(nakedObject);
                 var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
-                return AppropriateView(controlData, result.Target, action);
+                return AppropriateView(controlData, GetResult(result), action);
                 //}
 
                 //controlData.Form = oldForm;
@@ -457,7 +462,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var oid = Surface.OidStrategy.GetOid(nakedObject);
                 var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
 
-                return AppropriateView(controlData, result.Target, action);
+                return AppropriateView(controlData, GetResult(result), action);
             }
 
             SetDefaults(nakedObject, action);
@@ -503,9 +508,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult InitialAction(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-            var nakedObjectAction = controlData.GetAction(NakedObjectsContext);
-            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(nakedObjectAction), ScaffoldAssoc.Wrap(y)));
+            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObjectAction = controlData.GetAction(Surface);
+            CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, nakedObjectAction, y));
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 
