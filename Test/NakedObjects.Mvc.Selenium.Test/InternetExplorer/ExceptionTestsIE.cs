@@ -11,6 +11,7 @@ using OpenQA.Selenium.IE;
 
 namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
     [TestClass]
+    [Ignore]
     public class ExceptionTestsIE : ExceptionTests {
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
