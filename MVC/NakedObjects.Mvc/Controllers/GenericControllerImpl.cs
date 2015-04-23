@@ -62,6 +62,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View("ObjectEdit", controlData.GetNakedObject(Surface).Object);
         }
 
+        // temp kludge 
+        private void SetNotQueryable(INakedObjectSurface no, bool isNotQueryable) {
+            INakedObjectAdapter noa = ((dynamic)no).WrappedNakedObject;
+            noa.SetNotQueryable(isNotQueryable);
+        }
+
 
         [HttpPost]
         public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
@@ -74,11 +80,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var nakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
             SetExistingCollectionFormats(form);
             SetNewCollectionFormats(controlData);
-
+            
             // TODO temp hack 
-            INakedObjectAdapter noa = ((dynamic)nakedObject).WrappedNakedObject;
-            noa.SetNotQueryable(true);
-            // end hack 
+            SetNotQueryable(nakedObject, true);
+
 
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient() && nakedObject.IsUserPersistable()) {
                 // remove from cache and return to last object 
@@ -379,10 +384,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 // force any result to not be queryable
                 //filteredNakedObject.SetNotQueryable(true);
                 // TODO temp hack 
-                INakedObjectAdapter noa = ((dynamic)filteredNakedObject).WrappedNakedObject;
-                noa.SetNotQueryable(true);
-                // end hack 
-
+                SetNotQueryable(filteredNakedObject, true);
 
                 return ExecuteAction(controlData, filteredNakedObject, targetAction);
             }
@@ -514,11 +516,37 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 
-        private ActionResult ApplyAction(ObjectAndControlData controlData) {
-            var targetNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
-            var targetAction = controlData.GetAction(NakedObjectsContext);
+        //private ActionResult ApplyAction(ObjectAndControlData controlData) {
+        //    var targetNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+        //    var targetAction = controlData.GetAction(NakedObjectsContext);
 
-            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(targetAction), ScaffoldAssoc.Wrap(y)));
+        //    CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(ScaffoldAdapter.Wrap(x), ScaffoldAction.Wrap(targetAction), ScaffoldAssoc.Wrap(y)));
+
+        //    if (targetNakedObject.IsNotPersistent()) {
+        //        RefreshTransient(targetNakedObject, controlData.Form);
+        //    }
+
+        //    // do after any parameters set by contributed action so this takes priority
+        //    SetSelectedParameters(targetAction);
+        //    if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
+        //        targetNakedObject.SetNotQueryable(targetAction.IsContributedMethod);
+        //        var parms = GetParameterValues(targetAction, controlData);
+        //        return AppropriateView(controlData, Execute(targetAction, targetNakedObject, parms.ToArray()), targetAction);
+        //    }
+        //    var property = DisplaySingleProperty(controlData, controlData.DataDict);
+        //    return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = targetNakedObject.Object, ContextAction = targetAction, PropertyName = property});
+        //}
+
+        private bool HasError(ActionResultContextSurface ar) {
+
+            return !string.IsNullOrEmpty(ar.ActionContext.Reason) || ar.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason));
+        }
+
+        private ActionResult ApplyAction(ObjectAndControlData controlData) {
+            var targetNakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
+            var targetAction = controlData.GetAction(Surface);
+
+            CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, targetAction, y));
 
             if (targetNakedObject.IsNotPersistent()) {
                 RefreshTransient(targetNakedObject, controlData.Form);
@@ -526,14 +554,38 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             // do after any parameters set by contributed action so this takes priority
             SetSelectedParameters(targetAction);
-            if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
-                targetNakedObject.SetNotQueryable(targetAction.IsContributedMethod);
-                var parms = GetParameterValues(targetAction, controlData);
-                return AppropriateView(controlData, Execute(targetAction, targetNakedObject, parms.ToArray()), targetAction);
+
+            var ac = GetParameterValues(targetAction, controlData);
+            var oid = Surface.OidStrategy.GetOid(targetNakedObject);
+            var ar = Surface.ExecuteObjectAction(oid, targetAction.Id, ac);
+
+            if (!HasError(ar)) {
+
+                SetNotQueryable(targetNakedObject, targetAction.IsContributed()); // kludge
+
+                return AppropriateView(controlData, GetResult(ar), targetAction);
             }
+
+            foreach (var parm in ar.ActionContext.VisibleParameters) {
+                if (!string.IsNullOrEmpty(parm.Reason)) {
+                    ModelState.AddModelError(IdHelper.GetParameterInputId(targetAction, parm.Parameter), parm.Reason);
+                }
+            }
+
+            if ( !(string.IsNullOrEmpty(ar.ActionContext.Reason)))
+            {
+                ModelState.AddModelError("", ar.ActionContext.Reason);
+            }
+        
+
+
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = targetNakedObject.Object, ContextAction = targetAction, PropertyName = property});
+            // TODO temp hack
+            IActionSpec oldAction = ((dynamic)targetAction).WrappedSpec;
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = targetNakedObject.Object, ContextAction = oldAction, PropertyName = property });
         }
+
+
 
         private ActionResult Find(ObjectAndControlData controlData) {
             string spec = controlData.DataDict["spec"];

@@ -146,7 +146,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
                     ViewData.Remove(IdConstants.PagingData);
                     // is this safe TODO !!
-                    return View("ObjectView", nakedObject.ToEnumerable().First());
+                    return View("ObjectView", nakedObject.ToEnumerable().First().Object);
                 }
 
                 // TODO hack pending move paging into surface 
@@ -373,6 +373,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return FilterCollection(nakedObject, controlData);
         }
 
+        internal object GetParameterValue(INakedObjectActionParameterSurface parm, string name, ObjectAndControlData controlData) {
+            object value = GetRawParameterValue(parm, controlData, name);
+            return GetParameterValue(parm, value);
+            // todo make this work
+            //return FilterCollection(nakedObject, controlData);
+        }
+
         internal INakedObjectAdapter GetParameterValue(IActionParameterSpec parm, object value) {
             if (value == null) {
                 return null;
@@ -395,6 +402,30 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return NakedObjectsContext.GetTypedCollection(parm, collectionValue);
         }
 
+        internal object GetParameterValue(INakedObjectActionParameterSurface parm, object value) {
+            if (value == null) {
+                return null;
+            }
+            // todo
+            //var fromStreamFacet = parm.Spec.GetFacet<IFromStreamFacet>();
+            //if (fromStreamFacet != null) {
+            //    var httpPostedFileBase = (HttpPostedFileBase)value;
+            //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
+            //}
+            var stringValue = value as string;
+            if (parm.Specification.IsParseable()) {
+                return value;
+            }
+
+            var collectionValue = value as IEnumerable;
+            if (!parm.Specification.IsCollection() || collectionValue == null) {
+                return GetNakedObjectFromId(stringValue).Object;
+            }
+
+            return Surface.GetTypedCollection(parm, collectionValue);
+        }
+
+
         private static object GetRawParameterValue(IActionParameterSpec parm, ObjectAndControlData controlData, string name) {
             var form = controlData.Form;
             ValueProviderResult vp = form.GetValue(name);
@@ -412,9 +443,33 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.First();
         }
 
+        private static object GetRawParameterValue(INakedObjectActionParameterSurface parm, ObjectAndControlData controlData, string name) {
+            var form = controlData.Form;
+            ValueProviderResult vp = form.GetValue(name);
+            string[] values = vp == null ? null : (string[])vp.RawValue;
+
+            if (values == null) {
+                if (controlData.Files.ContainsKey(name)) {
+                    return controlData.Files[name];
+                }
+                return null;
+            }
+            if (parm.Specification.IsCollection() && !parm.Specification.IsParseable()) {
+                return values.All(string.IsNullOrEmpty) ? null : values;
+            }
+            return values.First();
+        }
+
         internal IEnumerable<INakedObjectAdapter> GetParameterValues(IActionSpec action, ObjectAndControlData controlData) {
             return action.Parameters.Select(parm => GetParameterValue(parm, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm)), controlData));
         }
+
+        internal ArgumentsContext GetParameterValues(INakedObjectActionSurface action, ObjectAndControlData controlData) {
+            var values = action.Parameters.Select(parm => new {Id = IdHelper.GetParameterInputId(action, parm), Parm = parm}).ToDictionary(a => a.Parm.Id, a => GetParameterValue(a.Parm, a.Id, controlData));
+
+            return new ArgumentsContext() {Values = values, ValidateOnly = false};
+        }
+
 
         internal void SetContextObjectAsParameterValue(IActionSpec targetAction, INakedObjectAdapter contextNakedObject) {
             if (targetAction.Parameters.Any(p => p.Spec.IsOfType(contextNakedObject.Spec))) {

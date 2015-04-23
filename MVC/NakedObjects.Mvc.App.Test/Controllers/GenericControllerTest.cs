@@ -1601,6 +1601,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
+        [Ignore] // needs to be implemented !
         public void InvokeActionWithMultiSelectParseable() {
             string id = NakedObjectsFramework.GetObjectId(Order);
 

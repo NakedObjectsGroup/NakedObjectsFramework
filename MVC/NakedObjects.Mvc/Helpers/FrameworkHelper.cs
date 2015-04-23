@@ -17,6 +17,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -250,6 +252,39 @@ namespace NakedObjects.Web.Mvc.Html {
         public static bool IsParseableOrCollectionOfParseable(this INakedObjectsFramework framework, IActionParameterSpec parmSpec) {
             var spec = parmSpec.Spec;
             return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
+        }
+
+        private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+            var oid = surface.OidStrategy.GetOid(id, "");
+            return surface.GetObject(oid).Target;
+        }
+
+        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
+            var collectionitemSpec = featureSpec.ElementType;
+            string[] rawCollection = collectionValue.Cast<string>().ToArray();
+            object[] objCollection;
+
+            Type instanceType = collectionitemSpec.GetUnderlyingType();
+            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+
+            if (collectionitemSpec.IsParseable()) {
+                return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).Cast<object>().ToArray();
+            }
+
+            // need to check if collection is actually a collection memento 
+            if (rawCollection.Count() == 1) {
+                var firstObj = GetNakedObjectFromId(surface, rawCollection.First());
+
+                if (firstObj != null && firstObj.IsCollectionMemento()) {
+                    return firstObj;
+                }
+            }
+
+            objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
+
+            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
+
+            return typedCollection.AsQueryable();
         }
 
         public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
