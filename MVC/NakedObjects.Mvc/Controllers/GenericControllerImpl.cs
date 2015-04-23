@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
@@ -622,14 +623,66 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
         }
 
+
+        
+        private bool HasError(ObjectContextSurface ar) {
+            return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
+        }
+
         private ActionResult ApplyEdit(ObjectAndControlData controlData) {
-            string viewName = "ObjectEdit";
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-            if (ValidateChanges(nakedObject, controlData)) {
-                viewName = ApplyChanges(nakedObject, controlData) ? "ObjectView" : "ObjectEdit";
+            //string viewName = "ObjectEdit";
+            var nakedObject = controlData.GetNakedObject(Surface);
+
+            var oid = Surface.OidStrategy.GetOid(nakedObject);
+
+            var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) &&  p.IsUsable(nakedObject).IsAllowed);
+            var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, null, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
+
+            CheckConcurrency(nakedObject, null, controlData, GetConcurrencyFieldInputId);
+
+            fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
+
+
+            var ac = new ArgumentsContext();
+
+            ac.Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => f.Item2);
+            ac.ValidateOnly = false;
+
+            // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
+            // all mandatory fields are set. 
+            foreach (var pair in fieldsAndMatchingValues) {
+                var result = pair.Item2;
+                var stringResult = result as string;
+
+                if (pair.Item1.IsMandatory() && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
+                    AddErrorAndAttemptedValue(nakedObject, stringResult, pair.Item1, MvcUi.Mandatory);
+                }        
             }
 
-            return View(viewName, nakedObject.Object);
+            if (!ModelState.IsValid) {
+                return View("ObjectEdit", nakedObject.Object);
+            }
+
+            var res = Surface.PutObject(oid, ac);
+
+
+            if (!HasError(res)) {
+
+                return View("ObjectView", nakedObject.Object);
+            }
+
+            foreach (var parm in res.VisibleProperties) {
+                if (!string.IsNullOrEmpty(parm.Reason)) {
+                    ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
+                }
+            }
+
+            if (!(string.IsNullOrEmpty(res.Reason))) {
+                ModelState.AddModelError("", res.Reason);
+            }
+
+
+            return View("ObjectEdit", nakedObject.Object);
         }
 
         private ActionResult ApplyEditAndClose(ObjectAndControlData controlData) {

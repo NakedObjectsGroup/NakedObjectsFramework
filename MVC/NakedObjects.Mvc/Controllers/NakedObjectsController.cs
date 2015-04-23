@@ -574,6 +574,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected INakedObjectSurface GetNakedObjectFromId(string id) {
+            if (string.IsNullOrEmpty(id)) {
+                return null;
+            }
+
             var oid = Surface.OidStrategy.GetOid(id, "");
             return Surface.GetObject(oid).Target;
         }
@@ -769,7 +773,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private void GetUsableAndVisibleFields(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
+        protected void GetUsableAndVisibleFields(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = (nakedObject.GetObjectSpec()).Properties.Where(p => IsUsable(p, nakedObject) && IsVisible(p, nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
@@ -816,7 +820,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
+        protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
                                                                                                              INakedObjectAssociationSurface parent,
                                                                                                              IEnumerable<INakedObjectAssociationSurface> associations,
                                                                                                              ObjectAndControlData controlData,
@@ -836,6 +840,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             return controlData.Files.ContainsKey(name) ? controlData.Files[name] : null;
+        }
+
+        internal void AddErrorAndAttemptedValue(INakedObjectSurface nakedObject, string newValue, INakedObjectAssociationSurface assoc, string errorText, INakedObjectAssociationSurface parent = null) {
+            string key = GetFieldInputId(parent, nakedObject, assoc);
+            ModelState.AddModelError(key, errorText);
+            AddAttemptedValue(key, assoc.Specification.IsParseable() ? (object)newValue : GetNakedObjectFromId(newValue));
         }
 
         internal void AddErrorAndAttemptedValue(INakedObjectAdapter nakedObject, string newValue, IAssociationSpec assoc, string errorText, IAssociationSpec parent = null) {
@@ -970,7 +980,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private string GetFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
@@ -980,12 +990,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
         }
 
-        private string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
+        protected string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) :
                 IdHelper.GetInlineConcurrencyFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
         }
 
-        private string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) : 
                 IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
@@ -1068,7 +1078,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private void AddAttemptedValue(string key, object value) {
+        protected void AddAttemptedValue(string key, object value) {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));
         }
 
