@@ -23,13 +23,14 @@ namespace NakedObjects.Xat {
         private readonly ITransactionManager transactionManager;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodelManager;
+        private readonly IMessageBroker messageBroker;
         private readonly ITestHasActions owningObject;
         private readonly ISession session;
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager)
-            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager) {}
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker)
+            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager, messageBroker) {}
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker) {
             SubMenu = contributor;
             this.metamodelManager = metamodelManager;
             this.session = session;
@@ -38,6 +39,7 @@ namespace NakedObjects.Xat {
             this.owningObject = owningObject;
             this.factory = factory;
             this.manager = manager;
+            this.messageBroker = messageBroker;
             this.actionSpec = actionSpec;
         }
 
@@ -111,7 +113,7 @@ namespace NakedObjects.Xat {
 
             INakedObjectAdapter[] parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
             INakedObjectAdapter target = actionSpec.RealTarget(owningObject.NakedObject);
-            INakedObjectAdapter result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager);
+            INakedObjectAdapter result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker);
 
             if (result == null) {
                 return null;
