@@ -123,6 +123,23 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
+        // todo consolidate these
+        private object GetValue(string[] values, INakedObjectActionParameterSurface featureSpec, INakedObjectSpecificationSurface spec) {
+            if (!values.Any()) {
+                return null;
+            }
+
+            if (spec.IsParseable()) {
+                var v = values.First();
+                return string.IsNullOrEmpty(v) ? null : v;
+            }
+            if (spec.IsCollection()) {
+                return Surface.GetTypedCollection(featureSpec, values);
+            }
+
+            return GetNakedObjectFromId(values.First()).Object;
+        }
+
         private object GetValue(string[] values, INakedObjectAssociationSurface featureSpec, INakedObjectSpecificationSurface spec) {
             if (!values.Any()) {
                 return null;
@@ -178,6 +195,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
+        private IDictionary<string, object> GetOtherValues(INakedObjectActionSurface action) {
+            var results = new Dictionary<string, object>();
+            var parms = new FormCollection(HttpContext.Request.Params);
+
+            Decrypt(parms);
+
+            foreach (var parm in action.Parameters) {
+                string[] values = GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
+                results[parm.Id.ToLower()] = GetValue(values, parm, parm.Specification);
+            }
+
+            return results;
+        }
+
+
         private IDictionary<string, object> GetOtherValues(INakedObjectSurface nakedObject) {
             var results = new Dictionary<string, object>();
             var parms = new FormCollection(HttpContext.Request.Params);
@@ -207,19 +239,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
+        public static bool IsParseableOrCollectionOfParseable( INakedObjectsSurface surface, INakedObjectActionParameterSurface parmSpec) {
+            var spec = parmSpec.Specification;
+            return spec.IsParseable() || (spec.IsCollection() && parmSpec.ElementType.IsParseable());
+        }
+
         public virtual JsonResult GetActionChoices(string id, string actionName) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).Single(a => a.Id == actionName);
+            var nakedObject = GetNakedObjectFromId(id);
+            var action = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == actionName);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
-            IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(action);
+            var otherValues = GetOtherValues(action);
 
-            foreach (IActionParameterSpec p in action.Parameters) {
-                if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
-                    INakedObjectAdapter[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
+            foreach (var p in action.Parameters) {
+                if (p.IsChoicesEnabled /* todo  || p.IsMultipleChoicesEnabled*/) {
+                    var nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
+                    string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
-                    choices[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(p))] = new[] { value, content };
+                    choices[IdHelper.GetParameterInputId(action, p)] = new[] { value, content };
                 }
             }
             return Jsonp(choices);
@@ -234,7 +271,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (assoc.IsChoicesEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(objectSurface => NakedObjectsContext.GetObjectId(objectSurface)).ToArray();
+                    string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
                     choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }

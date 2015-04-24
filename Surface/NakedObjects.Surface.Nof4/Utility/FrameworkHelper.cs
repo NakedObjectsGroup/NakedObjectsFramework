@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -251,6 +252,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
             var spec = parmSpec.Spec;
             return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
         }
+
+      
 
         public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
             IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
