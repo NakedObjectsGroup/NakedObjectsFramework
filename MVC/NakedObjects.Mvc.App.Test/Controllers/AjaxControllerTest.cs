@@ -25,6 +25,7 @@ using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
@@ -88,18 +89,27 @@ namespace MvcTestApp.Tests.Controllers {
 
             StartTest();
 
-            var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            controller = new AjaxController(NakedObjectsFramework, mockSurface, new IdHelper());
+            controller = new AjaxController(NakedObjectsFramework, Surface, new IdHelper());
             mocks = new ContextMocks(controller);
+        }
+
+        protected INakedObjectsSurface Surface { get; set; }
+
+        protected override void StartTest() {
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
         }
 
         #endregion
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]

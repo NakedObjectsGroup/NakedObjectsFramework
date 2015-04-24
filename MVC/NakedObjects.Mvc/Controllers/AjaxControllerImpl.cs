@@ -209,46 +209,51 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(choices);
         }
 
-        private string GetIconSrc(INakedObjectAdapter nakedObject) {
+        public static string IconName(INakedObjectSurface nakedObject) {
+            string name = nakedObject.Specification.GetIconName(nakedObject);
+            return name.Contains(".") ? name : name + ".png";
+        }
+
+        private string GetIconSrc(INakedObjectSurface nakedObject) {
             var url = new UrlHelper(ControllerContext.RequestContext);
-            return url.Content("~/Images/" + FrameworkHelper.IconName(nakedObject));
+            return url.Content("~/Images/" + IconName(nakedObject));
         }
 
-        private string GetIconAlt(INakedObjectAdapter nakedObject) {
-            return nakedObject.Spec.SingularName;
+        private string GetIconAlt(INakedObjectSurface nakedObject) {
+            return nakedObject.Specification.SingularName();
         }
 
-        private object GetCompletionData(INakedObjectAdapter nakedObject, ITypeSpec spec) {
+        private object GetCompletionData(INakedObjectSurface nakedObject, INakedObjectSpecificationSurface spec) {
             string label = nakedObject.TitleString();
             string value = nakedObject.TitleString();
-            string link = spec.IsParseable ? label : NakedObjectsContext.GetObjectId(nakedObject);
+            string link = spec.IsParseable() ? label : Surface.OidStrategy.GetOid(nakedObject).ToString();
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);
             return new {label, value, link, src, alt};
         }
 
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            var nakedObject = GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
-            var assoc = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>().Single(p => p.Id == propertyId);
+            var assoc = nakedObject.Specification.Properties.SingleOrDefault(p => p.Id == propertyId && p.IsAutoCompleteEnabled);
 
-            if (assoc.IsAutoCompleteEnabled) {
-                INakedObjectAdapter[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);
-                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.ReturnSpec)).ToList();
+            if (assoc != null) {
+                var nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);
+                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
             return Jsonp(completions);
         }
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            var nakedObject = GetNakedObjectFromId(id);
+            var action = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == actionName);
             IList<object> completions = new List<object>();
 
-            IActionParameterSpec p = action.Parameters[parameterIndex];
+            var p = action.Parameters[parameterIndex];
             if (p.IsAutoCompleteEnabled) {
-                INakedObjectAdapter[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm);
-                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Spec)).ToList();
+                var nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm);
+                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
             }
 
             return Jsonp(completions);
