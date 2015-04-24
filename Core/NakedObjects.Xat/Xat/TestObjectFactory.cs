@@ -21,8 +21,9 @@ namespace NakedObjects.Xat {
         private readonly IObjectPersistor persistor;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
+        private readonly IMessageBroker messageBroker;
 
-        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager) {
+        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager, IMessageBroker messageBroker) {
             this.metamodelManager = metamodelManager;
             Session = session;
             this.lifecycleManager = lifecycleManager;
@@ -30,6 +31,7 @@ namespace NakedObjects.Xat {
             this.manager = manager;
             this.transactionManager = transactionManager;
             this.servicesManager = servicesManager;
+            this.messageBroker = messageBroker;
         }
 
         #region ITestObjectFactory Members
@@ -80,7 +82,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager,  actionSpec, owningObject, this, manager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager,  actionSpec, owningObject, this, manager, messageBroker);
         }
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpecImm, ITestHasActions owningObject) {
@@ -101,7 +103,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager);
+            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker);
         }
 
         public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) {
