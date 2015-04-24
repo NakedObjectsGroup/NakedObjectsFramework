@@ -267,6 +267,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, INakedObjectSurface valueNakedObject) {
+            var isValid = parm.IsValid(targetNakedObject, valueNakedObject);
+
+            if (!isValid.IsAllowed) {
+                ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), isValid.Reason);
+            }
+        }
+
         private bool CheckForAndAddCollectionMementoNew(string name, string[] values, ObjectAndControlData controlData) {
             if (values.Count() == 1) {
                 var oid = Surface.OidStrategy.GetOid(values.First(), "");
@@ -582,6 +590,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Surface.GetObject(oid).Target;
         }
 
+        internal void SetSelectedReferences(INakedObjectSurface nakedObject, IDictionary<string, string> dict) {
+            var refItems = (nakedObject.Specification.Properties.Where(p => !p.IsCollection() && !p.Specification.IsParseable())).Where(a => dict.ContainsKey(a.Id)).ToList();
+            if (refItems.Any()) {
+                refItems.ForEach(a => ValidateAssociation(nakedObject, a, dict[a.Id]));
+                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject,a), a => GetNakedObjectFromId(dict[a.Id]));
+                items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
+            }
+        }
+
         internal void SetSelectedReferences(INakedObjectAdapter nakedObject, IDictionary<string, string> dict) {
             var refItems = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.ReturnSpec.IsParseable).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
@@ -607,6 +624,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
+
+        internal void SetSelectedParameters(INakedObjectSurface nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
+            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => dict.ContainsKey(p.Id)).ToList();
+            if (refItems.Any()) {
+                refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id])));
+                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
+                items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
+            }
+        }
+
 
         internal void SetSelectedParameters(INakedObjectAdapter nakedObject, IActionSpec action, IDictionary<string, string> dict) {
             var refItems = action.Parameters.OfType<IOneToOneActionParameterSpec>().Where(p => !p.Spec.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
@@ -1077,6 +1104,41 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 AddAttemptedValue(key, attemptedValue);
             }
         }
+
+        internal void ValidateAssociation(INakedObjectSurface nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
+            string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
+            try {
+                //INakedObjectAdapter valueNakedObject = GetNakedObjectValue(oneToOneAssoc, nakedObject, attemptedValue);
+
+                //IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
+
+                var oid = Surface.OidStrategy.GetOid(nakedObject);
+
+                var ac = new ArgumentContext {
+                    Value = attemptedValue,
+                    ValidateOnly = true
+                };
+
+
+                var pcs = Surface.PutProperty(oid, oneToOneAssoc.Id, ac);
+
+                if (!string.IsNullOrEmpty(pcs.Reason)) {
+                    ModelState.AddModelError(key, pcs.Reason);
+                }
+            }
+            catch (InvalidEntryException) {
+                ModelState.AddModelError(key, MvcUi.InvalidEntry);
+            }
+            catch (ArgumentException) {
+                // Always expect newValue to be non-null for a parseable field as it should always be included 
+                // in the form so this is an unexpected result for a parseable field 
+                ModelState.AddModelError(key, MvcUi.InvalidEntry);
+            }
+            finally {
+                AddAttemptedValue(key, attemptedValue);
+            }
+        }
+
 
         protected void AddAttemptedValue(string key, object value) {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));

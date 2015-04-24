@@ -623,30 +623,40 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
         }
 
+        private ActionResult SelectSingleItem(INakedObjectSurface nakedObject, INakedObjectActionSurface action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
+            var property = DisplaySingleProperty(controlData, selectedItem);
+
+            if (action == null) {
+                SetSelectedReferences(nakedObject, selectedItem);
+                return property == null ? View("ObjectEdit", nakedObject.Object) :    View("PropertyEdit", new PropertyViewModel(nakedObject.Object, property));
+            }
+            SetSelectedParameters(nakedObject, action, selectedItem);
+
+            IActionSpec oldAction = ((dynamic)action).WrappedSpec; // hack
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = oldAction, PropertyName = property });
+        }
 
         
         private bool HasError(ObjectContextSurface ar) {
             return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
         }
 
-        private ActionResult ApplyEdit(ObjectAndControlData controlData) {
+        private bool ApplyEdit(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             //string viewName = "ObjectEdit";
-            var nakedObject = controlData.GetNakedObject(Surface);
 
             var oid = Surface.OidStrategy.GetOid(nakedObject);
 
-            var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) &&  p.IsUsable(nakedObject).IsAllowed);
+            var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) && p.IsUsable(nakedObject).IsAllowed);
             var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, null, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
 
             CheckConcurrency(nakedObject, null, controlData, GetConcurrencyFieldInputId);
 
             fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
 
-
-            var ac = new ArgumentsContext();
-
-            ac.Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => f.Item2);
-            ac.ValidateOnly = false;
+            var ac = new ArgumentsContext {
+                Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => f.Item2),
+                ValidateOnly = false
+            };
 
             // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
             // all mandatory fields are set. 
@@ -656,58 +666,64 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 if (pair.Item1.IsMandatory() && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
                     AddErrorAndAttemptedValue(nakedObject, stringResult, pair.Item1, MvcUi.Mandatory);
-                }        
+                }
             }
 
             if (!ModelState.IsValid) {
-                return View("ObjectEdit", nakedObject.Object);
+                return false;
             }
 
             var res = Surface.PutObject(oid, ac);
 
-
-            if (!HasError(res)) {
-
-                return View("ObjectView", nakedObject.Object);
-            }
-
-            foreach (var parm in res.VisibleProperties) {
-                if (!string.IsNullOrEmpty(parm.Reason)) {
-                    ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
+            if (HasError(res)) {
+                foreach (var parm in res.VisibleProperties) {
+                    if (!string.IsNullOrEmpty(parm.Reason)) {
+                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
+                    }
                 }
+
+                if (!(string.IsNullOrEmpty(res.Reason))) {
+                    ModelState.AddModelError("", res.Reason);
+                }
+
+                return false;
             }
 
-            if (!(string.IsNullOrEmpty(res.Reason))) {
-                ModelState.AddModelError("", res.Reason);
-            }
+            return true;
+        }
 
+        private ActionResult ApplyEdit(ObjectAndControlData controlData) {
+            //string viewName = "ObjectEdit";
+            var nakedObject = controlData.GetNakedObject(Surface);
 
-            return View("ObjectEdit", nakedObject.Object);
+            var viewName = ApplyEdit(nakedObject, controlData) ? "ObjectView" : "ObjectEdit";
+
+            return View(viewName, nakedObject.Object);
         }
 
         private ActionResult ApplyEditAndClose(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-            if (ValidateChanges(nakedObject, controlData)) {
-                if (ApplyChanges(nakedObject, controlData)) {
-                    // last object or home
-                    object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
-                    if (lastObject == null) {
-                        return RedirectHome();
-                    }
-
-                    nakedObject = NakedObjectsContext.GetNakedObject(lastObject);
-                    return AppropriateView(controlData, nakedObject);
+            var nakedObject = controlData.GetNakedObject(Surface);
+            if (ApplyEdit(nakedObject, controlData)) {
+                // last object or home
+                object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
+                if (lastObject == null) {
+                    return RedirectHome();
                 }
+
+                var oid = Surface.OidStrategy.GetOid(lastObject);
+                nakedObject = Surface.GetObject(oid).Target;
+                return AppropriateView(controlData, nakedObject);
             }
             return View("ObjectEdit", nakedObject.Object);
         }
 
         private ActionResult ApplyEditAction(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
-            var ok = ValidateChanges(nakedObject, controlData) && ApplyChanges(nakedObject, controlData);
+            var nakedObject = controlData.GetNakedObject(Surface);
+            var ok = ApplyEdit(nakedObject, controlData);
             if (ok) {
                 string targetActionId = controlData.DataDict["targetActionId"];
-                IActionSpec targetAction = NakedObjectsContext.GetActions(nakedObject).Single(a => a.Id == targetActionId);
+                var oid = Surface.OidStrategy.GetOid(nakedObject);
+                var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
                 return ExecuteAction(controlData, nakedObject, targetAction);
             }
             return View("ViewModel", nakedObject.Object);
@@ -717,13 +733,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetNewCollectionFormats(controlData);
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
             var isEdit = bool.Parse(controlData.DataDict["editMode"]);
-            var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+            var nakedObject = controlData.GetNakedObject(Surface);
             return property == null ? View(isEdit ? "ObjectEdit" : "ObjectView", nakedObject.Object) :
                 View(isEdit ? "PropertyEdit" : "PropertyView", new PropertyViewModel(nakedObject.Object, property));
         }
 
         private ActionResult Select(ObjectAndControlData controlData) {
-            return SelectSingleItem(controlData.GetNakedObject(NakedObjectsContext), null, controlData, controlData.DataDict);
+            return SelectSingleItem(controlData.GetNakedObject(Surface), null, controlData, controlData.DataDict);
         }
 
         private ActionResult SelectOnAction(ObjectAndControlData controlData) {

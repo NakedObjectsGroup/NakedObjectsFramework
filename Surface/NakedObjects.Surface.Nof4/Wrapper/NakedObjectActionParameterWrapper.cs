@@ -128,6 +128,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
+        public IConsentSurface IsValid(INakedObjectSurface target, INakedObjectSurface value) {
+            var t = ((NakedObjectWrapper) target).WrappedNakedObject;
+            var v = ((NakedObjectWrapper) value).WrappedNakedObject;
+            return new ConsentWrapper(nakedObjectActionParameter.IsValid(t, v));
+        }
+
         public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
             var choices = GetChoices(nakedObject, parameterNameValues);
             return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString())).ToArray();

@@ -24,5 +24,8 @@ namespace NakedObjects.Surface {
         bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);
         INakedObjectSurface GetDefault(INakedObjectSurface nakedObject);
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
+
+        // todo not really same as other interfaces - more PutValue with validate only ? 
+        IConsentSurface IsValid(INakedObjectSurface target, INakedObjectSurface value);
     }
 }

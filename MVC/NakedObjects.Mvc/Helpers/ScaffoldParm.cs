@@ -63,6 +63,10 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new NotImplementedException();
         }
 
+        public IConsentSurface IsValid(INakedObjectSurface target, INakedObjectSurface value) {
+            throw new NotImplementedException();
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { throw new NotImplementedException(); }
         }
