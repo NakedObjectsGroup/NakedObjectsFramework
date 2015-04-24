@@ -174,52 +174,52 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
         }
 
-        internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action = null, string propertyName = null) {
-            if (nakedObject == null) {
-                // no object to go to 
-                // if action on object go to that object. 
-                // if action on collection go to collection 
-                // if action on service go to last object 
+        //internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action = null, string propertyName = null) {
+        //    if (nakedObject == null) {
+        //        // no object to go to 
+        //        // if action on object go to that object. 
+        //        // if action on collection go to collection 
+        //        // if action on service go to last object 
 
-                nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+        //        nakedObject = controlData.GetNakedObject(NakedObjectsContext);
 
-                if (nakedObject.Spec is IServiceSpec) {
-                    object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
-                    if (lastObject == null) {
-                        return RedirectHome();
-                    }
+        //        if (nakedObject.Spec is IServiceSpec) {
+        //            object lastObject = Session.LastObject(NakedObjectsContext, ObjectCache.ObjectFlag.BreadCrumb);
+        //            if (lastObject == null) {
+        //                return RedirectHome();
+        //            }
 
-                    nakedObject = NakedObjectsContext.GetNakedObject(lastObject);
-                }
-            }
+        //            nakedObject = NakedObjectsContext.GetNakedObject(lastObject);
+        //        }
+        //    }
 
-            if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) {
-                var collection = nakedObject.GetAsQueryable();
-                int collectionSize = collection.Count();
-                if (collectionSize == 1) {
-                    // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
-                    ViewData.Remove(IdConstants.PagingData);
-                    return View("ObjectView", collection.First());
-                }
+        //    if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) {
+        //        var collection = nakedObject.GetAsQueryable();
+        //        int collectionSize = collection.Count();
+        //        if (collectionSize == 1) {
+        //            // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
+        //            ViewData.Remove(IdConstants.PagingData);
+        //            return View("ObjectView", collection.First());
+        //        }
 
-                nakedObject = Page(nakedObject, collectionSize, controlData, nakedObject.IsNotQueryable());
-                action = action ?? ((ICollectionMemento) nakedObject.Oid).Action;
-                int page, pageSize;
-                CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
-                var format = ViewData["NofCollectionFormat"] as string;
-                return View("StandaloneTable", ActionResultModel.Create(NakedObjectsContext, action, nakedObject, page, pageSize, format));
-            }
-            // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
-            ViewData.Remove(IdConstants.PagingData);
+        //        nakedObject = Page(nakedObject, collectionSize, controlData, nakedObject.IsNotQueryable());
+        //        action = action ?? ((ICollectionMemento) nakedObject.Oid).Action;
+        //        int page, pageSize;
+        //        CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
+        //        var format = ViewData["NofCollectionFormat"] as string;
+        //        return View("StandaloneTable", ActionResultModel.Create(NakedObjectsContext, action, nakedObject, page, pageSize, format));
+        //    }
+        //    // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
+        //    ViewData.Remove(IdConstants.PagingData);
 
-            if (controlData.DataDict.Values.Contains("max")) {
-                // maximizing an inline object - do not update history
-                ViewData.Add("updateHistory", false);
-            }
+        //    if (controlData.DataDict.Values.Contains("max")) {
+        //        // maximizing an inline object - do not update history
+        //        ViewData.Add("updateHistory", false);
+        //    }
 
-            return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
-                View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
-        }
+        //    return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
+        //        View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
+        //}
 
         internal bool ValidateParameters(INakedObjectAdapter targetNakedObject, IActionSpec action, ObjectAndControlData controlData) {
             // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
@@ -302,7 +302,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return false;
         }
 
-        internal void AddAttemptedValuesNew(ObjectAndControlData controlData) {
+        internal void AddAttemptedValues(ObjectAndControlData controlData) {
             var action = controlData.GetAction(Surface);
             var form = controlData.Form;
             foreach (var parm in action.Parameters) {
@@ -333,35 +333,35 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         // TODO replace and remove
-        internal void AddAttemptedValues(ObjectAndControlData controlData) {
-            IActionSpec action = controlData.GetAction(NakedObjectsContext);
-            var form = controlData.Form;
-            foreach (IActionParameterSpec parm in action.Parameters) {
-                string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm));
-                ValueProviderResult vp = form.GetValue(name);
-                string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
+        //internal void AddAttemptedValues(ObjectAndControlData controlData) {
+        //    IActionSpec action = controlData.GetAction(NakedObjectsContext);
+        //    var form = controlData.Form;
+        //    foreach (IActionParameterSpec parm in action.Parameters) {
+        //        string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm));
+        //        ValueProviderResult vp = form.GetValue(name);
+        //        string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
 
-                if (parm is IOneToManyActionParameterSpec) {
-                    // handle collection mementos 
+        //        if (parm is IOneToManyActionParameterSpec) {
+        //            // handle collection mementos 
 
-                    if (parm.IsMultipleChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
-                        var itemSpec = parm.GetFacet<IElementTypeFacet>().ValueSpec;
-                        var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
+        //            if (parm.IsMultipleChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
+        //                var itemSpec = parm.GetFacet<IElementTypeFacet>().ValueSpec;
+        //                var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
-                        if (itemvalues.Any()) {
-                            AddAttemptedValue(name, NakedObjectsContext.NakedObjectManager.CreateAdapter(itemvalues, null, null));
-                        }
-                    }
-                }
-                else {
-                    string value = values.Any() ? values.First() : "";
+        //                if (itemvalues.Any()) {
+        //                    AddAttemptedValue(name, NakedObjectsContext.NakedObjectManager.CreateAdapter(itemvalues, null, null));
+        //                }
+        //            }
+        //        }
+        //        else {
+        //            string value = values.Any() ? values.First() : "";
 
-                    if (!string.IsNullOrEmpty(value)) {
-                        AddAttemptedValue(name, parm.Spec.IsParseable ? (object) value : FilterCollection(NakedObjectsContext.GetNakedObjectFromId(value), controlData));
-                    }
-                }
-            }
-        }
+        //            if (!string.IsNullOrEmpty(value)) {
+        //                AddAttemptedValue(name, parm.Spec.IsParseable ? (object) value : FilterCollection(NakedObjectsContext.GetNakedObjectFromId(value), controlData));
+        //            }
+        //        }
+        //    }
+        //}
 
         internal void AddFilesToControlData(ObjectAndControlData controlData) {
             if (Request.Files.Count > 0) {
@@ -490,22 +490,45 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        //protected string DisplaySingleProperty(ObjectAndControlData controlData, IDictionary<string, string> data) {
+        //    if (Request.IsAjaxRequest()) {
+        //        var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+        //        if (controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay) {
+        //            IEnumerable<IAssociationSpec> assocs = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>();
+        //            IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
+        //            return item == null ? null : item.Id;
+        //        }
+        //        if (controlData.ActionId == null) {
+        //            IEnumerable<IAssociationSpec> assocs = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>();
+        //            IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
+        //            return item == null ? null : item.Id;
+        //        }
+        //        {
+        //            IEnumerable<IActionParameterSpec> parms = controlData.GetAction(NakedObjectsContext).Parameters;
+        //            IActionParameterSpec item = parms.SingleOrDefault(p => data.ContainsKey(p.Id));
+        //            return item == null ? null : item.Id;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
         protected string DisplaySingleProperty(ObjectAndControlData controlData, IDictionary<string, string> data) {
             if (Request.IsAjaxRequest()) {
-                var nakedObject = controlData.GetNakedObject(NakedObjectsContext);
+                var nakedObject = controlData.GetNakedObject(Surface);
                 if (controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay) {
-                    IEnumerable<IAssociationSpec> assocs = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>();
-                    IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
+                    var assocs = nakedObject.Specification.Properties.Where(p => p.IsCollection() && !p.Specification.IsParseable());
+                    var item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
                 if (controlData.ActionId == null) {
-                    IEnumerable<IAssociationSpec> assocs = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>();
-                    IAssociationSpec item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
+                    var assocs = nakedObject.Specification.Properties.Where(p => !p.IsCollection() || p.Specification.IsParseable());
+                    var item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
                 {
-                    IEnumerable<IActionParameterSpec> parms = controlData.GetAction(NakedObjectsContext).Parameters;
-                    IActionParameterSpec item = parms.SingleOrDefault(p => data.ContainsKey(p.Id));
+                    var parms = controlData.GetAction(Surface).Parameters;
+                    var item = parms.SingleOrDefault(p => data.ContainsKey(p.Id));
                     return item == null ? null : item.Id;
                 }
             }
@@ -1222,8 +1245,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (!string.IsNullOrEmpty(controlData.PageSize)) {
                 return int.Parse(controlData.PageSize);
             }
-            IActionSpec action = controlData.GetAction(NakedObjectsContext);
-            return action != null ? action.GetFacet<IPageSizeFacet>().Value : 0;
+            // todo fix paging !
+            //var action = controlData.GetAction(Surface);
+            //return action != null ? action.GetFacet<IPageSizeFacet>().Value : 0;
+            return 0;
         }
 
         internal INakedObjectAdapter Page(INakedObjectAdapter nakedObject, int collectionSize, ObjectAndControlData controlData, bool forceEnumerable) {

@@ -22,8 +22,8 @@ using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
-        private INakedObjectAdapter nakedObject;
-        private IActionSpec nakedObjectAction;
+        private INakedObjectSurface nakedObjectSurface;
+        private INakedObjectActionSurface nakedObjectAction;
 
         public enum SubActionType {
             Find,
@@ -125,67 +125,59 @@ namespace NakedObjects.Web.Mvc.Models {
         }
 
         public INakedObjectSurface GetNakedObject(INakedObjectsSurface surface) {
-            var link = surface.OidStrategy.GetOid(Id, "");
-
-            INakedObjectSurface nakedObjectSurface;
-            // hack
-            try {
-
-                 nakedObjectSurface = surface.GetObject(link).Target;
-            }
-            catch {
-                nakedObjectSurface = surface.GetService(link).Target;
-            }
 
             if (nakedObjectSurface == null) {
-                throw new ObjectNotFoundException();
+
+                var link = surface.OidStrategy.GetOid(Id, "");
+
+                // hack
+                try {
+                    nakedObjectSurface = surface.GetObject(link).Target;
+                }
+                catch {
+                    nakedObjectSurface = surface.GetService(link).Target;
+                }
+
+                if (nakedObjectSurface == null) {
+                    throw new ObjectNotFoundException();
+                }
             }
 
             return nakedObjectSurface;
         }
 
-
-
-        public INakedObjectAdapter GetNakedObject(INakedObjectsFramework framework) {
-            if (nakedObject == null) {
-                nakedObject = framework.GetNakedObjectFromId(Id);
-            }
-
-            if (nakedObject == null) {
-                throw new ObjectNotFoundException();
-            }
-
-            return nakedObject;
-        }
-
         public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
-            // todo cache
-
-            var no = GetNakedObject(surface);
-            var id = surface.OidStrategy.GetOid(no);
-            var action = surface.GetObjectAction(id, ActionId).Action;
-
-            return action.IsUsable(no).IsAllowed  ? action : null;
-        }
-
-        public IActionSpec GetAction(INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {
-                GetNakedObject(framework);
-                IActionSpec[] actions;
-                if (nakedObject.Spec.IsCollection) {
-                    var metamodel = framework.MetamodelManager.Metamodel;
-                    IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                    var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
-                    Trace.Assert(elementSpec != null);
-                    actions = elementSpec.GetCollectionContributedActions();
-                }
-                else {
-                    actions = nakedObject.Spec.GetActions();
-                }
-                nakedObjectAction = actions.Where(a => a.IsUsable(nakedObject).IsAllowed).Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == ActionId);
+
+                // todo collection contributed actions ? 
+
+                var no = GetNakedObject(surface);
+                var id = surface.OidStrategy.GetOid(no);
+                var action = surface.GetObjectAction(id, ActionId).Action;
+
+                nakedObjectAction = action.IsUsable(no).IsAllowed ? action : null;
             }
             return nakedObjectAction;
         }
+
+        //public IActionSpec GetAction(INakedObjectsFramework framework) {
+        //    if (nakedObjectAction == null) {
+        //        GetNakedObject(framework);
+        //        IActionSpec[] actions;
+        //        if (nakedObject.Spec.IsCollection) {
+        //            var metamodel = framework.MetamodelManager.Metamodel;
+        //            IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+        //            var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+        //            Trace.Assert(elementSpec != null);
+        //            actions = elementSpec.GetCollectionContributedActions();
+        //        }
+        //        else {
+        //            actions = nakedObject.Spec.GetActions();
+        //        }
+        //        nakedObjectAction = actions.Where(a => a.IsUsable(nakedObject).IsAllowed).Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == ActionId);
+        //    }
+        //    return nakedObjectAction;
+        //}
 
         private static string GetName(string nameValue) {
             if (string.IsNullOrEmpty(nameValue)) {

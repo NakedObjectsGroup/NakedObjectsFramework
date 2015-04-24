@@ -32,7 +32,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual ActionResult ClearHistoryOthers(string id, ObjectAndControlData controlData) {
-            var nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            var nakedObject = GetNakedObjectFromId(id);
             Session.RemoveOthersFromCache(NakedObjectsContext, nakedObject.Object, ObjectCache.ObjectFlag.BreadCrumb);
             SetNewCollectionFormats(controlData);
             SetControllerName(nakedObject.Object);
@@ -40,7 +40,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual ActionResult Cancel(string nextId, ObjectAndControlData controlData) {
-            var nextNakedObject = string.IsNullOrEmpty(nextId) ? null : NakedObjectsContext.GetNakedObjectFromId(nextId);
+            var nextNakedObject = string.IsNullOrEmpty(nextId) ? null : GetNakedObjectFromId(nextId);
 
             if (nextNakedObject == null) {
                 return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);

@@ -274,7 +274,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Decrypt(form);
             controlData.Form = form;
             AddFilesToControlData(controlData);
-            AddAttemptedValuesNew(controlData);
+            AddAttemptedValues(controlData);
 
             switch (controlData.SubAction) {
                 case (ObjectAndControlData.SubActionType.Find):
@@ -480,35 +480,35 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action) {
-            if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
-                // contributed action being invoked with a single parm that is the current target
-                // no dialog - go straight through 
-                var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap( action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
+        //private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectAdapter nakedObject, IActionSpec action) {
+        //    if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
+        //        // contributed action being invoked with a single parm that is the current target
+        //        // no dialog - go straight through 
+        //        var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap( action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
 
-                // horrid kludge 
-                var oldForm = controlData.Form;
-                controlData.Form = newForm;
+        //        // horrid kludge 
+        //        var oldForm = controlData.Form;
+        //        controlData.Form = newForm;
 
-                if (ValidateParameters(nakedObject, action, controlData)) {
-                    return AppropriateView(controlData, Execute(action, nakedObject, new[] {nakedObject}), action);
-                }
+        //        if (ValidateParameters(nakedObject, action, controlData)) {
+        //            return AppropriateView(controlData, Execute(action, nakedObject, new[] {nakedObject}), action);
+        //        }
 
-                controlData.Form = oldForm;
-                AddAttemptedValues(controlData);
-            }
+        //        controlData.Form = oldForm;
+        //        AddAttemptedValues(controlData);
+        //    }
 
-            if (!action.Parameters.Any()) {
-                return AppropriateView(controlData, Execute(action, nakedObject, new INakedObjectAdapter[] {}), action);
-            }
+        //    if (!action.Parameters.Any()) {
+        //        return AppropriateView(controlData, Execute(action, nakedObject, new INakedObjectAdapter[] {}), action);
+        //    }
 
-            SetDefaults(nakedObject, action);
-            // do after any parameters set by contributed action so this takes priority
-            SetSelectedParameters(action);
-            SetPagingValues(controlData, nakedObject);
-            var property = DisplaySingleProperty(controlData, controlData.DataDict);
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
-        }
+        //    SetDefaults(nakedObject, action);
+        //    // do after any parameters set by contributed action so this takes priority
+        //    SetSelectedParameters(action);
+        //    SetPagingValues(controlData, nakedObject);
+        //    var property = DisplaySingleProperty(controlData, controlData.DataDict);
+        //    return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
+        //}
 
         private ActionResult InitialAction(ObjectAndControlData controlData) {
             var nakedObject = controlData.GetNakedObject(Surface);
@@ -743,8 +743,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult SelectOnAction(ObjectAndControlData controlData) {
-            IActionSpec nakedObjectAction = controlData.GetAction(NakedObjectsContext);
-            INakedObjectAdapter contextNakedObject = FilterCollection(controlData.GetNakedObject(NakedObjectsContext), controlData);
+            var nakedObjectAction = controlData.GetAction(Surface);
+            var contextNakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
 
             return SelectSingleItem(contextNakedObject, nakedObjectAction, controlData, controlData.DataDict);
         }
