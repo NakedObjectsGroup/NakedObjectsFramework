@@ -26,6 +26,6 @@ namespace NakedObjects.Surface {
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
 
         // todo not really same as other interfaces - more PutValue with validate only ? 
-        IConsentSurface IsValid(INakedObjectSurface target, INakedObjectSurface value);
+        IConsentSurface IsValid(INakedObjectSurface target, object value);
     }
 }

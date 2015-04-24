@@ -131,9 +131,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
-        public IConsentSurface IsValid(INakedObjectSurface target, INakedObjectSurface value) {
+        public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
-            var v = ((NakedObjectWrapper) value).WrappedNakedObject;
+            var v = framework.GetNakedObject(value);
             return new ConsentWrapper(nakedObjectActionParameter.IsValid(t, v));
         }
 

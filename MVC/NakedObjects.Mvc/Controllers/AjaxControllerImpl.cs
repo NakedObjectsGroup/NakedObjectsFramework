@@ -46,15 +46,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual JsonResult ValidateProperty(string id, string value, string propertyName) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            var nakedObject = GetNakedObjectFromId(id);
 
-            if (nakedObject.ResolveState.IsTransient()) {
+            if (nakedObject.IsTransient()) {
                 // if transient then we cannot validate now - need to wait until save 
                 return Jsonp(true);
             }
 
-            IAssociationSpec property = (nakedObject.GetObjectSpec()).Properties.SingleOrDefault(p => p.Id == propertyName);
-            string fieldId = GetFieldInputId(nakedObject, property);
+            var property = nakedObject.Specification.Properties.SingleOrDefault(p => p.Id == propertyName);
+            string fieldId = IdHelper.GetAggregateFieldInputId(nakedObject, property);
 
             bool isValid = false;
 
@@ -62,8 +62,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 value = Request.Params[fieldId];
             }
 
-            if (property != null && property is IOneToOneAssociationSpec) {
-                ValidateAssociation(nakedObject, property as IOneToOneAssociationSpec, value);
+           
+            if (property != null && (!property.IsCollection() || property.Specification.IsParseable())) {
+                var pvalue = GetValue(new[] { value }, property, property.Specification);
+                ValidateAssociation(nakedObject, property, pvalue);
                 isValid = ModelState.IsValid;
             }
 
@@ -90,21 +92,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            var nakedObject = GetNakedObjectFromId(id);
+            var action = nakedObject.Specification.GetActionLeafNodes().SingleOrDefault(a => a.Id == actionName);
             bool isValid = false;
             string parmId = "";
 
             if (action != null) {
-                IActionParameterSpec parameter = action.Parameters.Where(p => p.Id.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Single();
-                parmId = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parameter));
+                var parameter = action.Parameters.Single(p => p.Id.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
+                parmId = IdHelper.GetParameterInputId(action, parameter);
 
                 if (value == null) {
                     value = Request.Params[parmId];
                 }
                 try {
-                    INakedObjectAdapter valueNakedObject = GetParameterValue(parameter, value);
-                    ValidateParameter(action, parameter, nakedObject, valueNakedObject);
+                    var parameterValue = GetParameterValue(parameter, value);
+                    ValidateParameter(action, parameter, nakedObject, parameterValue);
                 }
                 catch (InvalidEntryException) {
                     ModelState.AddModelError(parmId, MvcUi.InvalidEntry);

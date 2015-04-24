@@ -267,8 +267,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, INakedObjectSurface valueNakedObject) {
-            var isValid = parm.IsValid(targetNakedObject, valueNakedObject);
+        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, object value) {
+            var isValid = parm.IsValid(targetNakedObject, value);
 
             if (!isValid.IsAllowed) {
                 ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), isValid.Reason);
@@ -422,7 +422,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //}
             var stringValue = value as string;
             if (parm.Specification.IsParseable()) {
-                return value;
+                return string.IsNullOrEmpty(stringValue) ? null : stringValue;
             }
 
             var collectionValue = value as IEnumerable;
@@ -651,7 +651,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetSelectedParameters(INakedObjectSurface nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
-                refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id])));
+                refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).Object));
                 Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
