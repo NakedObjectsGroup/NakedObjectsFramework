@@ -16,9 +16,9 @@ namespace NakedObjects.Surface {
         string Id { get; }
         bool IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
-        INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues);
+        INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
 
-        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues);
+        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
 
         INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm);
         bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);

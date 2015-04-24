@@ -121,6 +121,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
+        private object GetValue(string[] values, INakedObjectAssociationSurface featureSpec, INakedObjectSpecificationSurface spec) {
+            if (!values.Any()) {
+                return null;
+            }
+
+            if (spec.IsParseable()) {
+                return values.First();
+            }
+            if (spec.IsCollection()) {
+                return Surface.GetTypedCollection(featureSpec, values);
+            }
+
+            return GetNakedObjectFromId(values.First()).Object;
+        }
+
+
         private INakedObjectAdapter GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
             if (!values.Any()) {
                 return null;
@@ -160,6 +176,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
+        private IDictionary<string, object> GetOtherValues(INakedObjectSurface nakedObject) {
+            var results = new Dictionary<string, object>();
+            var parms = new FormCollection(HttpContext.Request.Params);
+
+            Decrypt(parms);
+
+            foreach (var assoc in nakedObject.Specification.Properties.Where(p => !p.IsCollection())) {
+                string[] values = GetRawValues(parms, IdHelper.GetAggregateFieldInputId(nakedObject, assoc));
+                results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.Specification);
+            }
+
+            return results;
+        }
+
+
         private IDictionary<string, INakedObjectAdapter> GetOtherValues(INakedObjectAdapter nakedObject) {
             var results = new Dictionary<string, INakedObjectAdapter>();
             var parms = new FormCollection(HttpContext.Request.Params);
@@ -176,7 +207,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual JsonResult GetActionChoices(string id, string actionName) {
             INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).Single(a => a.Id == actionName);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(action);
 
@@ -193,17 +224,17 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual JsonResult GetPropertyChoices(string id) {
-            INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            var nakedObject = GetNakedObjectFromId(id);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
-            IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(nakedObject);
+            var otherValues = GetOtherValues(nakedObject);
 
-            foreach (IOneToOneAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>()) {
+            foreach (var assoc in nakedObject.Specification.Properties) {
                 if (assoc.IsChoicesEnabled) {
-                    INakedObjectAdapter[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
+                    var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = assoc.ReturnSpec.IsParseable ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
+                    string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(objectSurface => NakedObjectsContext.GetObjectId(objectSurface)).ToArray();
 
-                    choices[GetFieldInputId(nakedObject, assoc)] = new[] {value, content};
+                    choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
             }
             return Jsonp(choices);

@@ -171,9 +171,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                    assoc.ContainsFacet<IEagerlyFacet>();
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, null).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            var pnv = parameterNameValues == null ? null : parameterNameValues.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
@@ -181,7 +182,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, INakedObjectSpecificationSurface>[0];
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
             var choices = GetChoices(target, parameterNameValues);
             return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString())).ToArray();
         }

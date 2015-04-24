@@ -261,11 +261,19 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementType;
+            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+        }
+
+        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectAssociationSurface featureSpec, IEnumerable collectionValue) {
+            var collectionitemSpec = featureSpec.ElementSpecification;
+            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+        }
+
+        private static object GetTypedCollection(INakedObjectsSurface surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
-            object[] objCollection;
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();
-            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable()) {
                 return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).Cast<object>().ToArray();
@@ -280,7 +288,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
             }
 
-            objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
+            var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 

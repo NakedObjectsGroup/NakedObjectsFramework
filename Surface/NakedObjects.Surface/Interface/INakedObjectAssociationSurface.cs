@@ -18,11 +18,11 @@ namespace NakedObjects.Surface {
         INakedObjectSurface GetNakedObject(INakedObjectSurface target);
         bool IsVisible(INakedObjectSurface nakedObject);
         bool IsEager(INakedObjectSurface nakedObject);
-        INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues);
+        INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues);
 
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
 
-        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues);
+        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues);
 
         INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm);
         string GetTitle(INakedObjectSurface nakedObject);

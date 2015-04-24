@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new NotImplementedException();
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
             throw new NotImplementedException();
         }
 
@@ -67,7 +67,7 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new NotImplementedException();
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
             throw new NotImplementedException();
         }
 
