@@ -16,9 +16,11 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Menu;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
+
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
@@ -48,17 +50,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
-            var mainMenusFromViewData = (IEnumerable)html.ViewData[IdConstants.NofMainMenus];
-            if (mainMenusFromViewData != null && mainMenusFromViewData.Cast<IMenuImmutable>().Any()) {
-                return RenderMainMenus(html, mainMenusFromViewData.Cast<IMenuImmutable>());
-            }
-            //Use the MenuServices to derive the menus
-            var services = (IEnumerable)html.ViewData[IdConstants.NofServices];
-            var mainMenus = new List<IMenuImmutable>();
-            foreach (object service in services.Cast<object>()) {
-                var menu = GetMenu(html, service);
-                mainMenus.Add(menu);
-            }
+            var mainMenus = html.Surface().GetMainMenus();
             return RenderMainMenus(html, mainMenus);
         }
 
@@ -74,7 +66,16 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ServicesContainerName);
-            foreach (IMenuImmutable menu in menus) {
+            foreach (var menu in menus) {
+                tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
+            }
+            return MvcHtmlString.Create(tag.ToString());
+        }
+
+        private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<Surface.Interface.IMenu> menus) {
+            var tag = new TagBuilder("div");
+            tag.AddCssClass(IdConstants.ServicesContainerName);
+            foreach (var menu in menus) {
                 tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
             }
             return MvcHtmlString.Create(tag.ToString());
@@ -82,7 +83,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObjectAdapter nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
-            foreach (IMenuItemImmutable item in menu.MenuItems) {
+            foreach (var item in menu.MenuItems) {
                 var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
                 if (IsDuplicateAndIsVisibleActions(html, item, menu.MenuItems, nakedObject)) {
                     //Test that both items are in fact visible
@@ -115,9 +116,54 @@ namespace NakedObjects.Web.Mvc.Html {
                 menu.Name);
         }
 
-        private static bool IsDuplicateAndIsVisibleActions(
-            HtmlHelper html, IMenuItemImmutable item,
-            IList<IMenuItemImmutable> items, INakedObjectAdapter nakedObject) {
+        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, Surface.Interface.IMenu menu, INakedObjectSurface nakedObject, bool isEdit, bool defaultToEmptyMenu) {
+            var descriptors = new List<ElementDescriptor>();
+            foreach (IMenuItem item in menu.MenuItems) {
+                var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+                if (IsDuplicateAndIsVisibleActions(html, item, menu.MenuItems, nakedObject)) {
+                    //Test that both items are in fact visible
+                    //The Id is set just to preseve backwards compatiblity
+                    string id = menu.Id;
+                    if (id.EndsWith("Actions")) {
+                        id = id.Split('-').First() + "-DuplicateAction";
+                    }
+                    descriptor = new ElementDescriptor {
+                        TagType = "div",
+                        Value = item.Name,
+                        Attributes = new RouteValueDictionary(new {
+                            @id = id,
+                            @class = IdConstants.ActionName,
+                            title = MvcUi.DuplicateAction
+                        })
+                    };
+                }
+                if (descriptor != null) {
+                    //Would be null for an invisible action
+                    descriptors.Add(descriptor);
+                }
+            }
+            if (descriptors.Count == 0 && !defaultToEmptyMenu) {
+                return null;
+            }
+            return CommonHtmlHelper.BuildMenuContainer(descriptors,
+                IdConstants.MenuContainerName,
+                menu.Id,
+                menu.Name);
+        }
+
+        private static bool IsDuplicateAndIsVisibleActions(HtmlHelper html,
+                                                        IMenuItem item,
+                                                        IList<IMenuItem> items,
+                                                        INakedObjectSurface nakedObject) {
+            var itemsOfSameName = items.Where(i => i.Name == item.Name).ToArray();
+            if (itemsOfSameName.Count() == 1) return false;
+            return itemsOfSameName.Count(i => MenuActionAsElementDescriptor(html, i as IMenuAction, nakedObject, false) != null) > 1;
+        }
+
+        private static bool IsDuplicateAndIsVisibleActions(HtmlHelper html,
+                                                           IMenuItemImmutable item,
+                                                           IList<IMenuItemImmutable> items,
+                                                           INakedObjectAdapter nakedObject) {
             var itemsOfSameName = items.Where(i => i.Name == item.Name);
             if (itemsOfSameName.Count() == 1) return false;
             return itemsOfSameName.Count(i => MenuActionAsElementDescriptor(html, i as IMenuActionImmutable, nakedObject, false) != null) > 1;
@@ -128,8 +174,23 @@ namespace NakedObjects.Web.Mvc.Html {
             if (item is IMenuActionImmutable) {
                 descriptor = MenuActionAsElementDescriptor(html, item as IMenuActionImmutable, nakedObject, isEdit);
             }
-            else if (item is IMenu) {
+            else if (item is IMenuImmutable) {
                 descriptor = SubMenuAsElementDescriptor(html, item as IMenuImmutable, nakedObject, isEdit);
+            }
+            else if (item is CustomMenuItem) {
+                descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
+            }
+            return descriptor;
+        }
+
+
+        private static ElementDescriptor MenuItemAsElementDescriptor(this HtmlHelper html, IMenuItem item, INakedObjectSurface nakedObject, bool isEdit) {
+            ElementDescriptor descriptor = null;
+            if (item is IMenuAction) {
+                descriptor = MenuActionAsElementDescriptor(html, item as IMenuAction, nakedObject, isEdit);
+            }
+            else if (item is Surface.Interface.IMenu) {
+                descriptor = SubMenuAsElementDescriptor(html, item as Surface.Interface.IMenu, nakedObject, isEdit);
             }
             else if (item is CustomMenuItem) {
                 descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
@@ -166,6 +227,44 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
+                tagType = html.GetActionAsForm(actionContext, html.Framework().GetObjectTypeName(actionContext.Target.Object), new { id = html.Framework().GetObjectId(actionContext.Target) }, out value, out attributes);
+            }
+
+            return new ElementDescriptor {
+                TagType = tagType,
+                Value = value,
+                Attributes = attributes
+            };
+        }
+
+        private static ElementDescriptor MenuActionAsElementDescriptor(this HtmlHelper html, IMenuAction menuAction, INakedObjectSurface nakedObject, bool isEdit) {
+            var actionIm = menuAction.Action;
+            var actionSpec = actionIm.ReturnType;
+            if (nakedObject == null) {
+                var serviceIm = actionIm.OnType;
+
+                if (serviceIm == null) {
+                    throw new Exception("Action is not on a known service");
+                }
+                nakedObject = html.Surface().GetServices().List.Single(s => s.Specification == serviceIm);
+            }
+
+            var actionContext = new ActionContextNew(html.IdHelper(), false, nakedObject, actionIm);
+
+            RouteValueDictionary attributes;
+            string tagType;
+            string value;
+            if (!actionContext.Action.IsVisible(actionContext.Target)) {
+                return null;
+            }
+            var consent = actionContext.Action.IsUsable(actionContext.Target);
+            if (consent.IsVetoed) {
+                tagType = html.GetVetoedAction(actionContext, consent, out value, out attributes);
+            }
+            else if (isEdit) {
+                tagType = html.GetActionAsButton(actionContext, out value, out attributes);
+            }
+            else {
                 tagType = html.GetActionAsForm(actionContext, html.Framework().GetObjectTypeName(actionContext.Target.Object), new {id = html.Framework().GetObjectId(actionContext.Target)}, out value, out attributes);
             }
 
@@ -176,8 +275,7 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        private static ElementDescriptor SubMenuAsElementDescriptor(
-            this HtmlHelper html, IMenuImmutable subMenu, INakedObjectAdapter nakedObject, bool isEdit) {
+        private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenuImmutable subMenu, INakedObjectAdapter nakedObject, bool isEdit) {
             string tagType = "div";
             string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdConstants.MenuNameLabel).ToString();
             RouteValueDictionary attributes = new RouteValueDictionary(new {
@@ -196,6 +294,25 @@ namespace NakedObjects.Web.Mvc.Html {
             else {
                 return null;
             }
+        }
+
+        private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenu subMenu, INakedObjectSurface nakedObject, bool isEdit) {
+            string tagType = "div";
+            string value = CommonHtmlHelper.WrapInDiv(subMenu.Name, IdConstants.MenuNameLabel).ToString();
+            RouteValueDictionary attributes = new RouteValueDictionary(new {
+                @class = IdConstants.SubMenuName,
+                @id = subMenu.Id
+            });
+            var visibleSubMenuItems = subMenu.MenuItems.Select(item => html.MenuItemAsElementDescriptor(item, nakedObject, isEdit));
+            if (visibleSubMenuItems.Any(x => x != null)) {
+                return new ElementDescriptor {
+                    TagType = tagType,
+                    Value = value,
+                    Attributes = attributes,
+                    Children = visibleSubMenuItems.WrapInCollection("div", new {@class = IdConstants.SubMenuItemsName})
+                };
+            }
+            return null;
         }
 
         private static ElementDescriptor CustomMenuItemAsDescriptor(HtmlHelper html, CustomMenuItem customItem) {

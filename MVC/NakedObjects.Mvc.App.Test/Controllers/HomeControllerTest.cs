@@ -78,7 +78,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
           
-            controller = new HomeController(NakedObjectsFramework, Surface, new IdHelper());
+            controller = new HomeController( Surface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 

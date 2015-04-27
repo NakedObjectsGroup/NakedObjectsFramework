@@ -20,6 +20,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Nof4.Wrapper;
@@ -82,6 +83,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public ListContextSurface GetServices() {
             return MapErrors(() => GetServicesInternal().ToListContextSurface(this, framework));
+        }
+
+        public IMenu[] GetMainMenus() {
+            var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
+            return menus.Select(m => new MenuWrapper(m)).Cast<IMenu>().ToArray();
         }
 
         public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {

@@ -90,7 +90,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
             var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            controller = new CustomControllerWrapper(NakedObjectsFramework, mockSurface, new IdHelper());
+            controller = new CustomControllerWrapper( mockSurface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -218,7 +218,7 @@ namespace MvcTestApp.Tests.Controllers {
         #region Nested type: CustomControllerWrapper
 
         private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) {}
+            public CustomControllerWrapper(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);

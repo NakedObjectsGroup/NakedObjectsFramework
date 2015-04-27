@@ -93,6 +93,20 @@ namespace NakedObjects.Web.Mvc {
             session.RemoveFromCache(framework, nakedObject, flag);
         }
 
+        private static INakedObjectSurface GetNakedObject(INakedObjectsSurface surface, object domainObject) {
+            var oid = surface.OidStrategy.GetOid(domainObject);
+            return surface.GetObject(oid).Target;
+        }
+
+        private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+            var oid = surface.OidStrategy.GetOid(id, "");
+            return surface.GetObject(oid).Target;
+        }
+
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsSurface surface, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = GetNakedObject(surface, domainObject);
+            session.RemoveOthersFromCache(surface, nakedObject, flag);
+        }
 
         public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
             INakedObjectAdapter nakedObject = framework.GetNakedObject(domainObject);
@@ -118,6 +132,31 @@ namespace NakedObjects.Web.Mvc {
         public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectAdapter nakedObject, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveOthersFromCache(framework, nakedObject);
         }
+
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsSurface framework, INakedObjectSurface nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveOthersFromCache(framework, nakedObject);
+        }
+
+        public static object LastObject(this HttpSessionStateBase session, INakedObjectsSurface surface, ObjectFlag flag = ObjectFlag.None) {
+            KeyValuePair<string, CacheMemento> lastEntry = session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).LastOrDefault();
+
+            if (lastEntry.Equals(default(KeyValuePair<string, CacheMemento>))) {
+                return null;
+            }
+
+            var lastObject = SafeGetNakedObjectFromId(lastEntry.Key, surface);
+
+            // todo will this work ? 
+            //if (lastObject.ResolveState.IsDestroyed()) {
+            if (lastObject == null) {
+                session.GetCache(flag).Remove(lastEntry.Key);
+                return session.LastObject(surface, flag);
+            }
+
+            return lastObject.Object;
+        }
+
+
 
         public static object LastObject(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag = ObjectFlag.None) {
             KeyValuePair<string, CacheMemento> lastEntry = session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).LastOrDefault();
@@ -156,13 +195,27 @@ namespace NakedObjects.Web.Mvc {
             return thisSpec.IsOfType(otherSpec);
         }
 
+        private static bool SameSpec(string name, INakedObjectSpecificationSurface otherSpec, INakedObjectsSurface surface) {
+            var thisSpec = surface.GetDomainType(name);
+            return thisSpec.IsOfType(otherSpec);
+        }
+
         private static IEnumerable<INakedObjectAdapter> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, ITypeSpec spec, ObjectFlag flag) {
             session.ClearDestroyedObjectsOfType(framework, spec, flag);
             return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, framework)).OrderBy(kvp => kvp.Value.Added).Select(kvp => framework.GetNakedObjectFromId(kvp.Key));
         }
 
+        private static IEnumerable<INakedObjectSurface> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSpecificationSurface spec, ObjectFlag flag) {
+            session.ClearDestroyedObjectsOfType(surface, spec, flag);
+            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, surface)).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(surface, kvp.Key));
+        }
+
         public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, ITypeSpec spec, ObjectFlag flag = ObjectFlag.None) {
             return session.GetAndTidyCachedNakedObjectsOfType(framework, spec, flag).Select(no => no.Object);
+        }
+
+        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSpecificationSurface spec, ObjectFlag flag = ObjectFlag.None) {
+            return session.GetAndTidyCachedNakedObjectsOfType(surface, spec, flag).Select(no => no.Object);
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
@@ -178,11 +231,34 @@ namespace NakedObjects.Web.Mvc {
             toRemove.ForEach(k => cache.Remove(k));
         }
 
+        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSpecificationSurface spec, ObjectFlag flag = ObjectFlag.None) {
+            Dictionary<string, CacheMemento> cache = session.GetCache(flag);
+            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, surface)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, surface) }).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
+            toRemove.ForEach(k => cache.Remove(k));
+        }
+
         public static void ClearCachedObjects(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
             List<string> toRemove = cache.Select(kvp => kvp.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
+
+        private static INakedObjectSurface SafeGetNakedObjectFromId(string id, INakedObjectsSurface surface) {
+            try {
+                var oid = surface.OidStrategy.GetOid(id, "");
+                return surface.GetObject(oid).Target;
+            }
+            catch (Exception) {
+                // todo work out this 
+                //// create a NakedObject just to carry the 'Destroyed' state
+                //var no = framework.GetNakedObject(new object());
+                //no.ResolveState.Handle(Events.StartResolvingEvent);
+                //no.ResolveState.Handle(Events.DestroyEvent);
+                //return no;
+                return null;
+            }
+        }
+
 
         private static INakedObjectAdapter SafeGetNakedObjectFromId(string id, INakedObjectsFramework framework) {
             try {
@@ -250,6 +326,11 @@ namespace NakedObjects.Web.Mvc {
 
         private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             string id = framework.GetObjectId(nakedObject);
+            cache.RemoveOthersFromCache(id);
+        }
+
+        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface framework, INakedObjectSurface nakedObject) {
+            string id = framework.OidStrategy.GetOid(nakedObject).ToString();
             cache.RemoveOthersFromCache(id);
         }
 

@@ -139,6 +139,9 @@
     <Compile Include="Utility\MVCOid.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />
+    <Compile Include="Wrapper\MenuActionWrapper.cs" />
+    <Compile Include="Wrapper\MenuItemWrapper.cs" />
+    <Compile Include="Wrapper\MenuWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionParameterWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectAssociationWrapper.cs" />

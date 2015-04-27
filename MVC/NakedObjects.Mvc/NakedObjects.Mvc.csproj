@@ -182,6 +182,7 @@
     <Compile Include="Controllers\GenericControllerImpl.cs" />
     <Compile Include="Controllers\NakedObjectsController.cs" />
     <Compile Include="Controllers\SystemControllerImpl.cs" />
+    <Compile Include="Helpers\ContextClassesNew.cs" />
     <Compile Include="Helpers\IEncryptDecrypt.cs" />
     <Compile Include="Helpers\ScaffoldAction.cs" />
     <Compile Include="Helpers\ScaffoldAdapter.cs" />

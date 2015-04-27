@@ -7,6 +7,7 @@
 
 using System.Security.Principal;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectsSurface {
@@ -16,6 +17,8 @@ namespace NakedObjects.Surface {
         IOidStrategy OidStrategy { get; }
         ObjectContextSurface GetService(ILinkObjectId serviceName);
         ListContextSurface GetServices();
+
+        IMenu[] GetMainMenus();
 
         ObjectContextSurface GetObject(INakedObjectSurface nakedObject);
         ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments);

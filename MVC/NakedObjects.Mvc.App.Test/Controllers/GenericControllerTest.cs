@@ -232,7 +232,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
           
-            controller = new GenericController(NakedObjectsFramework, Surface, IdHelper);
+            controller = new GenericController( Surface, IdHelper);
             mocks = new ContextMocks(controller);
         }
 

@@ -25,6 +25,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
@@ -42,6 +43,10 @@ namespace NakedObjects.Web.Mvc.Html {
     internal static class CommonHtmlHelper {
         public static INakedObjectsFramework Framework(this HtmlHelper html) {
             return (INakedObjectsFramework)html.ViewData[IdConstants.NoFramework];
+        }
+
+        public static INakedObjectsSurface Surface(this HtmlHelper html) {
+            return (INakedObjectsSurface)html.ViewData["Surface"];
         }
 
         public static IIdHelper IdHelper(this HtmlHelper html) {
@@ -577,6 +582,16 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
+        internal static string GetVetoedAction(this HtmlHelper html, ActionContextNew actionContext, IConsentSurface consent, out string value, out RouteValueDictionary attributes) {
+            value = actionContext.Action.Name();
+            attributes = new RouteValueDictionary(new {
+                id = actionContext.GetActionId(),
+                @class = actionContext.GetActionClass(html.Framework()),
+                title = consent.Reason
+            });
+            return "div";
+        }
+
         internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsent consent, out string value, out RouteValueDictionary attributes) {
             value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
@@ -675,6 +690,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string GetActionAsButton(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
+            const string tagType = "button";
+
+            value = actionContext.Action.Name;
+            attributes = html.GetActionAttributes(IdConstants.ActionInvokeAction, actionContext, new ActionContext(html.IdHelper(), actionContext.Target, null), string.Empty);
+
+            return tagType;
+        }
+
+        internal static string GetActionAsButton(this HtmlHelper html, ActionContextNew actionContext, out string value, out RouteValueDictionary attributes) {
             const string tagType = "button";
 
             value = actionContext.Action.Name;

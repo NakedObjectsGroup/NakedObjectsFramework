@@ -13,11 +13,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
@@ -26,7 +23,7 @@ using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(INakedObjectsFramework nakedObjectsContext, INakedObjectsSurface surface, IIdHelper idHelper) : base(nakedObjectsContext, surface, idHelper) { }
+        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
@@ -156,21 +153,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        private INakedObjectAdapter GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
-            if (!values.Any()) {
-                return null;
-            }
-
-            if (spec.IsParseable) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.NakedObjectManager);
-            }
-            if (spec.IsCollection) {
-                return NakedObjectsContext.GetTypedCollection(featureSpec, values);
-            }
-
-            return NakedObjectsContext.GetNakedObjectFromId(values.First());
-        }
-
         private string[] GetRawValues(FormCollection parms, string id) {
             var values = new List<string>();
 
@@ -181,19 +163,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.ToArray();
         }
 
-        private IDictionary<string, INakedObjectAdapter> GetOtherValues(IActionSpec action) {
-            var results = new Dictionary<string, INakedObjectAdapter>();
-            var parms = new FormCollection(HttpContext.Request.Params);
-
-            Decrypt(parms);
-
-            foreach (IActionParameterSpec parm in action.Parameters) {
-                string[] values = GetRawValues(parms, IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm)));
-                results[parm.Id.ToLower()] = GetValue(values, parm, parm.Spec);
-            }
-
-            return results;
-        }
 
         private IDictionary<string, object> GetOtherValues(INakedObjectActionSurface action) {
             var results = new Dictionary<string, object>();
@@ -219,21 +188,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             foreach (var assoc in nakedObject.Specification.Properties.Where(p => !p.IsCollection())) {
                 string[] values = GetRawValues(parms, IdHelper.GetAggregateFieldInputId(nakedObject, assoc));
                 results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.Specification);
-            }
-
-            return results;
-        }
-
-
-        private IDictionary<string, INakedObjectAdapter> GetOtherValues(INakedObjectAdapter nakedObject) {
-            var results = new Dictionary<string, INakedObjectAdapter>();
-            var parms = new FormCollection(HttpContext.Request.Params);
-
-            Decrypt(parms);
-
-            foreach (IOneToOneAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToOneAssociationSpec>()) {
-                string[] values = GetRawValues(parms, GetFieldInputId(nakedObject, assoc));
-                results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.ReturnSpec);
             }
 
             return results;

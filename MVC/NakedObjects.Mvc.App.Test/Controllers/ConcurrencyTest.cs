@@ -86,7 +86,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
             var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            controller = new GenericController(NakedObjectsFramework, mockSurface, IdHelper);
+            controller = new GenericController( mockSurface, IdHelper);
             mocks = new ContextMocks(controller);
         }
 
