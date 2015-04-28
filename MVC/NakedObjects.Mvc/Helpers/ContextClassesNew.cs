@@ -64,7 +64,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return Property; }
         }
 
-        public INakedObjectSurface GetValue(INakedObjectsFramework framework) {
+        public INakedObjectSurface GetValue(INakedObjectsSurface surface) {
             return Property.GetNakedObject(Target);
         }
 

@@ -45,5 +45,10 @@ namespace NakedObjects.Surface {
         ParameterTypeContextSurface GetActionParameterType(string typeName, string actionName, string parmName);
         ObjectContextSurface Persist(string typeName, ArgumentsContext arguments);
         UserCredentials Validate(string user, string password);
+
+        // todo this to help the transition may be able to be removed after
+
+        INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec,  object domainObject);
+
     }
 }

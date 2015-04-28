@@ -85,6 +85,10 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         }
 
+        public string GetObjectId(INakedObjectSurface nakedobject) {
+            throw new NotImplementedException();
+        }
+
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);

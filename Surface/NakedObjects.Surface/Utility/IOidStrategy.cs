@@ -15,6 +15,9 @@ namespace NakedObjects.Surface {
         ILinkObjectId GetOid(string servicename);
         ILinkObjectId GetOid(string typeName, string instanceId);
 
+        // todo to help migration may be able to be removed
+        string GetObjectId(INakedObjectSurface nakedobject);
+
 
         INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec);

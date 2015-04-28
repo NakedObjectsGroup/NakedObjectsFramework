@@ -232,6 +232,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return spec != null && (spec.IsImage(framework) || spec.IsFileAttachment(framework) || spec.ContainsFacet<IArrayValueFacet<byte>>());
         }
 
+        public static string IconName(INakedObjectSurface nakedObject) {
+            string name = nakedObject.Specification.GetIconName(nakedObject);
+            return name.Contains(".") ? name : name + ".png";
+        }
+
         public static string IconName(INakedObjectAdapter nakedObject) {
             string name = nakedObject.Spec.GetIconName(nakedObject);
             return name.Contains(".") ? name : name + ".png";

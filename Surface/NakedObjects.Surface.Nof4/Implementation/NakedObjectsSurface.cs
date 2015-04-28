@@ -145,6 +145,25 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new UserCredentials(user, password, new List<string>());
         }
 
+        public INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec, object value) {
+            var s = ((NakedObjectSpecificationWrapper) spec).WrappedValue;
+            INakedObjectAdapter adapter;
+
+            if (value == null) {
+                return null;
+            }
+
+            if (value is string) {
+                adapter = s.GetFacet<IParseableFacet>().ParseTextEntry((string) value, Framework.NakedObjectManager);
+            }
+            else {
+
+                adapter = Framework.GetNakedObject(value);
+            }
+
+            return  NakedObjectWrapper.Wrap(adapter, this, Framework);
+        }
+
         public ObjectContextSurface GetObject(ILinkObjectId oid) {
             return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }

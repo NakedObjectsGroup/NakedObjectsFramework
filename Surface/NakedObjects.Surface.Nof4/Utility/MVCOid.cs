@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface.Nof4.Implementation;
+using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public class MVCOid : IOidStrategy {
@@ -98,6 +99,40 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public ILinkObjectId GetOid(string typeName, string instanceId) {
            return new MVCObjectId(typeName);
+        }
+
+        private  string Encode(IEncodedToStrings encoder) {
+            return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
+        }
+
+        private  string GetObjectId(INakedObjectAdapter nakedObject, IEncodedToStrings memento) {
+            return Encode(memento);
+        }
+
+        private  string GetObjectId( INakedObjectAdapter nakedObject) {
+            if (nakedObject.Spec.IsViewModel) {
+                framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
+            }
+            else if (nakedObject.Oid == null) {
+                return "";
+            }
+
+            return GetObjectId(nakedObject.Oid);
+        }
+
+        private  string GetObjectId(IOid oid) {
+            return Encode(((IEncodedToStrings)oid));
+        }
+
+        private  string GetObjectId(object model) {
+            Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectAdapter);
+            INakedObjectAdapter nakedObject = framework.GetNakedObject(model);
+            return framework.GetObjectId(nakedObject);
+        }
+
+        public string GetObjectId(INakedObjectSurface nakedobject) {
+            var no = ((NakedObjectWrapper) nakedobject).WrappedNakedObject;
+            return GetObjectId(no);
         }
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
