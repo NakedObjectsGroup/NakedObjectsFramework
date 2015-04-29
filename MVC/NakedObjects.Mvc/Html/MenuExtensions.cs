@@ -246,7 +246,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (serviceIm == null) {
                     throw new Exception("Action is not on a known service");
                 }
-                nakedObject = html.Surface().GetServices().List.Single(s => s.Specification == serviceIm);
+                nakedObject = html.Surface().GetServices().List.Single(s => s.Specification.Equals(serviceIm));
             }
 
             var actionContext = new ActionContextNew(html.IdHelper(), false, nakedObject, actionIm);
@@ -265,7 +265,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Framework().GetObjectTypeName(actionContext.Target.Object), new {id = html.Framework().GetObjectId(actionContext.Target)}, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeName(actionContext.Target.Object), new {id = html.Surface().OidStrategy.GetObjectId(actionContext.Target)}, out value, out attributes);
             }
 
             return new ElementDescriptor {

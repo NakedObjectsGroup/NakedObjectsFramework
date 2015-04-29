@@ -6,14 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Service;
 using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuActionWrapper : IMenuAction, IMenuItem {
-        private readonly IMenuActionImmutable wrapped;
 
-        public MenuActionWrapper(IMenuActionImmutable wrapped) {
-            this.wrapped = wrapped;
+        public MenuActionWrapper(IMenuActionImmutable wrapped, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            Wrapped = wrapped;
+            Name = wrapped.Name;
+            Id = wrapped.Id;
+            var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
+            Action = new NakedObjectActionWrapper(action, surface, framework, "");
         }
 
         #region IMenuAction Members
@@ -26,6 +30,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public string Name { get; private set; }
         public string Id { get; private set; }
+        public object Wrapped { get; private set; }
 
         #endregion
     }

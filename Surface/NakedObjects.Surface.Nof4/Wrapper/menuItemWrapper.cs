@@ -10,10 +10,9 @@ using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuItemWrapper : IMenuItem {
-        private readonly IMenuItemImmutable wrapped;
 
         public MenuItemWrapper(IMenuItemImmutable wrapped) {
-            this.wrapped = wrapped;
+            Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;
         }
@@ -22,6 +21,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public string Name { get; private set; }
         public string Id { get; private set; }
+        public object Wrapped { get; private set; }
 
         #endregion
     }

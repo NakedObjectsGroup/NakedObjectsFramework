@@ -9,5 +9,6 @@ namespace NakedObjects.Surface.Interface {
     public interface IMenuItem {
         string Name { get; }
         string Id { get; }
+        object Wrapped { get; }
     }
 }

@@ -87,6 +87,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return framework.GetObjectId(nakedObject);
         }
 
+        public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
+            var oid = surface.OidStrategy.GetOid(model);
+            var nakedObject = surface.GetObject(oid).Target;
+            return nakedObject.Specification.FullName().Split('.').Last();
+        }
+
         public static string GetObjectTypeName(this INakedObjectsFramework framework, object model) {
             INakedObjectAdapter nakedObject = framework.GetNakedObject(model);
             return nakedObject.Spec.ShortName;

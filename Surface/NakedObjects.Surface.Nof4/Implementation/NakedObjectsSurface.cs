@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -87,7 +88,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public IMenu[] GetMainMenus() {
             var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
-            return menus.Select(m => new MenuWrapper(m)).Cast<IMenu>().ToArray();
+            return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenu>().ToArray();
         }
 
         public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {
