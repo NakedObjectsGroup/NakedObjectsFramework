@@ -165,6 +165,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return  NakedObjectWrapper.Wrap(adapter, this, Framework);
         }
 
+        public INakedObjectSurface GetObject(object domainObject) {
+            return NakedObjectWrapper.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
+        }
+
         public ObjectContextSurface GetObject(ILinkObjectId oid) {
             return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }

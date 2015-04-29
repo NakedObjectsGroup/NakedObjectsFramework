@@ -39,8 +39,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static MvcHtmlString ObjectMenu(this HtmlHelper html, object domainObject, bool isEdit) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            IMenuImmutable objectMenu = nakedObject.Spec.Menu;
+            var nakedObject = html.Surface().GetObject(domainObject);
+            var objectMenu = nakedObject.Specification.Menu;
             return html.MenuAsHtml(objectMenu, nakedObject, isEdit, true);
         }
 

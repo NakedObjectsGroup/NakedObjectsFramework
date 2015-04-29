@@ -12,6 +12,7 @@ using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
@@ -121,6 +122,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var objectSpec = spec as IObjectSpec;
                 return objectSpec == null ? new INakedObjectAssociationSurface[] { } : objectSpec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray();
             }
+        }
+
+        public IMenu Menu
+        {
+            get { return new MenuWrapper(spec.Menu, Surface, framework); }
         }
 
         public bool IsImmutable(INakedObjectSurface nakedObject) {

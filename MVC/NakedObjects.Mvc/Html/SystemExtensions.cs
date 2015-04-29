@@ -201,7 +201,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (domainObject != null) {
                 newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
                 if (!(domainObject is FindViewModel) && !existingUrls.Contains(newUrl)) {
-                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Framework(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
+                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Surface(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
                 }
             }
 

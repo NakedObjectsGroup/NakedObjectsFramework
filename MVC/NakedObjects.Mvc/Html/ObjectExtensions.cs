@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
@@ -23,10 +24,16 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the object id
         /// </summary>
+        //public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
+        //    Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectAdapter);
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+        //    return MvcHtmlString.Create(html.Framework().GetObjectId(nakedObject));
+        //}
+
         public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
-            Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectAdapter);
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(html.Framework().GetObjectId(nakedObject));
+            Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectSurface);
+            var nakedObject = html.Surface().GetObject(model);
+            return MvcHtmlString.Create(html.Surface().OidStrategy.GetObjectId(nakedObject));
         }
 
         /// <summary>
@@ -50,9 +57,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-            var facet = nakedObject.Spec.GetFacet<IPresentationHintFacet>();
-            return facet == null ? "" : " " + facet.Value;
+            // todo
+            //INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+            //var facet = nakedObject.Spec.GetFacet<IPresentationHintFacet>();
+            //return facet == null ? "" : " " + facet.Value;
+            return "";
         }
 
         /// <summary>
@@ -80,8 +89,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object has any visible fields
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            var objectSpec = nakedObject.Spec as IObjectSpec;
+            var nakedObject = html.Surface().GetObject(domainObject);
+            var objectSpec = nakedObject.Specification;
             return objectSpec != null && objectSpec.Properties.Any(p => p.IsVisible(nakedObject));
         }
 
@@ -89,7 +98,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object is a not persistent  object
         /// </summary>
         public static bool ObjectIsNotPersistent(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            var nakedObject = html.Surface().GetObject(domainObject);
             return nakedObject.IsNotPersistent();
         }
 
@@ -112,9 +121,20 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Display name of object
         /// </summary>
+        //public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
+        //    return html.ObjectTitle(nakedObject);
+        //}
+
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
+            var oid = html.Surface().OidStrategy.GetOid(model);
+            var nakedObject = html.Surface().GetObject(oid).Target;
             return html.ObjectTitle(nakedObject);
+        }
+
+        public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectSurface nakedObject) {
+            string title = nakedObject.TitleString();
+            return MvcHtmlString.Create(title);
         }
 
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectAdapter nakedObject) {

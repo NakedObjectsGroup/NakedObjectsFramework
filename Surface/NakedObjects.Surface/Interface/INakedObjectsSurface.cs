@@ -49,6 +49,7 @@ namespace NakedObjects.Surface {
         // todo this to help the transition may be able to be removed after
 
         INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec,  object domainObject);
+        INakedObjectSurface GetObject(object domainObject);
 
     }
 }

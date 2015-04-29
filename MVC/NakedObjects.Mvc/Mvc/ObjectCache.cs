@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc {
@@ -44,6 +45,11 @@ namespace NakedObjects.Web.Mvc {
             session.AddToCache(framework, nakedObject, url, flag);
         }
 
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsSurface surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = surface.GetObject(domainObject);
+            session.AddOrUpdateInCache(surface, nakedObject, url, flag);
+        }
+
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             INakedObjectAdapter nakedObject = framework.GetNakedObject(domainObject);
             session.AddOrUpdateInCache(framework, nakedObject, url, flag);
@@ -58,11 +64,37 @@ namespace NakedObjects.Web.Mvc {
             session.AddToCache(framework, nakedObject, null, flag);
         }
 
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = surface.GetObject(domainObject);
+            session.AddToCache(surface, nakedObject, flag);
+        }
+
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.AddToCache(surface, nakedObject, null, flag);
+        }
+
         private static void ClearPreviousTransients(this HttpSessionStateBase session, INakedObjectAdapter nakedObject, ObjectFlag flag) {
             if (nakedObject.Oid.HasPrevious) {
                 if (nakedObject.Oid.Previous.IsTransient) {
                     session.GetCache(flag).Remove(FrameworkHelper.GetObjectId(nakedObject.Oid.Previous));
                 }
+            }
+        }
+
+        //private static void ClearPreviousTransients(this HttpSessionStateBase session, INakedObjectSurface nakedObject, ObjectFlag flag) {
+        //    if (nakedObject.Oid.HasPrevious) {
+        //        if (nakedObject.Oid.Previous.IsTransient) {
+        //            session.GetCache(flag).Remove(FrameworkHelper.GetObjectId(nakedObject.Oid.Previous));
+        //        }
+        //    }
+        //}
+
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            // only add transients if we are storing transients in the session 
+
+            if (!nakedObject.IsTransient() || nakedObject.Specification.IsCollection()) {
+                //session.ClearPreviousTransients(nakedObject, flag);
+                session.GetCache(flag).AddToCache(surface, nakedObject, url, flag);
             }
         }
 
@@ -72,6 +104,15 @@ namespace NakedObjects.Web.Mvc {
             if (!nakedObject.ResolveState.IsTransient() || nakedObject.Spec.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddToCache(framework, nakedObject, url, flag);
+            }
+        }
+
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            // only add transients if we are storing transients in the session 
+
+            if (!nakedObject.IsTransient() || nakedObject.Specification.IsCollection()) {
+                //session.ClearPreviousTransients(nakedObject, flag);
+                session.GetCache(flag).AddOrUpdateInCache(surface, nakedObject, url, flag);
             }
         }
 
@@ -282,6 +323,21 @@ namespace NakedObjects.Web.Mvc {
             return objs;
         }
 
+        private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag) {
+            string objectId = surface.OidStrategy.GetObjectId(nakedObject);
+
+            if (cache.ContainsKey(objectId)) {
+                cache[objectId].Spec = nakedObject.Specification.FullName();
+                cache[objectId].Url = url;
+            }
+            else {
+                cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName(), Url = url };
+                while (cache.Count > CacheSize) {
+                    RemoveOldest(cache, flag);
+                }
+            }
+        }
+
         private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObjectAdapter nakedObject, string url, ObjectFlag flag) {
             string objectId = framework.GetObjectId(nakedObject);
 
@@ -294,6 +350,14 @@ namespace NakedObjects.Web.Mvc {
                 while (cache.Count > CacheSize) {
                     RemoveOldest(cache, flag);
                 }
+            }
+        }
+
+        private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag) {
+            string objectId = surface.OidStrategy.GetObjectId(nakedObject);
+            cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName(), Url = url };
+            while (cache.Count > CacheSize) {
+                RemoveOldest(cache, flag);
             }
         }
 
