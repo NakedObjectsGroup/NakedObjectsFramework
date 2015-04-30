@@ -129,7 +129,7 @@ namespace NakedObjects.SystemTest.Injection {
                 var testObject = (Object5)NewTestObject<Object5>().GetDomainObject();
                 Assert.Fail("Should not get to here");
             } catch (Exception e) {
-                Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because there are 3 services implementing type NakedObjects.SystemTest.Injection.IService4", e.Message);
+                Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because multiple services implement type NakedObjects.SystemTest.Injection.IService4: NakedObjects.SystemTest.Injection.Service4ImplA; NakedObjects.SystemTest.Injection.Service4ImplB; NakedObjects.SystemTest.Injection.Service4ImplC; ", e.Message);
             }
         }
     }

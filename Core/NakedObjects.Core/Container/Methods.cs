@@ -11,6 +11,7 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Core.Util;
 using System;
+using System.Text;
 
 namespace NakedObjects.Core.Container {
     internal static class Methods {
@@ -54,9 +55,13 @@ namespace NakedObjects.Core.Container {
                             Log.DebugFormat("Injected service {0} into instance of {1}", service, target.GetType().FullName);
                             continue;
                         }
-                        throw new DomainException(string.Format("Cannot inject service into property {0} on target {1}" +
-                        " because there are {2} services implementing type {3}",
-                        prop.Name, target.GetType().FullName, count, prop.PropertyType));
+                        var msg = new StringBuilder();
+                        msg.Append(string.Format("Cannot inject service into property {0} on target {1}" +
+                        " because multiple services implement type {2}: ",prop.Name, target.GetType().FullName, prop.PropertyType));
+                        foreach (var serv in matches) {
+                            msg.Append(serv.GetType().FullName).Append("; ");
+                        }
+                        throw new DomainException(msg.ToString());
                     }
                 }
             }
