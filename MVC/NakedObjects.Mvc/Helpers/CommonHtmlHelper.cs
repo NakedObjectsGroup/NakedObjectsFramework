@@ -408,6 +408,18 @@ namespace NakedObjects.Web.Mvc.Html {
             return MvcHtmlString.Create(menuSet.ToString());
         }
 
+       
+
+        internal static MvcHtmlString GetStandaloneCollection(this HtmlHelper html,
+           INakedObjectSurface collectionNakedObject,
+           Func<INakedObjectAssociationSurface, bool> filter,
+           Func<INakedObjectAssociationSurface, int> order,
+           bool withTitle) {
+            var tag = new TagBuilder("div");
+            tag.AddCssClass(IdConstants.CollectionTableName);
+            return GetStandalone(html, collectionNakedObject, filter, order, tag, withTitle);
+        }
+
         internal static MvcHtmlString GetStandaloneCollection(this HtmlHelper html,
             INakedObjectAdapter collectionNakedObject,
             Func<IAssociationSpec, bool> filter,
@@ -416,6 +428,24 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.CollectionTableName);
             return GetStandalone(html, collectionNakedObject, filter, order, tag, withTitle);
+        }
+
+      
+
+        private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectSurface collectionNakedObject, Func<INakedObjectAssociationSurface, bool> filter, Func<INakedObjectAssociationSurface, int> order, TagBuilder tag, bool withTitle) {
+            Func<INakedObjectSurface, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
+
+            string menu = collectionNakedObject.Specification.IsQueryable() ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
+            string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
+
+            // can only be standalone and hence page if we have an id 
+            tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), collectionNakedObject.Specification.IsQueryable(), withTitle);
+
+            return html.WrapInForm(IdConstants.EditObjectAction,
+                html.Framework().GetObjectTypeName(collectionNakedObject.Object),
+                menu + tag,
+                IdConstants.ActionName,
+                new RouteValueDictionary(new { id }));
         }
 
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectAdapter collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
@@ -432,6 +462,14 @@ namespace NakedObjects.Web.Mvc.Html {
                 menu + tag,
                 IdConstants.ActionName,
                 new RouteValueDictionary(new {id}));
+        }
+
+        internal static MvcHtmlString GetStandaloneList(this HtmlHelper html,
+           INakedObjectSurface collectionNakedObject,
+           Func<INakedObjectAssociationSurface, int> order) {
+            var tag = new TagBuilder("div");
+            tag.AddCssClass(IdConstants.CollectionListName);
+            return GetStandalone(html, collectionNakedObject, x => false, order, tag, true);
         }
 
         internal static MvcHtmlString GetStandaloneList(this HtmlHelper html,
@@ -2939,6 +2977,24 @@ namespace NakedObjects.Web.Mvc.Html {
             //}
         }
 
+        internal static void GetTableColumnInfo(INakedObjectActionSurface holder, out Func<INakedObjectActionSurface, bool> filterFunc, out Func<INakedObjectActionSurface, int> orderFunc, out bool withTitle) {
+           // todo
+            
+            //ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
+
+            //if (tableViewFacet == null) {
+            filterFunc = x => true;
+            orderFunc = null;
+            withTitle = true;
+            //}
+            //else {
+            //    string[] columns = tableViewFacet.Columns;
+            //    filterFunc = x => columns.Contains(x.Id);
+            //    orderFunc = x => Array.IndexOf(columns, x.Id);
+            //    withTitle = tableViewFacet.Title;
+            //}
+        }
+
         internal static void GetTableColumnInfo(ISpecification holder, out Func<IAssociationSpec, bool> filterFunc, out Func<IAssociationSpec, int> orderFunc, out bool withTitle) {
             ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
 
@@ -2956,6 +3012,14 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static bool RenderEagerly(INakedObjectAssociationSurface holder) {
+
+            // todo
+            //IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();
+            //return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
+            return false;
+        }
+
+        internal static bool RenderEagerly(INakedObjectActionSurface holder) {
 
             // todo
             //IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();

@@ -155,7 +155,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
+            title = model.Action.Name() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
 
@@ -267,9 +267,14 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get short type name from object
         /// </summary>
+        //public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+        //    return MvcHtmlString.Create(nakedObject.Spec.ShortName);
+        //}
+
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Spec.ShortName);
+            var nakedObject = html.Surface().GetObject(model);
+            return MvcHtmlString.Create(nakedObject.Specification.FullName().Split('.').Last());
         }
 
         #endregion
