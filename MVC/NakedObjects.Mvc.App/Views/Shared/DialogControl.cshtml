@@ -1,9 +1,9 @@
 @using NakedObjects.Resources
 @using NakedObjects.Web.Mvc.Html
-@model global::NakedObjects.Web.Mvc.Models.FindViewModel
+@model global::NakedObjects.Web.Mvc.Models.FindViewModelNew
 
 @(Html.Object(Html.ObjectTitle(Model.ContextObject).ToString(), IdConstants.ViewAction, Model.ContextObject))
-@(Html.ObjectActionName(Model.ContextAction.Name))
+@(Html.ObjectActionName(Model.ContextAction.Name()))
 @Html.ValidationSummary(true, MvcUi.ActionError)
 @(Html.UserMessages())
 @{

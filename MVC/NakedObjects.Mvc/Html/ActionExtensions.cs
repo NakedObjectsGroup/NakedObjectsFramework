@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
@@ -30,6 +31,11 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
+        }
+
+        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, INakedObjectActionSurface action) {
+            INakedObjectSurface nakedObject = html.Surface().GetObject(domainObject);
+            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(nakedObject, action));
         }
 
         /// <summary>
@@ -70,6 +76,18 @@ namespace NakedObjects.Web.Mvc.Html {
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
 
+        public static MvcHtmlString ParameterList(this HtmlHelper html,
+           object contextObject,
+           object targetObject,
+           INakedObjectActionSurface contextAction,
+           INakedObjectActionSurface targetAction,
+           string propertyName,
+           IEnumerable collection) {
+            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction);
+
+            return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
+        }
+
         /// <summary>
         ///     Get the parameters of an action for display within a form
         /// </summary>
@@ -97,6 +115,18 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.IdHelper().GetParameterContainerId(ScaffoldAction.Wrap(contextAction)));
         }
 
+        private static MvcHtmlString ParameterList(INakedObjectActionSurface contextAction, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContextNew actionContext) {
+            if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
+                return html.ParameterList(actionContext);
+            }
+
+            var targetActionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(targetObject), targetAction);
+            return html.BuildParamContainer(actionContext,
+                html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
+                IdConstants.ParamContainerName,
+                html.IdHelper().GetParameterContainerId((contextAction)));
+        }
+
         /// <summary>
         ///     Get the parameters of an action for display within a form
         /// </summary>
@@ -115,6 +145,13 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.ActionParameterFields(actionContext),
                 IdConstants.ParamContainerName,
                 html.IdHelper().GetParameterContainerId(ScaffoldAction.Wrap(actionContext.Action)));
+        }
+
+        internal static MvcHtmlString ParameterList(this HtmlHelper html, ActionContextNew actionContext) {
+            return html.BuildParamContainer(actionContext,
+                html.ActionParameterFields(actionContext),
+                IdConstants.ParamContainerName,
+                html.IdHelper().GetParameterContainerId((actionContext.Action)));
         }
 
         #endregion

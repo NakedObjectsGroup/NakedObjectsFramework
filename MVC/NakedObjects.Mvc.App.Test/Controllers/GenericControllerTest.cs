@@ -303,8 +303,8 @@ namespace MvcTestApp.Tests.Controllers {
         private void AssertIsDialogViewOfAction(ViewResult result, string actionName) {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf<FindViewModel>(data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name);
+            Assert.IsInstanceOf<FindViewModelNew>(data.Model);
+            Assert.AreEqual(actionName, ((FindViewModelNew) data.Model).ContextAction.Name());
         }
 
         private static void AssertStateInViewDataDictionary(ViewResult result, string id, string state) {
@@ -548,8 +548,8 @@ namespace MvcTestApp.Tests.Controllers {
         private static void AssertNameAndParms(ViewResult result, string name, int? count, object contextObject, IActionSpec contextAction, object targetObject, IActionSpec targetAction, string pName) {
             Assert.AreEqual(name, result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf<FindViewModel>(data.Model);
-            var fvm = data.Model as FindViewModel;
+            Assert.IsInstanceOf<FindViewModelNew>(data.Model);
+            var fvm = data.Model as FindViewModelNew;
 
             if (count == null) {
                 Assert.IsNull(fvm.ActionResult);

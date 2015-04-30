@@ -1352,8 +1352,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var viewResult = ((ViewResultBase) filterContext.Result);
                 object model = viewResult.ViewData.Model;
 
-                if (model is FindViewModel) {
-                    SetControllerName(((FindViewModel) model).ContextObject);
+                if (model is FindViewModelNew) {
+                    SetControllerName(((FindViewModelNew) model).ContextObject);
                 }
                 else if (model is ActionResultModel) {
                     var nakedObject = GetNakedObject(((ActionResultModel) model).Result);

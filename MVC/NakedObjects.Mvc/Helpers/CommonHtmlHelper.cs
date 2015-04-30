@@ -263,6 +263,29 @@ namespace NakedObjects.Web.Mvc.Html {
             fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
         }
 
+        private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectSurface nakedObject, INakedObjectActionSurface action, TagBuilder fieldSet) {
+
+            // todo
+            //var parameters = new HashSet<string>(action.Parameters.Select(p => p.GetFacet<IActionChoicesFacet>()).Where(f => f != null).SelectMany(f => f.ParameterNamesAndTypes).Select(pnt => pnt.Item1));
+            //// check the names match 
+
+            //IEnumerable<string> matches = from p in parameters
+            //                              from pp in action.Parameters
+            //                              where p.ToLower() == pp.Id.ToLower()
+            //                              select p;
+
+            //if (matches.Count() != parameters.Count) {
+            //    string error = string.Format("On choices method Choices{0} one or more parameters in: '{1}' does not match a parameter on : {0}", action.Id, parameters.Aggregate("", (s, t) => s + " " + t));
+            //    throw new ArgumentException(error);
+            //}
+
+            //string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + html.IdHelper().GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(action.Parameters.Single(p => p.Id.ToLower() == t.ToLower()))));
+
+            //var url = html.GenerateUrl("GetActionChoices", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(nakedObject), actionName = action.Id }));
+            //fieldSet.MergeAttribute("data-choices", url);
+            //fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
+        }
+
         private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectAdapter nakedObject, IActionSpec action, TagBuilder fieldSet) {
             var parameters = new HashSet<string>(action.Parameters.Select(p => p.GetFacet<IActionChoicesFacet>()).Where(f => f != null).SelectMany(f => f.ParameterNamesAndTypes).Select(pnt => pnt.Item1));
             // check the names match 
@@ -300,6 +323,25 @@ namespace NakedObjects.Web.Mvc.Html {
             UpdatePagingValues(html, data);
 
             fieldSet.InnerHtml += GetSubmitButton(IdConstants          .OkButtonClass, MvcUi.OK, "None", data);
+            return MvcHtmlString.Create(fieldSet.ToString());
+        }
+
+        internal static MvcHtmlString BuildParamContainer(this HtmlHelper html, ActionContextNew actionContext, IEnumerable<ElementDescriptor> elements, string cls, string id) {
+            if (actionContext.Action.IsQueryOnly()) {
+                cls += (" " + IdConstants.QueryOnlyClass);
+            }
+            else if (actionContext.Action.IsIdempotent()) {
+                cls += (" " + IdConstants.IdempotentClass);
+            }
+
+            TagBuilder fieldSet = AddClassAndIdToElementSet(elements, cls, id);
+
+            AddAjaxDataUrlsToElementSet(html, actionContext.Target, actionContext.Action, fieldSet);
+
+            var data = new RouteValueDictionary();
+            UpdatePagingValues(html, data);
+
+            fieldSet.InnerHtml += GetSubmitButton(IdConstants.OkButtonClass, MvcUi.OK, "None", data);
             return MvcHtmlString.Create(fieldSet.ToString());
         }
 
@@ -666,6 +708,30 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static IEnumerable<ElementDescriptor> ActionParameterFields(this HtmlHelper html, ActionContext actionContext, ActionContext targetActionContext, string propertyName, IEnumerable actionResult) {
             List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => (html.Framework().GetNakedObject(x).ResolveState.IsTransient() && !html.Framework().GetNakedObject(x).Spec.IsCollection));
             return html.ActionParameterFields(actionContext, childElements, propertyName);
+        }
+
+        internal static IEnumerable<ElementDescriptor> ActionParameterFields(this HtmlHelper html, ActionContextNew actionContext, ActionContextNew targetActionContext, string propertyName, IEnumerable actionResult) {
+            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => (html.Surface().GetObject(x).IsTransient() && !html.Surface().GetObject(x).Specification.IsCollection()));
+            return html.ActionParameterFields(actionContext, childElements, propertyName);
+        }
+
+        private static List<ElementDescriptor> GetChildElements(this HtmlHelper html, IEnumerable actionResult, ActionContextNew targetActionContext, ActionContextNew actionContext, string propertyName, Func<object, bool> actionResultFilter) {
+            List<ElementDescriptor> childElements;
+
+            if (actionResult == null) {
+                List<ElementDescriptor> paramElements = html.ActionParameterFields(targetActionContext).ToList();
+                childElements = html.GetActionDialog(targetActionContext, actionContext, paramElements, propertyName).InList();
+            }
+            else {
+                List<object> result = actionResult.Cast<object>().ToList();
+                if (result.Count() == 1 && actionResultFilter(result.First())) {
+                    childElements = html.GetSubEditObject(targetActionContext, actionContext, result.First(), propertyName).InList();
+                }
+                else {
+                    childElements = html.SelectionView(actionContext.Target.Object, propertyName, actionResult).InList();
+                }
+            }
+            return childElements;
         }
 
         private static List<ElementDescriptor> GetChildElements(this HtmlHelper html, IEnumerable actionResult, ActionContext targetActionContext, ActionContext actionContext, string propertyName, Func<object, bool> actionResultFilter) {
@@ -1064,6 +1130,37 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
+        private static ElementDescriptor GetActionDialog(this HtmlHelper html,
+           ActionContextNew targetActionContext,
+           ActionContextNew actionContext,
+           IList<ElementDescriptor> paramElements,
+           string propertyName) {
+            if (!paramElements.Any()) {
+                return null;
+            }
+
+            var nameTag = new TagBuilder("div");
+            nameTag.AddCssClass(IdConstants.ActionNameLabel);
+            nameTag.SetInnerText(targetActionContext.Action.Name());
+
+            TagBuilder parms = ElementDescriptor.BuildElementSet(paramElements);
+            parms.AddCssClass(IdConstants.ParamContainerName);
+
+            html.AddAjaxDataUrlsToElementSet(targetActionContext.Target, targetActionContext.Action, parms);
+
+            return new ElementDescriptor {
+                TagType = "div",
+                Value = nameTag.ToString() + parms + GetSubmitButton(IdConstants.OkButtonClass,
+                    MvcUi.OK,
+                    IdConstants.InvokeFindAction,
+                    html.GetButtonNameValues(targetActionContext, actionContext, null, propertyName)),
+                Attributes = new RouteValueDictionary(new {
+                    @class = IdConstants.ActionDialogName,
+                    id = targetActionContext.GetActionDialogId()
+                })
+            };
+        }
+
         private static ElementDescriptor GetSubEditObject(this HtmlHelper html,
             ActionContext targetActionContext,
             ActionContext actionContext,
@@ -1093,6 +1190,35 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
+        private static ElementDescriptor GetSubEditObject(this HtmlHelper html,
+          ActionContextNew targetActionContext,
+          ActionContextNew actionContext,
+          object subEditObject,
+          string propertyName) {
+            var nakedObject = html.Surface().GetObject(subEditObject);
+
+            Func<INakedObjectAssociationSurface, bool> filterCollections = x => !x.IsCollection();
+
+            TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
+                IdConstants.FieldContainerName,
+                html.IdHelper().GetFieldContainerId((nakedObject)));
+            html.AddAjaxDataUrlsToElementSet(nakedObject, elementSet);
+
+            return new ElementDescriptor {
+                TagType = "div",
+                Value = html.Object(html.ObjectTitle(nakedObject.Object).ToString(), IdConstants.ViewAction, nakedObject.Object).ToString()
+                        + elementSet
+                        + GetSubmitButton(IdConstants.SaveButtonClass,
+                            MvcUi.Save,
+                            IdConstants.InvokeSaveAction,
+                            html.GetButtonNameValues(targetActionContext, actionContext, nakedObject, propertyName)),
+                Attributes = new RouteValueDictionary(new {
+                    @class = html.ObjectEditClass(nakedObject.Object),
+                    id = FrameworkHelper.GetObjectType(nakedObject.Object)
+                })
+            };
+        }
+
         private static TagBuilder AddClassAndIdToElementSet(IEnumerable<ElementDescriptor> elements, string cls, string id) {
             TagBuilder elementSet = ElementDescriptor.BuildElementSet(elements);
             elementSet.AddCssClass(cls);
@@ -1100,9 +1226,15 @@ namespace NakedObjects.Web.Mvc.Html {
             return elementSet;
         }
 
+        //private static ElementDescriptor SelectionView(this HtmlHelper html, object target, string propertyName, IEnumerable collection) {
+        //    INakedObjectAdapter collectionNakedObject = html.Framework().GetNakedObject(collection);
+        //    INakedObjectAdapter targetNakedObject = html.Framework().GetNakedObject(target);
+        //    return html.GetSelectionCollection(collectionNakedObject, targetNakedObject, propertyName);
+        //}
+
         private static ElementDescriptor SelectionView(this HtmlHelper html, object target, string propertyName, IEnumerable collection) {
-            INakedObjectAdapter collectionNakedObject = html.Framework().GetNakedObject(collection);
-            INakedObjectAdapter targetNakedObject = html.Framework().GetNakedObject(target);
+            var collectionNakedObject = html.Surface().GetObject(collection);
+            var targetNakedObject = html.Surface().GetObject(target);
             return html.GetSelectionCollection(collectionNakedObject, targetNakedObject, propertyName);
         }
 
@@ -1852,8 +1984,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GenerateUrl(this HtmlHelper html, string actionName, object domainObject) {
-            string controllerName = html.Framework().GetObjectTypeName(domainObject);
-            return html.GenerateUrl(actionName, controllerName, new RouteValueDictionary(new {id = html.Framework().GetObjectId(domainObject)}));
+            string controllerName = html.Surface().GetObjectTypeName(domainObject);
+            return html.GenerateUrl(actionName, controllerName, new RouteValueDictionary(new {id = html.GetObjectId(domainObject)}));
         }
 
         public static string GenerateUrl(this HtmlHelper html, string actionName, string controllerName, RouteValueDictionary routeValues) {
@@ -2919,6 +3051,20 @@ namespace NakedObjects.Web.Mvc.Html {
             return tag.ToString();
         }
 
+        private static ElementDescriptor GetSelectionCollection(this HtmlHelper html, INakedObjectSurface collectionNakedObject, INakedObjectSurface targetNakedObject, string propertyName) {
+            Func<INakedObjectSurface, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdConstants.ViewAction, item.Object) + " " +
+                                                                    GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new { id = html.Framework().GetObjectId(targetNakedObject) }) { { propertyName, html.Framework().GetObjectId(item) } }), IdConstants.ObjectName).ToString();
+
+            return new ElementDescriptor {
+                TagType = "div",
+                Value = html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true),
+                Attributes = new RouteValueDictionary(new {
+                    @class = IdConstants.CollectionListName
+                })
+            };
+        }
+
+
         private static ElementDescriptor GetSelectionCollection(this HtmlHelper html, INakedObjectAdapter collectionNakedObject, INakedObjectAdapter targetNakedObject, string propertyName) {
             Func<INakedObjectAdapter, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdConstants.ViewAction, item.Object) + " " +
                                                                     GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new { id = html.Framework().GetObjectId(targetNakedObject) }) { { propertyName, html.Framework().GetObjectId(item) } }), IdConstants.ObjectName).ToString();
@@ -2936,8 +3082,8 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ObjectName);
             tag.MergeAttribute("title", "");
-            var coll = propertyContext.Property as IOneToManyAssociationSpec;
-            tag.InnerHtml += CollectionUtils.CollectionTitleString(coll.ElementSpec, count);
+            var coll = propertyContext.Property;
+            tag.InnerHtml += coll.GetTitle(propertyContext.Target);
             return tag.ToString();
         }
 

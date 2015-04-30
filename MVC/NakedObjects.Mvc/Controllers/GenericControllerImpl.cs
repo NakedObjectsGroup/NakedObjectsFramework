@@ -258,9 +258,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var no = controlData.GetNakedObject(Surface);
             var action = controlData.GetAction(Surface);
 
-            return View("ActionDialog", new FindViewModel {
+            return View("ActionDialog", new FindViewModelNew {
                 ContextObject = no.Object,
-                ContextAction = ((dynamic)action).WrappedSpec // todo fix hack 
+                ContextAction = action // todo fix hack 
             });
         }
 
@@ -472,9 +472,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetPagingValues(controlData, nakedObject);
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
 
-            // TODO temp hack
-            IActionSpec oldAction = ((dynamic) action).WrappedSpec;
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = oldAction, PropertyName = property });
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModelNew { ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property });
         }
 
 
@@ -579,9 +577,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
-            // TODO temp hack
-            IActionSpec oldAction = ((dynamic)targetAction).WrappedSpec;
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = targetNakedObject.Object, ContextAction = oldAction, PropertyName = property });
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModelNew { ContextObject = targetNakedObject.Object, ContextAction = targetAction, PropertyName = property });
         }
 
 
@@ -607,7 +603,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return SelectSingleItem(contextNakedObject, contextAction, controlData, selectedItem);
             }
 
-            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = UnWrap(contextAction), PropertyName = propertyName});
+            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModelNew {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = contextAction, PropertyName = propertyName});
         }
 
         //private ActionResult SelectSingleItem(INakedObjectAdapter nakedObject, IActionSpec action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
@@ -631,8 +627,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             SetSelectedParameters(nakedObject, action, selectedItem);
 
-            IActionSpec oldAction = ((dynamic)action).WrappedSpec; // hack
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = oldAction, PropertyName = property });
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModelNew { ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property });
         }
 
         
@@ -777,12 +772,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             // and so all OK. 
 
             IEnumerable resultAsEnumerable = new List<object> {subEditObject.Object};
-            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {
+            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModelNew {
                 ActionResult = resultAsEnumerable,
                 TargetObject = targetNakedObject.Object,
                 ContextObject = contextNakedObject.Object,
-                TargetAction = UnWrap(targetAction),
-                ContextAction = UnWrap(contextAction),
+                TargetAction = (targetAction),
+                ContextAction = (contextAction),
                 PropertyName = propertyName
             });
         }
@@ -818,21 +813,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     }
                     string view = Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections";
 
-                    return View(view, new FindViewModel {
+                    return View(view, new FindViewModelNew {
                         ActionResult = resultAsEnumerable,
                         TargetObject = targetNakedObject.Object,
                         ContextObject = contextNakedObject.Object,
-                        TargetAction = UnWrap(targetAction),
-                        ContextAction = UnWrap(contextAction),
+                        TargetAction = (targetAction),
+                        ContextAction = (contextAction),
                         PropertyName = propertyName
                     });
                 }
             
-            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModel {
+            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModelNew {
                 TargetObject = targetNakedObject.Object,
                 ContextObject = contextNakedObject.Object,
-                TargetAction = UnWrap(targetAction),
-                ContextAction = UnWrap(contextAction),
+                TargetAction = (targetAction),
+                ContextAction = (contextAction),
                 PropertyName = propertyName
             });
         }
@@ -890,22 +885,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 string view = Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections";
-                return View(view, new FindViewModel {
+                return View(view, new FindViewModelNew {
                     ActionResult = resultAsEnumerable,
                     TargetObject = targetNakedObject.Object,
                     ContextObject = contextNakedObject.Object,
-                    TargetAction = UnWrap(targetAction),
-                    ContextAction = UnWrap(contextAction),
+                    TargetAction = (targetAction),
+                    ContextAction = (contextAction),
                     PropertyName = propertyName
                 });
             }
 
             SetDefaults(targetNakedObject, targetAction);
-            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModel {
+            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModelNew {
                 TargetObject = targetNakedObject.Object,
                 ContextObject = contextNakedObject.Object,
-                TargetAction = UnWrap(targetAction),
-                ContextAction = UnWrap(contextAction),
+                TargetAction = (targetAction),
+                ContextAction = (contextAction),
                 PropertyName = propertyName
             });
         }
