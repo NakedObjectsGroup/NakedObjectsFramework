@@ -10,10 +10,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
@@ -110,7 +112,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyList(this HtmlHelper html, object domainObject) {
-            return html.PropertyListWithFilter(domainObject, x => true, null);
+            Func<INakedObjectAssociationSurface, bool> f = x => true;
+            return html.PropertyListWithFilter(domainObject, f, null);
         }
 
         /// <summary>
@@ -213,7 +216,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyListWithoutCollections(this HtmlHelper html, object domainObject) {
-            return html.PropertyListWithFilter(domainObject, x => x is IOneToOneAssociationSpec, null);
+            Func<INakedObjectAssociationSurface, bool> f = x => !x.IsCollection();
+            return html.PropertyListWithFilter(domainObject, f , null);
         }
 
         /// <summary>
@@ -223,7 +227,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyList(obj)
         /// </example>
         public static MvcHtmlString PropertyListOnlyCollections(this HtmlHelper html, object domainObject) {
-            return html.PropertyListWithFilter(domainObject, x => x is IOneToManyAssociationSpec, null);
+            Func<INakedObjectAssociationSurface, bool> f = x => x.IsCollection();
+            return html.PropertyListWithFilter(domainObject, f, null);
         }
 
         /// <summary>
@@ -236,7 +241,8 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             IEnumerable<string> collections = (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>().Select(p => p.Id);
             collections.ForEach(t => html.ViewData[t] = format);
-            return html.PropertyListWithFilter(domainObject, x => x is IOneToManyAssociationSpec, null);
+            Func<INakedObjectAssociationSurface, bool> f = x => x.IsCollection();
+            return html.PropertyListWithFilter(domainObject, f, null);
         }
 
         /// <summary>
@@ -292,7 +298,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyListWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
         public static MvcHtmlString PropertyListWithout(this HtmlHelper html, object domainObject, params string[] excludingProperties) {
-            return html.PropertyListWithFilter(domainObject, x => !excludingProperties.Any(s => s == x.Id), null);
+            Func<INakedObjectAssociationSurface, bool> f = x => excludingProperties.All(s => s != x.Id);
+
+            return html.PropertyListWithFilter(domainObject, f, null);
         }
 
         /// <summary>
@@ -335,7 +343,9 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.PropertyListWith(obj, "TestCollectionOne", "TestInt")
         /// </example>
         public static MvcHtmlString PropertyListWith(this HtmlHelper html, object domainObject, params string[] includingProperties) {
-            return html.PropertyListWithFilter(domainObject, x => includingProperties.Any(s => s == x.Id), x => Array.IndexOf(includingProperties, x.Id));
+            Func<INakedObjectAssociationSurface, bool> f1 = x => includingProperties.Any(s => s == x.Id);
+            Func<INakedObjectAssociationSurface, int> f2 = x => Array.IndexOf(includingProperties, x.Id);
+            return html.PropertyListWithFilter(domainObject, f1, f2);
         }
 
         #endregion

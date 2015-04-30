@@ -158,7 +158,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 adapter = s.GetFacet<IParseableFacet>().ParseTextEntry((string) value, Framework.NakedObjectManager);
             }
             else {
-
                 adapter = Framework.GetNakedObject(value);
             }
 
