@@ -2742,7 +2742,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else {
                 var existingValue = html.GetParameterExistingValue(id, context);
                 var suggestedItem = html.GetSuggestedItem(id, existingValue);
-                string valueId = suggestedItem == null ? string.Empty : html.Framework().GetObjectId(suggestedItem);
+                string valueId = suggestedItem == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
 
                 string url = html.GenerateUrl("ValidateParameter", "Ajax", new RouteValueDictionary(new {
                     id = html.Framework().GetObjectId(context.Target),
