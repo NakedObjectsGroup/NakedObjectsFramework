@@ -18,6 +18,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
@@ -77,8 +78,9 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-          
-            controller = new HomeController( Surface, new IdHelper());
+            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+
+            controller = new HomeController( Surface, new IdHelper(), mockMessageBroker);
             mocks = new ContextMocks(controller);
         }
 

@@ -163,11 +163,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsContributed;
                 case (ScalarProperty.MemberOrder):
                     return MemberOrder;
+                case (ScalarProperty.PageSize):
+                    return PageSize();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private int PageSize() {
+            return action.GetFacet<IPageSizeFacet>().Value;
         }
     }
 }

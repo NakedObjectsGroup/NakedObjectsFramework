@@ -14,9 +14,12 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using Moq;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -233,6 +236,9 @@ namespace MvcTestApp.Tests.Controllers {
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
+
         }
 
         [TestFixtureSetUp]
@@ -890,7 +896,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // todo fix with paging
+        // todo fix with paging
         public void AAInitialInvokeContributedActionOnEmptyCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.SalesOrderHeader;RecentOrders;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False;Object;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.Store;1;System.Int32;502;False;;0;False",
@@ -908,7 +914,7 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
 
             AssertIsQueryableViewOf<SalesOrderHeader>(result);
-            string[] warnings = NakedObjectsFramework.MessageBroker.Warnings.ToArray();
+            string[] warnings = MessageBroker.Warnings.ToArray();
             Assert.AreEqual("No objects selected", warnings.First());
         }
 
@@ -1210,7 +1216,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+       
         public void EditObjectPage() {
             var objectModel = new ObjectAndControlData {
                 Id = "System.Linq.IQueryable%601-AdventureWorksModel.Store;FindStoreByName;NakedObjects.Persistor.Entity.Adapter.EntityOid;8;AdventureWorksModel.CustomerRepository;1;System.Int32;0;False;;0;False;Value;System.String;Cycling",
@@ -1510,7 +1516,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+       
         public void InvokeActionAsSaveForActionFailValidation() {
             Store store = Store;
             Store transientStore = TransientStore;
@@ -1563,9 +1569,8 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
-        [Test]
+        [Test]     
         [Ignore]
-
         public void InvokeActionWithMultiSelectObjects() {
             string id = GetObjectId(Order);
 
@@ -1590,7 +1595,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // needs to be implemented !
+        [Ignore]
+        // needs to be implemented !
         public void InvokeActionWithMultiSelectParseable() {
             string id = GetObjectId(Order);
 
@@ -1618,7 +1624,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // todo make collection contributed actions work
+        [Ignore]
+        // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1636,7 +1643,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // todo make collection contributed actions work
+        [Ignore]
+        // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1658,7 +1666,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // todo make collection contributed actions work
+        [Ignore]
+        // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "CommentAsUsersUnhappy",
@@ -1765,7 +1774,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+       
 
         public void InvokeEditActionAsSaveForObjectFailValidation() {
             Store store = Store;
@@ -1906,8 +1915,10 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // broken fix 
+        // broken fix 
         public void InvokeObjectActionReturnOrderedPagedCollectionAsc() {
+            var expectedCount = NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().Count(); 
+
             FormCollection form = GetForm(new Dictionary<string, string> {
                 {"OrderRepository-OrdersByValue-Ordering-Input", "Ascending"}
             });
@@ -1923,12 +1934,15 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("OrdersByValue", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, expectedCount);
         }
 
         [Test]
-        [Ignore] // broken fix 
+        // broken fix 
         public void InvokeObjectActionReturnOrderedPagedCollectionDesc() {
+            var expectedCount = NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().Count(); 
+
+
             FormCollection form = GetForm(new Dictionary<string, string> {
                 {"OrderRepository-OrdersByValue-Ordering-Input", "Descending"}
             });
@@ -1944,12 +1958,15 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("OrdersByValue", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, expectedCount);
         }
 
         [Test]
-        [Ignore] // broken fix 
+        // broken fix 
         public void InvokeObjectActionReturnPagedCollection() {
+            var expectedCount = NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().Count(); 
+
+
             var form = new FormCollection();
             var objectModel = new ObjectAndControlData {ActionId = "HighestValueOrders", Id = OrderRepoId};
 
@@ -1963,7 +1980,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("HighestValueOrders", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, expectedCount);
         }
 
         [Test]
@@ -2035,7 +2052,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+       
 
         public void ViewCollectionDisplay() {
             FormCollection form = GetForm(new Dictionary<string, string> {
@@ -2149,15 +2166,17 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
 
-            controller = new GenericController(Surface, IdHelper);
+            controller = new GenericController(Surface, IdHelper, new MessageBrokerWrapper(MessageBroker));
             mocks = new ContextMocks(controller);
         }
 
         protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
 
         protected override void StartTest() {
             Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
             NakedObjectsFramework = ((dynamic) Surface).Framework;
+            MessageBroker =  NakedObjectsFramework.MessageBroker;
         }
 
         #endregion

@@ -11,7 +11,9 @@ namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
         #region INakedObjectSurface
 
-
+        public static bool IsPaged(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsPaged);
+        }
 
         public static bool IsCollectionMemento(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsCollectionMemento);
@@ -81,6 +83,10 @@ namespace NakedObjects.Surface.Utility {
         #endregion
 
         #region INakedObjectActionSurface
+
+        public static int PageSize(this INakedObjectActionSurface nakedObjectActionSurface) {
+            return nakedObjectActionSurface.GetScalarProperty<int>(ScalarProperty.PageSize);
+        }
 
         public static string Name(this INakedObjectActionSurface nakedObjectActionSurface) {
             return nakedObjectActionSurface.GetScalarProperty<string>(ScalarProperty.Name);

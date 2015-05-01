@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -90,6 +91,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return new NakedObjectWrapper(Page(nakedObject, page, size), Surface, framework);
         }
 
+        public INakedObjectSurface Select(object[] selection, bool forceEnumerable) {
+            return new NakedObjectWrapper(Select(nakedObject, selection, forceEnumerable), Surface, framework);
+        }
+
         public int Count() {
             return WrappedNakedObject.GetAsQueryable().Count();
         }
@@ -131,8 +136,36 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface, framework);
         }
 
+        private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) {
+            ICollectionMemento collectionMemento = objectRepresentingCollection.Oid as ICollectionMemento;
+            return collectionMemento != null && collectionMemento.IsNotQueryable;
+        }
+
         private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, true);
+            var forceEnumerable = IsNotQueryable(objectRepresentingCollection);
+
+            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, forceEnumerable);
+
+            object[] objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
+
+            var currentMemento = (ICollectionMemento)nakedObject.Oid;
+            ICollectionMemento newMemento = currentMemento.NewSelectionMemento(objects, true);
+            newNakedObject.SetATransientOid(newMemento);
+            return newNakedObject;
+        }
+
+        private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
+            IList result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
+            INakedObjectAdapter adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
+            var currentMemento = (ICollectionMemento)objectRepresentingCollection.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(selected, false);
+            adapter.SetATransientOid(newMemento);
+            return adapter;
+        }
+
+        private  bool IsPaged() {
+            ICollectionMemento collectionMemento = nakedObject.Oid as ICollectionMemento;
+            return collectionMemento != null && collectionMemento.IsPaged;
         }
 
         public override object GetScalarProperty(ScalarProperty name) {
@@ -147,6 +180,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsUserPersistable();
                 case (ScalarProperty.IsCollectionMemento):
                     return IsCollectionMemento();
+                case (ScalarProperty.IsPaged):
+                    return IsPaged();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:

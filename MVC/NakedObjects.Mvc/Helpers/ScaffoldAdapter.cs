@@ -57,6 +57,14 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new System.NotImplementedException();
         }
 
+        public INakedObjectSurface Select(object[] selection, bool foreceEnumerable) {
+            throw new System.NotImplementedException();
+        }
+
+        public INakedObjectSurface Page(int page, int size, object[] selection) {
+            throw new System.NotImplementedException();
+        }
+
         public int Count() {
             throw new System.NotImplementedException();
         }

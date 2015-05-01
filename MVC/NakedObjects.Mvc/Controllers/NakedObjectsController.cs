@@ -32,23 +32,26 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private readonly INakedObjectsSurface surface;
         private readonly IOidStrategy oidStrategy;
         private readonly IIdHelper idHelper;
+        private readonly IMessageBrokerSurface messageBroker;
 
         protected NakedObjectsController(INakedObjectsSurface surface,
-                                         IIdHelper idHelper) {
+                                         IIdHelper idHelper, 
+                                         IMessageBrokerSurface messageBroker) {
           
             this.surface = surface;
             oidStrategy = surface.OidStrategy;
             this.idHelper = idHelper;
+            this.messageBroker = messageBroker;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
-        //protected INakedObjectsFramework NakedObjectsContext {
-        //    get { return nakedObjectsFramework; }
-        //}
-
         protected INakedObjectsSurface Surface {
             get { return surface; }
+        }
+
+        protected IMessageBrokerSurface MessageBroker {
+            get { return messageBroker; }
         }
 
         protected IOidStrategy OidStrategy {
@@ -94,17 +97,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetMainMenus();
             SetFramework();
             Surface.Start();
-            //NakedObjectsContext.TransactionManager.StartTransaction();
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
             if (filterContext.Exception == null) {
-                //NakedObjectsContext.TransactionManager.EndTransaction();
                 Surface.End(true);
             }
             else {
                 try {
-                    //NakedObjectsContext.TransactionManager.AbortTransaction();
                     Surface.End(false);
                 }
                 catch {
@@ -112,15 +112,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
             }
 
-            // todo sort
-            //SetMessagesAndWarnings();
+            SetMessagesAndWarnings();
             SetEncryptDecrypt();
         }
 
         internal ActionResult RedirectHome() {
-            // fix messages
-            //TempData[IdConstants.NofMessages] = NakedObjectsContext.MessageBroker.Messages;
-            //TempData[IdConstants.NofWarnings] = NakedObjectsContext.MessageBroker.Warnings;
+            TempData[IdConstants.NofMessages] = MessageBroker.Messages;
+            TempData[IdConstants.NofWarnings] = MessageBroker.Warnings;
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
@@ -154,17 +152,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     return View("ObjectView", nakedObject.ToEnumerable().First().Object);
                 }
 
-                // TODO hack pending move paging into surface 
-                //var no = UnWrap(nakedObject);
-
-                //no = Page(no, collectionSize, controlData, CollectionMementoHelper.IsNotQueryable(no));
-                //IActionSpec a =  action == null ? null :  ((dynamic) action).WrappedSpec; 
-                //a = a ?? ((ICollectionMemento)no.Oid).Action;
-                //int page, pageSize;
-                //CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
-
+                nakedObject = Page(nakedObject, collectionSize, controlData);
+                //action = action ?? ((ICollectionMemento)nakedObject.Oid).Action; todo understand this
+                int page, pageSize;
+                CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;
-                return View("StandaloneTable", ActionResultModel.Create(Surface, action, nakedObject, /*page, pageSize,*/ 0,0, format));
+                return View("StandaloneTable", ActionResultModel.Create(Surface, action, nakedObject, page, pageSize, format));
 
             }
             // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
@@ -1259,24 +1252,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action.IsContributed() && !action.OnType.Equals(targetNakedObject.Specification);
         }
 
-        //internal void SetMessagesAndWarnings() {
-        //    string[] messages = NakedObjectsContext.MessageBroker.Messages;
-        //    string[] warnings = NakedObjectsContext.MessageBroker.Warnings;
+        internal void SetMessagesAndWarnings() {
+            string[] messages = MessageBroker.Messages;
+            string[] warnings = MessageBroker.Warnings;
 
-        //    var existingMessages = TempData[IdConstants.NofMessages];
-        //    var existingWarnings = TempData[IdConstants.NofWarnings];
+            var existingMessages = TempData[IdConstants.NofMessages];
+            var existingWarnings = TempData[IdConstants.NofWarnings];
 
-        //    if (existingMessages is string[] && ((string[]) existingMessages).Length > 0) {
-        //        messages = ((string[]) existingMessages).Union(messages).ToArray();
-        //    }
+            if (existingMessages is string[] && ((string[])existingMessages).Length > 0) {
+                messages = ((string[])existingMessages).Union(messages).ToArray();
+            }
 
-        //    if (existingWarnings is string[] && ((string[]) existingWarnings).Length > 0) {
-        //        warnings = ((string[]) existingWarnings).Union(warnings).ToArray();
-        //    }
+            if (existingWarnings is string[] && ((string[])existingWarnings).Length > 0) {
+                warnings = ((string[])existingWarnings).Union(warnings).ToArray();
+            }
 
-        //    ViewData.Add(IdConstants.NofMessages, messages);
-        //    ViewData.Add(IdConstants.NofWarnings, warnings);
-        //}
+            ViewData.Add(IdConstants.NofMessages, messages);
+            ViewData.Add(IdConstants.NofWarnings, warnings);
+        }
 
         internal void SetEncryptDecrypt() {
             ViewData.Add(IdConstants.NofEncryptDecrypt, EncryptDecryptService);
@@ -1329,74 +1322,40 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (!string.IsNullOrEmpty(controlData.PageSize)) {
                 return int.Parse(controlData.PageSize);
             }
-            // todo fix paging !
-            //var action = controlData.GetAction(Surface);
-            //return action != null ? action.GetFacet<IPageSizeFacet>().Value : 0;
-            return 0;
+
+            var action = controlData.GetAction(Surface);
+            return action != null ? action.PageSize() : 0;
         }
 
-        //internal INakedObjectAdapter Page(INakedObjectAdapter nakedObject, int collectionSize, ObjectAndControlData controlData, bool forceEnumerable) {
-        //    int page, pageSize;
-        //    var collectionfacet = nakedObject.GetCollectionFacetFromSpec();
-        //    if (CurrentlyPaging(controlData, collectionSize, out page, out pageSize) && !nakedObject.IsPaged()) {
-        //        return DoPaging(nakedObject, collectionfacet, page, pageSize, forceEnumerable);
-        //    }
+        internal INakedObjectSurface Page(INakedObjectSurface nakedObject, int collectionSize, ObjectAndControlData controlData) {
+            int page, pageSize;
+         
+            if (CurrentlyPaging(controlData, collectionSize, out page, out pageSize) && !nakedObject.IsPaged()) {
+                return nakedObject.Page(page, pageSize);
+            }
 
-        //    // one page of full collection 
-        //    return DoPaging(nakedObject, collectionfacet, 1, collectionSize, forceEnumerable);
-        //}
-
-        //private INakedObjectAdapter DoPaging(INakedObjectAdapter nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
-        //    INakedObjectAdapter newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.NakedObjectManager, forceEnumerable);
-        //    object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Select(no => no.Object).ToArray();
-        //    var currentMemento = (ICollectionMemento) nakedObject.Oid;
-        //    ICollectionMemento newMemento = currentMemento.NewSelectionMemento(objects, true);
-        //    newNakedObject.SetATransientOid(newMemento);
-        //    return newNakedObject;
-        //}
-
-        //internal INakedObjectAdapter FilterCollection(INakedObjectAdapter nakedObject, ObjectAndControlData controlData) {
-        //    var form = controlData.Form;
-        //    if (form != null && nakedObject != null && nakedObject.Spec.IsCollection && nakedObject.Oid is ICollectionMemento) {
-        //        nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
-        //        var map = nakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
-        //        var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
-        //        return CloneAndPopulateCollection(nakedObject, selected, false);
-        //    }
-
-        //    return nakedObject;
-        //}
+            // one page of full collection 
+            return nakedObject.Page(1, collectionSize);
+        }
 
         internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
-            // TODO another temp hack
-
-            //INakedObjectAdapter no = UnWrap(nakedObject);
-
-            //no = FilterCollection(no, controlData);
-
-            //((dynamic) nakedObject).WrappedNakedObject = no;
+            var form = controlData.Form;
+            if (form != null && nakedObject != null && nakedObject.Specification.IsCollection() /*&& nakedObject.Oid is ICollectionMemento  todo */) {
+                nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
+                var map = nakedObject.ToEnumerable().ToDictionary(Surface.OidStrategy.GetObjectId, y => y.Object);
+                var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
+                return nakedObject.Select(selected, false);
+            }
 
             return nakedObject;
         }
 
-
-
-        //private INakedObjectAdapter CloneAndPopulateCollection(INakedObjectAdapter nakedObject, object[] selected, bool forceEnumerable) {
-        //    IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-        //    INakedObjectAdapter adapter = NakedObjectsContext.NakedObjectManager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
-        //    var currentMemento = (ICollectionMemento) nakedObject.Oid;
-        //    var newMemento = currentMemento.NewSelectionMemento(selected, false);
-        //    adapter.SetATransientOid(newMemento);
-        //    return adapter;
-        //}
 
         protected void Decrypt(FormCollection form) {
             if (EncryptDecryptService != null) {
                 EncryptDecryptService.Decrypt(Session, form);
             }
         }
-
-     
 
         internal void UpdateViewAndController(ActionExecutedContext filterContext) {
             if (filterContext.Result is ViewResultBase) {

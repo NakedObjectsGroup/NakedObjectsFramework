@@ -12,7 +12,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-        public HomeController(INakedObjectsSurface surface,  IIdHelper idhelper) : base( surface, idhelper) {
+        public HomeController(INakedObjectsSurface surface,  IIdHelper idHelper, IMessageBrokerSurface messageBroker) : base(surface, idHelper, messageBroker)  {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.DomainObjectInjector.InjectInto(this);
         }

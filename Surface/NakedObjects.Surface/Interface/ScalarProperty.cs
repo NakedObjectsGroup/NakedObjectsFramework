@@ -40,6 +40,8 @@ namespace NakedObjects.Surface {
         IsUserPersistable,
         IsConcurrency,
         IsCollectionMemento,
-        IsContributed
+        IsContributed,
+        IsPaged,
+        PageSize
     }
 }
