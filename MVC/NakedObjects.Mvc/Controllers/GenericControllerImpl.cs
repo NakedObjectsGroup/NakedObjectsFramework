@@ -743,6 +743,39 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return SelectSingleItem(contextNakedObject, nakedObjectAction, controlData, controlData.DataDict);
         }
 
+
+        //internal bool ApplyChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
+        //    List<IAssociationSpec> usableAndVisibleFields;
+        //    List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues;
+        //    GetUsableAndVisibleFields(nakedObject, controlData, parent, out usableAndVisibleFields, out fieldsAndMatchingValues);
+
+        //    foreach (var pair in fieldsAndMatchingValues) {
+        //        INakedObjectAdapter value = GetNakedObjectValue(pair.Item1, nakedObject, pair.Item2);
+        //        var spec = pair.Item1 as IOneToOneAssociationSpec;
+        //        if (spec != null) {
+        //            SetAssociation(nakedObject, spec, value, pair.Item2);
+        //        }
+        //    }
+
+        //    ValidateOrApplyInlineChanges(nakedObject, controlData, (nakedObject.GetObjectSpec()).Properties, ApplyChanges);
+
+        //    if (nakedObject.ResolveState.IsTransient()) {
+        //        CanPersist(nakedObject, usableAndVisibleFields);
+        //        if (ModelState.IsValid) {
+        //            if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+        //                NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
+        //            }
+        //            else {
+        //                NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.MetamodelManager);
+        //            }
+        //        }
+        //    }
+
+        //    return ModelState.IsValid;
+        //}
+
+
+
         private ActionResult InvokeActionAsSave(ObjectAndControlData controlData) {
             var form = controlData.Form;
             string targetActionId = controlData.DataDict["targetActionId"];
@@ -763,7 +796,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //}
 
             var oid = Surface.OidStrategy.GetOid(subEditObject);
-            var ac = Convert(form);
+            var ac = ConvertForSave(subEditObject, controlData);
 
             Surface.PutObject(oid, ac);
 
@@ -776,8 +809,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ActionResult = resultAsEnumerable,
                 TargetObject = targetNakedObject.Object,
                 ContextObject = contextNakedObject.Object,
-                TargetAction = (targetAction),
-                ContextAction = (contextAction),
+                TargetAction = targetAction,
+                ContextAction = contextAction,
                 PropertyName = propertyName
             });
         }

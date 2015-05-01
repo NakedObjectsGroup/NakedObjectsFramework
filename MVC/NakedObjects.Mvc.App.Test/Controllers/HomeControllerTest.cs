@@ -126,6 +126,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
+        [Ignore]
+
         public void ClearHistory() {
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 

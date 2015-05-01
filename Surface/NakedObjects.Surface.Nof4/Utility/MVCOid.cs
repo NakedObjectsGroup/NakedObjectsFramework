@@ -10,6 +10,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Services;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Wrapper;
 
@@ -135,8 +136,26 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetObjectId(no);
         }
 
+
+        private Type GetType(string typeName) {
+            return GetTypeCodeMapper().TypeFromCode(typeName);
+        }
+
+        private ITypeCodeMapper GetTypeCodeMapper() {
+            return (ITypeCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+                   ?? new DefaultTypeCodeMapper();
+        }
+
+        private IKeyCodeMapper GetKeyCodeMapper() {
+            return (IKeyCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+                   ?? new DefaultKeyCodeMapper();
+        }
+
+        // todo - revist clone code smell - not hapy with oid strategy resposnsibilities
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
-            throw new NotImplementedException();
+            Type type = GetType(linkDomainType);
+            ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
+            return new NakedObjectSpecificationWrapper(spec, Surface, framework);
         }
 
         public string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec) {

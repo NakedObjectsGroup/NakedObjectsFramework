@@ -861,6 +861,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
 
+        protected void GetUsableAndVisibleFields(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
+            usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject)).ToList();
+            fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
+        }
+
+
         //internal bool ApplyChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
         //    List<IAssociationSpec> usableAndVisibleFields;
         //    List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues;
@@ -996,9 +1002,54 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
         }
 
-        
+        //internal bool ApplyChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
+        //    List<IAssociationSpec> usableAndVisibleFields;
+        //    List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues;
+        //    GetUsableAndVisibleFields(nakedObject, controlData, parent, out usableAndVisibleFields, out fieldsAndMatchingValues);
+
+        //    foreach (var pair in fieldsAndMatchingValues) {
+        //        INakedObjectAdapter value = GetNakedObjectValue(pair.Item1, nakedObject, pair.Item2);
+        //        var spec = pair.Item1 as IOneToOneAssociationSpec;
+        //        if (spec != null) {
+        //            SetAssociation(nakedObject, spec, value, pair.Item2);
+        //        }
+        //    }
+
+        //    ValidateOrApplyInlineChanges(nakedObject, controlData, (nakedObject.GetObjectSpec()).Properties, ApplyChanges);
+
+        //    if (nakedObject.ResolveState.IsTransient()) {
+        //        CanPersist(nakedObject, usableAndVisibleFields);
+        //        if (ModelState.IsValid) {
+        //            if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+        //                NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
+        //            }
+        //            else {
+        //                NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.MetamodelManager);
+        //            }
+        //        }
+        //    }
+
+        //    return ModelState.IsValid;
+        //}
+
+        internal ArgumentsContext ConvertForSave(INakedObjectSurface nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
+
+            List<INakedObjectAssociationSurface> usableAndVisibleFields;
+            List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues;
+            GetUsableAndVisibleFields(nakedObject, controlData, null, out usableAndVisibleFields, out fieldsAndMatchingValues);
+
+            var ac = new ArgumentsContext {
+                ValidateOnly = validateOnly,
+                Values = fieldsAndMatchingValues.ToDictionary(t => t.Item1.Id, t => t.Item2)
+            };
+
+            return ac;
+        }
+
 
         internal ArgumentsContext Convert(FormCollection form, bool validateOnly = false) {
+
+         
             var ac = new ArgumentsContext {
                 ValidateOnly = validateOnly,
                 Values = form.AllKeys.ToDictionary(k => k, k => form.GetValue(k).RawValue)

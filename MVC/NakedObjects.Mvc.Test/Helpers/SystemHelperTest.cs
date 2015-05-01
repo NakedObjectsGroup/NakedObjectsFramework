@@ -27,6 +27,8 @@ using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
+    [Ignore]
+
     public class SystemHelperTest : AcceptanceTestCase {
         private static readonly bool writeTest = false;
         private DummyController controller;
