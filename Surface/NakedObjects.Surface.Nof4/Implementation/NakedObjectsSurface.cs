@@ -720,7 +720,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.NakedObjectManager)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof (List<>).MakeGenericType(elementType);
-                    var collection = framework.NakedObjectManager.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    var list = ((IList) Activator.CreateInstance(collType)).AsQueryable();
+                    var collection = framework.NakedObjectManager.CreateAdapter(list, null, null);
                     collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
                     return collection;
                 }

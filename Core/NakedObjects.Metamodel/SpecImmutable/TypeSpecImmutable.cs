@@ -130,6 +130,21 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return !IsCollection; }
         }
 
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
+            var interfaceTypes = givenType.GetInterfaces();
+
+            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType)) {
+                return true;
+            }
+
+            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) {
+                return true;
+            }
+
+            Type baseType = givenType.BaseType;
+            return baseType != null && IsAssignableToGenericType(baseType, genericType);
+        }
+
         public bool IsOfType(ITypeSpecImmutable otherSpecification) {
             if (otherSpecification == this) {
                 return true;
@@ -141,23 +156,14 @@ namespace NakedObjects.Meta.SpecImmutable {
                 return true;
             }
 
-            // match covariant generic types 
-            if (Type.IsGenericType && IsCollection) {
-                if (otherType.IsGenericType && Type.GetGenericArguments().Count() == 1 && otherType.GetGenericArguments().Count() == 1) {
-                    if (Type.GetGenericTypeDefinition() == (typeof (IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
-                        Type genericArgument = Type.GetGenericArguments().Single();
-                        Type otherGenericArgument = otherType.GetGenericArguments().Single();
-                        Type otherGenericParameter = otherType.GetGenericTypeDefinition().GetGenericArguments().Single();
-                        if ((otherGenericParameter.GenericParameterAttributes & GenericParameterAttributes.Covariant) != 0) {
-                            if (otherGenericArgument.IsAssignableFrom(genericArgument)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
+            // match  generic types 
+            if (Type.IsGenericType && IsCollection  && otherType.IsGenericType && otherSpecification.IsCollection) {
+                var thisGenericType = Type.GetGenericTypeDefinition();
+                var otherGenericType = Type.GetGenericTypeDefinition();
+                return thisGenericType == otherGenericType || IsAssignableToGenericType(otherType, thisGenericType);
             }
 
-            return Superclass != null && Superclass.IsOfType(otherSpecification); 
+            return false;
         }
 
         public string GetIconName(INakedObjectAdapter forObjectAdapter, IMetamodel metamodel) {
