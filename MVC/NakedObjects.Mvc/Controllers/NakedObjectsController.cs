@@ -20,6 +20,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
@@ -311,12 +312,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (parm.Specification.IsCollection() && !parm.Specification.IsParseable()) {
                     // handle collection mementos 
 
-                    if (parm.IsChoicesEnabled || !CheckForAndAddCollectionMementoNew(name, values, controlData)) {
+                    if (parm.IsChoicesEnabled == Choices.Multiple || !CheckForAndAddCollectionMementoNew(name, values, controlData)) {
                         var itemSpec = parm.ElementType;
                         var itemvalues = values.Select(v => itemSpec.IsParseable() ? (object)v : GetNakedObjectFromId(v).Object).ToList();
 
                         if (itemvalues.Any()) {
-                            var no = GetNakedObject(itemvalues);
+                            var no =  Surface.GetObject(itemvalues);
 
                             AddAttemptedValue(name, no);
                         }

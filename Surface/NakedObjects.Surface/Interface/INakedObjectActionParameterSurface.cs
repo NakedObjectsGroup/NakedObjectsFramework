@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectActionParameterSurface : IScalarPropertyHolder, ISurfaceHolder {
@@ -14,7 +15,7 @@ namespace NakedObjects.Surface {
         INakedObjectSpecificationSurface ElementType { get; }
         INakedObjectActionSurface Action { get; }
         string Id { get; }
-        bool IsChoicesEnabled { get; }
+        Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
 

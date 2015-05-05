@@ -130,7 +130,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             get { return !IsCollection; }
         }
 
-        public bool IsOfType(IObjectSpecImmutable otherSpecification) {
+        public bool IsOfType(ITypeSpecImmutable otherSpecification) {
             if (otherSpecification == this) {
                 return true;
             }
@@ -157,7 +157,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 }
             }
 
-            return false;
+            return Superclass != null && Superclass.IsOfType(otherSpecification); 
         }
 
         public string GetIconName(INakedObjectAdapter forObjectAdapter, IMetamodel metamodel) {

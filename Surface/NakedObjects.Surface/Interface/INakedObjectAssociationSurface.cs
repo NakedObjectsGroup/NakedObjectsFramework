@@ -7,12 +7,13 @@
 
 using System;
 using System.Collections.Generic;
+using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectAssociationSurface : INakedObjectMemberSurface {
         INakedObjectSpecificationSurface Specification { get; }
         INakedObjectSpecificationSurface ElementSpecification { get; }
-        bool IsChoicesEnabled { get; }
+        Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         IConsentSurface IsUsable(INakedObjectSurface target);
         INakedObjectSurface GetNakedObject(INakedObjectSurface target);

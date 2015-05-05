@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
@@ -117,7 +118,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
 
         public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            if (propertyContext.Property.IsChoicesEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
+            if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
                 object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy ,req, c, propertyContext.Property, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));

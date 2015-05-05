@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
@@ -205,7 +206,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var otherValues = GetOtherValues(action);
 
             foreach (var p in action.Parameters) {
-                if (p.IsChoicesEnabled /* todo  || p.IsMultipleChoicesEnabled*/) {
+                if (p.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
@@ -222,7 +223,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var otherValues = GetOtherValues(nakedObject);
 
             foreach (var assoc in nakedObject.Specification.Properties) {
-                if (assoc.IsChoicesEnabled) {
+                if (assoc.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();

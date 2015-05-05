@@ -33,7 +33,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
-    [Ignore]
+    
     public class CustomControllerTest : AcceptanceTestCase {
         private CustomControllerWrapper controller;
         private ContextMocks mocks;

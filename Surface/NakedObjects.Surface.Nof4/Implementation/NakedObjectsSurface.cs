@@ -626,7 +626,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (isValid) {
                 foreach (IActionParameterSpec parm in actionContext.Action.Parameters) {
                     try {
-                        INakedObjectAdapter valueNakedObject = GetValue(parm.Spec, rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null);
+                        var multiParm = parm as IOneToManyActionParameterSpec;
+                        INakedObjectAdapter valueNakedObject = GetValue(parm.Spec, multiParm == null ? null : multiParm.ElementSpec, rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null);
 
                         orderedParms[parm.Id].ProposedNakedObject = valueNakedObject;
 
@@ -636,6 +637,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             isValid = false;
                         }
                     }
+
                     catch (InvalidEntryException) {
                         isValid = false;
                         orderedParms[parm.Id].ErrorCause = Cause.WrongType;
@@ -703,7 +705,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private INakedObjectAdapter GetValue(IObjectSpec specification, object rawValue) {
+        private INakedObjectAdapter GetValue(IObjectSpec specification, IObjectSpec elementSpec, object rawValue) {
             if (rawValue == null) {
                 return null;
             }
@@ -712,12 +714,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.NakedObjectManager);
             }
 
-            var no = framework.NakedObjectManager.CreateAdapter(rawValue, null, null);
-
-            // the rawValue is not necessarily a collection so need extra check here to avoid 
-            // a potential error getting the element spec. 
-            if (specification.IsCollection && (no.Spec.IsCollection && !no.Spec.IsParseable)) {
-                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no, framework.MetamodelManager.Metamodel);
+            if (elementSpec != null) {
 
                 if (elementSpec.IsParseable) {
                     var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.NakedObjectManager)).ToArray();
@@ -730,12 +727,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
 
-            return no;
+            return framework.NakedObjectManager.CreateAdapter(rawValue, null, null);
         }
 
         private IConsent CanSetPropertyValue(PropertyContext context) {
             try {
-                context.ProposedNakedObject = GetValue((IObjectSpec) context.Specification, context.ProposedValue);
+                var coll = context.Property as IOneToManyAssociationSpec;
+                context.ProposedNakedObject = GetValue((IObjectSpec) context.Specification, coll == null ? null : coll.ElementSpec, context.ProposedValue);
                 return new Allow();
             }
             catch (InvalidEntryException e) {

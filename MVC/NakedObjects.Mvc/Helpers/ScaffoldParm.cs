@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Web.Mvc.Helpers {
     public class ScaffoldParm : INakedObjectActionParameterSurface {
@@ -88,7 +89,7 @@ namespace NakedObjects.Web.Mvc.Helpers {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsChoicesEnabled {
+        public Choices IsChoicesEnabled {
             get { throw new NotImplementedException(); }
         }
 

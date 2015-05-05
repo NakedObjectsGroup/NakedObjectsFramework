@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
@@ -143,8 +144,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return assoc.Id; }
         }
 
-        public bool IsChoicesEnabled {
-            get { return ((IOneToOneFeatureSpec) assoc).IsChoicesEnabled; }
+        public Choices IsChoicesEnabled {
+            get { return ((IOneToOneFeatureSpec) assoc).IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
         }
 
         public bool IsAutoCompleteEnabled {
