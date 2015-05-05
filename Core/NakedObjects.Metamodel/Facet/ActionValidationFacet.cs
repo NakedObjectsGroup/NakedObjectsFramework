@@ -37,7 +37,11 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) {
-            return (string) methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
+            if (methodDelegate != null) {
+                return (string)methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
+            }
+            //Fall back (e.g. if method has > 6 params) on reflection...
+            return (string)InvokeUtils.Invoke(method, target, proposedArguments);
         }
 
         #endregion
