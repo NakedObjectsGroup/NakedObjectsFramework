@@ -1624,7 +1624,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+        //[Ignore]
         // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {

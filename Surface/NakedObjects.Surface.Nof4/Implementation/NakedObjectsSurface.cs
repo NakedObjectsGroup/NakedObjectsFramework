@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
@@ -802,6 +803,18 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
             IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+
+            // todo tidy this 
+            if (action == null) {
+                var metamodel = framework.MetamodelManager.Metamodel;
+                var elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
+
+                if (elementSpec != null) {
+                    actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
+                    action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+                }
+            }
 
             if (action == null) {
                 throw new ActionResourceNotFoundNOSException(actionName);

@@ -149,11 +149,19 @@ namespace NakedObjects.Web.Mvc.Models {
         public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
             if (nakedObjectAction == null) {
 
-                // todo collection contributed actions ? 
 
                 var no = GetNakedObject(surface);
-                var id = surface.OidStrategy.GetOid(no);
-                var action = surface.GetObjectAction(id, ActionId).Action;
+                INakedObjectActionSurface action;
+
+                if (no.Specification.IsCollection()) {
+                    var elementSpec = no.ElementSpecification;
+
+                    action = elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(no)).Single(a => a.Id == ActionId);
+                }
+                else {
+                    var id = surface.OidStrategy.GetOid(no);
+                    action = surface.GetObjectAction(id, ActionId).Action;
+                }
 
                 nakedObjectAction = action.IsUsable(no).IsAllowed ? action : null;
             }
