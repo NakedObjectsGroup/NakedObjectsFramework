@@ -1569,8 +1569,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
-        [Test]     
-        [Ignore]
+        [Test]           
         public void InvokeActionWithMultiSelectObjects() {
             string id = GetObjectId(Order);
 
@@ -1595,7 +1594,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+        
         // needs to be implemented !
         public void InvokeActionWithMultiSelectParseable() {
             string id = GetObjectId(Order);
@@ -1624,7 +1623,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        //[Ignore]
+        
         // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTarget() {
             var objectModel = new ObjectAndControlData {
@@ -1643,7 +1642,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+        
         // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
             var objectModel = new ObjectAndControlData {
@@ -1666,7 +1665,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+        
         // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
