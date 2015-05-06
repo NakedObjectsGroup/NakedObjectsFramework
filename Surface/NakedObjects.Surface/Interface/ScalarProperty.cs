@@ -43,6 +43,11 @@ namespace NakedObjects.Surface {
         IsContributed,
         IsPaged,
         PageSize,
-        IsViewModelEditView
+        IsViewModelEditView,
+        IsBoolean, 
+        IsEnum,
+        NumberOfLines,
+        TypicalLength,
+        Width
     }
 }

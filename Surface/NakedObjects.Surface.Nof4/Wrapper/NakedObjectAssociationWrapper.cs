@@ -202,6 +202,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string GetTitle(INakedObjectSurface nakedObject) {
+            var enumFacet = assoc.GetFacet<IEnumFacet>();
+    
+            if (enumFacet != null) {
+                return enumFacet.GetTitle(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            }
+
             var mask = assoc.GetFacet<IMaskFacet>();
             if (mask == null) {
                 return nakedObject.TitleString();
@@ -264,10 +270,37 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return AutoCompleteMinLength;
                 case (ScalarProperty.IsConcurrency):
                     return IsConcurrency;
+                case (ScalarProperty.NumberOfLines):
+                    return NumberOfLines;
+                case (ScalarProperty.Width):
+                    return Width;
+                case (ScalarProperty.TypicalLength):
+                    return TypicalLength;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object Width {
+            get {
+                var multiline = assoc.GetFacet<IMultiLineFacet>();
+                return multiline == null ? 0 : multiline.Width;
+            }
+        }
+
+        public object TypicalLength {
+            get {
+                var typicalLength = assoc.GetFacet<ITypicalLengthFacet>();
+                return typicalLength == null ? 0 : typicalLength.Value;
+            }
+        }
+
+        public object NumberOfLines {
+            get {
+                var multiline = assoc.GetFacet<IMultiLineFacet>();
+                return multiline == null ? 1 : multiline.NumberOfLines;
             }
         }
     }

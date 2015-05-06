@@ -155,7 +155,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// html.CollectionTableWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
         public static MvcHtmlString CollectionTableWithout(this HtmlHelper html, IEnumerable domainObject, params string[] excludingColumns) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            var nakedObject = html.Surface().GetObject(domainObject);
             string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
             return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => !excludingColumns.Any(s => s == x.Id), null, true) :

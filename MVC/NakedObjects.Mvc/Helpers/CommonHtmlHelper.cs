@@ -218,27 +218,27 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectSurface nakedObject, TagBuilder fieldSet, PropertyContextNew parent = null) {
-            // todo
-            //var parameters = new HashSet<string>(nakedObject.Specification.Properties.Select(p => p.GetFacet<IPropertyChoicesFacet>()).Where(f => f != null).SelectMany(f => f.ParameterNamesAndTypes).Select(pnt => pnt.Item1));
+
+            var parameters = new HashSet<string>(nakedObject.Specification.Properties.SelectMany(p => p.GetChoicesParameters()).Select(t => t.Item1));
 
             // check the names match 
 
-            //var properties = nakedObject.Specification.Properties;
-            //IEnumerable<string> matches = from p in parameters
-            //                              from pp in properties
-            //                              where p.ToLower() == pp.Id.ToLower()
-            //                              select p;
+            var properties = nakedObject.Specification.Properties;
+            IEnumerable<string> matches = from p in parameters
+                                          from pp in properties
+                                          where p.ToLower() == pp.Id.ToLower()
+                                          select p;
 
-            //if (matches.Count() != parameters.Count) {
-            //    string error = string.Format("On choices method in: {0} one or more properties in: '{1}' does not match a property on that class", nakedObject.Spec.FullName, parameters.Aggregate("", (s, t) => s + " " + t));
-            //    throw new ArgumentException(error);
-            //}
+            if (matches.Count() != parameters.Count) {
+                string error = string.Format("On choices method in: {0} one or more properties in: '{1}' does not match a property on that class", nakedObject.Specification.FullName(), parameters.Aggregate("", (s, t) => s + " " + t));
+                throw new ArgumentException(error);
+            }
 
-            //string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + new PropertyContext(html.IdHelper(), nakedObject, (nakedObject.GetObjectSpec()).Properties.Single(p => p.Id.ToLower() == t.ToLower()), false, parent).GetFieldInputId());
+            string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + new PropertyContextNew(html.IdHelper(), nakedObject, nakedObject.Specification.Properties.Single(p => p.Id.ToLower() == t.ToLower()), false, parent).GetFieldInputId());
 
-            //string url = html.GenerateUrl("GetPropertyChoices", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(nakedObject) }));
-            //fieldSet.MergeAttribute("data-choices", url);
-            //fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
+            string url = html.GenerateUrl("GetPropertyChoices", "Ajax", new RouteValueDictionary(new { id = html.Surface().OidStrategy.GetObjectId(nakedObject) }));
+            fieldSet.MergeAttribute("data-choices", url);
+            fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
         }
 
         private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectAdapter nakedObject, TagBuilder fieldSet, PropertyContext parent = null) {
@@ -266,25 +266,25 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectSurface nakedObject, INakedObjectActionSurface action, TagBuilder fieldSet) {
 
-            // todo
-            //var parameters = new HashSet<string>(action.Parameters.Select(p => p.GetFacet<IActionChoicesFacet>()).Where(f => f != null).SelectMany(f => f.ParameterNamesAndTypes).Select(pnt => pnt.Item1));
-            //// check the names match 
 
-            //IEnumerable<string> matches = from p in parameters
-            //                              from pp in action.Parameters
-            //                              where p.ToLower() == pp.Id.ToLower()
-            //                              select p;
+            var parameters = new HashSet<string>(action.Parameters.SelectMany(p => p.GetChoicesParameters()).Select(t => t.Item1));
+            // check the names match 
 
-            //if (matches.Count() != parameters.Count) {
-            //    string error = string.Format("On choices method Choices{0} one or more parameters in: '{1}' does not match a parameter on : {0}", action.Id, parameters.Aggregate("", (s, t) => s + " " + t));
-            //    throw new ArgumentException(error);
-            //}
+            IEnumerable<string> matches = from p in parameters
+                                          from pp in action.Parameters
+                                          where p.ToLower() == pp.Id.ToLower()
+                                          select p;
 
-            //string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + html.IdHelper().GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(action.Parameters.Single(p => p.Id.ToLower() == t.ToLower()))));
+            if (matches.Count() != parameters.Count) {
+                string error = string.Format("On choices method Choices{0} one or more parameters in: '{1}' does not match a parameter on : {0}", action.Id, parameters.Aggregate("", (s, t) => s + " " + t));
+                throw new ArgumentException(error);
+            }
 
-            //var url = html.GenerateUrl("GetActionChoices", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(nakedObject), actionName = action.Id }));
-            //fieldSet.MergeAttribute("data-choices", url);
-            //fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
+            string parameterNames = parameters.Aggregate("", (s, t) => (s == "" ? "" : s + ",") + html.IdHelper().GetParameterInputId(action, action.Parameters.Single(p => p.Id.ToLower() == t.ToLower())));
+
+            var url = html.GenerateUrl("GetActionChoices", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(nakedObject), actionName = action.Id }));
+            fieldSet.MergeAttribute("data-choices", url);
+            fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
         }
 
         private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObjectAdapter nakedObject, IActionSpec action, TagBuilder fieldSet) {
@@ -437,7 +437,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Func<INakedObjectSurface, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
             string menu = collectionNakedObject.Specification.IsQueryable() ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
-            string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
+            string id = collectionNakedObject.Oid == null ? "" : html.Surface().OidStrategy.GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
             tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), collectionNakedObject.Specification.IsQueryable(), withTitle);
@@ -1712,13 +1712,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectAssociationSurface holder, string completionAjaxUrl) {
-            int minLength = 0;//holder.MinLength() todo
+            int minLength = holder.AutoCompleteMinLength();
             var attrs = new RouteValueDictionary { { "data-completions", completionAjaxUrl }, { "data-completions-minlength", minLength } };
             return attrs;
         }
 
         private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectActionParameterSurface holder, string completionAjaxUrl) {
-            int minLength = 0;// holder.GetFacet<IAutoCompleteFacet>().MinLength; todo
+            int minLength = holder.AutoCompleteMinLength();
             var attrs = new RouteValueDictionary { { "data-completions", completionAjaxUrl }, { "data-completions-minlength", minLength } };
             return attrs;
         }
@@ -1736,19 +1736,17 @@ namespace NakedObjects.Web.Mvc.Html {
                 return string.Empty;
             }
 
-            // todo
+            if (propertyContext.Property.Specification.IsFileAttachment()) {
+                return html.GetFileFieldValue(propertyContext);
+            }
 
-            //if (propertyContext.Property.IsFile(html.Framework())) {
-            //    return html.GetFileFieldValue(propertyContext);
-            //}
+            if (propertyContext.Property.Specification.IsBoolean()) {
+                return html.GetBooleanFieldValue(valueNakedObject);
+            }
 
-            //if (propertyContext.Property.ReturnSpec.ContainsFacet<IBooleanValueFacet>()) {
-            //    return html.GetBooleanFieldValue(valueNakedObject);
-            //}
-
-            //if (propertyContext.Property.ContainsFacet<IEnumFacet>()) {
-            //    return GetEnumFieldValue(propertyContext.Property, valueNakedObject);
-            //}
+            if (propertyContext.Property.Specification.IsEnum()) {
+                return GetEnumFieldValue(propertyContext.Property, valueNakedObject);
+            }
 
             return html.GetTextOrRefFieldValue(propertyContext, valueNakedObject, inTable);
         }
@@ -1778,6 +1776,11 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetEnumFieldValue(IAssociationSpec property, INakedObjectAdapter valueNakedObject) {
             return property.GetFacet<IEnumFacet>().GetTitle(valueNakedObject);
         }
+
+        private static string GetEnumFieldValue(INakedObjectAssociationSurface property, INakedObjectSurface valueNakedObject) {
+            return property.GetTitle(valueNakedObject);
+        }
+
 
         private static string GetTextOrRefFieldValue(this HtmlHelper html, PropertyContext propertyContext, INakedObjectAdapter valueNakedObject, bool inTable = false) {
             if (valueNakedObject.Spec.IsCollection) {
@@ -1866,26 +1869,22 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string title = html.GetDisplayTitle(propertyContext.Property, valueNakedObject);
 
-            // todo
-            //if (propertyContext.Property.ContainsFacet<IMultiLineFacet>()) {
-            //    var multiLineFacet = propertyContext.Property.GetFacet<IMultiLineFacet>();
+            if (propertyContext.Property.NumberOfLines() > 1) {
+                int typicalLength = propertyContext.Property.TypicalLength();
+                int width = propertyContext.Property.Width();
 
-            //    if (multiLineFacet.NumberOfLines > 1) {
-            //        var typicalLengthFacet = propertyContext.Property.GetFacet<ITypicalLengthFacet>();
+                typicalLength = typicalLength == 0 ? 20 : typicalLength;
+                width = width == 0 ? typicalLength : width;
 
-            //        int typicalLength = typicalLengthFacet.Value == 0 ? 20 : typicalLengthFacet.Value;
-            //        int width = multiLineFacet.Width == 0 ? typicalLength : multiLineFacet.Width;
-
-            //        if (inTable) {
-            //            // truncate to width 
-            //            if (title.Length > width) {
-            //                const string elipsis = "...";
-            //                int length = width - elipsis.Length;
-            //                title = title.Substring(0, length > 0 ? length : 1) + elipsis;
-            //            }
-            //        }
-            //    }
-            //}
+                if (inTable) {
+                    // truncate to width 
+                    if (title.Length > width) {
+                        const string elipsis = "...";
+                        int length = width - elipsis.Length;
+                        title = title.Substring(0, length > 0 ? length : 1) + elipsis;
+                    }
+                }
+            }
 
             return string.Format(link, title);
         }
@@ -1909,6 +1908,31 @@ namespace NakedObjects.Web.Mvc.Html {
                     return html.ControllerAction(MvcUi.Edit, IdConstants.EditObjectAction, IdConstants.EditButtonClass, inlineNakedObject.Object);
             }
             return new MvcHtmlString("");
+        }
+
+        private static string GetBooleanFieldValue(this HtmlHelper html, INakedObjectSurface valueNakedObject) {
+            var state = valueNakedObject.GetDomainObject<bool?>();
+
+            string img = "unset.png";
+            string alt = MvcUi.TriState_NotSet;
+
+            if (state.HasValue) {
+                if (state.Value) {
+                    img = "checked.png";
+                    alt = MvcUi.TriState_True;
+                }
+                else {
+                    img = "unchecked.png";
+                    alt = MvcUi.TriState_False;
+                }
+            }
+
+            var url = new UrlHelper(html.ViewContext.RequestContext);
+            var tag = new TagBuilder("img");
+            tag.MergeAttribute("src", url.Content("~/Images/" + img));
+            tag.MergeAttribute("alt", alt);
+
+            return tag.ToString();
         }
 
         private static string GetBooleanFieldValue(this HtmlHelper html, INakedObjectAdapter valueNakedObject) {
@@ -1935,6 +1959,34 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return tag.ToString();
         }
+
+        private static string GetFileFieldValue(this HtmlHelper html, PropertyContextNew propertyContext) {
+            string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
+            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
+
+            string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
+                html.Framework().GetObjectTypeName(propertyContext.Target.Object),
+                new RouteValueDictionary(new {
+                    Id = html.Framework().GetObjectId(propertyContext.Target),
+                    PropertyId = propertyContext.Property.Id
+                }));
+
+            var linktag = new TagBuilder("a");
+            linktag.MergeAttribute("href", imageUrl);
+
+            if (propertyContext.Property.Specification.IsImage()) {
+                var imageTag = new TagBuilder("img");
+                imageTag.MergeAttribute("src", imageUrl);
+                imageTag.MergeAttribute("alt", title);
+                linktag.InnerHtml += imageTag.ToString(TagRenderMode.SelfClosing);
+            }
+            else {
+                linktag.InnerHtml += title;
+            }
+
+            return linktag.ToString();
+        }
+
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
@@ -2669,9 +2721,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return assocs.ToArray();
         }
         private static string CollectionItemTypeName(this HtmlHelper html, INakedObjectSurface collectionNakedObject) {
-            //ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
-            //return facet.GetValueSpec(collectionNakedObject, html.Framework().MetamodelManager.Metamodel).ShortName;
-            return ""; // todo
+            return collectionNakedObject.ElementSpecification.FullName().Split('.').Last();
         }
 
         private static string CollectionItemTypeName(this HtmlHelper html, INakedObjectAdapter collectionNakedObject) {

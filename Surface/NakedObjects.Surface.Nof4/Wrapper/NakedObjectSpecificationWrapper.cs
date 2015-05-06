@@ -229,11 +229,23 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsImage;
                 case (ScalarProperty.IsFileAttachment):
                     return IsFileAttachment;
+                case (ScalarProperty.IsBoolean):
+                    return IsBoolean;
+                case (ScalarProperty.IsEnum):
+                    return IsEnum;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        public object IsEnum {
+            get { return spec.ContainsFacet<IEnumValueFacet>(); }
+        }
+
+        public object IsBoolean {
+            get { return spec.ContainsFacet<IBooleanValueFacet>(); }
         }
     }
 }

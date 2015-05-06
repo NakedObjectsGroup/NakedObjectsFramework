@@ -20,8 +20,12 @@ using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Component;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
@@ -30,7 +34,7 @@ using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
-    [Ignore]
+    [Ignore] // working on
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
@@ -81,6 +85,16 @@ namespace MvcTestApp.Tests.Helpers {
 
         #region Setup/Teardown
 
+        protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
+        protected override void StartTest() {
+            base.StartTest();
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
+        }
+
         [SetUp]
         public void SetupTest() {
             StartTest();
@@ -109,6 +123,11 @@ namespace MvcTestApp.Tests.Helpers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("CustomHtmlHelperTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
         }
 
         private static string GetTestData(string name) {
@@ -206,6 +225,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
+            mocks.ViewDataContainer.Object.ViewData["Surface"] = Surface;
             mocks.ViewDataContainer.Object.ViewData["IdHelper"] = new IdHelper();
         }
 

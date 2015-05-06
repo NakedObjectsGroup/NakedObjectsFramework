@@ -11,6 +11,10 @@ namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
         #region INakedObjectSurface
 
+        public static T GetDomainObject<T>(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface == null ? default(T) : (T)nakedObjectSurface.Object;
+        }
+
         public static bool IsPaged(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsPaged);
         }
@@ -123,6 +127,18 @@ namespace NakedObjects.Surface.Utility {
         #endregion
 
         #region INakedObjectAssociationSurface
+
+        public static int NumberOfLines(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<int>(ScalarProperty.NumberOfLines);
+        }
+
+        public static int Width(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<int>(ScalarProperty.Width);
+        }
+
+        public static int TypicalLength(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<int>(ScalarProperty.TypicalLength);
+        }
 
         public static int? MaxLength(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<int?>(ScalarProperty.MaxLength);
@@ -246,6 +262,14 @@ namespace NakedObjects.Surface.Utility {
 
         public static IDictionary<string, object> ExtensionData(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
+        }
+
+        public static bool IsBoolean(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsBoolean);
+        }
+
+        public static bool IsEnum(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsEnum);
         }
 
         #endregion
