@@ -599,7 +599,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (actionContext.Action.IsContributedMethod && !actionContext.Action.OnSpec.Equals(actionContext.Target.Spec)) {
                 IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
-                if (parm != null) {
+                // todo investigate this rawparms should either contain or not contain  target
+                if (parm != null && !rawParms.ContainsKey(parm.Id)) {
                     rawParms.Add(parm.Id, actionContext.Target.Object);
                 }
             }

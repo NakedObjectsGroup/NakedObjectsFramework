@@ -8,8 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
@@ -127,10 +129,45 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter.IsAutoCompleteEnabled; }
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+        private  INakedObjectAdapter GetValue(INakedObjectActionParameterSurface parm, object rawValue) {
+            if (rawValue == null || rawValue is string && string.IsNullOrEmpty(rawValue as string) ) {
+                return null; 
+            }
 
-            var pnv = parameterNameValues == null ? null : parameterNameValues.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));  
-            
+            if (parm.Specification.IsParseable()) {
+                return nakedObjectActionParameter.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)rawValue, framework.NakedObjectManager);
+            }
+            var collectionParm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
+
+            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
+                var stringArray = rawValue as string[];
+                if (stringArray == null || !stringArray.Any()) {
+                    return null; 
+                }
+           
+                var eSpec = collectionParm.ElementSpec;
+
+                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
+
+                if (!objectArray.Any()) {
+                    return null;
+                }
+
+                var typedArray = Array.CreateInstance(objectArray.First().GetType(), objectArray.Length);
+
+                Array.Copy(objectArray, typedArray, typedArray.Length);
+
+                return framework.GetNakedObject(typedArray);
+            }
+
+            return framework.GetNakedObject(rawValue);
+        }
+
+        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+            var otherParms = parameterNameValues == null ? null : parameterNameValues.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
+
+            var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => GetValue(a.parm, a.Value));
+
             return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
         }
 

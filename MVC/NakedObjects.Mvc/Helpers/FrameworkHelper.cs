@@ -289,7 +289,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable()) {
-                return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).Cast<object>().ToArray();
+                return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();
             }
 
             // need to check if collection is actually a collection memento 
@@ -297,7 +297,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var firstObj = GetNakedObjectFromId(surface, rawCollection.First());
 
                 if (firstObj != null && firstObj.IsCollectionMemento()) {
-                    return firstObj;
+                    return firstObj.Object;
                 }
             }
 

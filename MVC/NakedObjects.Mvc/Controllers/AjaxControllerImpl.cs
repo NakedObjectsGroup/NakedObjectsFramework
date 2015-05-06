@@ -199,6 +199,26 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return spec.IsParseable() || (spec.IsCollection() && parmSpec.ElementType.IsParseable());
         }
 
+
+        //public virtual JsonResult GetActionChoices(string id, string actionName) {
+        //    INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+        //    IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+        //    IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
+        //    IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(action);
+
+        //    foreach (IActionParameterSpec p in action.Parameters) {
+        //        if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
+        //            INakedObjectAdapter[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
+        //            string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
+        //            string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
+
+        //            choices[IdHelper.GetParameterInputId(action, p)] = new[] { value, content };
+        //        }
+        //    }
+        //    return Jsonp(choices);
+        //}
+
+
         public virtual JsonResult GetActionChoices(string id, string actionName) {
             var nakedObject = GetNakedObjectFromId(id);
             var action = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == actionName);
