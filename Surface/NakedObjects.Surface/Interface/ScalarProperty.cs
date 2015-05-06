@@ -42,6 +42,7 @@ namespace NakedObjects.Surface {
         IsCollectionMemento,
         IsContributed,
         IsPaged,
-        PageSize
+        PageSize,
+        IsViewModelEditView
     }
 }

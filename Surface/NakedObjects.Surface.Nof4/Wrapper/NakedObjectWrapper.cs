@@ -168,6 +168,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return collectionMemento != null && collectionMemento.IsPaged;
         }
 
+        private  bool IsViewModelEditView() {
+            return nakedObject.Spec.ContainsFacet<IViewModelFacet>() && nakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(nakedObject);
+        }
+
         public override object GetScalarProperty(ScalarProperty name) {
             switch (name) {
                 case (ScalarProperty.IsTransient):
@@ -182,6 +186,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsCollectionMemento();
                 case (ScalarProperty.IsPaged):
                     return IsPaged();
+                case (ScalarProperty.IsViewModelEditView):
+                    return IsViewModelEditView();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:

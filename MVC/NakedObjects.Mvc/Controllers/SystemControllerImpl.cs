@@ -23,8 +23,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
             }
             SetControllerName(lastObject);
-            var oid = Surface.OidStrategy.GetOid(lastObject);
-            return View(Surface.GetObject(oid).Target);
+            return View(Surface.GetObject(lastObject));
         }
 
         public virtual ActionResult ClearHistoryItem(string id, string nextId, ObjectAndControlData controlData) {
@@ -52,7 +51,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return AppropriateView(controlData, nextNakedObject);
         }
 
-        private ActionResult View(INakedObjectAdapter nakedObject) {
+        private ActionResult View(INakedObjectSurface nakedObject) {
             string viewName = nakedObject.IsViewModelEditView() ? "ViewModel" : "ObjectView";
             return View(viewName, nakedObject.Object);
         }

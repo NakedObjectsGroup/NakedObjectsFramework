@@ -68,7 +68,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetControllerName(object domainObject) {
-            string controllerName = GetNakedObject(domainObject).Specification.FullName();
+            string controllerName = Surface.GetObjectTypeName(domainObject);
             SetControllerName(controllerName);
         }
 

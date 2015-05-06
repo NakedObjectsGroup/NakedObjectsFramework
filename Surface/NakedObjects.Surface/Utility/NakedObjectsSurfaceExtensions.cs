@@ -35,6 +35,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.TitleString);
         }
 
+        public static bool IsViewModelEditView(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModelEditView);
+        }
+
         public static IDictionary<string, object> ExtensionData(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
         }
