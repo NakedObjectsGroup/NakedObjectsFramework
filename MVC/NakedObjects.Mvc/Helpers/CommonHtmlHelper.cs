@@ -26,6 +26,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
@@ -2731,14 +2732,14 @@ namespace NakedObjects.Web.Mvc.Html {
                 string valueId = suggestedItem == null ? string.Empty : html.Framework().GetObjectId(suggestedItem);
                 tag.InnerHtml += html.CustomEncrypted(id, valueId);
             }
-            else if (context.Parameter.IsChoicesEnabled) {
+            else if (context.Parameter.IsChoicesEnabled == Choices.Single) {
                 var htmlAttributes = new RouteValueDictionary(new { title = tooltip });
                 html.AddDropDownControl(tag, htmlAttributes, context, id);
             }
-            //else if (context.Parameter.IsMultipleChoicesEnabled) {
-            //    var htmlAttributes = new RouteValueDictionary(new { title = tooltip });
-            //    html.AddListBoxControl(tag, htmlAttributes, context, id);
-            //}
+            else if (context.Parameter.IsChoicesEnabled == Choices.Multiple) {
+                //var htmlAttributes = new RouteValueDictionary(new { title = tooltip });
+                //html.AddListBoxControl(tag, htmlAttributes, context, id);
+            }
             else {
                 var existingValue = html.GetParameterExistingValue(id, context);
                 var suggestedItem = html.GetSuggestedItem(id, existingValue);
@@ -2860,7 +2861,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                      html.CustomEncrypted(id, valueId);
                     propertyContext.IsPropertyEdit = false;
                 }
-                else if (propertyContext.Property.IsChoicesEnabled) {
+                else if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled) {
                     IEnumerable<SelectListItem> items = html.GetItems(id, propertyContext);
 
                     tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target)) +
@@ -3252,12 +3253,12 @@ namespace NakedObjects.Web.Mvc.Html {
             //else if (context.Parameter.ContainsFacet<IPasswordFacet>()) {
             //    html.AddPasswordControl(tag, htmlAttributes, context, id, html.GetFieldValue(context, id));
             //}
-            else if (context.Parameter.IsChoicesEnabled) {
+            else if (context.Parameter.IsChoicesEnabled == Choices.Single) {
                 html.AddDropDownControl(tag, htmlAttributes, context, id);
             }
-            //else if (context.Parameter.IsMultipleChoicesEnabled) {
-            //    html.AddListBoxControl(tag, htmlAttributes, context, id);
-            //}
+            else if (context.Parameter.IsChoicesEnabled == Choices.Multiple) {
+               // html.AddListBoxControl(tag, htmlAttributes, context, id);
+            }
             else if (context.Parameter.IsAutoCompleteEnabled) {
                 html.AddAutoCompleteControl(tag, htmlAttributes, context, html.GetParameterDefaultValue(id, context));
             }
@@ -3535,7 +3536,7 @@ namespace NakedObjects.Web.Mvc.Html {
             //else if (propertyContext.Property.ContainsFacet<IPasswordFacet>() && !readOnly) {
             //    html.AddPasswordControl(tag, htmlAttributes, propertyContext, id, html.GetPropertyValue(propertyContext));
             //}
-            else if (propertyContext.Property.IsChoicesEnabled && !readOnly) {
+            else if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !readOnly) {
                 html.AddDropDownControl(tag, htmlAttributes, propertyContext, id);
             }
             else if (propertyContext.Property.IsAutoCompleteEnabled && !readOnly) {

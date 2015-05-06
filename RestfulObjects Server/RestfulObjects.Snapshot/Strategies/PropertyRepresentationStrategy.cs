@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
@@ -106,7 +107,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private bool IsUnconditionalChoices() {
-            return propertyContext.Property.IsChoicesEnabled &&
+            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
                    (propertyContext.Property.Specification.IsParseable() || (propertyContext.Property.Specification.IsCollection() && propertyContext.Property.ElementSpecification.IsParseable())) &&
                    !propertyContext.Property.GetChoicesParameters().Any();
         }
@@ -129,7 +130,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public bool GetHasChoices() {
-            return propertyContext.Property.IsChoicesEnabled && !propertyContext.Property.GetChoicesParameters().Any();
+            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any();
         }
     }
 }

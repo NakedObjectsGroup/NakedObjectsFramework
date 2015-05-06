@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ActionContextSurface.cs" />
+    <Compile Include="Context\Choices.cs" />
     <Compile Include="Context\ContextSurface.cs" />
     <Compile Include="Context\ActionResultContextSurface.cs" />
     <Compile Include="Context\Cause.cs" />

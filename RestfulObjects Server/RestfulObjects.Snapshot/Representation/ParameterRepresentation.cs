@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
@@ -131,7 +132,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static bool IsUnconditionalChoices(INakedObjectActionParameterSurface parameter) {
-            return parameter.IsChoicesEnabled &&
+            return parameter.IsChoicesEnabled != Choices.NotEnabled  &&
                    (parameter.Specification.IsParseable() || (parameter.Specification.IsCollection() && parameter.ElementType.IsParseable())) &&
                    !parameter.GetChoicesParameters().Any();
         }
@@ -150,7 +151,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
-            if (parameter.IsChoicesEnabled && !parameter.GetChoicesParameters().Any()) {
+            if (parameter.IsChoicesEnabled != Choices.NotEnabled  && !parameter.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = parameter.GetChoices(nakedObject, null);
                 object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy ,req, c, parameter, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));

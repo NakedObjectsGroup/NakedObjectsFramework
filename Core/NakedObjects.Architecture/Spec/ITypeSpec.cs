@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
@@ -168,6 +169,7 @@ namespace NakedObjects.Architecture.Spec {
         #region Actions
 
         IMenuImmutable Menu { get; }
+        ITypeSpecImmutable InnerSpec { get; }
 
         /// <summary>
         ///     Returns an array of actions (i.e. native actions and object-contributedActions)

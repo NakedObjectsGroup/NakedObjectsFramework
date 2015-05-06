@@ -67,7 +67,7 @@ namespace NakedObjects.Core.Spec {
             get { return objectActions ?? (objectActions = MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions)); }
         }
 
-        protected ITypeSpecImmutable InnerSpec {
+        public ITypeSpecImmutable InnerSpec {
             get { return innerSpec; }
         }
 
@@ -294,31 +294,9 @@ namespace NakedObjects.Core.Spec {
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
         public bool IsOfType(ITypeSpec spec) {
-            if (spec.Equals(this)) {
-                return true;
-            }
-            if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(spec))) {
-                return true;
-            }
+            return InnerSpec.IsOfType(spec.InnerSpec);
 
-            // match covariant generic types 
-            if (Type.IsGenericType && IsCollection) {
-                Type otherType = ((TypeSpec) spec).Type;
-                if (otherType.IsGenericType && Type.GetGenericArguments().Count() == 1 && otherType.GetGenericArguments().Count() == 1) {
-                    if (Type.GetGenericTypeDefinition() == (typeof (IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
-                        Type genericArgument = Type.GetGenericArguments().Single();
-                        Type otherGenericArgument = otherType.GetGenericArguments().Single();
-                        Type otherGenericParameter = otherType.GetGenericTypeDefinition().GetGenericArguments().Single();
-                        if ((otherGenericParameter.GenericParameterAttributes & GenericParameterAttributes.Covariant) != 0) {
-                            if (otherGenericArgument.IsAssignableFrom(genericArgument)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
 
-            return Superclass != null && Superclass.IsOfType(spec);
         }
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {

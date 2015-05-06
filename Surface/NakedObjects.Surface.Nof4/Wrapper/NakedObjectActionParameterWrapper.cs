@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
@@ -112,8 +113,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter.Id; }
         }
 
-        public bool IsChoicesEnabled {
-            get { return nakedObjectActionParameter.IsChoicesEnabled || nakedObjectActionParameter.IsMultipleChoicesEnabled; }
+        public Choices IsChoicesEnabled {
+            get
+            {
+                if (nakedObjectActionParameter.IsMultipleChoicesEnabled) {
+                    return Choices.Multiple;
+                }
+                return nakedObjectActionParameter.IsChoicesEnabled ? Choices.Single : Choices.NotEnabled;
+            }
         }
 
         public bool IsAutoCompleteEnabled {
