@@ -806,13 +806,17 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // todo tidy this 
             if (action == null) {
-                var metamodel = framework.MetamodelManager.Metamodel;
-                var elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
+                var typeOfFacet = nakedObject.Spec.GetFacet<ITypeOfFacet>();
 
-                if (elementSpec != null) {
-                    actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
-                    action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+                if (typeOfFacet != null) {
+                    var metamodel = framework.MetamodelManager.Metamodel;
+                    var elementSpecImmut = typeOfFacet.GetValueSpec(nakedObject, metamodel);
+                    var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
+
+                    if (elementSpec != null) {
+                        actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
+                        action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+                    }
                 }
             }
 
