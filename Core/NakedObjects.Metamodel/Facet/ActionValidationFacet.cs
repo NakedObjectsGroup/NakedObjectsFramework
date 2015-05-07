@@ -13,10 +13,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+using Common.Logging;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionValidationFacet));
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
@@ -41,6 +43,7 @@ namespace NakedObjects.Meta.Facet {
                 return (string)methodDelegate(target.GetDomainObject(), proposedArguments.Select(no => no.GetDomainObject()).ToArray());
             }
             //Fall back (e.g. if method has > 6 params) on reflection...
+            Log.WarnFormat("Invoking validate method via reflection as no delegate {0}.{1}", target, method);
             return (string)InvokeUtils.Invoke(method, target, proposedArguments);
         }
 

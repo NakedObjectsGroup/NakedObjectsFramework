@@ -1342,7 +1342,6 @@ namespace NakedObjects.SystemTest.Method {
             }
         }
 
-
         [TestMethod]
         public virtual void ValidateReferenceProperty() {
             ITestObject obj1 = NewTestObject<Validate1>();
@@ -1399,7 +1398,6 @@ namespace NakedObjects.SystemTest.Method {
             action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Something amiss");
         }
 
-
         [TestMethod]
         public virtual void ValidateCrossValidationFail4() {
             ITestObject obj = NewTestObject<Validate4>();
@@ -1422,7 +1420,6 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetPropertyByName("Prop2").SetValue("value1");
             obj.Save();
         }
-
 
         [TestMethod]
         public virtual void ValidateCrossValidationFail5A() {
@@ -1478,7 +1475,6 @@ namespace NakedObjects.SystemTest.Method {
             }
         }
 
-
         [TestMethod]
         public virtual void ValidateCrossValidationSuccess5() {
             ITestObject obj = NewTestObject<Validate5>();
@@ -1491,6 +1487,16 @@ namespace NakedObjects.SystemTest.Method {
             obj.Save();
         }
 
+        //Test added because > 6 params relies on reflection rather than a delegate  
+        [TestMethod]  
+        public virtual void ValidateActionWithMoreThanSixParams() {  
+            ITestObject obj = NewTestObject<Validate1>();  
+            ITestAction action = obj.GetAction("Do Something With Many Params");  
+            Assert.AreEqual(7, action.Parameters.Count());  
+            action.AssertIsInvalidWithParms(new object[] { "y", "x", "x", "x", "x", "x", "x" });  
+            action.AssertIsValidWithParms(new object[] { "x", "x", "x", "x", "x", "x", "x" });  
+            action.Invoke(new object[] { "x", "x", "x", "x", "x", "x", "x" });  
+        }  
         #endregion
     }
 
@@ -2708,6 +2714,15 @@ namespace NakedObjects.SystemTest.Method {
                 return "Something amiss";
             }
             return null;
+        }
+
+        #endregion
+
+        #region DoSomethingWithManyParams
+        public void DoSomethingWithManyParams(string param0, string param1, string param2, string param3, string param4, string param5, string param6) { }
+
+        public string ValidateDoSomethingWithManyParams(string param0, string param1, string param2, string param3, string param4, string param5, string param6) {
+            return param0 != "x" ? "Invalid" : null;
         }
 
         #endregion
