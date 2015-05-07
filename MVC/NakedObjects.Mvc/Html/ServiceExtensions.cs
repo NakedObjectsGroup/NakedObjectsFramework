@@ -22,11 +22,19 @@ namespace NakedObjects.Web.Mvc.Html {
 
         //TODO: Mark obsolete when Menus refactoring complete
         //[Obsolete("Add CustomMenuItems into an IMenu directly when constructing menus")]
+        //public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
+        //    return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
+        //        IdConstants.MenuContainerName,
+        //        html.IdHelper().GetServiceContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+        //        nakedObject.TitleString());
+        //}
+
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
+            var nakedObject = html.Surface().GetObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetServiceContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+                html.IdHelper().GetServiceContainerId(nakedObject),
                 nakedObject.TitleString());
         }
 

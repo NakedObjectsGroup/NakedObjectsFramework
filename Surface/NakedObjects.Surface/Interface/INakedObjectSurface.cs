@@ -19,8 +19,10 @@ namespace NakedObjects.Surface {
         IEnumerable<INakedObjectSurface> ToEnumerable();
         PropertyInfo[] GetKeys();
         INakedObjectSurface Page(int page, int size);
-        INakedObjectSurface Select(object[] selection, bool foreceEnumerable);
+        INakedObjectSurface Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContext GetAttachment();
+
+        object[] GetSelected();
     }
 }

@@ -48,6 +48,16 @@ namespace NakedObjects.Surface {
         IsEnum,
         NumberOfLines,
         TypicalLength,
-        Width
+        Width,
+        IsAlwaysImmutable,
+        IsImmutableOncePersisted,
+        IsComplexType,
+        InvariantString,
+        IsNullable,
+        TableViewData,
+        RenderEagerly,
+        DoNotCount,
+        IsPassword,
+        EnumIntegralValue
     }
 }

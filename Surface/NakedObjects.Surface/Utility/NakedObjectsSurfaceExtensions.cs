@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Surface.Utility {
@@ -13,6 +14,10 @@ namespace NakedObjects.Surface.Utility {
 
         public static T GetDomainObject<T>(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface == null ? default(T) : (T)nakedObjectSurface.Object;
+        }
+
+        public static string EnumIntegralValue(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.EnumIntegralValue);
         }
 
         public static bool IsPaged(this INakedObjectSurface nakedObjectSurface) {
@@ -39,6 +44,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.TitleString);
         }
 
+        public static string InvariantString(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.InvariantString);
+        }
+
         public static bool IsViewModelEditView(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModelEditView);
         }
@@ -50,6 +59,26 @@ namespace NakedObjects.Surface.Utility {
         #endregion
 
         #region INakedObjectActionParameterSurface
+
+        public static int NumberOfLines(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<int>(ScalarProperty.NumberOfLines);
+        }
+
+        public static int Width(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<int>(ScalarProperty.Width);
+        }
+
+        public static int TypicalLength(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<int>(ScalarProperty.TypicalLength);
+        }
+
+        public static bool IsNullable(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<bool>(ScalarProperty.IsNullable);
+        }
+
+        public static bool IsPassword(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<bool>(ScalarProperty.IsPassword);
+        }
 
         public static string Name(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
             return nakedObjectActionParameterSurface.GetScalarProperty<string>(ScalarProperty.Name);
@@ -124,9 +153,33 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectActionSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
         }
 
+        public static Tuple<bool, string[]> TableViewData(this INakedObjectActionSurface nakedObjectActionSurface) {
+            return nakedObjectActionSurface.GetScalarProperty<Tuple<bool, string[]>>(ScalarProperty.TableViewData);
+        }
+
+        public static bool RenderEagerly(this INakedObjectActionSurface nakedObjectActionSurface) {
+            return nakedObjectActionSurface.GetScalarProperty<bool>(ScalarProperty.RenderEagerly);
+        }
+
         #endregion
 
         #region INakedObjectAssociationSurface
+
+        public static bool IsNullable(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsNullable);
+        }
+
+        public static bool IsPassword(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsPassword);
+        }
+
+        public static bool DoNotCount(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.DoNotCount);
+        }
+
+        public static bool RenderEagerly(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.RenderEagerly);
+        }
 
         public static int NumberOfLines(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<int>(ScalarProperty.NumberOfLines);
@@ -196,9 +249,26 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectAssociationSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
         }
 
+        public static Tuple<bool, string[]> TableViewData(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<Tuple<bool, string[]>>(ScalarProperty.TableViewData);
+        }
+
+
         #endregion
 
         #region INakedObjectSpecificationSurface
+
+        public static bool IsAlwaysImmutable(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsAlwaysImmutable);
+        }
+
+        public static bool IsImmutableOncePersisted(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsImmutableOncePersisted);
+        }
+
+        public static bool IsComplexType(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsComplexType);
+        }
 
         public static bool IsParseable(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsParseable);

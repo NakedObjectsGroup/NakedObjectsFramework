@@ -29,6 +29,16 @@ namespace NakedObjects.Web.Mvc.Html {
                 Where(a => a.IsVisible(nakedObject));
         }
 
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+            if (nakedObject.Specification.IsQueryable()) {
+
+                var elementSpec = nakedObject.ElementSpecification;
+                Trace.Assert(elementSpec != null);
+                return elementSpec.GetCollectionContributedActions();
+            }
+            return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
+        }
+
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             if (nakedObject.Spec.IsQueryable) {
                 var metamodel = framework.MetamodelManager.Metamodel;
@@ -88,8 +98,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
-            var oid = surface.OidStrategy.GetOid(model);
-            var nakedObject = surface.GetObject(oid).Target;
+            var nakedObject = surface.GetObject(model);
             return nakedObject.Specification.FullName().Split('.').Last();
         }
 

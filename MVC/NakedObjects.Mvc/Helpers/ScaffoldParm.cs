@@ -67,6 +67,10 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new NotImplementedException();
         }
 
+        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+            throw new NotImplementedException();
+        }
+
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             throw new NotImplementedException();
         }

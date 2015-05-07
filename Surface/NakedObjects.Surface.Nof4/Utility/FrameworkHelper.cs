@@ -28,6 +28,16 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 Where(a => a.IsVisible(nakedObject));
         }
 
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+            if (nakedObject.Specification.IsQueryable()) {
+
+                var elementSpec = nakedObject.ElementSpecification;
+                Trace.Assert(elementSpec != null);
+                return elementSpec.GetCollectionContributedActions();
+            }
+            return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
+        }
+
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             if (nakedObject.Spec.IsQueryable) {
                 var metamodel = framework.MetamodelManager.Metamodel;

@@ -259,12 +259,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //    return ModelState.IsValid;
         //}
 
-        public void ValidateParameter(IActionSpec action, IActionParameterSpec parm, INakedObjectAdapter targetNakedObject, INakedObjectAdapter valueNakedObject) {
-            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject);
-            if (!consent.IsAllowed) {
-                ModelState.AddModelError(IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm)), consent.Reason);
-            }
-        }
+        //public void ValidateParameter(IActionSpec action, IActionParameterSpec parm, INakedObjectAdapter targetNakedObject, INakedObjectAdapter valueNakedObject) {
+        //    IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject);
+        //    if (!consent.IsAllowed) {
+        //        ModelState.AddModelError(IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm)), consent.Reason);
+        //    }
+        //}
 
         public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, object value) {
             var isValid = parm.IsValid(targetNakedObject, value);
@@ -435,22 +435,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        private static object GetRawParameterValue(IActionParameterSpec parm, ObjectAndControlData controlData, string name) {
-            var form = controlData.Form;
-            ValueProviderResult vp = form.GetValue(name);
-            string[] values = vp == null ? null : (string[]) vp.RawValue;
+        //private static object GetRawParameterValue(IActionParameterSpec parm, ObjectAndControlData controlData, string name) {
+        //    var form = controlData.Form;
+        //    ValueProviderResult vp = form.GetValue(name);
+        //    string[] values = vp == null ? null : (string[]) vp.RawValue;
 
-            if (values == null) {
-                if (controlData.Files.ContainsKey(name)) {
-                    return controlData.Files[name];
-                }
-                return null;
-            }
-            if (parm is IOneToManyActionParameterSpec) {
-                return values.All(string.IsNullOrEmpty) ? null : values;
-            }
-            return values.First();
-        }
+        //    if (values == null) {
+        //        if (controlData.Files.ContainsKey(name)) {
+        //            return controlData.Files[name];
+        //        }
+        //        return null;
+        //    }
+        //    if (parm is IOneToManyActionParameterSpec) {
+        //        return values.All(string.IsNullOrEmpty) ? null : values;
+        //    }
+        //    return values.First();
+        //}
 
         private static object GetRawParameterValue(INakedObjectActionParameterSurface parm, ObjectAndControlData controlData, string name) {
             var form = controlData.Form;
@@ -491,16 +491,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        internal void SetContextObjectAsParameterValue(IActionSpec targetAction, INakedObjectAdapter contextNakedObject) {
-            if (targetAction.Parameters.Any(p => p.Spec.IsOfType(contextNakedObject.Spec))) {
-                foreach (IActionParameterSpec parm in targetAction.Parameters) {
-                    if (parm.Spec.IsOfType(contextNakedObject.Spec)) {
-                        string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(targetAction), ScaffoldParm.Wrap(parm));
-                        AddAttemptedValue(name, contextNakedObject);
-                    }
-                }
-            }
-        }
+        //internal void SetContextObjectAsParameterValue(IActionSpec targetAction, INakedObjectAdapter contextNakedObject) {
+        //    if (targetAction.Parameters.Any(p => p.Spec.IsOfType(contextNakedObject.Spec))) {
+        //        foreach (IActionParameterSpec parm in targetAction.Parameters) {
+        //            if (parm.Spec.IsOfType(contextNakedObject.Spec)) {
+        //                string name = IdHelper.GetParameterInputId(ScaffoldAction.Wrap(targetAction), ScaffoldParm.Wrap(parm));
+        //                AddAttemptedValue(name, contextNakedObject);
+        //            }
+        //        }
+        //    }
+        //}
 
         //protected string DisplaySingleProperty(ObjectAndControlData controlData, IDictionary<string, string> data) {
         //    if (Request.IsAjaxRequest()) {
@@ -603,18 +603,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
 
-        internal void SetDefaults(INakedObjectAdapter nakedObject, IActionSpec action) {
-            foreach (IActionParameterSpec parm in action.Parameters) {
-                INakedObjectAdapter value = parm.GetDefault(nakedObject);
-                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject);
+        //internal void SetDefaults(INakedObjectAdapter nakedObject, IActionSpec action) {
+        //    foreach (IActionParameterSpec parm in action.Parameters) {
+        //        INakedObjectAdapter value = parm.GetDefault(nakedObject);
+        //        TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject);
 
-                bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
-                if (!ignore) {
-                    // deliberately not an attempted value so it only gets populated after masking 
-                    ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm))] = parm.Spec.IsParseable ? value.Object : value;
-                }
-            }
-        }
+        //        bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
+        //        if (!ignore) {
+        //            // deliberately not an attempted value so it only gets populated after masking 
+        //            ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parm))] = parm.Spec.IsParseable ? value.Object : value;
+        //        }
+        //    }
+        //}
 
         protected INakedObjectSurface GetNakedObject(object domainObject) {
             if (domainObject == null) {
@@ -839,16 +839,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //    return ModelState.IsValid;
         //}
 
-        private void ValidateOrApplyInlineChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationSpec> assocs, Func<INakedObjectAdapter, ObjectAndControlData, IAssociationSpec, bool> validateOrApply) {
-            var form = controlData.Form;
-            // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
-            foreach (IAssociationSpec assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => IdHelper.KeyPrefixIs(k, a.Id)))) {
-                INakedObjectAdapter inlineNakedObject = assoc.GetNakedObject(nakedObject);
-                if (inlineNakedObject != null) {
-                    validateOrApply(inlineNakedObject, controlData, assoc);
-                }
-            }
-        }
+        //private void ValidateOrApplyInlineChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationSpec> assocs, Func<INakedObjectAdapter, ObjectAndControlData, IAssociationSpec, bool> validateOrApply) {
+        //    var form = controlData.Form;
+        //    // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
+        //    foreach (IAssociationSpec assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => IdHelper.KeyPrefixIs(k, a.Id)))) {
+        //        INakedObjectAdapter inlineNakedObject = assoc.GetNakedObject(nakedObject);
+        //        if (inlineNakedObject != null) {
+        //            validateOrApply(inlineNakedObject, controlData, assoc);
+        //        }
+        //    }
+        //}
 
         protected void GetUsableAndVisibleFields(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = (nakedObject.GetObjectSpec()).Properties.Where(p => IsUsable(p, nakedObject) && IsVisible(p, nakedObject)).ToList();
@@ -960,28 +960,28 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void AddAttemptedValues(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
-            foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => (IsUsable(p, nakedObject) && IsVisible(p, nakedObject)) || IsConcurrency(p))) {
-                string name = GetFieldInputId(parent, nakedObject, assoc);
-                string value = GetValueFromForm(controlData, name) as string;
-                if (value != null) {
-                    AddAttemptedValue(name, value);
-                }
-            }
+        //internal void AddAttemptedValues(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
+        //    foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => (IsUsable(p, nakedObject) && IsVisible(p, nakedObject)) || IsConcurrency(p))) {
+        //        string name = GetFieldInputId(parent, nakedObject, assoc);
+        //        string value = GetValueFromForm(controlData, name) as string;
+        //        if (value != null) {
+        //            AddAttemptedValue(name, value);
+        //        }
+        //    }
 
-            foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(IsConcurrency)) {
-                string name = GetConcurrencyFieldInputId(parent, nakedObject, assoc);
-                string value = GetValueFromForm(controlData, name) as string;
-                if (value != null) {
-                    AddAttemptedValue(name, value);
-                }
-            }
+        //    foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(IsConcurrency)) {
+        //        string name = GetConcurrencyFieldInputId(parent, nakedObject, assoc);
+        //        string value = GetValueFromForm(controlData, name) as string;
+        //        if (value != null) {
+        //            AddAttemptedValue(name, value);
+        //        }
+        //    }
 
-            foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => p.IsInline)) {
-                var inlineNakedObject = assoc.GetNakedObject(nakedObject);
-                AddAttemptedValues(inlineNakedObject, controlData, assoc);
-            }
-        }
+        //    foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => p.IsInline)) {
+        //        var inlineNakedObject = assoc.GetNakedObject(nakedObject);
+        //        AddAttemptedValues(inlineNakedObject, controlData, assoc);
+        //    }
+        //}
 
         internal bool IsUsable(IAssociationSpec assoc, INakedObjectAdapter nakedObject) {
             return assoc.IsUsable(nakedObject).IsAllowed;

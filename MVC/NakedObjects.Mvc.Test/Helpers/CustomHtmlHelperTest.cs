@@ -34,7 +34,7 @@ using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
-    [Ignore] // working on
+    //[Ignore] // working on
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
@@ -1431,7 +1431,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             SetupViewData(tc);
 
-            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-OneRefParameterAction-Parm-Select"] = NakedObjectsFramework.NakedObjectManager.CreateAdapter(tc, null, null);
+            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-OneRefParameterAction-Parm-Select"] = Surface.GetObject(tc);
 
             string s = mocks.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, CustomHelperTestClass>(y => y.OneRefParameterAction).ToString();
 

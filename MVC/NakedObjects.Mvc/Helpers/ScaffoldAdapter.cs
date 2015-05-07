@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new System.NotImplementedException();
         }
 
-        public INakedObjectSurface Select(object[] selection, bool foreceEnumerable) {
+        public INakedObjectSurface Select(object[] selection, bool forceEnumerable) {
             throw new System.NotImplementedException();
         }
 
@@ -70,6 +70,10 @@ namespace NakedObjects.Web.Mvc.Helpers {
         }
 
         public AttachmentContext GetAttachment() {
+            throw new System.NotImplementedException();
+        }
+
+        public object[] GetSelected() {
             throw new System.NotImplementedException();
         }
 

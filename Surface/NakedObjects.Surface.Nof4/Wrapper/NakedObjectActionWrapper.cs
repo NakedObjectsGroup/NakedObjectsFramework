@@ -164,16 +164,36 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 case (ScalarProperty.MemberOrder):
                     return MemberOrder;
                 case (ScalarProperty.PageSize):
-                    return PageSize();
+                    return PageSize;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
+                case (ScalarProperty.TableViewData):
+                    return TableViewData;
+                case (ScalarProperty.RenderEagerly):
+                    return RenderEagerly;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
         }
 
-        private int PageSize() {
-            return action.GetFacet<IPageSizeFacet>().Value;
+        public bool RenderEagerly {
+            get {
+                IEagerlyFacet eagerlyFacet = action.GetFacet<IEagerlyFacet>();
+                return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
+            }
+        }
+
+        public Tuple<bool, string[]> TableViewData {
+            get {
+                var facet = action.GetFacet<ITableViewFacet>();
+                return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
+            }
+        }
+
+        private int PageSize {
+            get {
+                return action.GetFacet<IPageSizeFacet>().Value;
+            }
         }
     }
 }

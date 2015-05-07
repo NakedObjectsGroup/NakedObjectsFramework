@@ -54,8 +54,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return RenderMainMenus(html, mainMenus);
         }
 
-        private static IMenuImmutable GetMenu(HtmlHelper html, object service) {
-            return html.Framework().GetNakedObject(service).Spec.Menu;
+        private static IMenu GetMenu(HtmlHelper html, object service) {
+            return html.Surface().GetObject(service).Specification.Menu;
         }
 
         public static MvcHtmlString MainMenu(this HtmlHelper html, object service) {

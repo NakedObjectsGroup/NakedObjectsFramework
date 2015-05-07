@@ -75,19 +75,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private string GetFieldInputId(INakedObjectAdapter nakedObject, IAssociationSpec property) {
-            string fieldId;
+        //private string GetFieldInputId(INakedObjectAdapter nakedObject, IAssociationSpec property) {
+        //    string fieldId;
 
-            var aoid = nakedObject.Oid as IAggregateOid;
-            if (aoid != null) {
-                IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-                fieldId = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
-            }
-            else {
-                fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
-            }
-            return fieldId;
-        }
+        //    var aoid = nakedObject.Oid as IAggregateOid;
+        //    if (aoid != null) {
+        //        IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
+        //        fieldId = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
+        //    }
+        //    else {
+        //        fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
+        //    }
+        //    return fieldId;
+        //}
 
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
             var nakedObject = GetNakedObjectFromId(id);

@@ -162,10 +162,7 @@ namespace NakedObjects.Web.Mvc.Html {
                         object value;
                         if (ParameterValues.TryGetValue(pc.Parameter.Id, out value)) {
                             pc.IsHidden = true;
-
-                            var oid = surface.OidStrategy.GetOid(value);
-                            var obj = surface.GetObject(oid).Target;
-                            pc.CustomValue = obj;
+                            pc.CustomValue = surface.GetObject(value);
                         }
                     }
                 }
@@ -193,14 +190,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return null;
         }
 
-        private bool IsFileActionNoParms(INakedObjectsFramework framework) {
-            // todo
-            //return Action != null && Action.ReturnSpec.IsFile(framework) && !Action.Parameters.Any();
-            return false;
+        private bool IsFileActionNoParms() {        
+            return Action != null && Action.ReturnType.IsFileAttachment() && !Action.Parameters.Any();
         }
 
-        public string GetActionClass(INakedObjectsFramework framework) {
-            return (IsFileActionNoParms(framework) ? IdConstants.ActionNameFile : IdConstants.ActionName) + GetPresentationHint();
+        public string GetActionClass() {
+            return (IsFileActionNoParms() ? IdConstants.ActionNameFile : IdConstants.ActionName) + GetPresentationHint();
         }
 
         public string GetSubMenuId() {

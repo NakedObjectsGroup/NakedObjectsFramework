@@ -28,5 +28,9 @@ namespace NakedObjects.Surface {
         INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm);
         string GetTitle(INakedObjectSurface nakedObject);
         int Count(INakedObjectSurface target);
+        string GetMaskedValue(INakedObjectSurface valueNakedObject);
+
+        bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);
+
     }
 }

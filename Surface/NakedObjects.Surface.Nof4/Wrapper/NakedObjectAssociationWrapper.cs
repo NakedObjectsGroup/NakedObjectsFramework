@@ -149,9 +149,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsAutoCompleteEnabled {
-            get { return ((IOneToOneFeatureSpec) assoc).IsAutoCompleteEnabled; }
+            get {
+                var single = assoc as IOneToOneFeatureSpec;
+                return single != null && single.IsAutoCompleteEnabled;
+            }
         }
-
 
         public IConsentSurface IsUsable(INakedObjectSurface target) {
             IConsent consent = assoc.IsUsable(((NakedObjectWrapper) target).WrappedNakedObject);
@@ -278,8 +280,24 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return TypicalLength;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
+                case (ScalarProperty.TableViewData):
+                    return TableViewData;
+                case (ScalarProperty.RenderEagerly):
+                    return RenderEagerly;
+                case (ScalarProperty.DoNotCount):
+                    return DoNotCount;
+                case (ScalarProperty.IsNullable):
+                    return IsNullable;
+                case (ScalarProperty.IsPassword):
+                    return IsPassword;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object DoNotCount {
+            get {
+                return assoc.ContainsFacet<INotCountedFacet>();
             }
         }
 
@@ -288,6 +306,22 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var multiline = assoc.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 0 : multiline.Width;
             }
+        }
+
+        // todo move common assoc/parameter code into helper or baseclass
+        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+            var mask = assoc.GetFacet<IMaskFacet>();
+
+            if (valueNakedObject == null) {
+                return null;
+            }
+            var no = ((NakedObjectWrapper)valueNakedObject).WrappedNakedObject;
+            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
+        }
+
+        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+            var no = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
+            return assoc.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 
         public object TypicalLength {
@@ -302,6 +336,31 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var multiline = assoc.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 1 : multiline.NumberOfLines;
             }
+        }
+
+        public Tuple<bool, string[]> TableViewData {
+            get {
+                var facet = assoc.GetFacet<ITableViewFacet>();
+                return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
+            }
+        }
+
+        // todo move common assoc/action code into helper or baseclass
+        public bool RenderEagerly {
+            get {
+                IEagerlyFacet eagerlyFacet = assoc.GetFacet<IEagerlyFacet>();
+                return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
+            }
+        }
+
+        public object IsPassword {
+            get {
+                return assoc.ContainsFacet<IPasswordFacet>();
+            }
+        }
+
+        public bool IsNullable {
+            get { return assoc.ContainsFacet<INullableFacet>(); }
         }
     }
 }

@@ -18,6 +18,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
@@ -112,6 +113,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return context;
         }
 
+        public object[] GetSelected() {
+            var memento = nakedObject.Oid as ICollectionMemento;
+            if (memento != null) {
+                return memento.SelectedObjects.ToArray();
+            }
+
+            return new object[] {};
+        }
+
         public PropertyInfo[] GetKeys() {
             if (nakedObject.Spec is IServiceSpec) {
                 // services don't have keys
@@ -125,7 +135,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IOidSurface Oid {
-            get { return new OidWrapper(nakedObject.Oid); }
+            get { return nakedObject.Oid == null ? null : new OidWrapper(nakedObject.Oid); }
         }
 
         public INakedObjectsSurface Surface { get; set; }
@@ -178,6 +188,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsTransient;
                 case (ScalarProperty.TitleString):
                     return TitleString();
+                case (ScalarProperty.InvariantString):
+                    return InvariantString();
                 case (ScalarProperty.IsNotPersistent):
                     return IsNotPersistent();
                 case (ScalarProperty.IsUserPersistable):
@@ -188,11 +200,23 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsPaged();
                 case (ScalarProperty.IsViewModelEditView):
                     return IsViewModelEditView();
+                case (ScalarProperty.EnumIntegralValue):
+                    return EnumIntegralValue();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private object EnumIntegralValue() {
+            var enumFacet = nakedObject.Spec.GetFacet<IEnumValueFacet>();
+            return enumFacet != null ? enumFacet.IntegralValue(nakedObject) : null;
+        }
+
+
+        private object InvariantString() {
+            return nakedObject.InvariantString();
         }
 
         private bool IsCollectionMemento() {
@@ -208,6 +232,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string TitleString() {
+
+        
+
             return nakedObject.TitleString();
         }
 

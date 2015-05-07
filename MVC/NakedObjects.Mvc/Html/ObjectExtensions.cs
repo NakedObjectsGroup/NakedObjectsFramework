@@ -201,8 +201,13 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Display name (Title) of object
         /// </summary>
+        //public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+        //    return MvcHtmlString.Create(nakedObject.TitleString());
+        //}
+
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+            var nakedObject = html.Surface().GetObject(model);
             return MvcHtmlString.Create(nakedObject.TitleString());
         }
 
@@ -223,9 +228,14 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Display description of object
         /// </summary>
+        //public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+        //    return MvcHtmlString.Create(nakedObject.Spec.Description);
+        //}
+
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Spec.Description);
+            var nakedObject = html.Surface().GetObject(model);
+            return MvcHtmlString.Create(nakedObject.Specification.Description());
         }
 
         #endregion
@@ -245,9 +255,14 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get icon name from object
         /// </summary>
+        //public static MvcHtmlString IconName<TModel>(this HtmlHelper html, TModel model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+        //    return MvcHtmlString.Create(nakedObject.Spec.GetIconName(nakedObject));
+        //}
+
         public static MvcHtmlString IconName<TModel>(this HtmlHelper html, TModel model) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Spec.GetIconName(nakedObject));
+            var nakedObject = html.Surface().GetObject(model);
+            return MvcHtmlString.Create(nakedObject.Specification.GetIconName(nakedObject));
         }
 
         #endregion

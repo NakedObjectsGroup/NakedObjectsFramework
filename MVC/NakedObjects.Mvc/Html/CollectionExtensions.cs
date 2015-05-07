@@ -54,10 +54,16 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.Collection(collection, action);
         }
 
+        //public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
+        //    INakedObjectAdapter adapter = html.Framework().GetNakedObject(domainObject);
+        //    var collections = adapter.GetObjectSpec().Properties.OfType<IOneToManyAssociationSpec>().Where(obj => obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
+        //    return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString())).ToArray();
+        //}
+
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
-            INakedObjectAdapter adapter = html.Framework().GetNakedObject(domainObject);
-            var collections = adapter.GetObjectSpec().Properties.OfType<IOneToManyAssociationSpec>().Where(obj => obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
-            return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString())).ToArray();
+            var adapter = html.Surface().GetObject(domainObject);
+            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection() && obj.IsVisible(adapter)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter) });
+            return collections.Select(coll => string.Format(format, coll.assoc.Name(), coll.val.TitleString())).ToArray();
         }
 
         #endregion
@@ -255,8 +261,16 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <example>
         /// html.CollectionTableWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
+        //public static MvcHtmlString CollectionTableWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+        //    string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
+        //    return displayType == IdConstants.TableDisplayFormat ?
+        //        html.GetStandaloneCollection(nakedObject, x => includingColumns.Any(s => s == x.Id), x => Array.IndexOf(includingColumns, x.Id), true) :
+        //        html.GetStandaloneList(nakedObject, null);
+        //}
+
         public static MvcHtmlString CollectionTableWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            var nakedObject = html.Surface().GetObject(domainObject);
             string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
             return displayType == IdConstants.TableDisplayFormat ?
                 html.GetStandaloneCollection(nakedObject, x => includingColumns.Any(s => s == x.Id), x => Array.IndexOf(includingColumns, x.Id), true) :

@@ -26,6 +26,8 @@ namespace NakedObjects.Surface {
         INakedObjectSurface GetDefault(INakedObjectSurface nakedObject);
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
 
+        string GetMaskedValue(INakedObjectSurface valueNakedObject);
+
         // todo not really same as other interfaces - more PutValue with validate only ? 
         IConsentSurface IsValid(INakedObjectSurface target, object value);
     }

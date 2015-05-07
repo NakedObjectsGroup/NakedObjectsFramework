@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -96,7 +95,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsCollection {
-            get { return spec.IsCollection; }
+            get { return spec.IsCollection && !spec.IsParseable; }
         }
 
         public bool IsObject {
@@ -115,17 +114,42 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.Description; }
         }
 
+        public object IsEnum {
+            get { return spec.ContainsFacet<IEnumValueFacet>(); }
+        }
+
+        public object IsBoolean {
+            get { return spec.ContainsFacet<IBooleanValueFacet>(); }
+        }
+
+        public bool IsAlwaysImmutable {
+            get {
+                IImmutableFacet facet = spec.GetFacet<IImmutableFacet>();
+                return facet != null && facet.Value == WhenTo.Always;
+            }
+        }
+
+        public bool IsImmutableOncePersisted {
+            get {
+                IImmutableFacet facet = spec.GetFacet<IImmutableFacet>();
+                return facet != null && facet.Value == WhenTo.OncePersisted;
+            }
+        }
+
+        public bool IsComplexType {
+            get { return spec.ContainsFacet<IComplexTypeFacet>(); }
+        }
+
         #region INakedObjectSpecificationSurface Members
 
         public INakedObjectAssociationSurface[] Properties {
             get {
                 var objectSpec = spec as IObjectSpec;
-                return objectSpec == null ? new INakedObjectAssociationSurface[] { } : objectSpec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray();
+                return objectSpec == null ? new INakedObjectAssociationSurface[] {} : objectSpec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray();
             }
         }
 
-        public IMenu Menu
-        {
+        public IMenu Menu {
             get { return new MenuWrapper(spec.Menu, Surface, framework); }
         }
 
@@ -172,7 +196,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             if (objectSpec != null) {
                 return objectSpec.GetFinderActions().Select(a => new NakedObjectActionWrapper(a, Surface, framework, "")).Cast<INakedObjectActionSurface>().ToArray();
             }
-            return new INakedObjectActionSurface[] { };
+            return new INakedObjectActionSurface[] {};
         }
 
         public INakedObjectsSurface Surface { get; set; }
@@ -188,8 +212,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool Equals(NakedObjectSpecificationWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.spec, spec);
         }
 
@@ -233,19 +257,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsBoolean;
                 case (ScalarProperty.IsEnum):
                     return IsEnum;
+                case (ScalarProperty.IsAlwaysImmutable):
+                    return IsAlwaysImmutable;
+                case (ScalarProperty.IsImmutableOncePersisted):
+                    return IsImmutableOncePersisted;
+                case (ScalarProperty.IsComplexType):
+                    return IsComplexType;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
-        }
-
-        public object IsEnum {
-            get { return spec.ContainsFacet<IEnumValueFacet>(); }
-        }
-
-        public object IsBoolean {
-            get { return spec.ContainsFacet<IBooleanValueFacet>(); }
         }
     }
 }

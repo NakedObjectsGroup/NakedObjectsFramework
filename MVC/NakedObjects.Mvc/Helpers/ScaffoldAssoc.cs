@@ -84,6 +84,14 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new NotImplementedException();
         }
 
+        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+            throw new NotImplementedException();
+        }
+
+        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+            throw new NotImplementedException();
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { throw new NotImplementedException(); }
         }

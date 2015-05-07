@@ -175,6 +175,16 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
+        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+            var mask = nakedObjectActionParameter.GetFacet<IMaskFacet>();
+
+            if (valueNakedObject == null) {
+                return null;
+            }
+            var no = ((NakedObjectWrapper) valueNakedObject).WrappedNakedObject;
+            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
+        }
+
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
             var v = framework.GetNakedObject(value);
@@ -242,10 +252,51 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return Mask;
                 case (ScalarProperty.AutoCompleteMinLength):
                     return AutoCompleteMinLength;
+                case (ScalarProperty.TypicalLength):
+                    return TypicalLength;
+                case (ScalarProperty.IsNullable):
+                    return IsNullable;
+                case (ScalarProperty.IsPassword):
+                    return IsPassword;
+                case (ScalarProperty.NumberOfLines):
+                    return NumberOfLines;
+                case (ScalarProperty.Width):
+                    return Width;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object IsPassword {
+            get {
+                return nakedObjectActionParameter.ContainsFacet<IPasswordFacet>();
+            }
+        }
+
+        public object TypicalLength {
+            get {
+                var typicalLength = nakedObjectActionParameter.GetFacet<ITypicalLengthFacet>();
+                return typicalLength == null ? 0 : typicalLength.Value;
+            }
+        }
+
+        public bool IsNullable {
+            get { return nakedObjectActionParameter.ContainsFacet<INullableFacet>(); }
+        }
+
+        public object Width {
+            get {
+                var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
+                return multiline == null ? 0 : multiline.Width;
+            }
+        }
+
+        public object NumberOfLines {
+            get {
+                var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
+                return multiline == null ? 1 : multiline.NumberOfLines;
             }
         }
     }
