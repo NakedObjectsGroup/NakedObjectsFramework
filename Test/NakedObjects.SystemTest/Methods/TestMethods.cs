@@ -34,7 +34,7 @@ namespace NakedObjects.SystemTest.Method {
         #endregion
 
         protected override string[] Namespaces {
-            get { return new[] {typeof (Auto1).Namespace}; }
+            get { return new[] { typeof(Auto1).Namespace }; }
         }
 
         protected override Type[] Types {
@@ -113,16 +113,14 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Auto Complete Prop1");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
             try {
                 obj1.GetAction("Auto Complete 0 Do Something");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -145,8 +143,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 action.Parameters[0].GetCompletions("bar");
                 Assert.Fail("expect exception");
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 // expected
             }
 
@@ -189,8 +186,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 prop.GetCompletions("any");
                 Assert.Fail("expect exception");
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 // expected
             }
             obj1.GetAction("Auto Complete Prop1");
@@ -217,16 +213,14 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Choices Prop1");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
             try {
                 obj1.GetAction("Choices 0 Do Something");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -328,8 +322,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Clear Prop1");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -386,7 +379,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void CreatedCalled() {
             ITestObject obj1 = NewTestObject<Created1>();
-            var dom1 = (Created1) obj1.GetDomainObject();
+            var dom1 = (Created1)obj1.GetDomainObject();
             Assert.IsTrue(dom1.CreatedCalled);
         }
 
@@ -396,8 +389,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Created");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -405,13 +397,12 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Created2>();
-            var dom1 = (Created2) obj1.GetDomainObject();
+            var dom1 = (Created2)obj1.GetDomainObject();
             Assert.IsFalse(dom1.CreatedCalled);
 
             try {
                 obj1.GetAction("created");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -426,16 +417,14 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Default Prop1");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
             try {
                 obj.GetAction("Default 0 Do Something");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -553,7 +542,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void DeletedCalled() {
             ITestObject obj1 = NewTestObject<Deleted1>();
-            var dom1 = (Deleted1) obj1.GetDomainObject();
+            var dom1 = (Deleted1)obj1.GetDomainObject();
             obj1.Save();
 
             Assert.IsFalse(Deleted1.DeletedCalled);
@@ -568,20 +557,18 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Deleted");
                 Assert.Fail("Should not get here");
-            }
-            catch (Exception) {}
+            } catch (Exception) { }
         }
 
         [TestMethod]
         public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Deleted2>();
-            var dom1 = (Deleted2) obj1.GetDomainObject();
+            var dom1 = (Deleted2)obj1.GetDomainObject();
             Assert.IsFalse(Deleted2.DeletedCalled);
 
             try {
                 obj1.GetAction("Deleted");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -593,7 +580,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void DeletingCalled() {
             ITestObject obj1 = NewTestObject<Deleting1>();
-            var dom1 = (Deleting1) obj1.GetDomainObject();
+            var dom1 = (Deleting1)obj1.GetDomainObject();
             obj1.Save();
 
             Assert.IsFalse(Deleting1.DeletingCalled);
@@ -609,8 +596,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Deleting");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -618,7 +604,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Deleting2>().Save();
-            var dom1 = (Deleting2) obj1.GetDomainObject();
+            var dom1 = (Deleting2)obj1.GetDomainObject();
 
             //Check method is visible as an action
             obj1.GetAction("Deleting").AssertIsVisible();
@@ -650,8 +636,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Disable Prop6");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
@@ -709,8 +694,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Disable Action Default");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
@@ -743,8 +727,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Disable Property Default ");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -770,8 +753,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Do Something");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
@@ -783,8 +765,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Hide Prop6");
                 Assert.Fail("'Hide Prop6' is showing as an action");
-            }
-            catch (AssertFailedException e) {
+            } catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Prop6'", e.Message);
             }
         }
@@ -842,8 +823,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Hide Action Default");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
@@ -876,8 +856,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Hide Property Default ");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -899,8 +878,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Modify Prop1");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1024,13 +1002,12 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Persisted2>();
-            var dom1 = (Persisted2) obj1.GetDomainObject();
+            var dom1 = (Persisted2)obj1.GetDomainObject();
             Assert.IsFalse(dom1.PersistedCalled);
 
             try {
                 obj1.GetAction("persisted");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1038,12 +1015,11 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void PersistedCalled() {
             ITestObject obj1 = NewTestObject<Persisted1>();
-            var dom1 = (Persisted1) obj1.GetDomainObject();
+            var dom1 = (Persisted1)obj1.GetDomainObject();
             try {
                 obj1.Save();
                 Assert.Fail("Shouldn't get to here");
-            }
-            catch (Exception) {}
+            } catch (Exception) { }
         }
 
         [TestMethod]
@@ -1052,8 +1028,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Persisted");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1065,7 +1040,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void PersistingCalled() {
             ITestObject obj1 = NewTestObject<Persisting1>();
-            var dom1 = (Persisting1) obj1.GetDomainObject();
+            var dom1 = (Persisting1)obj1.GetDomainObject();
             Assert.IsFalse(Persisting1.PersistingCalled);
 
             obj1.Save();
@@ -1079,8 +1054,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Persisting");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1095,15 +1069,13 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Saved");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
             try {
                 obj1.GetAction("Saving");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1192,13 +1164,12 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void LowerCaseNotRecognisedAndShowsAsAction() {
             var obj1 = NewTestObject<Updated2>();
-            var dom1 = (Updated2) obj1.GetDomainObject();
+            var dom1 = (Updated2)obj1.GetDomainObject();
             Assert.IsFalse(Updated2.UpdatedCalled);
 
             try {
                 obj1.GetAction("updated");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1206,13 +1177,12 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void UpdatedCalled() {
             var obj1 = NewTestObject<Updated1>();
-            var dom1 = (Updated1) obj1.GetDomainObject();
+            var dom1 = (Updated1)obj1.GetDomainObject();
             obj1.Save();
             try {
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
                 Assert.Fail("Shouldn't get to here");
-            }
-            catch (Exception) {}
+            } catch (Exception) { }
         }
 
         [TestMethod]
@@ -1221,8 +1191,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Updated");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1236,8 +1205,7 @@ namespace NakedObjects.SystemTest.Method {
             ITestObject obj1 = NewTestObject<Updating2>();
             try {
                 obj1.GetAction("Updating");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1245,14 +1213,13 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void UpdatingCalled() {
             ITestObject obj1 = NewTestObject<Updating1>();
-            var dom1 = (Updating1) obj1.GetDomainObject();
+            var dom1 = (Updating1)obj1.GetDomainObject();
             obj1.Save();
 
             try {
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
                 Assert.Fail("Should not get to here");
-            }
-            catch (Exception) {}
+            } catch (Exception) { }
         }
 
         [TestMethod]
@@ -1261,8 +1228,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Updating");
                 Assert.Fail();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
@@ -1288,24 +1254,21 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.GetAction("Validate Prop1");
                 Assert.Fail("'Validate Prop1' is showing as an action");
-            }
-            catch (AssertFailedException e) {
+            } catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop1'", e.Message);
             }
 
             try {
                 obj.GetAction("Validate0 Do Something");
                 Assert.Fail("'Validate0 Do Something' is showing as an action");
-            }
-            catch (AssertFailedException e) {
+            } catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate0 Do Something'", e.Message);
             }
 
             try {
                 obj.GetAction("Validate Do Something Else");
                 Assert.Fail("'Validate Do Something Else' is showing as an action");
-            }
-            catch (AssertFailedException e) {
+            } catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something Else'", e.Message);
             }
         }
@@ -1320,8 +1283,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 prop1.SetValue("11");
                 Assert.Fail();
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 prop1.SetValue("7");
             }
         }
@@ -1336,8 +1298,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 prop1.SetValue("bar");
                 Assert.Fail();
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 prop1.SetValue("abar");
             }
         }
@@ -1359,8 +1320,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1Prop3.SetObject(obj2b);
                 Assert.Fail();
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 obj1Prop3.SetObject(obj2a);
             }
         }
@@ -1375,11 +1335,11 @@ namespace NakedObjects.SystemTest.Method {
             ITestObject obj2b = NewTestObject<Validate2>();
             obj2b.GetPropertyByName("Prop1").SetValue("b");
 
-            action.InvokeReturnObject(new object[] {5, "abar", obj2a});
+            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
 
-            action.AssertIsInvalidWithParms(new object[] {2, "abar", obj2a}).AssertLastMessageIs("Value must be between 3 & 10");
-            action.AssertIsInvalidWithParms(new object[] {5, "bar", obj2a}).AssertLastMessageIs("Value must start with a");
-            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Invalid Object");
+            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Value must be between 3 & 10");
+            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Value must start with a");
+            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Invalid Object");
         }
 
         [TestMethod]
@@ -1392,13 +1352,12 @@ namespace NakedObjects.SystemTest.Method {
             ITestObject obj2b = NewTestObject<Validate2>();
             obj2b.GetPropertyByName("Prop1").SetValue("b");
 
-            action.InvokeReturnObject(new object[] {5, "abar", obj2a});
+            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
 
-            action.AssertIsInvalidWithParms(new object[] {2, "abar", obj2a}).AssertLastMessageIs("Something amiss");
-            action.AssertIsInvalidWithParms(new object[] {5, "bar", obj2a}).AssertLastMessageIs("Something amiss");
-            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Something amiss");
         }
-
 
         [TestMethod]
         public virtual void ValidateCrossValidationFail4() {
@@ -1409,8 +1368,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.Save();
                 Assert.Fail("Expect exception");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Expect prop1 == prop2", e.Message);
             }
         }
@@ -1422,7 +1380,6 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetPropertyByName("Prop2").SetValue("value1");
             obj.Save();
         }
-
 
         [TestMethod]
         public virtual void ValidateCrossValidationFail5A() {
@@ -1436,8 +1393,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.Save();
                 Assert.Fail("Expect exception");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
@@ -1455,8 +1411,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.Save();
                 Assert.Fail("Expect exception");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
@@ -1472,12 +1427,10 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj.Save();
                 Assert.Fail("Expect exception");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
-
 
         [TestMethod]
         public virtual void ValidateCrossValidationSuccess5() {
@@ -1491,6 +1444,17 @@ namespace NakedObjects.SystemTest.Method {
             obj.Save();
         }
 
+        //Test added because > 6 params relies on reflection rather than a delegate
+        [TestMethod]
+        public virtual void ValidateActionWithMoreThanSixParams() {
+            ITestObject obj = NewTestObject<Validate1>();
+            ITestAction action = obj.GetAction("Do Something With Many Params");
+            Assert.AreEqual(7, action.Parameters.Count());
+
+            action.AssertIsInvalidWithParms(new object[] { "y", "x", "x", "x", "x", "x", "x" });
+            action.AssertIsValidWithParms(new object[] { "x", "x", "x", "x", "x", "x", "x" });
+            action.Invoke(new object[] { "x", "x", "x", "x", "x", "x", "x" });
+        }
         #endregion
     }
 
@@ -1498,7 +1462,7 @@ namespace NakedObjects.SystemTest.Method {
 
     public class MethodsDbContext : DbContext {
         public const string DatabaseName = "TestMethods";
-        public MethodsDbContext() : base(DatabaseName) {}
+        public MethodsDbContext() : base(DatabaseName) { }
 
         public DbSet<Auto1> Auto1 { get; set; }
         public DbSet<Auto2> Auto2 { get; set; }
@@ -1570,11 +1534,11 @@ namespace NakedObjects.SystemTest.Method {
         public virtual Auto2 Prop3 { get; set; }
 
         public IQueryable<int> AutoCompleteProp1(string autoCompleteParm) {
-            return new List<int> {4, 8, 9}.AsQueryable();
+            return new List<int> { 4, 8, 9 }.AsQueryable();
         }
 
         public IQueryable<string> AutoCompleteProp2(string autoCompleteParm) {
-            return new List<string> {"Fee", "Foo", "Fuu"}.AsQueryable();
+            return new List<string> { "Fee", "Foo", "Fuu" }.AsQueryable();
         }
 
         public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
@@ -1583,7 +1547,7 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Auto2 param2) {}
+        public void DoSomething(int param0, string param1, Auto2 param2) { }
 
         public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm) {
             return AutoCompleteProp1(autoCompleteParm);
@@ -1626,7 +1590,7 @@ namespace NakedObjects.SystemTest.Method {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Auto2 param2) {}
+        public void DoSomething(int param0, string param1, Auto2 param2) { }
 
         public IQueryable<int> AutoComplete0DoSomthing(string autoCompleteParm) {
             return null;
@@ -1653,11 +1617,11 @@ namespace NakedObjects.SystemTest.Method {
         public Choices4 Prop3 { get; set; }
 
         public List<int> ChoicesProp1() {
-            return new List<int> {4, 8, 9};
+            return new List<int> { 4, 8, 9 };
         }
 
         public List<string> ChoicesProp2() {
-            return new List<string> {"Fee", "Foo", "Fuu"};
+            return new List<string> { "Fee", "Foo", "Fuu" };
         }
 
         public List<Choices4> ChoicesProp3() {
@@ -1666,7 +1630,7 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Choices2 param2) {}
+        public void DoSomething(int param0, string param1, Choices2 param2) { }
 
         public List<int> Choices0DoSomething() {
             return ChoicesProp1();
@@ -1709,7 +1673,7 @@ namespace NakedObjects.SystemTest.Method {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Choices2 param2) {}
+        public void DoSomething(int param0, string param1, Choices2 param2) { }
 
         public List<int> Choices0DoSomthing() {
             return null;
@@ -1762,7 +1726,7 @@ namespace NakedObjects.SystemTest.Method {
         public virtual string Prop3 { get; set; }
 
         //Has param
-        public void ClearProp2(string value) {}
+        public void ClearProp2(string value) { }
 
         //Non-void method
         public bool ClearProp3() {
@@ -1770,7 +1734,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         //No corresponding Prop4
-        public void ClearProp4() {}
+        public void ClearProp4() { }
     }
 
     public class Clear3 {
@@ -1850,7 +1814,7 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Default4 param2) {}
+        public void DoSomething(int param0, string param1, Default4 param2) { }
 
         public int Default0DoSomething() {
             return DefaultProp1();
@@ -1869,7 +1833,7 @@ namespace NakedObjects.SystemTest.Method {
         #region Do Something Else
 
         public void DoSomethingElse([DefaultValue(7)] int param0,
-                                    [DefaultValue("Bar")] string param1) {}
+                                    [DefaultValue("Bar")] string param1) { }
 
         public int Default0DoSomethingElse() {
             return DefaultProp1();
@@ -1902,7 +1866,7 @@ namespace NakedObjects.SystemTest.Method {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Default2 param2) {}
+        public void DoSomething(int param0, string param1, Default2 param2) { }
 
         public string Default0DoSomthing(int param0) {
             return null;
@@ -2037,9 +2001,9 @@ namespace NakedObjects.SystemTest.Method {
             return null;
         }
 
-        public void Action1() {}
+        public void Action1() { }
 
-        public void Action2(string param) {}
+        public void Action2(string param) { }
     }
 
     public class Disable2 {
@@ -2058,11 +2022,11 @@ namespace NakedObjects.SystemTest.Method {
             return "This property has been disabled by default";
         }
 
-        public void Action1() {}
+        public void Action1() { }
 
-        public void Action2(string param) {}
+        public void Action2(string param) { }
 
-        public void Action3() {}
+        public void Action3() { }
 
         public string DisableAction3() {
             return null;
@@ -2094,7 +2058,7 @@ namespace NakedObjects.SystemTest.Method {
             return false;
         }
 
-        public void Action1() {}
+        public void Action1() { }
 
         //OK
         public string DisableAction1() {
@@ -2133,7 +2097,7 @@ namespace NakedObjects.SystemTest.Method {
 
         public void Action4() { }
 
-      
+
         public string DisableAction4() {
             return "disabled";
         }
@@ -2178,9 +2142,9 @@ namespace NakedObjects.SystemTest.Method {
             return false;
         }
 
-        public void Action1() {}
+        public void Action1() { }
 
-        public void Action2(string param) {}
+        public void Action2(string param) { }
     }
 
     public class Hide2 {
@@ -2202,11 +2166,11 @@ namespace NakedObjects.SystemTest.Method {
         }
 
 
-        public void Action1() {}
+        public void Action1() { }
 
-        public void Action2(string param) {}
+        public void Action2(string param) { }
 
-        public void Action3() {}
+        public void Action3() { }
 
         public bool HideAction3() {
             return false;
@@ -2304,7 +2268,7 @@ namespace NakedObjects.SystemTest.Method {
         //Has the wrong type of parameter
 
         public virtual string Prop3 { get; set; }
-        public void ModifyProp2(int value) {}
+        public void ModifyProp2(int value) { }
 
         //Non-void method
         public bool ModifyProp3(string value) {
@@ -2312,7 +2276,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         //No corresponding Prop4
-        public void ModifyProp4(string value) {}
+        public void ModifyProp4(string value) { }
     }
 
     public class Modify3 {
@@ -2413,9 +2377,9 @@ namespace NakedObjects.SystemTest.Method {
         public virtual int Id { get; set; }
 
 
-        public void Saved() {}
+        public void Saved() { }
 
-        public void Saving() {}
+        public void Saving() { }
     }
 
     #endregion
@@ -2555,7 +2519,7 @@ namespace NakedObjects.SystemTest.Method {
             Container.Persist(ref t3);
 
             var tb = Container.NewTitleBuilder();
-            tb.Append("&","x"); //  "x";
+            tb.Append("&", "x"); //  "x";
             tb.Append("&", "y"); //  "x& y";
             tb.Append("y"); //  "x& y y";
             //Append objects, each having different title mechanisms
@@ -2683,7 +2647,7 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Validate2 param2) {}
+        public void DoSomething(int param0, string param1, Validate2 param2) { }
 
         public string Validate0DoSomething(int value) {
             return ValidateProp1(value);
@@ -2701,13 +2665,22 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something Else
 
-        public void DoSomethingElse(int param0, string param1, Validate2 param2) {}
+        public void DoSomethingElse(int param0, string param1, Validate2 param2) { }
 
         public string ValidateDoSomethingElse(int param0, string param1, Validate2 param2) {
             if (ValidateProp1(param0) != null || ValidateProp2(param1) != null || ValidateProp3(param2) != null) {
                 return "Something amiss";
             }
             return null;
+        }
+
+        #endregion
+
+        #region DoSomethingWithManyParams
+        public void DoSomethingWithManyParams(string param0, string param1, string param2, string param3, string param4, string param5, string param6) { }
+
+        public string ValidateDoSomethingWithManyParams(string param0, string param1, string param2, string param3, string param4, string param5, string param6) {
+            return param0 != "x" ? "Invalid" : null;
         }
 
         #endregion
@@ -2738,7 +2711,7 @@ namespace NakedObjects.SystemTest.Method {
             return null;
         }
 
-        public void DoSomething(int par1) {}
+        public void DoSomething(int par1) { }
 
         public string ValidateDoSomething(decimal par1) {
             return null;
