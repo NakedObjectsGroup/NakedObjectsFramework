@@ -77,6 +77,10 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new System.NotImplementedException();
         }
 
+        public void Resolve() {
+            throw new System.NotImplementedException();
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { throw new System.NotImplementedException(); }
         }

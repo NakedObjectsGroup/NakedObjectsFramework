@@ -227,6 +227,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return FullName;
                 case (ScalarProperty.SingularName):
                     return SingularName;
+                case (ScalarProperty.UntitledName):
+                    return UntitledName;
                 case (ScalarProperty.PluralName):
                     return PluralName;
                 case (ScalarProperty.Description):
@@ -268,6 +270,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        public string UntitledName {
+            get { return spec.UntitledName; }
         }
     }
 }

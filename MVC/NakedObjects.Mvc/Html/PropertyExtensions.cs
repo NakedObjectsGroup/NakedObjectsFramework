@@ -400,10 +400,16 @@ namespace NakedObjects.Web.Mvc.Html {
         /// include all the properties of the domain object as hidden fields  
         /// </summary>
         public static MvcHtmlString PropertyListEditHidden(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            var  nakedObject = html.Surface().GetObject(domainObject);
             var fields = html.EditObjectFields(nakedObject, null, x => false, null);
             return MvcHtmlString.Create(ElementDescriptor.BuildElementSet(fields).ToString());
         }
+
+        //public static MvcHtmlString PropertyListEditHidden(this HtmlHelper html, object domainObject) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+        //    var fields = html.EditObjectFields(nakedObject, null, x => false, null);
+        //    return MvcHtmlString.Create(ElementDescriptor.BuildElementSet(fields).ToString());
+        //}
 
         /// <summary>
         ///  Display all the properties of the domain object in edit fields, with action dialog or collection view
@@ -423,6 +429,16 @@ namespace NakedObjects.Web.Mvc.Html {
                 IdConstants.FieldContainerName,
                 html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
+
+        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
+            var nakedObject = html.Surface().GetObject(contextObject);
+            var target = html.Surface().GetObject(targetObject);
+            return html.BuildEditContainer(nakedObject,
+                html.EditObjectFields(contextObject, new ActionContextNew(html.IdHelper(), true, target, targetAction), propertyName, actionResult, true),
+                IdConstants.FieldContainerName,
+                html.IdHelper().GetFieldContainerId(nakedObject));
+        }
+
 
         /// <summary>
         ///  Display identified property of the domain object in edit fields, with action dialog or collection view

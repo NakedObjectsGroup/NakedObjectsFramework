@@ -144,10 +144,18 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Display name of object with icon
         /// </summary>
+        //public static MvcHtmlString Object(this HtmlHelper html, object model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
+        //    string title = nakedObject.Spec.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
+        //    title = string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
+        //    return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdConstants.ObjectName);
+        //}
+
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
-            INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
-            string title = nakedObject.Spec.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
-            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
+            var nakedObject = html.Surface().GetObject(model);
+
+            string title = nakedObject.Specification.IsCollection() ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
+            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName() : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdConstants.ObjectName);
         }
 
@@ -157,6 +165,23 @@ namespace NakedObjects.Web.Mvc.Html {
             title = model.Action.Name() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
+
+        private static string GetCollectionTitle(INakedObjectSurface nakedObject, HtmlHelper html) {
+            int pageSize, maxPage, currentPage, total;
+            int count = nakedObject.ToEnumerable().Count();
+            if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
+                total = count;
+            }
+
+            string queryInd = nakedObject.Specification.IsQueryable() ? MvcUi.QueryResult + ": " : "";
+            int viewSize = count;
+
+            var typeSpec = nakedObject.ElementSpecification;
+            string type = total == 1 ? typeSpec.SingularName() : typeSpec.PluralName();
+
+            return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);
+        }
+
 
         private static string GetCollectionTitle(INakedObjectAdapter nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;

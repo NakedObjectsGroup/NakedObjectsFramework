@@ -50,6 +50,5 @@ namespace NakedObjects.Surface {
 
         INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec,  object domainObject);
         INakedObjectSurface GetObject(object domainObject);
-
     }
 }

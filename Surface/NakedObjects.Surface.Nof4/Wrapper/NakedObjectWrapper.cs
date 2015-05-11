@@ -65,6 +65,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #region INakedObjectSurface Members
 
+        public void Resolve() {
+            if (nakedObject.ResolveState.IsResolvable()) {
+                nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
+                nakedObject.ResolveState.Handle(Events.EndResolvingEvent);
+            }
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
         }

@@ -46,11 +46,19 @@ namespace NakedObjects.Web.Mvc.Html {
             return collections.Select(c => html.Collection(c.ToEnumerable(), (INakedObjectActionSurface)null, defaultTo)).ToArray();
         }
 
+        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
+            return html.Collection(collection, action, IdConstants.TableDisplayFormat);
+        }
+
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
             return html.Collection(collection, action, IdConstants.TableDisplayFormat);
         }
 
         public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
+            return html.Collection(collection, action);
+        }
+
+        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
             return html.Collection(collection, action);
         }
 

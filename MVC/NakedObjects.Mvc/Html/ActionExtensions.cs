@@ -16,6 +16,7 @@ using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
@@ -29,9 +30,12 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the id for an action dialog
         /// </summary>
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
+            //var nakedObject = html.Surface().GetObject(domainObject);
+            //return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
+            throw new UnexpectedCallException();
         }
+
+      
 
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, INakedObjectActionSurface action) {
             INakedObjectSurface nakedObject = html.Surface().GetObject(domainObject);
@@ -132,6 +136,11 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ParameterList(this HtmlHelper html, object context, IActionSpec action) {
             var actionContext = new ActionContext(html.IdHelper(), false, html.Framework().GetNakedObject(context), action);
+            return html.ParameterList(actionContext);
+        }
+
+        public static MvcHtmlString ParameterList(this HtmlHelper html, object context, INakedObjectActionSurface action) {
+            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(context), action);
             return html.ParameterList(actionContext);
         }
 
@@ -255,12 +264,20 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Create menu from actions of domainObject
         /// </summary>
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            var nakedObject = html.Surface().GetObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
                 IdConstants.MenuContainerName,
-                html.IdHelper().GetActionContainerId(ScaffoldAdapter.Wrap(nakedObject)),
-                html.IdHelper().GetActionLabel(ScaffoldAdapter.Wrap(nakedObject)));
+                html.IdHelper().GetActionContainerId(nakedObject),
+                html.IdHelper().GetActionLabel(nakedObject));
         }
+
+        //public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
+        //    var nakedObject = html.Framework().GetNakedObject(domainObject);
+        //    return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
+        //        IdConstants.MenuContainerName,
+        //        html.IdHelper().GetActionContainerId(ScaffoldAdapter.Wrap(nakedObject)),
+        //        html.IdHelper().GetActionLabel(ScaffoldAdapter.Wrap(nakedObject)));
+        //}
 
         /// <summary>
         ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter

@@ -205,6 +205,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string GetTitle(INakedObjectSurface nakedObject) {
+
             var enumFacet = assoc.GetFacet<IEnumFacet>();
     
             if (enumFacet != null) {

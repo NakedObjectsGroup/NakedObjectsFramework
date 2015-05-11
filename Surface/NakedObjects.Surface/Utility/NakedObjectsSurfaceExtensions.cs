@@ -349,6 +349,11 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSpecificationSurface.GetScalarProperty<string>(ScalarProperty.FullName);
         }
 
+        // todo should remove this and move title stuff down
+        public static string UntitledName(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<string>(ScalarProperty.UntitledName);
+        }
+
         public static string SingularName(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<string>(ScalarProperty.SingularName);
         }

@@ -136,8 +136,13 @@ namespace NakedObjects.Web.Mvc.Html {
         //    return html.ObjectIcon(nakedObject) + html.ObjectLink(linkText, actionName, model, withTitleAttr);
         //}
 
+        //internal static string ObjectIconAndDetailsLink(this HtmlHelper html, string linkText, string actionName, object model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
+        //    return html.ObjectIcon(nakedObject) + html.ObjectTitle(model) + html.ObjectLink(MvcUi.Details, actionName, model);
+        //}
+
         internal static string ObjectIconAndDetailsLink(this HtmlHelper html, string linkText, string actionName, object model) {
-            INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model, null, null);
+            var nakedObject = html.Surface().GetObject(model);
             return html.ObjectIcon(nakedObject) + html.ObjectTitle(model) + html.ObjectLink(MvcUi.Details, actionName, model);
         }
 
@@ -173,7 +178,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string CollectionLink(this HtmlHelper html, string linkText, string actionName, object domainObject) {
-            var data = new RouteValueDictionary(new {id = html.Framework().GetObjectId(domainObject)});
+            var no = html.Surface().GetObject(domainObject);
+            var data = new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(no)});
             UpdatePagingValues(html, data);
             return GetSubmitButton(null, linkText, actionName, data);
         }
@@ -733,7 +739,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<ElementDescriptor> GetCollectionSelectedElements(this HtmlHelper html, INakedObjectSurface nakedObject) {
    
             if (nakedObject.IsCollectionMemento()) {
-                string[] selectedObjectIds = nakedObject.GetSelected().Select(html.Framework().GetObjectId).ToArray();
+                var selectedObjects = nakedObject.GetSelected();
+                var selectedObjectIds = selectedObjects.Select(o => html.Surface().GetObject(o)).Select(no => html.Surface().OidStrategy.GetObjectId(no)).ToArray();
                 int index = 0;
                 return selectedObjectIds.Select(id => new ElementDescriptor {
                     TagType = "input",
@@ -768,6 +775,13 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             return new ElementDescriptor[] {};
+        }
+
+        internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html, object contextObject, ActionContextNew targetActionContext, string propertyName, IEnumerable actionResult, bool all) {
+            var contextNakedObject = html.Surface().GetObject(contextObject);
+            var actionContext = new ActionContextNew(html.IdHelper(), false, contextNakedObject, null);
+            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => html.Surface().GetObject(x).IsTransient());
+            return html.EditObjectFields(contextNakedObject, null, x => all || x.Id == propertyName, null, false, childElements, propertyName);
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html, object contextObject, ActionContext targetActionContext, string propertyName, IEnumerable actionResult, bool all) {
@@ -1509,7 +1523,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     int i = index++;
                     string id = "checkbox" + i;
                     string label = GetLabelTag(true, (i + 1).ToString(CultureInfo.InvariantCulture), () => id);
-                    cbTag.InnerHtml += (label + html.CheckBox(html.Framework().GetObjectId(item), defaultChecked, new { id, @class = IdConstants.CheckboxClass }));
+                    cbTag.InnerHtml += (label + html.CheckBox(html.Surface().OidStrategy.GetObjectId(item), defaultChecked, new { id, @class = IdConstants.CheckboxClass }));
                     row.InnerHtml += cbTag.ToString();
                 }
 
@@ -1783,7 +1797,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetAutoCompleteTextBox(this HtmlHelper html, ParameterContextNew context, RouteValueDictionary htmlAttributes, INakedObjectSurface valueNakedObject) {
-            string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(context.Target), actionName = context.Action.Id, parameterIndex = context.Parameter.Number() }));
+            string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new { id = html.Surface().OidStrategy.GetObjectId(context.Target), actionName = context.Action.Id, parameterIndex = context.Parameter.Number() }));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Parameter, completionAjaxUrl);
             attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Parameter, valueNakedObject);
@@ -1791,7 +1805,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetAutoCompleteTextBox(this HtmlHelper html, PropertyContextNew context, RouteValueDictionary htmlAttributes, INakedObjectSurface valueNakedObject) {
-            string completionAjaxUrl = html.GenerateUrl("GetPropertyCompletions", "Ajax", new RouteValueDictionary(new { id = html.Framework().GetObjectId(context.Target), propertyId = context.Property.Id }));
+            string completionAjaxUrl = html.GenerateUrl("GetPropertyCompletions", "Ajax", new RouteValueDictionary(new { id = html.Surface().OidStrategy.GetObjectId(context.Target), propertyId = context.Property.Id }));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Property, completionAjaxUrl);
             attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Property, valueNakedObject);
@@ -1941,13 +1955,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetTextOrRefFieldValue(this HtmlHelper html, PropertyContextNew propertyContext, INakedObjectSurface valueNakedObject, bool inTable = false) {
            
-            // todo
-            //if (valueNakedObject.Specification.IsCollection()) {
-            //    if (valueNakedObject.ResolveState.IsResolvable()) {
-            //        valueNakedObject.ResolveState.Handle(Events.StartResolvingEvent);
-            //        valueNakedObject.ResolveState.Handle(Events.EndResolvingEvent);
-            //    }
-            //}
+           
+            if (valueNakedObject.Specification.IsCollection()) {
+                valueNakedObject.Resolve();
+            }
 
             string link = "{0}";
 
@@ -2068,9 +2079,9 @@ namespace NakedObjects.Web.Mvc.Html {
             title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
 
             string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
-                html.Framework().GetObjectTypeName(propertyContext.Target.Object),
+                html.Surface().GetObjectTypeName(propertyContext.Target.Object),
                 new RouteValueDictionary(new {
-                    Id = html.Framework().GetObjectId(propertyContext.Target),
+                    Id = html.Surface().OidStrategy.GetObjectId(propertyContext.Target),
                     PropertyId = propertyContext.Property.Id
                 }));
 
@@ -2605,7 +2616,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (choice.Specification.IsParseable()) {
                 return choice.TitleString();
             }
-            return html.Framework().GetObjectId(choice);
+            return html.Surface().OidStrategy.GetObjectId(choice);
         }
 
         private static string GetValueForChoice(this HtmlHelper html, INakedObjectAdapter choice) {
@@ -3177,7 +3188,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string id) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ObjectName);
-            string value = html.Framework().GetObjectId(item);
+            string value = html.Surface().OidStrategy.GetObjectId(item);
             tag.InnerHtml += html.Hidden(id, value, new { id = string.Empty }).ToString();
             return tag.ToString();
         }
@@ -3370,7 +3381,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static ElementDescriptor GetSelectionCollection(this HtmlHelper html, INakedObjectSurface collectionNakedObject, INakedObjectSurface targetNakedObject, string propertyName) {
             Func<INakedObjectSurface, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdConstants.ViewAction, item.Object) + " " +
-                                                                    GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new { id = html.Framework().GetObjectId(targetNakedObject) }) { { propertyName, html.Framework().GetObjectId(item) } }), IdConstants.ObjectName).ToString();
+                                                                    GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new { id = html.Surface().OidStrategy.GetObjectId(targetNakedObject) }) { { propertyName, html.Surface().OidStrategy.GetObjectId(item) } }), IdConstants.ObjectName).ToString();
 
             return new ElementDescriptor {
                 TagType = "div",
@@ -4434,7 +4445,7 @@ namespace NakedObjects.Web.Mvc.Html {
             });
 
             if (subEditNakedObject != null) {
-                data.Add("subEditObjectId", html.Framework().GetObjectId(subEditNakedObject));
+                data.Add("subEditObjectId", html.Surface().OidStrategy.GetObjectId(subEditNakedObject));
             }
 
             UpdatePagingValues(html, data);

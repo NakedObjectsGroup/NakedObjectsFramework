@@ -24,5 +24,6 @@ namespace NakedObjects.Surface {
         AttachmentContext GetAttachment();
 
         object[] GetSelected();
+        void Resolve();
     }
 }

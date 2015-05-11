@@ -63,6 +63,7 @@ namespace NakedObjects.Surface {
         Range,
         RegEx,
         IsFindMenuEnabled,
-        PresentationHint
+        PresentationHint,
+        UntitledName
     }
 }

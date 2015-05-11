@@ -239,9 +239,13 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private string CollectionTitleString(ICollectionFacet facet) {
-            int size = ElementsLoaded() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
+            int size =  CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
             var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
+        }
+
+        private bool CanCount() {
+            return !Spec.ContainsFacet<INotCountedFacet>();
         }
 
         private bool ElementsLoaded() {
