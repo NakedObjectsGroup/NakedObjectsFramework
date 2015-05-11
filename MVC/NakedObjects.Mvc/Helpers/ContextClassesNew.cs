@@ -6,11 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Web.Routing;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 
@@ -73,10 +70,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public bool IsPropertyEdit { get; set; }
 
         public bool IsFindMenuEnabled() {
-            //if (Property is IOneToOneAssociationSpec) {
-            //    return (Property as IOneToOneAssociationSpec).IsFindMenuEnabled;
-            //}
-            return false;
+            return Property.IsFindMenuEnabled();
         }
 
         public ObjectContextNew OuterContext {
@@ -99,9 +93,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            //var facet = Property.GetFacet<IPresentationHintFacet>();
-            //return facet == null ? "" : " " + facet.Value;
-            return null;
+            return Property.PresentationHint();
         }
 
         public string GetFieldClass() {
@@ -184,10 +176,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            // todo
-            //var facet = Action == null ? null : Action.GetFacet<IPresentationHintFacet>();
-            //return facet == null ? "" : " " + facet.Value;
-            return null;
+            return Action != null ? Action.PresentationHint() : "";
         }
 
         private bool IsFileActionNoParms() {        
@@ -207,7 +196,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public string GetFindMenuId(string propertyName) {
-            return IdHelper.GetFindMenuId((Target), (Action), propertyName);
+            return IdHelper.GetFindMenuId(Target, Action, propertyName);
         }
     }
 
@@ -225,12 +214,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public bool IsHidden { get; set; }
 
         public bool IsFindMenuEnabled() {
-            // todo
-            //if (Parameter is IOneToOneActionParameterSpec) {
-            //    var p = Parameter as IOneToOneActionParameterSpec;
-            //    return p.IsFindMenuEnabled && (!p.Action.IsContributedMethod || !Target.Spec.IsOfType(p.Spec));
-            //}
-            return false;
+            return Parameter.IsFindMenuEnabled() && (!Parameter.Action.IsContributed() || !Target.Specification.IsOfType(Parameter.Specification));
         }
 
         public INakedObjectActionParameterSurface Parameter { get; set; }
@@ -256,10 +240,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            // todo
-            //var facet = Parameter == null ? null : Parameter.GetFacet<IPresentationHintFacet>();
-            //return facet == null ? "" : " " + facet.Value;
-            return null;
+            return Parameter.PresentationHint();
         }
 
         public string GetParameterClass() {

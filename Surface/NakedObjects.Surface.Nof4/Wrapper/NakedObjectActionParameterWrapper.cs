@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -256,16 +257,51 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return TypicalLength;
                 case (ScalarProperty.IsNullable):
                     return IsNullable;
+                case (ScalarProperty.IsAjax):
+                    return IsAjax;
                 case (ScalarProperty.IsPassword):
                     return IsPassword;
                 case (ScalarProperty.NumberOfLines):
                     return NumberOfLines;
                 case (ScalarProperty.Width):
                     return Width;
+                case (ScalarProperty.Range):
+                    return Range;
+                case (ScalarProperty.RegEx):
+                    return RegEx;
+                case (ScalarProperty.PresentationHint):
+                    return PresentationHintValue;
+                case (ScalarProperty.IsFindMenuEnabled):
+                    return IsFindMenuEnabled;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object IsFindMenuEnabled {
+            get { return (nakedObjectActionParameter is IOneToOneActionParameterSpec) && ((IOneToOneActionParameterSpec) nakedObjectActionParameter).IsFindMenuEnabled; }
+        }
+
+        public Tuple<Regex, string> RegEx {
+            get {
+                var regEx = nakedObjectActionParameter.GetFacet<IRegExFacet>();
+                return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
+            }
+        }
+
+        public Tuple<IConvertible, IConvertible, bool> Range {
+            get {
+                var rangeFacet = nakedObjectActionParameter.GetFacet<IRangeFacet>();
+                return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
+            }
+        }
+
+
+        public object IsAjax {
+            get {
+                return !nakedObjectActionParameter.ContainsFacet<IAjaxFacet>();
             }
         }
 
@@ -297,6 +333,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get {
                 var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 1 : multiline.NumberOfLines;
+            }
+        }
+
+        public object PresentationHintValue {
+            get {
+                var hintFacet = nakedObjectActionParameter.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? null : hintFacet.Value;
             }
         }
     }

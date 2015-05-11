@@ -564,7 +564,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString ObjectAction(this HtmlHelper html, object model, string id, object paramValues = null) {
             var nakedObject = html.Surface().GetObject(model);
-            var action = nakedObject.Specification.GetActionLeafNodes().SingleOrDefault(a => a.Id == id);
+            var action = nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == id);
             ValidateParamValues(action, paramValues);
             return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContextNew(html.IdHelper(), nakedObject, action) { ParameterValues = new RouteValueDictionary(paramValues) });
         }

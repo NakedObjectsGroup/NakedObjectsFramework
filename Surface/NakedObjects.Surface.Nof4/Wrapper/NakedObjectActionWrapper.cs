@@ -171,6 +171,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return TableViewData;
                 case (ScalarProperty.RenderEagerly):
                     return RenderEagerly;
+                case (ScalarProperty.PresentationHint):
+                    return PresentationHintValue;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
@@ -193,6 +195,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private int PageSize {
             get {
                 return action.GetFacet<IPageSizeFacet>().Value;
+            }
+        }
+
+
+        public string PresentationHintValue {
+            get {
+                var hintFacet = action.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? null : hintFacet.Value;
             }
         }
     }

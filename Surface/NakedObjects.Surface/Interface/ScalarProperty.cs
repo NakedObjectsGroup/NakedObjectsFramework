@@ -58,6 +58,11 @@ namespace NakedObjects.Surface {
         RenderEagerly,
         DoNotCount,
         IsPassword,
-        EnumIntegralValue
+        EnumIntegralValue,
+        IsAjax,
+        Range,
+        RegEx,
+        IsFindMenuEnabled,
+        PresentationHint
     }
 }

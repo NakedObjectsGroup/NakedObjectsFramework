@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
@@ -2844,7 +2845,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     value = ToNameValuePairs(new {
                         spec = spec.FullName(),
                         contextObjectId = html.Surface().OidStrategy.GetObjectId(actionContext.Target),
-                        contextActionId = actionContext.Action.Id,
+                        contextActionId = actionContext.Action == null ? "" :  actionContext.Action.Id,
                         propertyName
                     })
                 })
@@ -3631,17 +3632,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return (propertyContext.Property.IsMandatory() && propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed);
         }
 
-       
-
-        private static bool IsMandatory(this HtmlHelper html, FeatureContextNew context) {
-            if (context is PropertyContextNew) {
-                return html.IsMandatory(context as PropertyContextNew);
-            }
-            if (context is ParameterContextNew) {
-                return html.IsMandatory(context as ParameterContextNew);
-            }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
-        }
+         
 
         private static bool IsMandatory(this HtmlHelper html, ParameterContext parameterContext) {
             return (parameterContext.Parameter.IsMandatory && parameterContext.Parameter.IsUsable(parameterContext.Target).IsAllowed);
@@ -3665,6 +3656,16 @@ namespace NakedObjects.Web.Mvc.Html {
             throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
+        private static bool IsMandatory(this HtmlHelper html, FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return html.IsMandatory(context as PropertyContextNew);
+            }
+            if (context is ParameterContextNew) {
+                return html.IsMandatory(context as ParameterContextNew);
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+        }
+
         private static bool IsAutoComplete(FeatureContext context) {
             if (context is PropertyContext) {
                 var assoc = ((context as PropertyContext).Property) as IOneToOneAssociationSpec;
@@ -3675,6 +3676,27 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
+
+        private static bool IsAutoComplete(FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return (context as PropertyContextNew).Property.IsAutoCompleteEnabled;
+            }
+            if (context is ParameterContextNew) {
+                return (context as ParameterContextNew).Parameter.IsAutoCompleteEnabled;
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+        }
+
+        private static bool IsAjax(FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return (context as PropertyContextNew).Property.IsAjax();
+            }
+            if (context is ParameterContextNew) {
+                return (context as ParameterContextNew).Parameter.IsAjax();
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+        }
+
 
         private static string GetMandatoryIndicator(this HtmlHelper html, FeatureContextNew context) {
             return html.IsMandatory(context) ? html.MandatoryIndicator() : string.Empty;
@@ -3847,6 +3869,19 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
+        private static void RangeValidation(RangeData rangeData, RouteValueDictionary htmlAttributes) {
+            //Because JQuery client-side validation will not work for Date fields
+
+            if (rangeData.IsValid && !rangeData.IsDateRange) {
+                htmlAttributes["data-val"] = "true";
+                htmlAttributes["data-val-number"] = MvcUi.InvalidEntry;
+                htmlAttributes["data-val-range-min"] = rangeData.Min;
+                htmlAttributes["data-val-range-max"] = rangeData.Max;
+                htmlAttributes["data-val-range"] = string.Format(Resources.NakedObjects.RangeMismatch, rangeData.Min, rangeData.Max);
+            }
+        }
+
+
         private static void RegExValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
             var regexFacet = facet as IRegExFacet;
 
@@ -3854,6 +3889,15 @@ namespace NakedObjects.Web.Mvc.Html {
                 htmlAttributes["data-val"] = "true";
                 htmlAttributes["data-val-regex-pattern"] = regexFacet.Pattern.ToString();
                 htmlAttributes["data-val-regex"] = regexFacet.FailureMessage ?? MvcUi.InvalidEntry;
+            }
+        }
+
+        private static void RegExValidation(RegexData regexData, RouteValueDictionary htmlAttributes) {
+
+            if (regexData.IsValid) {
+                htmlAttributes["data-val"] = "true";
+                htmlAttributes["data-val-regex-pattern"] = regexData.Pattern;
+                htmlAttributes["data-val-regex"] = regexData.FailureMessage ?? MvcUi.InvalidEntry;
             }
         }
 
@@ -3865,6 +3909,43 @@ namespace NakedObjects.Web.Mvc.Html {
                 htmlAttributes["data-val-length-max"] = maxLengthFacet.Value;
                 htmlAttributes["data-val-length"] = string.Format(Resources.NakedObjects.MaximumLengthMismatch, maxLengthFacet.Value);
             }
+        }
+
+        private static void MaxlengthValidation(int maxlength, RouteValueDictionary htmlAttributes) {
+            if (maxlength > 0) {
+                htmlAttributes["data-val"] = "true";
+                htmlAttributes["data-val-length-max"] = maxlength;
+                htmlAttributes["data-val-length"] = string.Format(Resources.NakedObjects.MaximumLengthMismatch, maxlength);
+            }
+        }
+
+        private static void AddRemoteValidation(this HtmlHelper html, FeatureContextNew context, RouteValueDictionary htmlAttributes) {
+            htmlAttributes["data-val"] = "true";
+            htmlAttributes["data-val-remote"] = MvcUi.InvalidEntry;
+
+            string action;
+            RouteValueDictionary routeValueDictionary;
+
+            if (context is PropertyContextNew) {
+                var propertyContext = context as PropertyContextNew;
+                action = "ValidateProperty";
+                routeValueDictionary = new RouteValueDictionary(new {
+                    id = html.Surface().OidStrategy.GetObjectId(propertyContext.Target),
+                    propertyName = propertyContext.Property.Id
+                });
+            }
+            else {
+                // (context is ParameterContext)
+                var parameterContext = context as ParameterContextNew;
+                action = "ValidateParameter";
+                routeValueDictionary = new RouteValueDictionary(new {
+                    id = html.Surface().OidStrategy.GetObjectId(parameterContext.Target),
+                    actionName = parameterContext.Action.Id,
+                    parameterName = parameterContext.Parameter.Id
+                });
+            }
+
+            htmlAttributes["data-val-remote-url"] = html.GenerateUrl(action, "Ajax", routeValueDictionary);
         }
 
         private static void AddRemoteValidation(this HtmlHelper html, FeatureContext context, RouteValueDictionary htmlAttributes) {
@@ -3897,20 +3978,99 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static void AddClientValidationAttributes(this HtmlHelper html, FeatureContextNew context, RouteValueDictionary htmlAttributes) {
-            //if (html.IsMandatory(context)) {
-            //    htmlAttributes["data-val"] = "true";
-            //    htmlAttributes["data-val-required"] = MvcUi.Mandatory;
-            //}
+            if (html.IsMandatory(context)) {
+                htmlAttributes["data-val"] = "true";
+                htmlAttributes["data-val-required"] = MvcUi.Mandatory;
+            }
 
-            //// remote validation and autocomplete on reference fields do not play nicely together as the actual value is in the hidden field
-            //if (IsAjax(context) && !IsAutoComplete(context)) {
-            //    html.AddRemoteValidation(context, htmlAttributes);
-            //}
+            // remote validation and autocomplete on reference fields do not play nicely together as the actual value is in the hidden field
+            if (IsAjax(context) && !IsAutoComplete(context)) {
+                html.AddRemoteValidation(context, htmlAttributes);
+            }
+
+            var range = GetRange(context);
+            var regex = GetRegex(context);
+            var maxLength = GetMaxlength(context).GetValueOrDefault(0);
+
+            RangeValidation(range, htmlAttributes);
+
+            RegExValidation(regex, htmlAttributes);
+
+            MaxlengthValidation(maxLength, htmlAttributes);
 
             //var supportedFacetTypes = new List<Type> { typeof(IRangeFacet), typeof(IRegExFacet), typeof(IMaxLengthFacet) };
             //IEnumerable<IFacet> facets = supportedFacetTypes.Select(ft => context.Feature.GetFacet(ft));
 
             //facets.ForEach(f => ClientValidationHandlers.ForEach(a => a(f, htmlAttributes)));
+        }
+
+        private static int? GetMaxlength(FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return (context as PropertyContextNew).Property.MaxLength();
+            }
+            if (context is ParameterContextNew) {
+                return (context as ParameterContextNew).Parameter.MaxLength();
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+        }
+
+        private class RegexData {
+            public RegexData(Tuple<Regex, string> tuple) {
+                if (tuple == null) {
+                    IsValid = false;
+                    return;
+                }
+
+                Pattern = tuple.Item1.ToString();
+                FailureMessage = tuple.Item2;
+                IsValid = true;
+            }
+
+            public bool IsValid { get; set; }
+
+            public string FailureMessage { get; set; }
+            public object Pattern { get; set; }
+        }
+
+        private static RegexData GetRegex(FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return new RegexData((context as PropertyContextNew).Property.RegEx());
+            }
+            if (context is ParameterContextNew) {
+                return new RegexData((context as ParameterContextNew).Parameter.RegEx());
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+        }
+
+        private class RangeData {
+            public RangeData(Tuple<IConvertible, IConvertible, bool> tuple ) {
+
+                if (tuple == null) {
+                    IsValid = false;
+                    return;
+                }
+
+                Min = tuple.Item1.ToString(CultureInfo.InvariantCulture);
+                Max = tuple.Item1.ToString(CultureInfo.InvariantCulture);
+                IsDateRange = tuple.Item3;
+                IsValid = true;
+            }
+
+            public string Min { get; set; }
+            public string Max { get; set; }
+
+            public bool IsDateRange { get; set; }
+            public bool IsValid { get; set; } 
+        }
+
+        private static RangeData GetRange(FeatureContextNew context) {
+            if (context is PropertyContextNew) {
+                return new RangeData((context as PropertyContextNew).Property.Range());
+            }
+            if (context is ParameterContextNew) {
+                return new RangeData((context as ParameterContextNew).Parameter.Range());
+            }
+            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private static void AddClientValidationAttributes(this HtmlHelper html, FeatureContext context, RouteValueDictionary htmlAttributes) {
@@ -4269,7 +4429,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 targetActionId = targetActionContext.Action.Id, //e.g.  FindEmployeeByName
                 targetObjectId = html.Surface().OidStrategy.GetObjectId(targetActionContext.Target), //e.g. Expenses.ExpenseEmployees.EmployeeRepository;1;System.Int32;0;False;;0
                 contextObjectId = html.Surface().OidStrategy.GetObjectId(actionContext.Target), //e.g. Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0
-                contextActionId = actionContext.Action.Id, //e.g. Approver
+                contextActionId = actionContext.Action == null ? "" : actionContext.Action.Id, //e.g. Approver
                 propertyName
             });
 
@@ -4439,7 +4599,8 @@ namespace NakedObjects.Web.Mvc.Html {
             var finderActions = fieldSpec.GetFinderActions();
             var descriptors = new List<ElementDescriptor>();
             foreach (var finderAction in finderActions) {
-                var service = html.Surface().GetService(html.Surface().OidStrategy.GetOid(finderAction.OnType.FullName())).Target;
+                var serviceSpec = finderAction.OnType;
+                var service = html.Surface().GetServices().List.Single(s => s.Specification.Equals(serviceSpec));
                 var targetActionContext = new ActionContextNew(html.IdHelper(), service, finderAction);
                 var ed = html.GetActionElementDescriptor(targetActionContext, actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
                 descriptors.Add(ed);
@@ -4450,19 +4611,12 @@ namespace NakedObjects.Web.Mvc.Html {
         #endregion
 
         #region private
-        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectAssociationSurface holder, INakedObjectSurface nakedObject) {
-            //var mask = holder.GetFacet<IMaskFacet>();
-            //string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().NakedObjectManager) : nakedObject.TitleString();
-            //return string.IsNullOrWhiteSpace(title) && !nakedObject.Spec.IsParseable ? nakedObject.Spec.UntitledName : title;
-            return ""; // todo
+        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectAssociationSurface holder, INakedObjectSurface nakedObject) {      
+            return holder.GetMaskedValue(nakedObject);
         }
 
-        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectActionParameterSurface holder, INakedObjectSurface nakedObject) {
-            //var mask = holder.GetFacet<IMaskFacet>();
-            //string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().NakedObjectManager) : nakedObject.TitleString();
-            //return string.IsNullOrWhiteSpace(title) && !nakedObject.Spec.IsParseable ? nakedObject.Spec.UntitledName : title;
-            return ""; // todo
-
+        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectActionParameterSurface holder, INakedObjectSurface nakedObject) {     
+            return holder.GetMaskedValue(nakedObject);
         }
 
 

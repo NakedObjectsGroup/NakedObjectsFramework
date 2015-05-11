@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -288,10 +289,51 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return DoNotCount;
                 case (ScalarProperty.IsNullable):
                     return IsNullable;
+                case (ScalarProperty.IsAjax):
+                    return IsAjax;
                 case (ScalarProperty.IsPassword):
                     return IsPassword;
+                case (ScalarProperty.Range):
+                    return Range;
+                case (ScalarProperty.RegEx):
+                    return RegEx;
+                case (ScalarProperty.IsFindMenuEnabled):
+                    return IsFindMenuEnabled;
+                case (ScalarProperty.PresentationHint):
+                    return PresentationHintValue;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object PresentationHintValue {
+            get {
+                var hintFacet = assoc.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? "" : hintFacet.Value;
+            }
+        }
+
+        public bool IsFindMenuEnabled {
+            get { return assoc is IOneToOneAssociationSpec && ((IOneToOneAssociationSpec) assoc).IsFindMenuEnabled; }
+        }
+
+        public Tuple<Regex, string> RegEx {
+            get {
+                var regEx = assoc.GetFacet<IRegExFacet>();
+                return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
+            }
+        }
+
+        public Tuple<IConvertible, IConvertible, bool> Range {
+            get {
+                var rangeFacet = assoc.GetFacet<IRangeFacet>();
+                return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
+            }
+        }
+
+        public object IsAjax {
+            get {
+                return !assoc.ContainsFacet<IAjaxFacet>();
             }
         }
 

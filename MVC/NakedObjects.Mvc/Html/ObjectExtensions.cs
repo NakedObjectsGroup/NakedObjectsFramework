@@ -127,8 +127,7 @@ namespace NakedObjects.Web.Mvc.Html {
         //}
 
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            var oid = html.Surface().OidStrategy.GetOid(model);
-            var nakedObject = html.Surface().GetObject(oid).Target;
+            var nakedObject = html.Surface().GetObject(model);
             return html.ObjectTitle(nakedObject);
         }
 

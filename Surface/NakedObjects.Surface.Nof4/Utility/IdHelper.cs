@@ -134,7 +134,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         public string GetFindMenuId(INakedObjectSurface nakedObject, INakedObjectActionSurface actionSurface, string propertyName) {
-            IActionSpec action = ((dynamic)actionSurface).WrappedSpec;
+            IActionSpec action =  actionSurface == null ? null : ((dynamic)actionSurface).WrappedSpec;
             string contextActionName = action == null ? "" : Sep + action.Id;
             return GetObjectId(nakedObject) + contextActionName + Sep + NameUtils.CapitalizeName(propertyName) + Sep + IdConstants.FindMenuName;
         }

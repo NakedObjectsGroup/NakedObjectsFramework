@@ -232,10 +232,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string TitleString() {
-
-        
-
-            return nakedObject.TitleString();
+            var title =  nakedObject.TitleString();
+            return string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
         }
 
         public override bool Equals(object obj) {

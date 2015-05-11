@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
@@ -60,6 +61,22 @@ namespace NakedObjects.Surface.Utility {
 
         #region INakedObjectActionParameterSurface
 
+        public static bool IsFindMenuEnabled(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<bool>(ScalarProperty.IsFindMenuEnabled);
+        }
+
+        public static string PresentationHint(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<string>(ScalarProperty.PresentationHint);
+        }
+
+        public static Tuple<Regex, string> RegEx(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<Tuple<Regex, string>>(ScalarProperty.RegEx);
+        }
+
+        public static Tuple<IConvertible, IConvertible, bool> Range(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<Tuple<IConvertible, IConvertible, bool>>(ScalarProperty.Range);
+        }
+
         public static int NumberOfLines(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
             return nakedObjectActionParameterSurface.GetScalarProperty<int>(ScalarProperty.NumberOfLines);
         }
@@ -70,6 +87,10 @@ namespace NakedObjects.Surface.Utility {
 
         public static int TypicalLength(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
             return nakedObjectActionParameterSurface.GetScalarProperty<int>(ScalarProperty.TypicalLength);
+        }
+
+        public static bool IsAjax(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
+            return nakedObjectActionParameterSurface.GetScalarProperty<bool>(ScalarProperty.IsAjax);
         }
 
         public static bool IsNullable(this INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
@@ -121,6 +142,10 @@ namespace NakedObjects.Surface.Utility {
 
         #region INakedObjectActionSurface
 
+        public static string PresentationHint(this INakedObjectActionSurface nakedObjectActionSurface) {
+            return nakedObjectActionSurface.GetScalarProperty<string>(ScalarProperty.PresentationHint);
+        }
+
         public static int PageSize(this INakedObjectActionSurface nakedObjectActionSurface) {
             return nakedObjectActionSurface.GetScalarProperty<int>(ScalarProperty.PageSize);
         }
@@ -165,6 +190,24 @@ namespace NakedObjects.Surface.Utility {
 
         #region INakedObjectAssociationSurface
 
+      
+
+        public static Tuple<Regex, string> RegEx(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<Tuple<Regex, string>>(ScalarProperty.RegEx);
+        }
+
+        public static Tuple<IConvertible, IConvertible, bool> Range(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<Tuple<IConvertible, IConvertible, bool>>(ScalarProperty.Range);
+        }
+
+        public static bool IsFindMenuEnabled(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsFindMenuEnabled);
+        }
+
+        public static bool IsAjax(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsAjax);
+        }
+
         public static bool IsNullable(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsNullable);
         }
@@ -195,6 +238,10 @@ namespace NakedObjects.Surface.Utility {
 
         public static int? MaxLength(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<int?>(ScalarProperty.MaxLength);
+        }
+
+        public static string PresentationHint(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<string>(ScalarProperty.PresentationHint);
         }
 
         public static string Pattern(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
