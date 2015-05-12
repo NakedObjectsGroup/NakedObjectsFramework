@@ -17,8 +17,12 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Component;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
@@ -62,11 +66,19 @@ namespace MvcTestApp.Tests.Helpers {
             get { return (DemoFixtureSet.FixtureSet()); }
         }
 
+        private IIdHelper IdHelper { get { return new IdHelper(); } }
+        protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("SystemHelperTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
@@ -83,6 +95,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
             mocks.ViewDataContainer.Object.ViewData["IdHelper"] = new IdHelper();
+            mocks.ViewDataContainer.Object.ViewData["Surface"] = Surface;
         }
 
         private static string GetTestData(string name) {
@@ -167,6 +180,9 @@ namespace MvcTestApp.Tests.Helpers {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
             StartTest();
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
             controller = new DummyController();
             mocks = new ContextMocks(controller);
             SetUser("sven");

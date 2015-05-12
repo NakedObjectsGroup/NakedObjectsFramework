@@ -61,7 +61,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString History(this HtmlHelper html, int count, object domainObject = null, bool clearAll = false) {
             if (domainObject != null && !(domainObject is FindViewModelNew)) {
                 string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
-                html.ViewContext.HttpContext.Session.AddToCache(html.Framework(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
+                html.ViewContext.HttpContext.Session.AddToCache(html.Surface(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
             }
 
             List<string> urls = html.ViewContext.HttpContext.Session.AllCachedUrls(ObjectCache.ObjectFlag.BreadCrumb).ToList();

@@ -45,6 +45,11 @@ namespace NakedObjects.Web.Mvc {
             session.AddToCache(framework, nakedObject, url, flag);
         }
 
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = surface.GetObject(domainObject);
+            session.AddToCache(surface, nakedObject, url, flag);
+        }
+
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsSurface surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             var nakedObject = surface.GetObject(domainObject);
             session.AddOrUpdateInCache(surface, nakedObject, url, flag);

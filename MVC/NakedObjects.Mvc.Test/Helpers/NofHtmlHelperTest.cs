@@ -931,7 +931,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var collectionAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(new List<ChoicesTestClass> {testChoices}, null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
-            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = collectionAdapter;
+            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = Surface.GetObject(collectionAdapter.Object);
 
             var action = Surface.GetObject(testChoices).Specification.GetActionLeafNodes().Single(p => p.Id == "TestEnumerableAction");
 
@@ -1082,7 +1082,7 @@ namespace MvcTestApp.Tests.Helpers {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm1-Select"] = Surface.GetObject(testChoices);
-            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = NakedObjectsFramework.NakedObjectManager.CreateAdapter(new List<string> {"test1", "test2"}, null, null);
+            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = Surface.GetObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(new List<string> {"test1", "test2"}, null, null).Object);
 
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -1498,7 +1498,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var cr = NakedObjectsFramework.GetAdaptedService("ClaimRepository").Object;
             var claimRepo = Surface.GetObject(cr);
-            var targetAction = claimRepo.Specification.GetActionLeafNodes().First(a => a.Id == "CreateNewClaim");
+            var targetAction = claimRepo.Specification.GetActionLeafNodes().First(a => a.Id == "CreateNewClaim1");
 
             string s = mocks.HtmlHelper.ParameterList(adapter.Object, claimRepo.Object, action, targetAction, "otherClaim", null).ToString();
 
@@ -1528,7 +1528,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var cr = NakedObjectsFramework.GetAdaptedService("ClaimRepository").Object;
             var claimRepo = Surface.GetObject(cr);
-            var targetAction = claimRepo.Specification.GetActionLeafNodes().First(a => a.Id == "CreateNewClaim");
+            var targetAction = claimRepo.Specification.GetActionLeafNodes().First(a => a.Id == "CreateNewClaim1");
 
             string s = mocks.HtmlHelper.ParameterList(adapter.Object, claimRepo.Object, action, targetAction, "otherClaim", new[] {claim2}).ToString();
 
@@ -1807,7 +1807,9 @@ namespace MvcTestApp.Tests.Helpers {
 
             var collectionAdapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(new List<ChoicesTestClass> {testChoices}.AsQueryable(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
-            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] = collectionAdapter;
+
+
+            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] =  Surface.GetObject(collectionAdapter.Object);
 
             var action = Surface.GetObject(testChoices).Specification.GetActionLeafNodes().Single(p => p.Id == "TestQueryableAction");
 

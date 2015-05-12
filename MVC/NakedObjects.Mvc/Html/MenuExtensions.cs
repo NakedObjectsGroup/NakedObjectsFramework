@@ -246,7 +246,12 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (serviceIm == null) {
                     throw new Exception("Action is not on a known service");
                 }
-                nakedObject = html.Surface().GetServices().List.Single(s => s.Specification.Equals(serviceIm));
+                nakedObject = html.Surface().GetServices().List.SingleOrDefault(s => s.Specification.Equals(serviceIm));
+            }
+
+            if (nakedObject == null) {
+                // service may not be visible 
+                return null;
             }
 
             var actionContext = new ActionContextNew(html.IdHelper(), false, nakedObject, actionIm);

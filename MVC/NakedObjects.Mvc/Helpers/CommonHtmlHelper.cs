@@ -4062,7 +4062,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
 
                 Min = tuple.Item1.ToString(CultureInfo.InvariantCulture);
-                Max = tuple.Item1.ToString(CultureInfo.InvariantCulture);
+                Max = tuple.Item2.ToString(CultureInfo.InvariantCulture);
                 IsDateRange = tuple.Item3;
                 IsValid = true;
             }
