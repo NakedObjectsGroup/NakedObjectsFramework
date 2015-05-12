@@ -1184,6 +1184,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectActionsWithHints() {
             var hint = (HintTestClass) GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
 
+            
             string s = mocks.HtmlHelper.Menu(hint).ToString();
 
             CheckResults("ObjectActionsWithHints", s);

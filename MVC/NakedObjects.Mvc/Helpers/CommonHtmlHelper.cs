@@ -2731,7 +2731,7 @@ namespace NakedObjects.Web.Mvc.Html {
           PropertyContextNew propertyContext,
           INakedObjectSurface existingNakedObject,
           IDictionary<string, INakedObjectSurface> values) {
-            var nakedObjects = propertyContext.Property.GetChoices(propertyContext.Target, values.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Object) ).ToList();
+            var nakedObjects = propertyContext.Property.GetChoices(propertyContext.Target, values.ToDictionary(kvp => kvp.Key, kvp => kvp.Value == null ? null : kvp.Value.Object) ).ToList();
             return html.GetChoicesSet(nakedObjects, existingNakedObject);
         }
 
@@ -2765,7 +2765,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                  ParameterContextNew parameterContext,
                                                                  INakedObjectSurface existingNakedObject,
                                                                  IDictionary<string, INakedObjectSurface> values) {
-            var nakedObjects = parameterContext.Parameter.GetChoices(parameterContext.Target, values.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Object)).ToList();
+            var nakedObjects = parameterContext.Parameter.GetChoices(parameterContext.Target, values.ToDictionary(kvp => kvp.Key, kvp => kvp.Value == null ? null :  kvp.Value.Object)).ToList();
             return html.GetChoicesSet(nakedObjects, existingNakedObject);
         }
 

@@ -203,6 +203,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
+        public bool Equals(INakedObjectSpecificationSurface other) {
+            return Equals((object)other);
+        }
+
         public override bool Equals(object obj) {
             var nakedObjectSpecificationWrapper = obj as NakedObjectSpecificationWrapper;
             if (nakedObjectSpecificationWrapper != null) {

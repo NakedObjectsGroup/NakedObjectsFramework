@@ -216,9 +216,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        private object EnumIntegralValue() {
+        private string EnumIntegralValue() {
             var enumFacet = nakedObject.Spec.GetFacet<IEnumValueFacet>();
-            return enumFacet != null ? enumFacet.IntegralValue(nakedObject) : null;
+
+            if (enumFacet != null) {
+                return enumFacet.IntegralValue(nakedObject);
+            }
+
+            var value = nakedObject.Object == null ? "" : nakedObject.Object.ToString();
+
+            long result;
+            return long.TryParse(value, out result) ? result.ToString() : null;
         }
 
 

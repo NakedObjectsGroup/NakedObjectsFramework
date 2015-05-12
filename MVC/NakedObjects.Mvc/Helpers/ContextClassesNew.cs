@@ -93,7 +93,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            return Property.PresentationHint();
+            var hint = Property.PresentationHint();
+            return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
         public string GetFieldClass() {
@@ -176,7 +177,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            return Action != null ? Action.PresentationHint() : "";
+            var hint = Action != null ? Action.PresentationHint() : "";
+            return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
         private bool IsFileActionNoParms() {        
@@ -240,7 +242,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            return Parameter.PresentationHint();
+            var hint = Parameter.PresentationHint();
+            return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
         public string GetParameterClass() {

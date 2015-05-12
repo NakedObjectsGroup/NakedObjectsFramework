@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectSpecificationSurface : IScalarPropertyHolder, ISurfaceHolder {
+    public interface INakedObjectSpecificationSurface : IScalarPropertyHolder, ISurfaceHolder, IEquatable<INakedObjectSpecificationSurface> {
         INakedObjectAssociationSurface[] Properties { get; }
         IMenu Menu { get;  }
         INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject);
