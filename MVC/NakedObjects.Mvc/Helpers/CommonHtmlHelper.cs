@@ -1853,7 +1853,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return string.Empty;
             }
 
-            if (propertyContext.Property.Specification.IsFileAttachment()) {
+            if (propertyContext.Property.IsFile()) {
                 return html.GetFileFieldValue(propertyContext);
             }
 
@@ -1861,7 +1861,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetBooleanFieldValue(valueNakedObject);
             }
 
-            if (propertyContext.Property.Specification.IsEnum()) {
+            if (propertyContext.Property.IsEnum()) {
                 return GetEnumFieldValue(propertyContext.Property, valueNakedObject);
             }
 
@@ -2075,9 +2075,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContextNew propertyContext) {
+            // todo is this right ?
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
-            title = string.IsNullOrEmpty(title) ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
+            string utitle = propertyContext.Property.GetNakedObject(propertyContext.Target).Specification.UntitledName();
 
+            title = string.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
+
+        
             string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
                 html.Surface().GetObjectTypeName(propertyContext.Target.Object),
                 new RouteValueDictionary(new {
@@ -2900,7 +2904,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string id = context.GetParameterInputId();
             string tooltip = context.Parameter.Description();
 
-            if (context.Parameter.Specification.IsFileAttachment()) {
+            if (context.Parameter.Specification.IsFile()) {
                 return html.GetFileParameter(context, id, tooltip);
             }
 

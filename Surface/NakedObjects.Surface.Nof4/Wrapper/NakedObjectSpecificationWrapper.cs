@@ -86,6 +86,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
+        protected bool IsFile {
+            get { return spec.IsFile(framework); }
+        }
+
         public bool IsDateTime {
             get { return FullName == "System.DateTime"; }
         }
@@ -259,6 +263,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsImage;
                 case (ScalarProperty.IsFileAttachment):
                     return IsFileAttachment;
+                case (ScalarProperty.IsFile):
+                    return IsFile;
                 case (ScalarProperty.IsBoolean):
                     return IsBoolean;
                 case (ScalarProperty.IsEnum):

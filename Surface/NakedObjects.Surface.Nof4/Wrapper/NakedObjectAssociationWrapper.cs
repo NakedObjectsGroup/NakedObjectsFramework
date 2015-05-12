@@ -302,9 +302,22 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsFindMenuEnabled;
                 case (ScalarProperty.PresentationHint):
                     return PresentationHintValue;
+                case (ScalarProperty.IsEnum):
+                    return IsEnum;
+                case (ScalarProperty.IsFileAttachment):
+                    return IsFile;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        public object IsFile {
+            get { return assoc.IsFile(framework); }
+        }
+
+        public bool IsEnum
+        {
+            get { return assoc.ContainsFacet<IEnumFacet>(); }
         }
 
         public object PresentationHintValue {

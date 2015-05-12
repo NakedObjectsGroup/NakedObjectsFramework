@@ -190,7 +190,13 @@ namespace NakedObjects.Surface.Utility {
 
         #region INakedObjectAssociationSurface
 
-      
+        public static bool IsFile(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsFileAttachment);
+        }
+
+        public static bool IsEnum(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
+            return nakedObjectAssociationSurface.GetScalarProperty<bool>(ScalarProperty.IsEnum);
+        }
 
         public static Tuple<Regex, string> RegEx(this INakedObjectAssociationSurface nakedObjectAssociationSurface) {
             return nakedObjectAssociationSurface.GetScalarProperty<Tuple<Regex, string>>(ScalarProperty.RegEx);
@@ -380,6 +386,10 @@ namespace NakedObjects.Surface.Utility {
 
         public static bool IsFileAttachment(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsFileAttachment);
+        }
+
+        public static bool IsFile(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsFile);
         }
 
         public static IDictionary<string, object> ExtensionData(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {

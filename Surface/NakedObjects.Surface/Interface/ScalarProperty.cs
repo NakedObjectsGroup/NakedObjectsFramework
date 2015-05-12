@@ -64,6 +64,7 @@ namespace NakedObjects.Surface {
         RegEx,
         IsFindMenuEnabled,
         PresentationHint,
-        UntitledName
+        UntitledName,
+        IsFile
     }
 }
