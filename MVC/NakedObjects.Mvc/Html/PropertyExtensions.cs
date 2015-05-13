@@ -459,6 +459,15 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
         }
 
+        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
+            var nakedObject = html.Surface().GetObject(contextObject);
+            var target = html.Surface().GetObject(targetObject);
+            return html.BuildEditContainer(nakedObject,
+                html.EditObjectFields(contextObject, new ActionContextNew(html.IdHelper(), true, target, targetAction), propertyName, actionResult, false),
+                IdConstants.FieldContainerName,
+                html.IdHelper().GetFieldContainerId(nakedObject));
+        }
+
         // formats
 
         /// <summary>

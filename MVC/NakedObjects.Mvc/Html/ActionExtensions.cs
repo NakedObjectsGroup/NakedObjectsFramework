@@ -107,6 +107,18 @@ namespace NakedObjects.Web.Mvc.Html {
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
 
+        public static MvcHtmlString ParameterListWith(this HtmlHelper html,
+            object contextObject,
+            object targetObject,
+            INakedObjectActionSurface contextAction,
+            INakedObjectActionSurface targetAction,
+            string propertyName,
+            IEnumerable collection) {
+            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
+
+            return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
+        }
+
         private static MvcHtmlString ParameterList(IActionSpec contextAction, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
             if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
                 return html.ParameterList(actionContext);
