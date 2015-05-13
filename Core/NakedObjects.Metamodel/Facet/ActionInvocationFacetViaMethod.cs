@@ -52,7 +52,11 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        public override IObjectSpecImmutable ReturnType {
+        public override MethodInfo ActionMethod {
+            get { return actionMethod; }
+        }
+
+         public override IObjectSpecImmutable ReturnType {
             get { return returnType; }
         }
 

@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
+using System.Reflection;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
@@ -20,6 +21,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     methods).
     /// </para>
     public interface IActionInvocationFacet : IFacet {
+        MethodInfo ActionMethod { get; }
         IObjectSpecImmutable ReturnType { get; }
         ITypeSpecImmutable OnType { get; }
         IObjectSpecImmutable ElementType { get; }
