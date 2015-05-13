@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using System.Reflection;
 
 namespace NakedObjects.Meta.Audit {
     [Serializable]
@@ -28,6 +29,10 @@ namespace NakedObjects.Meta.Audit {
 
         public override bool IsQueryOnly {
             get { return underlyingFacet.IsQueryOnly; }
+        }
+
+        public override MethodInfo ActionMethod {
+            get { return underlyingFacet.ActionMethod; }
         }
 
         public override IObjectSpecImmutable ReturnType {
@@ -51,5 +56,6 @@ namespace NakedObjects.Meta.Audit {
             auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
             return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker);
         }
+
     }
 }

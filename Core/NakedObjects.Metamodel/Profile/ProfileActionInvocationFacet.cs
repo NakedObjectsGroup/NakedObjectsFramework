@@ -31,6 +31,10 @@ namespace NakedObjects.Meta.Profile {
             get { return underlyingFacet.IsQueryOnly; }
         }
 
+        public override System.Reflection.MethodInfo ActionMethod {
+            get { return underlyingFacet.ActionMethod; }
+        }
+
         public override IObjectSpecImmutable ReturnType {
             get { return underlyingFacet.ReturnType; }
         }

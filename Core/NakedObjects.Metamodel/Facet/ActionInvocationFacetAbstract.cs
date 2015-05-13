@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using System.Reflection;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -24,6 +25,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionInvocationFacet Members
 
+        public abstract MethodInfo ActionMethod { get; } //This is exosed to permit third-party decoration DO NOT REMOVE.
         public abstract ITypeSpecImmutable OnType { get; }
         public abstract IObjectSpecImmutable ReturnType { get; }
         public abstract IObjectSpecImmutable ElementType { get; }
