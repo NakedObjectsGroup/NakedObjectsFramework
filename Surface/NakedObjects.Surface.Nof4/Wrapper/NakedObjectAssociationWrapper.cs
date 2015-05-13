@@ -146,7 +146,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public Choices IsChoicesEnabled {
-            get { return ((IOneToOneFeatureSpec) assoc).IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
+            get {
+                var oneToOneFeature = assoc as IOneToOneFeatureSpec;
+                return oneToOneFeature != null && oneToOneFeature.IsChoicesEnabled ? Choices.Single : Choices.NotEnabled;
+            }
         }
 
         public bool IsAutoCompleteEnabled {

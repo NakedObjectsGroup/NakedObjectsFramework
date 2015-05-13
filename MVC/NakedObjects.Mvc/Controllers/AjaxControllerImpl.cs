@@ -150,7 +150,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return Surface.GetTypedCollection(featureSpec, values);
             }
 
-            return GetNakedObjectFromId(values.First()).Object;
+            return GetNakedObjectFromId(values.First()).GetDomainObject<object>();
         }
 
 
@@ -178,7 +178,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return results;
         }
-
 
         private IDictionary<string, object> GetOtherValues(INakedObjectSurface nakedObject) {
             var results = new Dictionary<string, object>();

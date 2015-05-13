@@ -114,8 +114,8 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object is a transient object
         /// </summary>
         public static string TransientFlag(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.ResolveState.IsTransient() ? " " + IdConstants.TransientName : "";
+            var nakedObject = html.Surface().GetObject(domainObject);
+            return nakedObject.IsTransient() ? " " + IdConstants.TransientName : "";
         }
 
         /// <summary>
