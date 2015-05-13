@@ -147,12 +147,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ActionResultLink(this HtmlHelper html, string linkText, string actionName, ActionResultModel arm, object titleAttr) {
-            string id = html.Framework().GetObjectId(arm.Result);
+            var no = html.Surface().GetObject(arm.Result);
+            string id = html.Surface().OidStrategy.GetObjectId(no);
             int pageSize = arm.PageSize;
             int page = arm.Page;
             string format = arm.Format;
 
-            string url = html.GenerateUrl(actionName, html.Framework().GetObjectTypeName(arm.Result), new RouteValueDictionary(new {id, pageSize, page, format}));
+            string url = html.GenerateUrl(actionName, html.Surface().GetObjectTypeName(arm.Result), new RouteValueDictionary(new { id, pageSize, page, format }));
 
             var linkTag = new TagBuilder("a");
             linkTag.MergeAttribute("href", url);
@@ -164,6 +165,25 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return linkTag.ToString();
         }
+
+        //internal static string ActionResultLink(this HtmlHelper html, string linkText, string actionName, ActionResultModel arm, object titleAttr) {
+        //    string id = html.Framework().GetObjectId(arm.Result);
+        //    int pageSize = arm.PageSize;
+        //    int page = arm.Page;
+        //    string format = arm.Format;
+
+        //    string url = html.GenerateUrl(actionName, html.Framework().GetObjectTypeName(arm.Result), new RouteValueDictionary(new {id, pageSize, page, format}));
+
+        //    var linkTag = new TagBuilder("a");
+        //    linkTag.MergeAttribute("href", url);
+        //    linkTag.SetInnerText(linkText);
+
+        //    if (titleAttr != null) {
+        //        linkTag.MergeAttributes(new RouteValueDictionary(titleAttr));
+        //    }
+
+        //    return linkTag.ToString();
+        //}
 
         internal static string ObjectLink(this HtmlHelper html, string linkText, string actionName, object domainObject, bool withTitleAttr = false) {
             var titleAttr = withTitleAttr && (domainObject != null) ? new {title = html.ObjectTitle(domainObject)} : null;

@@ -160,11 +160,18 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
-            INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model.Result, null, null);
+            var nakedObject = html.Surface().GetObject(model.Result);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.Name() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
+            title = model.Action.Name() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName() : title);
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
+
+        //public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
+        //    INakedObjectAdapter nakedObject = html.Framework().NakedObjectManager.CreateAdapter(model.Result, null, null);
+        //    string title = GetCollectionTitle(nakedObject, html);
+        //    title = model.Action.Name() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
+        //    return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
+        //}
 
         private static string GetCollectionTitle(INakedObjectSurface nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;
