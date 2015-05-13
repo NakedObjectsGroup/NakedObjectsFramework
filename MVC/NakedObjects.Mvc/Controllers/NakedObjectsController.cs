@@ -621,8 +621,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
 
-            var oid = Surface.OidStrategy.GetOid(domainObject);
-            return Surface.GetObject(oid).Target;
+            return Surface.GetObject(domainObject);
         }
 
 

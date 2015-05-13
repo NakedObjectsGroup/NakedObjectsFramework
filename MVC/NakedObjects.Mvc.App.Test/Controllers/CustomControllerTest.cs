@@ -18,11 +18,14 @@ using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
@@ -33,7 +36,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
-    [Ignore]
+    //[Ignore]
     public class CustomControllerTest : AcceptanceTestCase {
         private CustomControllerWrapper controller;
         private ContextMocks mocks;
@@ -90,12 +93,20 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            controller = new CustomControllerWrapper(mockSurface, new IdHelper(), mockMessageBroker);
+            controller = new CustomControllerWrapper(Surface, new IdHelper(), new MessageBrokerWrapper(MessageBroker));
             mocks = new ContextMocks(controller);
         }
+
+        protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
+        protected override void StartTest() {
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
+        }
+
 
         #endregion
 
@@ -104,6 +115,11 @@ namespace MvcTestApp.Tests.Controllers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
