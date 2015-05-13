@@ -2324,7 +2324,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string rawExistingValue = html.ViewData.ModelState.TryGetValue(id, out modelState) ? (string)modelState.Value.RawValue : null;
 
             INakedObjectSurface existingValue;
-            if (rawExistingValue == null) {
+            if (string.IsNullOrEmpty(rawExistingValue)) {
                 existingValue = propertyContext.GetValue(html.Surface());
             }
             else {
