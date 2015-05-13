@@ -4,8 +4,8 @@
 @using NakedObjects.Web.Mvc.Models
 @model object
 
-@if (Model is FindViewModel) {
-    var fvm = (FindViewModel) Model;
+@if (Model is FindViewModelNew) {
+    var fvm = (FindViewModelNew) Model;
 
 
     @Html.ValidationSummary(true, MvcUi.EditError)

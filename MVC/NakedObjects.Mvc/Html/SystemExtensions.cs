@@ -11,9 +11,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
@@ -23,6 +22,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static INakedObjectsFramework GetFramework(this HtmlHelper html) {
             return html.Framework();
+        }
+
+        public static INakedObjectsSurface GetSurface(this HtmlHelper html) {
+            return html.Surface();
         }
 
         #region system menus

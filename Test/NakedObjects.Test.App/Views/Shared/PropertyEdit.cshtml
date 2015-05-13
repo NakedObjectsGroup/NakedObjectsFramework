@@ -6,7 +6,7 @@
     @(Html.PropertyListEditWith(pvm.ContextObject, pvm.PropertyName))
 }
 else {
-    var fvm = Model as FindViewModel;
+    var fvm = Model as FindViewModelNew;
 
     if (fvm.ContextAction == null) {
         @(Html.PropertyListEditWith(fvm.ContextObject, fvm.TargetObject, fvm.TargetAction, fvm.PropertyName, fvm.ActionResult))

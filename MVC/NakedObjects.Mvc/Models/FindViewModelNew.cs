@@ -31,15 +31,23 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public string PropertyName { get; set; }
 
-        public string DialogClass(INakedObjectsFramework framework) {
+        public string DialogClass(INakedObjectsSurface framework) {
             if (ViewType == ViewTypes.Dialog) {
-                // todo
-                //return ContextAction.ReturnSpec.IsFile(framework) ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
-                return  IdConstants.DialogNameClass;
-
+                return ContextAction.ReturnType.IsFile() ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
             }
 
             return IdConstants.EditName;
         }
+
+        //public string DialogClass(INakedObjectsFramework framework) {
+        //    if (ViewType == ViewTypes.Dialog) {
+        //        // todo
+        //        //return ContextAction.ReturnSpec.IsFile(framework) ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
+        //        return  IdConstants.DialogNameClass;
+
+        //    }
+
+        //    return IdConstants.EditName;
+        //}
     }
 }
