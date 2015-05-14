@@ -154,7 +154,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 nakedObject = Page(nakedObject, collectionSize, controlData);
-                //action = action ?? ((ICollectionMemento)nakedObject.Oid).Action; todo understand this
+                // todo is there a better way to do this ?
+                action = action ?? nakedObject.MementoAction();
                 int page, pageSize;
                 CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;

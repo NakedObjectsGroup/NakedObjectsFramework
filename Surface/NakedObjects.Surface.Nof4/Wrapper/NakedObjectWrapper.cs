@@ -209,11 +209,18 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsViewModelEditView();
                 case (ScalarProperty.EnumIntegralValue):
                     return EnumIntegralValue();
+                case (ScalarProperty.MementoAction):
+                    return MementoAction();
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        private INakedObjectActionSurface MementoAction() {
+            var mementoOid = nakedObject.Oid as ICollectionMemento;
+            return mementoOid == null ? null : new NakedObjectActionWrapper(mementoOid.Action, Surface, framework, "");
         }
 
         private string EnumIntegralValue() {

@@ -65,6 +65,7 @@ namespace NakedObjects.Surface {
         IsFindMenuEnabled,
         PresentationHint,
         UntitledName,
-        IsFile
+        IsFile,
+        MementoAction
     }
 }

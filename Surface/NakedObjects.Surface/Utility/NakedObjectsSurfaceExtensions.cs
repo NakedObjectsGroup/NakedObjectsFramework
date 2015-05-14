@@ -17,6 +17,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface == null ? default(T) : (T)nakedObjectSurface.Object;
         }
 
+        public static INakedObjectActionSurface MementoAction(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<INakedObjectActionSurface>(ScalarProperty.MementoAction);
+        }
+
         public static string EnumIntegralValue(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.EnumIntegralValue);
         }
