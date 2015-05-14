@@ -12,6 +12,10 @@ namespace NakedObjects.Architecture.Component {
         void AbortTransaction();
         void UserAbortTransaction();
         void EndTransaction();
+        /// <summary>
+        /// Number of nested transaction levels; 0 indicates that no transaction is running
+        /// </summary>
+        int TransactionLevel {get;}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

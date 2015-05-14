@@ -82,6 +82,12 @@ namespace NakedObjects.Core.Component {
             }
         }
 
+        public int TransactionLevel {
+            get {
+                return transactionLevel;
+            }
+        }
+
         #endregion
     }
 
