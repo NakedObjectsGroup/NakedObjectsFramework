@@ -11,7 +11,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
     //[Authorize]
     public class HomeController : SystemControllerImpl {
-        public HomeController( INakedObjectsSurface surface, IIdHelper idHelper, IMessageBrokerSurface mb) : base( surface, idHelper, mb) {}
+        public HomeController( INakedObjectsSurface surface, IIdHelper idHelper) : base( surface, idHelper) {}
 
         public ActionResult Index() {
             return View();

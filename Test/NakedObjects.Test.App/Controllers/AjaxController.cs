@@ -12,7 +12,7 @@ namespace NakedObjects.Test.App.Controllers {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     //[Authorize]
     public class AjaxController : AjaxControllerImpl {
-        public AjaxController( INakedObjectsSurface surface, IIdHelper idHelper, IMessageBrokerSurface mb) : base( surface, idHelper, mb) { }
+        public AjaxController( INakedObjectsSurface surface, IIdHelper idHelper) : base( surface, idHelper) { }
 
         [HttpGet]
         public override JsonResult ValidateProperty(string id, string value, string propertyName) {

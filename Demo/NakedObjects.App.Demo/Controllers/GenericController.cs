@@ -14,7 +14,7 @@ namespace NakedObjects.App.Demo.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsSurface surface, IIdHelper idHelper, IMessageBrokerSurface mb) : base(surface, idHelper, mb) { }
+        public GenericController(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {
