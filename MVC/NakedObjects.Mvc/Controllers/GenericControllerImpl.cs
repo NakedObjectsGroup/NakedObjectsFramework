@@ -47,11 +47,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View("ObjectEdit", controlData.GetNakedObject(Surface).Object);
         }
 
-        // temp kludge 
-        private void SetNotQueryable(INakedObjectSurface no, bool isNotQueryable) {
-            INakedObjectAdapter noa = ((dynamic) no).WrappedNakedObject;
-            noa.SetNotQueryable(isNotQueryable);
-        }
+        //// temp kludge 
+        //private void SetNotQueryable(INakedObjectSurface no, bool isNotQueryable) {
+        //    INakedObjectAdapter noa = ((dynamic) no).WrappedNakedObject;
+        //    noa.SetNotQueryable(isNotQueryable);
+        //}
 
         [HttpPost]
         public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
@@ -65,8 +65,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetExistingCollectionFormats(form);
             SetNewCollectionFormats(controlData);
 
-            // TODO temp hack 
-            SetNotQueryable(nakedObject, true);
+            nakedObject.SetIsNotQueryableState(true);
 
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient() && nakedObject.IsUserPersistable()) {
                 // remove from cache and return to last object 
@@ -221,9 +220,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
 
                 // force any result to not be queryable
-                //filteredNakedObject.SetNotQueryable(true);
-                // TODO temp hack 
-                SetNotQueryable(filteredNakedObject, true);
+                filteredNakedObject.SetIsNotQueryableState(true);
 
                 return ExecuteAction(controlData, filteredNakedObject, targetAction);
             }
@@ -310,12 +307,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetSelectedParameters(targetAction);
 
             var ac = GetParameterValues(targetAction, controlData);
-            var oid = Surface.OidStrategy.GetOid(targetNakedObject);
-            var ar = Surface.ExecuteObjectAction(oid, targetAction.Id, ac);
+            ActionResultContextSurface ar;
+
+            if (targetNakedObject.Specification.IsCollection() && !targetNakedObject.Specification.IsParseable()) {
+                var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidStrategy.GetOid(no)).ToArray();
+                var spec = targetNakedObject.ElementSpecification;
+
+                ar = Surface.ExecuteListAction(oids, spec, targetAction.Id, ac);
+            }
+            else {
+                var oid = Surface.OidStrategy.GetOid(targetNakedObject);
+                ar = Surface.ExecuteObjectAction(oid, targetAction.Id, ac);
+            }
 
             if (!HasError(ar)) {
-                SetNotQueryable(targetNakedObject, targetAction.IsContributed()); // kludge
-
+                targetNakedObject.SetIsNotQueryableState(targetAction.IsContributed());
                 return AppropriateView(controlData, GetResult(ar), targetAction);
             }
 
