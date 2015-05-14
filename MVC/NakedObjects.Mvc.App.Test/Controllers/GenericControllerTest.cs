@@ -237,7 +237,6 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
-            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
 
         }
 
@@ -1665,7 +1664,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        
+        [Ignore]
         // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
@@ -2165,7 +2164,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
 
-            controller = new GenericController(Surface, IdHelper, new MessageBrokerWrapper(MessageBroker));
+            controller = new GenericController(Surface, IdHelper);
             mocks = new ContextMocks(controller);
         }
 

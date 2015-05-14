@@ -78,7 +78,6 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
-            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]

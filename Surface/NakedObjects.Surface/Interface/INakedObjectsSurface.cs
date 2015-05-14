@@ -8,6 +8,7 @@
 using System.Security.Principal;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectsSurface {
@@ -15,6 +16,8 @@ namespace NakedObjects.Surface {
         void End(bool success);
         IPrincipal GetUser();
         IOidStrategy OidStrategy { get; }
+        IMessageBrokerSurface MessageBroker { get; }
+
         ObjectContextSurface GetService(ILinkObjectId serviceName);
         ListContextSurface GetServices();
 

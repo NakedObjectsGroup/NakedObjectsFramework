@@ -48,9 +48,6 @@ namespace NakedObjects.Mvc.App {
 
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
 
-            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerRequestLifetimeManager());
-
-
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>("RestSurface", new PerRequestLifetimeManager(), new InjectionConstructor(new ResolvedParameter<IOidStrategy>("RestOid"), typeof(INakedObjectsFramework)));
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
 

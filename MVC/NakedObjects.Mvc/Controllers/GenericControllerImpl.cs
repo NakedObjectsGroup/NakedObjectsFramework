@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsSurface surface,  IIdHelper idHelper, IMessageBrokerSurface messageBroker) : base(surface, idHelper, messageBroker) {}
+        protected GenericControllerImpl(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
@@ -215,7 +215,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
 
                 if (!filteredNakedObject.ToEnumerable().Any()) {
-                    MessageBroker.AddWarning("No objects selected");
+                    Surface.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
 
@@ -256,9 +256,28 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 //if (ValidateParameters(nakedObject, action, controlData)) {
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
-                var oid = Surface.OidStrategy.GetOid(nakedObject);
-                var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
-                return AppropriateView(controlData, GetResult(result), action);
+
+
+                if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+                    var oids = nakedObject.ToEnumerable().Select(no => Surface.OidStrategy.GetOid(no)).ToArray();
+                    var spec = nakedObject.ElementSpecification;
+
+                    var ar = Surface.ExecuteListAction(oids, spec, action.Id, ac);
+                    return AppropriateView(controlData, GetResult(ar), action);
+                }
+                else {
+                    var oid = Surface.OidStrategy.GetOid(nakedObject);
+                    var ar = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                  
+                    return AppropriateView(controlData, GetResult(ar), action);
+                }
+
+
+
+
+                //var oid = Surface.OidStrategy.GetOid(nakedObject);
+                //var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                //return AppropriateView(controlData, GetResult(result), action);
                 //}
 
                 //controlData.Form = oldForm;
@@ -349,7 +368,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);
-                MessageBroker.AddWarning("No objects of appropriate type viewed recently");
+                Surface.MessageBroker.AddWarning("No objects of appropriate type viewed recently");
             }
             var contextNakedObject = FilterCollection(GetNakedObjectFromId(contextObjectId), controlData);
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : contextNakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == contextActionId);

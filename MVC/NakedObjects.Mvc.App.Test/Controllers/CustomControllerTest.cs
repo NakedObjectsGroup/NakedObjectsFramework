@@ -94,7 +94,7 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
             StartTest();
 
-            controller = new CustomControllerWrapper(Surface, new IdHelper(), new MessageBrokerWrapper(MessageBroker));
+            controller = new CustomControllerWrapper(Surface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -119,7 +119,6 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
-            container.RegisterType<IMessageBrokerSurface, MessageBrokerWrapper>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
@@ -237,7 +236,7 @@ namespace MvcTestApp.Tests.Controllers {
         #region Nested type: CustomControllerWrapper
 
         private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsSurface surface,  IIdHelper idHelper, IMessageBrokerSurface messageBroker) : base(surface, idHelper, messageBroker)  {}
+            public CustomControllerWrapper(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper)  {}
 
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);

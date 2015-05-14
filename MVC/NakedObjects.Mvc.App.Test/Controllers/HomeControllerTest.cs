@@ -78,9 +78,9 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            controller = new HomeController( Surface, new IdHelper(), mockMessageBroker);
+            controller = new HomeController( Surface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 

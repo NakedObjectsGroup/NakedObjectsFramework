@@ -89,10 +89,10 @@ namespace MvcTestApp.Tests.Controllers {
             InitializeNakedObjectsFramework(this);
 
             StartTest();
-            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
 
-            controller = new AjaxController( Surface, new IdHelper(), mockMessageBroker);
+            controller = new AjaxController( Surface, new IdHelper());
             mocks = new ContextMocks(controller);
         }
 
@@ -428,9 +428,9 @@ namespace MvcTestApp.Tests.Controllers {
         public void TestJsonp() {
             const string data = "testData";
             var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController( mockSurface, null, mockMessageBroker).Jsonp(data, "application/json", Encoding.UTF8);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController( mockSurface, null).Jsonp(data, "application/json", Encoding.UTF8);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -453,9 +453,9 @@ namespace MvcTestApp.Tests.Controllers {
         public void TestJsonpDefaults() {
             const string data = "testData";
             var mockSurface = new Mock<INakedObjectsSurface>().Object;
-            var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(mockSurface, null, mockMessageBroker).Jsonp(data);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(mockSurface, null).Jsonp(data);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();

@@ -33,26 +33,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private readonly INakedObjectsSurface surface;
         private readonly IOidStrategy oidStrategy;
         private readonly IIdHelper idHelper;
-        private readonly IMessageBrokerSurface messageBroker;
 
         protected NakedObjectsController(INakedObjectsSurface surface,
-                                         IIdHelper idHelper, 
-                                         IMessageBrokerSurface messageBroker) {
+                                         IIdHelper idHelper) {
           
             this.surface = surface;
             oidStrategy = surface.OidStrategy;
             this.idHelper = idHelper;
-            this.messageBroker = messageBroker;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
         protected INakedObjectsSurface Surface {
             get { return surface; }
-        }
-
-        protected IMessageBrokerSurface MessageBroker {
-            get { return messageBroker; }
         }
 
         protected IOidStrategy OidStrategy {
@@ -118,8 +111,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal ActionResult RedirectHome() {
-            TempData[IdConstants.NofMessages] = MessageBroker.Messages;
-            TempData[IdConstants.NofWarnings] = MessageBroker.Warnings;
+            TempData[IdConstants.NofMessages] = Surface.MessageBroker.Messages;
+            TempData[IdConstants.NofWarnings] = Surface.MessageBroker.Warnings;
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
@@ -1254,8 +1247,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetMessagesAndWarnings() {
-            string[] messages = MessageBroker.Messages;
-            string[] warnings = MessageBroker.Warnings;
+            string[] messages = Surface.MessageBroker.Messages;
+            string[] warnings = Surface.MessageBroker.Warnings;
 
             var existingMessages = TempData[IdConstants.NofMessages];
             var existingWarnings = TempData[IdConstants.NofWarnings];

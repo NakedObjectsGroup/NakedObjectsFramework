@@ -26,17 +26,20 @@ using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class NakedObjectsSurface : INakedObjectsSurface {
         private readonly INakedObjectsFramework framework;
         private readonly IOidStrategy oidStrategy;
+        private readonly IMessageBrokerSurface messageBroker;
 
         public NakedObjectsSurface(IOidStrategy oidStrategy, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
             this.framework = framework;
+            messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
         }
 
         #region INakedObjectsSurface Members
@@ -64,6 +67,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public IOidStrategy OidStrategy {
             get { return oidStrategy; }
+        }
+
+        public IMessageBrokerSurface MessageBroker {
+            get { return messageBroker; }
         }
 
         /// <summary>

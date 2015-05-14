@@ -24,7 +24,7 @@ using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper, IMessageBrokerSurface messageBroker) : base(surface, idHelper, messageBroker) { }
+        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);

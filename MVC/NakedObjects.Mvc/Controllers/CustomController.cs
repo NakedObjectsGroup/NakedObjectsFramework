@@ -19,7 +19,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(INakedObjectsSurface surface, IIdHelper idHelper, IMessageBrokerSurface messageBroker) : base(surface, idHelper, messageBroker) { }
+        protected CustomController(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions

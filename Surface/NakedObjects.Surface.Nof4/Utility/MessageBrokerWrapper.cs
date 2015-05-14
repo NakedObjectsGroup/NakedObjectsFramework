@@ -29,7 +29,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         public string[] Warnings {
-            get { return messageBroker.PeekMessages; }
+            get { return messageBroker.Warnings; }
         }
 
         public void AddWarning(string message) {
