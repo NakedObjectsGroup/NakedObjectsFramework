@@ -35,6 +35,7 @@ namespace NakedObjects.Surface {
         PropertyContextSurface PutProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument);
         PropertyContextSurface DeleteProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument);
 
+        ActionResultContextSurface ExecuteListAction(ILinkObjectId[] objectId,  INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments);
         ActionResultContextSurface ExecuteObjectAction(ILinkObjectId objectId, string actionName, ArgumentsContext arguments);
         ActionResultContextSurface ExecuteServiceAction(ILinkObjectId serviceName, string actionName, ArgumentsContext arguments);
         ObjectContextSurface GetImage(string imageId);

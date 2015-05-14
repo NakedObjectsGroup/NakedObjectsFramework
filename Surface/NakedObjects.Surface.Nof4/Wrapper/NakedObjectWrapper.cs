@@ -72,6 +72,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
+        public void SetIsNotQueryableState(bool state) {
+            var memento = nakedObject.Oid as ICollectionMemento;
+
+            if (memento != null) {
+                memento.IsNotQueryable = state;
+            }
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
         }

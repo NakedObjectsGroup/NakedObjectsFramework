@@ -25,5 +25,7 @@ namespace NakedObjects.Surface {
 
         object[] GetSelected();
         void Resolve();
+
+        void SetIsNotQueryableState(bool state);
     }
 }

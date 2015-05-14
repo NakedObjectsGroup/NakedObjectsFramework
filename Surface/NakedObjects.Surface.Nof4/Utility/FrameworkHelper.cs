@@ -263,15 +263,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
         }
 
-      
-
-        public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
-            IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
+        public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ITypeSpec collectionitemSpec, IEnumerable collectionValue) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 
             Type instanceType = TypeUtils.GetType(collectionitemSpec.FullName);
-            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager).Object).ToArray();
@@ -292,6 +289,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
+        }
+      
+
+        public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
+            IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
+            return framework.GetTypedCollection(collectionitemSpec, collectionValue);
         }
 
         public static bool IsViewModelEditView(this INakedObjectAdapter target) {

@@ -209,6 +209,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
+        public ActionResultContextSurface ExecuteListAction(ILinkObjectId[] list, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments) {
+            return MapErrors(() => {
+                ActionContext actionContext = GetInvokeActionOnList(list, elementSpec, actionName);
+                return ExecuteAction(actionContext, arguments);
+            });
+        }
 
         public ActionResultContextSurface ExecuteObjectAction(ILinkObjectId objectId, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
@@ -600,8 +606,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
                 // todo investigate this rawparms should either contain or not contain  target
-                if (parm != null && !rawParms.ContainsKey(parm.Id)) {
-                    rawParms.Add(parm.Id, actionContext.Target.Object);
+                if (parm != null) {
+                    rawParms[parm.Id] = actionContext.Target.Object;
                 }
             }
 
@@ -888,6 +894,18 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             return new Tuple<IActionSpec, ITypeSpec, IActionParameterSpec, string>(actionAndUid.Item1, spec, parm, actionAndUid.Item2);
+        }
+
+        private INakedObjectAdapter MakeTypedCollection(Type instanceType, IEnumerable<object> objects) {
+            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+            objects.Where(o => o != null).ForEach(o => typedCollection.Add(o));
+            return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
+        }
+
+        private ActionContext GetInvokeActionOnList(ILinkObjectId[] list, INakedObjectSpecificationSurface elementSpec, string actionName) {
+            var domainCollection = list.Select(id => oidStrategy.GetDomainObjectByOid(id));
+            var nakedObject = MakeTypedCollection(elementSpec.GetUnderlyingType(), domainCollection);
+            return GetAction(actionName, nakedObject);
         }
 
 
