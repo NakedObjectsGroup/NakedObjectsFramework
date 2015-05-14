@@ -410,7 +410,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
 
             var ac = new ArgumentsContext {
-                Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => f.Item2),
+                Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f =>  GetObjectValue(f.Item1, nakedObject,  f.Item2)),
                 ValidateOnly = false
             };
 

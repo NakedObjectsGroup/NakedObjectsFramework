@@ -682,6 +682,28 @@ namespace NakedObjects.Web.Mvc.Controllers {
         //    }
         //}
 
+        internal object GetObjectValue(INakedObjectAssociationSurface assoc, INakedObjectSurface targetNakedObject, object value) {
+            if (value == null) {
+                return null;
+            }
+            // todo
+            //var fromStreamFacet = assoc.ReturnSpec.GetFacet<IFromStreamFacet>();
+            //if (fromStreamFacet != null) {
+            //    var httpPostedFileBase = (HttpPostedFileBase)value;
+            //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
+            //}
+        
+            if (assoc.Specification.IsParseable()) {
+                return value;
+            }
+
+            if (!assoc.IsCollection()) {
+                return Surface.OidStrategy.GetDomainObjectByOid( Surface.OidStrategy.GetOid(value.ToString(), ""));
+            }
+            // collection 
+            return null;
+        }
+
         //internal INakedObjectAdapter GetNakedObjectValue(IAssociationSpec assoc, INakedObjectAdapter targetNakedObject, object value) {
         //    if (value == null) {
         //        return null;
