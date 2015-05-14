@@ -216,7 +216,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 if (!filteredNakedObject.ToEnumerable().Any()) {
                     Surface.MessageBroker.AddWarning("No objects selected");
-                    return AppropriateView(controlData, targetNakedObject, targetAction);
+                    return AppropriateView(controlData, targetNakedObject, null);
                 }
 
                 // force any result to not be queryable
