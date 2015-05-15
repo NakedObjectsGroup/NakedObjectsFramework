@@ -6,16 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
-using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class FindViewModel {
+        #region ViewTypes enum
+
         public enum ViewTypes {
             Edit,
             Dialog
         };
+
+        #endregion
 
         public ViewTypes ViewType {
             get { return ContextAction == null ? ViewTypes.Edit : ViewTypes.Dialog; }
@@ -23,19 +26,25 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public IEnumerable ActionResult { get; set; }
         public object TargetObject { get; set; }
-        public IActionSpec TargetAction { get; set; }
-
+        public INakedObjectActionSurface TargetAction { get; set; }
         public object ContextObject { get; set; }
-        public IActionSpec ContextAction { get; set; }
-
+        public INakedObjectActionSurface ContextAction { get; set; }
         public string PropertyName { get; set; }
 
-        public string DialogClass(INakedObjectsFramework framework) {
+        public string DialogClass(INakedObjectsSurface framework) {
             if (ViewType == ViewTypes.Dialog) {
-                return ContextAction.ReturnSpec.IsFile(framework) ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
+                return ContextAction.ReturnType.IsFile() ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
             }
-
             return IdConstants.EditName;
         }
+
+        //public string DialogClass(INakedObjectsFramework framework) {
+        //    if (ViewType == ViewTypes.Dialog) {
+        //        // todo
+        //        return ContextAction.ReturnType.IsFile() ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
+        //    }
+
+        //    return IdConstants.EditName;
+        //}
     }
 }

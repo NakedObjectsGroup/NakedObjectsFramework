@@ -62,7 +62,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString History(this HtmlHelper html, int count, object domainObject = null, bool clearAll = false) {
-            if (domainObject != null && !(domainObject is FindViewModelNew)) {
+            if (domainObject != null && !(domainObject is FindViewModel)) {
                 string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
                 html.ViewContext.HttpContext.Session.AddToCache(html.Surface(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
             }
@@ -203,7 +203,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (domainObject != null) {
                 newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
-                if (!(domainObject is FindViewModelNew) && !existingUrls.Contains(newUrl)) {
+                if (!(domainObject is FindViewModel) && !existingUrls.Contains(newUrl)) {
                     html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Surface(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
                 }
             }
@@ -268,7 +268,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Return to view the last object in the history. If the history is empty return to the home page.  
         /// </summary>
         public static MvcHtmlString CancelButton(this HtmlHelper html, object domainObject) {
-            var fvm = domainObject as FindViewModelNew;
+            var fvm = domainObject as FindViewModel;
 
             if (fvm != null) {
                 // if dialog return to target - unless it's a service 

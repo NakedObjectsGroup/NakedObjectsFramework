@@ -1061,7 +1061,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             var ac = new ArgumentsContext {
                 ValidateOnly = validateOnly,
-                Values = fieldsAndMatchingValues.ToDictionary(t => t.Item1.Id, t => t.Item2)
+                Values = fieldsAndMatchingValues.ToDictionary(t => t.Item1.Id, f => GetObjectValue(f.Item1, nakedObject, f.Item2))
             };
 
             return ac;
@@ -1390,8 +1390,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var viewResult = ((ViewResultBase) filterContext.Result);
                 object model = viewResult.ViewData.Model;
 
-                if (model is FindViewModelNew) {
-                    SetControllerName(((FindViewModelNew) model).ContextObject);
+                if (model is FindViewModel) {
+                    SetControllerName(((FindViewModel) model).ContextObject);
                 }
                 else if (model is ActionResultModel) {
                     var nakedObject = GetNakedObject(((ActionResultModel) model).Result);

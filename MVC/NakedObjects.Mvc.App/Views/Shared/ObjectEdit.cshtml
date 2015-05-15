@@ -11,7 +11,7 @@
 <div id="body">
     <section class="main-content" >
         @Html.TabbedHistory(Model)   
-        <div class="@(Html.ObjectEditClass(Model) + " " + Html.TransientFlag(Model is FindViewModelNew ? ((FindViewModelNew) Model).TargetObject : Model))" id="@Html.ObjectTypeAsCssId(Model)">
+        <div class="@(Html.ObjectEditClass(Model) + " " + Html.TransientFlag(Model is FindViewModel ? ((FindViewModel) Model).TargetObject : Model))" id="@Html.ObjectTypeAsCssId(Model)">
             @{ Html.RenderPartial("ObjectEditControl", Model); }          
         </div> 
     </section>

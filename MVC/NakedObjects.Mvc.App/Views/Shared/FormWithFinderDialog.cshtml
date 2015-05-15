@@ -1,17 +1,17 @@
 @using NakedObjects.Web.Mvc.Html
 @using NakedObjects.Web.Mvc.Models
-@model FindViewModelNew
+@model FindViewModel
 
 @{
     Layout = "~/Views/Shared/_NofLayout.cshtml";
-    ViewBag.Title = (Model.ViewType == FindViewModelNew.ViewTypes.Dialog) ? MvcHtmlString.Create(Model.ContextAction.Name()) : Html.ObjectTitle(Model.ContextObject);
+    ViewBag.Title = (Model.ViewType == FindViewModel.ViewTypes.Dialog) ? MvcHtmlString.Create(Model.ContextAction.Name()) : Html.ObjectTitle(Model.ContextObject);
 }
 
 <div id="body">
     <section class="main-content" >
         @(Html.TabbedHistory())   
         <div class="@(IdConstants.FindDialogName)">
-            @if (Model.ViewType == FindViewModelNew.ViewTypes.Dialog) {
+            @if (Model.ViewType == FindViewModel.ViewTypes.Dialog) {
                 <div class="@(IdConstants.ActionDialogName)" id="@(Html.ObjectActionDialogId(Model.ContextObject, Model.ContextAction))">
                     @{ Html.RenderPartial("DialogControl", Model); }
   
