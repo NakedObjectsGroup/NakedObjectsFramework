@@ -85,6 +85,10 @@ namespace NakedObjects.Web.Mvc.Helpers {
             throw new System.NotImplementedException();
         }
 
+        public object Wrap() {
+            throw new System.NotImplementedException();
+        }
+
         public INakedObjectSpecificationSurface Specification {
             get { throw new System.NotImplementedException(); }
         }

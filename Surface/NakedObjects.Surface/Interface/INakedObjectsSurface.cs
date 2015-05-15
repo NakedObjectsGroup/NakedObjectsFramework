@@ -54,5 +54,8 @@ namespace NakedObjects.Surface {
 
         INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec,  object domainObject);
         INakedObjectSurface GetObject(object domainObject);
+
+        // todo temp wrap - probably remove actionresult model ? 
+        object Wrap(object arm, INakedObjectSurface oldNakedObject);
     }
 }

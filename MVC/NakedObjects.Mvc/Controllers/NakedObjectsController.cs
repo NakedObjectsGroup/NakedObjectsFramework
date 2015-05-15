@@ -409,7 +409,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (value == null) {
                 return null;
             }
-            // todo
+           
+            if (parm.Specification.IsStream()) {
+                // todo not sure about this couple surface to http?
+                // create stream wrapper ? 
+                return (HttpPostedFileBase) value;
+            }
+            // todo this now needs doing in the surface ? 
             //var fromStreamFacet = parm.Spec.GetFacet<IFromStreamFacet>();
             //if (fromStreamFacet != null) {
             //    var httpPostedFileBase = (HttpPostedFileBase)value;

@@ -146,7 +146,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return View("ActionDialog", new FindViewModelNew {
                 ContextObject = no.Object,
-                ContextAction = action // todo fix hack 
+                ContextAction = action 
             });
         }
 

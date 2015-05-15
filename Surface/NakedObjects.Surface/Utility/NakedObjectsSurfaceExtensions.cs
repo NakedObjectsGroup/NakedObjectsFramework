@@ -331,6 +331,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsParseable);
         }
 
+        public static bool IsStream(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsStream);
+        }
+
         public static bool IsQueryable(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsQueryable);
         }

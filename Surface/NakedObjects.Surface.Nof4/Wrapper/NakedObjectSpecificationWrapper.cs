@@ -269,6 +269,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsBoolean;
                 case (ScalarProperty.IsEnum):
                     return IsEnum;
+                case (ScalarProperty.IsStream):
+                    return IsStream;
                 case (ScalarProperty.IsAlwaysImmutable):
                     return IsAlwaysImmutable;
                 case (ScalarProperty.IsImmutableOncePersisted):
@@ -280,6 +282,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        public bool IsStream {
+            get { return spec.ContainsFacet<IFromStreamFacet>(); }
         }
 
         public string UntitledName {

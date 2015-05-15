@@ -176,6 +176,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return NakedObjectWrapper.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 
+       
         public ObjectContextSurface GetObject(ILinkObjectId oid) {
             return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }
@@ -1146,5 +1147,16 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         #endregion
+
+        public object Wrap(object arm, INakedObjectSurface oldNakedObject) {
+            var no = ((NakedObjectWrapper)oldNakedObject).WrappedNakedObject;
+            // var oid = framework.OidStrategy.GetOid(arm);
+            var noArm = framework.GetNakedObject(arm);
+            var currentMemento = (ICollectionMemento)no.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(new object[] { }, false);
+            noArm.SetATransientOid(newMemento);
+
+            return noArm.Object;
+        }
     }
 }

@@ -80,6 +80,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
+        
+
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
         }

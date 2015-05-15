@@ -27,5 +27,7 @@ namespace NakedObjects.Surface {
         void Resolve();
 
         void SetIsNotQueryableState(bool state);
+
+        
     }
 }

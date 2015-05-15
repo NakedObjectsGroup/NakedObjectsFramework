@@ -66,6 +66,7 @@ namespace NakedObjects.Surface {
         PresentationHint,
         UntitledName,
         IsFile,
-        MementoAction
+        MementoAction,
+        IsStream
     }
 }
