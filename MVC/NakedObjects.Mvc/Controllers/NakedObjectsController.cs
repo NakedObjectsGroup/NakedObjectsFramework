@@ -1404,24 +1404,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                     if (viewResult.ViewName == "ViewNameSetAfterTransaction") {
                         // todo sort
-                        //if (nakedObject.ResolveState.IsTransient()) {
-                        //    viewResult.ViewName = model is PropertyViewModel ? "PropertyEdit" : "ObjectEdit";
-                        //}
-                        //else if (nakedObject.ResolveState.IsDestroyed()) {
-                        //    viewResult.ViewName = "DestroyedError";
-                        //}
-                        //else if (nakedObject.IsViewModelEditView()) {
-                        //    viewResult.ViewName = "ViewModel";
-                        //}
-                        //else if (nakedObject.Spec.IsFile(NakedObjectsContext)) {
-                        //    filterContext.Result = AsFile(nakedObject.Object);
-                        //}
-                        //else if (nakedObject.Spec.IsParseable) {
-                        //    viewResult.ViewName = "ScalarView";
-                        //}
-                        //else {
+                        if (nakedObject.IsTransient()) {
+                            viewResult.ViewName = model is PropertyViewModel ? "PropertyEdit" : "ObjectEdit";
+                        }
+                        else if (nakedObject.IsDestroyed()) {
+                            viewResult.ViewName = "DestroyedError";
+                        }
+                        else if (nakedObject.IsViewModelEditView()) {
+                            viewResult.ViewName = "ViewModel";
+                        }
+                        else if (nakedObject.Specification.IsFile()) {
+                            filterContext.Result = AsFile(nakedObject.Object);
+                        }
+                        else if (nakedObject.Specification.IsParseable()) {
+                            viewResult.ViewName = "ScalarView";
+                        }
+                        else {
                             viewResult.ViewName = model is PropertyViewModel ? "PropertyView" : "ObjectView";
-                        //}
+                        }
                     }
                 }
             }

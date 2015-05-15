@@ -203,6 +203,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             switch (name) {
                 case (ScalarProperty.IsTransient):
                     return IsTransient;
+                case (ScalarProperty.IsDestroyed):
+                    return IsDestroyed;
                 case (ScalarProperty.TitleString):
                     return TitleString();
                 case (ScalarProperty.InvariantString):
@@ -226,6 +228,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }
+        }
+
+        public bool IsDestroyed {
+            get { return nakedObject.ResolveState.IsDestroyed(); }
         }
 
         private INakedObjectActionSurface MementoAction() {

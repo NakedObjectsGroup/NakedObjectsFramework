@@ -67,6 +67,7 @@ namespace NakedObjects.Surface {
         UntitledName,
         IsFile,
         MementoAction,
-        IsStream
+        IsStream,
+        IsDestroyed
     }
 }

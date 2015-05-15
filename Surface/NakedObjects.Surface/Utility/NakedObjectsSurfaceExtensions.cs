@@ -37,6 +37,10 @@ namespace NakedObjects.Surface.Utility {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);
         }
 
+        public static bool IsDestroyed(this INakedObjectSurface nakedObjectSurface) {
+            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsDestroyed);
+        }
+
         public static bool IsUserPersistable(this INakedObjectSurface nakedObjectSurface) {
             return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsUserPersistable);
         }
