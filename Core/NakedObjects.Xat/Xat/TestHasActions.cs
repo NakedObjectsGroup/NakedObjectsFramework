@@ -52,7 +52,7 @@ namespace NakedObjects.Xat {
             return actions.Single();
         }
 
-        public ITestAction GetActionFor(string methodName) {
+        public ITestAction GetActionById(string methodName) {
             var actions = ActionsForMethodName(methodName).Where(x => string.IsNullOrEmpty(x.SubMenu)).ToArray();
             AssertErrors(actions, methodName, " (as method name)");
             return actions.Single();
@@ -64,7 +64,7 @@ namespace NakedObjects.Xat {
             return actions.Single();
         }
 
-        public ITestAction GetActionFor(string methodName, params Type[] parameterTypes) {
+        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) {
             var actions = ActionsForMethodName(methodName).Where(x => string.IsNullOrEmpty(x.SubMenu) && x.MatchParameters(parameterTypes)).ToArray();
             AssertErrors(actions, methodName, " (as method name & with specified parameters)");
             return actions.Single();
@@ -74,8 +74,8 @@ namespace NakedObjects.Xat {
             return GetMenu().GetSubMenu(subMenu).GetAction(actionName);
         }
 
-        public ITestAction GetActionFor(string methodName, string subMenu) {
-            var action = GetActionFor(methodName);
+        public ITestAction GetActionById(string methodName, string subMenu) {
+            var action = GetActionById(methodName);
             var friendlyName = action.Name;
             return GetAction(friendlyName, subMenu);
         }
@@ -86,8 +86,8 @@ namespace NakedObjects.Xat {
             return action;
         }
 
-        public ITestAction GetActionFor(string methodName, string subMenu, params Type[] parameterTypes) {
-            var action = GetActionFor(methodName, subMenu);
+        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
+            var action = GetActionById(methodName, subMenu);
             Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action with method name: " + methodName);
             return action;
         }

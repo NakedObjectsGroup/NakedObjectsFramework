@@ -35,32 +35,32 @@ namespace NakedObjects.Xat {
             return wrappedObject.GetAction(friendlyName);
         }
 
-        public ITestAction GetActionFor(string methodName) {
-            return wrappedObject.GetActionFor(methodName);
+        public ITestAction GetActionById(string methodName) {
+            return wrappedObject.GetActionById(methodName);
         }
 
         public ITestAction GetAction(string friendlyName, params Type[] parameterTypes) {
             return wrappedObject.GetAction(friendlyName, parameterTypes);
         }
 
-        public ITestAction GetActionFor(string methodName, params Type[] parameterTypes) {
-            return wrappedObject.GetActionFor(methodName, parameterTypes);
+        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) {
+            return wrappedObject.GetActionById(methodName, parameterTypes);
         }
 
         public ITestAction GetAction(string friendlyName, string subMenu) {
             return wrappedObject.GetAction(friendlyName, subMenu);
         }
 
-        public ITestAction GetActionFor(string methodName, string subMenu) {
-            return wrappedObject.GetActionFor(methodName, subMenu);
+        public ITestAction GetActionById(string methodName, string subMenu) {
+            return wrappedObject.GetActionById(methodName, subMenu);
         }
 
         public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) {
             return wrappedObject.GetAction(friendlyName, subMenu, parameterTypes);
         }
 
-        public ITestAction GetActionFor(string methodName, string subMenu, params Type[] parameterTypes) {
-            return wrappedObject.GetActionFor(methodName, subMenu, parameterTypes);
+        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
+            return wrappedObject.GetActionById(methodName, subMenu, parameterTypes);
         }
 
         public string GetObjectActionOrder() {

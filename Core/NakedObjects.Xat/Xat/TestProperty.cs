@@ -441,6 +441,11 @@ namespace NakedObjects.Xat {
             return this;
         }
 
+        public ITestProperty AssertHasFriendlyName(string friendlyName) {
+            Assert.AreEqual(friendlyName, this.Name);
+            return this;
+        }
+
         #endregion
     }
 }
