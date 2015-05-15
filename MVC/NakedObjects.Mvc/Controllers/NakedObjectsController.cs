@@ -693,6 +693,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
             // todo
+            if (assoc.Specification.IsStream()) {
+                // todo not sure about this couple surface to http?
+                // create stream wrapper ? 
+                return (HttpPostedFileBase)value;
+            }
+
             //var fromStreamFacet = assoc.ReturnSpec.GetFacet<IFromStreamFacet>();
             //if (fromStreamFacet != null) {
             //    var httpPostedFileBase = (HttpPostedFileBase)value;

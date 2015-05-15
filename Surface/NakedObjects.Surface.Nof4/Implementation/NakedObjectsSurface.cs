@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
+using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -161,6 +162,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (value == null) {
                 return null;
             }
+
+          
+
 
             if (value is string) {
                 adapter = s.GetFacet<IParseableFacet>().ParseTextEntry((string) value, Framework.NakedObjectManager);
@@ -724,6 +728,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private INakedObjectAdapter GetValue(IObjectSpec specification, IObjectSpec elementSpec, object rawValue) {
             if (rawValue == null) {
                 return null;
+            }
+
+            var fromStreamFacet = specification.GetFacet<IFromStreamFacet>();
+            if (fromStreamFacet != null) {
+                var httpPostedFileBase = (HttpPostedFileBase)rawValue;
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, framework.NakedObjectManager);
             }
 
             if (specification.IsParseable) {
