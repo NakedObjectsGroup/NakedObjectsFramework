@@ -211,11 +211,19 @@ namespace NakedObjects.Xat {
             InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
         }
 
+        protected ITestService GetTestService<T>() {
+            return GetTestService(typeof(T));
+        }
+
         protected virtual ITestService GetTestService(Type type) {
-            return NakedObjectsFramework.ServicesManager.GetServices().
+            var testService = NakedObjectsFramework.ServicesManager.GetServices().
                 Where(no => type.IsInstanceOfType(no.Object)).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
+            if (testService == null) {
+                Assert.Fail("No service of type " + type);
+            }
+            return testService;
         }
 
         protected virtual ITestService GetTestService(string serviceName) {

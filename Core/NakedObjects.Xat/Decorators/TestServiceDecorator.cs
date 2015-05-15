@@ -31,20 +31,36 @@ namespace NakedObjects.Xat {
             get { return wrappedObject.Actions; }
         }
 
-        public ITestAction GetAction(string name) {
-            return wrappedObject.GetAction(name);
+        public ITestAction GetAction(string friendlyName) {
+            return wrappedObject.GetAction(friendlyName);
         }
 
-        public ITestAction GetAction(string name, params Type[] parameterTypes) {
-            return wrappedObject.GetAction(name, parameterTypes);
+        public ITestAction GetActionById(string methodName) {
+            return wrappedObject.GetActionById(methodName);
         }
 
-        public ITestAction GetAction(string name, string subMenu) {
-            return wrappedObject.GetAction(name, subMenu);
+        public ITestAction GetAction(string friendlyName, params Type[] parameterTypes) {
+            return wrappedObject.GetAction(friendlyName, parameterTypes);
         }
 
-        public ITestAction GetAction(string name, string subMenu, params Type[] parameterTypes) {
-            return wrappedObject.GetAction(name, subMenu, parameterTypes);
+        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) {
+            return wrappedObject.GetActionById(methodName, parameterTypes);
+        }
+
+        public ITestAction GetAction(string friendlyName, string subMenu) {
+            return wrappedObject.GetAction(friendlyName, subMenu);
+        }
+
+        public ITestAction GetActionById(string methodName, string subMenu) {
+            return wrappedObject.GetActionById(methodName, subMenu);
+        }
+
+        public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) {
+            return wrappedObject.GetAction(friendlyName, subMenu, parameterTypes);
+        }
+
+        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
+            return wrappedObject.GetActionById(methodName, subMenu, parameterTypes);
         }
 
         public string GetObjectActionOrder() {
@@ -59,7 +75,6 @@ namespace NakedObjects.Xat {
         public ITestMenu GetMenu() {
             return wrappedObject.GetMenu();
         }
-
         #endregion
     }
 }

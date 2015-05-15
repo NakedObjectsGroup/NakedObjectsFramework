@@ -204,7 +204,7 @@
     <Compile Include="Injection\TestInjection.cs" />
     <Compile Include="Persistence\TestPersistence.cs" />
     <Compile Include="Repositories\TestSimpleRepository.cs" />
-    <Compile Include="XATs\TestFailureScenarios.cs" />
+    <Compile Include="XATs\TestXATFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

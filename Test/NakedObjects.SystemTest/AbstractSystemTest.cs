@@ -63,16 +63,16 @@ namespace NakedObjects.SystemTest {
         /// Assumes that a SimpleRepository for the type T has been registered in Services
         /// </summary>
         protected ITestObject NewTestObject<T>() {
-            return GetTestService<T>().GetAction("New Instance").InvokeReturnObject();
+            return GetSimpleRepositoryTestService<T>().GetAction("New Instance").InvokeReturnObject();
         }
 
-        private ITestService GetTestService<T>() {
+        private ITestService GetSimpleRepositoryTestService<T>() {
             var name = NameUtils.NaturalName(typeof (T).Name) + "s";
             return GetTestService(name);
         }
 
         protected ITestObject GetAllInstances<T>(int number) {
-            return GetTestService<T>().GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
+            return GetSimpleRepositoryTestService<T>().GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
         }
 
         protected ITestObject GetAllInstances(string simpleRepositoryName, int number) {
@@ -84,7 +84,7 @@ namespace NakedObjects.SystemTest {
         }
 
         protected ITestObject FindById<T>(int id) {
-            return GetTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
+            return GetSimpleRepositoryTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
         }
 
         protected ITestObject FindById(string simpleRepositoryName, int id) {

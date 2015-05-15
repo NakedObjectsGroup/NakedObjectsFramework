@@ -252,6 +252,11 @@ namespace NakedObjects.Xat {
             return parsedParameters.ToArray();
         }
 
+        public ITestAction AssertHasFriendlyName(string friendlyName) {
+            Assert.AreEqual(friendlyName, this.Name);
+            return this;
+        }
+
         #endregion
     }
 }

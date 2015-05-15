@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
+using NakedObjects.Util;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
@@ -35,15 +36,37 @@ namespace NakedObjects.Xat {
             get { return NakedObject.Spec.GetActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
         }
 
-        public ITestAction GetAction(string actionName) {
-            ITestAction[] actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu)).ToArray();
-            AssertErrors(actions, actionName);
+        private ITestAction[] ActionsWithFriendlyName(string friendlyName) {
+            return Actions.Where(x => x.Name == friendlyName).ToArray();
+        }
+
+        private ITestAction[] ActionsForMethodName(string methodName) {
+            return NakedObject.Spec.GetActions().Where(
+                a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
+                .Select(x => Factory.CreateTestAction(x, this)).ToArray(); 
+        }
+
+        public ITestAction GetAction(string friendlyName) {
+            var actions = ActionsWithFriendlyName(friendlyName).Where(x => string.IsNullOrEmpty(x.SubMenu)).ToArray();
+            AssertErrors(actions, friendlyName);
             return actions.Single();
         }
 
-        public ITestAction GetAction(string actionName, params Type[] parameterTypes) {
-            ITestAction[] actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu) && x.MatchParameters(parameterTypes)).ToArray();
-            AssertErrors(actions, actionName, " (with specified parameters)");
+        public ITestAction GetActionById(string methodName) {
+            var actions = ActionsForMethodName(methodName).Where(x => string.IsNullOrEmpty(x.SubMenu)).ToArray();
+            AssertErrors(actions, methodName, " (as method name)");
+            return actions.Single();
+        }
+
+        public ITestAction GetAction(string friendlyName, params Type[] parameterTypes) {
+            var actions = ActionsWithFriendlyName(friendlyName).Where(x => string.IsNullOrEmpty(x.SubMenu) && x.MatchParameters(parameterTypes)).ToArray();
+            AssertErrors(actions, friendlyName, " (with specified parameters)");
+            return actions.Single();
+        }
+
+        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) {
+            var actions = ActionsForMethodName(methodName).Where(x => string.IsNullOrEmpty(x.SubMenu) && x.MatchParameters(parameterTypes)).ToArray();
+            AssertErrors(actions, methodName, " (as method name & with specified parameters)");
             return actions.Single();
         }
 
@@ -51,9 +74,21 @@ namespace NakedObjects.Xat {
             return GetMenu().GetSubMenu(subMenu).GetAction(actionName);
         }
 
-        public ITestAction GetAction(string actionName, string subMenu, params Type[] parameterTypes) {
-            var action = GetAction(actionName, subMenu);
-            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: " + actionName);
+        public ITestAction GetActionById(string methodName, string subMenu) {
+            var action = GetActionById(methodName);
+            var friendlyName = action.Name;
+            return GetAction(friendlyName, subMenu);
+        }
+
+        public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) {
+            var action = GetAction(friendlyName, subMenu);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: " + friendlyName);
+            return action;
+        }
+
+        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
+            var action = GetActionById(methodName, subMenu);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action with method name: " + methodName);
             return action;
         }
 

@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Xat {
-    public interface ITestMenu //Because menu can be a sub-menu (item) of another menu
+    public interface ITestMenu
     {
         ITestMenu AssertNameEquals(string name);
         ITestMenu AssertItemCountIs(int count);

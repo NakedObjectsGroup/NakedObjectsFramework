@@ -50,5 +50,9 @@ namespace NakedObjects.Xat {
         ITestProperty AssertIsValidToSave();
         ITestProperty AssertLastMessageIs(string message);
         ITestProperty AssertLastMessageContains(string message);
+        /// <summary>
+        /// Test the name of the property as would be presented to the user.
+        /// </summary>
+        ITestProperty AssertHasFriendlyName(string friendlyName);
     }
 }
