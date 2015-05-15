@@ -34,5 +34,5 @@ namespace NakedObjects.Xat {
         ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
     }
 
-    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
 }

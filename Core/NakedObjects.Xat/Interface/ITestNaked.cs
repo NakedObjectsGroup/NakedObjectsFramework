@@ -13,5 +13,5 @@ namespace NakedObjects.Xat {
         string Title { get; }
     }
 
-    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
 }
