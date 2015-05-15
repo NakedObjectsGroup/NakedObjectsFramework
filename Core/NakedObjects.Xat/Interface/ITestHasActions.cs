@@ -10,19 +10,49 @@ using System;
 namespace NakedObjects.Xat {
     public interface ITestHasActions : ITestNaked {
         ITestAction[] Actions { get; }
-        ITestAction GetAction(string name);
+        /// <summary>
+        /// The friendlyName means the name as would be presented to the user, including
+        /// spaces and capitalisation. (See also: GetActionFor)
+        /// </summary>
+        ITestAction GetAction(string friendlyName);
+
+        /// <summary>
+        /// Equivalent to GetAction but using the methodName, rather than the friendly name of the action.
+        /// Designed to work with the nameof() operator in C# 6. 
+        /// </summary>
+        ITestAction GetActionFor(string methodName);
 
         /// <summary>
         /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
-        ITestAction GetAction(string name, params Type[] parameterTypes);
+        ITestAction GetAction(string friendlyName, params Type[] parameterTypes);
 
-        ITestAction GetAction(string name, string subMenu);
+        /// <summary>
+        /// Equivalent to GetAction but using the methodName, rather than the friendly name of the action.
+        /// Designed to work with the nameof() operator in C# 6. 
+        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        /// </summary>
+        ITestAction GetActionFor(string methodName, params Type[] parameterTypes);
+
+        ITestAction GetAction(string friendlyName, string subMenu);
+
+        /// <summary>
+        /// Equivalent to GetAction but using the methodName, rather than the friendly name of the action.
+        /// Designed to work with the nameof() operator in C# 6. 
+        /// </summary>
+        ITestAction GetActionFor(string methodName, string subMenu);
 
         /// <summary>
         /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
-        ITestAction GetAction(string name, string subMenu, params Type[] parameterTypes);
+        ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes);
+
+        /// <summary>
+        /// Equivalent to GetAction but using the methodName, rather than the friendly name of the action.
+        /// Designed to work with the nameof() operator in C# 6. 
+        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        /// </summary>
+        ITestAction GetActionFor(string methodName, string subMenu, params Type[] parameterTypes);
 
         string GetObjectActionOrder();
 
