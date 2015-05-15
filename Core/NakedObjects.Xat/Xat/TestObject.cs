@@ -173,5 +173,5 @@ namespace NakedObjects.Xat {
         }
     }
 
-    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
 }

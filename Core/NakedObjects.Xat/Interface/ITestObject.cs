@@ -17,5 +17,5 @@ namespace NakedObjects.Xat {
         object GetDomainObject();
     }
 
-    // Copyright (c) INakedObjectAdapter Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
 }

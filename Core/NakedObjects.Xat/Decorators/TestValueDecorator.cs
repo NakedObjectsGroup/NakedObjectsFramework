@@ -28,5 +28,5 @@ namespace NakedObjects.Xat {
         #endregion
     }
 
-    // Copyright (c) Naked Objects Group Ltd. Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
 }
