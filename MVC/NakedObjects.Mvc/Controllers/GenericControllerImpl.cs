@@ -604,7 +604,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             // transaction and so association may not work (possible persistent to transient). By doing this we split into two transactions 
             // and so all OK. 
 
-            IEnumerable resultAsEnumerable = new List<object> {subEditObject.Object};
+            IEnumerable resultAsEnumerable = new List<object> {result.Target.Object};
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {
                 ActionResult = resultAsEnumerable,
                 TargetObject = targetNakedObject.Object,
