@@ -196,7 +196,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         private  bool IsViewModelEditView() {
-            return nakedObject.Spec.ContainsFacet<IViewModelFacet>() && nakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(nakedObject);
+            return IsViewModel() && nakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(nakedObject);
+        }
+
+        private bool IsViewModel() {
+            return nakedObject.Spec.ContainsFacet<IViewModelFacet>();
         }
 
         public override object GetScalarProperty(ScalarProperty name) {
@@ -219,6 +223,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsPaged();
                 case (ScalarProperty.IsViewModelEditView):
                     return IsViewModelEditView();
+                case (ScalarProperty.IsViewModel):
+                    return IsViewModel();
                 case (ScalarProperty.EnumIntegralValue):
                     return EnumIntegralValue();
                 case (ScalarProperty.MementoAction):
