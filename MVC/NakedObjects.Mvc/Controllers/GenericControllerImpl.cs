@@ -434,7 +434,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (HasError(res)) {
                 foreach (var parm in res.VisibleProperties) {
                     if (!string.IsNullOrEmpty(parm.Reason)) {
-                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), MvcUi.InvalidEntry);
+                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
                     }
                 }
 
@@ -786,6 +786,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 filterContext.ExceptionHandled = true;
             }
             else if (filterContext.Exception is NakedObjectDomainException) {
+                filterContext.Result = View("DomainError", filterContext.Exception);
+                filterContext.ExceptionHandled = true;
+            }
+            else if (filterContext.Exception is NakedObjectsSurfaceException) {
                 filterContext.Result = View("DomainError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
