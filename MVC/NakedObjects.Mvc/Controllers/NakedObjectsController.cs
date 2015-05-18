@@ -672,7 +672,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetSelectedParameters(INakedObjectSurface nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
-                refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).Object));
+                refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).GetDomainObject<object>()));
                 Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }

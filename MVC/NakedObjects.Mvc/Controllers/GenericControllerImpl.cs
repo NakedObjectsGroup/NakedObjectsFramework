@@ -588,12 +588,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             var result = Surface.PutObject(oid, ac);
 
-            foreach (var p in result.VisibleProperties) {        
-                if (!string.IsNullOrEmpty(p.Reason)) {
-                    string key = GetFieldInputId(null, subEditObject, p.Property);
-                    ModelState.AddModelError(key, MvcUi.InvalidEntry);
-                    AddAttemptedValue(key, p.Property.Specification.IsParseable() ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
+            foreach (var p in result.VisibleProperties) {
+                string key = GetFieldInputId(null, subEditObject, p.Property);
+                if (!string.IsNullOrEmpty(p.Reason)) {             
+                    // kludge to keep ui the same 
+                    string reason = p.Reason == MvcUi.Mandatory ? MvcUi.Mandatory : MvcUi.InvalidEntry; 
+                    ModelState.AddModelError(key, reason);
                 }
+                AddAttemptedValue(key, p.Property.Specification.IsParseable() ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
             }
 
             if (!string.IsNullOrEmpty(result.Reason)) {
