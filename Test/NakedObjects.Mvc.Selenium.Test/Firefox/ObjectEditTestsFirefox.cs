@@ -46,41 +46,35 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void SaveWithNoChanges() {
             DoSaveWithNoChanges();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ChangeStringField() {
             DoChangeStringField();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
         public override void ChangeDropDownField() {
             DoChangeDropDownField();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ChangeReferencePropertyViaRecentlyViewed() {
             DoChangeReferencePropertyViaRecentlyViewed();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ChangeReferencePropertyViaRemove() {
             DoChangeReferencePropertyViaRemove();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ChangeReferencePropertyViaAFindAction() {
             DoChangeReferencePropertyViaAFindAction();
@@ -122,7 +116,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void NoValidationOnTransientUntilSave() {
             DoNoValidationOnTransientUntilSave();

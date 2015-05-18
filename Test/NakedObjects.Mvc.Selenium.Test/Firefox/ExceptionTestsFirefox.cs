@@ -26,7 +26,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void DomainException() {
             DoDomainException();

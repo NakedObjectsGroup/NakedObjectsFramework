@@ -56,25 +56,21 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
         [TestMethod]
-        [Ignore]
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
 
         [TestMethod]
-        [Ignore]
         public override void InvokeContributedActionParmsValidateFail() {
             DoInvokeContributedActionParmsValidateFail();
         }
 
         [TestMethod]
-        [Ignore]
         public override void InvokeContributedActionNoSelections() {
             DoInvokeContributedActionNoSelections();
         }

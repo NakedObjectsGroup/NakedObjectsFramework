@@ -51,21 +51,18 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ActionCrossValidateFail() {
             DoActionCrossValidateFail();
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ActionMultipleChoicesDefaults() {
             DoActionMultipleChoicesDefaults();
@@ -77,7 +74,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ActionMultipleChoicesConditionalEnum() {
             DoActionMultipleChoicesConditionalEnum();
@@ -89,7 +85,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public override void ActionMultipleChoicesDomainObject() {
             DoActionMultipleChoicesDomainObject();

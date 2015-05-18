@@ -42,7 +42,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
 
         public void ZzUploadImage() {
             DoUploadImage();
