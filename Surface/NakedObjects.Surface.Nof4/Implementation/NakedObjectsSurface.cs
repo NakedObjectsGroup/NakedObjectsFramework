@@ -554,6 +554,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
                     if (!arguments.ValidateOnly) {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
+
+                        if (nakedObject.Spec.Persistable == PersistableType.UserPersistable && nakedObject.ResolveState.IsTransient()) {
+                            framework.LifecycleManager.MakePersistent(nakedObject);
+                        }
+                        else {
+                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
+                        }
                     }
 
                     propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
