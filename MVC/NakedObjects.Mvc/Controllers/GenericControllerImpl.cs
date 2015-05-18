@@ -434,7 +434,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (HasError(res)) {
                 foreach (var parm in res.VisibleProperties) {
                     if (!string.IsNullOrEmpty(parm.Reason)) {
-                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
+                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), MvcUi.InvalidEntry);
                     }
                 }
 
@@ -591,7 +591,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             foreach (var p in result.VisibleProperties) {        
                 if (!string.IsNullOrEmpty(p.Reason)) {
                     string key = GetFieldInputId(null, subEditObject, p.Property);
-                    ModelState.AddModelError(key, p.Reason);
+                    ModelState.AddModelError(key, MvcUi.InvalidEntry);
                     AddAttemptedValue(key, p.Property.Specification.IsParseable() ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
                 }
             }
