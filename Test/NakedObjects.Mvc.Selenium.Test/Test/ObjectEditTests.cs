@@ -72,7 +72,6 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             //Return to View via History
 
-            br.FindElement(By.CssSelector(".nof-tab:first-of-type a")).Click();
             wait.ClickAndWait(".nof-tab:first-of-type a", ".nof-objectview");
         }
 
