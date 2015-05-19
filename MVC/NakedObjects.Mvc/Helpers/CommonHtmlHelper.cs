@@ -17,33 +17,31 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core;
+//using NakedObjects.Architecture.Facet;
+//using NakedObjects.Architecture.Menu;
+//using NakedObjects.Architecture.Spec;
+//using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public class CustomMenuItem : IMenuItemImmutable {
+    public class CustomMenuItem : IMenuItem {
         public string Controller { get; set; }
         public string Name { get; set; }
         public string Id { get; set; }
+        public object Wrapped { get; private set; }
         public string Action { get; set; }
         public object RouteValues { get; set; }
         public int MemberOrder { get; set; }
     }
 
     internal static class CommonHtmlHelper {
-        public static INakedObjectsFramework Framework(this HtmlHelper html) {
-            throw new UnexpectedCallException();
-            // return (INakedObjectsFramework)html.ViewData[IdConstants.NoFramework];
-        }
-
+        
         public static INakedObjectsSurface Surface(this HtmlHelper html) {
             return (INakedObjectsSurface) html.ViewData["Surface"];
         }
@@ -703,9 +701,9 @@ namespace NakedObjects.Web.Mvc.Html {
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(html.IdHelper(), nakedObject, property, false, parentContext)));
         }
 
-        internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
-            return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
-        }
+        //internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
+        //    return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
+        //}
 
         internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<INakedObjectActionSurface> allActions, INakedObjectActionSurface action) {
             return new Tuple<bool, string>(allActions.Count(a => a.Name() == action.Name()) > 1, MvcUi.DuplicateAction);
@@ -745,7 +743,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region private
 
-        private static readonly IList<Action<IFacet, RouteValueDictionary>> ClientValidationHandlers = new List<Action<IFacet, RouteValueDictionary>> {RangeValidation, RegExValidation, MaxlengthValidation};
+        //private static readonly IList<Action<IFacet, RouteValueDictionary>> ClientValidationHandlers = new List<Action<IFacet, RouteValueDictionary>> {RangeValidation, RegExValidation, MaxlengthValidation};
 
         private static ElementDescriptor GetActionDialog(this HtmlHelper html,
             ActionContext targetActionContext,
@@ -1082,11 +1080,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return attrs;
         }
 
-        private static RouteValueDictionary CreateAutoCompleteAttributes(ISpecification holder, string completionAjaxUrl) {
-            int minLength = holder.GetFacet<IAutoCompleteFacet>().MinLength;
-            var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
-            return attrs;
-        }
+        //private static RouteValueDictionary CreateAutoCompleteAttributes(ISpecification holder, string completionAjaxUrl) {
+        //    int minLength = holder.GetFacet<IAutoCompleteFacet>().MinLength;
+        //    var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
+        //    return attrs;
+        //}
 
         private static string GetFieldValue(this HtmlHelper html, PropertyContext propertyContext, bool inTable = false) {
             var valueNakedObject = propertyContext.GetValue(html.Surface());
@@ -1405,8 +1403,9 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return html.GetItems(id, context as ParameterContext);
             }
-
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
     
@@ -1879,21 +1878,21 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        internal static void GetTableColumnInfo(ISpecification holder, out Func<IAssociationSpec, bool> filterFunc, out Func<IAssociationSpec, int> orderFunc, out bool withTitle) {
-            ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
+        //internal static void GetTableColumnInfo(ISpecification holder, out Func<IAssociationSpec, bool> filterFunc, out Func<IAssociationSpec, int> orderFunc, out bool withTitle) {
+        //    ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
 
-            if (tableViewFacet == null) {
-                filterFunc = x => true;
-                orderFunc = null;
-                withTitle = true;
-            }
-            else {
-                string[] columns = tableViewFacet.Columns;
-                filterFunc = x => columns.Contains(x.Id);
-                orderFunc = x => Array.IndexOf(columns, x.Id);
-                withTitle = tableViewFacet.Title;
-            }
-        }
+        //    if (tableViewFacet == null) {
+        //        filterFunc = x => true;
+        //        orderFunc = null;
+        //        withTitle = true;
+        //    }
+        //    else {
+        //        string[] columns = tableViewFacet.Columns;
+        //        filterFunc = x => columns.Contains(x.Id);
+        //        orderFunc = x => Array.IndexOf(columns, x.Id);
+        //        withTitle = tableViewFacet.Title;
+        //    }
+        //}
 
         internal static bool RenderEagerly(INakedObjectAssociationSurface holder) {
             return holder.RenderEagerly();
@@ -1903,14 +1902,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return holder != null && holder.RenderEagerly();
         }
 
-        internal static bool RenderEagerly(ISpecification holder) {
-            IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();
-            return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
-        }
+        //internal static bool RenderEagerly(ISpecification holder) {
+        //    IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();
+        //    return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
+        //}
 
-        internal static bool DoNotCount(ISpecification holder) {
-            return holder.ContainsFacet<INotCountedFacet>();
-        }
+        //internal static bool DoNotCount(ISpecification holder) {
+        //    return holder.ContainsFacet<INotCountedFacet>();
+        //}
 
         internal static bool DoNotCount(INakedObjectAssociationSurface holder) {
             return holder.DoNotCount();
@@ -2113,7 +2112,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return html.IsMandatory(context as ParameterContext);
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
      
@@ -2125,7 +2127,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return (context as ParameterContext).Parameter.IsAutoCompleteEnabled;
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+           // throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private static bool IsAjax(FeatureContext context) {
@@ -2135,7 +2140,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return (context as ParameterContext).Parameter.IsAjax();
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private static string GetMandatoryIndicator(this HtmlHelper html, FeatureContext context) {
@@ -2224,18 +2232,18 @@ namespace NakedObjects.Web.Mvc.Html {
             return tag.ToString();
         }
 
-        private static void RangeValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
-            var rangeFacet = facet as IRangeFacet;
+        //private static void RangeValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
+        //    var rangeFacet = facet as IRangeFacet;
 
-            if (rangeFacet != null && !rangeFacet.IsDateRange) {
-                //Because JQuery client-side validation will not work for Date fields
-                htmlAttributes["data-val"] = "true";
-                htmlAttributes["data-val-number"] = MvcUi.InvalidEntry;
-                htmlAttributes["data-val-range-min"] = rangeFacet.Min.ToString(CultureInfo.InvariantCulture);
-                htmlAttributes["data-val-range-max"] = rangeFacet.Max.ToString(CultureInfo.InvariantCulture);
-                htmlAttributes["data-val-range"] = string.Format(Resources.NakedObjects.RangeMismatch, rangeFacet.Min, rangeFacet.Max);
-            }
-        }
+        //    if (rangeFacet != null && !rangeFacet.IsDateRange) {
+        //        //Because JQuery client-side validation will not work for Date fields
+        //        htmlAttributes["data-val"] = "true";
+        //        htmlAttributes["data-val-number"] = MvcUi.InvalidEntry;
+        //        htmlAttributes["data-val-range-min"] = rangeFacet.Min.ToString(CultureInfo.InvariantCulture);
+        //        htmlAttributes["data-val-range-max"] = rangeFacet.Max.ToString(CultureInfo.InvariantCulture);
+        //        htmlAttributes["data-val-range"] = string.Format(Resources.NakedObjects.RangeMismatch, rangeFacet.Min, rangeFacet.Max);
+        //    }
+        //}
 
         private static void RangeValidation(RangeData rangeData, RouteValueDictionary htmlAttributes) {
             //Because JQuery client-side validation will not work for Date fields
@@ -2249,15 +2257,15 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        private static void RegExValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
-            var regexFacet = facet as IRegExFacet;
+        //private static void RegExValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
+        //    var regexFacet = facet as IRegExFacet;
 
-            if (regexFacet != null) {
-                htmlAttributes["data-val"] = "true";
-                htmlAttributes["data-val-regex-pattern"] = regexFacet.Pattern.ToString();
-                htmlAttributes["data-val-regex"] = regexFacet.FailureMessage ?? MvcUi.InvalidEntry;
-            }
-        }
+        //    if (regexFacet != null) {
+        //        htmlAttributes["data-val"] = "true";
+        //        htmlAttributes["data-val-regex-pattern"] = regexFacet.Pattern.ToString();
+        //        htmlAttributes["data-val-regex"] = regexFacet.FailureMessage ?? MvcUi.InvalidEntry;
+        //    }
+        //}
 
         private static void RegExValidation(RegexData regexData, RouteValueDictionary htmlAttributes) {
             if (regexData.IsValid) {
@@ -2267,15 +2275,15 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        private static void MaxlengthValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
-            var maxLengthFacet = facet as IMaxLengthFacet;
+        //private static void MaxlengthValidation(IFacet facet, RouteValueDictionary htmlAttributes) {
+        //    var maxLengthFacet = facet as IMaxLengthFacet;
 
-            if (maxLengthFacet != null && maxLengthFacet.Value > 0) {
-                htmlAttributes["data-val"] = "true";
-                htmlAttributes["data-val-length-max"] = maxLengthFacet.Value;
-                htmlAttributes["data-val-length"] = string.Format(Resources.NakedObjects.MaximumLengthMismatch, maxLengthFacet.Value);
-            }
-        }
+        //    if (maxLengthFacet != null && maxLengthFacet.Value > 0) {
+        //        htmlAttributes["data-val"] = "true";
+        //        htmlAttributes["data-val-length-max"] = maxLengthFacet.Value;
+        //        htmlAttributes["data-val-length"] = string.Format(Resources.NakedObjects.MaximumLengthMismatch, maxLengthFacet.Value);
+        //    }
+        //}
 
         private static void MaxlengthValidation(int maxlength, RouteValueDictionary htmlAttributes) {
             if (maxlength > 0) {
@@ -2350,7 +2358,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return (context as ParameterContext).Parameter.MaxLength();
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private class RegexData {
@@ -2378,7 +2389,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return new RegexData((context as ParameterContext).Parameter.RegEx());
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private class RangeData {
@@ -2408,7 +2422,10 @@ namespace NakedObjects.Web.Mvc.Html {
             if (context is ParameterContext) {
                 return new RangeData((context as ParameterContext).Parameter.Range());
             }
-            throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
+            // todo is this correct exception
+            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+
+            //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
       

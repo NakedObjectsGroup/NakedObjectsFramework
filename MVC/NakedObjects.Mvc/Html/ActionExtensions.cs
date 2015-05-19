@@ -29,11 +29,11 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the id for an action dialog
         /// </summary>
-        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
-            //var nakedObject = html.Surface().GetObject(domainObject);
-            //return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
-            throw new UnexpectedCallException();
-        }
+        //public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
+        //    //var nakedObject = html.Surface().GetObject(domainObject);
+        //    //return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAction.Wrap(action)));
+        //    throw new UnexpectedCallException();
+        //}
 
       
 

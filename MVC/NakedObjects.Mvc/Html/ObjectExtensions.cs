@@ -173,21 +173,21 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
 
-        private static string GetCollectionTitle(INakedObjectAdapter nakedObject, HtmlHelper html) {
-            int pageSize, maxPage, currentPage, total;
-            int count = nakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Count();
-            if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
-                total = count;
-            }
+        //private static string GetCollectionTitle(INakedObjectAdapter nakedObject, HtmlHelper html) {
+        //    int pageSize, maxPage, currentPage, total;
+        //    int count = nakedObject.GetAsEnumerable(html.Framework().NakedObjectManager).Count();
+        //    if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
+        //        total = count;
+        //    }
 
-            string queryInd = nakedObject.Spec.IsQueryable ? MvcUi.QueryResult + ": " : "";
-            int viewSize = count;
+        //    string queryInd = nakedObject.Spec.IsQueryable ? MvcUi.QueryResult + ": " : "";
+        //    int viewSize = count;
 
-            ITypeSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().GetValueSpec(nakedObject, html.Framework().MetamodelManager.Metamodel));
-            string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
+        //    ITypeSpec typeSpec = html.Framework().MetamodelManager.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().GetValueSpec(nakedObject, html.Framework().MetamodelManager.Metamodel));
+        //    string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
 
-            return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);
-        }
+        //    return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);
+        //}
 
         /// <summary>
         ///     Display link to object with icon
