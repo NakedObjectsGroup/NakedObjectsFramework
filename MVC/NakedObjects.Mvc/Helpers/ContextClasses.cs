@@ -12,15 +12,15 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
-    internal abstract class ObjectContextNew {
+    internal abstract class ObjectContext {
         protected IIdHelper IdHelper { get; set; }
 
-        protected ObjectContextNew(IIdHelper idHelper ,ObjectContextNew otherContext) {
+        protected ObjectContext(IIdHelper idHelper ,ObjectContext otherContext) {
             IdHelper = idHelper;
             Target = otherContext.Target;
         }
 
-        protected ObjectContextNew(IIdHelper idHelper ,INakedObjectSurface target) {
+        protected ObjectContext(IIdHelper idHelper ,INakedObjectSurface target) {
             IdHelper = idHelper;
             Target = target;
         }
@@ -28,20 +28,20 @@ namespace NakedObjects.Web.Mvc.Html {
         public INakedObjectSurface Target { get; set; }
     }
 
-    internal abstract class FeatureContextNew : ObjectContextNew {
-        protected FeatureContextNew(IIdHelper idHelper ,ObjectContextNew otherContext) : base(idHelper, otherContext) { }
-        protected FeatureContextNew(IIdHelper idHelper ,INakedObjectSurface target) : base(idHelper, target) {}
+    internal abstract class FeatureContext : ObjectContext {
+        protected FeatureContext(IIdHelper idHelper ,ObjectContext otherContext) : base(idHelper, otherContext) { }
+        protected FeatureContext(IIdHelper idHelper ,INakedObjectSurface target) : base(idHelper, target) {}
         public abstract IScalarPropertyHolder Feature { get; }
     }
 
-    internal class PropertyContextNew : FeatureContextNew {
+    internal class PropertyContext : FeatureContext {
 
-        public PropertyContextNew(IIdHelper idHelper, PropertyContextNew otherContext)
+        public PropertyContext(IIdHelper idHelper, PropertyContext otherContext)
             : base(idHelper ,otherContext) {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContextNew(IIdHelper idHelper, INakedObjectSurface target, INakedObjectAssociationSurface property, bool isEdit, PropertyContextNew parentContext = null)
+        public PropertyContext(IIdHelper idHelper, INakedObjectSurface target, INakedObjectAssociationSurface property, bool isEdit, PropertyContext parentContext = null)
             : base(idHelper ,target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -53,7 +53,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
         }
 
-        public PropertyContextNew ParentContext { get; set; }
+        public PropertyContext ParentContext { get; set; }
 
         public INakedObjectAssociationSurface Property { get; set; }
 
@@ -73,7 +73,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return Property.IsFindMenuEnabled();
         }
 
-        public ObjectContextNew OuterContext {
+        public ObjectContext OuterContext {
             get { return this; }
         }
 
@@ -107,20 +107,20 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    internal class ActionContextNew : FeatureContextNew {
-        public ActionContextNew(IIdHelper idHelper, ActionContextNew otherContext)
+    internal class ActionContext : FeatureContext {
+        public ActionContext(IIdHelper idHelper, ActionContext otherContext)
             : base(idHelper, otherContext) {
             EmbeddedInObject = otherContext.EmbeddedInObject;
             Action = otherContext.Action;
         }
 
-        public ActionContextNew(IIdHelper idHelper, INakedObjectSurface target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, INakedObjectSurface target, INakedObjectActionSurface action)
             : base(idHelper, target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContextNew(IIdHelper idHelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action)
             : base(idHelper, target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -128,7 +128,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private Func<INakedObjectActionParameterSurface, bool> filter;
 
-        private ParameterContextNew[] parameterContexts;
+        private ParameterContext[] parameterContexts;
 
         public Func<INakedObjectActionParameterSurface, bool> Filter {
             get {
@@ -146,12 +146,12 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public RouteValueDictionary ParameterValues { get; set; }
 
-        public ParameterContextNew[] GetParameterContexts(INakedObjectsSurface surface) {
+        public ParameterContext[] GetParameterContexts(INakedObjectsSurface surface) {
             if (parameterContexts == null) {
-                parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContextNew(IdHelper, EmbeddedInObject, Target, Action, p, true)).ToArray();
+                parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContext(IdHelper, EmbeddedInObject, Target, Action, p, true)).ToArray();
 
                 if (ParameterValues != null) {
-                    foreach (ParameterContextNew pc in parameterContexts) {
+                    foreach (ParameterContext pc in parameterContexts) {
                         object value;
                         if (ParameterValues.TryGetValue(pc.Parameter.Id, out value)) {
                             pc.IsHidden = true;
@@ -202,12 +202,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
     }
 
-    internal class ParameterContextNew : ActionContextNew {
-        public ParameterContextNew(IIdHelper idhelper, ParameterContextNew otherContext) : base(idhelper, otherContext) {
+    internal class ParameterContext : ActionContext {
+        public ParameterContext(IIdHelper idhelper, ParameterContext otherContext) : base(idhelper, otherContext) {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContextNew(IIdHelper idhelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter, bool isEdit)
+        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter, bool isEdit)
             : base(idhelper, embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;

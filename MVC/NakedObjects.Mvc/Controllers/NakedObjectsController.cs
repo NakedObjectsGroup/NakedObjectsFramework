@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
@@ -579,7 +578,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ModelState.AddModelError(key, pcs.Reason);
                 }
             }
-            catch (InvalidEntryException) {
+            //catch (InvalidEntryException) {
+
+            catch (NakedObjectsSurfaceException) { // todo find correct NOS exception
                 ModelState.AddModelError(key, MvcUi.InvalidEntry);
             }
             catch (ArgumentException) {

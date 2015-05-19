@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
             var property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible(nakedObject));
-            return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContextNew(html.IdHelper(), nakedObject, property, false));
+            return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(html.IdHelper(), nakedObject, property, false));
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
             var property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible(nakedObject));
-            return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContextNew(html.IdHelper(), nakedObject, property, true));
+            return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(html.IdHelper(), nakedObject, property, true));
         }
 
         #endregion
@@ -414,7 +414,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var nakedObject = html.Surface().GetObject(contextObject);
             var target = html.Surface().GetObject(targetObject);
             return html.BuildEditContainer(nakedObject,
-                html.EditObjectFields(contextObject, new ActionContextNew(html.IdHelper(), true, target, targetAction), propertyName, actionResult, true),
+                html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, true),
                 IdConstants.FieldContainerName,
                 html.IdHelper().GetFieldContainerId(nakedObject));
         }
@@ -436,7 +436,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var nakedObject = html.Surface().GetObject(contextObject);
             var target = html.Surface().GetObject(targetObject);
             return html.BuildEditContainer(nakedObject,
-                html.EditObjectFields(contextObject, new ActionContextNew(html.IdHelper(), true, target, targetAction), propertyName, actionResult, false),
+                html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, false),
                 IdConstants.FieldContainerName,
                 html.IdHelper().GetFieldContainerId(nakedObject));
         }

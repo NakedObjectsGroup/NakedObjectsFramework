@@ -8,14 +8,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
@@ -31,7 +27,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
-            Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
+            Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
 
             var nakedObject = controlData.GetNakedObject(Surface);
@@ -42,7 +38,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         [HttpGet]
         public virtual ActionResult EditObject(ObjectAndControlData controlData) {
-            Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.None);
+            Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.None);
             return View("ObjectEdit", controlData.GetNakedObject(Surface).Object);
         }
 
@@ -50,7 +46,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
             Decrypt(form);
             controlData.Form = form;
-            Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay ||
+            Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
                               controlData.SubAction == ObjectAndControlData.SubActionType.None);
@@ -572,13 +568,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return false;
         }
 
-        private static bool ContextParameterIsCollection(IActionSpec contextAction, string propertyName) {
-            if (contextAction != null) {
-                IActionParameterSpec parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
-                return parameter.Spec.IsCollection;
-            }
-            return false;
-        }
+        //private static bool ContextParameterIsCollection(IActionSpec contextAction, string propertyName) {
+        //    if (contextAction != null) {
+        //        IActionParameterSpec parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
+        //        return parameter.Spec.IsCollection;
+        //    }
+        //    return false;
+        //}
 
         private string GetObjectId(object domainObject) {
             return Surface.OidStrategy.GetOid(domainObject).ToString();
@@ -660,7 +656,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 Log.Error("GenericControllerImpl:OnException handling exception but exception is null");
             }
 
-            if (filterContext.Exception is DataUpdateException) {
+            if (filterContext.Exception is BadRequestNOSException) { // todo find correct exception
+            //if (filterContext.Exception is DataUpdateException) {
                 filterContext.Result = View("DataUpdateError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
@@ -668,14 +665,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 filterContext.Result = View("ConcurrencyError", (PreconditionFailedNOSException) filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
-            else if (filterContext.Exception is ObjectNotFoundException) {
-                filterContext.Result = View("DestroyedError");
-                filterContext.ExceptionHandled = true;
-            }
-            else if (filterContext.Exception is NakedObjectDomainException) {
-                filterContext.Result = View("DomainError", filterContext.Exception);
-                filterContext.ExceptionHandled = true;
-            }
+            // todo fix theses is this the right exception ?
+            //else if (filterContext.Exception is ObjectNotFoundException) {
+            //    filterContext.Result = View("DestroyedError");
+            //    filterContext.ExceptionHandled = true;
+            //}
+            //else if (filterContext.Exception is NakedObjectDomainException) {
+            //    filterContext.Result = View("DomainError", filterContext.Exception);
+            //    filterContext.ExceptionHandled = true;
+            //}
             else if (filterContext.Exception is NakedObjectsSurfaceException) {
                 filterContext.Result = View("DomainError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;

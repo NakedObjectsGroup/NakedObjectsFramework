@@ -77,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Html {
            INakedObjectActionSurface targetAction,
            string propertyName,
            IEnumerable collection) {
-            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction);
+            var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction);
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
@@ -94,19 +94,19 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectActionSurface targetAction,
             string propertyName,
             IEnumerable collection) {
-            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
+            var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
 
        
 
-        private static MvcHtmlString ParameterList(INakedObjectActionSurface contextAction, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContextNew actionContext) {
+        private static MvcHtmlString ParameterList(INakedObjectActionSurface contextAction, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
             if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
                 return html.ParameterList(actionContext);
             }
 
-            var targetActionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(targetObject), targetAction);
+            var targetActionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(targetObject), targetAction);
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext, targetActionContext, propertyName, collection),
                 IdConstants.ParamContainerName,
@@ -118,12 +118,12 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
        
         public static MvcHtmlString ParameterList(this HtmlHelper html, object context, INakedObjectActionSurface action) {
-            var actionContext = new ActionContextNew(html.IdHelper(), false, html.Surface().GetObject(context), action);
+            var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(context), action);
             return html.ParameterList(actionContext);
         }
 
 
-        internal static MvcHtmlString ParameterList(this HtmlHelper html, ActionContextNew actionContext) {
+        internal static MvcHtmlString ParameterList(this HtmlHelper html, ActionContext actionContext) {
             return html.BuildParamContainer(actionContext,
                 html.ActionParameterFields(actionContext),
                 IdConstants.ParamContainerName,
@@ -535,7 +535,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var nakedObject = html.Surface().GetObject(model);
             var action = nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject)).SingleOrDefault(a => a.Id == id);
             ValidateParamValues(action, paramValues);
-            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContextNew(html.IdHelper(), nakedObject, action) { ParameterValues = new RouteValueDictionary(paramValues) });
+            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(html.IdHelper(), nakedObject, action) { ParameterValues = new RouteValueDictionary(paramValues) });
         }
 
         private static void ValidateParamValues(INakedObjectActionSurface action, object paramValues) {
@@ -815,7 +815,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object model, string id) {
             var nakedObject = html.Surface().GetObject(model);
             var action = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == id);
-            return html.ObjectActionOnTransient(new ActionContextNew(html.IdHelper(), nakedObject, action));
+            return html.ObjectActionOnTransient(new ActionContext(html.IdHelper(), nakedObject, action));
         }
 
         #endregion
@@ -1008,7 +1008,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object model, string id) {
             var nakedObject = html.Surface().GetObject(model);
             var action = nakedObject.Specification.GetActionLeafNodes().SingleOrDefault(a => a.Id == id);
-            return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContextNew(html.IdHelper(), nakedObject, action));
+            return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(html.IdHelper(), nakedObject, action));
         }
 
         #endregion

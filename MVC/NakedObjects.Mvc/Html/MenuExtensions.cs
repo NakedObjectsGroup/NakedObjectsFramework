@@ -148,7 +148,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return null;
             }
 
-            var actionContext = new ActionContextNew(html.IdHelper(), false, nakedObject, actionIm);
+            var actionContext = new ActionContext(html.IdHelper(), false, nakedObject, actionIm);
 
             RouteValueDictionary attributes;
             string tagType;

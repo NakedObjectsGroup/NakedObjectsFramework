@@ -12,7 +12,6 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using NakedObjects.Core;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
@@ -88,7 +87,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     var parameterValue = GetParameterValue(parameter, value);
                     ValidateParameter(action, parameter, nakedObject, parameterValue);
                 }
-                catch (InvalidEntryException) {
+                //catch (InvalidEntryException) { todo NOS exception ?
+                catch (Exception) {
+
                     ModelState.AddModelError(parmId, MvcUi.InvalidEntry);
                 }
 
