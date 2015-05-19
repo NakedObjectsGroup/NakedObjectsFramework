@@ -107,19 +107,21 @@ namespace MvcTestApp.Tests.Controllers {
             SqlConnection.ClearAllPools();
         }
 
-        public FormCollection GetFormForStoreEdit(INakedObjectAdapter store,
+       
+
+        public FormCollection GetFormForStoreEdit(INakedObjectSurface store,
                                                   string storeName,
                                                   string salesPerson,
                                                   string modifiedDate,
                                                   out IDictionary<string, string> idToRawValue) {
-            IObjectSpec nakedObjectSpecification = (IObjectSpec)NakedObjectsFramework.MetamodelManager.GetSpecification(typeof(Store));
-            IAssociationSpec assocSN = nakedObjectSpecification.GetProperty("Name");
-            IAssociationSpec assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
-            IAssociationSpec assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
+            var nakedObjectSpecification = store.Specification;
+            var assocSN = nakedObjectSpecification.Properties.Single( p => p.Id == "Name");
+            var assocSP = nakedObjectSpecification.Properties.Single(p => p.Id == "SalesPerson");
+            var assocMD = nakedObjectSpecification.Properties.Single(p => p.Id == "ModifiedDate");
 
-            string idSN = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSN));
-            string idSP = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocSP));
-            string idMD = IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(store), ScaffoldAssoc.Wrap(assocMD));
+            string idSN = IdHelper.GetFieldInputId(store, (assocSN));
+            string idSP = IdHelper.GetFieldInputId(store, (assocSP));
+            string idMD = IdHelper.GetConcurrencyFieldInputId((store), (assocMD));
 
             idToRawValue = new Dictionary<string, string> {
                 {idSN, storeName},
@@ -136,50 +138,50 @@ namespace MvcTestApp.Tests.Controllers {
             return form;
         }
 
-        [Test, Ignore] //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
-            //Store, or even into Customer, without getting a model validation error
-        // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
-        // System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
-        //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
-        public void EditSaveEFConcurrencyFail() {
-            Store store = Store;
-            INakedObjectAdapter adaptedStore = NakedObjectsFramework.NakedObjectManager.CreateAdapter(store, null, null);
-            IDictionary<string, string> idToRawvalue;
+        //[Test, Ignore] //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
+        //    //Store, or even into Customer, without getting a model validation error
+        //// in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
+        //// System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
+        ////  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
+        //public void EditSaveEFConcurrencyFail() {
+        //    Store store = Store;
+        //    var adaptedStore = Surface.
+        //    IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+        //    FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(store) };
+        //    var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(store) };
 
-            NakedObjectsFramework.TransactionManager.StartTransaction();
-            var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
+        //    NakedObjectsFramework.TransactionManager.StartTransaction();
+        //    var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
-            conn.Open();
+        //    conn.Open();
 
-            try {
-                controller.Edit(objectModel, form);
+        //    try {
+        //        controller.Edit(objectModel, form);
 
-                // change store in database 
+        //        // change store in database 
 
-                string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", store.Name);
+        //        string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", store.Name);
 
-                string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", store.Name);
+        //        string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", store.Name);
 
-                using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
-                    cmd.ExecuteNonQuery();
-                }
-                using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
-                    cmd.ExecuteNonQuery();
-                }
+        //        using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //        using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
+        //            cmd.ExecuteNonQuery();
+        //        }
 
-                NakedObjectsFramework.TransactionManager.EndTransaction();
+        //        NakedObjectsFramework.TransactionManager.EndTransaction();
 
-                Assert.Fail("Expect concurrency exception");
-            } catch (ConcurrencyException expected) {
-                Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
-            } finally {
-                conn.Close();
-            }
-        }
+        //        Assert.Fail("Expect concurrency exception");
+        //    } catch (ConcurrencyException expected) {
+        //        Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
+        //    } finally {
+        //        conn.Close();
+        //    }
+        //}
 
         [Test, Ignore] //As above
         public void InvokeObjectActionConcurrencyFail() {
