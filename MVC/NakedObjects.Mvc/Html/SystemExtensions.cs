@@ -20,10 +20,6 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class SystemExtensions {
         private const int DefaultHistorySize = 10;
 
-        //public static INakedObjectsFramework GetFramework(this HtmlHelper html) {
-        //    return html.Framework();
-        //}
-
         public static INakedObjectsSurface GetSurface(this HtmlHelper html) {
             return html.Surface();
         }
@@ -34,8 +30,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
         public static MvcHtmlString UserMessages(this HtmlHelper html) {
-            string[] messages = (string[])html.ViewData[IdConstants.NofMessages] ?? new string[0];
-            string[] warnings = (string[])html.ViewData[IdConstants.NofWarnings] ?? new string[0];
+            string[] messages = (string[]) html.ViewData[IdConstants.NofMessages] ?? new string[0];
+            string[] warnings = (string[]) html.ViewData[IdConstants.NofWarnings] ?? new string[0];
             return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdConstants.NofMessages) +
                                         CommonHtmlHelper.UserMessages(warnings, IdConstants.NofWarnings));
         }
@@ -52,7 +48,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
         public static MvcHtmlString SystemMessages(this HtmlHelper html) {
-            string[] messages = (string[])html.ViewData[IdConstants.SystemMessages] ?? new string[0];
+            string[] messages = (string[]) html.ViewData[IdConstants.SystemMessages] ?? new string[0];
 
             return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdConstants.NofMessages));
         }
@@ -81,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (urls.Any()) {
-                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new { clearAll }));
+                tag.InnerHtml += html.ControllerAction(MvcUi.Clear, IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new {clearAll}));
             }
 
             return MvcHtmlString.Create(tag.ToString());
@@ -165,13 +161,13 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             public void AddCloseThis(HtmlHelper html, UrlData nextEntry) {
-                var closeThis = html.ControllerAction("", IdConstants.ClearHistoryItemAction, IdConstants.HomeName, IdConstants.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new { id = Id, nextId = nextEntry.Id }))).ToString();
+                var closeThis = html.ControllerAction("", IdConstants.ClearHistoryItemAction, IdConstants.HomeName, IdConstants.ClearItemButtonClass, "", AddPageData(nextEntry, new RouteValueDictionary(new {id = Id, nextId = nextEntry.Id}))).ToString();
                 var closeThisElem = XDocument.Parse(closeThis).Element("form");
                 AddElement(closeThisElem);
             }
 
             public void AddCloseOthers(HtmlHelper html) {
-                var closeOthers = html.ControllerAction("", IdConstants.ClearHistoryOthersAction, IdConstants.HomeName, IdConstants.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new { id = Id }))).ToString();
+                var closeOthers = html.ControllerAction("", IdConstants.ClearHistoryOthersAction, IdConstants.HomeName, IdConstants.ClearOthersButtonClass, "", AddPageData(this, new RouteValueDictionary(new {id = Id}))).ToString();
                 AddElement(ToElement(closeOthers));
             }
 
@@ -183,7 +179,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             public void AddCloseAll(HtmlHelper html) {
                 const bool clearAll = true;
-                var closeAll = html.ControllerAction("", IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new { clearAll })).ToString();
+                var closeAll = html.ControllerAction("", IdConstants.ClearHistoryAction, IdConstants.HomeName, IdConstants.ClearButtonClass, "", new RouteValueDictionary(new {clearAll})).ToString();
                 AddElement(ToElement(closeAll));
             }
 
@@ -192,7 +188,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             public void AddCancel(HtmlHelper html, UrlData nextEntry) {
-                var cancel = html.ControllerAction(MvcUi.Cancel, IdConstants.CancelAction, IdConstants.HomeName, IdConstants.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new { nextId = nextEntry.Id }))).ToString();
+                var cancel = html.ControllerAction(MvcUi.Cancel, IdConstants.CancelAction, IdConstants.HomeName, IdConstants.CancelButtonClass, MvcUi.Cancel, AddPageData(nextEntry, new RouteValueDictionary(new {nextId = nextEntry.Id}))).ToString();
                 Document = XDocument.Parse(cancel).Element("form").Document;
             }
         }

@@ -10,17 +10,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
-using NakedObjects.Value;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
@@ -31,7 +25,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
             if (nakedObject.Specification.IsQueryable()) {
-
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
@@ -273,8 +266,6 @@ namespace NakedObjects.Web.Mvc.Html {
         //    var spec = parmSpec.Spec;
         //    return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
         //}
-
-    
 
         private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
             var oid = surface.OidStrategy.GetOid(id, "");

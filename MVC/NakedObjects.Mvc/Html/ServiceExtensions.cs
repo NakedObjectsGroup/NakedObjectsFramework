@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
 using System;
+using System.Web.Mvc;
 using NakedObjects.Surface.Utility;
-using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
@@ -22,13 +20,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         //TODO: Mark obsolete when Menus refactoring complete
         //[Obsolete("Add CustomMenuItems into an IMenu directly when constructing menus")]
-        //public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
-        //    return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
-        //        IdConstants.MenuContainerName,
-        //        html.IdHelper().GetServiceContainerId(ScaffoldAdapter.Wrap(nakedObject)),
-        //        nakedObject.TitleString());
-        //}
 
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
             var nakedObject = html.Surface().GetObject(service);

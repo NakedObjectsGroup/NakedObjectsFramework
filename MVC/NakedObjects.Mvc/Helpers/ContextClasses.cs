@@ -15,12 +15,12 @@ namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {
         protected IIdHelper IdHelper { get; set; }
 
-        protected ObjectContext(IIdHelper idHelper ,ObjectContext otherContext) {
+        protected ObjectContext(IIdHelper idHelper, ObjectContext otherContext) {
             IdHelper = idHelper;
             Target = otherContext.Target;
         }
 
-        protected ObjectContext(IIdHelper idHelper ,INakedObjectSurface target) {
+        protected ObjectContext(IIdHelper idHelper, INakedObjectSurface target) {
             IdHelper = idHelper;
             Target = target;
         }
@@ -29,27 +29,27 @@ namespace NakedObjects.Web.Mvc.Html {
     }
 
     internal abstract class FeatureContext : ObjectContext {
-        protected FeatureContext(IIdHelper idHelper ,ObjectContext otherContext) : base(idHelper, otherContext) { }
-        protected FeatureContext(IIdHelper idHelper ,INakedObjectSurface target) : base(idHelper, target) {}
+        protected FeatureContext(IIdHelper idHelper, ObjectContext otherContext) : base(idHelper, otherContext) {}
+        protected FeatureContext(IIdHelper idHelper, INakedObjectSurface target) : base(idHelper, target) {}
         public abstract IScalarPropertyHolder Feature { get; }
     }
 
     internal class PropertyContext : FeatureContext {
-
         public PropertyContext(IIdHelper idHelper, PropertyContext otherContext)
-            : base(idHelper ,otherContext) {
+            : base(idHelper, otherContext) {
             ParentContext = otherContext.ParentContext;
         }
 
         public PropertyContext(IIdHelper idHelper, INakedObjectSurface target, INakedObjectAssociationSurface property, bool isEdit, PropertyContext parentContext = null)
-            : base(idHelper ,target) {
+            : base(idHelper, target) {
             Property = property;
             IsPropertyEdit = isEdit;
             IsEdit = isEdit;
             ParentContext = parentContext;
         }
 
-        public INakedObjectSurface OriginalTarget {
+        public INakedObjectSurface OriginalTarget
+        {
             get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
         }
 
@@ -57,7 +57,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public INakedObjectAssociationSurface Property { get; set; }
 
-        public override IScalarPropertyHolder Feature {
+        public override IScalarPropertyHolder Feature
+        {
             get { return Property; }
         }
 
@@ -73,7 +74,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return Property.IsFindMenuEnabled();
         }
 
-        public ObjectContext OuterContext {
+        public ObjectContext OuterContext
+        {
             get { return this; }
         }
 
@@ -130,8 +132,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private ParameterContext[] parameterContexts;
 
-        public Func<INakedObjectActionParameterSurface, bool> Filter {
-            get {
+        public Func<INakedObjectActionParameterSurface, bool> Filter
+        {
+            get
+            {
                 if (filter == null) {
                     return x => true;
                 }
@@ -164,7 +168,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return parameterContexts;
         }
 
-        public override IScalarPropertyHolder Feature {
+        public override IScalarPropertyHolder Feature
+        {
             get { return Action; }
         }
 
@@ -181,7 +186,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
-        private bool IsFileActionNoParms() {        
+        private bool IsFileActionNoParms() {
             return Action != null && Action.ReturnType.IsFileAttachment() && !Action.Parameters.Any();
         }
 
@@ -223,7 +228,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public INakedObjectSurface CustomValue { get; set; }
 
-        public override IScalarPropertyHolder Feature {
+        public override IScalarPropertyHolder Feature
+        {
             get { return Parameter; }
         }
 

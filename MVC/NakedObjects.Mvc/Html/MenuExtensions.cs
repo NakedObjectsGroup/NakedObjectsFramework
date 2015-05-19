@@ -56,8 +56,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.MenuAsHtml(menu, null, false, false);
         }
 
-    
-
         private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenu> menus) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ServicesContainerName);
@@ -66,8 +64,6 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             return MvcHtmlString.Create(tag.ToString());
         }
-
-       
 
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenu menu, INakedObjectSurface nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
@@ -105,15 +101,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static bool IsDuplicateAndIsVisibleActions(HtmlHelper html,
-                                                        IMenuItem item,
-                                                        IList<IMenuItem> items,
-                                                        INakedObjectSurface nakedObject) {
+            IMenuItem item,
+            IList<IMenuItem> items,
+            INakedObjectSurface nakedObject) {
             var itemsOfSameName = items.Where(i => i.Name == item.Name).ToArray();
             if (itemsOfSameName.Count() == 1) return false;
             return itemsOfSameName.Count(i => MenuActionAsElementDescriptor(html, i as IMenuAction, nakedObject, false) != null) > 1;
         }
-
-     
 
         private static ElementDescriptor MenuItemAsElementDescriptor(this HtmlHelper html, IMenuItem item, INakedObjectSurface nakedObject, bool isEdit) {
             ElementDescriptor descriptor = null;
@@ -128,8 +122,6 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             return descriptor;
         }
-
-    
 
         private static ElementDescriptor MenuActionAsElementDescriptor(this HtmlHelper html, IMenuAction menuAction, INakedObjectSurface nakedObject, bool isEdit) {
             var actionIm = menuAction.Action;
@@ -173,8 +165,6 @@ namespace NakedObjects.Web.Mvc.Html {
                 Attributes = attributes
             };
         }
-
-      
 
         private static ElementDescriptor SubMenuAsElementDescriptor(this HtmlHelper html, IMenu subMenu, INakedObjectSurface nakedObject, bool isEdit) {
             string tagType = "div";

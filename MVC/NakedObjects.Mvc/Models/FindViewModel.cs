@@ -20,7 +20,8 @@ namespace NakedObjects.Web.Mvc.Models {
 
         #endregion
 
-        public ViewTypes ViewType {
+        public ViewTypes ViewType
+        {
             get { return ContextAction == null ? ViewTypes.Edit : ViewTypes.Dialog; }
         }
 
@@ -37,14 +38,5 @@ namespace NakedObjects.Web.Mvc.Models {
             }
             return IdConstants.EditName;
         }
-
-        //public string DialogClass(INakedObjectsFramework framework) {
-        //    if (ViewType == ViewTypes.Dialog) {
-        //        // todo
-        //        return ContextAction.ReturnType.IsFile() ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
-        //    }
-
-        //    return IdConstants.EditName;
-        //}
     }
 }

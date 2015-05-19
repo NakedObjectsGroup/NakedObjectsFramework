@@ -10,8 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface;
 
 namespace NakedObjects.Web.Mvc.Models {
@@ -32,36 +30,12 @@ namespace NakedObjects.Web.Mvc.Models {
             return Result.GetEnumerator();
         }
 
-        //public static ActionResultModel Create(INakedObjectsFramework framework, IActionSpec action, INakedObjectAdapter nakedObject, int page, int pageSize, string format) {
-        //    var result = (IEnumerable) nakedObject.Object;
-        //    Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
-        //    Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
-        //    Type armType = armGenericType.MakeGenericType(genericType);
-        //    var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
-        //    INakedObjectAdapter noArm = framework.NakedObjectManager.CreateAdapter(arm, null, null);
-        //    var currentMemento = (ICollectionMemento) nakedObject.Oid;
-        //    var newMemento = currentMemento.NewSelectionMemento(new object[] {}, false);
-        //    noArm.SetATransientOid(newMemento);
-        //    arm.Page = page;
-        //    arm.PageSize = pageSize;
-        //    arm.Format = format;
-        //    return arm;
-        //}
-
         public static ActionResultModel Create(INakedObjectsSurface surface, INakedObjectActionSurface action, INakedObjectSurface nakedObject, int page, int pageSize, string format) {
-            var result = (IEnumerable)nakedObject.Object;
-            Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof(object);
-            Type armGenericType = result is IQueryable ? typeof(ActionResultModelQ<>) : typeof(ActionResultModel<>);
+            var result = (IEnumerable) nakedObject.Object;
+            Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
+            Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
             Type armType = armGenericType.MakeGenericType(genericType);
-            var arm = (ActionResultModel)Activator.CreateInstance(armType, action, result);
-
-            // todo fix this
-            //var oid = framework.OidStrategy.GetOid(arm);
-            //var noArm = framework.GetObject(oid);
-            //var currentMemento = (ICollectionMemento)nakedObject.Oid;
-            //var newMemento = currentMemento.NewSelectionMemento(new object[] { }, false);
-            //noArm.SetATransientOid(newMemento);
-
+            var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
 
             arm.Page = page;
             arm.PageSize = pageSize;
@@ -92,15 +66,18 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public new IQueryable<T> Result { get; private set; }
 
-        public Expression Expression {
+        public Expression Expression
+        {
             get { return Result.Expression; }
         }
 
-        public Type ElementType {
+        public Type ElementType
+        {
             get { return Result.ElementType; }
         }
 
-        public IQueryProvider Provider {
+        public IQueryProvider Provider
+        {
             get { return Result.Provider; }
         }
     }

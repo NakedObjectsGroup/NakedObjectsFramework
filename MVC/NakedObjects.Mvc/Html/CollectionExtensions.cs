@@ -11,9 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 
@@ -21,37 +18,29 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
         #region all
 
-     
-
         public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action, string defaultTo = IdConstants.ListDisplayFormat) {
             bool renderEagerly = CommonHtmlHelper.RenderEagerly(action);
             string displayType = DefaultFormat(html, renderEagerly ? IdConstants.TableDisplayFormat : defaultTo);
             return displayType == IdConstants.TableDisplayFormat ? CollectionTableInternal(html, collection, action) : CollectionListInternal(html, collection, action);
         }
 
-
-
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdConstants.ListDisplayFormat) {
             var adapter = html.Surface().GetObject(domainObject);
             IEnumerable<INakedObjectSurface> collections = adapter.Specification.Properties.Where(p => p.IsCollection()).Select(a => a.GetNakedObject(adapter));
-            return collections.Select(c => html.Collection(c.ToEnumerable(), (INakedObjectActionSurface)null, defaultTo)).ToArray();
+            return collections.Select(c => html.Collection(c.ToEnumerable(), (INakedObjectActionSurface) null, defaultTo)).ToArray();
         }
 
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
             return html.Collection(collection, action, IdConstants.TableDisplayFormat);
         }
 
-       
-
         public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
             return html.Collection(collection, action);
         }
 
-      
-
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             var adapter = html.Surface().GetObject(domainObject);
-            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection() && obj.IsVisible(adapter)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter) });
+            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection() && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
             return collections.Select(coll => string.Format(format, coll.assoc.Name(), coll.val.TitleString())).ToArray();
         }
 
@@ -76,8 +65,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return html.GetStandaloneCollection(nakedObject, filterFunc, orderFunc, withTitle);
         }
-
-    
 
         internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
             var nakedObject = html.Surface().GetObject(collection);
@@ -174,8 +161,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <example>
         /// html.CollectionTableWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
-    
-
         public static MvcHtmlString CollectionListWithout(this HtmlHelper html, IEnumerable domainObject, params string[] excludingColumns) {
             var nakedObject = html.Surface().GetObject(domainObject);
             string displayType = DefaultFormat(html, IdConstants.ListDisplayFormat);
@@ -230,9 +215,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <example>
         /// html.CollectionTableWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
-        //public static MvcHtmlString CollectionTableWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
-     
-
         public static MvcHtmlString CollectionTableWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
             var nakedObject = html.Surface().GetObject(domainObject);
             string displayType = DefaultFormat(html, IdConstants.TableDisplayFormat);
@@ -242,7 +224,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string DefaultFormat(HtmlHelper html, string defaultTo) {
-            string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string)html.ViewData[IdConstants.CollectionFormat] : defaultTo;
+            string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string) html.ViewData[IdConstants.CollectionFormat] : defaultTo;
             html.ViewData[IdConstants.CollectionFormat] = displayType; // ensure default value is saved
             return displayType;
         }
@@ -287,8 +269,6 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <example>
         /// html.CollectionTableWithout(obj, "TestCollectionOne", "TestInt")
         /// </example>
-       
-
         public static MvcHtmlString CollectionListWith(this HtmlHelper html, IEnumerable domainObject, params string[] includingColumns) {
             var nakedObject = html.Surface().GetObject(domainObject);
             string displayType = DefaultFormat(html, IdConstants.ListDisplayFormat);
