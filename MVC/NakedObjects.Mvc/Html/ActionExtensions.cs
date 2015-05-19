@@ -529,12 +529,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectAction(model, y => y.NoParameterAction)
         /// </example>
         // non lambda 
-        //public static MvcHtmlString ObjectAction(this HtmlHelper html, object model, string id, object paramValues = null) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-        //    IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
-        //    ValidateParamValues(action, paramValues);
-        //    return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(html.IdHelper(),  nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
-        //}
+       
 
         public static MvcHtmlString ObjectAction(this HtmlHelper html, object model, string id, object paramValues = null) {
             var nakedObject = html.Surface().GetObject(model);
@@ -815,11 +810,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Html.ObjectActionOnTransient(model, y => y.NoParameterAction)
         /// </example>
         // non lambda 
-        //public static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object model, string id) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-        //    IActionSpec action = nakedObject.Spec.GetActions().Single(a => a.Id == id);
-        //    return html.ObjectActionOnTransient(new ActionContext(html.IdHelper(), nakedObject, action));
-        //}
+        
 
         public static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object model, string id) {
             var nakedObject = html.Surface().GetObject(model);

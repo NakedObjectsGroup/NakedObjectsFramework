@@ -6,21 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
-
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
@@ -65,7 +58,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
     
 
-        private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<Surface.Interface.IMenu> menus) {
+        private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenu> menus) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ServicesContainerName);
             foreach (var menu in menus) {
@@ -76,7 +69,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
        
 
-        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, Surface.Interface.IMenu menu, INakedObjectSurface nakedObject, bool isEdit, bool defaultToEmptyMenu) {
+        private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenu menu, INakedObjectSurface nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItem item in menu.MenuItems) {
                 var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
@@ -127,8 +120,8 @@ namespace NakedObjects.Web.Mvc.Html {
             if (item is IMenuAction) {
                 descriptor = MenuActionAsElementDescriptor(html, item as IMenuAction, nakedObject, isEdit);
             }
-            else if (item is Surface.Interface.IMenu) {
-                descriptor = SubMenuAsElementDescriptor(html, item as Surface.Interface.IMenu, nakedObject, isEdit);
+            else if (item is IMenu) {
+                descriptor = SubMenuAsElementDescriptor(html, item as IMenu, nakedObject, isEdit);
             }
             else if (item is CustomMenuItem) {
                 descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
