@@ -150,6 +150,7 @@
     <Compile Include="Controllers\AutoCompleteObject.cs" />
     <Compile Include="Controllers\ConcurrencyTest.cs" />
     <Compile Include="Controllers\CustomControllerTest.cs" />
+    <Compile Include="Controllers\FrameworkHelper.cs" />
     <Compile Include="Controllers\GenericControllerTest.cs" />
     <Compile Include="Controllers\NotPersistedObject.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

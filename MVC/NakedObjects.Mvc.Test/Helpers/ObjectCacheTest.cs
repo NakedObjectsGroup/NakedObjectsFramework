@@ -19,10 +19,14 @@ using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
@@ -70,6 +74,10 @@ namespace MvcTestApp.Tests.Helpers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("ObjectCacheTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
@@ -97,34 +105,37 @@ namespace MvcTestApp.Tests.Helpers {
             var mockOid = CollectionMementoHelper.TestMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, claimRepoAdapter, claimRepoAdapter.GetActionLeafNode("AllClaims"), new INakedObjectAdapter[] {});
 
             claimsAdapter.SetATransientOid(mockOid);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claimsAdapter);
-            Assert.IsTrue(((IEnumerable<object>) mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).First()).SequenceEqual(claims));
+
+            var ca = Surface.GetObject(claimsAdapter.Object);
+
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, ca);
+            Assert.IsTrue(((IEnumerable<object>) mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).First()).SequenceEqual(claims));
         }
 
         [Test]
         public void AddNakedObjectToCache() {
-            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
+            var claim = Surface.GetObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
         }
 
         [Test]
         public void AddToCache() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
         }
 
         [Test]
         public void AddTransient() {
             var claim = NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
-            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Any());
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
+            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Any());
         }
 
         [Test]
@@ -132,21 +143,21 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderBy(c => c.Id).First();
             Claim claim2 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim2);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim2);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim2));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Count() == 2);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Count() == 2);
         }
 
         [Test]
         public void CacheLimit() {
             var claims = NakedObjectsFramework.Persistor.Instances<Claim>().Where(c => c.Claimant.UserName == "dick");
 
-            claims.ForEach(c => mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, c));
+            claims.ForEach(c => mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, c));
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Count() == ObjectCache.CacheSize);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Count() == ObjectCache.CacheSize);
         }
 
         [Test]
@@ -154,14 +165,14 @@ namespace MvcTestApp.Tests.Helpers {
             GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
             GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item2);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, item1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, item2);
 
-            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (AbstractExpenseItem));
+            var spec = Surface.GetDomainType(typeof (AbstractExpenseItem).FullName);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item1));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item2));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Count() == 2);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(item1));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(item2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Count() == 2);
         }
 
         [Test]
@@ -169,14 +180,14 @@ namespace MvcTestApp.Tests.Helpers {
             GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
             GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, item2);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, item1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, item2);
 
-            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim));
+            var spec = Surface.GetDomainType(typeof(Claim).FullName);
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item1));
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(item2));
-            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Any());
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(item1));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(item2));
+            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Any());
         }
 
         [Test]
@@ -184,49 +195,51 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderBy(c => c.Id).First();
             Claim claim2 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim2);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim2);
 
-            IObjectSpec spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim));
+            var spec = Surface.GetDomainType(typeof(Claim).FullName);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(claim1));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Contains(claim2));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(NakedObjectsFramework, spec).Count() == 2);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(claim1));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Contains(claim2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.CachedObjectsOfType(Surface, spec).Count() == 2);
         }
 
         [Test]
         public void ClearCache() {
-            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            var claim = Surface.GetObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.ClearCachedObjects();
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
         }
 
         [Test]
         public void ClearDisposedFromCache() {
             var claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First());
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            var cc = Surface.GetObject(claim.Object);
+
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, cc);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
 
             NakedObjectsFramework.TransactionManager.StartTransaction();
             NakedObjectsFramework.Persistor.DestroyObject(claim);
             NakedObjectsFramework.TransactionManager.EndTransaction();
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
         }
 
         [Test]
         public void DoNotAddDuplicates() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Count() == 1);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Count() == 1);
         }
 
         [Test]
@@ -237,50 +250,50 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim2 = null;
             foreach (var c in claims.OrderBy(c => c.Id)) {
                 claim1 = claim1 ?? c;
-                mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, c);
+                mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, c);
                 claim2 = c;
             }
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Count() == ObjectCache.CacheSize);
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Count() == ObjectCache.CacheSize);
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim2));
         }
 
         [Test]
         public void RemoveFromCache() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(NakedObjectsFramework, claim);
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(Surface, claim);
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
         }
 
         [Test]
         public void RemoveFromCacheNotThere() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(NakedObjectsFramework, claim);
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim));
-            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Any());
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(Surface, claim);
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim));
+            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Any());
         }
 
         [Test]
         public void RemoveNakedObjectFromCache() {
-            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            var claim = Surface.GetObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim);
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(NakedObjectsFramework, claim);
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(Surface, claim);
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
         }
 
         [Test]
         public void RemoveNakedObjectFromCacheNotThere() {
-            INakedObjectAdapter claim = NakedObjectsFramework.GetNakedObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
+            var claim = Surface.GetObject(NakedObjectsFramework.Persistor.Instances<Claim>().First());
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(NakedObjectsFramework, claim);
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
-            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Any());
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveFromCache(Surface, claim);
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim.Object));
+            Assert.IsTrue(!mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Any());
         }
 
         [Test]
@@ -288,16 +301,16 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderBy(c => c.Id).First();
             Claim claim2 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First();
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim2);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim2);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim2));
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveOthersFromCache(NakedObjectsFramework, claim1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.RemoveOthersFromCache(Surface, claim1);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1));
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim2));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim2));
         }
 
         [Test]
@@ -305,28 +318,28 @@ namespace MvcTestApp.Tests.Helpers {
             Claim c1 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderBy(c => c.Id).First();
             Claim c2 = NakedObjectsFramework.Persistor.Instances<Claim>().OrderByDescending(c => c.Id).First();
 
-            INakedObjectAdapter claim1 = NakedObjectsFramework.GetNakedObject(c1);
-            INakedObjectAdapter claim2 = NakedObjectsFramework.GetNakedObject(c2);
+            var claim1 = Surface.GetObject(c1);
+            var claim2 = Surface.GetObject(c2);
 
             Assert.AreNotSame(claim1, claim2);
 
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim1);
-            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim2, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim1);
+            mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(Surface, claim2, ObjectCache.ObjectFlag.BreadCrumb);
 
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1.Object));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1.Object));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim2.Object));
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim1.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim2.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim1.Object));
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.ClearCachedObjects();
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim1.Object));
-            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface).Contains(claim1.Object));
+            Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.ClearCachedObjects(ObjectCache.ObjectFlag.BreadCrumb);
 
-            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
+            Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(Surface, ObjectCache.ObjectFlag.BreadCrumb).Contains(claim2.Object));
         }
 
         #region Nested type: DummyController
@@ -346,11 +359,21 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
+        protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
+        protected override void StartTest() {
+            base.StartTest();
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
+        }
+
         [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
-            RunFixturesOnce();
             StartTest();
+            RunFixturesOnce();
             controller = new DummyController();
             mocks = new ContextMocks(controller);
             SetUser("sven");

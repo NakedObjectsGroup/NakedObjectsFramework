@@ -17,10 +17,14 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
@@ -68,6 +72,10 @@ namespace MvcTestApp.Tests.Helpers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("SessionCacheTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
@@ -90,16 +98,16 @@ namespace MvcTestApp.Tests.Helpers {
         public void AddPersistentToSession() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            session.AddObjectToSession(Surface, "key1", claim);
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(Surface, "key1"));
         }
 
         [Test]
         public void AddTransientToSession() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             var claim = NakedObjectsFramework.LifecycleManager.CreateInstance((IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
-            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            session.AddObjectToSession(Surface, "key1", claim);
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(Surface, "key1"));
         }
 
         [Test]
@@ -115,10 +123,10 @@ namespace MvcTestApp.Tests.Helpers {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
             GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
-            session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
-            session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
-            Assert.AreEqual(item1, session.GetObjectFromSession<GeneralExpense>(NakedObjectsFramework, "key1"));
-            Assert.AreEqual(item2, session.GetObjectFromSession<AbstractExpenseItem>(NakedObjectsFramework, "key2"));
+            session.AddObjectToSession(Surface, "key1", item1);
+            session.AddObjectToSession(Surface, "key2", item2);
+            Assert.AreEqual(item1, session.GetObjectFromSession<GeneralExpense>(Surface, "key1"));
+            Assert.AreEqual(item2, session.GetObjectFromSession<AbstractExpenseItem>(Surface, "key2"));
         }
 
         [Test]
@@ -126,10 +134,10 @@ namespace MvcTestApp.Tests.Helpers {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
             GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
-            session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
-            session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            session.AddObjectToSession(Surface, "key1", item1);
+            session.AddObjectToSession(Surface, "key2", item2);
+            Assert.IsNull(session.GetObjectFromSession<Claim>(Surface, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(Surface, "key1"));
         }
 
         [Test]
@@ -150,17 +158,17 @@ namespace MvcTestApp.Tests.Helpers {
         public void RemoveFromCacheNotThere() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             session.ClearFromSession("key1");
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(Surface, "key1"));
         }
 
         [Test]
         public void RemoveObjectFromCache() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
-            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            session.AddObjectToSession(Surface, "key1", claim);
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(Surface, "key1"));
             session.ClearFromSession("key1");
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(Surface, "key1"));
         }
 
         [Test]
@@ -189,11 +197,21 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
+        protected INakedObjectsSurface Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
+        protected override void StartTest() {
+            base.StartTest();
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
+        }
+
         [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
-            RunFixturesOnce();
             StartTest();
+            RunFixturesOnce();
             controller = new DummyController();
             mocks = new ContextMocks(controller);
             SetUser("sven");

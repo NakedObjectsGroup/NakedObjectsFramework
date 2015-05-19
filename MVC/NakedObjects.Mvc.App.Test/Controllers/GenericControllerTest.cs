@@ -702,9 +702,9 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditFindForObjectMultiCached(Store store) {
             SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().OrderBy(sp => "").First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
+            mocks.HttpContext.Object.Session.AddToCache(Surface, salesPerson);
             salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
+            mocks.HttpContext.Object.Session.AddToCache(Surface, salesPerson);
 
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
@@ -723,7 +723,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditFindForObjectOneCached(Store store) {
             SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
+            mocks.HttpContext.Object.Session.AddToCache(Surface, salesPerson);
 
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;

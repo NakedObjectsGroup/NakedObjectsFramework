@@ -101,10 +101,10 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Indicate if object is a transient object
         /// </summary>
-        public static bool ObjectIsTransient(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.ResolveState.IsTransient();
-        }
+        //public static bool ObjectIsTransient(this HtmlHelper html, object domainObject) {
+        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+        //    return nakedObject.ResolveState.IsTransient();
+        //}
 
         /// <summary>
         ///     Indicate if object is a transient object

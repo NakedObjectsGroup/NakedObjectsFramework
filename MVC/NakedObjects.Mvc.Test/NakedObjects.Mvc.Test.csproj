@@ -44,6 +44,7 @@
     <Compile Include="Helpers\CollectionMementoTest.cs" />
     <Compile Include="Helpers\EncryptionTest.cs" />
     <Compile Include="Helpers\DummyOid.cs" />
+    <Compile Include="Helpers\FrameworkHelper.cs" />
     <Compile Include="Helpers\SessionCacheTest.cs" />
     <Compile Include="Helpers\CustomHtmlHelperTest.cs" />
     <Compile Include="Helpers\NofFrameworkHelperTest.cs" />

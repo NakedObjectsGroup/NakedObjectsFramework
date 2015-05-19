@@ -1685,19 +1685,19 @@ namespace NakedObjects.Web.Mvc.Html {
             return assocs.ToArray();
         }
 
-        private static IAssociationSpec[] CollectionAssociations(this HtmlHelper html,
-            INakedObjectAdapter[] collection,
-            IObjectSpec collectionSpec,
-            Func<IAssociationSpec, bool> filter,
-            Func<IAssociationSpec, int> order) {
-            IEnumerable<IAssociationSpec> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
+        //private static IAssociationSpec[] CollectionAssociations(this HtmlHelper html,
+        //    INakedObjectAdapter[] collection,
+        //    IObjectSpec collectionSpec,
+        //    Func<IAssociationSpec, bool> filter,
+        //    Func<IAssociationSpec, int> order) {
+        //    IEnumerable<IAssociationSpec> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
 
-            if (order != null) {
-                assocs = assocs.OrderBy(order);
-            }
+        //    if (order != null) {
+        //        assocs = assocs.OrderBy(order);
+        //    }
 
-            return assocs.ToArray();
-        }
+        //    return assocs.ToArray();
+        //}
 
         private static string CollectionItemTypeName(this HtmlHelper html, INakedObjectSurface collectionNakedObject) {
             return collectionNakedObject.ElementSpecification.FullName().Split('.').Last();
@@ -1824,15 +1824,15 @@ namespace NakedObjects.Web.Mvc.Html {
             return tag.ToString();
         }
 
-        private static string GetCollectionItem(this HtmlHelper html,
-            INakedObjectAdapter item,
-            string id) {
-            var tag = new TagBuilder("div");
-            tag.AddCssClass(IdConstants.ObjectName);
-            string value = html.Framework().GetObjectId(item);
-            tag.InnerHtml += html.Hidden(id, value, new {id = string.Empty}).ToString();
-            return tag.ToString();
-        }
+        //private static string GetCollectionItem(this HtmlHelper html,
+        //    INakedObjectAdapter item,
+        //    string id) {
+        //    var tag = new TagBuilder("div");
+        //    tag.AddCssClass(IdConstants.ObjectName);
+        //    string value = html.Framework().GetObjectId(item);
+        //    tag.InnerHtml += html.Hidden(id, value, new {id = string.Empty}).ToString();
+        //    return tag.ToString();
+        //}
 
         private static void AddInsertedElements(IList<ElementDescriptor> childElements, bool addToThis, TagBuilder parent) {
             if (addToThis && childElements.Any()) {
@@ -2086,12 +2086,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return textBox.ToString();
         }
 
-        private static string GetMaskedValue(this HtmlHelper html, INakedObjectAdapter valueNakedObject, IMaskFacet mask) {
-            if (valueNakedObject != null) {
-                return mask != null ? valueNakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().NakedObjectManager) : valueNakedObject.TitleString();
-            }
-            return null;
-        }
+        //private static string GetMaskedValue(this HtmlHelper html, INakedObjectAdapter valueNakedObject, IMaskFacet mask) {
+        //    if (valueNakedObject != null) {
+        //        return mask != null ? valueNakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().NakedObjectManager) : valueNakedObject.TitleString();
+        //    }
+        //    return null;
+        //}
 
         private static string MandatoryIndicator(this HtmlHelper html) {
             var tag = new TagBuilder("span");
@@ -2739,11 +2739,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return holder.GetMaskedValue(nakedObject);
         }
 
-        private static string GetDisplayTitle(this HtmlHelper html, ISpecification holder, INakedObjectAdapter nakedObject) {
-            var mask = holder.GetFacet<IMaskFacet>();
-            string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().NakedObjectManager) : nakedObject.TitleString();
-            return string.IsNullOrWhiteSpace(title) && !nakedObject.Spec.IsParseable ? nakedObject.Spec.UntitledName : title;
-        }
+        //private static string GetDisplayTitle(this HtmlHelper html, ISpecification holder, INakedObjectAdapter nakedObject) {
+        //    var mask = holder.GetFacet<IMaskFacet>();
+        //    string title = mask != null ? nakedObject.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().NakedObjectManager) : nakedObject.TitleString();
+        //    return string.IsNullOrWhiteSpace(title) && !nakedObject.Spec.IsParseable ? nakedObject.Spec.UntitledName : title;
+        //}
 
         private static string Action(string actionName) {
             return IdConstants.ActionAction + "/" + actionName;
