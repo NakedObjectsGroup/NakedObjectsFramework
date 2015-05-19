@@ -681,8 +681,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 filterContext.Result = View("DataUpdateError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
-            else if (filterContext.Exception is ConcurrencyException) {
-                filterContext.Result = View("ConcurrencyError", filterContext.Exception);
+            else if (filterContext.Exception is PreconditionFailedNOSException) {
+                filterContext.Result = View("ConcurrencyError", (PreconditionFailedNOSException) filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
             else if (filterContext.Exception is ObjectNotFoundException) {

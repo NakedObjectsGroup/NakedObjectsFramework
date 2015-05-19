@@ -9,9 +9,13 @@ using System;
 
 namespace NakedObjects.Surface {
     public class PreconditionFailedNOSException : NakedObjectsSurfaceException {
+        public INakedObjectSurface SourceNakedObject { get; private set; }
         public PreconditionFailedNOSException() {}
         public PreconditionFailedNOSException(string message) : base(message) {}
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) {}
+        public PreconditionFailedNOSException(INakedObjectSurface sourceNakedObject) {
+            this.SourceNakedObject = sourceNakedObject;
+        }
 
         public override string Message {
             get { return "Object changed by another user"; }

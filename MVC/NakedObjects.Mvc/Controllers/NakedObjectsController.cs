@@ -440,16 +440,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return null;
         }
 
-        // todo remove this it's a temp hack
-        protected INakedObjectAdapter UnWrap(INakedObjectSurface nakedObject) {
-            return ((dynamic) nakedObject).WrappedNakedObject;
-        }
-
-        // todo remove this it's a temp hack
-        protected IActionSpec UnWrap(INakedObjectActionSurface action) {
-            return ((dynamic) action).WrappedSpec;
-        }
-
         internal void CheckConcurrency(INakedObjectSurface nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
             var objectSpec = nakedObject.Specification;
             var concurrencyFields = objectSpec == null ? new List<INakedObjectAssociationSurface>() : objectSpec.Properties.Where(p => p.IsConcurrency()).ToList();
@@ -468,41 +458,28 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue != currentValue.TitleString()) {
-                                throw new ConcurrencyException(UnWrap(nakedObject));
+                                throw new PreconditionFailedNOSException(nakedObject);
                             }
                         }
                         else if (concurrencyValue == null && currentValue == null) {
                             // OK 
                         }
                         else {
-                            throw new ConcurrencyException(UnWrap(nakedObject));
+                            throw new PreconditionFailedNOSException(nakedObject);
                         }
                     }
                 }
             }
         }
 
-        protected void GetUsableAndVisibleFields(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent, out List<IAssociationSpec> usableAndVisibleFields, out List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues) {
-            usableAndVisibleFields = (nakedObject.GetObjectSpec()).Properties.Where(p => IsUsable(p, nakedObject) && IsVisible(p, nakedObject)).ToList();
-            fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
-        }
+       
 
         protected void GetUsableAndVisibleFields(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
 
-        private static IEnumerable<Tuple<IAssociationSpec, object>> GetFieldsAndMatchingValues(INakedObjectAdapter nakedObject,
-            IAssociationSpec parent,
-            IEnumerable<IAssociationSpec> associations,
-            ObjectAndControlData controlData,
-            Func<IAssociationSpec, INakedObjectAdapter, IAssociationSpec, string> idFunc) {
-            foreach (IAssociationSpec assoc in associations.Where(a => !a.IsInline)) {
-                string name = idFunc(parent, nakedObject, assoc);
-                object newValue = GetValueFromForm(controlData, name);
-                yield return new Tuple<IAssociationSpec, object>(assoc, newValue);
-            }
-        }
+      
 
         protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
             INakedObjectAssociationSurface parent,
@@ -532,11 +509,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             AddAttemptedValue(key, assoc.Specification.IsParseable() ? (object) newValue : GetNakedObjectFromId(newValue));
         }
 
-        //internal void AddErrorAndAttemptedValue(INakedObjectAdapter nakedObject, string newValue, IAssociationSpec assoc, string errorText, IAssociationSpec parent = null) {
-        //    string key = GetFieldInputId(parent, nakedObject, assoc);
-        //    ModelState.AddModelError(key, errorText);
-        //    AddAttemptedValue(key, assoc.ReturnSpec.IsParseable ? (object) newValue : NakedObjectsContext.GetNakedObjectFromId(newValue));
-        //}
+      
 
         internal void AddAttemptedValuesNew(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
             foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject) || p.IsConcurrency())) {
@@ -561,17 +534,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal bool IsUsable(IAssociationSpec assoc, INakedObjectAdapter nakedObject) {
-            return assoc.IsUsable(nakedObject).IsAllowed;
-        }
-
-        internal bool IsVisible(IAssociationSpec assoc, INakedObjectAdapter nakedObject) {
-            return assoc.IsVisible(nakedObject);
-        }
-
-        internal bool IsConcurrency(IAssociationSpec assoc) {
-            return assoc.ContainsFacet<IConcurrencyCheckFacet>();
-        }
+       
 
         internal ArgumentsContext ConvertForSave(INakedObjectSurface nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
             List<INakedObjectAssociationSurface> usableAndVisibleFields;
@@ -607,32 +570,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
-        private string GetFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
-            return parent == null ? IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) :
-                IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
-        }
-
-        protected string GetConcurrencyFieldInputId(IAssociationSpec parent, INakedObjectAdapter nakedObject, IAssociationSpec assoc) {
-            return parent == null ? IdHelper.GetConcurrencyFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc)) :
-                IdHelper.GetInlineConcurrencyFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(assoc));
-        }
+    
+      
 
         protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
 
-        internal void SetAssociation(INakedObjectAdapter nakedObject, IOneToOneAssociationSpec oneToOneAssoc, INakedObjectAdapter valueNakedObject, object attemptedValue) {
-            IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
-            string key = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(oneToOneAssoc));
-            if (consent.IsAllowed) {
-                oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject);
-            }
-            else {
-                ModelState.AddModelError(key, consent.Reason);
-            }
-            AddAttemptedValue(key, attemptedValue);
-        }
+      
 
         internal void ValidateAssociation(INakedObjectSurface nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
@@ -667,9 +613,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));
         }
 
-        internal static bool ActionExecutingAsContributed(IActionSpec action, INakedObjectAdapter targetNakedObject) {
-            return action.IsContributedMethod && !action.OnSpec.Equals(targetNakedObject.Spec);
-        }
+      
 
         internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, INakedObjectSurface targetNakedObject) {
             return action.IsContributed() && !action.OnType.Equals(targetNakedObject.Specification);
