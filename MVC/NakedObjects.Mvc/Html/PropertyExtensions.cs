@@ -10,14 +10,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
-using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
@@ -382,12 +378,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         /// Display all the properties of the domain object in edit fields  
         /// </summary>
-        //public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object domainObject) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-        //    return html.BuildEditContainer(nakedObject, html.EditObjectFields(nakedObject, null, x => true, null),
-        //        IdConstants.FieldContainerName,
-        //        html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
-        //}
+       
 
         public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object domainObject) {
             var nakedObject = html.Surface().GetObject(domainObject);
@@ -405,11 +396,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return MvcHtmlString.Create(ElementDescriptor.BuildElementSet(fields).ToString());
         }
 
-        //public static MvcHtmlString PropertyListEditHidden(this HtmlHelper html, object domainObject) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-        //    var fields = html.EditObjectFields(nakedObject, null, x => false, null);
-        //    return MvcHtmlString.Create(ElementDescriptor.BuildElementSet(fields).ToString());
-        //}
+      
 
         /// <summary>
         ///  Display all the properties of the domain object in edit fields, with action dialog or collection view
@@ -421,14 +408,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable actionResult) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(contextObject);
-            INakedObjectAdapter target = html.Framework().GetNakedObject(targetObject);
-            return html.BuildEditContainer(nakedObject,
-                html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, true),
-                IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
-        }
+        
 
         public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
             var nakedObject = html.Surface().GetObject(contextObject);
@@ -450,14 +430,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable actionResult) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(contextObject);
-            INakedObjectAdapter target = html.Framework().GetNakedObject(targetObject);
-            return html.BuildEditContainer(nakedObject,
-                html.EditObjectFields(contextObject, new ActionContext(html.IdHelper(), true, target, targetAction), propertyName, actionResult, false),
-                IdConstants.FieldContainerName,
-                html.IdHelper().GetFieldContainerId(ScaffoldAdapter.Wrap(nakedObject)));
-        }
+      
 
         public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
             var nakedObject = html.Surface().GetObject(contextObject);
@@ -685,10 +658,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         /// Display the contents of the identified property on model parameter
         /// </summary>
-        //public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string propertyId) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-        //    return MvcHtmlString.Create((nakedObject.GetObjectSpec()).Properties.Single(p => p.Id == propertyId).GetNakedObject(nakedObject).TitleString());
-        //}
+       
 
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
@@ -729,11 +699,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         /// Get the description of the identified property 
         /// </summary>
-        //public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model, string propertyId) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-
-        //    return MvcHtmlString.Create((nakedObject.GetObjectSpec()).Properties.Where(p => p.Id == propertyId).Single().Description);
-        //}
+      
 
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
@@ -775,11 +741,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         /// Get the name of the identified property 
         /// </summary>
-        //public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string propertyId) {
-        //    INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
-
-        //    return MvcHtmlString.Create((nakedObject.GetObjectSpec()).Properties.Single(p => p.Id == propertyId).Name);
-        //}
+      
 
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
