@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
@@ -218,10 +217,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 //var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
                 return ExecuteAction(controlData, targetNakedObject, targetAction);
             }
-        }
-
-        private INakedObjectAdapter Execute(IActionSpec action, INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
-            return action.Execute(target, parameterSet);
         }
 
         private INakedObjectSurface GetResult(ActionResultContextSurface context) {
@@ -603,8 +598,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
             if (targetAction.ParameterCount == 0) {
-                //var result = Execute(targetAction, targetNakedObject, new INakedObjectAdapter[] {});
-
                 var oid = Surface.OidStrategy.GetOid(targetNakedObject);
 
                 var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContext() {
@@ -645,16 +638,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static IEnumerable GetResultAsEnumerable(INakedObjectSurface result, INakedObjectActionSurface contextAction, string propertyName) {
             if (result != null) {
                 if (result.Specification.IsCollection() && !ContextParameterIsCollection(contextAction, propertyName)) {
-                    return (IEnumerable) result.Object;
-                }
-                return new List<object> {result.Object};
-            }
-            return new List<object>();
-        }
-
-        private static IEnumerable GetResultAsEnumerable(INakedObjectAdapter result, IActionSpec contextAction, string propertyName) {
-            if (result != null) {
-                if (result.Spec.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
                     return (IEnumerable) result.Object;
                 }
                 return new List<object> {result.Object};

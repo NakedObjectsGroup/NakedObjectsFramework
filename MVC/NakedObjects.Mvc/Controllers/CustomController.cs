@@ -11,8 +11,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Util;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
@@ -416,12 +414,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             bool valid;
             var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
             return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.Object);
-        }
-
-        private ViewResult InvokeAction(INakedObjectAdapter nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-            bool valid;
-            var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
-            return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.GetDomainObject());
         }
 
         private static MethodInfo GetAction(LambdaExpression expression) {

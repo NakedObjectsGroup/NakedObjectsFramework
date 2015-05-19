@@ -12,10 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
@@ -472,14 +468,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-       
-
         protected void GetUsableAndVisibleFields(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
-
-      
 
         protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
             INakedObjectAssociationSurface parent,
@@ -509,8 +501,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             AddAttemptedValue(key, assoc.Specification.IsParseable() ? (object) newValue : GetNakedObjectFromId(newValue));
         }
 
-      
-
         internal void AddAttemptedValuesNew(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
             foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject) || p.IsConcurrency())) {
                 string name = GetFieldInputId(parent, nakedObject, assoc);
@@ -533,8 +523,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 AddAttemptedValuesNew(inlineNakedObject, controlData, assoc);
             }
         }
-
-       
 
         internal ArgumentsContext ConvertForSave(INakedObjectSurface nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
             List<INakedObjectAssociationSurface> usableAndVisibleFields;
@@ -570,15 +558,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
-    
-      
-
         protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
-
-      
 
         internal void ValidateAssociation(INakedObjectSurface nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
@@ -612,8 +595,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         protected void AddAttemptedValue(string key, object value) {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));
         }
-
-      
 
         internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, INakedObjectSurface targetNakedObject) {
             return action.IsContributed() && !action.OnType.Equals(targetNakedObject.Specification);
