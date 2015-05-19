@@ -146,9 +146,10 @@ namespace NakedObjects.Core.Component {
                 throw new UnknownTypeException(string.Format("Expect ViewModelOid got {0}", nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString()));
             }
 
-            if (!vmoid.IsFinal) {
+            // todo fix - temp hack
+            //if (!vmoid.IsFinal) {
                 vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
-            }
+            //}
         }
 
         public IOid RestoreOid(string[] encodedData) {

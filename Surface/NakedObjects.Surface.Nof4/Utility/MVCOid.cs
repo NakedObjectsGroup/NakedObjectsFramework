@@ -112,6 +112,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         private  string GetObjectId( INakedObjectAdapter nakedObject) {
             if (nakedObject.Spec.IsViewModel) {
+                // todo this always repopulates oid now - see core - look into optimizing
                 framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
             }
             else if (nakedObject.Oid == null) {
