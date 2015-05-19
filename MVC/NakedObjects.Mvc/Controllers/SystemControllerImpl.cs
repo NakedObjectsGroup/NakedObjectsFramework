@@ -6,15 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class SystemControllerImpl : NakedObjectsController {
-        protected SystemControllerImpl(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper) {}
+        protected SystemControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         public virtual ActionResult ClearHistory(bool clearAll) {
             object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);

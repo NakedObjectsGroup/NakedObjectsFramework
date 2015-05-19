@@ -12,19 +12,16 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
-using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
+        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
@@ -60,9 +57,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 value = Request.Params[fieldId];
             }
 
-           
             if (property != null && (!property.IsCollection() || property.Specification.IsParseable())) {
-                var pvalue = GetValue(new[] { value }, property, property.Specification);
+                var pvalue = GetValue(new[] {value}, property, property.Specification);
                 ValidateAssociation(nakedObject, property, pvalue);
                 isValid = ModelState.IsValid;
             }
@@ -74,20 +70,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ModelError error = ModelState[fieldId].Errors.FirstOrDefault();
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
-
-        //private string GetFieldInputId(INakedObjectAdapter nakedObject, IAssociationSpec property) {
-        //    string fieldId;
-
-        //    var aoid = nakedObject.Oid as IAggregateOid;
-        //    if (aoid != null) {
-        //        IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-        //        fieldId = IdHelper.GetInlineFieldInputId(ScaffoldAssoc.Wrap(parent), ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
-        //    }
-        //    else {
-        //        fieldId = IdHelper.GetFieldInputId(ScaffoldAdapter.Wrap(nakedObject), ScaffoldAssoc.Wrap(property));
-        //    }
-        //    return fieldId;
-        //}
 
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
             var nakedObject = GetNakedObjectFromId(id);
@@ -153,7 +135,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return GetNakedObjectFromId(values.First()).GetDomainObject<object>();
         }
 
-
         private string[] GetRawValues(FormCollection parms, string id) {
             var values = new List<string>();
 
@@ -163,7 +144,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return values.ToArray();
         }
-
 
         private IDictionary<string, object> GetOtherValues(INakedObjectActionSurface action) {
             var results = new Dictionary<string, object>();
@@ -193,30 +173,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-        public static bool IsParseableOrCollectionOfParseable( INakedObjectsSurface surface, INakedObjectActionParameterSurface parmSpec) {
+        public static bool IsParseableOrCollectionOfParseable(INakedObjectsSurface surface, INakedObjectActionParameterSurface parmSpec) {
             var spec = parmSpec.Specification;
             return spec.IsParseable() || (spec.IsCollection() && parmSpec.ElementType.IsParseable());
         }
-
-
-        //public virtual JsonResult GetActionChoices(string id, string actionName) {
-        //    INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-        //    IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
-        //    IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
-        //    IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(action);
-
-        //    foreach (IActionParameterSpec p in action.Parameters) {
-        //        if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
-        //            INakedObjectAdapter[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
-        //            string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-        //            string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
-
-        //            choices[IdHelper.GetParameterInputId(action, p)] = new[] { value, content };
-        //        }
-        //    }
-        //    return Jsonp(choices);
-        //}
-
 
         public virtual JsonResult GetActionChoices(string id, string actionName) {
             var nakedObject = GetNakedObjectFromId(id);
@@ -230,7 +190,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
-                    choices[IdHelper.GetParameterInputId(action, p)] = new[] { value, content };
+                    choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
                 }
             }
             return Jsonp(choices);

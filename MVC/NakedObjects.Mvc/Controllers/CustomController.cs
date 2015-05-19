@@ -19,7 +19,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) { }
+        protected CustomController(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions
@@ -91,8 +91,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var nakedObject = GetNakedObject(domainObject);
             return InvokeAction(nakedObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
         }
-
-       
 
         #region Invoke Action - action lambda 
 
@@ -314,7 +312,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <returns>true if changes in form are valid and object saved</returns>
         protected bool SaveObject<T>(FormCollection form, ref T obj) {
             var naked = GetNakedObject(obj);
-            
+
             var oid = Surface.OidStrategy.GetOid(naked);
             var ac = Convert(form);
 
@@ -326,7 +324,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //    }
             //}
 
-            obj = (T)naked.Object;
+            obj = (T) naked.Object;
             return string.IsNullOrEmpty(result.Reason);
         }
 
@@ -382,46 +380,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
         }
 
-        //private T ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
-        //    if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
-        //        // contributed action being invoked with a single parm that is the current target
-        //        //// no dialog - go straight through 
-        //        //var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
-
-        //        //// horrid kludge 
-        //        //var oldForm = controlData.Form;
-        //        //controlData.Form = newForm;
-
-        //        //if (ValidateParameters(nakedObject, action, controlData)) {
-        //        var ac = new ArgumentsContext() { Values = new Dictionary<string, object>(), ValidateOnly = false };
-        //        var oid = Surface.OidStrategy.GetOid(nakedObject);
-        //        var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
-        //        return AppropriateView(controlData, GetResult(result), action);
-        //        //}
-
-        //        //controlData.Form = oldForm;
-        //        //AddAttemptedValues(controlData);
-        //    }
-
-        //    if (!action.Parameters.Any()) {
-        //        var ac = new ArgumentsContext() { Values = new Dictionary<string, object>(), ValidateOnly = false };
-        //        var oid = Surface.OidStrategy.GetOid(nakedObject);
-        //        var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
-
-        //        return AppropriateView(controlData, GetResult(result), action);
-        //    }
-
-        //    SetDefaults(nakedObject, action);
-        //    // do after any parameters set by contributed action so this takes priority
-        //    SetSelectedParameters(action);
-        //    SetPagingValues(controlData, nakedObject);
-        //    var property = DisplaySingleProperty(controlData, controlData.DataDict);
-
-        //    // TODO temp hack
-        //    IActionSpec oldAction = ((dynamic)action).WrappedSpec;
-        //    return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel { ContextObject = nakedObject.Object, ContextAction = oldAction, PropertyName = property });
-        //}
-
         private T GetResult<T>(ActionResultContextSurface contextSurface) {
             if (contextSurface.HasResult) {
                 return (T) contextSurface.Result.Target.Object;
@@ -453,35 +411,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return default(T);
         }
-
-        //private T InvokeAction<T>(INakedObjectAdapter nakedObject, IActionSpec action, FormCollection parameters, out bool valid) {
-        //    if (ActionExecutingAsContributed(action, nakedObject)) {
-        //        if (action.ParameterCount == 1) {
-        //            // contributed action being invoked with a single parm that is the current target
-        //            // no dialog - go straight through 
-        //            INakedObjectAdapter result = action.Execute(nakedObject, new[] {nakedObject});
-        //            valid = true;
-        //            return result.GetDomainObject<T>();
-        //        }
-        //        if (action.ParameterCount > 1) {
-        //            // contributed action being invoked with multiple parms - populate first that match the target 
-        //            IActionParameterSpec parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Spec.IsOfType(p.Spec));
-        //            if (parmToPopulate != null) {
-        //                ViewData[IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(parmToPopulate))] = NakedObjectsContext.GetObjectId(nakedObject.Object);
-        //            }
-        //        }
-        //    }
-
-        //    if (ValidateParameters(nakedObject, action, new ObjectAndControlData {Form = parameters})) {
-        //        IEnumerable<INakedObjectAdapter> parms = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-        //        INakedObjectAdapter result = action.Execute(nakedObject, parms.ToArray());
-        //        valid = true;
-        //        return result.GetDomainObject<T>();
-        //    }
-
-        //    valid = false;
-        //    return default(T);
-        //}
 
         private ViewResult InvokeAction(INakedObjectSurface nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
             bool valid;

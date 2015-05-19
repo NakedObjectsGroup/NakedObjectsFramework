@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper) {}
+        protected GenericControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
@@ -46,12 +46,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Assert.AssertTrue(controlData.SubAction == ObjectAndControlData.SubActionType.None);
             return View("ObjectEdit", controlData.GetNakedObject(Surface).Object);
         }
-
-        //// temp kludge 
-        //private void SetNotQueryable(INakedObjectSurface no, bool isNotQueryable) {
-        //    INakedObjectAdapter noa = ((dynamic) no).WrappedNakedObject;
-        //    noa.SetNotQueryable(isNotQueryable);
-        //}
 
         [HttpPost]
         public virtual ActionResult Details(ObjectAndControlData controlData, FormCollection form) {
@@ -146,7 +140,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             return View("ActionDialog", new FindViewModel {
                 ContextObject = no.Object,
-                ContextAction = action 
+                ContextAction = action
             });
         }
 
@@ -182,10 +176,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
-            //INakedObjectAdapter target = NakedObjectsContext.GetNakedObjectFromId(Id);
-            //IAssociationSpec assoc = target.GetObjectSpec().Properties.Single(a => a.Id == PropertyId);
-            //var domainObject = assoc.GetNakedObject(target).GetDomainObject();
-
             var oid = Surface.OidStrategy.GetOid(Id, "");
             var tgt = Surface.GetObject(oid).Target;
 
@@ -206,9 +196,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var targetNakedObject = GetNakedObjectFromId(targetObjectId);
             if (targetNakedObject.Specification.IsCollection()) {
                 var filteredNakedObject = FilterCollection(targetNakedObject, controlData);
-                //var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
-                //IObjectSpecImmutable elementSpecImmut =
-                //    filteredNakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(filteredNakedObject, metamodel);
 
                 var elementSpec = targetNakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
@@ -247,16 +234,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
-                //// no dialog - go straight through 
-                //var newForm = new FormCollection { { IdHelper.GetParameterInputId(ScaffoldAction.Wrap(action), ScaffoldParm.Wrap(action.Parameters.First())), NakedObjectsContext.GetObjectId(nakedObject) } };
+                // no dialog - go straight through 
 
-                //// horrid kludge 
-                //var oldForm = controlData.Form;
-                //controlData.Form = newForm;
-
-                //if (ValidateParameters(nakedObject, action, controlData)) {
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
-
 
                 if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
                     var oids = nakedObject.ToEnumerable().Select(no => Surface.OidStrategy.GetOid(no)).ToArray();
@@ -268,20 +248,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 else {
                     var oid = Surface.OidStrategy.GetOid(nakedObject);
                     var ar = Surface.ExecuteObjectAction(oid, action.Id, ac);
-                  
+
                     return AppropriateView(controlData, GetResult(ar), action);
                 }
-
-
-
-
-                //var oid = Surface.OidStrategy.GetOid(nakedObject);
-                //var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
-                //return AppropriateView(controlData, GetResult(result), action);
-                //}
-
-                //controlData.Form = oldForm;
-                //AddAttemptedValues(controlData);
             }
 
             if (!action.Parameters.Any()) {
@@ -398,8 +367,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private bool ApplyEdit(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
-            //string viewName = "ObjectEdit";
-
             var oid = Surface.OidStrategy.GetOid(nakedObject);
 
             var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) && p.IsUsable(nakedObject).IsAllowed);
@@ -410,7 +377,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
 
             var ac = new ArgumentsContext {
-                Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f =>  GetObjectValue(f.Item1, nakedObject,  f.Item2)),
+                Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => GetObjectValue(f.Item1, nakedObject, f.Item2)),
                 ValidateOnly = false
             };
 
@@ -505,65 +472,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return SelectSingleItem(contextNakedObject, nakedObjectAction, controlData, controlData.DataDict);
         }
 
-
-        //internal bool ValidateChanges(INakedObjectAdapter nakedObject, ObjectAndControlData controlData, IAssociationSpec parent = null) {
-        //    List<IAssociationSpec> usableAndVisibleFields;
-        //    List<Tuple<IAssociationSpec, object>> fieldsAndMatchingValues;
-        //    GetUsableAndVisibleFields(nakedObject, controlData, parent, out usableAndVisibleFields, out fieldsAndMatchingValues);
-
-        //    CheckConcurrency(nakedObject, parent, controlData, GetConcurrencyFieldInputId);
-
-        //    fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(parent, nakedObject, pair.Item1), pair.Item2));
-
-        //    // check mandatory fields first to emulate WPF UI behaviour where no validation takes place until 
-        //    // all mandatory fields are set. 
-        //    foreach (var pair in fieldsAndMatchingValues) {
-        //        var result = pair.Item2;
-        //        var stringResult = result as string;
-
-        //        if (pair.Item1.IsMandatory && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
-        //            AddErrorAndAttemptedValue(nakedObject, stringResult, pair.Item1, MvcUi.Mandatory, parent);
-        //        }
-        //    }
-
-        //    if (ModelState.IsValid) {
-        //        ValidateOrApplyInlineChanges(nakedObject, controlData, usableAndVisibleFields, ValidateChanges);
-        //    }
-
-        //    if (ModelState.IsValid) {
-        //        foreach (var pair in fieldsAndMatchingValues) {
-        //            var spec = pair.Item1 as IOneToOneAssociationSpec;
-        //            if (spec != null) {
-        //                ValidateAssociation(nakedObject, spec, pair.Item2, parent);
-        //            }
-        //        }
-        //    }
-
-        //    if (ModelState.IsValid) {
-        //        var validateFacet = nakedObject.Spec.GetFacet<IValidateObjectFacet>();
-
-        //        if (validateFacet != null) {
-        //            var parms = fieldsAndMatchingValues.Select(t => new Tuple<string, INakedObjectAdapter>(t.Item1.Id.ToLower(), GetNakedObjectValue(t.Item1, nakedObject, t.Item2))).ToArray();
-        //            var result = validateFacet.ValidateParms(nakedObject, parms);
-
-        //            if (!string.IsNullOrEmpty(result)) {
-        //                ModelState.AddModelError(string.Empty, result);
-        //            }
-        //        }
-        //    }
-
-        //    if (ModelState.IsValid) {
-        //        if (nakedObject.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
-        //            string state = nakedObject.ValidToPersist();
-        //            if (state != null) {
-        //                ModelState.AddModelError(string.Empty, state);
-        //            }
-        //        }
-        //    }
-
-        //    return ModelState.IsValid;
-        //}
-
         private ActionResult InvokeActionAsSave(ObjectAndControlData controlData) {
             var form = controlData.Form;
             string targetActionId = controlData.DataDict["targetActionId"];
@@ -579,10 +487,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : contextNakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == contextActionId);
             var subEditObject = GetNakedObjectFromId(subEditObjectId);
 
-            //if (ValidateChanges(subEditObject, controlData)) {
-            //    ApplyChanges(subEditObject, controlData);
-            //}
-
             var oid = Surface.OidStrategy.GetOid(subEditObject);
             var ac = ConvertForSave(subEditObject, controlData);
 
@@ -590,9 +494,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (var p in result.VisibleProperties) {
                 string key = GetFieldInputId(null, subEditObject, p.Property);
-                if (!string.IsNullOrEmpty(p.Reason)) {             
+                if (!string.IsNullOrEmpty(p.Reason)) {
                     // kludge to keep ui the same 
-                    string reason = p.Reason == MvcUi.Mandatory ? MvcUi.Mandatory : MvcUi.InvalidEntry; 
+                    string reason = p.Reason == MvcUi.Mandatory ? MvcUi.Mandatory : MvcUi.InvalidEntry;
                     ModelState.AddModelError(key, reason);
                 }
                 AddAttemptedValue(key, p.Property.Specification.IsParseable() ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
