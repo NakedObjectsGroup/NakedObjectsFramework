@@ -201,7 +201,6 @@
     <Compile Include="Models\ObjectAndControlData.cs" />
     <Compile Include="Helpers\CommonHtmlHelper.cs" />
     <Compile Include="Helpers\ElementDescriptor.cs" />
-    <Compile Include="Helpers\ContextClasses.cs" />
     <Compile Include="Html\SystemExtensions.cs" />
     <Compile Include="Helpers\FrameworkHelper.cs" />
     <Compile Include="Mvc\ObjectCache.cs" />
