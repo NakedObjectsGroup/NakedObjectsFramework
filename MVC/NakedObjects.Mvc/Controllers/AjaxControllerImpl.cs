@@ -100,22 +100,22 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private object GetValue(string[] values, INakedObjectActionParameterSurface parameterSpec, INakedObjectSpecificationSurface spec) {
             object domainObject;
-            return GetValue(values, spec, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
+            return GetValue(values, spec, true, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
         }
 
         private object GetValue(string[] values, INakedObjectAssociationSurface propertySpec, INakedObjectSpecificationSurface spec) {
             object domainObject;
-            return GetValue(values, spec, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
+            return GetValue(values, spec, false, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
         }
 
-        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, out object domainObject) {
+        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, bool nullEmpty,  out object domainObject) {
             if (!values.Any()) {
                 domainObject = null;
                 return true;
             }
             if (spec.IsParseable()) {
                 var v = values.First();
-                domainObject = string.IsNullOrEmpty(v) ? null : v;
+                domainObject = nullEmpty && string.IsNullOrEmpty(v) ? null : v;
                 return true;
             }
             if (!spec.IsCollection()) {
