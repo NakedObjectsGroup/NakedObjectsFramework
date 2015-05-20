@@ -21,13 +21,9 @@ using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
-using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
-//using NakedObjects.Architecture.Facet;
-//using NakedObjects.Architecture.Menu;
-//using NakedObjects.Architecture.Spec;
-//using NakedObjects.Core;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem : IMenuItem {
@@ -1044,7 +1040,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetAutoCompleteTextBox(this HtmlHelper html, ParameterContext context, RouteValueDictionary htmlAttributes, INakedObjectSurface valueNakedObject) {
             string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(context.Target), actionName = context.Action.Id, parameterIndex = context.Parameter.Number()}));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Parameter, completionAjaxUrl);
-            attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
+            SurfaceHelper.ForEach(attrs, kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Parameter, valueNakedObject);
             return html.TextBox(context.GetParameterAutoCompleteId(), title, htmlAttributes).ToHtmlString();
         }
@@ -1052,7 +1048,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetAutoCompleteTextBox(this HtmlHelper html, PropertyContext context, RouteValueDictionary htmlAttributes, INakedObjectSurface valueNakedObject) {
             string completionAjaxUrl = html.GenerateUrl("GetPropertyCompletions", "Ajax", new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(context.Target), propertyId = context.Property.Id}));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Property, completionAjaxUrl);
-            attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
+            SurfaceHelper.ForEach(attrs, kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Property, valueNakedObject);
             return html.TextBox(context.GetAutoCompleteFieldId(), title, htmlAttributes).ToHtmlString();
         }
@@ -1408,7 +1404,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     html.ViewData.ModelState.Remove(id);
 
                     if (errors.Any()) {
-                        errors.ForEach(e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
+                        SurfaceHelper.ForEach(errors, e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
                     }
                 }
                 if (context.Parameter.Specification.IsParseable()) {

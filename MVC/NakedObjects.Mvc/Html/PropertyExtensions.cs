@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
-using NakedObjects.Core.Util;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {

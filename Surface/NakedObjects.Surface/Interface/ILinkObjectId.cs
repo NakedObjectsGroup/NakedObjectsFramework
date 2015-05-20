@@ -7,7 +7,6 @@
 
 namespace NakedObjects.Surface {
     public interface ILinkObjectId {
-        
         string DomainType { get; set; }
         string InstanceId { get; set; }
     }

@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectSurface : IScalarPropertyHolder, ISurfaceHolder {
@@ -22,12 +21,8 @@ namespace NakedObjects.Surface {
         INakedObjectSurface Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContext GetAttachment();
-
         object[] GetSelected();
         void Resolve();
-
         void SetIsNotQueryableState(bool state);
-
-        
     }
 }

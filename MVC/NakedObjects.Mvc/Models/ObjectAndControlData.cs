@@ -7,10 +7,11 @@
 
 using System.Collections.Generic;
 using System.Data.Entity.Core;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NakedObjects.Core.Util;
+
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 
@@ -41,7 +42,7 @@ namespace NakedObjects.Web.Mvc.Models {
             {
                 var subActions = new List<string> {Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel, SaveAndClose};
 
-                Assert.AssertFalse(subActions.Count(s => !string.IsNullOrEmpty(s)) > 1);
+                Debug.Assert(subActions.Count(s => !string.IsNullOrEmpty(s)) <= 1);
 
                 if (!string.IsNullOrEmpty(Finder)) {
                     return SubActionType.Find;

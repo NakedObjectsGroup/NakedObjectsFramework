@@ -313,7 +313,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
 
-            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
+            CollectionUtils.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
 
             return typedCollection.AsQueryable();
         }
@@ -342,7 +342,7 @@ namespace MvcTestApp.Tests.Controllers {
                 objCollection = rawCollection.Select(s => framework.GetNakedObjectFromId(s).GetDomainObject()).ToArray();
             }
 
-            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
+            CollectionUtils.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
 
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }

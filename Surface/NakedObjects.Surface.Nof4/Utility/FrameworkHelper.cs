@@ -286,7 +286,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 objCollection = rawCollection.Select(s => framework.GetNakedObjectFromId(s).GetDomainObject()).ToArray();
             }
 
-            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
+            objCollection.Where(o => o != null). ForEach(o => typedCollection.Add(o));
 
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }

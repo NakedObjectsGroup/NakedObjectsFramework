@@ -6,11 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Util;
+
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
@@ -22,7 +23,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the object id
         /// </summary>
         public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
-            Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectSurface);
+            Debug.Assert(!(model is INakedObjectSurface), "Cannot get Adapter for Adapter");
             var nakedObject = html.Surface().GetObject(model);
             return MvcHtmlString.Create(html.Surface().OidStrategy.GetObjectId(nakedObject));
         }
@@ -49,9 +50,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
             // todo
-            //INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
+            //var nakedObject = html.Surface().GetObject(model);
             //var facet = nakedObject.Spec.GetFacet<IPresentationHintFacet>();
             //return facet == null ? "" : " " + facet.Value;
+            //return nakedObject.Specification.PresentationHint;
             return "";
         }
 

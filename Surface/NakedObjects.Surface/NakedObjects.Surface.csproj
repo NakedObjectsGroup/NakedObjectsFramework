@@ -116,16 +116,17 @@
     <Compile Include="Interface\IScalarPropertyHolder.cs" />
     <Compile Include="Interface\IVersionSurface.cs" />
     <Compile Include="Utility\IdConstants.cs" />
-    <Compile Include="Utility\IIdHelper.cs" />
-    <Compile Include="Utility\IMessageBrokerSurface.cs" />
+    <Compile Include="Interface\IIdHelper.cs" />
+    <Compile Include="Interface\IMessageBrokerSurface.cs" />
     <Compile Include="Utility\NakedObjectsSurfaceExtensions.cs" />
     <Compile Include="Interface\ScalarProperty.cs" />
     <Compile Include="Interface\ScalarPropertyHolder.cs" />
     <Compile Include="Interface\UserCredentials.cs" />
-    <Compile Include="Utility\ILogWrapper.cs" />
-    <Compile Include="Utility\IOidStrategy.cs" />
+    <Compile Include="Interface\ILogWrapper.cs" />
+    <Compile Include="Interface\IOidStrategy.cs" />
     <Compile Include="Utility\LogWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\SurfaceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

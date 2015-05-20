@@ -18,16 +18,12 @@ namespace NakedObjects.Surface {
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
-
         Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
-
         INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm);
         bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);
         INakedObjectSurface GetDefault(INakedObjectSurface nakedObject);
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
-
         string GetMaskedValue(INakedObjectSurface valueNakedObject);
-
         // todo not really same as other interfaces - more PutValue with validate only ? 
         IConsentSurface IsValid(INakedObjectSurface target, object value);
     }

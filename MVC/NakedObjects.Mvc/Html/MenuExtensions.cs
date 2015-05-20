@@ -12,7 +12,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {

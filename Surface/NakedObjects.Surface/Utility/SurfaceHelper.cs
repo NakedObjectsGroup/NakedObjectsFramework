@@ -5,10 +5,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 
-namespace NakedObjects.Surface {
-    public interface IMenu : IMenuItem {
-        IList<IMenuItem> MenuItems { get; }
+namespace NakedObjects.Surface.Utility.Restricted {
+    public static class SurfaceHelper {
+        public static void ForEach<T>(this T[] toIterate, Action<T> action) {
+            Array.ForEach<T>(toIterate, action);
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T> action) {
+            foreach (T obj in toIterate) {
+                action(obj);
+            }
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T, int> action) {
+            int num = 0;
+            foreach (T obj in toIterate) {
+                action(obj, num++);
+            }
+        }
     }
 }

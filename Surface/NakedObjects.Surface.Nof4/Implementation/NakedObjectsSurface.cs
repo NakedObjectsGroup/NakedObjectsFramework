@@ -10,24 +10,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface.Context;
-using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Nof4.Wrapper;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
@@ -96,6 +92,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public IMenu[] GetMainMenus() {
+          
             var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
             return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenu>().ToArray();
         }

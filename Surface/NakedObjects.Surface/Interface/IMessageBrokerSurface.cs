@@ -5,23 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Menu;
-
-namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class MenuItemWrapper : IMenuItem {
-
-        public MenuItemWrapper(IMenuItemImmutable wrapped) {
-            Wrapped = wrapped;
-            Name = wrapped.Name;
-            Id = wrapped.Id;
-        }
-
-        #region IMenuItem Members
-
-        public string Name { get; private set; }
-        public string Id { get; private set; }
-        public object Wrapped { get; private set; }
-
-        #endregion
+namespace NakedObjects.Surface {
+    public interface IMessageBrokerSurface {
+        string[] PeekMessages { get; }
+        string[] PeekWarnings { get; }
+        string[] Messages { get; }
+        string[] Warnings { get; }
+        void AddWarning(string message);
+        void AddMessage(string message);
+        void ClearWarnings();
+        void ClearMessages();
+        void EnsureEmpty();
     }
 }

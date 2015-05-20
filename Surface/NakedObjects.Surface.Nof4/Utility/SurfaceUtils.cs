@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -58,7 +59,6 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return "";
         }
 
-
         private static Tuple<IActionSpec, string>[] GetOverloadedActionsAndUIds(IActionSpec[] actions) {
             IActionSpec[] overloadedActions = actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
@@ -109,6 +109,10 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (o == null) {
                 throw new NullReferenceException(msg);
             }
+        }
+
+        public static List<T> InList<T>(this T item) {
+            return item == null ? new List<T>() : new List<T> {item};
         }
     }
 }

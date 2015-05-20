@@ -7,12 +7,11 @@
 
 using System.IO;
 
-namespace NakedObjects.Surface.Interface {
+namespace NakedObjects.Surface {
     public class AttachmentContext {
         public const string DefaultMimeType = "application/octet-stream";
         public const string DefaultContentDisposition = "attachment";
         public const string DefaultFileName = "unknown.txt";
-
         private Stream content;
         private string contentDisposition;
         private string fileName;

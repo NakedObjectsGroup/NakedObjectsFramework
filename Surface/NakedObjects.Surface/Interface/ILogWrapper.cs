@@ -5,23 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Menu;
+namespace NakedObjects.Surface {
+    // this is to hide log4net from all code above the Surface ... 
+    // this is to avoid problems with log4net versioning caused by their propensity to change keys  
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class MenuItemWrapper : IMenuItem {
-
-        public MenuItemWrapper(IMenuItemImmutable wrapped) {
-            Wrapped = wrapped;
-            Name = wrapped.Name;
-            Id = wrapped.Id;
-        }
-
-        #region IMenuItem Members
-
-        public string Name { get; private set; }
-        public string Id { get; private set; }
-        public object Wrapped { get; private set; }
-
-        #endregion
+    public interface ILogWrapper {
+        void DebugFormat(string fmt, params object[] parms);
+        void InfoFormat(string fmt, params object[] parms);
+        void WarnFormat(string fmt, params object[] parms);
+        void ErrorFormat(string fmt, params object[] parms);
+        void FatalFormat(string fmt, params object[] parms);
     }
 }

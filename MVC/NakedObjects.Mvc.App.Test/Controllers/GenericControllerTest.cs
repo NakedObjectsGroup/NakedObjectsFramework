@@ -14,7 +14,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -33,6 +32,7 @@ using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+using NakedObjectsSurfaceExtensions = NakedObjects.Surface.Utility.NakedObjectsSurfaceExtensions;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
@@ -289,7 +289,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf<FindViewModel>(data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name());
+            Assert.AreEqual(actionName, NakedObjectsSurfaceExtensions.Name(((FindViewModel) data.Model).ContextAction));
         }
 
         private static void AssertStateInViewDataDictionary(ViewResult result, string id, string state) {
@@ -302,7 +302,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
+            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
 

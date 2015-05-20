@@ -42,6 +42,7 @@ using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+using IMenu = NakedObjects.Surface.IMenu;
 
 namespace MvcTestApp.Tests.Helpers {
     public static class StringHelper {
@@ -168,7 +169,7 @@ namespace MvcTestApp.Tests.Helpers {
             Database.Delete("NofHtmlHelperTest");
         }
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) {
+        protected override NakedObjects.Menu.IMenu[] MainMenus(IMenuFactory factory) {
             return DemoServicesSet.MainMenus(factory);
         }
 
