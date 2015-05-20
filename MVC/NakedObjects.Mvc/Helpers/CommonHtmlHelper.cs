@@ -23,6 +23,7 @@ using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Surface.Utility.Restricted;
+using NakedObjects.Util;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
@@ -48,6 +49,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IIdHelper IdHelper(this HtmlHelper html) {
             return (IIdHelper) html.ViewData[IdConstants.IdHelper];
+        }
+
+        public static string GetObjectType(Type type) {
+            return type.GetProxiedTypeFullName().Replace('.', '-');
+        }
+
+        public static string GetObjectType(object model) {
+            return model == null ? String.Empty : GetObjectType(model.GetType());
         }
 
         #region internal api
@@ -80,7 +89,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (items.Any()) {
                 var divTag = new TagBuilder("div");
                 var ulTag = new TagBuilder("ul");
-                divTag.AddCssClass(@cls);
+                divTag.AddCssClass(cls);
                 foreach (string item in items) {
                     var liTag = new TagBuilder("li");
                     liTag.SetInnerText(item);
@@ -89,7 +98,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 divTag.InnerHtml += ulTag;
                 return divTag + Environment.NewLine;
             }
-            return string.Empty;
+            return String.Empty;
         }
 
         internal static string ObjectIconAndLink(this HtmlHelper html, string linkText, string actionName, object model, bool withTitleAttr = false) {
@@ -109,7 +118,7 @@ namespace NakedObjects.Web.Mvc.Html {
             int page = arm.Page;
             string format = arm.Format;
 
-            string url = html.GenerateUrl(actionName, html.Surface().GetObjectTypeName(arm.Result), new RouteValueDictionary(new {id, pageSize, page, format}));
+            string url = html.GenerateUrl(actionName, html.Surface().GetObjectTypeShortName(arm.Result), new RouteValueDictionary(new {id, pageSize, page, format}));
 
             var linkTag = new TagBuilder("a");
             linkTag.MergeAttribute("href", url);
@@ -130,7 +139,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.ActionResultLink(linkText, actionName, actionResultModel, titleAttr);
             }
 
-            string controllerName = html.Surface().GetObjectTypeName(domainObject);
+            string controllerName = html.Surface().GetObjectTypeShortName(domainObject);
             return html.ActionLink(linkText, actionName, controllerName, new {id = html.GetObjectId(domainObject)}, titleAttr).ToString();
         }
 
@@ -142,25 +151,25 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static MvcHtmlString ObjectButton(this HtmlHelper html, string linkText, string actionName, string classAttribute, object domainObject) {
-            string controllerName = html.Surface().GetObjectTypeName(domainObject);
+            string controllerName = html.Surface().GetObjectTypeShortName(domainObject);
             return html.ObjectActionAsString(linkText, actionName, controllerName, classAttribute, "", new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(html.Surface().GetObject(domainObject))}));
         }
 
         internal static MvcHtmlString EditObjectButton(this HtmlHelper html, string linkText, string actionName, object domainObject) {
-            string controllerName = html.Surface().GetObjectTypeName(domainObject);
+            string controllerName = html.Surface().GetObjectTypeShortName(domainObject);
             return html.TransientObjectActionAsString(linkText, actionName, controllerName, new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(html.Surface().GetObject(domainObject))}));
         }
 
         internal static string ObjectIcon(this HtmlHelper html, INakedObjectSurface nakedObject) {
             if (nakedObject == null || nakedObject.Specification.IsService()) {
                 // no icons for services 
-                return string.Empty;
+                return String.Empty;
             }
             html.ViewContext.HttpContext.Session.AddToCache(html.Surface(), nakedObject);
 
             var url = new UrlHelper(html.ViewContext.RequestContext);
             var tag = new TagBuilder("img");
-            tag.MergeAttribute("src", url.Content("~/Images/" + FrameworkHelper.IconName(nakedObject)));
+            tag.MergeAttribute("src", url.Content("~/Images/" + SurfaceHelper.IconName(nakedObject)));
             tag.MergeAttribute("alt", nakedObject.Specification.SingularName());
             return tag.ToString(TagRenderMode.SelfClosing);
         }
@@ -171,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Html {
             AddAjaxDataUrlsToElementSet(html, nakedObject, fieldSet);
 
             fieldSet.InnerHtml += html.Hidden(html.IdHelper().GetDisplayFormatId(id), ToNameValuePairs(html.GetDisplayStatuses()));
-            fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdConstants.SaveButtonClass, MvcUi.Save, string.Empty, new RouteValueDictionary());
+            fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdConstants.SaveButtonClass, MvcUi.Save, String.Empty, new RouteValueDictionary());
             fieldSet.InnerHtml += nakedObject.IsTransient() ? GetSubmitButton(IdConstants.SaveCloseButtonClass, MvcUi.SaveAndClose, IdConstants.SaveAndCloseAction, new RouteValueDictionary(new {close = true})) : "";
 
             return MvcHtmlString.Create(fieldSet.ToString());
@@ -189,7 +198,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 select p;
 
             if (matches.Count() != parameters.Count) {
-                string error = string.Format("On choices method in: {0} one or more properties in: '{1}' does not match a property on that class", nakedObject.Specification.FullName(), parameters.Aggregate("", (s, t) => s + " " + t));
+                string error = String.Format("On choices method in: {0} one or more properties in: '{1}' does not match a property on that class", nakedObject.Specification.FullName(), parameters.Aggregate("", (s, t) => s + " " + t));
                 throw new ArgumentException(error);
             }
 
@@ -210,7 +219,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 select p;
 
             if (matches.Count() != parameters.Count) {
-                string error = string.Format("On choices method Choices{0} one or more parameters in: '{1}' does not match a parameter on : {0}", action.Id, parameters.Aggregate("", (s, t) => s + " " + t));
+                string error = String.Format("On choices method Choices{0} one or more parameters in: '{1}' does not match a parameter on : {0}", action.Id, parameters.Aggregate("", (s, t) => s + " " + t));
                 throw new ArgumentException(error);
             }
 
@@ -257,7 +266,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 fieldSet.InnerHtml += ElementDescriptor.BuildElementSet(html.EditObjectFields(nakedObject, null, x => false, null));
 
                 if (anyEditableFields && !nakedObject.Specification.IsAlwaysImmutable()) {
-                    fieldSet.InnerHtml += GetSubmitButton(IdConstants.EditButtonClass, MvcUi.Edit, string.Empty, new RouteValueDictionary());
+                    fieldSet.InnerHtml += GetSubmitButton(IdConstants.EditButtonClass, MvcUi.Edit, String.Empty, new RouteValueDictionary());
                 }
             }
             else {
@@ -303,10 +312,10 @@ namespace NakedObjects.Web.Mvc.Html {
             string id = collectionNakedObject.Oid == null ? "" : html.Surface().OidStrategy.GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
-            tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), collectionNakedObject.Specification.IsQueryable(), withTitle);
+            tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !String.IsNullOrEmpty(id), collectionNakedObject.Specification.IsQueryable(), withTitle);
 
             return html.WrapInForm(IdConstants.EditObjectAction,
-                html.Surface().GetObjectTypeName(collectionNakedObject.Object),
+                html.Surface().GetObjectTypeShortName(collectionNakedObject.Object),
                 menu + tag,
                 IdConstants.ActionName,
                 new RouteValueDictionary(new {id}));
@@ -495,7 +504,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static MvcHtmlString TransientObjectActionAsString(this HtmlHelper html, string linkText, string actionName, string controllerName, RouteValueDictionary routeValues) {
-            return MvcHtmlString.Create(GetSubmitButton(null, linkText, string.Empty, routeValues));
+            return MvcHtmlString.Create(GetSubmitButton(null, linkText, String.Empty, routeValues));
         }
 
         internal static ElementDescriptor ActionFormAsElementDescriptor(this HtmlHelper html, string linkText, string actionName, string id, string controllerName) {
@@ -503,7 +512,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static ElementDescriptor ActionFormAsElementDescriptor(this HtmlHelper html, string linkText, string actionName, string controllerName, string id, RouteValueDictionary routeValues) {
-            string innerHtml = GetSubmitButton(null, linkText, string.Empty, routeValues);
+            string innerHtml = GetSubmitButton(null, linkText, String.Empty, routeValues);
             return html.WrapInFormElementDescriptor(actionName, controllerName, innerHtml, id, routeValues);
         }
 
@@ -614,7 +623,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeName(actionContext.Target.Object), routeValues, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeShortName(actionContext.Target.Object), routeValues, out value, out attributes);
             }
 
             return new ElementDescriptor {
@@ -629,7 +638,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             IEnumerable<ElementDescriptor> concurrencyElements = html.GetConcurrencyElements(actionContext.Target, actionContext.GetConcurrencyActionInputId);
 
-            string elements = concurrencyElements.Aggregate(string.Empty, (s, t) => s + t.BuildElement());
+            string elements = concurrencyElements.Aggregate(String.Empty, (s, t) => s + t.BuildElement());
 
             RouteValueDictionary routeValueDictionary;
             if (actionContext.ParameterValues != null && actionContext.ParameterValues.Any()) {
@@ -644,7 +653,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
 
                 List<ElementDescriptor> paramElements = html.ActionParameterFields(actionContext).ToList();
-                elements = paramElements.Aggregate(string.Empty, (s, t) => s + t.BuildElement());
+                elements = paramElements.Aggregate(String.Empty, (s, t) => s + t.BuildElement());
                 routeValueDictionary = new RouteValueDictionary();
             }
             else {
@@ -666,7 +675,7 @@ namespace NakedObjects.Web.Mvc.Html {
             const string tagType = "button";
 
             value = actionContext.Action.Name();
-            attributes = html.GetActionAttributes(IdConstants.ActionInvokeAction, actionContext, new ActionContext(html.IdHelper(), actionContext.Target, null), string.Empty);
+            attributes = html.GetActionAttributes(IdConstants.ActionInvokeAction, actionContext, new ActionContext(html.IdHelper(), actionContext.Target, null), String.Empty);
 
             return tagType;
         }
@@ -788,7 +797,7 @@ namespace NakedObjects.Web.Mvc.Html {
                             html.GetButtonNameValues(targetActionContext, actionContext, nakedObject, propertyName)),
                 Attributes = new RouteValueDictionary(new {
                     @class = html.ObjectEditClass(nakedObject.Object),
-                    id = FrameworkHelper.GetObjectType(nakedObject.Object)
+                    id = GetObjectType(nakedObject.Object)
                 })
             };
         }
@@ -808,7 +817,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string FinderActions(this HtmlHelper html, INakedObjectSpecificationSurface spec, ActionContext actionContext, string propertyName) {
             if (spec.IsCollection()) {
-                return string.Empty; // We don't want Finder menu rendered on any collection field
+                return String.Empty; // We don't want Finder menu rendered on any collection field
             }
             var allActions = new List<ElementDescriptor> {
                 RemoveAction(propertyName),
@@ -823,7 +832,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     MvcUi.Find).ToString();
             }
 
-            return string.Empty;
+            return String.Empty;
         }
 
         private static string CollectionTable(this HtmlHelper html,
@@ -935,7 +944,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 var tagPageNumber = new TagBuilder("div");
                 tagPageNumber.AddCssClass(IdConstants.PageNumberClass);
-                tagPageNumber.InnerHtml += string.Format(MvcUi.PageOf, currentPage, maxPage);
+                tagPageNumber.InnerHtml += String.Format(MvcUi.PageOf, currentPage, maxPage);
                 tagPaging.InnerHtml += tagPageNumber;
 
                 var tagTotalCount = new TagBuilder("div");
@@ -943,7 +952,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 var typeSpec = pagedCollectionNakedObject.ElementSpecification;
 
-                tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName() : typeSpec.PluralName());
+                tagTotalCount.InnerHtml += String.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName() : typeSpec.PluralName());
                 tagPaging.InnerHtml += tagTotalCount;
                 string displayType = html.ViewData.ContainsKey(IdConstants.CollectionFormat) ? (string) html.ViewData[IdConstants.CollectionFormat] : IdConstants.ListDisplayFormat;
 
@@ -1009,7 +1018,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
 
                 string title = html.GetDisplayTitle(context.Parameter, valueNakedObject);
-                value += string.Format(link, title);
+                value += String.Format(link, title);
             }
 
             return value;
@@ -1030,7 +1039,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (!context.Property.Specification.IsParseable()) {
                     link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object);
                 }
-                value += string.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
+                value += String.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
             }
 
             return value;
@@ -1068,7 +1077,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var valueNakedObject = propertyContext.GetValue(html.Surface());
 
             if (valueNakedObject == null) {
-                return string.Empty;
+                return String.Empty;
             }
 
             if (propertyContext.Property.IsFile()) {
@@ -1098,7 +1107,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string link = "{0}";
 
             if (!propertyContext.Property.Specification.IsParseable() && !propertyContext.Property.IsCollection()) {
-                string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : string.Empty;
+                string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : String.Empty;
                 bool renderEagerly = RenderEagerly(propertyContext.Property);
 
                 link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object) + (inTable ? "" : html.GetObjectDisplayLinks(propertyContext));
@@ -1135,7 +1144,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
             }
 
-            return string.Format(link, title);
+            return String.Format(link, title);
         }
 
         private static MvcHtmlString GetEditButtonIfRequired(this HtmlHelper html, bool anyEditableFields, INakedObjectSurface inlineNakedObject) {
@@ -1178,10 +1187,10 @@ namespace NakedObjects.Web.Mvc.Html {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
             string utitle = propertyContext.Property.GetNakedObject(propertyContext.Target).Specification.UntitledName();
 
-            title = string.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
+            title = String.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
 
             string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
-                html.Surface().GetObjectTypeName(propertyContext.Target.Object),
+                html.Surface().GetObjectTypeShortName(propertyContext.Target.Object),
                 new RouteValueDictionary(new {
                     Id = html.Surface().OidStrategy.GetObjectId(propertyContext.Target),
                     PropertyId = propertyContext.Property.Id
@@ -1207,7 +1216,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var valueNakedObject = propertyContext.GetValue(html.Surface());
 
             if (valueNakedObject == null) {
-                return string.Empty;
+                return String.Empty;
             }
             return valueNakedObject.InvariantString();
         }
@@ -1216,7 +1225,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var valueNakedObject = propertyContext.GetValue(html.Surface());
 
             if (valueNakedObject == null) {
-                return string.Empty;
+                return String.Empty;
             }
 
             if (valueNakedObject.Specification.IsEnum()) {
@@ -1237,7 +1246,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GenerateUrl(this HtmlHelper html, string actionName, object domainObject) {
-            string controllerName = html.Surface().GetObjectTypeName(domainObject);
+            string controllerName = html.Surface().GetObjectTypeShortName(domainObject);
             return html.GenerateUrl(actionName, controllerName, new RouteValueDictionary(new {id = html.GetObjectId(domainObject)}));
         }
 
@@ -1310,7 +1319,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string rawExistingValue = html.ViewData.ModelState.TryGetValue(id, out modelState) ? (string) modelState.Value.RawValue : null;
 
             INakedObjectSurface existingValue;
-            if (string.IsNullOrEmpty(rawExistingValue)) {
+            if (String.IsNullOrEmpty(rawExistingValue)) {
                 existingValue = propertyContext.GetValue(html.Surface());
             }
             else {
@@ -1374,7 +1383,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetItems(id, context as ParameterContext);
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
@@ -1609,7 +1618,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     name = IdConstants.SelectAction,
                     type = "submit",
                     @class = IdConstants.RemoveButtonClass,
-                    value = ToNameValuePairs(new Dictionary<string, object> {{propertyName, string.Empty}})
+                    value = ToNameValuePairs(new Dictionary<string, object> {{propertyName, String.Empty}})
                 })
             };
         }
@@ -1653,7 +1662,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (context.IsHidden) {
                 var suggestedItem = html.GetSuggestedItem(id, (INakedObjectSurface) null);
-                string valueId = suggestedItem == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
+                string valueId = suggestedItem == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
                 tag.InnerHtml += html.CustomEncrypted(id, valueId);
             }
             else if (context.Parameter.IsChoicesEnabled == Choices.Single) {
@@ -1667,7 +1676,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else {
                 var existingValue = html.GetParameterExistingValue(id, context);
                 var suggestedItem = html.GetSuggestedItem(id, existingValue);
-                string valueId = suggestedItem == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
+                string valueId = suggestedItem == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
 
                 string url = html.GenerateUrl("ValidateParameter", "Ajax", new RouteValueDictionary(new {
                     id = html.Surface().OidStrategy.GetObjectId(context.Target),
@@ -1681,7 +1690,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                  html.GetFieldValue(context, suggestedItem) +
-                                 (noFinder ? string.Empty : html.FinderActions(context.Parameter.Specification, context, context.Parameter.Id)) +
+                                 (noFinder ? String.Empty : html.FinderActions(context.Parameter.Specification, context, context.Parameter.Id)) +
                                  html.GetMandatoryIndicator(context) +
                                  html.ValidationMessage(context.Parameter.IsAutoCompleteEnabled ? context.GetParameterAutoCompleteId() : id) +
                                  html.CustomEncrypted(id, valueId);
@@ -1704,14 +1713,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (!propertyContext.Property.IsVisible(propertyContext.Target)) {
                 var existingValue = propertyContext.GetValue(html.Surface());
-                string value = existingValue == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(existingValue);
+                string value = existingValue == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(existingValue);
                 tag.InnerHtml += html.Encrypted(id, value).ToString();
                 propertyContext.IsPropertyEdit = false;
             }
             else {
                 if (readOnly) {
                     var valueNakedObject = propertyContext.GetValue(html.Surface());
-                    string valueId = valueNakedObject == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(valueNakedObject);
+                    string valueId = valueNakedObject == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(valueNakedObject);
 
                     tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target)) +
                                      html.GetFieldValue(propertyContext) +
@@ -1729,7 +1738,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 else {
                     var valueNakedObject = html.GetExistingValue(id, propertyContext);
                     var suggestedItem = html.GetSuggestedItem(id, valueNakedObject);
-                    string valueId = suggestedItem == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
+                    string valueId = suggestedItem == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
 
                     if (!propertyContext.Target.IsTransient()) {
                         // do not only allow drag and drop onto transients - otherwise  attempt to validate 
@@ -1747,7 +1756,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
                                      html.GetFieldValue(propertyContext, suggestedItem) +
-                                     (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.Specification, new ActionContext(html.IdHelper(), propertyContext.Target, null), propertyContext.Property.Id)) +
+                                     (noFinder ? String.Empty : html.FinderActions(propertyContext.Property.Specification, new ActionContext(html.IdHelper(), propertyContext.Target, null), propertyContext.Property.Id)) +
                                      html.GetMandatoryIndicator(propertyContext) +
                                      html.ValidationMessage(propertyContext.Property.IsAutoCompleteEnabled ? propertyContext.GetAutoCompleteFieldId() : id) +
                                      html.CustomEncrypted(id, valueId);
@@ -1764,7 +1773,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.ObjectName);
             string value = html.Surface().OidStrategy.GetObjectId(item);
-            tag.InnerHtml += html.Hidden(id, value, new {id = string.Empty}).ToString();
+            tag.InnerHtml += html.Hidden(id, value, new {id = String.Empty}).ToString();
             return tag.ToString();
         }
 
@@ -1834,7 +1843,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetCollectionDisplayLinks(propertyContext);
             }
             int count = propertyContext.Property.Count(propertyContext.Target);
-            return (count > 0 ? html.GetCollectionDisplayLinks(propertyContext) : string.Empty) + GetCollectionTitle(propertyContext, count);
+            return (count > 0 ? html.GetCollectionDisplayLinks(propertyContext) : String.Empty) + GetCollectionTitle(propertyContext, count);
         }
 
         private static string GetCollectionAsList(this HtmlHelper html, PropertyContext propertyContext) {
@@ -1846,11 +1855,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetChildCollection(this HtmlHelper html, PropertyContext propertyContext) {
-            string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : string.Empty;
+            string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : String.Empty;
             bool renderEagerly = RenderEagerly(propertyContext.Property);
 
             var tag = new TagBuilder("div");
-            if (displayType == IdConstants.TableDisplayFormat || (string.IsNullOrWhiteSpace(displayType) && renderEagerly)) {
+            if (displayType == IdConstants.TableDisplayFormat || (String.IsNullOrWhiteSpace(displayType) && renderEagerly)) {
                 tag.AddCssClass(IdConstants.CollectionTableName);
                 tag.InnerHtml += html.GetCollectionAsTable(propertyContext);
             }
@@ -2014,7 +2023,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.IsMandatory(context as ParameterContext);
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
@@ -2027,7 +2036,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return (context as ParameterContext).Parameter.IsAutoCompleteEnabled;
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             // throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
@@ -2040,13 +2049,13 @@ namespace NakedObjects.Web.Mvc.Html {
                 return (context as ParameterContext).Parameter.IsAjax();
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
         private static string GetMandatoryIndicator(this HtmlHelper html, FeatureContext context) {
-            return html.IsMandatory(context) ? html.MandatoryIndicator() : string.Empty;
+            return html.IsMandatory(context) ? html.MandatoryIndicator() : String.Empty;
         }
 
         private static bool ShouldClearValue(object value) {
@@ -2136,7 +2145,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 htmlAttributes["data-val-number"] = MvcUi.InvalidEntry;
                 htmlAttributes["data-val-range-min"] = rangeData.Min;
                 htmlAttributes["data-val-range-max"] = rangeData.Max;
-                htmlAttributes["data-val-range"] = string.Format(Resources.NakedObjects.RangeMismatch, rangeData.Min, rangeData.Max);
+                htmlAttributes["data-val-range"] = String.Format(Resources.NakedObjects.RangeMismatch, rangeData.Min, rangeData.Max);
             }
         }
 
@@ -2152,7 +2161,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (maxlength > 0) {
                 htmlAttributes["data-val"] = "true";
                 htmlAttributes["data-val-length-max"] = maxlength;
-                htmlAttributes["data-val-length"] = string.Format(Resources.NakedObjects.MaximumLengthMismatch, maxlength);
+                htmlAttributes["data-val-length"] = String.Format(Resources.NakedObjects.MaximumLengthMismatch, maxlength);
             }
         }
 
@@ -2215,7 +2224,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return (context as ParameterContext).Parameter.MaxLength();
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
@@ -2245,7 +2254,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return new RegexData((context as ParameterContext).Parameter.RegEx());
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
@@ -2277,7 +2286,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return new RangeData((context as ParameterContext).Parameter.Range());
             }
             // todo is this correct exception
-            throw new BadRequestNOSException(string.Format("Unexpected context type {0}", context.GetType()));
+            throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
 
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
@@ -2375,7 +2384,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string ZeroValueIfTransientAndNotSet(this HtmlHelper html, PropertyContext propertyContext, string value) {
-            if (propertyContext.Target.IsTransient() && !string.IsNullOrEmpty(value)) {
+            if (propertyContext.Target.IsTransient() && !String.IsNullOrEmpty(value)) {
                 var valueNakedObject = propertyContext.GetValue(html.Surface());
 
                 if (!propertyContext.Property.DefaultTypeIsExplicit(propertyContext.Target) && ShouldClearValue(valueNakedObject.Object)) {
@@ -2436,7 +2445,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else {
                 tag.AddCssClass(IdConstants.ObjectName);
                 var existingValue = propertyContext.GetValue(html.Surface());
-                value = existingValue == null ? string.Empty : html.Surface().OidStrategy.GetObjectId(existingValue);
+                value = existingValue == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(existingValue);
             }
             tag.InnerHtml += html.Encrypted(id, value).ToString();
             return tag.ToString();
@@ -2473,7 +2482,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (children.Any()) {
                 return new ElementDescriptor {
                     TagType = tagType,
-                    Value = string.Empty,
+                    Value = String.Empty,
                     Children = children,
                     Attributes = new RouteValueDictionary(routeValues)
                 }.InList();
@@ -2701,7 +2710,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (allowed) {
                 return html.WrapInForm(Action(actionContext.Action.Id),
-                    html.Surface().GetObjectTypeName(actionContext.Target.Object),
+                    html.Surface().GetObjectTypeShortName(actionContext.Target.Object),
                     html.ParameterList(actionContext).ToString(),
                     actionContext.GetActionClass(),
                     new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(actionContext.Target)}));

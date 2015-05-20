@@ -323,6 +323,10 @@ namespace NakedObjects.Surface.Utility {
 
         #region INakedObjectSpecificationSurface
 
+        public static string PresentationHint(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
+            return nakedObjectSpecificationSurface.GetScalarProperty<string>(ScalarProperty.PresentationHint);
+        }
+
         public static bool IsAlwaysImmutable(this INakedObjectSpecificationSurface nakedObjectSpecificationSurface) {
             return nakedObjectSpecificationSurface.GetScalarProperty<bool>(ScalarProperty.IsAlwaysImmutable);
         }

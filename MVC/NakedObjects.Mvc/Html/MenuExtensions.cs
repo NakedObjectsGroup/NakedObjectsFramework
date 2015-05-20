@@ -13,6 +13,7 @@ using System.Web.Routing;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
@@ -155,7 +156,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeName(actionContext.Target.Object), new {id = html.Surface().OidStrategy.GetObjectId(actionContext.Target)}, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeShortName(actionContext.Target.Object), new { id = html.Surface().OidStrategy.GetObjectId(actionContext.Target) }, out value, out attributes);
             }
 
             return new ElementDescriptor {

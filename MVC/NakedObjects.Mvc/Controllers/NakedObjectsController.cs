@@ -54,7 +54,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetControllerName(object domainObject) {
-            string controllerName = Surface.GetObjectTypeName(domainObject);
+            string controllerName = Surface.GetObjectTypeShortName(domainObject);
             SetControllerName(controllerName);
         }
 
@@ -214,8 +214,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal object GetParameterValue(INakedObjectActionParameterSurface parm, string name, ObjectAndControlData controlData) {
             object value = GetRawParameterValue(parm, controlData, name);
             return GetParameterValue(parm, value);
-            // todo make this work
-            //return FilterCollection(nakedObject, controlData);
         }
 
         internal object GetParameterValue(INakedObjectActionParameterSurface parm, object value) {
@@ -564,15 +562,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ModelState.AddModelError(key, pcs.Reason);
                 }
             }
-                //catch (InvalidEntryException) {
-
-            catch (NakedObjectsSurfaceException) {
-                // todo find correct NOS exception
-                ModelState.AddModelError(key, MvcUi.InvalidEntry);
-            }
-            catch (ArgumentException) {
-                // Always expect newValue to be non-null for a parseable field as it should always be included 
-                // in the form so this is an unexpected result for a parseable field 
+            catch (NakedObjectsSurfaceException) {  
                 ModelState.AddModelError(key, MvcUi.InvalidEntry);
             }
             finally {
@@ -669,7 +659,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             var form = controlData.Form;
-            if (form != null && nakedObject != null && nakedObject.Specification.IsCollection() /*&& nakedObject.Oid is ICollectionMemento  todo */) {
+            if (form != null && nakedObject != null && nakedObject.Specification.IsCollection()) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
                 var map = nakedObject.ToEnumerable().ToDictionary(Surface.OidStrategy.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();

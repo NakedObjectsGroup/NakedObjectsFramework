@@ -27,9 +27,7 @@ using NakedObjects.Services;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
@@ -68,7 +66,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         protected override Type[] Types {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (EnumerableQuery<string>)
                 };
             }
@@ -82,32 +80,9 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        #region Setup/Teardown
-
-        [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
-
-            StartTest();
-            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
-
-
-            controller = new AjaxController( Surface, new IdHelper());
-            mocks = new ContextMocks(controller);
-        }
-
-        protected INakedObjectsSurface Surface { get; set; }
-
-        protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
-            NakedObjectsFramework = ((dynamic)Surface).Framework;
-        }
-
-        #endregion
-
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
@@ -285,35 +260,26 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-         // todo support multiple choices !
-
         public void TestGetActionChoicesOtherParmsMultiple1() {
             TestGetActionChoicesOtherParmsMultiple("value1");
         }
 
         [Test]
-         // todo support multiple choices !
-
         public void TestGetActionChoicesOtherParmsMultiple2() {
             TestGetActionChoicesOtherParmsMultiple("value2");
         }
 
         [Test]
-         // todo support multiple choices !
-
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect1() {
             TestGetActionChoicesOtherParmsMultipleMultiSelect("value1");
         }
 
         [Test]
-         // todo support multiple choices !
-
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect2() {
             TestGetActionChoicesOtherParmsMultipleMultiSelect("value2");
         }
 
         [Test]
-         // todo support multiple choices !
         public void TestGetActionMultipleChoicesDefault() {
             INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
@@ -430,7 +396,7 @@ namespace MvcTestApp.Tests.Controllers {
             var mockSurface = new Mock<INakedObjectsSurface>().Object;
             //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController( mockSurface, null).Jsonp(data, "application/json", Encoding.UTF8);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(mockSurface, null).Jsonp(data, "application/json", Encoding.UTF8);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -597,5 +563,27 @@ namespace MvcTestApp.Tests.Controllers {
             JsonResult result = controller.ValidateProperty(id, null, propertyName);
             Assert.IsTrue((bool) result.Data);
         }
+
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            InitializeNakedObjectsFramework(this);
+
+            StartTest();
+            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
+
+            controller = new AjaxController(Surface, new IdHelper());
+            mocks = new ContextMocks(controller);
+        }
+
+        protected INakedObjectsSurface Surface { get; set; }
+
+        protected override void StartTest() {
+            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            NakedObjectsFramework = ((dynamic) Surface).Framework;
+        }
+
+        #endregion
     }
 }

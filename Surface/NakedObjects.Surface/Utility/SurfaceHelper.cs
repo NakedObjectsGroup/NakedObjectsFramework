@@ -6,7 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace NakedObjects.Surface.Utility.Restricted {
     public static class SurfaceHelper {
@@ -25,6 +28,68 @@ namespace NakedObjects.Surface.Utility.Restricted {
             foreach (T obj in toIterate) {
                 action(obj, num++);
             }
+        }
+
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+            if (nakedObject.Specification.IsQueryable()) {
+                var elementSpec = nakedObject.ElementSpecification;
+                Trace.Assert(elementSpec != null);
+                return elementSpec.GetCollectionContributedActions();
+            }
+            return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
+        }
+
+       
+
+        public static string GetObjectTypeShortName(this INakedObjectsSurface surface, object model) {
+            var nakedObject = surface.GetObject(model);
+            return nakedObject.Specification.FullName().Split('.').Last();
+        }
+
+        public static string IconName(INakedObjectSurface nakedObject) {
+            string name = nakedObject.Specification.GetIconName(nakedObject);
+            return name.Contains(".") ? name : name + ".png";
+        }
+
+        private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+            var oid = surface.OidStrategy.GetOid(id, "");
+            return surface.GetObject(oid).Target;
+        }
+
+        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
+            var collectionitemSpec = featureSpec.ElementType;
+            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+        }
+
+        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectAssociationSurface featureSpec, IEnumerable collectionValue) {
+            var collectionitemSpec = featureSpec.ElementSpecification;
+            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+        }
+
+        private static object GetTypedCollection(INakedObjectsSurface surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
+            string[] rawCollection = collectionValue.Cast<string>().ToArray();
+
+            Type instanceType = collectionitemSpec.GetUnderlyingType();
+            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+
+            if (collectionitemSpec.IsParseable()) {
+                return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();
+            }
+
+            // need to check if collection is actually a collection memento 
+            if (rawCollection.Count() == 1) {
+                var firstObj = GetNakedObjectFromId(surface, rawCollection.First());
+
+                if (firstObj != null && firstObj.IsCollectionMemento()) {
+                    return firstObj.Object;
+                }
+            }
+
+            var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
+
+            SurfaceHelper.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
+
+            return typedCollection.AsQueryable();
         }
     }
 }

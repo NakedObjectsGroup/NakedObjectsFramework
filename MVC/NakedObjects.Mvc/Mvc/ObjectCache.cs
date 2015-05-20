@@ -110,8 +110,6 @@ namespace NakedObjects.Web.Mvc {
 
             var lastObject = SafeGetNakedObjectFromId(lastEntry.Key, surface);
 
-            // todo will this work ? 
-            //if (lastObject.ResolveState.IsDestroyed()) {
             if (lastObject == null) {
                 session.GetCache(flag).Remove(lastEntry.Key);
                 return session.LastObject(surface, flag);
@@ -153,7 +151,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static void ClearDestroyedObjects(this HttpSessionStateBase session, INakedObjectsSurface framework, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework)}).Where(ao => ao.no.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
@@ -175,12 +173,6 @@ namespace NakedObjects.Web.Mvc {
                 return surface.GetObject(oid).Target;
             }
             catch (Exception) {
-                // todo work out this 
-                //// create a NakedObject just to carry the 'Destroyed' state
-                //var no = framework.GetNakedObject(new object());
-                //no.ResolveState.Handle(Events.StartResolvingEvent);
-                //no.ResolveState.Handle(Events.DestroyEvent);
-                //return no;
                 return null;
             }
         }

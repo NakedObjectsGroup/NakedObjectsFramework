@@ -276,10 +276,19 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                     return IsImmutableOncePersisted;
                 case (ScalarProperty.IsComplexType):
                     return IsComplexType;
+                case (ScalarProperty.PresentationHint):
+                    return PresentationHintValue;
                 case (ScalarProperty.ExtensionData):
                     return ExtensionData;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
+            }
+        }
+
+        public object PresentationHintValue {
+            get {
+                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? "" : hintFacet.Value;
             }
         }
 

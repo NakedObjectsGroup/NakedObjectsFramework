@@ -179,7 +179,6 @@
     <Compile Include="Helpers\CommonHtmlHelper.cs" />
     <Compile Include="Helpers\ElementDescriptor.cs" />
     <Compile Include="Html\SystemExtensions.cs" />
-    <Compile Include="Helpers\FrameworkHelper.cs" />
     <Compile Include="Mvc\ObjectCache.cs" />
     <Compile Include="Mvc\SessionCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,6 +16,7 @@ using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {

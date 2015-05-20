@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
@@ -31,11 +32,11 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectTypeAsCssId(this HtmlHelper html, object model) {
             if (model.GetType().IsGenericType) {
-                var gType = new StringBuilder(FrameworkHelper.GetObjectType(model.GetType().GetGenericTypeDefinition()));
+                var gType = new StringBuilder(CommonHtmlHelper.GetObjectType(model.GetType().GetGenericTypeDefinition()));
 
                 gType.Append("[[");
                 foreach (Type gTypeParm in model.GetType().GetGenericArguments()) {
-                    gType.Append(FrameworkHelper.GetObjectType(gTypeParm)).Append(", ");
+                    gType.Append(CommonHtmlHelper.GetObjectType(gTypeParm)).Append(", ");
                 }
                 gType.Remove(gType.Length - 2, 2);
                 gType.Append("]]");
@@ -43,16 +44,12 @@ namespace NakedObjects.Web.Mvc.Html {
                 return MvcHtmlString.Create(gType.ToString());
             }
 
-            return MvcHtmlString.Create(FrameworkHelper.GetObjectType(model));
+            return MvcHtmlString.Create(CommonHtmlHelper.GetObjectType(model));
         }
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
-            // todo
-            //var nakedObject = html.Surface().GetObject(model);
-            //var facet = nakedObject.Spec.GetFacet<IPresentationHintFacet>();
-            //return facet == null ? "" : " " + facet.Value;
-            //return nakedObject.Specification.PresentationHint;
-            return "";
+            var nakedObject = html.Surface().GetObject(model);
+            return nakedObject.Specification.PresentationHint();
         }
 
         /// <summary>

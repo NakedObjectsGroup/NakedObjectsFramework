@@ -20,7 +20,6 @@ namespace NakedObjects.Web.Mvc.Html {
 
         //TODO: Mark obsolete when Menus refactoring complete
         //[Obsolete("Add CustomMenuItems into an IMenu directly when constructing menus")]
-
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
             var nakedObject = html.Surface().GetObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
