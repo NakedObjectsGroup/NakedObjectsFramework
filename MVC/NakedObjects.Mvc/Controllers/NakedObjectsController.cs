@@ -24,12 +24,12 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
-        private readonly INakedObjectsSurface surface;
-        private readonly IOidStrategy oidStrategy;
         private readonly IIdHelper idHelper;
+        private readonly IOidStrategy oidStrategy;
+        private readonly INakedObjectsSurface surface;
 
         protected NakedObjectsController(INakedObjectsSurface surface,
-            IIdHelper idHelper) {
+                                         IIdHelper idHelper) {
             this.surface = surface;
             oidStrategy = surface.OidStrategy;
             this.idHelper = idHelper;
@@ -37,18 +37,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
-        protected INakedObjectsSurface Surface
-        {
+        protected INakedObjectsSurface Surface {
             get { return surface; }
         }
 
-        protected IOidStrategy OidStrategy
-        {
+        protected IOidStrategy OidStrategy {
             get { return oidStrategy; }
         }
 
-        protected IIdHelper IdHelper
-        {
+        protected IIdHelper IdHelper {
             get { return idHelper; }
         }
 
@@ -65,24 +62,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ViewData[IdConstants.NofServices] = Surface.GetServices().List.Select(no => no.Object);
         }
 
-        protected void SetMainMenus() {
-            // todo
-            //var menus = NakedObjectsContext.MetamodelManager.MainMenus();
-            //if (!menus.Any()) {
-            //    menus = nakedObjectsFramework.ServicesManager.GetServices().Select(s => s.Spec.Menu).ToArray();
-            //}
-            //ViewData[IdConstants.NofMainMenus] = menus;
-        }
-
-        protected void SetFramework() {
+        protected void SetSurface() {
+            // todo use idHelper
             ViewData["Surface"] = Surface;
             ViewData["IdHelper"] = IdHelper;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
             SetServices();
-            SetMainMenus();
-            SetFramework();
+            SetSurface();
             Surface.Start();
         }
 
@@ -130,7 +118,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
-                //var collection = nakedObject.GetAsQueryable();
                 int collectionSize = nakedObject.Count();
                 if (collectionSize == 1) {
                     // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
@@ -473,10 +460,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
-            INakedObjectAssociationSurface parent,
-            IEnumerable<INakedObjectAssociationSurface> associations,
-            ObjectAndControlData controlData,
-            Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+                                                                                                               INakedObjectAssociationSurface parent,
+                                                                                                               IEnumerable<INakedObjectAssociationSurface> associations,
+                                                                                                               ObjectAndControlData controlData,
+                                                                                                               Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
             foreach (var assoc in associations.Where(a => !a.IsInline())) {
                 string name = idFunc(parent, nakedObject, assoc);
                 object newValue = GetValueFromForm(controlData, name);
@@ -578,9 +565,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ModelState.AddModelError(key, pcs.Reason);
                 }
             }
-            //catch (InvalidEntryException) {
+                //catch (InvalidEntryException) {
 
-            catch (NakedObjectsSurfaceException) { // todo find correct NOS exception
+            catch (NakedObjectsSurfaceException) {
+                // todo find correct NOS exception
                 ModelState.AddModelError(key, MvcUi.InvalidEntry);
             }
             catch (ArgumentException) {

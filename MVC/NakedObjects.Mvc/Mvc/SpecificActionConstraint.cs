@@ -17,6 +17,8 @@ namespace NakedObjects.Web.Mvc {
             valuesToMatch = new RouteValueDictionary(values);
         }
 
+        #region IRouteConstraint Members
+
         public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection) {
             if (values.ContainsKey("controller") && values.ContainsKey("action")) {
                 var controllerName = (string) values["controller"];
@@ -27,5 +29,7 @@ namespace NakedObjects.Web.Mvc {
 
             return false;
         }
+
+        #endregion
     }
 }

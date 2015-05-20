@@ -21,14 +21,17 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public INakedObjectActionSurface Action { get; private set; }
         public IEnumerable Result { get; private set; }
-
         public int PageSize { get; set; }
         public int Page { get; set; }
         public string Format { get; set; }
 
+        #region IEnumerable Members
+
         public IEnumerator GetEnumerator() {
             return Result.GetEnumerator();
         }
+
+        #endregion
 
         public static ActionResultModel Create(INakedObjectsSurface surface, INakedObjectActionSurface action, INakedObjectSurface nakedObject, int page, int pageSize, string format) {
             var result = (IEnumerable) nakedObject.Object;
@@ -53,9 +56,13 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public new IEnumerable<T> Result { get; private set; }
 
+        #region IEnumerable<T> Members
+
         IEnumerator<T> IEnumerable<T>.GetEnumerator() {
             return Result.GetEnumerator();
         }
+
+        #endregion
     }
 
     public class ActionResultModelQ<T> : ActionResultModel<T>, IQueryable<T> {
@@ -66,19 +73,20 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public new IQueryable<T> Result { get; private set; }
 
-        public Expression Expression
-        {
+        #region IQueryable<T> Members
+
+        public Expression Expression {
             get { return Result.Expression; }
         }
 
-        public Type ElementType
-        {
+        public Type ElementType {
             get { return Result.ElementType; }
         }
 
-        public IQueryProvider Provider
-        {
+        public IQueryProvider Provider {
             get { return Result.Provider; }
         }
+
+        #endregion
     }
 }

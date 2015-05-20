@@ -13,8 +13,6 @@ using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {
-        protected IIdHelper IdHelper { get; set; }
-
         protected ObjectContext(IIdHelper idHelper, ObjectContext otherContext) {
             IdHelper = idHelper;
             Target = otherContext.Target;
@@ -25,6 +23,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Target = target;
         }
 
+        protected IIdHelper IdHelper { get; set; }
         public INakedObjectSurface Target { get; set; }
     }
 
@@ -48,35 +47,30 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = parentContext;
         }
 
-        public INakedObjectSurface OriginalTarget
-        {
+        public INakedObjectSurface OriginalTarget {
             get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
         }
 
         public PropertyContext ParentContext { get; set; }
-
         public INakedObjectAssociationSurface Property { get; set; }
 
-        public override IScalarPropertyHolder Feature
-        {
+        public override IScalarPropertyHolder Feature {
             get { return Property; }
+        }
+
+        public bool IsEdit { get; private set; }
+        public bool IsPropertyEdit { get; set; }
+
+        public ObjectContext OuterContext {
+            get { return this; }
         }
 
         public INakedObjectSurface GetValue(INakedObjectsSurface surface) {
             return Property.GetNakedObject(Target);
         }
 
-        public bool IsEdit { get; private set; }
-
-        public bool IsPropertyEdit { get; set; }
-
         public bool IsFindMenuEnabled() {
             return Property.IsFindMenuEnabled();
-        }
-
-        public ObjectContext OuterContext
-        {
-            get { return this; }
         }
 
         public string GetFieldInputId() {
@@ -110,6 +104,9 @@ namespace NakedObjects.Web.Mvc.Html {
     }
 
     internal class ActionContext : FeatureContext {
+        private Func<INakedObjectActionParameterSurface, bool> filter;
+        private ParameterContext[] parameterContexts;
+
         public ActionContext(IIdHelper idHelper, ActionContext otherContext)
             : base(idHelper, otherContext) {
             EmbeddedInObject = otherContext.EmbeddedInObject;
@@ -128,14 +125,8 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = action;
         }
 
-        private Func<INakedObjectActionParameterSurface, bool> filter;
-
-        private ParameterContext[] parameterContexts;
-
-        public Func<INakedObjectActionParameterSurface, bool> Filter
-        {
-            get
-            {
+        public Func<INakedObjectActionParameterSurface, bool> Filter {
+            get {
                 if (filter == null) {
                     return x => true;
                 }
@@ -145,10 +136,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public bool EmbeddedInObject { get; set; }
-
         public INakedObjectActionSurface Action { get; set; }
-
         public RouteValueDictionary ParameterValues { get; set; }
+
+        public override IScalarPropertyHolder Feature {
+            get { return Action; }
+        }
 
         public ParameterContext[] GetParameterContexts(INakedObjectsSurface surface) {
             if (parameterContexts == null) {
@@ -166,11 +159,6 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             return parameterContexts;
-        }
-
-        public override IScalarPropertyHolder Feature
-        {
-            get { return Action; }
         }
 
         public string GetConcurrencyActionInputId(INakedObjectAssociationSurface nakedObjectAssociation) {
@@ -219,21 +207,18 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public bool IsHidden { get; set; }
-
-        public bool IsFindMenuEnabled() {
-            return Parameter.IsFindMenuEnabled() && (!Parameter.Action.IsContributed() || !Target.Specification.IsOfType(Parameter.Specification));
-        }
-
         public INakedObjectActionParameterSurface Parameter { get; set; }
-
         public INakedObjectSurface CustomValue { get; set; }
 
-        public override IScalarPropertyHolder Feature
-        {
+        public override IScalarPropertyHolder Feature {
             get { return Parameter; }
         }
 
         public bool IsParameterEdit { get; set; }
+
+        public bool IsFindMenuEnabled() {
+            return Parameter.IsFindMenuEnabled() && (!Parameter.Action.IsContributed() || !Target.Specification.IsOfType(Parameter.Specification));
+        }
 
         public string GetParameterInputId() {
             return IdHelper.GetParameterInputId((Action), (Parameter));

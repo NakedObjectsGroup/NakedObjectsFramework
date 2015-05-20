@@ -20,8 +20,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         #endregion
 
-        public ViewTypes ViewType
-        {
+        public ViewTypes ViewType {
             get { return ContextAction == null ? ViewTypes.Edit : ViewTypes.Dialog; }
         }
 

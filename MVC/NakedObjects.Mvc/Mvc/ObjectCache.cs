@@ -23,16 +23,8 @@ namespace NakedObjects.Web.Mvc {
 
         #endregion
 
-        [Serializable]
-        private class CacheMemento {
-            public DateTime Added { get; set; }
-            public string Url { get; set; }
-            public string Spec { get; set; }
-        }
-
         private const string NoneBucket = "ObjectCache";
         private const string BreadCrumbBucket = "BreadCrumbCache";
-
         public const int CacheSize = 100;
         private static readonly string[] Bucket = new[] {NoneBucket, BreadCrumbBucket};
 
@@ -248,5 +240,16 @@ namespace NakedObjects.Web.Mvc {
             List<string> toRemove = cache.Where(kvp => kvp.Key != id).Select(kvp => kvp.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
+
+        #region Nested type: CacheMemento
+
+        [Serializable]
+        private class CacheMemento {
+            public DateTime Added { get; set; }
+            public string Url { get; set; }
+            public string Spec { get; set; }
+        }
+
+        #endregion
     }
 }

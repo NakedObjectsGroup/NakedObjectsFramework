@@ -12,7 +12,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -316,6 +315,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             var result = Surface.PutObject(oid, ac);
 
+            // todo handle result 
             //if (ValidateChanges(naked, new ObjectAndControlData() {Form = form})) {
             //    if (ApplyChanges(naked, new ObjectAndControlData() {Form = form})) {
             //        result = true;

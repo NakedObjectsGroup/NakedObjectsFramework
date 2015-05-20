@@ -34,19 +34,10 @@ namespace NakedObjects.Web.Mvc.Html {
             return model == null ? string.Empty : GetObjectType(model.GetType());
         }
 
-        //private static string Encode(this IEncodedToStrings encoder) {
-        //    return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
-        //}
-
-        //public static string GetObjectId(IOid oid) {
-        //    return ((IEncodedToStrings) oid).Encode();
-        //}
-
         public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
             var nakedObject = surface.GetObject(model);
             return nakedObject.Specification.FullName().Split('.').Last();
         }
-
 
         public static string IconName(INakedObjectSurface nakedObject) {
             string name = nakedObject.Specification.GetIconName(nakedObject);

@@ -16,6 +16,28 @@ using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
+        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
+            var nakedObject = html.Surface().GetObject(collection);
+
+            Func<INakedObjectAssociationSurface, bool> filterFunc;
+            Func<INakedObjectAssociationSurface, int> orderFunc;
+            bool withTitle;
+
+            if (action == null || action.ReturnType.IsVoid()) {
+                // todo investigate other ways to do this 
+                action = nakedObject.MementoAction();
+            }
+
+            CommonHtmlHelper.GetTableColumnInfo(action, out filterFunc, out orderFunc, out withTitle);
+
+            return html.GetStandaloneCollection(nakedObject, filterFunc, orderFunc, withTitle);
+        }
+
+        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
+            var nakedObject = html.Surface().GetObject(collection);
+            return html.GetStandaloneList(nakedObject, null);
+        }
+
         #region all
 
         public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action, string defaultTo = IdConstants.ListDisplayFormat) {
@@ -45,28 +67,6 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         #endregion
-
-        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
-            var nakedObject = html.Surface().GetObject(collection);
-
-            Func<INakedObjectAssociationSurface, bool> filterFunc;
-            Func<INakedObjectAssociationSurface, int> orderFunc;
-            bool withTitle;
-
-            if (action == null || action.ReturnType.IsVoid()) {
-                // todo investigate other ways to do this 
-                action = nakedObject.MementoAction();
-            }
-
-            CommonHtmlHelper.GetTableColumnInfo(action, out filterFunc, out orderFunc, out withTitle);
-
-            return html.GetStandaloneCollection(nakedObject, filterFunc, orderFunc, withTitle);
-        }
-
-        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
-            var nakedObject = html.Surface().GetObject(collection);
-            return html.GetStandaloneList(nakedObject, null);
-        }
 
         #region without
 

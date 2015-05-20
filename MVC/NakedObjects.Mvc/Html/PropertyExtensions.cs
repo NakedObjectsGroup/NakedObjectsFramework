@@ -17,13 +17,21 @@ using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
+        #region scalar
+
+        public static MvcHtmlString ScalarView(this HtmlHelper html, object scalar) {
+            return html.Scalar(scalar);
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
         /// Display the identified property on the ViewData Model
         /// </summary>
         public static MvcHtmlString ObjectPropertyView<TModel, TParm>(this HtmlHelper<TModel> html,
-            Expression<Func<TModel, TParm>> expression) {
+                                                                      Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyView(html.ViewData.Model, html.GetProperty(expression));
         }
 
@@ -31,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the model parameter
         /// </summary>
         public static MvcHtmlString ObjectPropertyView<TModel, TParm>(this HtmlHelper html, TModel model,
-            Expression<Func<TModel, TParm>> expression) {
+                                                                      Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyView(model, html.GetProperty(expression));
         }
 
@@ -58,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the ViewData Model in an edit field 
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit<TModel, TParm>(this HtmlHelper<TModel> html,
-            Expression<Func<TModel, TParm>> expression) {
+                                                                      Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyEdit(html.ViewData.Model, html.GetProperty(expression));
         }
 
@@ -66,7 +74,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// Display the identified property on the model parameter in an edit field 
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit<TModel, TParm>(this HtmlHelper html, TModel model,
-            Expression<Func<TModel, TParm>> expression) {
+                                                                      Expression<Func<TModel, TParm>> expression) {
             return html.ObjectPropertyEdit(model, html.GetProperty(expression));
         }
 
@@ -741,14 +749,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
             return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).Specification.FullName().Split('.').Last());
-        }
-
-        #endregion
-
-        #region scalar
-
-        public static MvcHtmlString ScalarView(this HtmlHelper html, object scalar) {
-            return html.Scalar(scalar);
         }
 
         #endregion

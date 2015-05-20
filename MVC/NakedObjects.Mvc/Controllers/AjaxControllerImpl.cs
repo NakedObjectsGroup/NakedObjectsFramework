@@ -87,9 +87,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     var parameterValue = GetParameterValue(parameter, value);
                     ValidateParameter(action, parameter, nakedObject, parameterValue);
                 }
-                //catch (InvalidEntryException) { todo NOS exception ?
+                    //catch (InvalidEntryException) { todo NOS exception ?
                 catch (Exception) {
-
                     ModelState.AddModelError(parmId, MvcUi.InvalidEntry);
                 }
 
@@ -264,6 +263,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(completions);
         }
 
+        #region Nested type: JsonpResult
+
         public class JsonpResult : JsonResult {
             public override void ExecuteResult(ControllerContext context) {
                 if (context == null) {
@@ -283,5 +284,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
             }
         }
+
+        #endregion
     }
 }

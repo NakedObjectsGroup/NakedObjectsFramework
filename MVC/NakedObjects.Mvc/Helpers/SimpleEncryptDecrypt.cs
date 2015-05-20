@@ -44,8 +44,6 @@ namespace NakedObjects.Web.Mvc.Helpers {
             }
         }
 
-        #endregion
-
         public string Encrypt(HttpSessionStateBase session, string toEncrypt) {
             byte[] valueBytes = Encoding.UTF8.GetBytes(toEncrypt);
             CreateOrUpdateKey(session);
@@ -63,6 +61,8 @@ namespace NakedObjects.Web.Mvc.Helpers {
                 return Encoding.UTF8.GetString(decryptedBytes);
             }
         }
+
+        #endregion
 
         private void CreateOrUpdateKey(HttpSessionStateBase session) {
             var data = session[EncryptFieldData] as Tuple<byte[], byte[]>;

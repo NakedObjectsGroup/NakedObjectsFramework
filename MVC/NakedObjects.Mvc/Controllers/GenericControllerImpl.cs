@@ -28,7 +28,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
             Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
-                              controlData.SubAction == ObjectAndControlData.SubActionType.None);
+                         controlData.SubAction == ObjectAndControlData.SubActionType.None);
 
             var nakedObject = controlData.GetNakedObject(Surface);
             nakedObject = FilterCollection(nakedObject, controlData);
@@ -47,9 +47,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             Decrypt(form);
             controlData.Form = form;
             Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay ||
-                              controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
-                              controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
-                              controlData.SubAction == ObjectAndControlData.SubActionType.None);
+                         controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
+                         controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
+                         controlData.SubAction == ObjectAndControlData.SubActionType.None);
             var nakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
             SetExistingCollectionFormats(form);
             SetNewCollectionFormats(controlData);
@@ -407,11 +407,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult ApplyEdit(ObjectAndControlData controlData) {
-            //string viewName = "ObjectEdit";
             var nakedObject = controlData.GetNakedObject(Surface);
-
             var viewName = ApplyEdit(nakedObject, controlData) ? "ObjectView" : "ObjectEdit";
-
             return View(viewName, nakedObject.Object);
         }
 
@@ -568,14 +565,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return false;
         }
 
-        //private static bool ContextParameterIsCollection(IActionSpec contextAction, string propertyName) {
-        //    if (contextAction != null) {
-        //        IActionParameterSpec parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
-        //        return parameter.Spec.IsCollection;
-        //    }
-        //    return false;
-        //}
-
         private string GetObjectId(object domainObject) {
             return Surface.OidStrategy.GetOid(domainObject).ToString();
         }
@@ -656,8 +645,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 Log.Error("GenericControllerImpl:OnException handling exception but exception is null");
             }
 
-            if (filterContext.Exception is BadRequestNOSException) { // todo find correct exception
-            //if (filterContext.Exception is DataUpdateException) {
+            if (filterContext.Exception is BadRequestNOSException) {
+                // todo find correct exception
+                //if (filterContext.Exception is DataUpdateException) {
                 filterContext.Result = View("DataUpdateError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }

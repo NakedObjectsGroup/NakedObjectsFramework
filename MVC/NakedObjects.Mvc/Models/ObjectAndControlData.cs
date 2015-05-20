@@ -11,14 +11,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
-        private INakedObjectSurface nakedObjectSurface;
-        private INakedObjectActionSurface nakedObjectAction;
+        #region SubActionType enum
 
         public enum SubActionType {
             Find,
@@ -36,10 +34,15 @@ namespace NakedObjects.Web.Mvc.Models {
             SaveAndClose
         };
 
-        public SubActionType SubAction
-        {
-            get
-            {
+        #endregion
+
+        private IDictionary<string, string> dataDict;
+        public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
+        private INakedObjectActionSurface nakedObjectAction;
+        private INakedObjectSurface nakedObjectSurface;
+
+        public SubActionType SubAction {
+            get {
                 var subActions = new List<string> {Finder, Selector, Redisplay, ActionAsFinder, InvokeAction, InvokeActionAsFinder, Details, Pager, Cancel, SaveAndClose};
 
                 Debug.Assert(subActions.Count(s => !string.IsNullOrEmpty(s)) <= 1);
@@ -83,7 +86,6 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public string Id { get; set; }
         public string ActionId { get; set; }
-
         public string Finder { get; set; }
         public string Selector { get; set; }
         public string Redisplay { get; set; }
@@ -96,26 +98,18 @@ namespace NakedObjects.Web.Mvc.Models {
         public string Cancel { get; set; }
         public string None { get; set; }
         public string SaveAndClose { get; set; }
-
         public string PageSize { get; set; }
         public string Page { get; set; }
         public string Format { get; set; }
 
-        public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
-
-        public IDictionary<string, HttpPostedFileBase> Files
-        {
+        public IDictionary<string, HttpPostedFileBase> Files {
             get { return files; }
         }
 
         public FormCollection Form { get; set; }
 
-        private IDictionary<string, string> dataDict;
-
-        public IDictionary<string, string> DataDict
-        {
-            get
-            {
+        public IDictionary<string, string> DataDict {
+            get {
                 if (dataDict == null) {
                     string data = Finder ?? Selector ?? ActionAsFinder ?? Redisplay ?? InvokeActionAsFinder ?? InvokeActionAsSave ?? InvokeAction ?? Details ?? Pager ?? None ?? "";
                     dataDict = data.Split('&').ToDictionary(GetName, GetValue);

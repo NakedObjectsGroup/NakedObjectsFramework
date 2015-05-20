@@ -100,11 +100,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static bool IsDuplicateAndIsVisibleActions(HtmlHelper html,
-            IMenuItem item,
-            IList<IMenuItem> items,
-            INakedObjectSurface nakedObject) {
+                                                           IMenuItem item,
+                                                           IList<IMenuItem> items,
+                                                           INakedObjectSurface nakedObject) {
             var itemsOfSameName = items.Where(i => i.Name == item.Name).ToArray();
-            if (itemsOfSameName.Count() == 1) return false;
+            if (itemsOfSameName.Count() == 1) { return false; }
             return itemsOfSameName.Count(i => MenuActionAsElementDescriptor(html, i as IMenuAction, nakedObject, false) != null) > 1;
         }
 

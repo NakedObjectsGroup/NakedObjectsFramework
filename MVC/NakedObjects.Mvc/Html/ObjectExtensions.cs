@@ -10,8 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Adapter;
-
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
@@ -114,11 +112,6 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectSurface nakedObject) {
             string title = nakedObject.TitleString();
             return MvcHtmlString.Create(title);
-        }
-
-        public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectAdapter nakedObject) {
-            string title = nakedObject.TitleString();
-            return MvcHtmlString.Create(string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
         }
 
         /// <summary>

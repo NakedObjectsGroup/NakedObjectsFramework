@@ -13,7 +13,6 @@ namespace NakedObjects.Web.Mvc.Helpers {
     public interface IEncryptDecrypt {
         string Encrypt(HttpSessionStateBase session, string toEncrypt);
         string Decrypt(HttpSessionStateBase session, string toDecrypt);
-
         Tuple<string, string> Encrypt(HttpSessionStateBase session, string name, string value);
         void Decrypt(HttpSessionStateBase session, NameValueCollection collection);
     }

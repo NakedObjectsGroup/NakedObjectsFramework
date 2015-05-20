@@ -116,10 +116,6 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
             }
 
-            public static UrlData Empty() {
-                return new UrlData("");
-            }
-
             public XDocument Document { get; set; }
             private XElement DivElement { get; set; }
             public string Id { get; set; }
@@ -128,6 +124,10 @@ namespace NakedObjects.Web.Mvc.Html {
             public string Page { get; set; }
             public string PageSize { get; set; }
             public string Format { get; set; }
+
+            public static UrlData Empty() {
+                return new UrlData("");
+            }
 
             public void SetActive() {
                 string existingValue = DivElement.Attribute("class").Value;
