@@ -54,11 +54,8 @@ namespace NakedObjects.Web.Mvc.Html {
             bool withTitle;
 
             if (action == null || action.ReturnType.IsVoid()) {
-                // todo
-                //var memento = nakedObject.Oid as ICollectionMemento;
-                //if (memento != null) {
-                //    action = memento.Action;
-                //}
+                // todo investigate other ways to do this 
+                action = nakedObject.MementoAction();
             }
 
             CommonHtmlHelper.GetTableColumnInfo(action, out filterFunc, out orderFunc, out withTitle);
