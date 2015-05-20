@@ -178,8 +178,8 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofMainMenus] = NakedObjectsFramework.MetamodelManager.MainMenus();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
-            mocks.ViewDataContainer.Object.ViewData["IdHelper"] = new IdHelper();
-            mocks.ViewDataContainer.Object.ViewData["Surface"] = Surface;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NoSurface] = Surface;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.IdHelper] = new IdHelper();
         }
 
         private static string GetTestData(string name) {

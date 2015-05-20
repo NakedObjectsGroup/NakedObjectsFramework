@@ -50,7 +50,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetControllerName(string name) {
-            ControllerContext.RouteData.Values["controller"] = name;
+            ControllerContext.RouteData.Values[IdConstants.Controller] = name;
         }
 
         protected void SetControllerName(object domainObject) {
@@ -63,9 +63,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetSurface() {
-            // todo use idHelper
-            ViewData["Surface"] = Surface;
-            ViewData["IdHelper"] = IdHelper;
+            ViewData[IdConstants.NoSurface] = Surface;
+            ViewData[IdConstants.IdHelper] = IdHelper;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {

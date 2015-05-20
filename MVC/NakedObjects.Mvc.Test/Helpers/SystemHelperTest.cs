@@ -93,8 +93,8 @@ namespace MvcTestApp.Tests.Helpers {
         private void SetupViewData() {
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdConstants.NoFramework] = NakedObjectsFramework;
-            mocks.ViewDataContainer.Object.ViewData["IdHelper"] = new IdHelper();
-            mocks.ViewDataContainer.Object.ViewData["Surface"] = Surface;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.NoSurface] = Surface;
+            mocks.ViewDataContainer.Object.ViewData[IdConstants.IdHelper] = new IdHelper();
         }
 
         private static string GetTestData(string name) {

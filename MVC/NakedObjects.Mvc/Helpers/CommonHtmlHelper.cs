@@ -43,11 +43,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
     internal static class CommonHtmlHelper {
         public static INakedObjectsSurface Surface(this HtmlHelper html) {
-            return (INakedObjectsSurface) html.ViewData["Surface"];
+            return (INakedObjectsSurface) html.ViewData[IdConstants.NoSurface];
         }
 
         public static IIdHelper IdHelper(this HtmlHelper html) {
-            return (IIdHelper) html.ViewData["IdHelper"];
+            return (IIdHelper) html.ViewData[IdConstants.IdHelper];
         }
 
         #region internal api
