@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -314,16 +315,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var ac = Convert(form);
 
             var result = Surface.PutObject(oid, ac);
+            var error = HasError(result);
 
-            // todo handle result 
-            //if (ValidateChanges(naked, new ObjectAndControlData() {Form = form})) {
-            //    if (ApplyChanges(naked, new ObjectAndControlData() {Form = form})) {
-            //        result = true;
-            //    }
-            //}
+            obj = error ? default(T) : result.Target.GetDomainObject<T>();
 
-            obj = (T) naked.Object;
-            return string.IsNullOrEmpty(result.Reason);
+            return HasError(result);
         }
 
         #endregion

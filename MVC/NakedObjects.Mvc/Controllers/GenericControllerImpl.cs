@@ -353,9 +353,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
         }
 
-        private bool HasError(ObjectContextSurface ar) {
-            return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
-        }
+      
 
         private bool ApplyEdit(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             var oid = Surface.OidStrategy.GetOid(nakedObject);
@@ -645,25 +643,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 Log.Error("GenericControllerImpl:OnException handling exception but exception is null");
             }
 
-            if (filterContext.Exception is BadRequestNOSException) {
-                // todo find correct exception
-                //if (filterContext.Exception is DataUpdateException) {
+            if (filterContext.Exception is DataUpdateNOSException) {
                 filterContext.Result = View("DataUpdateError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }
             else if (filterContext.Exception is PreconditionFailedNOSException) {
                 filterContext.Result = View("ConcurrencyError", (PreconditionFailedNOSException) filterContext.Exception);
                 filterContext.ExceptionHandled = true;
+            }         
+            else if (filterContext.Exception is ObjectResourceNotFoundNOSException) {
+                filterContext.Result = View("DestroyedError");
+                filterContext.ExceptionHandled = true;
             }
-            // todo fix theses is this the right exception ?
-            //else if (filterContext.Exception is ObjectNotFoundException) {
-            //    filterContext.Result = View("DestroyedError");
-            //    filterContext.ExceptionHandled = true;
-            //}
-            //else if (filterContext.Exception is NakedObjectDomainException) {
-            //    filterContext.Result = View("DomainError", filterContext.Exception);
-            //    filterContext.ExceptionHandled = true;
-            //}
             else if (filterContext.Exception is NakedObjectsSurfaceException) {
                 filterContext.Result = View("DomainError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;

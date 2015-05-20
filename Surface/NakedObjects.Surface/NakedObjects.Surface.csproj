@@ -78,6 +78,7 @@
     <Compile Include="Exception\BadArgumentsNOSException.cs" />
     <Compile Include="Exception\BadRequestNOSException.cs" />
     <Compile Include="Exception\CollectionResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\DataUpdateNOSException.cs" />
     <Compile Include="Exception\PreconditionFailedNOSException.cs" />
     <Compile Include="Exception\TypeActionParameterResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\TypeActionResourceNotFoundNOSException.cs" />

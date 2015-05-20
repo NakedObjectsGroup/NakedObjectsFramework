@@ -734,6 +734,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
+        protected bool HasError(ObjectContextSurface ar) {
+            return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
+        }
+
         protected FileContentResult AsFile(object domainObject) {
             if (domainObject is FileAttachment) {
                 var fileAttachment = domainObject as FileAttachment;

@@ -11,7 +11,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
@@ -189,7 +192,18 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
             var v = GetValue(this, value);
-            return new ConsentWrapper(nakedObjectActionParameter.IsValid(t, v));
+            IConsent consent;
+            try {
+                consent = nakedObjectActionParameter.IsValid(t, v);
+            }
+            catch (InvalidEntryException) {
+                consent = new Veto("Invalid Entry"); // todo i18n
+            }
+            catch (Exception e) {
+                consent = new Veto(e.Message); // todo i18n
+            }
+
+            return new ConsentWrapper(consent);
         }
 
         public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {

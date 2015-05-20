@@ -83,14 +83,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (value == null) {
                     value = Request.Params[parmId];
                 }
-                try {
-                    var parameterValue = GetParameterValue(parameter, value);
-                    ValidateParameter(action, parameter, nakedObject, parameterValue);
-                }
-                    //catch (InvalidEntryException) { todo NOS exception ?
-                catch (Exception) {
-                    ModelState.AddModelError(parmId, MvcUi.InvalidEntry);
-                }
+
+                var parameterValue = GetParameterValue(parameter, value);
+                ValidateParameter(action, parameter, nakedObject, parameterValue);
 
                 isValid = ModelState.IsValid;
             }
@@ -103,36 +98,32 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        // todo consolidate these
-        private object GetValue(string[] values, INakedObjectActionParameterSurface featureSpec, INakedObjectSpecificationSurface spec) {
-            if (!values.Any()) {
-                return null;
-            }
-
-            if (spec.IsParseable()) {
-                var v = values.First();
-                return string.IsNullOrEmpty(v) ? null : v;
-            }
-            if (spec.IsCollection()) {
-                return Surface.GetTypedCollection(featureSpec, values);
-            }
-
-            return GetNakedObjectFromId(values.First()).Object;
+        private object GetValue(string[] values, INakedObjectActionParameterSurface parameterSpec, INakedObjectSpecificationSurface spec) {
+            object domainObject;
+            return GetValue(values, spec, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
         }
 
-        private object GetValue(string[] values, INakedObjectAssociationSurface featureSpec, INakedObjectSpecificationSurface spec) {
+        private object GetValue(string[] values, INakedObjectAssociationSurface propertySpec, INakedObjectSpecificationSurface spec) {
+            object domainObject;
+            return GetValue(values, spec, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
+        }
+
+        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, out object domainObject) {
             if (!values.Any()) {
-                return null;
+                domainObject = null;
+                return true;
             }
-
             if (spec.IsParseable()) {
-                return values.First();
+                var v = values.First();
+                domainObject = string.IsNullOrEmpty(v) ? null : v;
+                return true;
             }
-            if (spec.IsCollection()) {
-                return Surface.GetTypedCollection(featureSpec, values);
+            if (!spec.IsCollection()) {
+                domainObject = GetNakedObjectFromId(values.First()).GetDomainObject<object>();
+                return true;
             }
-
-            return GetNakedObjectFromId(values.First()).GetDomainObject<object>();
+            domainObject = null;
+            return false;
         }
 
         private string[] GetRawValues(FormCollection parms, string id) {

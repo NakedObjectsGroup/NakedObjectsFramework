@@ -50,11 +50,19 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public void End(bool success) {
-            if (success) {
-                framework.TransactionManager.EndTransaction();
+            try {
+                if (success) {
+                    framework.TransactionManager.EndTransaction();
+                }
+                else {
+                    framework.TransactionManager.AbortTransaction();
+                }
             }
-            else {
-                framework.TransactionManager.AbortTransaction();
+            catch (DataUpdateException e) {
+                throw new DataUpdateNOSException(e);
+            }
+            catch (ConcurrencyException e) {
+                throw new PreconditionFailedNOSException(e.Message, e);
             }
         }
 
