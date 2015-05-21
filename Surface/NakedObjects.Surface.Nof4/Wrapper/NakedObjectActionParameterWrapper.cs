@@ -191,9 +191,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
-            var v = GetValue(this, value);
+            
             IConsent consent;
             try {
+                var v = GetValue(this, value);
                 consent = nakedObjectActionParameter.IsValid(t, v);
             }
             catch (InvalidEntryException) {
