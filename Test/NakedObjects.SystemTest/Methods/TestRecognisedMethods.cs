@@ -16,12 +16,12 @@ using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Method {
     [TestClass]
-    public class TestMethods : AbstractSystemTest<MethodsDbContext> {
+    public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
         #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestMethods());
+            CleanupNakedObjectsFramework(new TestRecognisedMethods());
             Database.Delete(MethodsDbContext.DatabaseName);
         }
 
@@ -33,6 +33,7 @@ namespace NakedObjects.SystemTest.Method {
 
         #endregion
 
+        #region Configuration
         protected override string[] Namespaces {
             get { return new[] { typeof(Auto1).Namespace }; }
         }
@@ -103,14 +104,15 @@ namespace NakedObjects.SystemTest.Method {
                 };
             }
         }
+        #endregion
 
         #region AutoComplete
 
         [TestMethod]
-        public void AutoCompleteMethodDoesNotShowUpAsAction() {
+        public void RecognisedAutoCompleteMethodDoesNotShowUpAsAction() {
             var obj1 = NewTestObject<Auto1>();
-
             try {
+<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
                 obj1.GetAction("Auto Complete Prop1");
                 Assert.Fail();
             } catch (Exception e) {
@@ -122,7 +124,52 @@ namespace NakedObjects.SystemTest.Method {
                 Assert.Fail();
             } catch (Exception e) {
                 Assert.IsNotNull(e);
+=======
+                var act = obj1.GetAction("Auto Complete Prop2");
+                Assert.Fail("Should not get to here!");
             }
+            catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete Prop2'", e.Message);
+            }
+            try {
+                var act = obj1.GetAction("Auto Complete Prop3");
+                Assert.Fail("Should not get to here!");
+            } catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete Prop3'", e.Message);
+            }
+
+            try {
+                obj1.GetAction("Auto Complete0 Do Something");
+                Assert.Fail("Should not get to here!");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete0 Do Something'", e.Message);
+>>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
+            }
+            try {
+                obj1.GetAction("Auto Complete1 Do Something");
+                Assert.Fail("Should not get to here!");
+            } catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete1 Do Something'", e.Message);
+            }
+            try {
+                obj1.GetAction("Auto Complete2 Do Something");
+                Assert.Fail("Should not get to here!");
+            } catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete2 Do Something'", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
+            ITestObject obj3 = NewTestObject<Auto3>();
+            obj3.GetAction("Auto Complete Prop1");
+            obj3.GetAction("Auto Complete Prop2");
+            obj3.GetAction("Auto Complete Prop3");
+            obj3.GetAction("Auto Complete 0 Do Something");
+            obj3.GetAction("Auto Complete 1 Do Something");
+            obj3.GetAction("Auto Complete 2 Do Somting");
+            obj3.GetAction("Auto Complete 3 Do Something");
         }
 
         private void CreateAuto2(string prop1) {
@@ -138,6 +185,7 @@ namespace NakedObjects.SystemTest.Method {
             CreateAuto2("Bar3");
 
             var obj1 = NewTestObject<Auto1>();
+<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
             ITestAction action = obj1.GetAction("Do Something");
 
             try {
@@ -146,14 +194,17 @@ namespace NakedObjects.SystemTest.Method {
             } catch (Exception) {
                 // expected
             }
+=======
+            var action = obj1.GetAction("Do Something");
+            ITestNaked[] cho0 = action.Parameters[0].GetCompletions("any");
+            Assert.AreEqual(1, cho0.Count());
+>>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
 
             ITestNaked[] cho1 = action.Parameters[1].GetCompletions("any");
             Assert.AreEqual(3, cho1.Count());
-            Assert.AreEqual("Fee", cho1[0].Title);
 
             ITestNaked[] cho2 = action.Parameters[2].GetCompletions("bar");
-            Assert.AreEqual(3, cho2.Count());
-            Assert.AreEqual("Bar1", cho2[0].Title);
+            Assert.AreEqual(2, cho2.Count());
         }
 
         [TestMethod]
@@ -190,17 +241,6 @@ namespace NakedObjects.SystemTest.Method {
                 // expected
             }
             obj1.GetAction("Auto Complete Prop1");
-        }
-
-
-        [TestMethod]
-        public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
-            ITestObject obj3 = NewTestObject<Auto3>();
-            obj3.GetAction("Auto Complete Prop1");
-            obj3.GetAction("Auto Complete Prop2");
-            obj3.GetAction("Auto Complete Prop3");
-            obj3.GetAction("Auto Complete 0 Do Somthing");
-            obj3.GetAction("Auto Complete 0 Do Something");
         }
 
         #endregion
@@ -1527,18 +1567,25 @@ namespace NakedObjects.SystemTest.Method {
 
         public IDomainObjectContainer Container { set; protected get; }
 
-        public virtual string Prop1 { get; set; }
+        public virtual int Prop1 { get; set; }    
 
         public virtual string Prop2 { get; set; }
 
         public virtual Auto2 Prop3 { get; set; }
 
+<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
         public IQueryable<int> AutoCompleteProp1(string autoCompleteParm) {
             return new List<int> { 4, 8, 9 }.AsQueryable();
         }
 
         public IQueryable<string> AutoCompleteProp2(string autoCompleteParm) {
             return new List<string> { "Fee", "Foo", "Fuu" }.AsQueryable();
+=======
+        public virtual Auto2 Prop4 { get; set; }
+
+        public IList<string> AutoCompleteProp2(string autoCompleteParm) {
+            return new List<string> {"Fee", "Foo", "Fuu"};
+>>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
         }
 
         public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
@@ -1547,18 +1594,22 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Do Something
 
+<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
         public void DoSomething(int param0, string param1, Auto2 param2) { }
+=======
+        public void DoSomething(Auto1 param0, string param1, Auto2 param2) {}
+>>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
 
-        public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm) {
-            return AutoCompleteProp1(autoCompleteParm);
+        public Auto1 AutoComplete0DoSomething(string autoCompleteParm) {
+            return this;
         }
 
-        public IQueryable<string> AutoComplete1DoSomething(string autoCompleteParm) {
+        public IList<string> AutoComplete1DoSomething(string autoCompleteParm) {
             return AutoCompleteProp2(autoCompleteParm);
         }
 
         public IQueryable<Auto2> AutoComplete2DoSomething(string autoCompleteParm) {
-            return AutoCompleteProp3(autoCompleteParm);
+            return Container.Instances<Auto2>().Take(2);
         }
 
         #endregion
@@ -1576,27 +1627,53 @@ namespace NakedObjects.SystemTest.Method {
 
         public virtual int Prop1 { get; set; }
 
+        //Prop1 not a valid type for auto-complete
+        public IQueryable<int> AutoCompleteProp1() {
+            return null;
+        }
+
         public virtual string Prop2 { get; set; }
 
-        public IQueryable<string> AutoCompleteProp1() {
+        //Return type does not match
+        public IQueryable<Auto2> AutoCompleteProp2(string autoCompleteParm) {
             return null;
         }
 
-        public string AutoCompleteProp2(string autoCompleteParm) {
+        //No corresponding property
+        public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
             return null;
         }
 
-        public string AutoCompleteProp3(string autoCompleteParm) {
+        public virtual Auto2 Prop4 { get; set; }
+
+        //List of domain object not valid
+        public IList<Auto2> AutoCompleteProp4(string autoCompleteParm) {
             return null;
         }
 
+        public void DoSomething(int param0, Auto2 param1, Auto2 param2) {}
+
+        //param not a valid type for auto-complete
+        public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm) {
+            return null;
+        }
+
+<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
         public void DoSomething(int param0, string param1, Auto2 param2) { }
+=======
+        //Return type does not match
+        public IQueryable<Auto3> AutoComplete1DoSomething(string autoCompleteParm) {
+            return null;
+        }
+>>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
 
-        public IQueryable<int> AutoComplete0DoSomthing(string autoCompleteParm) {
+        //Action name mis-spelled
+        public IQueryable<Auto2> AutoComplete2DoSomting(string autoCompleteParm) {
             return null;
         }
 
-        public IQueryable<string> AutoComplete0DoSomething(string autoCompleteParm) {
+        //No corresponding param
+        public IQueryable<Auto2> AutoComplete3DoSomething(string autoCompleteParm) {
             return null;
         }
     }
