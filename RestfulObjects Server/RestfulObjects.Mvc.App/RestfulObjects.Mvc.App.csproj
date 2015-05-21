@@ -114,14 +114,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Surface.7.1.0-alpha\lib\net451\NakedObjects.Surface.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.1.0-alpha\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-alpha\lib\net40\NakedObjects.Types.dll</HintPath>
@@ -209,6 +201,14 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj">
+      <Project>{9aeb1ea4-e7a0-42e5-b5c8-0629e61ecf0d}</Project>
+      <Name>NakedObjects.Surface.Nof4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
+      <Project>{ec9af8ed-fc49-4e1b-8e45-3450641ae561}</Project>
+      <Name>NakedObjects.Surface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Project>{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}</Project>
       <Name>RestfulObjects.Mvc</Name>
