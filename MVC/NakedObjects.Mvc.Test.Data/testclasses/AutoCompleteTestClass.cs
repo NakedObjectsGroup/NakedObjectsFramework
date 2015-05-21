@@ -13,7 +13,7 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Helpers {
     [Bounded]
     public class AutoCompleteTestClass {
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         public IDomainObjectContainer Container { protected get; set; }

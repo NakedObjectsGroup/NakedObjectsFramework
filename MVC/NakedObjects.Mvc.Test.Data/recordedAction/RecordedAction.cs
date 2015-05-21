@@ -13,10 +13,10 @@ using NakedObjects;
 namespace Expenses.RecordedActions {
     [Immutable(WhenTo.OncePersisted)]
     public class RecordedAction {
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual IRecordedActionContext Context { get; set; }
 
         [MemberOrder(Sequence = "1"), Disabled]
@@ -34,7 +34,7 @@ namespace Expenses.RecordedActions {
         [MemberOrder(Sequence = "6"), Disabled]
         public virtual IActor Actor { get; set; }
 
-        [Hidden, ConcurrencyCheck]
+        [NakedObjectsIgnore, ConcurrencyCheck]
         public DateTime ConcurrencyCheck { get; set; }
 
         #region Title

@@ -26,7 +26,7 @@ namespace RestfulObjects.Test.Data {
         [Disabled]
         public virtual MostSimple ADisabledReference { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         [Optionally]
         public virtual MostSimple AHiddenReference { get; set; }
 

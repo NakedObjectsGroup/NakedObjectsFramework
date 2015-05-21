@@ -32,7 +32,7 @@ namespace AdventureWorksModel {
         [Disabled, Description("xxx")]
         public virtual string AccountNumber { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CustomerType { get; set; }
 
         [NakedObjectsIgnore]

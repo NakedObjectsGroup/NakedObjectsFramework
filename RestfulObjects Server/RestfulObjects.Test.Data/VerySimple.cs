@@ -15,7 +15,7 @@ namespace RestfulObjects.Test.Data {
         private ICollection<MostSimple> aSetAsCollection = new List<MostSimple>();
 
 
-        [Key, Hidden, ConcurrencyCheck]
+        [Key, NakedObjectsIgnore, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         [Optionally, Title]
@@ -24,7 +24,7 @@ namespace RestfulObjects.Test.Data {
         [Optionally, Title]
         public virtual MostSimple MostSimple { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<MostSimple> ASetAsCollection {
             get { return aSetAsCollection; }
             set { aSetAsCollection = value; }

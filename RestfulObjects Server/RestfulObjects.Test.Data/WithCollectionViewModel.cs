@@ -31,7 +31,7 @@ namespace RestfulObjects.Test.Data {
         [Disabled]
         public virtual IList<MostSimple> ADisabledCollection { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual IList<MostSimple> AHiddenCollection { get; set; }
 
         [DescribedAs("an empty collection for testing")]

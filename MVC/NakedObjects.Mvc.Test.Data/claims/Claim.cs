@@ -19,7 +19,7 @@ namespace Expenses {
         public class Claim : IRecordedActionContext {
             public IDomainObjectContainer Container { protected get; set; }
 
-            [Hidden, Key]
+            [NakedObjectsIgnore, Key]
             public int Id { get; set; }
 
             #region Title
@@ -261,12 +261,12 @@ namespace Expenses {
                 set { m_total = value; }
             }
 
-            [Hidden]
+            [NakedObjectsIgnore]
             public virtual void InitialiseTotal() {
                 m_total = 0M;
             }
 
-            [Hidden]
+            [NakedObjectsIgnore]
             public virtual void RecalculateTotal() {
                 decimal runningTotal = 0M;
                 for (int i = 0; i < ExpenseItems.Count; i++) {
@@ -456,7 +456,7 @@ namespace Expenses {
                 ReturnToClaimant(messageToClaimant, true);
             }
 
-            [Hidden]
+            [NakedObjectsIgnore]
             public virtual void ReturnToClaimant(string message, bool sendEmail) {
                 ChangeStatusToReturned();
                 for (int i = 0; i < ExpenseItems.Count; i++) {
@@ -550,7 +550,7 @@ namespace Expenses {
 
             public static string USER_IS_NOT_THE_APPROVER = "User is not the specified approver for this claim";
 
-            [Hidden]
+            [NakedObjectsIgnore]
             public string DisableApproverActionsOnAllItems() {
                 if (!(IsSubmitted())) {
                     return APPROVER_ACTIONS_NOT_VALID_ON_NEW_CLAIM;
@@ -585,7 +585,7 @@ namespace Expenses {
                 return true;
             }
 
-            [Hidden]
+            [NakedObjectsIgnore]
             public virtual bool UserIsTheApproverForThisClaim() {
                 return m_userFinder.CurrentUserAsObject().Equals(Approver);
             }

@@ -14,7 +14,7 @@ namespace RestfulObjects.Test.Data {
     public class WithReferenceViewModel : IViewModel {
         public IDomainObjectContainer Container { set; protected get; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public string AggregateKey {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }
@@ -31,7 +31,7 @@ namespace RestfulObjects.Test.Data {
         [Disabled]
         public virtual MostSimple ADisabledReference { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         [Optionally]
         public virtual MostSimple AHiddenReference { get; set; }
 

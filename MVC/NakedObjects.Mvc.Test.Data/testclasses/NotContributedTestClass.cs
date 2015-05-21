@@ -11,7 +11,7 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Helpers {
     [Bounded]
     public class NotContributedTestClass1 {
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         [Title]
@@ -22,7 +22,7 @@ namespace MvcTestApp.Tests.Helpers {
 
     [Bounded]
     public class NotContributedTestClass2 {
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         [Title]

@@ -29,7 +29,7 @@ namespace Expenses.Fixtures {
             PAID = CreateClaimStatus(ClaimStatus.PAID);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ExpenseItemStatus CreateExpenseItemStatus(string description) {
             var status = Container.NewTransientInstance<ExpenseItemStatus>();
             status.TitleString = description;
@@ -37,7 +37,7 @@ namespace Expenses.Fixtures {
             return status;
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ClaimStatus CreateClaimStatus(string description) {
             var status = Container.NewTransientInstance<ClaimStatus>();
             status.TitleString = description;

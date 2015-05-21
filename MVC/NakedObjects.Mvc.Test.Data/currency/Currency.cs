@@ -16,7 +16,7 @@ namespace Expenses.Currencies {
         private byte[] currencyFile = new byte[] {};
         private byte[] currencyImage = new byte[] {};
 
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         [NotMapped]

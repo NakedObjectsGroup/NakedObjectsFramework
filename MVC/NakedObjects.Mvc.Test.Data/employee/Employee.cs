@@ -14,7 +14,7 @@ using NakedObjects;
 
 namespace Expenses.ExpenseEmployees {
     public class Employee : IActor, IRecordedActionContext {
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         #region Name
@@ -26,7 +26,7 @@ namespace Expenses.ExpenseEmployees {
 
         #region UserName field
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string UserName { get; set; }
 
         #endregion

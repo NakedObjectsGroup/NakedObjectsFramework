@@ -15,7 +15,7 @@ namespace MvcTestApp.Tests.Helpers {
     public class HintTestClass {
         private IList<HintTestClass> hintCollection = new List<HintTestClass>();
 
-        [Hidden, Key]
+        [NakedObjectsIgnore, Key]
         public int Id { get; set; }
 
         [Title]
