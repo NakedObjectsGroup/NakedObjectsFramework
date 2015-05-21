@@ -18,3 +18,5 @@ Core - Richard.sln
 nog-packages.txt
 *.orig
 *.DotSettings
+*.dll
+RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
