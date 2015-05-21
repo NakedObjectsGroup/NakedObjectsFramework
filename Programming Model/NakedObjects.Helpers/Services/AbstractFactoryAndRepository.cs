@@ -26,7 +26,7 @@ namespace NakedObjects.Services {
         /// <summary>
         ///     Unique identifier for this service
         /// </summary>
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Id {
             get { return GetType().Name; }
         }
