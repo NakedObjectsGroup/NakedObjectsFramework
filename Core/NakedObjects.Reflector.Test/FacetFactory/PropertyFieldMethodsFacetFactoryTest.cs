@@ -522,6 +522,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestAutoCompleteFacetFoundAndMethodRemovedForIEnumerableOfString() {
+            PropertyInfo property = FindProperty(typeof(Customer22), "FirstName");
+            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer22), "AutoCompleteFirstName");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AutoCompleteFacet);
+            var propertyAutoCompleteFacet = (AutoCompleteFacet)facet;
+            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
+            AssertMethodRemoved(propertyAutoCompleteMethod);
+            Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
+            Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
+        }
+
+        [TestMethod]
         public void TestAutoCompleteFacetFoundAndMethodRemovedForInterface() {
             PropertyInfo property = FindProperty(typeof (Customer27), "FirstName");
             MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer27), "AutoCompleteFirstName");
@@ -538,11 +553,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestAutoCompleteFacetIgnored() {
-            PropertyInfo property = FindProperty(typeof (Customer22), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IAutoCompleteFacet)));
-
-            property = FindProperty(typeof (Customer23), "FirstName");
+            var property = FindProperty(typeof (Customer23), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof (IAutoCompleteFacet)));
 
