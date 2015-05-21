@@ -843,8 +843,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer27 {
             public void SomeAction(string x, string y, string z) {}
 
-            public IEnumerable<string> AutoComplete0SomeAction(string name) {
-                return new string[0].AsQueryable();
+            public IQueryable<int> AutoComplete0SomeAction(string name) {
+                return new int[0].AsQueryable();
             }
 
             public IQueryable<string> AutoComplete1SomeAction() {
