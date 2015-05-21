@@ -126,10 +126,6 @@ copy "$(ProjectDir)NakedObjects.Rest.Test.Nof2.dll.config"  "$(TargetDir)NakedOb
     <Reference Include="nakedobjects.net">
       <HintPath>..\..\..\nof2-standalone\lib\nakedobjects.net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
