@@ -113,7 +113,7 @@ namespace NakedObjects.Xat {
 
             INakedObjectAdapter[] parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
             INakedObjectAdapter target = actionSpec.RealTarget(owningObject.NakedObject);
-            INakedObjectAdapter result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker);
+            INakedObjectAdapter result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker, transactionManager);
 
             if (result == null) {
                 return null;
