@@ -699,11 +699,7 @@ namespace AdventureWorksModel {
         #region MarkAsShipped
 
         [Description("Indicate that the order has been shipped, specifying the date")]
-<<<<<<< HEAD
-        [Hidden]
-=======
         [Hidden(WhenTo.Always)] //Testing that the complementary methods don't show up either
->>>>>>> a3960c2... #1096 -  extension of auto-complete
         public void MarkAsShipped(DateTime shipDate) {
             Status = (byte) OrderStatus.Shipped;
             ShipDate = shipDate;
