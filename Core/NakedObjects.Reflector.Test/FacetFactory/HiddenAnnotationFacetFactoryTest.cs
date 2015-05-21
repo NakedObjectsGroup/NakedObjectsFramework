@@ -46,7 +46,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #endregion
 
         private class Customer {
-            [Hidden]
+
+            [Hidden(WhenTo.Always)]
 // ReSharper disable UnusedMember.Local
             public int NumberOfOrders {
                 get { return 0; }
@@ -54,14 +55,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer1 {
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public IList Orders {
                 get { return null; }
             }
         }
 
         private class Customer2 {
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public void SomeAction() {}
         }
 
@@ -107,7 +108,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer10 {
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             [ScaffoldColumn(true)]
             public int NumberOfOrders {
                 get { return 0; }

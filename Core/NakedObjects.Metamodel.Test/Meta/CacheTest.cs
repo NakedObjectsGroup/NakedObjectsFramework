@@ -71,7 +71,7 @@ namespace NakedObjects.Meta.Test {
         [Mask("C")]
         public virtual decimal TestDecimal { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual decimal TestHidden { get; set; }
 
         [Optionally]

@@ -28,79 +28,79 @@ namespace NakedObjects.Core.Util {
 
         #region IList Members
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public IEnumerator GetEnumerator() {
             return wrappedList.GetEnumerator();
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void CopyTo(Array array, int index) {
             wrappedList.CopyTo((T[]) array, index);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public int Count {
             get { return wrappedList.Count; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public object SyncRoot {
             get { return ((ICollection) wrappedList).SyncRoot; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool IsSynchronized {
             get { return ((ICollection)wrappedList).IsSynchronized; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public int Add(object value) {
             wrappedList.Add((T) value);
             return wrappedList.Count - 1;
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool Contains(object value) {
             return wrappedList.Contains((T) value);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void Clear() {
             wrappedList.Clear();
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public int IndexOf(object value) {
             return wrappedList.IndexOf((T) value);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void Insert(int index, object value) {
             wrappedList.Insert(index, (T) value);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void Remove(object value) {
             wrappedList.Remove((T) value);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void RemoveAt(int index) {
             wrappedList.RemoveAt(index);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public object this[int index] {
             get { return wrappedList[index]; }
             set { wrappedList[index] = (T) value; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool IsReadOnly {
             get { return wrappedList.IsReadOnly; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool IsFixedSize {
             get { return ((IList)wrappedList).IsFixedSize; }
         }
@@ -113,37 +113,37 @@ namespace NakedObjects.Core.Util {
             return wrappedList.GetEnumerator();
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void CopyTo(T[] array, int arrayIndex) {
             wrappedList.CopyTo(array, arrayIndex);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool Remove(T item) {
             return wrappedList.Remove(item);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void Add(T item) {
             wrappedList.Add(item);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public bool Contains(T item) {
             return wrappedList.Contains(item);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public int IndexOf(T item) {
             return wrappedList.IndexOf(item);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public void Insert(int index, T item) {
             wrappedList.Insert(index, item);
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         T IList<T>.this[int index] {
             get { return wrappedList[index]; }
             set { wrappedList[index] = value; }
@@ -153,17 +153,17 @@ namespace NakedObjects.Core.Util {
 
         #region IQueryable<T> Members
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public Expression Expression {
             get { return wrappedListAsQueryable.Expression; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public Type ElementType {
             get { return wrappedListAsQueryable.ElementType; }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public IQueryProvider Provider {
             get { return wrappedListAsQueryable.Provider; }
         }

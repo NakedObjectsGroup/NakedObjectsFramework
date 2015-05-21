@@ -20,7 +20,7 @@ namespace Snapshot.Xml.Test {
         private IList<TestObject> testCollection = new List<TestObject>();
 
         [Key]
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int TestObjectId { get; set; }
 
         //Add properties with 'propv', collections with 'coll', actions with 'act' shortcuts
