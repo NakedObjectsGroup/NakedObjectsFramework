@@ -18,7 +18,7 @@ namespace NakedObjects {
 
         #endregion
 
-        [Disabled, Hidden]
+        [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
         #region IPolymorphicLink<TRole,TOwner> Members
