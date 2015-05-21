@@ -47,20 +47,20 @@ namespace NakedObjects.Meta.Profile {
             get { return underlyingFacet.OnType; }
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker);
+                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
             }
             finally {
                 profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             }
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
             try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker);
+                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
             }
             finally {
                 profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);

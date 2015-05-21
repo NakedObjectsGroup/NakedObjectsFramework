@@ -30,9 +30,9 @@ namespace NakedObjects.Meta.Facet {
         public abstract IObjectSpecImmutable ReturnType { get; }
         public abstract IObjectSpecImmutable ElementType { get; }
 
-        //Note: IMessageBroker is not used within NOF code, but is provided for third-party customisation. DO NOT REMOVE.
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker);
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker);
+        //Note: Some passed-in components are not used within NOF code, but are provided for third-party customisation. DO NOT REMOVE.
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager);
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager);
         public abstract bool IsQueryOnly { get; }
 
         #endregion

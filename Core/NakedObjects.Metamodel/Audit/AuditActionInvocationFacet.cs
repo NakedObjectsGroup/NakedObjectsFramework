@@ -47,14 +47,14 @@ namespace NakedObjects.Meta.Audit {
             get { return underlyingFacet.OnType; }
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
         }
 
     }

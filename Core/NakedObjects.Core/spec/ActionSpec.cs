@@ -31,6 +31,7 @@ namespace NakedObjects.Core.Spec {
         private readonly IActionParameterSpec[] parametersSpec;
         private readonly IServicesManager servicesManager;
         private readonly IMessageBroker messageBroker;
+        private readonly ITransactionManager transactionManager;
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -39,7 +40,7 @@ namespace NakedObjects.Core.Spec {
         // cached values     
         private IObjectSpec returnSpec;
 
-        public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable, IMessageBroker messageBroker)
+        public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable, IMessageBroker messageBroker, ITransactionManager transactionManager)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(servicesManager);
@@ -51,6 +52,7 @@ namespace NakedObjects.Core.Spec {
             this.nakedObjectManager = nakedObjectManager;
             this.actionSpecImmutable = actionSpecImmutable;
             this.messageBroker = messageBroker;
+            this.transactionManager = transactionManager;
             int index = 0;
             parametersSpec = this.actionSpecImmutable.Parameters.Select(pp => this.memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
@@ -115,7 +117,7 @@ namespace NakedObjects.Core.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObjectAdapter, Id);
             INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
             INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
-            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker);
+            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager);
 
             if (result != null && result.Oid == null) {
                 result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObjectAdapter, this, parameterSet));
