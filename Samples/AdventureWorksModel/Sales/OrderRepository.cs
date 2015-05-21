@@ -9,6 +9,8 @@ using System.ComponentModel;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace AdventureWorksModel {
     public enum Ordering {
@@ -18,6 +20,14 @@ namespace AdventureWorksModel {
 
     [DisplayName("Orders")]
     public class OrderRepository : AbstractFactoryAndRepository {
+
+        #region Injected Services
+        public CustomerRepository CustomerRepository { set; protected get; }
+
+        public OrderContributedActions OrderContributedActions { set; protected get; }
+
+        #endregion
+
         [FinderAction]
         [MemberOrder(99)]
         public SalesOrderHeader RandomOrder() {
@@ -69,5 +79,20 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        #region OrdersForCustomer
+        //Action to demonstrate use of Auto-Complete that returns a single object
+        public IQueryable<SalesOrderHeader> OrdersForCustomer([DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer")]Customer customer) {
+            return OrderContributedActions.RecentOrders(customer);
+        }
+     
+        [PageSize(10)]
+        public Customer AutoComplete0OrdersForCustomer([MinLength(10)] string accountNumber) {
+            return CustomerRepository.FindCustomerByAccountNumber(accountNumber);
+        }
+        #endregion
+
+
+
     }
 }

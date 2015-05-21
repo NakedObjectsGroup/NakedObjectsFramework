@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
@@ -166,12 +167,18 @@ namespace NakedObjects.Reflect.FacetFactory {
                                                      ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
-                MethodInfo method = FindMethod(reflector,
-                    type,
-                    MethodType.Object,
-                    PrefixesAndRecognisedMethods.AutoCompletePrefix + capitalizedName,
-                    typeof (IQueryable<>).MakeGenericType(returnType),
-                    new[] {typeof (string)});
+                MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName,
+                    typeof (IQueryable<>).MakeGenericType(returnType));
+
+                    //.. or returning a single object
+                    if (method == null ) {
+                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);
+                    }
+
+                    //... or returning an enumerable of string
+                    if (method == null && TypeUtils.IsString(returnType)) {                      
+                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IEnumerable<string>));
+                    }
 
                 if (method != null) {
                     var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
@@ -185,6 +192,16 @@ namespace NakedObjects.Reflect.FacetFactory {
                     AddOrAddToExecutedWhereFacet(method, property);
                 }
             }
+        }
+
+        private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type returnType) {
+            MethodInfo method = FindMethod(reflector,
+                type,
+                MethodType.Object,
+                PrefixesAndRecognisedMethods.AutoCompletePrefix +  capitalizedName,
+                returnType,
+                new[] { typeof(string) });
+            return method;
         }
 
         public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {

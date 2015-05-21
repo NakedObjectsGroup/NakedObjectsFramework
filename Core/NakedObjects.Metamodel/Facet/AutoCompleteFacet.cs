@@ -14,6 +14,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -47,11 +49,21 @@ namespace NakedObjects.Meta.Facet {
             try {
                 object autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
 
-                var complete = autoComplete as IQueryable;
-                if (complete != null) {
-                    return complete.Take(PageSize).ToArray();
+                //returning an IQueryable
+                var queryable = autoComplete as IQueryable;
+                if (queryable != null) {
+                    return queryable.Take(PageSize).ToArray();
                 }
-                throw new NakedObjectDomainException("Must return IQueryable from autoComplete method: " + method.Name);
+                //returning an IEnumerable (of string only)
+                var strings = autoComplete as IEnumerable<string>;
+                if (strings != null) {
+                    return strings.ToArray();
+                }
+                //return type is a single object
+                if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
+                    return new object[] { autoComplete };
+                }
+                throw new NakedObjectDomainException("Must return IQueryable or a single object from autoComplete method: " + method.Name);
             }
             catch (ArgumentException ae) {
                 string msg = string.Format("autoComplete exception: {0} has mismatched parameter type - must be string", method.Name);

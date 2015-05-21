@@ -249,16 +249,22 @@ namespace NakedObjects.Reflect.FacetFactory {
         private void FindAndRemoveParametersAutoCompleteMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types 
+                Type paramType = paramTypes[i];
+                if (paramType.IsClass || paramType.IsInterface) {
 
-                if (paramTypes[i].IsClass || paramTypes[i].IsInterface) {
-                    Type returnType = typeof (IQueryable<>).MakeGenericType(paramTypes[i]);
+                    //returning an IQueryable ...
+                    MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName, i,
+                        typeof(IQueryable<>).MakeGenericType(paramType));
 
-                    MethodInfo method = FindMethod(reflector,
-                        type,
-                        MethodType.Object,
-                        PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
-                        returnType,
-                        new[] {typeof (string)});
+                    //.. or returning a single object
+                    if (method == null ) {
+                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
+                    }
+
+                    //... or returning an enumerable of string
+                    if (method == null && (TypeUtils.IsString(paramType))) {                      
+                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
+                    }
 
                     if (method != null) {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
@@ -276,6 +282,16 @@ namespace NakedObjects.Reflect.FacetFactory {
                     }
                 }
             }
+        }
+
+        private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
+            MethodInfo method = FindMethod(reflector,
+                type,
+                MethodType.Object,
+                PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
+                returnType,
+                new[] { typeof(string) });
+            return method;
         }
 
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {

@@ -198,7 +198,7 @@
     <Compile Include="util\TypeUtilsTest.cs" />
     <Compile Include="value\FileAttachmentTest.cs" />
     <Compile Include="value\ImageTest.cs" />
-    <Compile Include="Methods\TestMethods.cs" />
+    <Compile Include="Methods\TestRecognisedMethods.cs" />
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />
     <Compile Include="Injection\TestInjection.cs" />

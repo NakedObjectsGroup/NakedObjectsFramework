@@ -457,6 +457,27 @@ namespace AdventureWorksModel {
             };
         }
 
+        //Action to demonstrate use of auto-complete that returns IEnumerable<string>
+        public void AddComment(string comment) {
+            Comment += comment + "\n";
+        }
+
+        [PageSize(10)]
+        public IEnumerable<string> AutoComplete0AddComment(
+            [DescribedAs("Auto-complete")] [MinLength(2)] string matching) {
+            return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower()));
+        }
+
+        //Action to demonstrate use of auto-complete that returns IEnumerable<string>
+        public void AddComment2(string comment) {
+            Comment += comment + "\n";
+        }
+
+        [PageSize(10)]
+        public IList<string> AutoComplete0AddComment2(
+            [DescribedAs("Auto-complete")] [MinLength(2)] string matching) {
+            return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
+        }
         #endregion
 
         #region SalesPerson
@@ -702,7 +723,7 @@ namespace AdventureWorksModel {
         #region MarkAsShipped
 
         [Description("Indicate that the order has been shipped, specifying the date")]
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)] //Testing that the complementary methods don't show up either
         public void MarkAsShipped(DateTime shipDate) {
             Status = (byte) OrderStatus.Shipped;
             ShipDate = shipDate;
