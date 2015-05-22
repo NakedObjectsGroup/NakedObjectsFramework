@@ -143,6 +143,21 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
+        public override void AutoCompleteOnActionDialogFailingToSelectValidOption() {
+            DoAutoCompleteOnActionDialogFailingToSelectValidOption();
+        }
+
+        [TestMethod]
+        public override void AutoCompleteOnActionDialogReturningSingleObject() {
+            DoAutoCompleteOnActionDialogReturningSingleObject();
+        }
+
+        [TestMethod]
+        public override void AutoCompleteStringParamWithEnumerableOfString() {
+            DoAutoCompleteStringParamWithEnumerableOfString();
+        }
+
+        [TestMethod]
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
         }

@@ -135,6 +135,21 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
             DoAutoCompleteOnActionDialog();
         }
 
+        [TestMethod] 
+        public override void AutoCompleteOnActionDialogFailingToSelectValidOption() {
+            DoAutoCompleteOnActionDialogFailingToSelectValidOption();
+        }
+
+        [TestMethod]
+        public override void AutoCompleteOnActionDialogReturningSingleObject() {
+            DoAutoCompleteOnActionDialogReturningSingleObject();
+        }
+
+        [TestMethod]
+        public override void AutoCompleteStringParamWithEnumerableOfString() {
+            DoAutoCompleteStringParamWithEnumerableOfString();
+        }
+
         //[TestMethod] fails
         public override void NewObjectOnActionDialogFailMandatory() {
             DoNewObjectOnActionDialogFailMandatory();
