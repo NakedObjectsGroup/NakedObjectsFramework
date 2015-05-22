@@ -98,6 +98,11 @@ copy "$(ProjectDir)NakedObjects.Rest.Test.Nof2.dll.config"  "$(TargetDir)NakedOb
       <Project>{ec9af8ed-fc49-4e1b-8e45-3450641ae561}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\RestfulObjects.Mvc.App.Nof2\RestfulObjects.Mvc.App.Nof2.csproj">
+      <Name>RestfulObjects.Mvc.App.Nof2</Name>
+      <Project>{907b43da-a34b-4b87-80cb-10e2f5871c51}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Name>RestfulObjects.Mvc</Name>
       <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
@@ -118,8 +123,25 @@ copy "$(ProjectDir)NakedObjects.Rest.Test.Nof2.dll.config"  "$(TargetDir)NakedOb
       <Project>{3bbbe57e-abd7-48ae-b4e4-b3eceb4d7a0a}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="mscorlib" />

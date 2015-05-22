@@ -10,6 +10,12 @@ open sdm.systems.application.services.api.security.authorisation
 open sdm.systems.application.services.api.security.authentication
 open sdm.systems.reflector.container
 open RestfulObjects.Test.TestCase.Nof2
+open Microsoft.Practices.Unity
+open System
+open MvcTestApp.Controllers
+open NakedObjects.Surface
+open NakedObjects.Surface.Nof2.Implementation
+open NakedObjects.Surface.Nof2.Utility
 
 [<TestFixture>]
 type Nof2Tests() = class      
@@ -26,8 +32,17 @@ type Nof2Tests() = class
 
     member x.AppContainer() : IContainer  =
         box(x.Container) :?> IContainer
-      
-            
+    
+    member x.RegisterTypes (container : IUnityContainer) = 
+          container.RegisterType(typeof<IOidStrategy>, typeof<SerialOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
+          container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
+        
+    member x.UnityContainer : IUnityContainer = 
+        let c = new UnityContainer()
+        x.RegisterTypes(c);
+        box(c) :?> IUnityContainer
+           
+        
     [<SetUp>]
     member x.Setup() =
         x.SetUp()
@@ -42,9 +57,7 @@ type Nof2Tests() = class
         x.tearDown()
         ()
 
-    member x.API : RestfulObjectsControllerBase = null// todox.GetConfiguredContainer().Resolve<RestfulObjectsController>()
-    
-
+    member x.API : RestfulObjectsController = x.UnityContainer.Resolve<RestfulObjectsController>()
    
     [<Test>] 
     member x.GetHomePage() = HomePage5.GetHomePage x.API
