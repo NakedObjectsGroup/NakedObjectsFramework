@@ -7,16 +7,36 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectActionParameterSurface : IScalarPropertyHolder, ISurfaceHolder {
+    public interface INakedObjectActionParameterSurface :  ISurfaceHolder {
         INakedObjectSpecificationSurface Specification { get; }
         INakedObjectSpecificationSurface ElementType { get; }
         INakedObjectActionSurface Action { get; }
         string Id { get; }
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
+        string PresentationHint { get; }
+        Tuple<Regex, string> RegEx { get; }
+        Tuple<IConvertible, IConvertible, bool> Range { get; }
+        int NumberOfLines { get; }
+        int Width { get; }
+        int TypicalLength { get; }
+        bool IsAjax { get; }
+        bool IsNullable { get; }
+        bool IsPassword { get; }
+        string Name { get; }
+        string Description { get; }
+        bool IsMandatory { get; }
+        int? MaxLength { get; }
+        string Pattern { get; }
+        int Number { get; }
+        string Mask { get; }
+        int AutoCompleteMinLength { get; }
+        IDictionary<string, object> ExtensionData { get; }
+        bool IsFindMenuEnabled { get; }
         INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
         Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
         INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm);

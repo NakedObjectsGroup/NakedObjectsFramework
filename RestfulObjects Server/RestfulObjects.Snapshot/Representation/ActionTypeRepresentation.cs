@@ -61,10 +61,10 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(ActionTypeContextSurface actionTypeContext) {
             Id = actionTypeContext.ActionContext.Id;
-            FriendlyName = actionTypeContext.ActionContext.Action.Name();
-            Description = actionTypeContext.ActionContext.Action.Description();
+            FriendlyName = actionTypeContext.ActionContext.Action.Name;
+            Description = actionTypeContext.ActionContext.Action.Description;
             HasParams = actionTypeContext.ActionContext.VisibleParameters.Any();
-            MemberOrder = actionTypeContext.ActionContext.Action.MemberOrder();
+            MemberOrder = actionTypeContext.ActionContext.Action.MemberOrder;
         }
 
         private void SetParameters(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext) {

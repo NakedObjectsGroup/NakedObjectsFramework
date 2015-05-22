@@ -35,7 +35,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             if (propertyContext.Property.IsAutoCompleteEnabled) {
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))));
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength())));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength)));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
                 links.Add(CreateModifyLink());
 
-                if (!propertyContext.Property.IsMandatory()) {
+                if (!propertyContext.Property.IsMandatory) {
                     links.Add(CreateClearLink());
                 }
             }
@@ -83,7 +83,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-            IDictionary<string, object> custom = propertyContext.Property.ExtensionData();
+            IDictionary<string, object> custom = propertyContext.Property.ExtensionData;
 
             if (IsUnconditionalChoices()) {
                 Tuple<INakedObjectSurface, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
@@ -96,7 +96,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 custom[JsonPropertyNames.CustomChoices] = map;
             }
 
-            string mask = propertyContext.Property.Mask();
+            string mask = propertyContext.Property.Mask;
 
             if (!string.IsNullOrWhiteSpace(mask)) {
                 custom = custom ?? new Dictionary<string, object>();
@@ -113,16 +113,16 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name(),
-                description: propertyContext.Property.Description(),
+            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name,
+                description: propertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
                 hasParams: null,
-                optional: !propertyContext.Property.IsMandatory(),
-                maxLength: propertyContext.Property.MaxLength(),
-                pattern: propertyContext.Property.Pattern(),
-                memberOrder: propertyContext.Property.MemberOrder(),
+                optional: !propertyContext.Property.IsMandatory,
+                maxLength: propertyContext.Property.MaxLength,
+                pattern: propertyContext.Property.Pattern,
+                memberOrder: propertyContext.Property.MemberOrder,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
                 elementType: propertyContext.ElementSpecification,

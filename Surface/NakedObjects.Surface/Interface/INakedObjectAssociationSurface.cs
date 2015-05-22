@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
@@ -15,6 +16,35 @@ namespace NakedObjects.Surface {
         INakedObjectSpecificationSurface ElementSpecification { get; }
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
+        bool IsFile { get; }
+        bool IsEnum { get; }
+        Tuple<Regex, string> RegEx { get; }
+        Tuple<IConvertible, IConvertible, bool> Range { get; }
+        bool IsFindMenuEnabled { get; }
+        bool IsAjax { get; }
+        bool IsNullable { get; }
+        bool IsPassword { get; }
+        bool DoNotCount { get; }
+        bool RenderEagerly { get; }
+        int NumberOfLines { get; }
+        int Width { get; }
+        int TypicalLength { get; }
+        int? MaxLength { get; }
+        string PresentationHint { get; }
+        string Pattern { get; }
+        bool IsMandatory { get; }
+        string Name { get; }
+        string Description { get; }
+        bool IsCollection { get; }
+        bool IsObject { get; }
+        int MemberOrder { get; }
+        bool IsASet { get; }
+        bool IsInline { get; }
+        string Mask { get; }
+        int AutoCompleteMinLength { get; }
+        bool IsConcurrency { get; }
+        IDictionary<string, object> ExtensionData { get; }
+        Tuple<bool, string[]> TableViewData { get; }
         IConsentSurface IsUsable(INakedObjectSurface target);
         INakedObjectSurface GetNakedObject(INakedObjectSurface target);
         bool IsVisible(INakedObjectSurface nakedObject);

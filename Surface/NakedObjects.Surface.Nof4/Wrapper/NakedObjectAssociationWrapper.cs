@@ -20,10 +20,9 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectAssociationWrapper : ScalarPropertyHolder, INakedObjectAssociationSurface {
+    public class NakedObjectAssociationWrapper : INakedObjectAssociationSurface {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
-
 
         public NakedObjectAssociationWrapper(IAssociationSpec assoc, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
@@ -35,10 +34,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
+        public IAssociationSpec WrappedSpec {
+            get { return assoc; }
+        }
 
-        public IAssociationSpec WrappedSpec { get { return assoc; } }
+        #region INakedObjectAssociationSurface Members
 
-        protected IDictionary<string, object> ExtensionData {
+        public IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
 
@@ -49,7 +51,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return extData.Any() ? extData : null;
             }
         }
-
 
         public string Name {
             get { return assoc.Name; }
@@ -89,7 +90,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        protected int MemberOrder {
+        public int MemberOrder {
             get {
                 var facet = assoc.GetFacet<IMemberOrderFacet>();
 
@@ -102,14 +103,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        protected bool IsASet {
+        public bool IsASet {
             get {
                 var collection = assoc as IOneToManyAssociationSpec;
                 return collection != null && collection.IsASet;
             }
         }
 
-        protected bool IsInline {
+        public bool IsInline {
             get { return assoc.IsInline; }
         }
 
@@ -126,8 +127,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return facet != null ? facet.MinLength : 0;
             }
         }
-
-        #region INakedObjectAssociationSurface Members
 
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(assoc.ReturnSpec, Surface, framework); }
@@ -208,9 +207,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string GetTitle(INakedObjectSurface nakedObject) {
-
             var enumFacet = assoc.GetFacet<IEnumFacet>();
-    
+
             if (enumFacet != null) {
                 return enumFacet.GetTitle(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
             }
@@ -225,105 +223,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectsSurface Surface { get; set; }
 
-        #endregion
-
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
-            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
-        }
-
-        public override bool Equals(object obj) {
-            var nakedObjectAssociationWrapper = obj as NakedObjectAssociationWrapper;
-            if (nakedObjectAssociationWrapper != null) {
-                return Equals(nakedObjectAssociationWrapper);
-            }
-            return false;
-        }
-
-        public bool Equals(NakedObjectAssociationWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.assoc, assoc);
-        }
-
-        public override int GetHashCode() {
-            return (assoc != null ? assoc.GetHashCode() : 0);
-        }
-
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.Name):
-                    return Name;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsCollection):
-                    return IsCollection;
-                case (ScalarProperty.IsObject):
-                    return IsObject;
-                case (ScalarProperty.IsMandatory):
-                    return IsMandatory;
-                case (ScalarProperty.MaxLength):
-                    return MaxLength;
-                case (ScalarProperty.Pattern):
-                    return Pattern;
-                case (ScalarProperty.MemberOrder):
-                    return MemberOrder;
-                case (ScalarProperty.IsASet):
-                    return IsASet;
-                case (ScalarProperty.IsInline):
-                    return IsInline;
-                case (ScalarProperty.Mask):
-                    return Mask;
-                case (ScalarProperty.AutoCompleteMinLength):
-                    return AutoCompleteMinLength;
-                case (ScalarProperty.IsConcurrency):
-                    return IsConcurrency;
-                case (ScalarProperty.NumberOfLines):
-                    return NumberOfLines;
-                case (ScalarProperty.Width):
-                    return Width;
-                case (ScalarProperty.TypicalLength):
-                    return TypicalLength;
-                case (ScalarProperty.ExtensionData):
-                    return ExtensionData;
-                case (ScalarProperty.TableViewData):
-                    return TableViewData;
-                case (ScalarProperty.RenderEagerly):
-                    return RenderEagerly;
-                case (ScalarProperty.DoNotCount):
-                    return DoNotCount;
-                case (ScalarProperty.IsNullable):
-                    return IsNullable;
-                case (ScalarProperty.IsAjax):
-                    return IsAjax;
-                case (ScalarProperty.IsPassword):
-                    return IsPassword;
-                case (ScalarProperty.Range):
-                    return Range;
-                case (ScalarProperty.RegEx):
-                    return RegEx;
-                case (ScalarProperty.IsFindMenuEnabled):
-                    return IsFindMenuEnabled;
-                case (ScalarProperty.PresentationHint):
-                    return PresentationHintValue;
-                case (ScalarProperty.IsEnum):
-                    return IsEnum;
-                case (ScalarProperty.IsFileAttachment):
-                    return IsFile;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
-
-        public object IsFile {
+        public bool IsFile {
             get { return assoc.IsFile(framework); }
         }
 
-        public bool IsEnum
-        {
+        public bool IsEnum {
             get { return assoc.ContainsFacet<IEnumFacet>(); }
         }
 
-        public object PresentationHintValue {
+        public string PresentationHint {
             get {
                 var hintFacet = assoc.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? "" : hintFacet.Value;
@@ -348,19 +256,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public object IsAjax {
-            get {
-                return !assoc.ContainsFacet<IAjaxFacet>();
-            }
+        public bool IsAjax {
+            get { return !assoc.ContainsFacet<IAjaxFacet>(); }
         }
 
-        public object DoNotCount {
-            get {
-                return assoc.ContainsFacet<INotCountedFacet>();
-            }
+        public bool DoNotCount {
+            get { return assoc.ContainsFacet<INotCountedFacet>(); }
         }
 
-        public object Width {
+        public int Width {
             get {
                 var multiline = assoc.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 0 : multiline.Width;
@@ -374,7 +278,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             if (valueNakedObject == null) {
                 return null;
             }
-            var no = ((NakedObjectWrapper)valueNakedObject).WrappedNakedObject;
+            var no = ((NakedObjectWrapper) valueNakedObject).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
@@ -383,14 +287,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return assoc.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 
-        public object TypicalLength {
+        public int TypicalLength {
             get {
                 var typicalLength = assoc.GetFacet<ITypicalLengthFacet>();
                 return typicalLength == null ? 0 : typicalLength.Value;
             }
         }
 
-        public object NumberOfLines {
+        public int NumberOfLines {
             get {
                 var multiline = assoc.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 1 : multiline.NumberOfLines;
@@ -412,14 +316,36 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public object IsPassword {
-            get {
-                return assoc.ContainsFacet<IPasswordFacet>();
-            }
+        public bool IsPassword {
+            get { return assoc.ContainsFacet<IPasswordFacet>(); }
         }
 
         public bool IsNullable {
             get { return assoc.ContainsFacet<INullableFacet>(); }
+        }
+
+        #endregion
+
+        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
+            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+        }
+
+        public override bool Equals(object obj) {
+            var nakedObjectAssociationWrapper = obj as NakedObjectAssociationWrapper;
+            if (nakedObjectAssociationWrapper != null) {
+                return Equals(nakedObjectAssociationWrapper);
+            }
+            return false;
+        }
+
+        public bool Equals(NakedObjectAssociationWrapper other) {
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
+            return Equals(other.assoc, assoc);
+        }
+
+        public override int GetHashCode() {
+            return (assoc != null ? assoc.GetHashCode() : 0);
         }
     }
 }

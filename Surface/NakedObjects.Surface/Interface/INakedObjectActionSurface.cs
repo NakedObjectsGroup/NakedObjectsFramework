@@ -5,6 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
+
 namespace NakedObjects.Surface {
     public interface INakedObjectActionSurface : INakedObjectMemberSurface {
         INakedObjectSpecificationSurface ReturnType { get; }
@@ -12,6 +15,17 @@ namespace NakedObjects.Surface {
         int ParameterCount { get; }
         INakedObjectActionParameterSurface[] Parameters { get; }
         INakedObjectSpecificationSurface OnType { get; }
+        string PresentationHint { get; }
+        int PageSize { get; }
+        string Name { get; }
+        string Description { get; }
+        bool IsQueryOnly { get; }
+        bool IsIdempotent { get; }
+        bool IsContributed { get; }
+        int MemberOrder { get; }
+        IDictionary<string, object> ExtensionData { get; }
+        Tuple<bool, string[]> TableViewData { get; }
+        bool RenderEagerly { get; }
         bool IsVisible(INakedObjectSurface nakedObject);
         IConsentSurface IsUsable(INakedObjectSurface nakedObject);
     }

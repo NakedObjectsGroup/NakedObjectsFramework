@@ -125,8 +125,8 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface assoc)
             : this(oidStrategy ,req) {
             cachedId = "";
-            if (assoc.IsCollection()) {
-                cachedType = assoc.IsASet() ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
+            if (assoc.IsCollection) {
+                cachedType = assoc.IsASet ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
             }
             else {
                 cachedType = assoc.Specification.DomainTypeName(oidStrategy);
@@ -265,10 +265,10 @@ namespace RestfulObjects.Snapshot.Utility {
 
 
         public Uri GetInvokeUri() {
-            if (action.IsQueryOnly()) {
+            if (action.IsQueryOnly) {
                 return GetQueryInvokeUri();
             }
-            if (action.IsIdempotent()) {
+            if (action.IsIdempotent) {
                 return GetIdempotentUri();
             }
             return GetNonIdempotentUri();
@@ -376,7 +376,7 @@ namespace RestfulObjects.Snapshot.Utility {
                 return getUri(action, SegmentValues.Actions);
             }
 
-            if (assoc != null && assoc.IsCollection()) {
+            if (assoc != null && assoc.IsCollection) {
                 return getUri(assoc, SegmentValues.Collections);
             }
 
@@ -418,7 +418,7 @@ namespace RestfulObjects.Snapshot.Utility {
             if (action != null) {
                 return RepresentationTypes.ObjectAction;
             }
-            if (assoc != null && assoc.IsCollection()) {
+            if (assoc != null && assoc.IsCollection) {
                 return RepresentationTypes.ObjectCollection;
             }
             return RepresentationTypes.ObjectProperty;
@@ -428,7 +428,7 @@ namespace RestfulObjects.Snapshot.Utility {
             if (action != null) {
                 return RepresentationTypes.ActionDescription;
             }
-            if (assoc != null && assoc.IsCollection()) {
+            if (assoc != null && assoc.IsCollection) {
                 return RepresentationTypes.CollectionDescription;
             }
             return RepresentationTypes.PropertyDescription;
@@ -510,7 +510,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public void AddObjectCollectionRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
-            if (assoc != null && assoc.IsCollection()) {
+            if (assoc != null && assoc.IsCollection) {
                 string parameterValue = GetParameterValue(flags, assoc.ElementSpecification);
                 if (parameterValue != null) {
                     mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
@@ -549,7 +549,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
             if (nakedObjectMemberSurface is INakedObjectAssociationSurface) {
                 var associationSurface = (INakedObjectAssociationSurface) nakedObjectMemberSurface;
-                return FormatParameter(associationSurface.IsCollection() ? RelParamValues.Collection : RelParamValues.Property, associationSurface.Id);
+                return FormatParameter(associationSurface.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationSurface.Id);
             }
 
             throw new ArgumentException("Unexpected type:" + nakedObjectMemberSurface.GetType());

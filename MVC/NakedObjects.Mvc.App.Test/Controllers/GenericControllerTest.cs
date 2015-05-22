@@ -289,7 +289,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf<FindViewModel>(data.Model);
-            Assert.AreEqual(actionName, NakedObjectsSurfaceExtensions.Name(((FindViewModel) data.Model).ContextAction));
+            Assert.AreEqual(actionName, (((FindViewModel) data.Model).ContextAction).Name);
         }
 
         private static void AssertStateInViewDataDictionary(ViewResult result, string id, string state) {

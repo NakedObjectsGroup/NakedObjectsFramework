@@ -46,9 +46,9 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(PropertyTypeContextSurface propertyContext) {
             Id = propertyContext.Property.Id;
-            FriendlyName = propertyContext.Property.Name();
-            Description = propertyContext.Property.Description();
-            MemberOrder = propertyContext.Property.MemberOrder();
+            FriendlyName = propertyContext.Property.Name;
+            Description = propertyContext.Property.Description;
+            MemberOrder = propertyContext.Property.MemberOrder;
         }
 
         private void SetHeader() {
@@ -69,7 +69,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
 
         public static MemberTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
-            if (propertyContext.Property.IsCollection()) {
+            if (propertyContext.Property.IsCollection) {
                 return CollectionTypeRepresentation.Create(oidStrategy , req, propertyContext, flags);
             }
 
@@ -78,7 +78,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (typeAndFormat.Item1 == PredefinedType.String.ToRoString()) {
                 var exts = new Dictionary<string, object>();
 
-                AddStringProperties(propertyContext.Property.Specification, propertyContext.Property.MaxLength(), propertyContext.Property.Pattern(), exts);
+                AddStringProperties(propertyContext.Property.Specification, propertyContext.Property.MaxLength, propertyContext.Property.Pattern, exts);
 
                 OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
 

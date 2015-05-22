@@ -3,12 +3,13 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
+    public class NakedObjectActionWrapper :  INakedObjectActionSurface {
         private readonly ActionWrapper action;
         private readonly Naked target;
 
@@ -28,6 +29,16 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsContributed {
             get { return false; }
         }
+
+        int INakedObjectActionSurface.MemberOrder {
+            get { return MemberOrder; }
+        }
+
+        public IDictionary<string, object> ExtensionData { get; private set; }
+        public Tuple<bool, string[]> TableViewData { get; private set; }
+        public bool RenderEagerly { get; private set; }
+
+        public int PageSize { get; private set; }
 
         public string Name {
             get { return action.getName(); }
@@ -85,6 +96,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { throw new NotImplementedException(); }
         }
 
+        public string PresentationHint { get; private set; }
+
         #endregion
 
         public override bool Equals(object obj) {
@@ -105,35 +118,9 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return (action != null ? action.GetHashCode() : 0);
         }
 
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.Name):
-                    return Name;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsQueryOnly):
-                    return IsQueryOnly;
-                case (ScalarProperty.IsIdempotent):
-                    return IsIdempotent;
-                case (ScalarProperty.IsContributed):
-                    return IsContributed;
-                case (ScalarProperty.MemberOrder):
-                    return MemberOrder;
-                case (ScalarProperty.PageSize):
-                    return 0;
-                case (ScalarProperty.ExtensionData):
-                    return null;
-                case (ScalarProperty.TableViewData):
-                    return null;
-                case (ScalarProperty.RenderEagerly):
-                    return false;
-                case (ScalarProperty.PresentationHint):
-                    return "";
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
+       
 
         public INakedObjectsSurface Surface { get; set; }
+        
     }
 }

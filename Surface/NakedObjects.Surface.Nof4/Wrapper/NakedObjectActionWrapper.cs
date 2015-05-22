@@ -14,7 +14,7 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
+    public class NakedObjectActionWrapper :  INakedObjectActionSurface {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
@@ -48,7 +48,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return action.Name; }
         }
 
-        protected IDictionary<string, object> ExtensionData {
+        public IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
 
@@ -78,7 +78,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return action.ContainsFacet<IIdempotentFacet>(); }
         }
 
-        protected int MemberOrder {
+        public int MemberOrder {
             get {
                 var facet = action.GetFacet<IMemberOrderFacet>();
 
@@ -150,34 +150,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return (action != null ? action.GetHashCode() : 0);
         }
 
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.Name):
-                    return Name;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsQueryOnly):
-                    return IsQueryOnly;
-                case (ScalarProperty.IsIdempotent):
-                    return IsIdempotent;
-                case (ScalarProperty.IsContributed):
-                    return IsContributed;
-                case (ScalarProperty.MemberOrder):
-                    return MemberOrder;
-                case (ScalarProperty.PageSize):
-                    return PageSize;
-                case (ScalarProperty.ExtensionData):
-                    return ExtensionData;
-                case (ScalarProperty.TableViewData):
-                    return TableViewData;
-                case (ScalarProperty.RenderEagerly):
-                    return RenderEagerly;
-                case (ScalarProperty.PresentationHint):
-                    return PresentationHintValue;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
+      
 
         public bool RenderEagerly {
             get {
@@ -193,14 +166,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        private int PageSize {
+        public int PageSize {
             get {
                 return action.GetFacet<IPageSizeFacet>().Value;
             }
         }
 
 
-        public string PresentationHintValue {
+        public string PresentationHint {
             get {
                 var hintFacet = action.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? null : hintFacet.Value;

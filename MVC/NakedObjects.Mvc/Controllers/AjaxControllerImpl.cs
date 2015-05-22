@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 value = Request.Params[fieldId];
             }
 
-            if (property != null && (!property.IsCollection() || property.Specification.IsParseable())) {
+            if (property != null && (!property.IsCollection || property.Specification.IsParseable())) {
                 var pvalue = GetValue(new[] {value}, property, property.Specification);
                 ValidateAssociation(nakedObject, property, pvalue);
                 isValid = ModelState.IsValid;
@@ -157,7 +157,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             Decrypt(parms);
 
-            foreach (var assoc in nakedObject.Specification.Properties.Where(p => !p.IsCollection())) {
+            foreach (var assoc in nakedObject.Specification.Properties.Where(p => !p.IsCollection)) {
                 string[] values = GetRawValues(parms, IdHelper.GetAggregateFieldInputId(nakedObject, assoc));
                 results[assoc.Id.ToLower()] = GetValue(values, assoc, assoc.Specification);
             }

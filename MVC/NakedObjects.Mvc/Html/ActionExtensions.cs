@@ -1223,7 +1223,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             var nakedObject = html.Surface().GetObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Description());
+            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Description);
         }
 
         #endregion
@@ -1358,7 +1358,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             var nakedObject = html.Surface().GetObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Name());
+            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Name);
         }
 
         #endregion

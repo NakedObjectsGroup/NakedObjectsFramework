@@ -300,7 +300,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!HasError(ar)) {
-                targetNakedObject.SetIsNotQueryableState(targetAction.IsContributed());
+                targetNakedObject.SetIsNotQueryableState(targetAction.IsContributed);
                 return AppropriateView(controlData, GetResult(ar), targetAction);
             }
 
@@ -376,7 +376,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var result = pair.Item2;
                 var stringResult = result as string;
 
-                if (pair.Item1.IsMandatory() && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
+                if (pair.Item1.IsMandatory && (result == null || (result is string && string.IsNullOrEmpty(stringResult)))) {
                     AddErrorAndAttemptedValue(nakedObject, stringResult, pair.Item1, MvcUi.Mandatory);
                 }
             }

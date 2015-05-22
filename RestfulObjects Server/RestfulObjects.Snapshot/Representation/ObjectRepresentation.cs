@@ -72,10 +72,10 @@ namespace RestfulObjects.Snapshot.Representations {
                 visiblePropertiesAndCollections = visiblePropertiesAndCollections.Where(vp => !RestUtils.IsBlobOrClob(vp.Specification)).ToArray();
             }
 
-            PropertyContextSurface[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection()).ToArray();
+            PropertyContextSurface[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
             if (!objectContext.Target.IsTransient && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
-                string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline()).Select(p => p.Id).ToArray();
+                string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
                 OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
 
                 LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, new UriMtHelper(OidStrategy ,req, objectContext.Target)) {Method = RelMethod.Put}, Flags,
@@ -85,7 +85,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (objectContext.Target.IsTransient) {
-                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection() && !p.IsInline()).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy ,req, p, objectContext.Target, Flags, true)).ToArray();
+                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy ,req, p, objectContext.Target, Flags, true)).ToArray();
                 OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
                 var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));

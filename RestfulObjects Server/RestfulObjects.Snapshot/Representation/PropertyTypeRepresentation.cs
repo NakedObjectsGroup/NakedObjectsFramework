@@ -28,7 +28,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(PropertyTypeContextSurface propertyContext) {
             Id = propertyContext.Property.Id;
-            Optional = !propertyContext.Property.IsMandatory();
+            Optional = !propertyContext.Property.IsMandatory;
         }
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {

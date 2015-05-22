@@ -571,7 +571,7 @@ namespace RestfulObjects.Mvc {
                 PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
                 // found but a collection 
-                if (propertyContext.Property.IsCollection()) {
+                if (propertyContext.Property.IsCollection) {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
@@ -589,7 +589,7 @@ namespace RestfulObjects.Mvc {
                     PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
 
-                    if (propertyContext.Property.IsCollection()) {
+                    if (propertyContext.Property.IsCollection) {
                         return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
                     }
                     // found but not a collection 
@@ -607,7 +607,7 @@ namespace RestfulObjects.Mvc {
                     PropertyContextSurface propertyContext = Surface.GetProperty(OidStrategy.GetOid(domainType, instanceId), propertyName);
 
 
-                    if (propertyContext.Property.IsCollection()) {
+                    if (propertyContext.Property.IsCollection) {
                         return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), true);
                     }
                     // found but not a collection 
@@ -840,11 +840,11 @@ namespace RestfulObjects.Mvc {
         }
 
         private void VerifyActionType(ActionContextSurface context, string method) {
-            if (method.ToUpper() == "PUT" && !(context.Action.IsQueryOnly() || context.Action.IsIdempotent())) {
+            if (method.ToUpper() == "PUT" && !(context.Action.IsQueryOnly || context.Action.IsIdempotent)) {
                 throw new NotAllowedNOSException("action is not idempotent"); // i18n 
             }
 
-            if (method.ToUpper() == "GET" && !context.Action.IsQueryOnly()) {
+            if (method.ToUpper() == "GET" && !context.Action.IsQueryOnly) {
                 throw new NotAllowedNOSException("action is not side-effect free"); // i18n 
             }
         }

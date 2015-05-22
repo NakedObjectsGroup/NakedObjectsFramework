@@ -15,13 +15,12 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
-using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectActionParameterWrapper : ScalarPropertyHolder, INakedObjectActionParameterSurface {
+    public class NakedObjectActionParameterWrapper : INakedObjectActionParameterSurface {
         private readonly INakedObjectsFramework framework;
         private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
@@ -38,9 +37,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
-        public IActionParameterSpec WrappedSpec { get { return nakedObjectActionParameter;} }
+        public IActionParameterSpec WrappedSpec {
+            get { return nakedObjectActionParameter; }
+        }
 
-        protected IDictionary<string, object> ExtensionData {
+        #region INakedObjectActionParameterSurface Members
+
+        public IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
 
@@ -92,12 +95,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-
         public int Number {
             get { return nakedObjectActionParameter.Number; }
         }
-
-        #region INakedObjectActionParameterSurface Members
 
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.Spec, Surface, framework); }
@@ -120,8 +120,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public Choices IsChoicesEnabled {
-            get
-            {
+            get {
                 if (nakedObjectActionParameter.IsMultipleChoicesEnabled) {
                     return Choices.Multiple;
                 }
@@ -131,40 +130,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public bool IsAutoCompleteEnabled {
             get { return nakedObjectActionParameter.IsAutoCompleteEnabled; }
-        }
-
-        private  INakedObjectAdapter GetValue(INakedObjectActionParameterSurface parm, object rawValue) {
-            if (rawValue == null || rawValue is string && string.IsNullOrEmpty(rawValue as string) ) {
-                return null; 
-            }
-
-            if (parm.Specification.IsParseable()) {
-                return nakedObjectActionParameter.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string)rawValue, framework.NakedObjectManager);
-            }
-            var collectionParm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
-
-            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
-                var stringArray = rawValue as string[];
-                if (stringArray == null || !stringArray.Any()) {
-                    return null; 
-                }
-           
-                var eSpec = collectionParm.ElementSpec;
-
-                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
-
-                if (!objectArray.Any()) {
-                    return null;
-                }
-
-                var typedArray = Array.CreateInstance(objectArray.First().GetType(), objectArray.Length);
-
-                Array.Copy(objectArray, typedArray, typedArray.Length);
-
-                return framework.GetNakedObject(typedArray);
-            }
-
-            return framework.GetNakedObject(rawValue);
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
@@ -191,7 +156,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
-            
+
             IConsent consent;
             try {
                 var v = GetValue(this, value);
@@ -226,76 +191,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectsSurface Surface { get; set; }
 
-        #endregion
-
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
-            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
-        }
-
-        public override bool Equals(object obj) {
-            var nakedObjectActionParameterWrapper = obj as NakedObjectActionParameterWrapper;
-            if (nakedObjectActionParameterWrapper != null) {
-                return Equals(nakedObjectActionParameterWrapper);
-            }
-            return false;
-        }
-
-        public bool Equals(NakedObjectActionParameterWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);
-        }
-
-        public override int GetHashCode() {
-            return (nakedObjectActionParameter != null ? nakedObjectActionParameter.GetHashCode() : 0);
-        }
-
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.Name):
-                    return Name;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsMandatory):
-                    return IsMandatory;
-                case (ScalarProperty.MaxLength):
-                    return MaxLength;
-                case (ScalarProperty.Pattern):
-                    return Pattern;
-                case (ScalarProperty.Number):
-                    return Number;
-                case (ScalarProperty.Mask):
-                    return Mask;
-                case (ScalarProperty.AutoCompleteMinLength):
-                    return AutoCompleteMinLength;
-                case (ScalarProperty.TypicalLength):
-                    return TypicalLength;
-                case (ScalarProperty.IsNullable):
-                    return IsNullable;
-                case (ScalarProperty.IsAjax):
-                    return IsAjax;
-                case (ScalarProperty.IsPassword):
-                    return IsPassword;
-                case (ScalarProperty.NumberOfLines):
-                    return NumberOfLines;
-                case (ScalarProperty.Width):
-                    return Width;
-                case (ScalarProperty.Range):
-                    return Range;
-                case (ScalarProperty.RegEx):
-                    return RegEx;
-                case (ScalarProperty.PresentationHint):
-                    return PresentationHintValue;
-                case (ScalarProperty.IsFindMenuEnabled):
-                    return IsFindMenuEnabled;
-                case (ScalarProperty.ExtensionData):
-                    return ExtensionData;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
-
-        public object IsFindMenuEnabled {
+        public bool IsFindMenuEnabled {
             get { return (nakedObjectActionParameter is IOneToOneActionParameterSpec) && ((IOneToOneActionParameterSpec) nakedObjectActionParameter).IsFindMenuEnabled; }
         }
 
@@ -313,20 +209,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-
-        public object IsAjax {
-            get {
-                return !nakedObjectActionParameter.ContainsFacet<IAjaxFacet>();
-            }
+        public bool IsAjax {
+            get { return !nakedObjectActionParameter.ContainsFacet<IAjaxFacet>(); }
         }
 
-        public object IsPassword {
-            get {
-                return nakedObjectActionParameter.ContainsFacet<IPasswordFacet>();
-            }
+        public bool IsPassword {
+            get { return nakedObjectActionParameter.ContainsFacet<IPasswordFacet>(); }
         }
 
-        public object TypicalLength {
+        public int TypicalLength {
             get {
                 var typicalLength = nakedObjectActionParameter.GetFacet<ITypicalLengthFacet>();
                 return typicalLength == null ? 0 : typicalLength.Value;
@@ -337,25 +228,83 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter.ContainsFacet<INullableFacet>(); }
         }
 
-        public object Width {
+        public int Width {
             get {
                 var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 0 : multiline.Width;
             }
         }
 
-        public object NumberOfLines {
+        public int NumberOfLines {
             get {
                 var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 1 : multiline.NumberOfLines;
             }
         }
 
-        public object PresentationHintValue {
+        public string PresentationHint {
             get {
                 var hintFacet = nakedObjectActionParameter.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? null : hintFacet.Value;
             }
+        }
+
+        #endregion
+
+        private INakedObjectAdapter GetValue(INakedObjectActionParameterSurface parm, object rawValue) {
+            if (rawValue == null || rawValue is string && string.IsNullOrEmpty(rawValue as string)) {
+                return null;
+            }
+
+            if (parm.Specification.IsParseable()) {
+                return nakedObjectActionParameter.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
+            }
+            var collectionParm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
+
+            if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
+                var stringArray = rawValue as string[];
+                if (stringArray == null || !stringArray.Any()) {
+                    return null;
+                }
+
+                var eSpec = collectionParm.ElementSpec;
+
+                var objectArray = stringArray.Select(i => i == null ? null : eSpec.GetFacet<IParseableFacet>().ParseTextEntry(i, framework.NakedObjectManager).Object).Where(o => o != null).ToArray();
+
+                if (!objectArray.Any()) {
+                    return null;
+                }
+
+                var typedArray = Array.CreateInstance(objectArray.First().GetType(), objectArray.Length);
+
+                Array.Copy(objectArray, typedArray, typedArray.Length);
+
+                return framework.GetNakedObject(typedArray);
+            }
+
+            return framework.GetNakedObject(rawValue);
+        }
+
+        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
+            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+        }
+
+        public override bool Equals(object obj) {
+            var nakedObjectActionParameterWrapper = obj as NakedObjectActionParameterWrapper;
+            if (nakedObjectActionParameterWrapper != null) {
+                return Equals(nakedObjectActionParameterWrapper);
+            }
+            return false;
+        }
+
+        public bool Equals(NakedObjectActionParameterWrapper other) {
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
+            return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);
+        }
+
+        public override int GetHashCode() {
+            return (nakedObjectActionParameter != null ? nakedObjectActionParameter.GetHashCode() : 0);
         }
     }
 }

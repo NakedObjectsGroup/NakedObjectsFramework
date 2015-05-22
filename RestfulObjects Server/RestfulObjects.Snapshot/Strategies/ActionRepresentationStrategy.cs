@@ -129,8 +129,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: actionContext.Action.Name(),
-                description: actionContext.Action.Description(),
+            return RestUtils.GetExtensions(friendlyname: actionContext.Action.Name,
+                description: actionContext.Action.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
@@ -138,8 +138,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 optional: null,
                 maxLength: null,
                 pattern: null,
-                memberOrder: actionContext.Action.MemberOrder(),
-                customExtensions: actionContext.Action.ExtensionData(),
+                memberOrder: actionContext.Action.MemberOrder,
+                customExtensions: actionContext.Action.ExtensionData,
                 returnType: actionContext.Action.ReturnType,
                 elementType: actionContext.Action.ElementType,
                 oidStrategy: OidStrategy);
@@ -154,10 +154,10 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private RelMethod GetRelMethod() {
-            if (actionContext.Action.IsQueryOnly()) {
+            if (actionContext.Action.IsQueryOnly) {
                 return RelMethod.Get;
             }
-            return actionContext.Action.IsIdempotent() ? RelMethod.Put : RelMethod.Post;
+            return actionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
     }
 }

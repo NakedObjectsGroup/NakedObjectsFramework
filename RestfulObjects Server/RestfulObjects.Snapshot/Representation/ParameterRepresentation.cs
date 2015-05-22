@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (parameter.IsAutoCompleteEnabled) {
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))));
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, parameter.AutoCompleteMinLength())));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, parameter.AutoCompleteMinLength)));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
@@ -91,7 +91,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
-            IDictionary<string, object> custom = parameter.ExtensionData();
+            IDictionary<string, object> custom = parameter.ExtensionData;
 
             if (IsUnconditionalChoices(parameter)) {
                 Tuple<INakedObjectSurface, string>[] choices = parameter.GetChoicesAndTitles(nakedObject, null);
@@ -103,7 +103,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomChoices] = map;
             }
 
-            string mask = parameter.Mask();
+            string mask = parameter.Mask;
 
             if (!string.IsNullOrWhiteSpace(mask)) {
                 custom = custom ?? new Dictionary<string, object>();
@@ -111,15 +111,15 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name(),
-                    description: parameter.Description(),
+                Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name,
+                    description: parameter.Description,
                     pluralName: null,
                     domainType: null,
                     isService: null,
                     hasParams: null,
-                    optional: !parameter.IsMandatory(),
-                    maxLength: parameter.MaxLength(),
-                    pattern: parameter.Pattern(),
+                    optional: !parameter.IsMandatory,
+                    maxLength: parameter.MaxLength,
+                    pattern: parameter.Pattern,
                     memberOrder: null,
                     customExtensions: custom,
                     returnType: parameter.Specification,

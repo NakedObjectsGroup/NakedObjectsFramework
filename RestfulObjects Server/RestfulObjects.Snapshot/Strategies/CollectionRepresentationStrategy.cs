@@ -24,8 +24,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name(),
-                description: propertyContext.Property.Description(),
+            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name,
+                description: propertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
@@ -33,8 +33,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 optional: null,
                 maxLength: null,
                 pattern: null,
-                memberOrder: propertyContext.Property.MemberOrder(),
-                customExtensions: propertyContext.Property.ExtensionData(),
+                memberOrder: propertyContext.Property.MemberOrder,
+                customExtensions: propertyContext.Property.ExtensionData,
                 returnType: collection.Specification,
                 elementType: propertyContext.ElementSpecification,
                 oidStrategy: OidStrategy);

@@ -268,7 +268,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
             }
 
-            var helper = new UriMtHelper(oidStrategy, req, property.IsInline() ? target : valueNakedObject);
+            var helper = new UriMtHelper(oidStrategy, req, property.IsInline ? target : valueNakedObject);
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {

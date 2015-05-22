@@ -30,7 +30,7 @@ namespace NakedObjects.Web.Mvc.Html {
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(IIdHelper idHelper, ObjectContext otherContext) : base(idHelper, otherContext) {}
         protected FeatureContext(IIdHelper idHelper, INakedObjectSurface target) : base(idHelper, target) {}
-        public abstract IScalarPropertyHolder Feature { get; }
+        public abstract ISurfaceHolder Feature { get; }
     }
 
     internal class PropertyContext : FeatureContext {
@@ -54,7 +54,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public PropertyContext ParentContext { get; set; }
         public INakedObjectAssociationSurface Property { get; set; }
 
-        public override IScalarPropertyHolder Feature {
+        public override ISurfaceHolder Feature {
             get { return Property; }
         }
 
@@ -70,7 +70,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public bool IsFindMenuEnabled() {
-            return Property.IsFindMenuEnabled();
+            return Property.IsFindMenuEnabled;
         }
 
         public string GetFieldInputId() {
@@ -89,7 +89,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            var hint = Property.PresentationHint();
+            var hint = Property.PresentationHint;
             return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
@@ -139,7 +139,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public INakedObjectActionSurface Action { get; set; }
         public RouteValueDictionary ParameterValues { get; set; }
 
-        public override IScalarPropertyHolder Feature {
+        public override ISurfaceHolder Feature {
             get { return Action; }
         }
 
@@ -170,7 +170,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            var hint = Action != null ? Action.PresentationHint() : "";
+            var hint = Action != null ? Action.PresentationHint : "";
             return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 
@@ -210,14 +210,14 @@ namespace NakedObjects.Web.Mvc.Html {
         public INakedObjectActionParameterSurface Parameter { get; set; }
         public INakedObjectSurface CustomValue { get; set; }
 
-        public override IScalarPropertyHolder Feature {
+        public override ISurfaceHolder Feature {
             get { return Parameter; }
         }
 
         public bool IsParameterEdit { get; set; }
 
         public bool IsFindMenuEnabled() {
-            return Parameter.IsFindMenuEnabled() && (!Parameter.Action.IsContributed() || !Target.Specification.IsOfType(Parameter.Specification));
+            return Parameter.IsFindMenuEnabled && (!Parameter.Action.IsContributed || !Target.Specification.IsOfType(Parameter.Specification));
         }
 
         public string GetParameterInputId() {
@@ -233,7 +233,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private string GetPresentationHint() {
-            var hint = Parameter.PresentationHint();
+            var hint = Parameter.PresentationHint;
             return string.IsNullOrWhiteSpace(hint) ? "" : " " + hint;
         }
 

@@ -230,10 +230,10 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static MvcHtmlString BuildParamContainer(this HtmlHelper html, ActionContext actionContext, IEnumerable<ElementDescriptor> elements, string cls, string id) {
-            if (actionContext.Action.IsQueryOnly()) {
+            if (actionContext.Action.IsQueryOnly) {
                 cls += (" " + IdConstants.QueryOnlyClass);
             }
-            else if (actionContext.Action.IsIdempotent()) {
+            else if (actionContext.Action.IsIdempotent) {
                 cls += (" " + IdConstants.IdempotentClass);
             }
 
@@ -397,7 +397,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 visibleElements = visibleElements.Union(hiddenElements);
 
-                IEnumerable<ElementDescriptor> collectionElements = nakedObject.Specification.Properties.Where(p => p.IsCollection()).
+                IEnumerable<ElementDescriptor> collectionElements = nakedObject.Specification.Properties.Where(p => p.IsCollection).
                     SelectMany(p => p.Items(html, nakedObject)).
                     Select(t => new ElementDescriptor {
                         TagType = "div",
@@ -409,7 +409,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             // add filtered fields as hidden to preserve their values 
 
-            var filteredFields = nakedObject.Specification.Properties.Where(p => !p.IsCollection() && p.IsVisible(nakedObject)).Except(visibleFields);
+            var filteredFields = nakedObject.Specification.Properties.Where(p => !p.IsCollection && p.IsVisible(nakedObject)).Except(visibleFields);
             IEnumerable<ElementDescriptor> filteredElements = filteredFields.Select(property => new PropertyContext(html.IdHelper(), nakedObject, property, false, parentContext)).Select(pc => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(pc, pc.GetFieldInputId(), false)
@@ -429,7 +429,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, INakedObjectSurface nakedObject, Func<INakedObjectAssociationSurface, string> idFunc) {
             var objectSpec = nakedObject.Specification;
 
-            var concurrencyFields = objectSpec == null ? new INakedObjectAssociationSurface[] {} : objectSpec.Properties.Where(p => p.IsConcurrency());
+            var concurrencyFields = objectSpec == null ? new INakedObjectAssociationSurface[] {} : objectSpec.Properties.Where(p => p.IsConcurrency);
             return concurrencyFields.Select(property => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(new PropertyContext(html.IdHelper(), nakedObject, property, false), idFunc(property), true)
@@ -583,7 +583,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsentSurface consent, out string value, out RouteValueDictionary attributes) {
-            value = actionContext.Action.Name();
+            value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
                 @class = actionContext.GetActionClass(),
@@ -593,7 +593,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string GetDuplicateAction(this HtmlHelper html, ActionContext actionContext, string reason, out string value, out RouteValueDictionary attributes) {
-            value = actionContext.Action.Name();
+            value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
                 @class = actionContext.GetActionClass(),
@@ -659,7 +659,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 routeValueDictionary = new RouteValueDictionary(new {action = "action"});
             }
 
-            value = (elements + GetSubmitButton(null, actionContext.Action.Name(), IdConstants.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
+            value = (elements + GetSubmitButton(null, actionContext.Action.Name, IdConstants.ActionInvokeAction, routeValueDictionary)).WrapInDivTag();
 
             attributes = new RouteValueDictionary(new {
                 action = html.GenerateUrl(Action(actionContext.Action.Id), controllerName, new RouteValueDictionary(routeValues)),
@@ -673,7 +673,7 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static string GetActionAsButton(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
             const string tagType = "button";
 
-            value = actionContext.Action.Name();
+            value = actionContext.Action.Name;
             attributes = html.GetActionAttributes(IdConstants.ActionInvokeAction, actionContext, new ActionContext(html.IdHelper(), actionContext.Target, null), String.Empty);
 
             return tagType;
@@ -704,7 +704,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<INakedObjectActionSurface> allActions, INakedObjectActionSurface action) {
-            return new Tuple<bool, string>(allActions.Count(a => a.Name() == action.Name()) > 1, MvcUi.DuplicateAction);
+            return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
         }
 
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObjectSurface nakedObject, bool isEdit) {
@@ -752,7 +752,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             var nameTag = new TagBuilder("div");
             nameTag.AddCssClass(IdConstants.ActionNameLabel);
-            nameTag.SetInnerText(targetActionContext.Action.Name());
+            nameTag.SetInnerText(targetActionContext.Action.Name);
 
             TagBuilder parms = ElementDescriptor.BuildElementSet(paramElements);
             parms.AddCssClass(IdConstants.ParamContainerName);
@@ -779,7 +779,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                           string propertyName) {
             var nakedObject = html.Surface().GetObject(subEditObject);
 
-            Func<INakedObjectAssociationSurface, bool> filterCollections = x => !x.IsCollection();
+            Func<INakedObjectAssociationSurface, bool> filterCollections = x => !x.IsCollection;
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
                 IdConstants.FieldContainerName,
@@ -874,7 +874,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     row.InnerHtml += itemTag.ToString();
                 }
 
-                string[] collectionValues = collectionAssocs.Select(a => html.GetViewField(new PropertyContext(html.IdHelper(), item, a, false), a.Description(), true, true)).ToArray();
+                string[] collectionValues = collectionAssocs.Select(a => html.GetViewField(new PropertyContext(html.IdHelper(), item, a, false), a.Description, true, true)).ToArray();
 
                 foreach (string s in collectionValues) {
                     row.InnerHtml += new TagBuilder("td") {InnerHtml = s};
@@ -882,7 +882,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 innerHtml += (row + Environment.NewLine);
             }
 
-            var headers = collectionAssocs.Select(a => a.Name()).ToArray();
+            var headers = collectionAssocs.Select(a => a.Name).ToArray();
             html.AddHeader(headers, table, isStandalone, withSelection, withTitle, defaultChecked);
             table.InnerHtml += innerHtml;
 
@@ -1001,7 +1001,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string value = "";
 
             if (context.Parameter.IsAutoCompleteEnabled) {
-                var htmlAttributes = new RouteValueDictionary(new {title = context.Parameter.Description()});
+                var htmlAttributes = new RouteValueDictionary(new {title = context.Parameter.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
                 value += html.GetAutoCompleteTextBox(context, htmlAttributes, valueNakedObject);
@@ -1027,7 +1027,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string value = "";
 
             if (context.Property.IsAutoCompleteEnabled) {
-                var htmlAttributes = new RouteValueDictionary(new {title = context.Property.Description()});
+                var htmlAttributes = new RouteValueDictionary(new {title = context.Property.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
                 value += html.GetAutoCompleteTextBox(context, htmlAttributes, valueNakedObject);
@@ -1045,7 +1045,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetAutoCompleteTextBox(this HtmlHelper html, ParameterContext context, RouteValueDictionary htmlAttributes, INakedObjectSurface valueNakedObject) {
-            string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(context.Target), actionName = context.Action.Id, parameterIndex = context.Parameter.Number()}));
+            string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(context.Target), actionName = context.Action.Id, parameterIndex = context.Parameter.Number}));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Parameter, completionAjaxUrl);
             SurfaceHelper.ForEach(attrs, kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Parameter, valueNakedObject);
@@ -1061,13 +1061,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectAssociationSurface holder, string completionAjaxUrl) {
-            int minLength = holder.AutoCompleteMinLength();
+            int minLength = holder.AutoCompleteMinLength;
             var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
             return attrs;
         }
 
         private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectActionParameterSurface holder, string completionAjaxUrl) {
-            int minLength = holder.AutoCompleteMinLength();
+            int minLength = holder.AutoCompleteMinLength;
             var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
             return attrs;
         }
@@ -1079,7 +1079,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return String.Empty;
             }
 
-            if (propertyContext.Property.IsFile()) {
+            if (propertyContext.Property.IsFile) {
                 return html.GetFileFieldValue(propertyContext);
             }
 
@@ -1087,7 +1087,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetBooleanFieldValue(valueNakedObject);
             }
 
-            if (propertyContext.Property.IsEnum()) {
+            if (propertyContext.Property.IsEnum) {
                 return GetEnumFieldValue(propertyContext.Property, valueNakedObject);
             }
 
@@ -1105,7 +1105,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string link = "{0}";
 
-            if (!propertyContext.Property.Specification.IsParseable() && !propertyContext.Property.IsCollection()) {
+            if (!propertyContext.Property.Specification.IsParseable() && !propertyContext.Property.IsCollection) {
                 string displayType = html.ViewData.ContainsKey(propertyContext.GetFieldId()) ? (string) html.ViewData[propertyContext.GetFieldId()] : String.Empty;
                 bool renderEagerly = RenderEagerly(propertyContext.Property);
 
@@ -1126,9 +1126,9 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string title = html.GetDisplayTitle(propertyContext.Property, valueNakedObject);
 
-            if (propertyContext.Property.NumberOfLines() > 1) {
-                int typicalLength = propertyContext.Property.TypicalLength();
-                int width = propertyContext.Property.Width();
+            if (propertyContext.Property.NumberOfLines > 1) {
+                int typicalLength = propertyContext.Property.TypicalLength;
+                int width = propertyContext.Property.Width;
 
                 typicalLength = typicalLength == 0 ? 20 : typicalLength;
                 width = width == 0 ? typicalLength : width;
@@ -1186,7 +1186,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString;
             string utitle = propertyContext.Property.GetNakedObject(propertyContext.Target).Specification.UntitledName();
 
-            title = String.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
+            title = String.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
 
             string imageUrl = html.GenerateUrl(IdConstants.GetFileAction + "/" + title.Replace(' ', '_'),
                 html.Surface().GetObjectTypeShortName(propertyContext.Target.Object),
@@ -1549,7 +1549,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetLabel(this HtmlHelper html, PropertyContext propertyContext) {
             bool isAutoComplete = propertyContext.IsEdit && propertyContext.Property.IsAutoCompleteEnabled;
             Func<string> propId = isAutoComplete ? (Func<string>) propertyContext.GetAutoCompleteFieldId : propertyContext.GetFieldInputId;
-            return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.Name(), propId);
+            return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.Name, propId);
         }
 
         private static string GetLabel(this HtmlHelper html, ParameterContext parameterContext) {
@@ -1558,7 +1558,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             bool isAutoComplete = parameterContext.Parameter.IsAutoCompleteEnabled;
             Func<string> parmId = isAutoComplete ? (Func<string>) parameterContext.GetParameterAutoCompleteId : parameterContext.GetParameterInputId;
-            return GetLabelTag(parameterContext.IsParameterEdit || isAutoComplete, parameterContext.Parameter.Name(), parmId);
+            return GetLabelTag(parameterContext.IsParameterEdit || isAutoComplete, parameterContext.Parameter.Name, parmId);
         }
 
         internal static string GetSubmitButton(string classAttribute, string label, string name, RouteValueDictionary data) {
@@ -1624,7 +1624,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetParameter(this HtmlHelper html, ParameterContext context, IList<ElementDescriptor> childElements, string propertyName) {
             string id = context.GetParameterInputId();
-            string tooltip = context.Parameter.Description();
+            string tooltip = context.Parameter.Description;
 
             if (context.Parameter.Specification.IsFile()) {
                 return html.GetFileParameter(context, id, tooltip);
@@ -1800,13 +1800,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static void GetTableColumnInfo(INakedObjectActionSurface holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
-            var tableViewData = holder == null ? null : holder.TableViewData();
+            var tableViewData = holder == null ? null : holder.TableViewData;
 
             GetTableColumnInfo(out filterFunc, out orderFunc, out withTitle, tableViewData);
         }
 
         internal static void GetTableColumnInfo(INakedObjectAssociationSurface holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
-            var tableViewData = holder == null ? null : holder.TableViewData();
+            var tableViewData = holder == null ? null : holder.TableViewData;
 
             GetTableColumnInfo(out filterFunc, out orderFunc, out withTitle, tableViewData);
         }
@@ -1826,15 +1826,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static bool RenderEagerly(INakedObjectAssociationSurface holder) {
-            return holder.RenderEagerly();
+            return holder.RenderEagerly;
         }
 
         internal static bool RenderEagerly(INakedObjectActionSurface holder) {
-            return holder != null && holder.RenderEagerly();
+            return holder != null && holder.RenderEagerly;
         }
 
         internal static bool DoNotCount(INakedObjectAssociationSurface holder) {
-            return holder.DoNotCount();
+            return holder.DoNotCount;
         }
 
         private static string GetCollectionAsSummary(this HtmlHelper html, PropertyContext propertyContext) {
@@ -1904,7 +1904,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 string value = html.GetFieldValue(propertyContext, inTable);
                 string cls = propertyContext.Property.Specification.IsParseable() ? IdConstants.ValueName : IdConstants.ObjectName;
 
-                if (propertyContext.Property.NumberOfLines() > 1) {
+                if (propertyContext.Property.NumberOfLines > 1) {
                     cls += (" " + IdConstants.MultilineDisplayFormat);
                 }
 
@@ -1950,7 +1950,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tag.InnerHtml += html.Encrypted(id, obj.ToString());
             }
             else if (context.Parameter.Specification.IsBoolean()) {
-                if (context.Parameter.IsNullable()) {
+                if (context.Parameter.IsNullable) {
                     html.AddTriState(tag, htmlAttributes, id, null);
                 }
                 else {
@@ -1960,7 +1960,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (context.Parameter.Specification.IsDateTime()) {
                 html.AddDateTimeControl(tag, htmlAttributes, context, id, html.GetFieldValue(context, id));
             }
-            else if (context.Parameter.IsPassword()) {
+            else if (context.Parameter.IsPassword) {
                 html.AddPasswordControl(tag, htmlAttributes, context, id, html.GetFieldValue(context, id));
             }
             else if (context.Parameter.IsChoicesEnabled == Choices.Single) {
@@ -2007,11 +2007,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static bool IsMandatory(this HtmlHelper html, ParameterContext parameterContext) {
-            return (parameterContext.Parameter.IsMandatory() /*&& parameterContext.Parameter.IsUsable(parameterContext.Target).IsAllowed*/);
+            return (parameterContext.Parameter.IsMandatory/*&& parameterContext.Parameter.IsUsable(parameterContext.Target).IsAllowed*/);
         }
 
         private static bool IsMandatory(this HtmlHelper html, PropertyContext propertyContext) {
-            return (propertyContext.Property.IsMandatory() && propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed);
+            return (propertyContext.Property.IsMandatory && propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed);
         }
 
         private static bool IsMandatory(this HtmlHelper html, FeatureContext context) {
@@ -2042,10 +2042,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static bool IsAjax(FeatureContext context) {
             if (context is PropertyContext) {
-                return (context as PropertyContext).Property.IsAjax();
+                return (context as PropertyContext).Property.IsAjax;
             }
             if (context is ParameterContext) {
-                return (context as ParameterContext).Parameter.IsAjax();
+                return (context as ParameterContext).Parameter.IsAjax;
             }
             // todo is this correct exception
             throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
@@ -2103,7 +2103,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (propertyContext.Property.Specification.IsBoolean() && !readOnly) {
                 var state = propertyContext.Property.GetNakedObject(propertyContext.Target).GetDomainObject<bool?>();
 
-                if (propertyContext.Property.IsNullable()) {
+                if (propertyContext.Property.IsNullable) {
                     html.AddTriState(tag, htmlAttributes, id, state);
                 }
                 else {
@@ -2113,7 +2113,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (propertyContext.Property.Specification.IsDateTime() && !readOnly) {
                 html.AddDateTimeControl(tag, htmlAttributes, propertyContext, id, html.GetPropertyValue(propertyContext));
             }
-            else if (propertyContext.Property.IsPassword() && !readOnly) {
+            else if (propertyContext.Property.IsPassword && !readOnly) {
                 html.AddPasswordControl(tag, htmlAttributes, propertyContext, id, html.GetPropertyValue(propertyContext));
             }
             else if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !readOnly) {
@@ -2217,10 +2217,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static int? GetMaxlength(FeatureContext context) {
             if (context is PropertyContext) {
-                return (context as PropertyContext).Property.MaxLength();
+                return (context as PropertyContext).Property.MaxLength;
             }
             if (context is ParameterContext) {
-                return (context as ParameterContext).Parameter.MaxLength();
+                return (context as ParameterContext).Parameter.MaxLength;
             }
             // todo is this correct exception
             throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
@@ -2247,10 +2247,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static RegexData GetRegex(FeatureContext context) {
             if (context is PropertyContext) {
-                return new RegexData((context as PropertyContext).Property.RegEx());
+                return new RegexData((context as PropertyContext).Property.RegEx);
             }
             if (context is ParameterContext) {
-                return new RegexData((context as ParameterContext).Parameter.RegEx());
+                return new RegexData((context as ParameterContext).Parameter.RegEx);
             }
             // todo is this correct exception
             throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
@@ -2279,10 +2279,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static RangeData GetRange(FeatureContext context) {
             if (context is PropertyContext) {
-                return new RangeData((context as PropertyContext).Property.Range());
+                return new RangeData((context as PropertyContext).Property.Range);
             }
             if (context is ParameterContext) {
-                return new RangeData((context as ParameterContext).Parameter.Range());
+                return new RangeData((context as ParameterContext).Parameter.Range);
             }
             // todo is this correct exception
             throw new BadRequestNOSException(String.Format("Unexpected context type {0}", context.GetType()));
@@ -2291,10 +2291,10 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static void AddTextControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, PropertyContext context, string id, string value) {
-            var typicalLength = context.Property.TypicalLength();
-            var maxLength = context.Property.MaxLength().GetValueOrDefault(0);
-            int numberOfLines = context.Property.NumberOfLines();
-            int width = context.Property.Width();
+            var typicalLength = context.Property.TypicalLength;
+            var maxLength = context.Property.MaxLength.GetValueOrDefault(0);
+            int numberOfLines = context.Property.NumberOfLines;
+            int width = context.Property.Width;
 
             width = width == 0 ? (typicalLength == 0 ? 20 : typicalLength)/numberOfLines : width;
 
@@ -2303,10 +2303,10 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static void AddTextControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, ParameterContext context, string id, string value) {
-            var typicalLength = context.Parameter.TypicalLength();
-            var maxLength = context.Parameter.MaxLength().GetValueOrDefault(0);
-            int numberOfLines = context.Parameter.NumberOfLines();
-            int width = context.Parameter.Width();
+            var typicalLength = context.Parameter.TypicalLength;
+            var maxLength = context.Parameter.MaxLength.GetValueOrDefault(0);
+            int numberOfLines = context.Parameter.NumberOfLines;
+            int width = context.Parameter.Width;
 
             width = width == 0 ? (typicalLength == 0 ? 20 : typicalLength)/numberOfLines : width;
 
@@ -2342,27 +2342,27 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static void AddDateTimeControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, PropertyContext context, string id, string value) {
-            var typicalLengthFacet = context.Property.TypicalLength();
+            var typicalLengthFacet = context.Property.TypicalLength;
             htmlAttributes["size"] = typicalLengthFacet == 0 ? 20 : typicalLengthFacet;
             htmlAttributes["class"] = "datetime";
             tag.InnerHtml += html.TextBox(id, value, htmlAttributes) + html.GetMandatoryIndicator(context) + html.ValidationMessage(id);
         }
 
         private static void AddDateTimeControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, ParameterContext context, string id, string value) {
-            var typicalLengthFacet = context.Parameter.TypicalLength();
+            var typicalLengthFacet = context.Parameter.TypicalLength;
             htmlAttributes["size"] = typicalLengthFacet == 0 ? 20 : typicalLengthFacet;
             htmlAttributes["class"] = "datetime";
             tag.InnerHtml += html.TextBox(id, value, htmlAttributes) + html.GetMandatoryIndicator(context) + html.ValidationMessage(id);
         }
 
         private static void AddPasswordControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, ParameterContext context, string id, string value) {
-            var length = context.Parameter.TypicalLength();
+            var length = context.Parameter.TypicalLength;
             htmlAttributes["size"] = length == 0 ? 20 : length;
             tag.InnerHtml += html.Password(id, value, htmlAttributes) + html.GetMandatoryIndicator(context) + html.ValidationMessage(id);
         }
 
         private static void AddPasswordControl(this HtmlHelper html, TagBuilder tag, RouteValueDictionary htmlAttributes, PropertyContext context, string id, string value) {
-            var length = context.Property.TypicalLength();
+            var length = context.Property.TypicalLength;
             htmlAttributes["size"] = length == 0 ? 20 : length;
             tag.InnerHtml += html.Password(id, value, htmlAttributes) + html.GetMandatoryIndicator(context) + html.ValidationMessage(id);
         }
@@ -2398,9 +2398,9 @@ namespace NakedObjects.Web.Mvc.Html {
                                            IList<ElementDescriptor> childElements,
                                            bool addToThis,
                                            bool noFinder) {
-            string tooltip = propertyContext.Property.Description();
+            string tooltip = propertyContext.Property.Description;
             string id = propertyContext.GetFieldInputId();
-            if (propertyContext.Property.IsCollection()) {
+            if (propertyContext.Property.IsCollection) {
                 propertyContext.IsPropertyEdit = false;
                 return html.GetChildCollection(propertyContext);
             }
@@ -2422,7 +2422,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetTextField(propertyContext, id, tooltip, readOnly);
             }
 
-            if (propertyContext.Property.IsInline()) {
+            if (propertyContext.Property.IsInline) {
                 var inlineNakedObject = propertyContext.GetValue(html.Surface());
                 TagBuilder elementSet = ElementDescriptor.BuildElementSet(html.EditObjectFields(inlineNakedObject, propertyContext, x => true, null, true));
                 html.AddAjaxDataUrlsToElementSet(inlineNakedObject, elementSet, propertyContext);
@@ -2451,8 +2451,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetViewValue(this HtmlHelper html, PropertyContext propertyContext) {
-            string tooltip = propertyContext.Property.Description();
-            if (propertyContext.Property.IsCollection() && !propertyContext.Property.Specification.IsFileAttachment()) {
+            string tooltip = propertyContext.Property.Description;
+            if (propertyContext.Property.IsCollection && !propertyContext.Property.Specification.IsFileAttachment()) {
                 return html.GetChildCollection(propertyContext);
             }
 
@@ -2549,7 +2549,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return new ElementDescriptor {
                 TagType = "button",
-                Value = targetActionContext.Action.Name(),
+                Value = targetActionContext.Action.Name,
                 Attributes = html.GetActionAttributes(IdConstants.ActionFindAction, targetActionContext, actionContext, propertyName)
             };
         }

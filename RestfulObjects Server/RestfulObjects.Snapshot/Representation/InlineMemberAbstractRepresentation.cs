@@ -41,7 +41,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
             }
 
-            if (propertyContext.Property.IsCollection()) {
+            if (propertyContext.Property.IsCollection) {
                 return InlineCollectionRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
             }
 

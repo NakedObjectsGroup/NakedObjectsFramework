@@ -60,11 +60,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(ParameterTypeContextSurface parameterTypeContext) {
             Id = parameterTypeContext.Parameter.Id;
-            Number = parameterTypeContext.Parameter.Number();
+            Number = parameterTypeContext.Parameter.Number;
             Name = parameterTypeContext.Parameter.Id;
-            FriendlyName = parameterTypeContext.Parameter.Name();
-            Description = parameterTypeContext.Parameter.Description();
-            Optional = !parameterTypeContext.Parameter.IsMandatory();
+            FriendlyName = parameterTypeContext.Parameter.Name;
+            Description = parameterTypeContext.Parameter.Description;
+            Optional = !parameterTypeContext.Parameter.IsMandatory;
         }
 
         private void SetLinks(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext) {
@@ -85,7 +85,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return new ParameterTypeRepresentation(oidStrategy ,req, parameterTypeContext, flags);
             }
             var exts = new Dictionary<string, object>();
-            AddStringProperties(parameterTypeContext.Parameter.Specification, parameterTypeContext.Parameter.MaxLength(), parameterTypeContext.Parameter.Pattern(), exts);
+            AddStringProperties(parameterTypeContext.Parameter.Specification, parameterTypeContext.Parameter.MaxLength, parameterTypeContext.Parameter.Pattern, exts);
 
             OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
 

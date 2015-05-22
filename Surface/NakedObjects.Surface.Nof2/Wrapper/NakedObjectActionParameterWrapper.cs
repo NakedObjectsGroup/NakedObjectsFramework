@@ -1,14 +1,16 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Surface;
+using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof2.Context;
-using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
@@ -19,7 +21,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public NakedObjectActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, INakedObjectsSurface surface) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.target = target;
-            Surface = surface; 
+            Surface = surface;
+        }
+
+        public bool IsChoicesEnabled {
+            get { return nakedObjectActionParameter.isChoicesEnabled(); }
         }
 
         #region INakedObjectActionParameterSurface Members
@@ -41,13 +47,25 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         Choices INakedObjectActionParameterSurface.IsChoicesEnabled {
             get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
         }
+
         public bool IsAutoCompleteEnabled {
             get { return false; }
         }
 
+        public string PresentationHint { get; private set; }
+        public Tuple<Regex, string> RegEx { get; private set; }
+        public Tuple<IConvertible, IConvertible, bool> Range { get; private set; }
+        public int NumberOfLines { get; private set; }
+        public int Width { get; private set; }
+        public int TypicalLength { get; private set; }
+        public bool IsAjax { get; private set; }
+        public bool IsNullable { get; private set; }
+        public bool IsPassword { get; private set; }
+        public bool IsFindMenuEnabled { get; private set; }
+
         public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
             //return GetChoices(nakedObject,  )
-            return new INakedObjectSurface[]{};
+            return new INakedObjectSurface[] {};
         }
 
         public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
@@ -56,10 +74,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm) {
             throw new NotImplementedException();
-        }
-
-        public bool IsChoicesEnabled {
-            get { return nakedObjectActionParameter.isChoicesEnabled(); }
         }
 
         public string Name {
@@ -86,9 +100,9 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return nakedObjectActionParameter.getNumber(); }
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
-            return nakedObjectActionParameter.getChoices(((NakedObjectWrapper) nakedObject).NakedObject).Select(no => new NakedObjectWrapper(no, Surface)).Cast<INakedObjectSurface>().ToArray();
-        }
+        public string Mask { get; private set; }
+        public int AutoCompleteMinLength { get; private set; }
+        public IDictionary<string, object> ExtensionData { get; private set; }
 
         public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
             return nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject) != null;
@@ -99,7 +113,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
-            return new Tuple<string, INakedObjectSpecificationSurface>[]{};
+            return new Tuple<string, INakedObjectSpecificationSurface>[] {};
         }
 
         public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
@@ -110,7 +124,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             throw new NotImplementedException();
         }
 
+        public INakedObjectsSurface Surface { get; set; }
+
         #endregion
+
+        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+            return nakedObjectActionParameter.getChoices(((NakedObjectWrapper) nakedObject).NakedObject).Select(no => new NakedObjectWrapper(no, Surface)).Cast<INakedObjectSurface>().ToArray();
+        }
 
         public override bool Equals(object obj) {
             var nakedObjectActionParameterWrapper = obj as NakedObjectActionParameterWrapper;
@@ -121,8 +141,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public bool Equals(NakedObjectActionParameterWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);
         }
 
@@ -131,50 +151,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.Name):
-                    return Name;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsMandatory):
-                    return IsMandatory;
-                case (ScalarProperty.MaxLength):
-                    return MaxLength;
-                case (ScalarProperty.Pattern):
-                    return Pattern;
-                case (ScalarProperty.Number):
-                    return Number;
-                case (ScalarProperty.Mask):
-                    return "";
-                case (ScalarProperty.AutoCompleteMinLength):
-                    return 0;
-                case (ScalarProperty.TypicalLength):
-                    return 0;
-                case (ScalarProperty.IsNullable):
-                    return false;
-                case (ScalarProperty.IsAjax):
-                    return false;
-                case (ScalarProperty.IsPassword):
-                    return false;
-                case (ScalarProperty.NumberOfLines):
-                    return 0;
-                case (ScalarProperty.Width):
-                    return 0;
-                case (ScalarProperty.Range):
-                    return 0;
-                case (ScalarProperty.RegEx):
-                    return null;
-                case (ScalarProperty.PresentationHint):
-                    return "";
-                case (ScalarProperty.IsFindMenuEnabled):
-                    return false;
-                case (ScalarProperty.ExtensionData):
-                    return null;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
+            throw new NotImplementedException();
         }
-
-        public INakedObjectsSurface Surface { get; set; }
     }
 }

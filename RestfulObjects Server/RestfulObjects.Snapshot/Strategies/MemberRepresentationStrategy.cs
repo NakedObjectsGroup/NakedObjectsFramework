@@ -71,7 +71,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 tempLinks.Add(CreateSelfLink());
             }
             else if (!propertyContext.Target.IsTransient) {
-                if (propertyContext.Property.IsCollection() && !propertyContext.Property.IsEager(propertyContext.Target)) {
+                if (propertyContext.Property.IsCollection && !propertyContext.Property.IsEager(propertyContext.Target)) {
                     tempLinks.Add(CreateCollectionValueLink());
                 }
                 tempLinks.Add(CreateDetailsLink());
