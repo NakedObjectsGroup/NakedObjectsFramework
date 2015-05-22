@@ -87,7 +87,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static bool ObjectIsNotPersistent(this HtmlHelper html, object domainObject) {
             var nakedObject = html.Surface().GetObject(domainObject);
-            return nakedObject.IsNotPersistent();
+            return nakedObject.IsNotPersistent;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static string TransientFlag(this HtmlHelper html, object domainObject) {
             var nakedObject = html.Surface().GetObject(domainObject);
-            return nakedObject.IsTransient() ? " " + IdConstants.TransientName : "";
+            return nakedObject.IsTransient ? " " + IdConstants.TransientName : "";
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectSurface nakedObject) {
-            string title = nakedObject.TitleString();
+            string title = nakedObject.TitleString;
             return MvcHtmlString.Create(title);
         }
 
@@ -117,7 +117,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
             var nakedObject = html.Surface().GetObject(model);
 
-            string title = nakedObject.Specification.IsCollection() ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
+            string title = nakedObject.Specification.IsCollection() ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString;
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName() : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdConstants.ObjectName);
         }
@@ -173,7 +173,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model) {
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(nakedObject.TitleString());
+            return MvcHtmlString.Create(nakedObject.TitleString);
         }
 
         #endregion

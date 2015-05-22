@@ -1,23 +1,25 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Surface;
 using org.nakedobjects.@object;
 using sdm.systems.reflector;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectWrapper : ScalarPropertyHolder,  INakedObjectSurface {
+    public class NakedObjectWrapper : INakedObjectSurface {
         private readonly Naked nakedObject;
 
         public NakedObjectWrapper(Naked nakedObject, INakedObjectsSurface surface) {
             this.nakedObject = nakedObject;
-            Surface = surface; 
+            Surface = surface;
         }
 
         public Naked NakedObject {
@@ -43,9 +45,16 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return nakedObject.getObject(); }
         }
 
-        public string TitleString() {
-            return nakedObject.titleString();
+        public bool IsNotPersistent { get; private set; }
+
+        public string TitleString {
+            get { return nakedObject.titleString(); }
         }
+
+        public string InvariantString { get; private set; }
+        public bool IsViewModelEditView { get; private set; }
+        public bool IsViewModel { get; private set; }
+        public IDictionary<string, object> ExtensionData { get; private set; }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
             return ((IEnumerable) Object).Cast<object>().Select(o => new NakedObjectWrapper(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), Surface));
@@ -84,10 +93,16 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             throw new NotImplementedException();
         }
 
+        public T GetDomainObject<T>() {
+            return (T) Object;
+        }
+
         public PropertyInfo[] GetKeys() {
             // return NakedObjectsContext.ObjectPersistor.GetKeys(nakedObject.Object.GetType());
             return null;
         }
+
+        public bool IsCollectionMemento { get; private set; }
 
         public bool IsTransient {
             get {
@@ -100,13 +115,22 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             }
         }
 
+        public bool IsDestroyed { get; private set; }
+        public bool IsUserPersistable { get; private set; }
+
         public IVersionSurface Version {
             get { return new VersionWrapper(((NakedReference) nakedObject).getVersion()); }
         }
 
+        public INakedObjectActionSurface MementoAction { get; private set; }
+        public string EnumIntegralValue { get; private set; }
+        public bool IsPaged { get; private set; }
+
         public IOidSurface Oid {
             get { return new OidWrapper(nakedObject.getOid()); }
         }
+
+        public INakedObjectsSurface Surface { get; set; }
 
         #endregion
 
@@ -119,48 +143,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public bool Equals(NakedObjectWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObject, nakedObject);
         }
 
         public override int GetHashCode() {
             return (nakedObject != null ? nakedObject.GetHashCode() : 0);
         }
-
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.IsTransient):
-                    return IsTransient;
-                case (ScalarProperty.IsDestroyed):
-                    return false;
-                case (ScalarProperty.TitleString):
-                    return TitleString();
-                case (ScalarProperty.InvariantString):
-                    return "";
-                case (ScalarProperty.IsNotPersistent):
-                    return false;
-                case (ScalarProperty.IsUserPersistable):
-                    return true;
-                case (ScalarProperty.IsCollectionMemento):
-                    return false;
-                case (ScalarProperty.IsPaged):
-                    return false;
-                case (ScalarProperty.IsViewModelEditView):
-                    return false;
-                case (ScalarProperty.IsViewModel):
-                    return false;
-                case (ScalarProperty.EnumIntegralValue):
-                    return false;
-                case (ScalarProperty.MementoAction):
-                    return null;
-                case (ScalarProperty.ExtensionData):
-                    return null;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
-
-        public INakedObjectsSurface Surface { get; set; }
     }
 }

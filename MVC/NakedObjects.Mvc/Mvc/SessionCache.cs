@@ -13,12 +13,12 @@ namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
         public static void AddObjectToSession(this HttpSessionStateBase session, INakedObjectsSurface framework, string key, object domainObject) {
             var nakedObject = framework.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient() ? domainObject : framework.OidStrategy.GetObjectId(nakedObject)));
+            session.Add(key, (nakedObject.IsTransient ? domainObject : framework.OidStrategy.GetObjectId(nakedObject)));
         }
 
         public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsSurface framework, string key, T domainObject) where T : class {
             var nakedObject = framework.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient() ? (object) domainObject : framework.OidStrategy.GetObjectId(nakedObject)));
+            session.Add(key, (nakedObject.IsTransient? (object) domainObject : framework.OidStrategy.GetObjectId(nakedObject)));
         }
 
         public static void AddValueToSession<T>(this HttpSessionStateBase session, string key, T value) where T : struct {

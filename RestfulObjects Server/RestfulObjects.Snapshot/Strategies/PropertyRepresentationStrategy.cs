@@ -73,7 +73,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         public new LinkRepresentation[] GetLinks(bool inline) {
             var links = new List<LinkRepresentation>(base.GetLinks(inline));
 
-            if (!propertyContext.Target.IsTransient()) {
+            if (!propertyContext.Target.IsTransient) {
                 AddMutatorLinks(links);
                 AddPrompt(links);
             }

@@ -9,12 +9,25 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectSurface : IScalarPropertyHolder, ISurfaceHolder {
+    public interface INakedObjectSurface :  ISurfaceHolder {
         INakedObjectSpecificationSurface Specification { get; }
         INakedObjectSpecificationSurface ElementSpecification { get; }
         object Object { get; }
         IOidSurface Oid { get; }
         IVersionSurface Version { get; }
+        INakedObjectActionSurface MementoAction { get; }
+        string EnumIntegralValue { get; }
+        bool IsPaged { get; }
+        bool IsCollectionMemento { get; }
+        bool IsTransient { get; }
+        bool IsDestroyed { get; }
+        bool IsUserPersistable { get; }
+        bool IsNotPersistent { get; }
+        string TitleString { get; }
+        string InvariantString { get; }
+        bool IsViewModelEditView { get; }
+        bool IsViewModel { get; }
+        IDictionary<string, object> ExtensionData { get; }
         IEnumerable<INakedObjectSurface> ToEnumerable();
         PropertyInfo[] GetKeys();
         INakedObjectSurface Page(int page, int size);
@@ -24,5 +37,6 @@ namespace NakedObjects.Surface {
         object[] GetSelected();
         void Resolve();
         void SetIsNotQueryableState(bool state);
+        T GetDomainObject<T>();
     }
 }

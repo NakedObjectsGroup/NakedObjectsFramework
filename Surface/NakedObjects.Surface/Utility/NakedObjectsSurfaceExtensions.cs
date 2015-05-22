@@ -13,61 +13,61 @@ namespace NakedObjects.Surface.Utility {
     public static class NakedObjectsSurfaceExtensions {
         #region INakedObjectSurface
 
-        public static T GetDomainObject<T>(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface == null ? default(T) : (T)nakedObjectSurface.Object;
-        }
+        //public static T GetDomainObject<T>(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface == null ? default(T) : (T)nakedObjectSurface.Object;
+        //}
 
-        public static INakedObjectActionSurface MementoAction(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<INakedObjectActionSurface>(ScalarProperty.MementoAction);
-        }
+        //public static INakedObjectActionSurface MementoAction(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<INakedObjectActionSurface>(ScalarProperty.MementoAction);
+        //}
 
-        public static string EnumIntegralValue(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.EnumIntegralValue);
-        }
+        //public static string EnumIntegralValue(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.EnumIntegralValue);
+        //}
 
-        public static bool IsPaged(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsPaged);
-        }
+        //public static bool IsPaged(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsPaged);
+        //}
 
-        public static bool IsCollectionMemento(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsCollectionMemento);
-        }
+        //public static bool IsCollectionMemento(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsCollectionMemento);
+        //}
 
-        public static bool IsTransient(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);
-        }
+        //public static bool IsTransient(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsTransient);
+        //}
 
-        public static bool IsDestroyed(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsDestroyed);
-        }
+        //public static bool IsDestroyed(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsDestroyed);
+        //}
 
-        public static bool IsUserPersistable(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsUserPersistable);
-        }
+        //public static bool IsUserPersistable(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsUserPersistable);
+        //}
 
-        public static bool IsNotPersistent(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsNotPersistent);
-        }
+        //public static bool IsNotPersistent(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsNotPersistent);
+        //}
 
-        public static string TitleString(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.TitleString);
-        }
+        //public static string TitleString(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.TitleString);
+        //}
 
-        public static string InvariantString(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.InvariantString);
-        }
+        //public static string InvariantString(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<string>(ScalarProperty.InvariantString);
+        //}
 
-        public static bool IsViewModelEditView(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModelEditView);
-        }
+        //public static bool IsViewModelEditView(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModelEditView);
+        //}
 
-        public static bool IsViewModel(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModel);
-        }
+        //public static bool IsViewModel(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<bool>(ScalarProperty.IsViewModel);
+        //}
 
-        public static IDictionary<string, object> ExtensionData(this INakedObjectSurface nakedObjectSurface) {
-            return nakedObjectSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
-        }
+        //public static IDictionary<string, object> ExtensionData(this INakedObjectSurface nakedObjectSurface) {
+        //    return nakedObjectSurface.GetScalarProperty<IDictionary<string, object>>(ScalarProperty.ExtensionData);
+        //}
 
         #endregion
 

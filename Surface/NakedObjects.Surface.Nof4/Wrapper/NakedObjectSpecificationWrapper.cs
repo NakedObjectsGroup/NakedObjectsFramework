@@ -40,7 +40,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (spec.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
+                    extData[IdConstants.PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
                 }
 
                 return extData.Any() ? extData : null;
@@ -157,7 +157,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsImmutable(INakedObjectSurface nakedObject) {
-            return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !nakedObject.IsTransient());
+            return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !nakedObject.IsTransient);
         }
 
         public string GetIconName(INakedObjectSurface nakedObject) {

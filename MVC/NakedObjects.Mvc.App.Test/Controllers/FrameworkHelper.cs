@@ -306,7 +306,7 @@ namespace MvcTestApp.Tests.Controllers {
             if (rawCollection.Count() == 1) {
                 var firstObj = GetNakedObjectFromId(surface, rawCollection.First());
 
-                if (firstObj != null && firstObj.IsCollectionMemento()) {
+                if (firstObj != null && firstObj.IsCollectionMemento) {
                     return firstObj.Object;
                 }
             }

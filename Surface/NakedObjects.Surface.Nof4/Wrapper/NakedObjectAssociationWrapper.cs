@@ -43,7 +43,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (assoc.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[PresentationHint] = assoc.GetFacet<IPresentationHintFacet>().Value;
+                    extData[IdConstants.PresentationHint] = assoc.GetFacet<IPresentationHintFacet>().Value;
                 }
 
                 return extData.Any() ? extData : null;
@@ -191,7 +191,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
             var choices = GetChoices(target, parameterNameValues);
-            return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString())).ToArray();
+            return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString)).ToArray();
         }
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
@@ -217,7 +217,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
             var mask = assoc.GetFacet<IMaskFacet>();
             if (mask == null) {
-                return nakedObject.TitleString();
+                return nakedObject.TitleString;
             }
             var titleFacet = ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
             return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.NakedObjectManager);

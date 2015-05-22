@@ -273,7 +273,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             // if target is transient  cancel back to history
-            if (domainObject != null && html.Surface().GetObject(domainObject).IsTransient()) {
+            if (domainObject != null && html.Surface().GetObject(domainObject).IsTransient) {
                 domainObject = null;
             }
 

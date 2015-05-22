@@ -50,7 +50,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult View(INakedObjectSurface nakedObject) {
-            string viewName = nakedObject.IsViewModelEditView() ? "ViewModel" : "ObjectView";
+            string viewName = nakedObject.IsViewModelEditView ? "ViewModel" : "ObjectView";
             return View(viewName, nakedObject.Object);
         }
 

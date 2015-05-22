@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                 IdConstants.MenuContainerName,
                 html.IdHelper().GetServiceContainerId(nakedObject),
-                nakedObject.TitleString());
+                nakedObject.TitleString);
         }
 
         [Obsolete("Use MenuExtensions#MainMenu")]

@@ -1088,7 +1088,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             var nakedObject = html.Surface().GetObject(model);
             var dflt = nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject);
-            return MvcHtmlString.Create(dflt == null ? "" : dflt.TitleString());
+            return MvcHtmlString.Create(dflt == null ? "" : dflt.TitleString);
         }
 
         #endregion

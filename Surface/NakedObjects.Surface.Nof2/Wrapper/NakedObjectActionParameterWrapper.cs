@@ -103,7 +103,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
-            return valueNakedObject.TitleString();
+            return valueNakedObject.TitleString;
         }
 
         public IConsentSurface IsValid(INakedObjectSurface target, object value) {

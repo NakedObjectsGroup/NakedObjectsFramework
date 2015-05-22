@@ -143,7 +143,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
             if (defaultNakedObject.Specification.IsCollection()) {
-                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, i, i.TitleString(), flags)).ToArray();
+                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, i, i.TitleString, flags)).ToArray();
             }
             return CreateDefaultLink(oidStrategy, req, parameter, defaultNakedObject, title, flags);
         }
@@ -160,7 +160,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (parameter.DefaultTypeIsExplicit(nakedObject)) {
                 INakedObjectSurface defaultNakedObject = parameter.GetDefault(nakedObject);
                 if (defaultNakedObject != null) {
-                    string title = defaultNakedObject.TitleString();
+                    string title = defaultNakedObject.TitleString;
                     object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object);
                     var isValue = defaultNakedObject.Specification.IsParseable() || (defaultNakedObject.Specification.IsCollection() && defaultNakedObject.ElementSpecification.IsParseable());
                     object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy ,req, parameter, defaultNakedObject, title, flags);

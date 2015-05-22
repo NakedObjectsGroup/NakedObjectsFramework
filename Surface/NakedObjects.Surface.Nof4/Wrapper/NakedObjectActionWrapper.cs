@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
@@ -52,7 +53,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (action.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[PresentationHint] = action.GetFacet<IPresentationHintFacet>().Value;
+                    extData[IdConstants.PresentationHint] = action.GetFacet<IPresentationHintFacet>().Value;
                 }
 
                 return extData.Any() ? extData : null;

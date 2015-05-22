@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (action == null || action.ReturnType.IsVoid()) {
                 // todo investigate other ways to do this 
-                action = nakedObject.MementoAction();
+                action = nakedObject.MementoAction;
             }
 
             CommonHtmlHelper.GetTableColumnInfo(action, out filterFunc, out orderFunc, out withTitle);
@@ -63,7 +63,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             var adapter = html.Surface().GetObject(domainObject);
             var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection() && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
-            return collections.Select(coll => string.Format(format, coll.assoc.Name(), coll.val.TitleString())).ToArray();
+            return collections.Select(coll => string.Format(format, coll.assoc.Name(), coll.val.TitleString)).ToArray();
         }
 
         #endregion

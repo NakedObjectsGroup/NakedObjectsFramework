@@ -140,7 +140,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static string SafeGetTitle(INakedObjectSurface no) {
-            return no == null ? "" : no.TitleString();
+            return no == null ? "" : no.TitleString;
         }
 
         public static string SafeGetTitle(INakedObjectAssociationSurface property, INakedObjectSurface valueNakedObject) {

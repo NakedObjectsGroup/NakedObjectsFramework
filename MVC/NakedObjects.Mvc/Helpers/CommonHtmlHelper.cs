@@ -81,7 +81,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString Scalar(this HtmlHelper html, object scalar) {
             var nakedObject = html.Surface().GetObject(scalar);
-            return new MvcHtmlString(nakedObject.TitleString());
+            return new MvcHtmlString(nakedObject.TitleString);
         }
 
         internal static string UserMessages(string[] items, string cls) {
@@ -179,8 +179,8 @@ namespace NakedObjects.Web.Mvc.Html {
             AddAjaxDataUrlsToElementSet(html, nakedObject, fieldSet);
 
             fieldSet.InnerHtml += html.Hidden(html.IdHelper().GetDisplayFormatId(id), ToNameValuePairs(html.GetDisplayStatuses()));
-            fieldSet.InnerHtml += nakedObject.IsViewModelEditView() ? "" : GetSubmitButton(IdConstants.SaveButtonClass, MvcUi.Save, String.Empty, new RouteValueDictionary());
-            fieldSet.InnerHtml += nakedObject.IsTransient() ? GetSubmitButton(IdConstants.SaveCloseButtonClass, MvcUi.SaveAndClose, IdConstants.SaveAndCloseAction, new RouteValueDictionary(new {close = true})) : "";
+            fieldSet.InnerHtml += nakedObject.IsViewModelEditView ? "" : GetSubmitButton(IdConstants.SaveButtonClass, MvcUi.Save, String.Empty, new RouteValueDictionary());
+            fieldSet.InnerHtml += nakedObject.IsTransient ? GetSubmitButton(IdConstants.SaveCloseButtonClass, MvcUi.SaveAndClose, IdConstants.SaveAndCloseAction, new RouteValueDictionary(new {close = true})) : "";
 
             return MvcHtmlString.Create(fieldSet.ToString());
         }
@@ -261,7 +261,7 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static MvcHtmlString BuildViewContainer(this HtmlHelper html, INakedObjectSurface nakedObject, IEnumerable<ElementDescriptor> elements, string cls, string id, bool anyEditableFields) {
             TagBuilder fieldSet = AddClassAndIdToElementSet(elements, cls, id);
 
-            if (nakedObject.IsNotPersistent()) {
+            if (nakedObject.IsNotPersistent) {
                 fieldSet.InnerHtml += ElementDescriptor.BuildElementSet(html.EditObjectFields(nakedObject, null, x => false, null));
 
                 if (anyEditableFields && !nakedObject.Specification.IsAlwaysImmutable()) {
@@ -388,7 +388,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             IEnumerable<ElementDescriptor> visibleElements = visibleFields.Select(property => html.EditObjectField(new PropertyContext(html.IdHelper(), nakedObject, property, true, parentContext), noFinder, childElements, idToAddTo));
 
-            if (nakedObject.IsTransient()) {
+            if (nakedObject.IsTransient) {
                 IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsVisible(nakedObject)).
                     Select(property => new ElementDescriptor {
                         TagType = "div",
@@ -416,7 +416,7 @@ namespace NakedObjects.Web.Mvc.Html {
             });
             IEnumerable<ElementDescriptor> elements = visibleElements.Union(filteredElements);
 
-            if (!nakedObject.IsTransient()) {
+            if (!nakedObject.IsTransient) {
                 // if change existing object add concurrency check fields as hidden  
 
                 IEnumerable<ElementDescriptor> concurrencyElements = html.GetConcurrencyElements(nakedObject, x => new PropertyContext(html.IdHelper(), nakedObject, x, false, parentContext).GetConcurrencyFieldInputId());
@@ -437,7 +437,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<ElementDescriptor> GetCollectionSelectedElements(this HtmlHelper html, INakedObjectSurface nakedObject) {
-            if (nakedObject.IsCollectionMemento()) {
+            if (nakedObject.IsCollectionMemento) {
                 var selectedObjects = nakedObject.GetSelected();
                 var selectedObjectIds = selectedObjects.Select(o => html.Surface().GetObject(o)).Select(no => html.Surface().OidStrategy.GetObjectId(no)).ToArray();
                 int index = 0;
@@ -459,12 +459,12 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html, object contextObject, ActionContext targetActionContext, string propertyName, IEnumerable actionResult, bool all) {
             var contextNakedObject = html.Surface().GetObject(contextObject);
             var actionContext = new ActionContext(html.IdHelper(), false, contextNakedObject, null);
-            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => html.Surface().GetObject(x).IsTransient());
+            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => html.Surface().GetObject(x).IsTransient);
             return html.EditObjectFields(contextNakedObject, null, x => all || x.Id == propertyName, null, false, childElements, propertyName);
         }
 
         internal static IEnumerable<ElementDescriptor> ActionParameterFields(this HtmlHelper html, ActionContext actionContext, ActionContext targetActionContext, string propertyName, IEnumerable actionResult) {
-            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => (html.Surface().GetObject(x).IsTransient() && !html.Surface().GetObject(x).Specification.IsCollection()));
+            List<ElementDescriptor> childElements = html.GetChildElements(actionResult, targetActionContext, actionContext, propertyName, x => (html.Surface().GetObject(x).IsTransient && !html.Surface().GetObject(x).Specification.IsCollection()));
             return html.ActionParameterFields(actionContext, childElements, propertyName);
         }
 
@@ -1183,7 +1183,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
             // todo is this right ?
-            string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString();
+            string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString;
             string utitle = propertyContext.Property.GetNakedObject(propertyContext.Target).Specification.UntitledName();
 
             title = String.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage() ? propertyContext.Property.Name() : MvcUi.ShowFile) : title;
@@ -1217,7 +1217,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (valueNakedObject == null) {
                 return String.Empty;
             }
-            return valueNakedObject.InvariantString();
+            return valueNakedObject.InvariantString;
         }
 
         private static string GetRawValue(this HtmlHelper html, PropertyContext propertyContext) {
@@ -1231,7 +1231,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return valueNakedObject.Object.ToString();
             }
 
-            return valueNakedObject.TitleString();
+            return valueNakedObject.TitleString;
         }
 
         private static IDictionary<string, object> GetDisplayStatuses(this HtmlHelper html) {
@@ -1258,7 +1258,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string actionName = propertyContext.IsEdit ? IdConstants.EditObjectAction : IdConstants.ViewAction;
 
-            if (propertyContext.IsEdit || propertyContext.Target.IsTransient()) {
+            if (propertyContext.IsEdit || propertyContext.Target.IsTransient) {
                 // for the moment no expand and delete on editable views 
                 return "";
             }
@@ -1294,7 +1294,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string actionName = propertyContext.IsEdit ? IdConstants.EditObjectAction : IdConstants.ViewAction;
 
-            if (propertyContext.IsEdit || propertyContext.Target.IsTransient()) {
+            if (propertyContext.IsEdit || propertyContext.Target.IsTransient) {
                 return GetSubmitButton(IdConstants.SummaryButtonClass, MvcUi.Summary, IdConstants.RedisplayAction, new RouteValueDictionary {{collectionId, IdConstants.SummaryDisplayFormat}, {"editMode", propertyContext.IsEdit}}) +
                        GetSubmitButton(IdConstants.ListButtonClass, MvcUi.List, IdConstants.RedisplayAction, new RouteValueDictionary {{collectionId, IdConstants.ListDisplayFormat}, {"editMode", propertyContext.IsEdit}}) +
                        GetSubmitButton(IdConstants.TableButtonClass, MvcUi.Table, IdConstants.RedisplayAction, new RouteValueDictionary {{collectionId, IdConstants.TableDisplayFormat}, {"editMode", propertyContext.IsEdit}});
@@ -1350,7 +1350,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<SelectListItem> GetItems(this HtmlHelper html, string id, PropertyContext propertyContext) {
             INakedObjectSurface existingValue;
 
-            if (propertyContext.Target.IsTransient() && !propertyContext.Property.DefaultTypeIsExplicit(propertyContext.Target)) {
+            if (propertyContext.Target.IsTransient && !propertyContext.Property.DefaultTypeIsExplicit(propertyContext.Target)) {
                 // ignore implicit defaults on transients
                 existingValue = null;
             }
@@ -1453,16 +1453,16 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetValueForChoice(this HtmlHelper html, INakedObjectSurface choice) {
             if (choice.Specification.IsEnum()) {
-                return choice.EnumIntegralValue();
+                return choice.EnumIntegralValue;
             }
             if (choice.Specification.IsParseable()) {
-                return choice.TitleString();
+                return choice.TitleString;
             }
             return html.Surface().OidStrategy.GetObjectId(choice);
         }
 
         private static string GetTextForChoice(INakedObjectSurface choice) {
-            return choice.TitleString();
+            return choice.TitleString;
         }
 
         private static bool GetSelectedForChoice(this HtmlHelper html, INakedObjectSurface choice, INakedObjectSurface existingNakedObject) {
@@ -1480,11 +1480,11 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (choice.Specification.IsEnum()) {
-                return existingNakedObjects.Any(no => no != null && choice.EnumIntegralValue() == no.EnumIntegralValue());
+                return existingNakedObjects.Any(no => no != null && choice.EnumIntegralValue == no.EnumIntegralValue);
             }
 
             if (choice.Specification.IsParseable()) {
-                return existingNakedObjects.Any(no => choice.TitleString().Trim() == no.TitleString().Trim());
+                return existingNakedObjects.Any(no => choice.TitleString.Trim() == no.TitleString.Trim());
             }
             return existingNakedObjects.Any(choice.Equals);
         }
@@ -1739,7 +1739,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     var suggestedItem = html.GetSuggestedItem(id, valueNakedObject);
                     string valueId = suggestedItem == null ? String.Empty : html.Surface().OidStrategy.GetObjectId(suggestedItem);
 
-                    if (!propertyContext.Target.IsTransient()) {
+                    if (!propertyContext.Target.IsTransient) {
                         // do not only allow drag and drop onto transients - otherwise  attempt to validate 
                         // may depend on missing fields/data. cf check at top of AjaxControllerImpl:ValidateProperty
 
@@ -1875,7 +1875,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static ElementDescriptor GetSelectionCollection(this HtmlHelper html, INakedObjectSurface collectionNakedObject, INakedObjectSurface targetNakedObject, string propertyName) {
-            Func<INakedObjectSurface, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString(), IdConstants.ViewAction, item.Object) + " " +
+            Func<INakedObjectSurface, string> linkFunc = item => WrapInDiv(html.ObjectIconAndDetailsLink(item.TitleString, IdConstants.ViewAction, item.Object) + " " +
                                                                            GetSubmitButton(IdConstants.SelectButtonClass, MvcUi.Select, IdConstants.SelectAction, new RouteValueDictionary(new {id = html.Surface().OidStrategy.GetObjectId(targetNakedObject)}) {{propertyName, html.Surface().OidStrategy.GetObjectId(item)}}), IdConstants.ObjectName).ToString();
 
             return new ElementDescriptor {
@@ -2383,7 +2383,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string ZeroValueIfTransientAndNotSet(this HtmlHelper html, PropertyContext propertyContext, string value) {
-            if (propertyContext.Target.IsTransient() && !String.IsNullOrEmpty(value)) {
+            if (propertyContext.Target.IsTransient && !String.IsNullOrEmpty(value)) {
                 var valueNakedObject = propertyContext.GetValue(html.Surface());
 
                 if (!propertyContext.Property.DefaultTypeIsExplicit(propertyContext.Target) && ShouldClearValue(valueNakedObject.Object)) {
@@ -2405,12 +2405,12 @@ namespace NakedObjects.Web.Mvc.Html {
                 return html.GetChildCollection(propertyContext);
             }
             var consent = propertyContext.Property.IsUsable(propertyContext.Target);
-            if (consent.IsVetoed && !propertyContext.Target.IsTransient()) {
+            if (consent.IsVetoed && !propertyContext.Target.IsTransient) {
                 propertyContext.IsPropertyEdit = false;
                 return html.GetViewField(propertyContext, consent.Reason);
             }
 
-            bool readOnly = consent.IsVetoed && propertyContext.Target.IsTransient();
+            bool readOnly = consent.IsVetoed && propertyContext.Target.IsTransient;
 
             // for the moment do not allow file properties to be edited 
             if (propertyContext.Property.Specification.IsFileAttachment()) {

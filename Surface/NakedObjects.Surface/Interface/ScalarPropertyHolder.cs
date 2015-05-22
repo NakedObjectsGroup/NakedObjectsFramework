@@ -12,9 +12,7 @@ using System.Linq;
 namespace NakedObjects.Surface {
     public abstract class ScalarPropertyHolder : IScalarPropertyHolder {
         // custom extensions 
-        protected const string ServiceType = "x-ro-nof-serviceType";
-        protected const string RenderInEditMode = "x-ro-nof-renderInEditMode";
-        protected const string PresentationHint = "x-ro-nof-presentationHint";
+       
 
         #region IScalarPropertyHolder Members
 

@@ -56,7 +56,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             nakedObject.SetIsNotQueryableState(true);
 
-            if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient() && nakedObject.IsUserPersistable()) {
+            if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient && nakedObject.IsUserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(Surface, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
                 return AppropriateView(controlData, (INakedObjectSurface) null);
@@ -72,7 +72,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var nakedObject = controlData.GetNakedObject(Surface);
             SetExistingCollectionFormats(form);
 
-            if (nakedObject.IsNotPersistent()) {
+            if (nakedObject.IsNotPersistent) {
                 RefreshTransient(nakedObject, form);
             }
 
@@ -278,7 +278,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, targetAction, y));
 
-            if (targetNakedObject.IsNotPersistent()) {
+            if (targetNakedObject.IsNotPersistent) {
                 RefreshTransient(targetNakedObject, controlData.Form);
             }
 
@@ -592,7 +592,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 IEnumerable resultAsEnumerable = GetResultAsEnumerable(result, contextAction, propertyName);
 
-                if (resultAsEnumerable.Cast<object>().Count() == 1 && !result.IsTransient()) {
+                if (resultAsEnumerable.Cast<object>().Count() == 1 && !result.IsTransient) {
                     var selectedItem = new Dictionary<string, string> {{propertyName, GetObjectId(resultAsEnumerable.Cast<object>().Single())}};
                     return SelectSingleItem(contextNakedObject, contextAction, controlData, selectedItem);
                 }

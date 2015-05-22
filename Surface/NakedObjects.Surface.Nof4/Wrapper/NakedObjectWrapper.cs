@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,68 +16,66 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectWrapper : ScalarPropertyHolder, INakedObjectSurface {
+    public class NakedObjectWrapper : INakedObjectSurface {
         private readonly INakedObjectsFramework framework;
-        private  INakedObjectAdapter nakedObject;
 
         protected NakedObjectWrapper(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
 
-
-            this.nakedObject = nakedObject;
+            WrappedNakedObject = nakedObject;
             this.framework = framework;
             Surface = surface;
         }
 
-        public INakedObjectAdapter WrappedNakedObject {
-            get { return nakedObject; }
-            set { nakedObject = value; } // hack remove
-        }
+        public INakedObjectAdapter WrappedNakedObject { get; private set; }
+
+        #region INakedObjectSurface Members
 
         public bool IsTransient {
-            get { return nakedObject.ResolveState.IsTransient(); }
+            get { return WrappedNakedObject.ResolveState.IsTransient(); }
         }
 
-        protected IDictionary<string, object> ExtensionData {
+        public IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
                 ITypeSpec spec = WrappedNakedObject.Spec;
 
                 if (spec.ContainsFacet<IViewModelFacet>() && spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject)) {
-                    extData[RenderInEditMode] = true;
+                    extData[IdConstants.RenderInEditMode] = true;
                 }
 
                 if (spec.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
+                    extData[IdConstants.PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
                 }
 
                 return extData.Any() ? extData : null;
             }
         }
 
-        #region INakedObjectSurface Members
-
         public void Resolve() {
-            if (nakedObject.ResolveState.IsResolvable()) {
-                nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
-                nakedObject.ResolveState.Handle(Events.EndResolvingEvent);
+            if (WrappedNakedObject.ResolveState.IsResolvable()) {
+                WrappedNakedObject.ResolveState.Handle(Events.StartResolvingEvent);
+                WrappedNakedObject.ResolveState.Handle(Events.EndResolvingEvent);
             }
         }
 
         public void SetIsNotQueryableState(bool state) {
-            var memento = nakedObject.Oid as ICollectionMemento;
+            var memento = WrappedNakedObject.Oid as ICollectionMemento;
 
             if (memento != null) {
                 memento.IsNotQueryable = state;
             }
         }
 
-        
+        public T GetDomainObject<T>() {
+            return (T) Object;
+        }
 
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
@@ -86,15 +83,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
-                ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
-                var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.MetamodelManager.Metamodel);
+                ITypeOfFacet typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
+                var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(spec, Surface, framework);
             }
         }
 
         public object Object {
-            get { return nakedObject.Object; }
+            get { return WrappedNakedObject.Object; }
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
@@ -104,11 +101,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         // todo move into adapterutils
 
         public INakedObjectSurface Page(int page, int size) {
-            return new NakedObjectWrapper(Page(nakedObject, page, size), Surface, framework);
+            return new NakedObjectWrapper(Page(WrappedNakedObject, page, size), Surface, framework);
         }
 
         public INakedObjectSurface Select(object[] selection, bool forceEnumerable) {
-            return new NakedObjectWrapper(Select(nakedObject, selection, forceEnumerable), Surface, framework);
+            return new NakedObjectWrapper(Select(WrappedNakedObject, selection, forceEnumerable), Surface, framework);
         }
 
         public int Count() {
@@ -129,7 +126,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public object[] GetSelected() {
-            var memento = nakedObject.Oid as ICollectionMemento;
+            var memento = WrappedNakedObject.Oid as ICollectionMemento;
             if (memento != null) {
                 return memento.SelectedObjects.ToArray();
             }
@@ -138,22 +135,86 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public PropertyInfo[] GetKeys() {
-            if (nakedObject.Spec is IServiceSpec) {
+            if (WrappedNakedObject.Spec is IServiceSpec) {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }
-            return framework.Persistor.GetKeys(nakedObject.Object.GetType());
+            return framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
         }
 
         public IVersionSurface Version {
-            get { return new VersionWrapper(nakedObject.Version); }
+            get { return new VersionWrapper(WrappedNakedObject.Version); }
         }
 
         public IOidSurface Oid {
-            get { return nakedObject.Oid == null ? null : new OidWrapper(nakedObject.Oid); }
+            get { return WrappedNakedObject.Oid == null ? null : new OidWrapper(WrappedNakedObject.Oid); }
         }
 
         public INakedObjectsSurface Surface { get; set; }
+
+        public bool IsPaged {
+            get {
+                ICollectionMemento collectionMemento = WrappedNakedObject.Oid as ICollectionMemento;
+                return collectionMemento != null && collectionMemento.IsPaged;
+            }
+        }
+
+        public bool IsViewModelEditView {
+            get { return IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject); }
+        }
+
+        public bool IsViewModel {
+            get { return WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>(); }
+        }
+
+        public bool IsDestroyed {
+            get { return WrappedNakedObject.ResolveState.IsDestroyed(); }
+        }
+
+        public INakedObjectActionSurface MementoAction {
+            get {
+                var mementoOid = WrappedNakedObject.Oid as ICollectionMemento;
+                return mementoOid == null ? null : new NakedObjectActionWrapper(mementoOid.Action, Surface, framework, "");
+            }
+        }
+
+        public string EnumIntegralValue {
+            get {
+                var enumFacet = WrappedNakedObject.Spec.GetFacet<IEnumValueFacet>();
+
+                if (enumFacet != null) {
+                    return enumFacet.IntegralValue(WrappedNakedObject);
+                }
+
+                var value = WrappedNakedObject.Object == null ? "" : WrappedNakedObject.Object.ToString();
+
+                long result;
+                return long.TryParse(value, out result) ? result.ToString() : null;
+            }
+        }
+
+        public string InvariantString {
+            get { return WrappedNakedObject.InvariantString(); }
+        }
+
+        public bool IsCollectionMemento {
+            get { return WrappedNakedObject.Oid is ICollectionMemento; }
+        }
+
+        public bool IsUserPersistable {
+            get { return WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable; }
+        }
+
+        public bool IsNotPersistent {
+            get { return WrappedNakedObject.IsNotPersistent(); }
+        }
+
+        public string TitleString {
+            get {
+                var title = WrappedNakedObject.TitleString();
+                return string.IsNullOrWhiteSpace(title) ? WrappedNakedObject.Spec.UntitledName : title;
+            }
+        }
 
         #endregion
 
@@ -173,7 +234,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
             object[] objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
 
-            var currentMemento = (ICollectionMemento)nakedObject.Oid;
+            var currentMemento = (ICollectionMemento) WrappedNakedObject.Oid;
             ICollectionMemento newMemento = currentMemento.NewSelectionMemento(objects, true);
             newNakedObject.SetATransientOid(newMemento);
             return newNakedObject;
@@ -181,101 +242,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         private INakedObjectAdapter Select(INakedObjectAdapter objectRepresentingCollection, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(objectRepresentingCollection.Object, selected);
-            INakedObjectAdapter adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            var currentMemento = (ICollectionMemento)objectRepresentingCollection.Oid;
+            INakedObjectAdapter adapter = framework.NakedObjectManager.CreateAdapter(objectRepresentingCollection.Spec.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result, null, null);
+            var currentMemento = (ICollectionMemento) objectRepresentingCollection.Oid;
             var newMemento = currentMemento.NewSelectionMemento(selected, false);
             adapter.SetATransientOid(newMemento);
             return adapter;
-        }
-
-        private  bool IsPaged() {
-            ICollectionMemento collectionMemento = nakedObject.Oid as ICollectionMemento;
-            return collectionMemento != null && collectionMemento.IsPaged;
-        }
-
-        private  bool IsViewModelEditView() {
-            return IsViewModel() && nakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(nakedObject);
-        }
-
-        private bool IsViewModel() {
-            return nakedObject.Spec.ContainsFacet<IViewModelFacet>();
-        }
-
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.IsTransient):
-                    return IsTransient;
-                case (ScalarProperty.IsDestroyed):
-                    return IsDestroyed;
-                case (ScalarProperty.TitleString):
-                    return TitleString();
-                case (ScalarProperty.InvariantString):
-                    return InvariantString();
-                case (ScalarProperty.IsNotPersistent):
-                    return IsNotPersistent();
-                case (ScalarProperty.IsUserPersistable):
-                    return IsUserPersistable();
-                case (ScalarProperty.IsCollectionMemento):
-                    return IsCollectionMemento();
-                case (ScalarProperty.IsPaged):
-                    return IsPaged();
-                case (ScalarProperty.IsViewModelEditView):
-                    return IsViewModelEditView();
-                case (ScalarProperty.IsViewModel):
-                    return IsViewModel();
-                case (ScalarProperty.EnumIntegralValue):
-                    return EnumIntegralValue();
-                case (ScalarProperty.MementoAction):
-                    return MementoAction();
-                case (ScalarProperty.ExtensionData):
-                    return ExtensionData;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
-
-        public bool IsDestroyed {
-            get { return nakedObject.ResolveState.IsDestroyed(); }
-        }
-
-        private INakedObjectActionSurface MementoAction() {
-            var mementoOid = nakedObject.Oid as ICollectionMemento;
-            return mementoOid == null ? null : new NakedObjectActionWrapper(mementoOid.Action, Surface, framework, "");
-        }
-
-        private string EnumIntegralValue() {
-            var enumFacet = nakedObject.Spec.GetFacet<IEnumValueFacet>();
-
-            if (enumFacet != null) {
-                return enumFacet.IntegralValue(nakedObject);
-            }
-
-            var value = nakedObject.Object == null ? "" : nakedObject.Object.ToString();
-
-            long result;
-            return long.TryParse(value, out result) ? result.ToString() : null;
-        }
-
-
-        private object InvariantString() {
-            return nakedObject.InvariantString();
-        }
-
-        private bool IsCollectionMemento() {
-            return nakedObject.Oid is ICollectionMemento;
-        }
-
-        private object IsUserPersistable() {
-            return nakedObject.Spec.Persistable == PersistableType.UserPersistable;
-        }
-
-        private object IsNotPersistent() {
-            return nakedObject.IsNotPersistent();
-        }
-
-        public string TitleString() {
-            var title =  nakedObject.TitleString();
-            return string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
         }
 
         public override bool Equals(object obj) {
@@ -287,13 +258,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool Equals(NakedObjectWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.nakedObject, nakedObject);
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
+            return Equals(other.WrappedNakedObject, WrappedNakedObject);
         }
 
         public override int GetHashCode() {
-            return (nakedObject != null ? nakedObject.GetHashCode() : 0);
+            return (WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0);
         }
     }
 }

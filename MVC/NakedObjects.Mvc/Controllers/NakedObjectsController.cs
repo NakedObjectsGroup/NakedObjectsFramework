@@ -127,7 +127,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 nakedObject = Page(nakedObject, collectionSize, controlData);
                 // todo is there a better way to do this ?
-                action = action ?? nakedObject.MementoAction();
+                action = action ?? nakedObject.MementoAction;
                 int page, pageSize;
                 CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;
@@ -141,8 +141,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ViewData.Add("updateHistory", false);
             }
 
-            return propertyName == null ? View(nakedObject.IsNotPersistent() ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
-                View(nakedObject.IsNotPersistent() ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
+            return propertyName == null ? View(nakedObject.IsNotPersistent ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
+                View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
         }
 
         public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, object value) {
@@ -158,7 +158,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var oid = Surface.OidStrategy.GetOid(values.First(), "");
                 var nakedObject = Surface.GetObject(oid).Target;
 
-                if (nakedObject != null && nakedObject.IsCollectionMemento()) {
+                if (nakedObject != null && nakedObject.IsCollectionMemento) {
                     nakedObject = FilterCollection(nakedObject, controlData);
                     AddAttemptedValue(name, nakedObject);
                     return true;
@@ -423,7 +423,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var objectSpec = nakedObject.Specification;
             var concurrencyFields = objectSpec == null ? new List<INakedObjectAssociationSurface>() : objectSpec.Properties.Where(p => p.IsConcurrency()).ToList();
 
-            if (!nakedObject.IsTransient() && concurrencyFields.Any()) {
+            if (!nakedObject.IsTransient && concurrencyFields.Any()) {
                 IEnumerable<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
 
                 foreach (var pair in fieldsAndMatchingValues) {
@@ -436,7 +436,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var concurrencyValue = pair.Item2 as string;
 
                         if (concurrencyValue != null && currentValue != null) {
-                            if (concurrencyValue != currentValue.TitleString()) {
+                            if (concurrencyValue != currentValue.TitleString) {
                                 throw new PreconditionFailedNOSException(nakedObject);
                             }
                         }
@@ -530,7 +530,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void RefreshTransient(INakedObjectSurface nakedObject, FormCollection form, INakedObjectAssociationSurface parent = null) {
-            if (nakedObject.IsTransient()) {
+            if (nakedObject.IsTransient) {
                 var ac = Convert(form);
                 Surface.RefreshObject(nakedObject, ac);
             }
@@ -649,7 +649,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal INakedObjectSurface Page(INakedObjectSurface nakedObject, int collectionSize, ObjectAndControlData controlData) {
             int page, pageSize;
 
-            if (CurrentlyPaging(controlData, collectionSize, out page, out pageSize) && !nakedObject.IsPaged()) {
+            if (CurrentlyPaging(controlData, collectionSize, out page, out pageSize) && !nakedObject.IsPaged) {
                 return nakedObject.Page(page, pageSize);
             }
 
@@ -700,13 +700,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                     if (viewResult.ViewName == "ViewNameSetAfterTransaction") {
                         // todo sort
-                        if (nakedObject.IsTransient()) {
+                        if (nakedObject.IsTransient) {
                             viewResult.ViewName = model is PropertyViewModel ? "PropertyEdit" : "ObjectEdit";
                         }
-                        else if (nakedObject.IsDestroyed()) {
+                        else if (nakedObject.IsDestroyed) {
                             viewResult.ViewName = "DestroyedError";
                         }
-                        else if (nakedObject.IsViewModelEditView()) {
+                        else if (nakedObject.IsViewModelEditView) {
                             viewResult.ViewName = "ViewModel";
                         }
                         else if (nakedObject.Specification.IsFile()) {

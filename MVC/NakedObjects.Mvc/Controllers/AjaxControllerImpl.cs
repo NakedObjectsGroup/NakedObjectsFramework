@@ -43,7 +43,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult ValidateProperty(string id, string value, string propertyName) {
             var nakedObject = GetNakedObjectFromId(id);
 
-            if (nakedObject.IsTransient()) {
+            if (nakedObject.IsTransient) {
                 // if transient then we cannot validate now - need to wait until save 
                 return Jsonp(true);
             }
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             foreach (var p in action.Parameters) {
                 if (p.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
-                    string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
+                    string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
                     string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
                     choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
@@ -196,7 +196,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             foreach (var assoc in nakedObject.Specification.Properties) {
                 if (assoc.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
-                    string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
+                    string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
                     string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
                     choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
@@ -220,8 +220,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private object GetCompletionData(INakedObjectSurface nakedObject, INakedObjectSpecificationSurface spec) {
-            string label = nakedObject.TitleString();
-            string value = nakedObject.TitleString();
+            string label = nakedObject.TitleString;
+            string value = nakedObject.TitleString;
             string link = spec.IsParseable() ? label : Surface.OidStrategy.GetOid(nakedObject).ToString();
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);

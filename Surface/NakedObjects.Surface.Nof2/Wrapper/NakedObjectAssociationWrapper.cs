@@ -150,7 +150,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public string GetTitle(INakedObjectSurface nakedObject) {
-            return nakedObject.TitleString();
+            return nakedObject.TitleString;
         }
 
         #endregion

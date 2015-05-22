@@ -40,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public MapRepresentation Members { get; set; }
 
         private void SetScalars(ObjectContextSurface objectContext) {
-            Title = objectContext.Target.TitleString();
+            Title = objectContext.Target.TitleString;
         }
 
         private void SetHeader(ObjectContextSurface objectContext) {
@@ -50,7 +50,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextSurface objectContext) {
             var tempLinks = new List<LinkRepresentation>();
-            if (!objectContext.Mutated && !objectContext.Target.IsTransient()) {
+            if (!objectContext.Mutated && !objectContext.Target.IsTransient) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
             }
 
@@ -74,7 +74,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             PropertyContextSurface[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection()).ToArray();
 
-            if (!objectContext.Target.IsTransient() && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
+            if (!objectContext.Target.IsTransient && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline()).Select(p => p.Id).ToArray();
                 OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
 
@@ -84,7 +84,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 tempLinks.Add(modifyLink);
             }
 
-            if (objectContext.Target.IsTransient()) {
+            if (objectContext.Target.IsTransient) {
                 KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection() && !p.IsInline()).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy ,req, p, objectContext.Target, Flags, true)).ToArray();
                 OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
@@ -99,7 +99,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy ,req, p, Flags)).ToArray();
 
-            InlineActionRepresentation[] actions = objectContext.Target.IsTransient() ? new InlineActionRepresentation[] {}
+            InlineActionRepresentation[] actions = objectContext.Target.IsTransient ? new InlineActionRepresentation[] {}
                 : objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy ,req, a, Flags)).ToArray();
 
 
@@ -109,7 +109,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private IDictionary<string, object> GetCustomExtensions(INakedObjectSurface nakedObject) {
-            return nakedObject.ExtensionData() == null ? null : nakedObject.ExtensionData().ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
+            return nakedObject.ExtensionData == null ? null : nakedObject.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
         }
 
         private void SetExtensions(INakedObjectSurface nakedObject) {
@@ -140,7 +140,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            if (objectContext.Target != null && (objectContext.Specification.IsService() || !objectContext.Target.IsTransient())) {
+            if (objectContext.Target != null && (objectContext.Specification.IsService() || !objectContext.Target.IsTransient)) {
                 return CreateObjectWithOptionals(oidStrategy ,objectContext, req, flags);
             }
 

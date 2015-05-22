@@ -50,7 +50,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if (!nakedObject.IsTransient() || nakedObject.Specification.IsCollection()) {
+            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection()) {
                 //session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddToCache(surface, nakedObject, url, flag);
             }
@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if (!nakedObject.IsTransient() || nakedObject.Specification.IsCollection()) {
+            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection()) {
                 //session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddOrUpdateInCache(surface, nakedObject, url, flag);
             }
@@ -119,7 +119,7 @@ namespace NakedObjects.Web.Mvc {
         }
 
         internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, INakedObjectsSurface framework, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjects(framework, flag).Where(no => !no.IsDestroyed()).Select(no => no.Object);
+            return session.GetAndTidyCachedNakedObjects(framework, flag).Where(no => !no.IsDestroyed).Select(no => no.Object);
         }
 
         public static IEnumerable<string> AllCachedUrls(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
