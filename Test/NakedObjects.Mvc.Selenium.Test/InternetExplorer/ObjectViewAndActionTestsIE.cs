@@ -130,9 +130,24 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoNewObjectOnActionDialog();
         }
 
-        //[TestMethod]
+        //[TestMethod] fails
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();
+        }
+
+        //[TestMethod] 
+        public override void AutoCompleteOnActionDialogFailingToSelectValidOption() {
+            DoAutoCompleteOnActionDialogFailingToSelectValidOption();
+        }
+
+        //[TestMethod] fails
+        public override void AutoCompleteOnActionDialogReturningSingleObject() {
+            DoAutoCompleteOnActionDialogReturningSingleObject();
+        }
+
+        //[TestMethod]
+        public override void AutoCompleteStringParamWithEnumerableOfString() {
+            DoAutoCompleteStringParamWithEnumerableOfString();
         }
 
         [TestMethod]
