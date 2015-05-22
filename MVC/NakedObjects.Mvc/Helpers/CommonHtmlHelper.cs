@@ -20,7 +20,6 @@ using System.Web.Routing;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
-using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Util;

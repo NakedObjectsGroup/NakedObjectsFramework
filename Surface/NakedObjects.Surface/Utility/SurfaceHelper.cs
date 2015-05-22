@@ -66,6 +66,10 @@ namespace NakedObjects.Surface.Utility.Restricted {
             return GetTypedCollection(surface, collectionValue, collectionitemSpec);
         }
 
+        public static List<T> InList<T>(this T item) {
+            return item == null ? new List<T>() : new List<T> {item};
+        }
+
         private static object GetTypedCollection(INakedObjectsSurface surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 

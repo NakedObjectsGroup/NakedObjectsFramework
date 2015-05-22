@@ -209,10 +209,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj">
-      <Project>{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}</Project>
-      <Name>NakedObjects.Surface.Nof4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
       <Project>{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}</Project>
       <Name>NakedObjects.Surface</Name>
