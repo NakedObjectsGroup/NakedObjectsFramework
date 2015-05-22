@@ -369,7 +369,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("test-popup ", product.FindElement(By.TagName("input")).GetAttribute("value"));
         }
-
+        #region Auto-complete
         public abstract void AutoCompleteOnActionDialog();
 
         public void DoAutoCompleteOnActionDialog() {
@@ -387,6 +387,66 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product input")).GetAttribute("value") == "HL Hub");
         }
+
+        public abstract void AutoCompleteOnActionDialogFailingToSelectValidOption();
+
+        public void DoAutoCompleteOnActionDialogFailingToSelectValidOption() {
+            Login();
+
+            wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder button", "#WorkOrderRepository-CreateNewWorkOrder-Product-ProductRepository-NewProduct");
+
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).TypeText("xxxxxxx");
+
+            var ok = br.FindElement(By.CssSelector("#CreateNewWorkOrder-ParameterList button.nof-ok"));
+
+            wait.ClickAndWait(ok, ".validation-summary-errors");
+
+            var msg = br.FindElement(By.CssSelector(".validation-summary-errors"));
+
+            Assert.AreEqual("Action was unsuccessful. Please correct the errors and try again.", msg.Text);
+        }
+
+        public abstract void AutoCompleteOnActionDialogReturningSingleObject();
+
+        public void DoAutoCompleteOnActionDialogReturningSingleObject() {
+            Login();
+
+            wait.ClickAndWait("#OrderRepository-OrdersForCustomer button", "#OrderRepository-OrdersForCustomer-Customer");
+
+            br.FindElement(By.CssSelector("#OrderRepository-OrdersForCustomer-Customer-Select-AutoComplete")).TypeText("AW00000324");
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
+            br.FindElement(By.CssSelector("#OrderRepository-OrdersForCustomer-Customer-Select-AutoComplete")).SendKeys(Keys.Tab);
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#OrderRepository-OrdersForCustomer-Customer input")).GetAttribute("value") == "A Bicycle Association, AW00000324");
+        }
+
+        public abstract void AutoCompleteStringParamWithEnumerableOfString();
+
+        public void DoAutoCompleteStringParamWithEnumerableOfString() {
+            Login();
+
+            var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
+
+            orderNumber.TypeText("SO72847" + Keys.Tab);
+
+            var action = wait.ClickAndWait(".nof-ok", "#SalesOrderHeader-AddComment button");  //get order
+
+            var comments = wait.ClickAndWait(action, "#SalesOrderHeader-AddComment-Comment-Input");
+
+            br.FindElement(By.CssSelector("#SalesOrderHeader-AddComment-Comment-Input")).TypeText("parcel");
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
+            br.FindElement(By.CssSelector("#SalesOrderHeader-AddComment-Comment-Input")).SendKeys(Keys.ArrowDown);
+            br.FindElement(By.CssSelector("#SalesOrderHeader-AddComment-Comment-Input")).SendKeys(Keys.Tab);
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#SalesOrderHeader-AddComment-Comment input")).GetAttribute("value") == "Leave parcel round back");
+
+        }
+
+        #endregion
 
         public abstract void NewObjectOnActionDialogFailMandatory();
 
