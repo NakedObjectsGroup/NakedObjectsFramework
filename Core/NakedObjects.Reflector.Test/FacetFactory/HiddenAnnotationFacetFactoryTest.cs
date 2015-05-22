@@ -46,7 +46,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #endregion
 
         private class Customer {
-
             [Hidden(WhenTo.Always)]
 // ReSharper disable UnusedMember.Local
             public int NumberOfOrders {

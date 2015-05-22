@@ -17,7 +17,7 @@ namespace RestfulObjects.Test.Data {
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual string AggregateKey {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }

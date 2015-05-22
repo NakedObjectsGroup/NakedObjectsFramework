@@ -126,8 +126,6 @@ type DomainTests() =
             x.TransformService.GetAction("Transform With Sub Object").InvokeReturnObject().NakedObject.GetDomainObject<Two.TransformFull>()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForSimpleObject() = 
             let testObject = x.SimpleTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -135,7 +133,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
         member x.XmlForComplexObject() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -143,8 +140,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForComplexObjectIncludeReference() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -153,8 +148,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForComplexObjectIncludeCollection() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -163,8 +156,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForComplexObjectIncludeReferenceWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -173,8 +164,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForComplexObjectIncludeCollectionWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -183,8 +172,6 @@ type DomainTests() =
             ()
         
         [<Test>]
-        [<Ignore>] // temp ignore
-
         member x.XmlForComplexObjectIncludeNestedReference() = 
             let testObject = x.NestedComplexTestObject()
             let ss = x.GenerateSnapshot testObject

@@ -97,7 +97,7 @@ namespace Expenses.Services {
 
     public class ServiceWithNoVisibleActions {
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public void DoSomething() {}
     }
 }

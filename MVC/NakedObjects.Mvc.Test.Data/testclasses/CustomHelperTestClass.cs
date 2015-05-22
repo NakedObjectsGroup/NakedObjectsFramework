@@ -16,7 +16,7 @@ namespace MvcTestApp.Tests.Helpers {
         private ICollection<CustomHelperTestClass> testCollectionTwo = new List<CustomHelperTestClass>();
         private InlineTestClass testInline = new InlineTestClass();
 
-        [NakedObjectsIgnore, Key]
+        [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
 
         public int TestInt { get; set; }
@@ -27,7 +27,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         public int TestIntDefault { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public int HiddenTestInt { get; set; }
 
         [Disabled]
@@ -64,7 +64,7 @@ namespace MvcTestApp.Tests.Helpers {
             return 0;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public void HiddenAction() {}
 
         [Disabled]
@@ -97,7 +97,7 @@ namespace MvcTestApp.Tests.Helpers {
             return 0;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public void HiddenOneRefParameterAction(CustomHelperTestClass parm) {}
 
         [Disabled]
@@ -137,7 +137,7 @@ namespace MvcTestApp.Tests.Helpers {
         private ICollection<CustomHelperTestClass> testCollectionOne = new List<CustomHelperTestClass>();
         private ICollection<CustomHelperTestClass> testCollectionTwo = new List<CustomHelperTestClass>();
 
-        [NakedObjectsIgnore, Key]
+        [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
 
         [DescribedAs("aDescription")]

@@ -16,7 +16,7 @@ namespace Expenses.RecordedActions {
         // application, objects might eventually accumulate too many recorded actions to be retrieved in one go, so it
         // would be more appropriate to specify a method that retrieved only the most recent 10, say, plus a
         // separate method for retrieving RecordedActions that match specified parameters and/or date range.
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public IList<RecordedAction> allRecordedActions(IRecordedActionContext context) {
             IQueryable<RecordedAction> query =
                 from action in Instances<RecordedAction>()

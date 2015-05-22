@@ -23,12 +23,12 @@ namespace Expenses.RecordedActions {
             Persist(ref ra);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual void RecordMenuAction(IRecordedActionContext context, string action, string details) {
             RecordAction(context, RecordedAction.ACTION, action, details);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual void RecordFieldChange(IRecordedActionContext context, string fieldName, object previousContents, object newContents) {
             string fromValue = previousContents == null ? "null" : previousContents.ToString();
 

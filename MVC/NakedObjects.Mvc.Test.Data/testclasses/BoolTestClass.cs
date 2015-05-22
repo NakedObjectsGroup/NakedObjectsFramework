@@ -12,7 +12,7 @@ namespace MvcTestApp.Tests.Helpers {
     [Bounded]
     public class
         BoolTestClass {
-        [NakedObjectsIgnore, Key]
+        [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
 
         [Title]

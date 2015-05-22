@@ -16,10 +16,10 @@ namespace RestfulObjects.Test.Data {
 
         #region IRedirectedObject Members
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual string ServerName { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual string Oid { get; set; }
 
         #endregion

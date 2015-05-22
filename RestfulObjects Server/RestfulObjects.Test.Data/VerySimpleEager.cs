@@ -13,7 +13,7 @@ using NakedObjects;
 namespace RestfulObjects.Test.Data {
     [Eagerly(EagerlyAttribute.Do.Rendering)]
     public class VerySimpleEager {
-        [Key, NakedObjectsIgnore, ConcurrencyCheck]
+        [Key, Hidden(WhenTo.Always), ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         [Optionally, Title]

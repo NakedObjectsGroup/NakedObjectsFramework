@@ -39,7 +39,7 @@ audio:not([controls]) {
   display: none;
   height: 0;
 }
-[NakedObjectsIgnore],
+[Hidden(WhenTo.Always)],
 template {
   display: none;
 }

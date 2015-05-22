@@ -144,7 +144,7 @@ namespace Expenses {
                 set { base.Amount = value; }
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public override void InitialiseAmount() {
                 var zero = 0M;
                 Accommodation = zero;

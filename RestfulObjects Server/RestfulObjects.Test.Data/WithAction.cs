@@ -91,7 +91,7 @@ namespace RestfulObjects.Test.Data {
             return null;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual MostSimple AHiddenAction() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }

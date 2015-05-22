@@ -157,7 +157,7 @@ namespace RestfulObjects.Test.Data {
             set { aDisabledCollection = value; }
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<MostSimple> AHiddenCollection {
             get { return aHiddenCollection; }
             set { aHiddenCollection = value; }

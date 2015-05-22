@@ -104,7 +104,7 @@ namespace RestfulObjects.Test.Data {
             return null;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
         public override MostSimple AHiddenAction() {
             return ms1;
         }

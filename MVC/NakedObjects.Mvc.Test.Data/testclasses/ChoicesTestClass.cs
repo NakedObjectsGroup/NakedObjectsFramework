@@ -14,7 +14,7 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Helpers {
     [Bounded]
     public class ChoicesTestClass {
-        [NakedObjectsIgnore, Key]
+        [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
 
         public IDomainObjectContainer Container { protected get; set; }

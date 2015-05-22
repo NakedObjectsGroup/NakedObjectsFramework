@@ -5852,7 +5852,7 @@ function getWidthOrHeight( elem, name, extra ) {
 }
 
 function showHide( elements, show ) {
-	var display, elem, hidden,
+	var display, elem, Hidden(WhenTo.Always),
 		values = [],
 		index = 0,
 		length = elements.length;

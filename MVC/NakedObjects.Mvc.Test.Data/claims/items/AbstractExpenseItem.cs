@@ -16,14 +16,14 @@ using NakedObjects;
 namespace Expenses {
     namespace ExpenseClaims.Items {
         public abstract class AbstractExpenseItem {
-            [NakedObjectsIgnore, Key]
+            [Hidden(WhenTo.Always), Key]
             public virtual int Id { get; set; }
 
             public IDomainObjectContainer Container { protected get; set; }
 
             #region ExpenseType
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual ExpenseType ExpenseType { get; set; }
 
             #endregion
@@ -92,7 +92,7 @@ namespace Expenses {
             [MemberOrder(Sequence = "4")]
             public virtual ProjectCode ProjectCode { get; set; }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void NewProjectCode(ProjectCode newCode) {
                 ModifyProjectCode(newCode);
             }
@@ -117,7 +117,7 @@ namespace Expenses {
 
             private Claim m_claim;
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual Claim Claim {
                 get { return m_claim; }
 
@@ -158,7 +158,7 @@ namespace Expenses {
                 return newAmount < 0M ? AMOUNT_CANNOT_BE_NEGATIVE : "";
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void InitialiseAmount() {
                 Amount = 0M;
             }
@@ -217,27 +217,27 @@ namespace Expenses {
 
             #region Reading the status
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public bool NewIncomplete() {
                 return Status.IsNewIncomplete();
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public bool NewComplete() {
                 return Status.IsNewComplete();
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public bool Approved() {
                 return Status.IsApproved();
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public bool Rejected() {
                 return Status.IsRejected();
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public bool Queried() {
                 return Status.IsQueried();
             }
@@ -250,27 +250,27 @@ namespace Expenses {
                 Status = (m_claimRepository.FindExpenseItemStatus(title));
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToNewIncomplete() {
                 ChangeStatusTo(ExpenseItemStatus.NEW_INCOMPLETE);
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToNewComplete() {
                 ChangeStatusTo(ExpenseItemStatus.NEW_COMPLETE);
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToApproved() {
                 ChangeStatusTo(ExpenseItemStatus.APPROVED);
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToRejected() {
                 ChangeStatusTo(ExpenseItemStatus.REJECTED);
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToQueried() {
                 ChangeStatusTo(ExpenseItemStatus.QUERIED);
             }
@@ -318,7 +318,7 @@ namespace Expenses {
 
             private const string SUBMITTED_WARN = "Read-only : submitted";
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual bool IsLocked { get; set; }
 
             protected internal virtual string DisabledIfLocked() {
@@ -443,7 +443,7 @@ namespace Expenses {
                 return Claim.DisableApproverActionsOnAllItems();
             }
 
-            [NakedObjectsIgnore]
+            [Hidden(WhenTo.Always)]
             public virtual decimal RequestedOrApprovedAmount() {
                 if (Rejected() || Queried()) {
                     return 0M;
