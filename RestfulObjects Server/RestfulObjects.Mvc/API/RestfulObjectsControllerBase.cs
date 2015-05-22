@@ -992,7 +992,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<ArgumentsContext, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, string domainType, string instanceId, bool ignoreConcurrency = false) {
             if (!ignoreConcurrency && domainType != null) {
                 ObjectContextSurface contextSurface = Surface.GetObject(OidStrategy.GetOid(domainType, instanceId));
-                ignoreConcurrency = contextSurface.Specification.IsService() || contextSurface.Specification.IsImmutable(contextSurface.Target);
+                ignoreConcurrency = contextSurface.Specification.IsService || contextSurface.Specification.IsImmutable(contextSurface.Target);
             }
 
             return ProcessArgumentMap(arguments, errorIfNone, ignoreConcurrency);

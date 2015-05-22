@@ -29,11 +29,11 @@ namespace RestfulObjects.Snapshot.Representations {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
-            if (context.Specification.IsParseable() ||
-                context.Specification.IsCollection() ||
+            if (context.Specification.IsParseable ||
+                context.Specification.IsCollection ||
                 context.ProposedValue == null ||
                 context.ProposedNakedObject == null ||
-                context.ProposedNakedObject.Specification.IsParseable()) {
+                context.ProposedNakedObject.Specification.IsParseable) {
                 value = CreateMap(context, context.ProposedValue);
             }
             else {

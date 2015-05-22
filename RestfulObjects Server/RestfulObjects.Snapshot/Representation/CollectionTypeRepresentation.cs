@@ -27,7 +27,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public string PluralName { get; set; }
 
         private void SetScalars(PropertyTypeContextSurface propertyContext) {
-            PluralName = propertyContext.Property.ElementSpecification.PluralName();
+            PluralName = propertyContext.Property.ElementSpecification.PluralName;
         }
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {

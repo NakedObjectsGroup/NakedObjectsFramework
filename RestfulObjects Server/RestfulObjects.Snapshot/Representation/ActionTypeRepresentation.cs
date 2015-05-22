@@ -85,7 +85,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, actionTypeContext.ActionContext.Action.ReturnType)), Flags)
             };
 
-            if (actionTypeContext.ActionContext.Action.ReturnType.IsCollection()) {
+            if (actionTypeContext.ActionContext.Action.ReturnType.IsCollection) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, actionTypeContext.ActionContext.Action.ElementType)), Flags));
             }
 

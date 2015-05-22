@@ -92,7 +92,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface no) {
             var helper = new UriMtHelper(oidStrategy ,req, no);
-            ObjectRelType rt = no.Specification.IsService() ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
+            ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 
             return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
@@ -111,7 +111,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         internal static Representation Create(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags) {
             // filter out System types
-            specs = specs.Where(s => !s.FullName().StartsWith("System.") && !s.FullName().StartsWith("Microsoft.")).ToArray();
+            specs = specs.Where(s => !s.FullName.StartsWith("System.") && !s.FullName.StartsWith("Microsoft.")).ToArray();
             // filter out predefined types
             specs = specs.Where(s => !RestUtils.IsPredefined(s)).ToArray();
             return new ListRepresentation(oidStrategy ,specs, req, flags);

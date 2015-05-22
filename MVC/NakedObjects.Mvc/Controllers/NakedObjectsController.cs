@@ -105,7 +105,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 nakedObject = controlData.GetNakedObject(Surface);
 
-                if (nakedObject.Specification.IsService()) {
+                if (nakedObject.Specification.IsService) {
                     object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);
                     if (lastObject == null) {
                         return RedirectHome();
@@ -116,7 +116,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
             }
 
-            if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+            if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                 int collectionSize = nakedObject.Count();
                 if (collectionSize == 1) {
                     // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
@@ -175,12 +175,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ValueProviderResult vp = form.GetValue(name);
                 string[] values = vp == null ? new string[] {} : (string[]) vp.RawValue;
 
-                if (parm.Specification.IsCollection() && !parm.Specification.IsParseable()) {
+                if (parm.Specification.IsCollection && !parm.Specification.IsParseable) {
                     // handle collection mementos 
 
                     if (parm.IsChoicesEnabled == Choices.Multiple || !CheckForAndAddCollectionMementoNew(name, values, controlData)) {
                         var itemSpec = parm.ElementType;
-                        var itemvalues = values.Select(v => itemSpec.IsParseable() ? (object) v : GetNakedObjectFromId(v).Object).ToList();
+                        var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : GetNakedObjectFromId(v).Object).ToList();
 
                         if (itemvalues.Any()) {
                             var no = Surface.GetObject(itemvalues);
@@ -193,7 +193,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string value = values.Any() ? values.First() : "";
 
                     if (!string.IsNullOrEmpty(value)) {
-                        AddAttemptedValue(name, parm.Specification.IsParseable() ? (object) value : FilterCollection(GetNakedObjectFromId(value), controlData));
+                        AddAttemptedValue(name, parm.Specification.IsParseable ? (object) value : FilterCollection(GetNakedObjectFromId(value), controlData));
                     }
                 }
             }
@@ -221,7 +221,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
 
-            if (parm.Specification.IsStream()) {
+            if (parm.Specification.IsStream) {
                 // todo not sure about this couple surface to http?
                 // create stream wrapper ? 
                 //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
@@ -229,12 +229,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             var stringValue = value as string;
-            if (parm.Specification.IsParseable()) {
+            if (parm.Specification.IsParseable) {
                 return string.IsNullOrEmpty(stringValue) ? null : stringValue;
             }
 
             var collectionValue = value as IEnumerable;
-            if (!parm.Specification.IsCollection() || collectionValue == null) {
+            if (!parm.Specification.IsCollection || collectionValue == null) {
                 return GetNakedObjectFromId(stringValue).Object;
             }
 
@@ -252,7 +252,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 return null;
             }
-            if (parm.Specification.IsCollection() && !parm.Specification.IsParseable()) {
+            if (parm.Specification.IsCollection && !parm.Specification.IsParseable) {
                 return values.All(string.IsNullOrEmpty) ? null : values;
             }
             return values.First();
@@ -279,12 +279,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (Request.IsAjaxRequest()) {
                 var nakedObject = controlData.GetNakedObject(Surface);
                 if (controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay) {
-                    var assocs = nakedObject.Specification.Properties.Where(p => p.IsCollection && !p.Specification.IsParseable());
+                    var assocs = nakedObject.Specification.Properties.Where(p => p.IsCollection && !p.Specification.IsParseable);
                     var item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
                 if (controlData.ActionId == null) {
-                    var assocs = nakedObject.Specification.Properties.Where(p => !p.IsCollection || p.Specification.IsParseable());
+                    var assocs = nakedObject.Specification.Properties.Where(p => !p.IsCollection || p.Specification.IsParseable);
                     var item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
                     return item == null ? null : item.Id;
                 }
@@ -348,7 +348,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || !isExplicit;
                 if (!ignore) {
                     // deliberately not an attempted value so it only gets populated after masking 
-                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable() ? value.Object : value;
+                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable ? value.Object : value;
                 }
             }
         }
@@ -371,7 +371,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedReferences(INakedObjectSurface nakedObject, IDictionary<string, string> dict) {
-            var refItems = (nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.Specification.IsParseable())).Where(a => dict.ContainsKey(a.Id)).ToList();
+            var refItems = (nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.Specification.IsParseable)).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(a => ValidateAssociation(nakedObject, a, dict[a.Id]));
                 Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => GetNakedObjectFromId(dict[a.Id]));
@@ -380,7 +380,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedParameters(INakedObjectActionSurface action) {
-            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
+            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
                 Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
@@ -388,7 +388,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetSelectedParameters(INakedObjectSurface nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
-            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection() && !p.Specification.IsParseable()).Where(p => dict.ContainsKey(p.Id)).ToList();
+            var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).GetDomainObject<object>()));
                 Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
@@ -401,14 +401,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
             // todo
-            if (assoc.Specification.IsStream()) {
+            if (assoc.Specification.IsStream) {
                 // todo not sure about this couple surface to http?
                 // create stream wrapper ? 
                 //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
                 return (HttpPostedFileBase) value;
             }
 
-            if (assoc.Specification.IsParseable()) {
+            if (assoc.Specification.IsParseable) {
                 return value;
             }
 
@@ -427,7 +427,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 IEnumerable<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
 
                 foreach (var pair in fieldsAndMatchingValues) {
-                    if (pair.Item1.Specification.IsParseable()) {
+                    if (pair.Item1.Specification.IsParseable) {
                         var currentValue = pair.Item1.GetNakedObject(nakedObject);
 
                         // todo revisit this 
@@ -481,7 +481,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void AddErrorAndAttemptedValue(INakedObjectSurface nakedObject, string newValue, INakedObjectAssociationSurface assoc, string errorText, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, assoc);
             ModelState.AddModelError(key, errorText);
-            AddAttemptedValue(key, assoc.Specification.IsParseable() ? (object) newValue : GetNakedObjectFromId(newValue));
+            AddAttemptedValue(key, assoc.Specification.IsParseable ? (object) newValue : GetNakedObjectFromId(newValue));
         }
 
         internal void AddAttemptedValuesNew(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
@@ -602,7 +602,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectSurface nakedObject) {
-            if (nakedObject.Specification.IsCollection()) {
+            if (nakedObject.Specification.IsCollection) {
                 int sink1, sink2;
                 CurrentlyPaging(controlData, nakedObject.Count(), out sink1, out sink2);
             }
@@ -659,7 +659,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             var form = controlData.Form;
-            if (form != null && nakedObject != null && nakedObject.Specification.IsCollection()) {
+            if (form != null && nakedObject != null && nakedObject.Specification.IsCollection) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
                 var map = nakedObject.ToEnumerable().ToDictionary(Surface.OidStrategy.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
@@ -685,14 +685,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     var nakedObject = GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Specification.FullName().Split('.').Last());
+                    SetControllerName(nakedObject.Specification.FullName.Split('.').Last());
                 }
                 else if (model != null) {
                     var nakedObject = model is PropertyViewModel ? GetNakedObject(((PropertyViewModel) model).ContextObject) : GetNakedObject(model);
 
-                    if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+                    if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                         //2nd clause is to avoid rendering a string as a collection
-                        SetControllerName(nakedObject.Specification.FullName().Split('.').Last());
+                        SetControllerName(nakedObject.Specification.FullName.Split('.').Last());
                     }
                     else {
                         SetControllerName(nakedObject.Object);
@@ -709,10 +709,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         else if (nakedObject.IsViewModelEditView) {
                             viewResult.ViewName = "ViewModel";
                         }
-                        else if (nakedObject.Specification.IsFile()) {
+                        else if (nakedObject.Specification.IsFile) {
                             filterContext.Result = AsFile(nakedObject.Object);
                         }
-                        else if (nakedObject.Specification.IsParseable()) {
+                        else if (nakedObject.Specification.IsParseable) {
                             viewResult.ViewName = "ScalarView";
                         }
                         else {

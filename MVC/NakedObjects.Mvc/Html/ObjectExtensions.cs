@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
             var nakedObject = html.Surface().GetObject(model);
-            return nakedObject.Specification.PresentationHint();
+            return nakedObject.Specification.PresentationHint;
         }
 
         /// <summary>
@@ -117,15 +117,15 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
             var nakedObject = html.Surface().GetObject(model);
 
-            string title = nakedObject.Specification.IsCollection() ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString;
-            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName() : title;
+            string title = nakedObject.Specification.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString;
+            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdConstants.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             var nakedObject = html.Surface().GetObject(model.Result);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName() : title);
+            title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
 
@@ -136,11 +136,11 @@ namespace NakedObjects.Web.Mvc.Html {
                 total = count;
             }
 
-            string queryInd = nakedObject.Specification.IsQueryable() ? MvcUi.QueryResult + ": " : "";
+            string queryInd = nakedObject.Specification.IsQueryable ? MvcUi.QueryResult + ": " : "";
             int viewSize = count;
 
             var typeSpec = nakedObject.ElementSpecification;
-            string type = total == 1 ? typeSpec.SingularName() : typeSpec.PluralName();
+            string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
 
             return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);
         }
@@ -195,7 +195,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model) {
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.Description());
+            return MvcHtmlString.Create(nakedObject.Specification.Description);
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.FullName().Split('.').Last());
+            return MvcHtmlString.Create(nakedObject.Specification.FullName.Split('.').Last());
         }
 
         #endregion

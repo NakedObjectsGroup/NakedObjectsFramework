@@ -121,7 +121,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected void SetEtag(INakedObjectSurface target) {
-            if (!target.Specification.IsService() && !target.Specification.IsImmutable(target)) {
+            if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
                 string digest = target.Version.Digest;
                 if (digest != null) {
                     etag = digest;
@@ -238,7 +238,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected static void AddStringProperties(INakedObjectSpecificationSurface spec, int? maxLength, string pattern, Dictionary<string, object> exts) {
-            if (spec.IsParseable()) {
+            if (spec.IsParseable) {
                 if (maxLength != null) {
                     exts.Add(JsonPropertyNames.MaxLength, maxLength);
                 }
@@ -247,7 +247,7 @@ namespace RestfulObjects.Snapshot.Representations {
                     exts.Add(JsonPropertyNames.Pattern, pattern);
                 }
 
-                if (spec.IsDateTime()) {
+                if (spec.IsDateTime) {
                     exts.Add(JsonPropertyNames.Format, PredefinedType.Date_time.ToRoString());
                 }
             }
@@ -260,7 +260,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (valueNakedObject == null) {
                 return null;
             }
-            if (property.Specification.IsParseable() || property.Specification.IsCollection()) {
+            if (property.Specification.IsParseable || property.Specification.IsCollection) {
                 return RestUtils.ObjectToPredefinedType(valueNakedObject.Object);
             }
 

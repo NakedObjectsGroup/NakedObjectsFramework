@@ -50,7 +50,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddToCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection()) {
+            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection) {
                 //session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddToCache(surface, nakedObject, url, flag);
             }
@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection()) {
+            if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection) {
                 //session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddOrUpdateInCache(surface, nakedObject, url, flag);
             }
@@ -190,11 +190,11 @@ namespace NakedObjects.Web.Mvc {
             string objectId = surface.OidStrategy.GetObjectId(nakedObject);
 
             if (cache.ContainsKey(objectId)) {
-                cache[objectId].Spec = nakedObject.Specification.FullName();
+                cache[objectId].Spec = nakedObject.Specification.FullName;
                 cache[objectId].Url = url;
             }
             else {
-                cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName(), Url = url};
+                cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url};
                 while (cache.Count > CacheSize) {
                     RemoveOldest(cache, flag);
                 }
@@ -203,7 +203,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag) {
             string objectId = surface.OidStrategy.GetObjectId(nakedObject);
-            cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName(), Url = url};
+            cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url};
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
             }

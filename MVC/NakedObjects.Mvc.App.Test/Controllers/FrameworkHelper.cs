@@ -31,7 +31,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
-            if (nakedObject.Specification.IsQueryable()) {
+            if (nakedObject.Specification.IsQueryable) {
 
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
             var nakedObject = surface.GetObject(model);
-            return nakedObject.Specification.FullName().Split('.').Last();
+            return nakedObject.Specification.FullName.Split('.').Last();
         }
 
         public static string GetObjectTypeName(this INakedObjectsFramework framework, object model) {
@@ -298,7 +298,7 @@ namespace MvcTestApp.Tests.Controllers {
             Type instanceType = collectionitemSpec.GetUnderlyingType();
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
-            if (collectionitemSpec.IsParseable()) {
+            if (collectionitemSpec.IsParseable) {
                 return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();
             }
 

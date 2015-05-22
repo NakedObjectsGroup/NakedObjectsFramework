@@ -228,7 +228,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public Uri GetParamUri() {
-            return spec.IsService() ? GetServiceParamUri() : GetObjectParamUri();
+            return spec.IsService ? GetServiceParamUri() : GetObjectParamUri();
         }
 
         public Uri GetTypeActionInvokeUri() {
@@ -292,7 +292,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private Uri GetInvokeUri(string queryString) {
-            return spec.IsService() ? GetServiceInvokeUri(queryString) : GetObjectInvokeUri(queryString);
+            return spec.IsService ? GetServiceInvokeUri(queryString) : GetObjectInvokeUri(queryString);
         }
 
         private Uri GetNonIdempotentUri() {
@@ -368,7 +368,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private Uri GetMemberUri(INakedObjectMemberSurface member, string memberType) {
-            return spec.IsService() ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
+            return spec.IsService ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
         }
 
         private Uri ByMemberType(Func<INakedObjectMemberSurface, string, Uri> getUri) {
@@ -520,7 +520,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public void AddActionResultRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             INakedObjectSpecificationSurface resultSpec = action.ReturnType;
-            bool isCollection = resultSpec.IsCollection() && !resultSpec.IsParseable();
+            bool isCollection = resultSpec.IsCollection && !resultSpec.IsParseable;
             INakedObjectSpecificationSurface parameterValueSpec = isCollection ? action.ElementType : resultSpec;
             string parameterValue = GetParameterValue(flags, parameterValueSpec);
 

@@ -121,7 +121,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
         private static string GetCode(INakedObjectSpecificationSurface spec) {
-            return GetCode(SurfaceUtils.GetType(spec.FullName()));
+            return GetCode(SurfaceUtils.GetType(spec.FullName));
         }
 
         private static Type GetType(string typeName) {

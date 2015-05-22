@@ -49,14 +49,14 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetResultType(ActionResultContextSurface actionResult) {
-            if (actionResult.Specification.IsParseable()) {
+            if (actionResult.Specification.IsParseable) {
                 ResultType = ResultTypes.Scalar;
             }
-            else if (actionResult.Specification.IsCollection()) {
+            else if (actionResult.Specification.IsCollection) {
                 ResultType = ResultTypes.List;
             }
             else {
-                ResultType = actionResult.Specification.IsVoid() ? ResultTypes.Void : ResultTypes.Object;
+                ResultType = actionResult.Specification.IsVoid ? ResultTypes.Void : ResultTypes.Object;
             }
         }
 
@@ -66,13 +66,13 @@ namespace RestfulObjects.Snapshot.Representations {
             foreach (ParameterContextSurface visibleParamContext in actionResult.ActionContext.VisibleParameters) {
                 IRepresentation value;
 
-                if (visibleParamContext.Specification.IsParseable()) {
+                if (visibleParamContext.Specification.IsParseable) {
                     object proposedObj = visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object;
                     object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
-                else if (visibleParamContext.Specification.IsCollection()) {
-                    if (visibleParamContext.ElementSpecification.IsParseable()) {
+                else if (visibleParamContext.Specification.IsCollection) {
+                    if (visibleParamContext.ElementSpecification.IsParseable) {
                         var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object)).Cast<object>();
                         var valueObjs = proposedCollection.Select(RestUtils.ObjectToPredefinedType).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
@@ -101,10 +101,10 @@ namespace RestfulObjects.Snapshot.Representations {
                 if (actionResult.Result == null) {
                     result = null;
                 }
-                else if (actionResult.Specification.IsParseable()) {
+                else if (actionResult.Specification.IsParseable) {
                     result = ScalarRepresentation.Create(oidStrategy ,actionResult.Result, req, flags);
                 }
-                else if (actionResult.Specification.IsObject()) {
+                else if (actionResult.Specification.IsObject) {
                     result = ObjectRepresentation.Create(oidStrategy ,actionResult.Result, req, flags);
                 }
                 else {

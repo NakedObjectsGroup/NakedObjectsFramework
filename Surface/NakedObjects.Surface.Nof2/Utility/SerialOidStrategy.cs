@@ -53,8 +53,8 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
         public string GetOidAsString(INakedObjectSurface nakedObject) {
-            if (nakedObject.Specification.IsService()) {
-                return nakedObject.Specification.FullName();
+            if (nakedObject.Specification.IsService) {
+                return nakedObject.Specification.FullName;
             }
             return nakedObject.Oid.ToString();
         }

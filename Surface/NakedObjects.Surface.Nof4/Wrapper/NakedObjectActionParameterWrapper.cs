@@ -256,7 +256,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return null;
             }
 
-            if (parm.Specification.IsParseable()) {
+            if (parm.Specification.IsParseable) {
                 return nakedObjectActionParameter.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
             }
             var collectionParm = nakedObjectActionParameter as IOneToManyActionParameterSpec;

@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 value = Request.Params[fieldId];
             }
 
-            if (property != null && (!property.IsCollection || property.Specification.IsParseable())) {
+            if (property != null && (!property.IsCollection || property.Specification.IsParseable)) {
                 var pvalue = GetValue(new[] {value}, property, property.Specification);
                 ValidateAssociation(nakedObject, property, pvalue);
                 isValid = ModelState.IsValid;
@@ -114,12 +114,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 domainObject = null;
                 return true;
             }
-            if (spec.IsParseable()) {
+            if (spec.IsParseable) {
                 var v = values.First();
                 domainObject = nullEmpty && string.IsNullOrEmpty(v) ? null : v;
                 return true;
             }
-            if (!spec.IsCollection()) {
+            if (!spec.IsCollection) {
                 domainObject = GetNakedObjectFromId(values.First()).GetDomainObject<object>();
                 return true;
             }
@@ -167,7 +167,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public static bool IsParseableOrCollectionOfParseable(INakedObjectsSurface surface, INakedObjectActionParameterSurface parmSpec) {
             var spec = parmSpec.Specification;
-            return spec.IsParseable() || (spec.IsCollection() && parmSpec.ElementType.IsParseable());
+            return spec.IsParseable || (spec.IsCollection && parmSpec.ElementType.IsParseable);
         }
 
         public virtual JsonResult GetActionChoices(string id, string actionName) {
@@ -197,7 +197,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (assoc.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
-                    string[] value = assoc.Specification.IsParseable() ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
+                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(o => Surface.OidStrategy.GetOid(o).ToString()).ToArray();
 
                     choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
@@ -216,13 +216,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private string GetIconAlt(INakedObjectSurface nakedObject) {
-            return nakedObject.Specification.SingularName();
+            return nakedObject.Specification.SingularName;
         }
 
         private object GetCompletionData(INakedObjectSurface nakedObject, INakedObjectSpecificationSurface spec) {
             string label = nakedObject.TitleString;
             string value = nakedObject.TitleString;
-            string link = spec.IsParseable() ? label : Surface.OidStrategy.GetOid(nakedObject).ToString();
+            string link = spec.IsParseable ? label : Surface.OidStrategy.GetOid(nakedObject).ToString();
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);
             return new {label, value, link, src, alt};

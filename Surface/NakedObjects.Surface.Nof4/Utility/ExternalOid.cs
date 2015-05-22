@@ -102,7 +102,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         #endregion
 
         private string GetCode(INakedObjectSpecificationSurface spec) {
-            return GetCode(TypeUtils.GetType(spec.FullName()));
+            return GetCode(TypeUtils.GetType(spec.FullName));
         }
 
         protected Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {

@@ -6,11 +6,38 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectSpecificationSurface : IScalarPropertyHolder, ISurfaceHolder, IEquatable<INakedObjectSpecificationSurface> {
+    public interface INakedObjectSpecificationSurface : ISurfaceHolder, IEquatable<INakedObjectSpecificationSurface> {
         INakedObjectAssociationSurface[] Properties { get; }
         IMenu Menu { get; }
+        string PresentationHint { get; }
+        bool IsAlwaysImmutable { get; }
+        bool IsImmutableOncePersisted { get; }
+        bool IsComplexType { get; }
+        bool IsParseable { get; }
+        bool IsStream { get; }
+        bool IsQueryable { get; }
+        bool IsService { get; }
+        bool IsVoid { get; }
+        bool IsDateTime { get; }
+        bool IsCollection { get; }
+        bool IsObject { get; }
+        string FullName { get; }
+        // todo should remove this and move title stuff down
+        string UntitledName { get; }
+        string SingularName { get; }
+        string PluralName { get; }
+        string Description { get; }
+        bool IsASet { get; }
+        bool IsAggregated { get; }
+        bool IsImage { get; }
+        bool IsFileAttachment { get; }
+        bool IsFile { get; }
+        IDictionary<string, object> ExtensionData { get; }
+        bool IsBoolean { get; }
+        bool IsEnum { get; }
         INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject);
         bool IsImmutable(INakedObjectSurface nakedObject);
         string GetIconName(INakedObjectSurface nakedObject);

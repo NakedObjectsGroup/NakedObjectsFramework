@@ -175,7 +175,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private bool IsFileActionNoParms() {
-            return Action != null && Action.ReturnType.IsFileAttachment() && !Action.Parameters.Any();
+            return Action != null && Action.ReturnType.IsFileAttachment && !Action.Parameters.Any();
         }
 
         public string GetActionClass() {

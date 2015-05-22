@@ -81,7 +81,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
 
         public static ParameterTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) {
-            if (!parameterTypeContext.Parameter.Specification.IsParseable()) {
+            if (!parameterTypeContext.Parameter.Specification.IsParseable) {
                 return new ParameterTypeRepresentation(oidStrategy ,req, parameterTypeContext, flags);
             }
             var exts = new Dictionary<string, object>();

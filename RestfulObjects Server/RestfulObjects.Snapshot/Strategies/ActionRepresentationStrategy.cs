@@ -75,10 +75,10 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
 
             if (Flags.FormalDomainModel) {
-                if (!actionContext.Specification.IsVoid()) {
+                if (!actionContext.Specification.IsVoid) {
                     tempLinks.Add(CreateReturnTypeLink());
 
-                    if (actionContext.Specification.IsCollection() && !actionContext.Specification.IsParseable()) {
+                    if (actionContext.Specification.IsCollection && !actionContext.Specification.IsParseable) {
                         tempLinks.Add(CreateElementTypeLink());
                     }
                 }
@@ -120,7 +120,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private LinkRepresentation CreateUpLink() {
             var helper = new UriMtHelper(OidStrategy, req, actionContext.Target);
-            ObjectRelType parentRelType = actionContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+            ObjectRelType parentRelType = actionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 

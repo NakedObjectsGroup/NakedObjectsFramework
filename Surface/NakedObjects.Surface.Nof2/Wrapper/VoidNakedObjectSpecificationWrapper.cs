@@ -3,12 +3,17 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class VoidNakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
+    public class VoidNakedObjectSpecificationWrapper :  INakedObjectSpecificationSurface {
+        public bool IsComplexType { get; private set; }
+
         public bool IsParseable {
             get { return false; }
         }
+
+        public bool IsStream { get; private set; }
 
         public bool IsQueryable {
             get { return false; }
@@ -30,6 +35,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return typeof (void).FullName; }
         }
 
+        public string UntitledName { get; private set; }
+
         public bool IsCollection {
             get { return false; }
         }
@@ -50,6 +57,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return ""; }
         }
 
+        public bool IsASet { get; private set; }
+        public bool IsAggregated { get; private set; }
+        public bool IsImage { get; private set; }
+        public bool IsFileAttachment { get; private set; }
+        public bool IsFile { get; private set; }
+        public IDictionary<string, object> ExtensionData { get; private set; }
+        public bool IsBoolean { get; private set; }
+        public bool IsEnum { get; private set; }
+
         #region INakedObjectSpecificationSurface Members
 
         public INakedObjectAssociationSurface[] Properties {
@@ -57,6 +73,9 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public IMenu Menu { get; private set; }
+        public string PresentationHint { get; private set; }
+        public bool IsAlwaysImmutable { get; private set; }
+        public bool IsImmutableOncePersisted { get; private set; }
 
         public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
             throw new NotImplementedException();
@@ -112,62 +131,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return (GetType().GetHashCode());
         }
 
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.FullName):
-                    return FullName;
-                case (ScalarProperty.SingularName):
-                    return SingularName;
-                case (ScalarProperty.UntitledName):
-                    return "";
-                case (ScalarProperty.PluralName):
-                    return PluralName;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsParseable):
-                    return IsParseable;
-                case (ScalarProperty.IsQueryable):
-                    return IsQueryable;
-                case (ScalarProperty.IsService):
-                    return IsService;
-                case (ScalarProperty.IsVoid):
-                    return IsVoid;
-                case (ScalarProperty.IsDateTime):
-                    return IsDateTime;
-                case (ScalarProperty.IsCollection):
-                    return IsCollection;
-                case (ScalarProperty.IsObject):
-                    return IsObject;
-                case (ScalarProperty.IsASet):
-                    return false;
-                case (ScalarProperty.IsAggregated):
-                    return false;
-                case (ScalarProperty.IsImage):
-                    return false;
-                case (ScalarProperty.IsFileAttachment):
-                    return false;
-                case (ScalarProperty.IsFile):
-                    return false;
-                case (ScalarProperty.IsBoolean):
-                    return false;
-                case (ScalarProperty.IsEnum):
-                    return false;
-                case (ScalarProperty.IsStream):
-                    return false;
-                case (ScalarProperty.IsAlwaysImmutable):
-                    return false;
-                case (ScalarProperty.IsImmutableOncePersisted):
-                    return false;
-                case (ScalarProperty.IsComplexType):
-                    return false;
-                case (ScalarProperty.PresentationHint):
-                    return "";
-                case (ScalarProperty.ExtensionData):
-                    return null;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
+       
 
         public INakedObjectsSurface Surface { get; set; }
     }

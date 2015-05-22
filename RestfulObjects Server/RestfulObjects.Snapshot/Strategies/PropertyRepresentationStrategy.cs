@@ -108,7 +108,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private bool IsUnconditionalChoices() {
             return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (propertyContext.Property.Specification.IsParseable() || (propertyContext.Property.Specification.IsCollection() && propertyContext.Property.ElementSpecification.IsParseable())) &&
+                   (propertyContext.Property.Specification.IsParseable || (propertyContext.Property.Specification.IsCollection && propertyContext.Property.ElementSpecification.IsParseable)) &&
                    !propertyContext.Property.GetChoicesParameters().Any();
         }
 

@@ -189,7 +189,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string targetObjectId = controlData.DataDict["targetObjectId"];
 
             var targetNakedObject = GetNakedObjectFromId(targetObjectId);
-            if (targetNakedObject.Specification.IsCollection()) {
+            if (targetNakedObject.Specification.IsCollection) {
                 var filteredNakedObject = FilterCollection(targetNakedObject, controlData);
 
                 var elementSpec = targetNakedObject.ElementSpecification;
@@ -229,7 +229,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
 
-                if (nakedObject.Specification.IsCollection() && !nakedObject.Specification.IsParseable()) {
+                if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                     var oids = nakedObject.ToEnumerable().Select(no => Surface.OidStrategy.GetOid(no)).ToArray();
                     var spec = nakedObject.ElementSpecification;
 
@@ -288,7 +288,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var ac = GetParameterValues(targetAction, controlData);
             ActionResultContextSurface ar;
 
-            if (targetNakedObject.Specification.IsCollection() && !targetNakedObject.Specification.IsParseable()) {
+            if (targetNakedObject.Specification.IsCollection && !targetNakedObject.Specification.IsParseable) {
                 var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidStrategy.GetOid(no)).ToArray();
                 var spec = targetNakedObject.ElementSpecification;
 
@@ -485,7 +485,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string reason = p.Reason == MvcUi.Mandatory ? MvcUi.Mandatory : MvcUi.InvalidEntry;
                     ModelState.AddModelError(key, reason);
                 }
-                AddAttemptedValue(key, p.Property.Specification.IsParseable() ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
+                AddAttemptedValue(key, p.Property.Specification.IsParseable ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
             }
 
             if (!string.IsNullOrEmpty(result.Reason)) {
@@ -528,7 +528,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var result = GetResult(context);
 
             if (result != null) {
-                IEnumerable resultAsEnumerable = !result.Specification.IsCollection() ? new List<object> {result.Object} : (IEnumerable) result.Object;
+                IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
 
                 if (resultAsEnumerable.Cast<object>().Count() == 1) {
                     var selectedItem = new Dictionary<string, string> {{propertyName, GetObjectId(resultAsEnumerable.Cast<object>().Single())}};
@@ -558,7 +558,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static bool ContextParameterIsCollection(INakedObjectActionSurface contextAction, string propertyName) {
             if (contextAction != null) {
                 var parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
-                return parameter.Specification.IsCollection();
+                return parameter.Specification.IsCollection;
             }
             return false;
         }
@@ -620,7 +620,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private static IEnumerable GetResultAsEnumerable(INakedObjectSurface result, INakedObjectActionSurface contextAction, string propertyName) {
             if (result != null) {
-                if (result.Specification.IsCollection() && !ContextParameterIsCollection(contextAction, propertyName)) {
+                if (result.Specification.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
                     return (IEnumerable) result.Object;
                 }
                 return new List<object> {result.Object};

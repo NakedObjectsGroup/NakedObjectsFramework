@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -29,7 +28,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
-            if (nakedObject.Specification.IsQueryable()) {
+            if (nakedObject.Specification.IsQueryable) {
 
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);

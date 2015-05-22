@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Surface;
@@ -12,7 +13,7 @@ using org.nakedobjects.@object;
 using sdm.systems.application.container;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
+    public class NakedObjectSpecificationWrapper :  INakedObjectSpecificationSurface {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;
 
@@ -24,9 +25,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #region INakedObjectSpecificationSurface Members
 
+        public bool IsComplexType { get; private set; }
+
         public bool IsParseable {
             get { return spec.isValue(); }
         }
+
+        public bool IsStream { get; private set; }
 
         public bool IsQueryable {
             get { return false; }
@@ -53,6 +58,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return spec.getFullName(); }
         }
 
+        public string UntitledName { get; private set; }
+
         public bool IsCollection {
             get { return spec.isCollection() || (target != null && target.getObject() is ICollection) || spec.getFullName() == "System.Collections.ArrayList"; }
         }
@@ -65,11 +72,22 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return false; }
         }
 
+        public bool IsAggregated { get; private set; }
+        public bool IsImage { get; private set; }
+        public bool IsFileAttachment { get; private set; }
+        public bool IsFile { get; private set; }
+        public IDictionary<string, object> ExtensionData { get; private set; }
+        public bool IsBoolean { get; private set; }
+        public bool IsEnum { get; private set; }
+
         public INakedObjectAssociationSurface[] Properties {
             get { return spec.getFields().Select(p => new NakedObjectAssociationWrapper(p, target, Surface)).Cast<INakedObjectAssociationSurface>().OrderBy(a => a.Id).ToArray(); }
         }
 
         public IMenu Menu { get; private set; }
+        public string PresentationHint { get; private set; }
+        public bool IsAlwaysImmutable { get; private set; }
+        public bool IsImmutableOncePersisted { get; private set; }
 
         public string SingularName {
             get { return spec.getSingularName(); }
@@ -81,6 +99,10 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public string Description {
             get { return ""; }
+        }
+
+        bool INakedObjectSpecificationSurface.IsASet {
+            get { return IsASet; }
         }
 
         public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
@@ -151,63 +173,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return (spec != null ? spec.GetHashCode() : 0);
         }
 
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                
-                case (ScalarProperty.FullName):
-                    return FullName;
-                case (ScalarProperty.SingularName):
-                    return SingularName;
-                case (ScalarProperty.UntitledName):
-                    return "";
-                case (ScalarProperty.PluralName):
-                    return PluralName;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsParseable):
-                    return IsParseable;
-                case (ScalarProperty.IsQueryable):
-                    return IsQueryable;
-                case (ScalarProperty.IsService):
-                    return IsService;
-                case (ScalarProperty.IsVoid):
-                    return IsVoid;
-                case (ScalarProperty.IsDateTime):
-                    return IsDateTime;
-                case (ScalarProperty.IsCollection):
-                    return IsCollection;
-                case (ScalarProperty.IsObject):
-                    return IsObject;
-                case (ScalarProperty.IsASet):
-                    return IsASet;
-                case (ScalarProperty.IsAggregated):
-                    return false;
-                case (ScalarProperty.IsImage):
-                    return false;
-                case (ScalarProperty.IsFileAttachment):
-                    return false;
-                case (ScalarProperty.IsFile):
-                    return false;
-                case (ScalarProperty.IsBoolean):
-                    return false;
-                case (ScalarProperty.IsEnum):
-                    return false;
-                case (ScalarProperty.IsStream):
-                    return false;
-                case (ScalarProperty.IsAlwaysImmutable):
-                    return false;
-                case (ScalarProperty.IsImmutableOncePersisted):
-                    return false;
-                case (ScalarProperty.IsComplexType):
-                    return false;
-                case (ScalarProperty.PresentationHint):
-                    return "";
-                case (ScalarProperty.ExtensionData):
-                    return null;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
+       
 
 
         public INakedObjectsSurface Surface { get; set; }

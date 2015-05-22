@@ -17,7 +17,7 @@ using NakedObjects.Util;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
+    public class NakedObjectSpecificationWrapper : INakedObjectSpecificationSurface {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;
 
@@ -35,7 +35,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec; }
         }
 
-        protected IDictionary<string, object> ExtensionData {
+        #region INakedObjectSpecificationSurface Members
+
+        public IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
 
@@ -67,25 +69,25 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.IsASet; }
         }
 
-        protected bool IsAggregated {
+        public bool IsAggregated {
             get { return spec.IsAggregated; }
         }
 
-        protected bool IsImage {
+        public bool IsImage {
             get {
                 var imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
-        protected bool IsFileAttachment {
+        public bool IsFileAttachment {
             get {
                 var fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }
 
-        protected bool IsFile {
+        public bool IsFile {
             get { return spec.IsFile(framework); }
         }
 
@@ -117,11 +119,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.Description; }
         }
 
-        public object IsEnum {
+        public bool IsEnum {
             get { return spec.ContainsFacet<IEnumValueFacet>(); }
         }
 
-        public object IsBoolean {
+        public bool IsBoolean {
             get { return spec.ContainsFacet<IBooleanValueFacet>(); }
         }
 
@@ -142,8 +144,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public bool IsComplexType {
             get { return spec.ContainsFacet<IComplexTypeFacet>(); }
         }
-
-        #region INakedObjectSpecificationSurface Members
 
         public INakedObjectAssociationSurface[] Properties {
             get {
@@ -204,11 +204,26 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectsSurface Surface { get; set; }
 
-        #endregion
-
         public bool Equals(INakedObjectSpecificationSurface other) {
-            return Equals((object)other);
+            return Equals((object) other);
         }
+
+        public string PresentationHint {
+            get {
+                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? "" : hintFacet.Value;
+            }
+        }
+
+        public bool IsStream {
+            get { return spec.ContainsFacet<IFromStreamFacet>(); }
+        }
+
+        public string UntitledName {
+            get { return spec.UntitledName; }
+        }
+
+        #endregion
 
         public override bool Equals(object obj) {
             var nakedObjectSpecificationWrapper = obj as NakedObjectSpecificationWrapper;
@@ -226,78 +241,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public override int GetHashCode() {
             return (spec != null ? spec.GetHashCode() : 0);
-        }
-
-        public override object GetScalarProperty(ScalarProperty name) {
-            switch (name) {
-                case (ScalarProperty.FullName):
-                    return FullName;
-                case (ScalarProperty.SingularName):
-                    return SingularName;
-                case (ScalarProperty.UntitledName):
-                    return UntitledName;
-                case (ScalarProperty.PluralName):
-                    return PluralName;
-                case (ScalarProperty.Description):
-                    return Description;
-                case (ScalarProperty.IsParseable):
-                    return IsParseable;
-                case (ScalarProperty.IsQueryable):
-                    return IsQueryable;
-                case (ScalarProperty.IsService):
-                    return IsService;
-                case (ScalarProperty.IsVoid):
-                    return IsVoid;
-                case (ScalarProperty.IsDateTime):
-                    return IsDateTime;
-                case (ScalarProperty.IsCollection):
-                    return IsCollection;
-                case (ScalarProperty.IsObject):
-                    return IsObject;
-                case (ScalarProperty.IsASet):
-                    return IsASet;
-                case (ScalarProperty.IsAggregated):
-                    return IsAggregated;
-                case (ScalarProperty.IsImage):
-                    return IsImage;
-                case (ScalarProperty.IsFileAttachment):
-                    return IsFileAttachment;
-                case (ScalarProperty.IsFile):
-                    return IsFile;
-                case (ScalarProperty.IsBoolean):
-                    return IsBoolean;
-                case (ScalarProperty.IsEnum):
-                    return IsEnum;
-                case (ScalarProperty.IsStream):
-                    return IsStream;
-                case (ScalarProperty.IsAlwaysImmutable):
-                    return IsAlwaysImmutable;
-                case (ScalarProperty.IsImmutableOncePersisted):
-                    return IsImmutableOncePersisted;
-                case (ScalarProperty.IsComplexType):
-                    return IsComplexType;
-                case (ScalarProperty.PresentationHint):
-                    return PresentationHintValue;
-                case (ScalarProperty.ExtensionData):
-                    return ExtensionData;
-                default:
-                    throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
-            }
-        }
-
-        public object PresentationHintValue {
-            get {
-                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
-                return hintFacet == null ? "" : hintFacet.Value;
-            }
-        }
-
-        public bool IsStream {
-            get { return spec.ContainsFacet<IFromStreamFacet>(); }
-        }
-
-        public string UntitledName {
-            get { return spec.UntitledName; }
         }
     }
 }

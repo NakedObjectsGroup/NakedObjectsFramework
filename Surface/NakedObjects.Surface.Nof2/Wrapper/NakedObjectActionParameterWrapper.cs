@@ -14,7 +14,7 @@ using NakedObjects.Surface.Nof2.Context;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectActionParameterWrapper : ScalarPropertyHolder, INakedObjectActionParameterSurface {
+    public class NakedObjectActionParameterWrapper : INakedObjectActionParameterSurface {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;
 
@@ -150,8 +150,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return (nakedObjectActionParameter != null ? nakedObjectActionParameter.GetHashCode() : 0);
         }
 
-        public override object GetScalarProperty(ScalarProperty name) {
-            throw new NotImplementedException();
-        }
+       
     }
 }

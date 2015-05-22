@@ -72,12 +72,12 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetScalars(INakedObjectSpecificationSurface spec) {
-            Name = spec.FullName();
+            Name = spec.FullName;
             DomainType = spec.DomainTypeName(OidStrategy);
-            FriendlyName = spec.SingularName();
-            PluralName = spec.PluralName();
-            Description = spec.Description();
-            IsService = spec.IsService();
+            FriendlyName = spec.SingularName;
+            PluralName = spec.PluralName;
+            Description = spec.Description;
+            IsService = spec.IsService;
         }
 
         private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {

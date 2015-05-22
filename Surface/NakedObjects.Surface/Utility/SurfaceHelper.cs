@@ -31,7 +31,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
         }
 
         public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
-            if (nakedObject.Specification.IsQueryable()) {
+            if (nakedObject.Specification.IsQueryable) {
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
@@ -43,7 +43,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
 
         public static string GetObjectTypeShortName(this INakedObjectsSurface surface, object model) {
             var nakedObject = surface.GetObject(model);
-            return nakedObject.Specification.FullName().Split('.').Last();
+            return nakedObject.Specification.FullName.Split('.').Last();
         }
 
         public static string IconName(INakedObjectSurface nakedObject) {
@@ -76,7 +76,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
             Type instanceType = collectionitemSpec.GetUnderlyingType();
             var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
 
-            if (collectionitemSpec.IsParseable()) {
+            if (collectionitemSpec.IsParseable) {
                 return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();
             }
 

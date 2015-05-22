@@ -82,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
                 exts.Add(JsonPropertyNames.MemberOrder, memberOrder);
             }
 
-            if (returnType != null && !returnType.IsVoid()) {
+            if (returnType != null && !returnType.IsVoid) {
                 Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy);
                 exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
 
@@ -95,9 +95,9 @@ namespace RestfulObjects.Snapshot.Utility {
                     exts.Add(JsonPropertyNames.MaxLength, maxLength ?? 0);
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
-                else if (returnType.IsCollection()) {
+                else if (returnType.IsCollection) {
                     exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy).Item1);
-                    exts.Add(JsonPropertyNames.PluralName, elementType.PluralName());
+                    exts.Add(JsonPropertyNames.PluralName, elementType.PluralName);
                 }
             }
 
@@ -128,7 +128,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public static object GetChoiceValue(IOidStrategy oidStrategy, INakedObjectSurface item, ChoiceRelType relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
             object value = ObjectToPredefinedType(item.Object);
-            return item.Specification.IsParseable() ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
@@ -205,11 +205,11 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static PredefinedType? SpecToPredefinedType(INakedObjectSpecificationSurface spec) {
-            if (spec.IsFileAttachment() || spec.IsImage()) {
+            if (spec.IsFileAttachment || spec.IsImage) {
                 return PredefinedType.Blob;
             }
 
-            if (spec.IsParseable() || spec.IsCollection() || spec.IsVoid()) {
+            if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
                 Type underlyingType = spec.GetUnderlyingType();
                 return TypeToPredefinedType(underlyingType);
             }
@@ -257,7 +257,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static bool IsBlobOrClob(INakedObjectSpecificationSurface spec) {
-            if (spec.IsParseable() || spec.IsCollection()) {
+            if (spec.IsParseable || spec.IsCollection) {
                 Type underlyingType = spec.GetUnderlyingType();
                 PredefinedType pdt = TypeToPredefinedType(underlyingType);
                 return pdt == PredefinedType.Blob || pdt == PredefinedType.Clob;
@@ -266,7 +266,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static bool IsAttachment(INakedObjectSpecificationSurface spec) {
-            return (spec.IsImage() || spec.IsFileAttachment());
+            return (spec.IsImage || spec.IsFileAttachment);
         }
 
         public static bool IsJsonMediaType(string mediaType) {

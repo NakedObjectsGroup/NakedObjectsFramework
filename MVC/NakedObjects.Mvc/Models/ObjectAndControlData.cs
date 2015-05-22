@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Models {
                 var no = GetNakedObject(surface);
                 INakedObjectActionSurface action;
 
-                if (no.Specification.IsCollection()) {
+                if (no.Specification.IsCollection) {
                     var elementSpec = no.ElementSpecification;
 
                     action = elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(no)).Single(a => a.Id == ActionId);

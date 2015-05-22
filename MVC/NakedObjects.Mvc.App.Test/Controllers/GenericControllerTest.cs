@@ -32,7 +32,6 @@ using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using NakedObjectsSurfaceExtensions = NakedObjects.Surface.Utility.NakedObjectsSurfaceExtensions;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]

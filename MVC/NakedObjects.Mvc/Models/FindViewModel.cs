@@ -33,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public string DialogClass(INakedObjectsSurface framework) {
             if (ViewType == ViewTypes.Dialog) {
-                return ContextAction.ReturnType.IsFile() ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
+                return ContextAction.ReturnType.IsFile ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
             }
             return IdConstants.EditName;
         }

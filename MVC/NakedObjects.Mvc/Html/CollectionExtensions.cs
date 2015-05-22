@@ -23,7 +23,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Func<INakedObjectAssociationSurface, int> orderFunc;
             bool withTitle;
 
-            if (action == null || action.ReturnType.IsVoid()) {
+            if (action == null || action.ReturnType.IsVoid) {
                 // todo investigate other ways to do this 
                 action = nakedObject.MementoAction;
             }
@@ -62,7 +62,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             var adapter = html.Surface().GetObject(domainObject);
-            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection() && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
+            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
             return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString)).ToArray();
         }
 

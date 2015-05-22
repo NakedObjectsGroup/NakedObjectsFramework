@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, flags) {
             var objectUri = new UriMtHelper(oidStrategy ,req, objectContext.Target);
             SetScalars(objectContext);
-            SelfRelType = objectContext.Specification.IsService() ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
+            SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
             SetLinksAndMembers(req, objectContext);
             SetExtensions(objectContext.Target);
             SetHeader(objectContext);
@@ -44,7 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetHeader(ObjectContextSurface objectContext) {
-            caching = objectContext.Specification.IsService() ? CacheType.NonExpiring : CacheType.Transactional;
+            caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
             SetEtag(objectContext.Target);
         }
 
@@ -114,11 +114,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetExtensions(INakedObjectSurface nakedObject) {
             if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(friendlyname: nakedObject.Specification.SingularName(),
-                    description: nakedObject.Specification.Description(),
-                    pluralName: nakedObject.Specification.PluralName(),
+                Extensions = RestUtils.GetExtensions(friendlyname: nakedObject.Specification.SingularName,
+                    description: nakedObject.Specification.Description,
+                    pluralName: nakedObject.Specification.PluralName,
                     domainType: nakedObject.Specification.DomainTypeName(OidStrategy),
-                    isService: nakedObject.Specification.IsService(),
+                    isService: nakedObject.Specification.IsService,
                     hasParams: null,
                     optional: null,
                     maxLength: null,
@@ -140,7 +140,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            if (objectContext.Target != null && (objectContext.Specification.IsService() || !objectContext.Target.IsTransient)) {
+            if (objectContext.Target != null && (objectContext.Specification.IsService || !objectContext.Target.IsTransient)) {
                 return CreateObjectWithOptionals(oidStrategy ,objectContext, req, flags);
             }
 
@@ -151,7 +151,7 @@ namespace RestfulObjects.Snapshot.Representations {
             ILinkObjectId oid = oidStrategy.GetOid(objectContext.Target);
 
             var props = new List<OptionalProperty>();
-            if (objectContext.Specification.IsService()) {
+            if (objectContext.Specification.IsService) {
                 props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
             }
             else {

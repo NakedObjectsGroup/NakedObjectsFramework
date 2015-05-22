@@ -34,7 +34,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetChoices(listContext, parmContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, parmContext));
             var helper = new UriMtHelper(oidStrategy,req, parmContext.Target);
-            ObjectRelType parentRelType = parmContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+            ObjectRelType parentRelType = parmContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             SetLinks(req, listContext.ElementType, parentRelType);
             SetExtensions();
             SetHeader(listContext.IsListOfServices);
