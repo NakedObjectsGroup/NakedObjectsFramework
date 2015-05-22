@@ -31,7 +31,9 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         #region API
 
-        public IOidStrategy OidStrategy { get; private set; }
+        public IOidStrategy OidStrategy {
+            get { return oidStrategy; }
+        }
         public IMessageBrokerSurface MessageBroker { get; private set; }
 
         public void Start() {

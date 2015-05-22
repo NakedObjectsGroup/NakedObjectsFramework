@@ -83,7 +83,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public Type GetUnderlyingType() {
-            throw new NotImplementedException();
+            return typeof (void);
         }
 
         public INakedObjectActionSurface[] GetCollectionContributedActions() {
@@ -118,6 +118,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
                     return FullName;
                 case (ScalarProperty.SingularName):
                     return SingularName;
+                case (ScalarProperty.UntitledName):
+                    return "";
                 case (ScalarProperty.PluralName):
                     return PluralName;
                 case (ScalarProperty.Description):
@@ -136,6 +138,32 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
                     return IsCollection;
                 case (ScalarProperty.IsObject):
                     return IsObject;
+                case (ScalarProperty.IsASet):
+                    return false;
+                case (ScalarProperty.IsAggregated):
+                    return false;
+                case (ScalarProperty.IsImage):
+                    return false;
+                case (ScalarProperty.IsFileAttachment):
+                    return false;
+                case (ScalarProperty.IsFile):
+                    return false;
+                case (ScalarProperty.IsBoolean):
+                    return false;
+                case (ScalarProperty.IsEnum):
+                    return false;
+                case (ScalarProperty.IsStream):
+                    return false;
+                case (ScalarProperty.IsAlwaysImmutable):
+                    return false;
+                case (ScalarProperty.IsImmutableOncePersisted):
+                    return false;
+                case (ScalarProperty.IsComplexType):
+                    return false;
+                case (ScalarProperty.PresentationHint):
+                    return "";
+                case (ScalarProperty.ExtensionData):
+                    return null;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }

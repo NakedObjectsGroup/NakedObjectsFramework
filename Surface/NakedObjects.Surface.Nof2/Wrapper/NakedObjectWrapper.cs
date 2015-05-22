@@ -132,8 +132,30 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             switch (name) {
                 case (ScalarProperty.IsTransient):
                     return IsTransient;
+                case (ScalarProperty.IsDestroyed):
+                    return false;
                 case (ScalarProperty.TitleString):
                     return TitleString();
+                case (ScalarProperty.InvariantString):
+                    return "";
+                case (ScalarProperty.IsNotPersistent):
+                    return false;
+                case (ScalarProperty.IsUserPersistable):
+                    return true;
+                case (ScalarProperty.IsCollectionMemento):
+                    return false;
+                case (ScalarProperty.IsPaged):
+                    return false;
+                case (ScalarProperty.IsViewModelEditView):
+                    return false;
+                case (ScalarProperty.IsViewModel):
+                    return false;
+                case (ScalarProperty.EnumIntegralValue):
+                    return false;
+                case (ScalarProperty.MementoAction):
+                    return null;
+                case (ScalarProperty.ExtensionData):
+                    return null;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }

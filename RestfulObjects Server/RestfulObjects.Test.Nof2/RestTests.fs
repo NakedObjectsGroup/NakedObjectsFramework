@@ -34,7 +34,8 @@ type Nof2Tests() = class
         box(x.Container) :?> IContainer
     
     member x.RegisterTypes (container : IUnityContainer) = 
-          container.RegisterType(typeof<IOidStrategy>, typeof<SerialOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
+          container.RegisterType(typeof<RestfulObjectsController>, typeof<RestfulObjectsController>, null, (new PerResolveLifetimeManager())) |> ignore
+          container.RegisterType(typeof<IOidStrategy>, typeof<TestOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
           container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
         
     member x.UnityContainer : IUnityContainer = 

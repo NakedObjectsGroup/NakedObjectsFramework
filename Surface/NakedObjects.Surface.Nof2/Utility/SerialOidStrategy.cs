@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Linq;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Nof2.Implementation;
 using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;
@@ -75,7 +76,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
         public ILinkObjectId GetOid(string typeName, string instanceId) {
-            throw new System.NotImplementedException();
+            return new LinkObjectId(typeName, instanceId);
         }
 
         public string GetObjectId(INakedObjectSurface nakedobject) {

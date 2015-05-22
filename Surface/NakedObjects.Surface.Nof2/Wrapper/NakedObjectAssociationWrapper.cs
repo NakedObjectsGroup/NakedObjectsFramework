@@ -65,16 +65,18 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return new NakedObjectSpecificationWrapper(assoc.getSpecification(), target, Surface); }
         }
 
-        public INakedObjectSpecificationSurface ElementSpecification { get;  set; }
-        Choices INakedObjectAssociationSurface.IsChoicesEnabled {
+        public INakedObjectSpecificationSurface ElementSpecification {
             get {
-                throw new NotImplementedException();
+             
+                return new NakedObjectSpecificationWrapper(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof(object).FullName), null, Surface);
+            
             }
         }
+        Choices INakedObjectAssociationSurface.IsChoicesEnabled {
+            get { return Choices.NotEnabled; }
+        }
         public bool IsAutoCompleteEnabled {
-            get {
-                throw new NotImplementedException();
-            }
+            get { return false; }
         }
 
         public string Id {
@@ -111,19 +113,19 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
-            throw new NotImplementedException();
+            return new INakedObjectSurface[]{};
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
-            throw new NotImplementedException();
+           return new Tuple<string, INakedObjectSpecificationSurface>[]{};
         }
 
         public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
-            throw new NotImplementedException();
+            return new Tuple<INakedObjectSurface, string>[]{};
         }
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
-            throw new NotImplementedException();
+            return new INakedObjectSurface[]{};
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
@@ -189,8 +191,48 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
                     return Pattern;
                 case (ScalarProperty.MemberOrder):
                     return MemberOrder;
+                case (ScalarProperty.IsASet):
+                    return false;
                 case (ScalarProperty.IsInline):
                     return IsInline;
+                case (ScalarProperty.Mask):
+                    return "";
+                case (ScalarProperty.AutoCompleteMinLength):
+                    return 0;
+                case (ScalarProperty.IsConcurrency):
+                    return false;
+                case (ScalarProperty.NumberOfLines):
+                    return 0;
+                case (ScalarProperty.Width):
+                    return 0;
+                case (ScalarProperty.TypicalLength):
+                    return 0;
+                case (ScalarProperty.ExtensionData):
+                    return null;
+                case (ScalarProperty.TableViewData):
+                    return null;
+                case (ScalarProperty.RenderEagerly):
+                    return false;
+                case (ScalarProperty.DoNotCount):
+                    return false;
+                case (ScalarProperty.IsNullable):
+                    return false;
+                case (ScalarProperty.IsAjax):
+                    return false;
+                case (ScalarProperty.IsPassword):
+                    return false;
+                case (ScalarProperty.Range):
+                    return 0;
+                case (ScalarProperty.RegEx):
+                    return null;
+                case (ScalarProperty.IsFindMenuEnabled):
+                    return false;
+                case (ScalarProperty.PresentationHint):
+                    return "";
+                case (ScalarProperty.IsEnum):
+                    return false;
+                case (ScalarProperty.IsFileAttachment):
+                    return false;
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }

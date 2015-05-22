@@ -61,7 +61,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public INakedObjectSpecificationSurface ElementType {
             get {
-                throw new NotImplementedException();
+                return new NakedObjectSpecificationWrapper(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof(object).FullName), null, Surface);
             }
         }
 
@@ -115,8 +115,20 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
                     return IsQueryOnly;
                 case (ScalarProperty.IsIdempotent):
                     return IsIdempotent;
+                case (ScalarProperty.IsContributed):
+                    return IsContributed;
                 case (ScalarProperty.MemberOrder):
                     return MemberOrder;
+                case (ScalarProperty.PageSize):
+                    return 0;
+                case (ScalarProperty.ExtensionData):
+                    return null;
+                case (ScalarProperty.TableViewData):
+                    return null;
+                case (ScalarProperty.RenderEagerly):
+                    return false;
+                case (ScalarProperty.PresentationHint):
+                    return "";
                 default:
                     throw new NotImplementedException(string.Format("{0} doesn't support {1}", GetType(), name));
             }

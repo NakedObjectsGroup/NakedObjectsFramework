@@ -61,11 +61,11 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
         public ILinkObjectId GetOid(string servicename) {
-            throw new NotImplementedException();
+            return new LinkObjectId(servicename, "");
         }
 
         public ILinkObjectId GetOid(string typeName, string instanceId) {
-            throw new NotImplementedException();
+           return new LinkObjectId(typeName, instanceId);
         }
 
         public string GetObjectId(INakedObjectSurface nakedobject) {

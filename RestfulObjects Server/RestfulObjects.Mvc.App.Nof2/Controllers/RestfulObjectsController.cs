@@ -6,11 +6,15 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using NakedObjects.Surface;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Model;
 
 namespace MvcTestApp.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
+
+        public RestfulObjectsController(INakedObjectsSurface surface) : base(surface) { }
+
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetHome(arguments);
@@ -164,5 +168,7 @@ namespace MvcTestApp.Controllers {
         public virtual HttpResponseMessage InvalidMethod() {
             throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
         }
+
+        
     }
 }
