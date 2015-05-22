@@ -210,8 +210,8 @@ namespace RestfulObjects.Test.EndToEnd {
             string machineName = Environment.MachineName;
             string suffix = @"Test\RestfulObjects.Test.EndToEnd\Json reference files\" + fileName + Txt;
 
-            if (machineName == "RICHARD-E4310") {
-                return @"C:\Naked Objects for .Net\" + suffix;
+            if (machineName == "YOGA") {  //Richard's
+                return @"C:\NakedObjectsFramework\" + suffix;
             }
 
             if (machineName == "STEF-PRECISION") {
