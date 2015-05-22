@@ -98,8 +98,12 @@
       <Project>{3bbbe57e-abd7-48ae-b4e4-b3eceb4d7a0a}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging.Core">
-      <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <HintPath>..\..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework">
@@ -144,9 +148,6 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-alpha\lib\net40\NakedObjects.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nakedobjects.net">
-      <HintPath>..\..\..\nof2-standalone\lib\nakedobjects.net.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>
@@ -185,33 +186,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="sdm.core.boot">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.core.boot.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.profiler">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.profiler.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.resultsprocessor">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.resultsprocessor.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.services.impl">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.services.impl.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.services.noop">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.services.noop.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.systems.application">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.systems.application.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.systems.reflector">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.systems.reflector.dll</HintPath>
-    </Reference>
-    <Reference Include="sdm.utilities">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.utilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Spring.Core">
-      <HintPath>..\..\..\nof2-standalone\lib\Spring.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
