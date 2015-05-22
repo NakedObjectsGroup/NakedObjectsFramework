@@ -112,19 +112,6 @@ namespace NakedObjects.SystemTest.Method {
         public void RecognisedAutoCompleteMethodDoesNotShowUpAsAction() {
             var obj1 = NewTestObject<Auto1>();
             try {
-<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
-                obj1.GetAction("Auto Complete Prop1");
-                Assert.Fail();
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
-
-            try {
-                obj1.GetAction("Auto Complete 0 Do Something");
-                Assert.Fail();
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-=======
                 var act = obj1.GetAction("Auto Complete Prop2");
                 Assert.Fail("Should not get to here!");
             }
@@ -144,8 +131,7 @@ namespace NakedObjects.SystemTest.Method {
             }
             catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete0 Do Something'", e.Message);
->>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
-            }
+             }
             try {
                 obj1.GetAction("Auto Complete1 Do Something");
                 Assert.Fail("Should not get to here!");
@@ -185,21 +171,9 @@ namespace NakedObjects.SystemTest.Method {
             CreateAuto2("Bar3");
 
             var obj1 = NewTestObject<Auto1>();
-<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
-            ITestAction action = obj1.GetAction("Do Something");
-
-            try {
-                action.Parameters[0].GetCompletions("bar");
-                Assert.Fail("expect exception");
-            } catch (Exception) {
-                // expected
-            }
-=======
             var action = obj1.GetAction("Do Something");
             ITestNaked[] cho0 = action.Parameters[0].GetCompletions("any");
             Assert.AreEqual(1, cho0.Count());
->>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
-
             ITestNaked[] cho1 = action.Parameters[1].GetCompletions("any");
             Assert.AreEqual(3, cho1.Count());
 
@@ -1572,20 +1546,10 @@ namespace NakedObjects.SystemTest.Method {
         public virtual string Prop2 { get; set; }
 
         public virtual Auto2 Prop3 { get; set; }
-
-<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
-        public IQueryable<int> AutoCompleteProp1(string autoCompleteParm) {
-            return new List<int> { 4, 8, 9 }.AsQueryable();
-        }
-
-        public IQueryable<string> AutoCompleteProp2(string autoCompleteParm) {
-            return new List<string> { "Fee", "Foo", "Fuu" }.AsQueryable();
-=======
         public virtual Auto2 Prop4 { get; set; }
 
         public IList<string> AutoCompleteProp2(string autoCompleteParm) {
             return new List<string> {"Fee", "Foo", "Fuu"};
->>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
         }
 
         public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
@@ -1593,12 +1557,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         #region Do Something
-
-<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
-        public void DoSomething(int param0, string param1, Auto2 param2) { }
-=======
         public void DoSomething(Auto1 param0, string param1, Auto2 param2) {}
->>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
 
         public Auto1 AutoComplete0DoSomething(string autoCompleteParm) {
             return this;
@@ -1657,15 +1616,10 @@ namespace NakedObjects.SystemTest.Method {
         public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm) {
             return null;
         }
-
-<<<<<<< HEAD:Test/NakedObjects.SystemTest/Methods/TestMethods.cs
-        public void DoSomething(int param0, string param1, Auto2 param2) { }
-=======
         //Return type does not match
         public IQueryable<Auto3> AutoComplete1DoSomething(string autoCompleteParm) {
             return null;
         }
->>>>>>> a3960c2... #1096 -  extension of auto-complete:Test/NakedObjects.SystemTest/Methods/TestRecognisedMethods.cs
 
         //Action name mis-spelled
         public IQueryable<Auto2> AutoComplete2DoSomting(string autoCompleteParm) {
