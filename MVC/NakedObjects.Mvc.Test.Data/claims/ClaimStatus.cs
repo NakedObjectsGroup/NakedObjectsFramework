@@ -12,32 +12,32 @@ namespace Expenses {
     namespace ExpenseClaims {
         [Bounded, Immutable(WhenTo.OncePersisted)]
         public class ClaimStatus : Status {
-            [Hidden, Key]
+            [Hidden(WhenTo.Always), Key]
             public int Id { get; set; }
 
             #region Status tests
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool IsNew() {
                 return TitleString.Equals(NEW_STATUS);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool IsSubmitted() {
                 return TitleString.Equals(SUBMITTED);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool IsReturned() {
                 return TitleString.Equals(RETURNED);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool IsToBePaid() {
                 return TitleString.Equals(TO_BE_PAID);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool IsPaid() {
                 return TitleString.Equals(PAID);
             }

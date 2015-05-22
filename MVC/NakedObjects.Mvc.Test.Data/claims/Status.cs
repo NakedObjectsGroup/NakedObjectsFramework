@@ -10,7 +10,7 @@ using NakedObjects;
 namespace Expenses {
     namespace ExpenseClaims {
         public abstract class Status {
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual string TitleString { get; set; }
 
             public virtual string Title() {

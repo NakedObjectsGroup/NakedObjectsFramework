@@ -23,7 +23,7 @@ namespace RestfulObjects.Test.Data {
         [Disabled]
         public virtual int ADisabledValue { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int AHiddenValue { get; set; }
 
         public virtual int AChoicesValue { get; set; }

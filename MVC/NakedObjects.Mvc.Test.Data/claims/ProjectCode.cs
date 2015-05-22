@@ -13,7 +13,7 @@ namespace Expenses {
     namespace ExpenseClaims {
         [Bounded, Immutable(WhenTo.OncePersisted)]
         public class ProjectCode {
-            [Hidden, Key]
+            [Hidden(WhenTo.Always), Key]
             public int Id { get; set; }
 
             #region Code

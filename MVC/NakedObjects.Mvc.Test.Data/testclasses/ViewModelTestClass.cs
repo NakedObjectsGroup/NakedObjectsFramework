@@ -14,7 +14,7 @@ namespace MvcTestApp.Tests.Helpers {
     public class ViewModelTestClass : IViewModel {
         public IDomainObjectContainer Container { protected get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public Employee Employee { get; set; }
 
         public string UserName {
