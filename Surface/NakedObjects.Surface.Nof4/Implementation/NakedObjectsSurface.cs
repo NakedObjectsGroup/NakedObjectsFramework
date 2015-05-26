@@ -21,6 +21,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Nof4.Wrapper;
@@ -30,11 +31,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
     public class NakedObjectsSurface : INakedObjectsSurface {
         private readonly INakedObjectsFramework framework;
         private readonly IOidStrategy oidStrategy;
+        private readonly ILinkOidFactory oidFactory;
         private readonly IMessageBrokerSurface messageBroker;
 
-        public NakedObjectsSurface(IOidStrategy oidStrategy, INakedObjectsFramework framework) {
+        public NakedObjectsSurface(IOidStrategy oidStrategy, ILinkOidFactory oidFactory,   INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
+            this.oidFactory = oidFactory;
             this.framework = framework;
             messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
         }
@@ -68,6 +71,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public IPrincipal GetUser() {
             return MapErrors(() => framework.Session.Principal);
+        }
+
+        public ILinkOidFactory OidFactory
+        {
+            get { return oidFactory; }
         }
 
         public IOidStrategy OidStrategy {

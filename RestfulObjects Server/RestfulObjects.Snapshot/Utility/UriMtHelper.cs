@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject) : this(oidStrategy ,req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
-            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -64,7 +64,7 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
             spec = nakedObject.Specification;
-            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -82,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
             spec = nakedObject.Specification;
-            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }
@@ -110,7 +110,7 @@ namespace RestfulObjects.Snapshot.Utility {
             param = parameterContext.Parameter;
             nakedObject = parameterContext.Target;
             spec = nakedObject.Specification;
-            ILinkObjectId oid = oidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
         }

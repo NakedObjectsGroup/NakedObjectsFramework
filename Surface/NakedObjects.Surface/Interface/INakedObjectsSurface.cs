@@ -7,9 +7,11 @@
 
 using System.Security.Principal;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectsSurface {
+        ILinkOidFactory OidFactory { get; }
         IOidStrategy OidStrategy { get; }
         IMessageBrokerSurface MessageBroker { get; }
         void Start();

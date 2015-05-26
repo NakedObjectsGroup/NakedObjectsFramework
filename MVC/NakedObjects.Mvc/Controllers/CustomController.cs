@@ -311,7 +311,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         protected bool SaveObject<T>(FormCollection form, ref T obj) {
             var naked = GetNakedObject(obj);
 
-            var oid = Surface.OidStrategy.GetOid(naked);
+            var oid = Surface.OidFactory.GetLinkOid(naked);
             var ac = Convert(form);
 
             var result = Surface.PutObject(oid, ac);
@@ -348,9 +348,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <summary>
         ///     Obtains the Id for the specified object
         /// </summary>
-        protected string GetIdFromObject(object domainObject) {
-            return Surface.OidStrategy.GetOid(domainObject).ToString();
-        }
+        //protected string GetIdFromObject(object domainObject) {
+        //    return Surface.OidFactory.GetLinkOid(domainObject).ToString();
+        //}
 
         #endregion
 
@@ -383,7 +383,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private T InvokeAction<T>(INakedObjectSurface nakedObject, INakedObjectActionSurface action, FormCollection parameters, out bool valid) {
             ArgumentsContext ac;
-            ILinkObjectId oid = Surface.OidStrategy.GetOid(nakedObject);
+            ILinkObjectId oid = Surface.OidFactory.GetLinkOid(nakedObject);
             ActionResultContextSurface contextSurface;
 
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {

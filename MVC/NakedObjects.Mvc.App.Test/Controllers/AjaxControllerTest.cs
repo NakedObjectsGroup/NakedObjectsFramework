@@ -25,6 +25,7 @@ using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Controllers;
@@ -88,6 +89,8 @@ namespace MvcTestApp.Tests.Controllers {
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
+
         }
 
         [TestFixtureSetUp]

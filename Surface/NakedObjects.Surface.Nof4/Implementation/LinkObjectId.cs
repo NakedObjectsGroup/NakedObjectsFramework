@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class LinkObjectId : ILinkObjectId {
@@ -14,10 +15,16 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             KeySeparator = "-";
         }
 
-        public LinkObjectId(string domainType, string instanceId) {
-            DomainType = domainType;
-            InstanceId = instanceId;
+        public LinkObjectId(string id) {
+            var split = id.Split('/');
+            DomainType = split.First();
+            InstanceId = split.LastOrDefault();
         }
+
+        //public LinkObjectId(string domainType, string instanceId) {
+        //    DomainType = domainType;
+        //    InstanceId = instanceId;
+        //}
 
         public static string KeySeparator { get; set; }
 
@@ -25,7 +32,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         public string InstanceId { get; set; }
 
         public override string ToString() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
+            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
         }
     }
 }

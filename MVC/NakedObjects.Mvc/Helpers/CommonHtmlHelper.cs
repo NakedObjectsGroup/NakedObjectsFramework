@@ -1323,7 +1323,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             else {
                 existingValue = propertyContext.Property.Specification.IsParseable ? html.Surface().GetObject(propertyContext.Property.Specification, rawExistingValue) :
-                    html.Surface().GetObject(html.Surface().OidStrategy.GetOid((string) modelState.Value.RawValue, "")).Target;
+                    html.Surface().GetObject(html.Surface().OidFactory.GetLinkOid((string) modelState.Value.RawValue)).Target;
             }
             return existingValue;
         }
@@ -1652,7 +1652,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string CollectionItemTypeName(this HtmlHelper html, INakedObjectSurface collectionNakedObject) {
-            return collectionNakedObject.ElementSpecification.FullName.Split('.').Last();
+            return collectionNakedObject.ElementSpecification.ShortName;
         }
 
         private static string GetReferenceParameter(this HtmlHelper html, ParameterContext context, string id, string tooltip, IList<ElementDescriptor> childElements, bool addToThis) {

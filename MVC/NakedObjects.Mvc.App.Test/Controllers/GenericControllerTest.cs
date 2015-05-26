@@ -24,6 +24,7 @@ using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
@@ -64,6 +65,11 @@ namespace MvcTestApp.Tests.Controllers {
                 return allTypes.ToArray();
             }
         }
+
+        private INakedObjectSurface GetService(string name) {
+            return Surface.GetServices().List.SingleOrDefault(s => s.Specification.ShortName == name);
+        }
+
 
         protected override object[] MenuServices {
             get {
@@ -236,6 +242,7 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
 
         }
 
@@ -529,9 +536,9 @@ namespace MvcTestApp.Tests.Controllers {
             return owner.Specification.GetActionLeafNodes().Single(a => a.Id == id);
         }
 
-        private INakedObjectSurface GetService(string serviceName) {
-            return Surface.GetService(Surface.OidStrategy.GetOid(serviceName)).Target;
-        }
+        //private INakedObjectSurface GetService(string serviceName) {
+        //    return Surface.GetServices().List.SingleOrDefault(s => s.Specification.FullName.Split('.').Last() == serviceName);
+        //}
 
         private static void AssertNameAndParms(ViewResult result, string name, int? count, object contextObject, INakedObjectActionSurface contextAction, object targetObject, INakedObjectActionSurface targetAction, string pName) {
             Assert.AreEqual(name, result.ViewName);
@@ -769,7 +776,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditActionAsFindNoParmsForObject(Store store) {
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            var salesRepo = Surface.GetService(Surface.OidStrategy.GetOid("SalesRepository")).Target;
+            var salesRepo = GetService("SalesRepository");
             var rndSpAction = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "RandomSalesPerson");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
@@ -787,10 +794,13 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsEditViewOf<Store>(result);
         }
 
+        
+
+
         public void EditActionAsFindParmsForObject(Store store) {
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            var salesRepo = Surface.GetService(Surface.OidStrategy.GetOid("SalesRepository")).Target;
+            var salesRepo = GetService(("SalesRepository"));
             var spAction = GetAction(salesRepo, "FindSalesPersonByName");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
@@ -809,7 +819,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeEditActionAsFindParmsForObject(Store store) {
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            var salesRepo = Surface.GetService(Surface.OidStrategy.GetOid("SalesRepository")).Target;
+            var salesRepo = GetService(("SalesRepository"));
             var spAction = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
@@ -826,7 +836,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void InvokeEditActionAsFindParmsForObjectWithParms(Store store) {
-            var salesRepo = Surface.GetService(Surface.OidStrategy.GetOid("SalesRepository")).Target;
+            var salesRepo = GetService(("SalesRepository"));
             var spAction = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +

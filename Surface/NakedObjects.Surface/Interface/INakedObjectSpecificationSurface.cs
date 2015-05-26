@@ -25,6 +25,8 @@ namespace NakedObjects.Surface {
         bool IsCollection { get; }
         bool IsObject { get; }
         string FullName { get; }
+        string ShortName { get; }
+
         // todo should remove this and move title stuff down
         string UntitledName { get; }
         string SingularName { get; }

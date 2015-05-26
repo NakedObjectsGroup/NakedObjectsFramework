@@ -1493,7 +1493,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             var nakedObject = html.Surface().GetObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Specification.FullName.Split('.').Last());
+            return MvcHtmlString.Create(nakedObject.Specification.GetActionLeafNodes().Single(p => p.Id == actionId).Parameters[index].Specification.ShortName);
         }
 
         #endregion

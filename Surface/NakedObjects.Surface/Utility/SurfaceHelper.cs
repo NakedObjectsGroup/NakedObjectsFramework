@@ -43,7 +43,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
 
         public static string GetObjectTypeShortName(this INakedObjectsSurface surface, object model) {
             var nakedObject = surface.GetObject(model);
-            return nakedObject.Specification.FullName.Split('.').Last();
+            return nakedObject.Specification.ShortName;
         }
 
         public static string IconName(INakedObjectSurface nakedObject) {
@@ -52,7 +52,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
         }
 
         private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
-            var oid = surface.OidStrategy.GetOid(id, "");
+            var oid = surface.OidFactory.GetLinkOid(id);
             return surface.GetObject(oid).Target;
         }
 

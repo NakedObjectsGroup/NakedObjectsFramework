@@ -20,6 +20,7 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Mvc.App.Controllers;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Mvc.App {
@@ -43,6 +44,10 @@ namespace NakedObjects.Mvc.App {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
+
+            container.RegisterType<ILinkOidFactory, KeyFormatLinkOidFactory>("KeyOid", new PerRequestLifetimeManager());
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>( new PerRequestLifetimeManager());
+
             container.RegisterType<IOidStrategy, ExternalOid>("RestOid", new PerRequestLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerRequestLifetimeManager());
 

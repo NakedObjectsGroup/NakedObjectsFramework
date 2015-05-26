@@ -33,7 +33,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         #region IOidStrategy Members
 
-        public INakedObjectsSurface Surface { protected get; set; }
+        public INakedObjectsSurface Surface {  get; set; }
 
         public object GetDomainObjectByOid(ILinkObjectId objectId) {
             Type type = ValidateObjectId(objectId);
@@ -67,23 +67,23 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
 
-        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
-            return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
-        }
+        //public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
+        //    Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
+        //    return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
+        //}
 
-        public ILinkObjectId GetOid(object domainObject) {
-            throw new NotImplementedException();
-        }
+        //public ILinkObjectId GetOid(object domainObject) {
+        //    throw new NotImplementedException();
+        //}
 
-        public ILinkObjectId GetOid(string servicename) {
-           return new LinkObjectId(servicename, "");
-        }
+        //public ILinkObjectId GetOid(string servicename) {
+        //   return new LinkObjectId(servicename, "");
+        //}
 
-        public ILinkObjectId GetOid(string typeName, string instanceId) {
-            return new LinkObjectId(typeName, instanceId);
+        //public ILinkObjectId GetOid(string typeName, string instanceId) {
+        //    return new LinkObjectId(typeName, instanceId);
 
-        }
+        //}
 
         public string GetObjectId(INakedObjectSurface nakedobject) {
             throw new NotImplementedException();

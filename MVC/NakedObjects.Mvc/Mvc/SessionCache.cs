@@ -48,7 +48,7 @@ namespace NakedObjects.Web.Mvc {
                 return null;
             }
 
-            var oid = surface.OidStrategy.GetOid(id, "");
+            var oid = surface.OidFactory.GetLinkOid(id);
             return surface.GetObject(oid).Target;
         }
 

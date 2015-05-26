@@ -24,7 +24,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         #region IOidStrategy Members
 
-        public INakedObjectsSurface Surface { protected get; set; }
+        public INakedObjectsSurface Surface { get; set; }
 
         private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
             return memento.RecoverCollection();

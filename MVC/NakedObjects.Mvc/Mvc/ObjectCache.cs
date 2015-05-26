@@ -71,12 +71,11 @@ namespace NakedObjects.Web.Mvc {
         }
 
         private static INakedObjectSurface GetNakedObject(INakedObjectsSurface surface, object domainObject) {
-            var oid = surface.OidStrategy.GetOid(domainObject);
-            return surface.GetObject(oid).Target;
+            return surface.GetObject(domainObject);
         }
 
         private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
-            var oid = surface.OidStrategy.GetOid(id, "");
+            var oid = surface.OidFactory.GetLinkOid(id);
             return surface.GetObject(oid).Target;
         }
 
@@ -169,7 +168,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static INakedObjectSurface SafeGetNakedObjectFromId(string id, INakedObjectsSurface surface) {
             try {
-                var oid = surface.OidStrategy.GetOid(id, "");
+                var oid = surface.OidFactory.GetLinkOid(id);
                 return surface.GetObject(oid).Target;
             }
             catch (Exception) {
@@ -216,15 +215,15 @@ namespace NakedObjects.Web.Mvc {
         }
 
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
-            cache.RemoveFromCache(surface.OidStrategy.GetOid(nakedObject).ToString());
+            cache.RemoveFromCache(surface.OidFactory.GetLinkOid(nakedObject).ToString());
         }
 
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, string objectId) {
             cache.Remove(objectId);
         }
 
-        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface framework, INakedObjectSurface nakedObject) {
-            string id = framework.OidStrategy.GetOid(nakedObject).ToString();
+        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+            string id = surface.OidFactory.GetLinkOid(nakedObject).ToString();
             cache.RemoveOthersFromCache(id);
         }
 

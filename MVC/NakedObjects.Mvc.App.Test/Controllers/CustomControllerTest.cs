@@ -25,6 +25,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Core.Util;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -115,6 +116,8 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
+
         }
 
         [TestFixtureSetUp]

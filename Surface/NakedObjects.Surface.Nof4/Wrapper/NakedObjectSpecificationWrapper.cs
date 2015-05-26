@@ -99,6 +99,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.FullName; }
         }
 
+        public string ShortName
+        {
+            get { return spec.ShortName; }
+        }
+
         public bool IsCollection {
             get { return spec.IsCollection && !spec.IsParseable; }
         }

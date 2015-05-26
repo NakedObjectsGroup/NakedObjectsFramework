@@ -35,7 +35,8 @@ namespace RestfulObjects.Mvc.Model {
         private object GetObjectByHref(string href, INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
             string[] oids = helper.GetObjectId(href);
             if (oids != null) {
-                var oid = oidStrategy.GetOid(oids[0], oids[1]);
+                // todo this is clunky 
+                var oid =  surface.OidFactory.GetLinkOid(oids[0] + "/" + oids[1]);
                 return surface.GetObject(oid).Target.Object;
             }
             string typeName = helper.GetTypeId(href);

@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
             var nakedObject = surface.GetObject(model);
-            return nakedObject.Specification.FullName.Split('.').Last();
+            return nakedObject.Specification.ShortName;
         }
 
         public static string GetObjectTypeName(this INakedObjectsFramework framework, object model) {
@@ -278,7 +278,7 @@ namespace MvcTestApp.Tests.Controllers {
     
 
         private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
-            var oid = surface.OidStrategy.GetOid(id, "");
+            var oid = surface.OidFactory.GetLinkOid(id);
             return surface.GetObject(oid).Target;
         }
 

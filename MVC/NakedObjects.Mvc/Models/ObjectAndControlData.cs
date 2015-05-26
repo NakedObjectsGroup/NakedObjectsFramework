@@ -120,7 +120,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public INakedObjectSurface GetNakedObject(INakedObjectsSurface surface) {
             if (nakedObjectSurface == null) {
-                var link = surface.OidStrategy.GetOid(Id, "");
+                var link = surface.OidFactory.GetLinkOid(Id);
 
                 // hack
                 try {
@@ -149,7 +149,7 @@ namespace NakedObjects.Web.Mvc.Models {
                     action = elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(no)).Single(a => a.Id == ActionId);
                 }
                 else {
-                    var id = surface.OidStrategy.GetOid(no);
+                    var id = surface.OidFactory.GetLinkOid(no);
                     action = surface.GetObjectAction(id, ActionId).Action;
                 }
 

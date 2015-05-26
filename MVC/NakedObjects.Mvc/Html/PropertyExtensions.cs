@@ -748,7 +748,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).Specification.FullName.Split('.').Last());
+            return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).Specification.ShortName);
         }
 
         #endregion

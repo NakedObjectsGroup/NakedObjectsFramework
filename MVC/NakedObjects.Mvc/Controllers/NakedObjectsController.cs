@@ -111,8 +111,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         return RedirectHome();
                     }
 
-                    var oid = Surface.OidStrategy.GetOid(lastObject);
-                    nakedObject = Surface.GetObject(oid).Target;
+                    nakedObject = Surface.GetObject(lastObject);
                 }
             }
 
@@ -155,7 +154,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool CheckForAndAddCollectionMementoNew(string name, string[] values, ObjectAndControlData controlData) {
             if (values.Count() == 1) {
-                var oid = Surface.OidStrategy.GetOid(values.First(), "");
+                var oid = Surface.OidFactory.GetLinkOid(values.First());
                 var nakedObject = Surface.GetObject(oid).Target;
 
                 if (nakedObject != null && nakedObject.IsCollectionMemento) {
@@ -366,7 +365,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
 
-            var oid = Surface.OidStrategy.GetOid(id, "");
+            var oid = Surface.OidFactory.GetLinkOid(id);
             return Surface.GetObject(oid).Target;
         }
 
@@ -413,7 +412,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!assoc.IsCollection) {
-                return Surface.OidStrategy.GetDomainObjectByOid(Surface.OidStrategy.GetOid(value.ToString(), ""));
+                return Surface.OidStrategy.GetDomainObjectByOid(Surface.OidFactory.GetLinkOid(value.ToString()));
             }
             // collection 
             return null;
@@ -549,7 +548,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void ValidateAssociation(INakedObjectSurface nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
             try {
-                var oid = Surface.OidStrategy.GetOid(nakedObject);
+                var oid = Surface.OidFactory.GetLinkOid(nakedObject);
 
                 var ac = new ArgumentContext {
                     Value = attemptedValue,
@@ -685,14 +684,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     var nakedObject = GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Specification.FullName.Split('.').Last());
+                    SetControllerName(nakedObject.Specification.ShortName);
                 }
                 else if (model != null) {
                     var nakedObject = model is PropertyViewModel ? GetNakedObject(((PropertyViewModel) model).ContextObject) : GetNakedObject(model);
 
                     if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                         //2nd clause is to avoid rendering a string as a collection
-                        SetControllerName(nakedObject.Specification.FullName.Split('.').Last());
+                        SetControllerName(nakedObject.Specification.ShortName);
                     }
                     else {
                         SetControllerName(nakedObject.Object);

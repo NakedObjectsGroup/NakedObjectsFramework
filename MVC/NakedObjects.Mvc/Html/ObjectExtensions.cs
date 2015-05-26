@@ -239,7 +239,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.FullName.Split('.').Last());
+            return MvcHtmlString.Create(nakedObject.Specification.ShortName);
         }
 
         #endregion

@@ -97,6 +97,7 @@
     <Compile Include="Interface\AttachmentContext.cs" />
     <Compile Include="Interface\IConsentSurface.cs" />
     <Compile Include="Interface\ILinkObjectId.cs" />
+    <Compile Include="Interface\ILinkOidFactory.cs" />
     <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Interface\IMenuAction.cs" />
     <Compile Include="Interface\IMenuItem.cs" />
