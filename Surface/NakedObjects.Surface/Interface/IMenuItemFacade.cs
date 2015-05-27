@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Surface {
-    public interface IMenuItem {
+    public interface IMenuItemFacade {
         string Name { get; }
         string Id { get; }
         object Wrapped { get; }

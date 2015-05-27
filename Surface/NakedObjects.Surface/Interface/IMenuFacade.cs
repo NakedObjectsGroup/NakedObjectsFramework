@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
-    public interface IMenu : IMenuItem {
-        IList<IMenuItem> MenuItems { get; }
+    public interface IMenuFacade : IMenuItemFacade {
+        IList<IMenuItemFacade> MenuItems { get; }
     }
 }

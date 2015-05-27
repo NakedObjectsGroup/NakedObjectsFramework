@@ -26,13 +26,13 @@ using NakedObjects.Util;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public class CustomMenuItem : IMenuItem {
+    public class CustomMenuItem : IMenuItemFacade {
         public string Controller { get; set; }
         public string Action { get; set; }
         public object RouteValues { get; set; }
         public int MemberOrder { get; set; }
 
-        #region IMenuItem Members
+        #region IMenuItemFacade Members
 
         public string Name { get; set; }
         public string Id { get; set; }

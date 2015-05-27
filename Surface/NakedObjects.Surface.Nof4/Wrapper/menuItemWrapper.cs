@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class MenuItemWrapper : IMenuItem {
+    public class MenuItemWrapper : IMenuItemFacade {
 
         public MenuItemWrapper(IMenuItemImmutable wrapped) {
             Wrapped = wrapped;
@@ -16,7 +16,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Id = wrapped.Id;
         }
 
-        #region IMenuItem Members
+        #region IMenuItemFacade Members
 
         public string Name { get; private set; }
         public string Id { get; private set; }

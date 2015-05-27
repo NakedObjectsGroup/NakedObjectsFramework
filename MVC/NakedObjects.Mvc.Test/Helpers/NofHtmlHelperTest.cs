@@ -34,15 +34,17 @@ using NakedObjects.Menu;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using IMenu = NakedObjects.Surface.IMenu;
+
 
 namespace MvcTestApp.Tests.Helpers {
     public static class StringHelper {
@@ -154,6 +156,8 @@ namespace MvcTestApp.Tests.Helpers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
+
         }
 
         [TestFixtureSetUp]
@@ -169,7 +173,7 @@ namespace MvcTestApp.Tests.Helpers {
             Database.Delete("NofHtmlHelperTest");
         }
 
-        protected override NakedObjects.Menu.IMenu[] MainMenus(IMenuFactory factory) {
+        protected override IMenu[] MainMenus(IMenuFactory factory) {
             return DemoServicesSet.MainMenus(factory);
         }
 

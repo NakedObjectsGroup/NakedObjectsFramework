@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace NakedObjects.Surface {
     public interface INakedObjectSpecificationSurface : ISurfaceHolder, IEquatable<INakedObjectSpecificationSurface> {
         INakedObjectAssociationSurface[] Properties { get; }
-        IMenu Menu { get; }
+        IMenuFacade Menu { get; }
         string PresentationHint { get; }
         bool IsAlwaysImmutable { get; }
         bool IsImmutableOncePersisted { get; }

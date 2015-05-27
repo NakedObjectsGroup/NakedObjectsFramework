@@ -98,9 +98,9 @@
     <Compile Include="Interface\IConsentSurface.cs" />
     <Compile Include="Interface\ILinkObjectId.cs" />
     <Compile Include="Interface\ILinkOidFactory.cs" />
-    <Compile Include="Interface\IMenu.cs" />
-    <Compile Include="Interface\IMenuAction.cs" />
-    <Compile Include="Interface\IMenuItem.cs" />
+    <Compile Include="Interface\IMenuFacade.cs" />
+    <Compile Include="Interface\IMenuActionFacade.cs" />
+    <Compile Include="Interface\IMenuItemFacade.cs" />
     <Compile Include="Interface\INakedObjectSurface.cs" />
     <Compile Include="Interface\INakedObjectActionSurface.cs" />
     <Compile Include="Interface\INakedObjectActionParameterSurface.cs" />

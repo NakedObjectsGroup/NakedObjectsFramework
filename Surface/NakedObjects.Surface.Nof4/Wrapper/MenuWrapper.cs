@@ -10,17 +10,17 @@ using System.Linq;
 using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class MenuWrapper : IMenu {
+    public class MenuWrapper : IMenuFacade {
         public object Wrapped { get; private set; }
 
-        private static IMenuItem Wrap(IMenuItemImmutable menu, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             var immutable = menu as IMenuActionImmutable;
             if (immutable != null) {
                 return new MenuActionWrapper(immutable, surface, framework);
             }
 
             var menuImmutable = menu as IMenuImmutable;
-            return menuImmutable != null ? (IMenuItem) new MenuWrapper(menuImmutable, surface, framework) : new MenuItemWrapper(menu);
+            return menuImmutable != null ? (IMenuItemFacade) new MenuWrapper(menuImmutable, surface, framework) : new MenuItemWrapper(menu);
         }
 
         public MenuWrapper(IMenuImmutable wrapped, INakedObjectsSurface surface, INakedObjectsFramework framework) {
@@ -32,7 +32,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #region IMenu Members
 
-        public IList<IMenuItem> MenuItems { get; private set; }
+        public IList<IMenuItemFacade> MenuItems { get; private set; }
 
         #endregion
 

@@ -157,7 +157,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public IMenu Menu {
+        public IMenuFacade Menu {
             get { return new MenuWrapper(spec.Menu, Surface, framework); }
         }
 

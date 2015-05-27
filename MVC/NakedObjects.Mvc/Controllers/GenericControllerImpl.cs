@@ -15,6 +15,7 @@ using Common.Logging;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
+using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {

@@ -73,9 +73,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public T GetDomainObject<T>() {
-            return (T) Object;
-        }
 
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }

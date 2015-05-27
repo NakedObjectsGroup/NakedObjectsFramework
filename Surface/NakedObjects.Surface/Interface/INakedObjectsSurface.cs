@@ -19,7 +19,7 @@ namespace NakedObjects.Surface {
         IPrincipal GetUser();
         ObjectContextSurface GetService(ILinkObjectId serviceName);
         ListContextSurface GetServices();
-        IMenu[] GetMainMenus();
+        IMenuFacade[] GetMainMenus();
         ObjectContextSurface GetObject(INakedObjectSurface nakedObject);
         ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments);
         ObjectContextSurface GetObject(ILinkObjectId objectId);

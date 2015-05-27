@@ -13,6 +13,11 @@ using System.Linq;
 
 namespace NakedObjects.Surface.Utility.Restricted {
     public static class SurfaceHelper {
+
+        public static T GetDomainObject<T>(this INakedObjectSurface nakedObject) {
+            return nakedObject == null ? default(T) : (T) nakedObject.Object;
+        }
+
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
             Array.ForEach<T>(toIterate, action);
         }

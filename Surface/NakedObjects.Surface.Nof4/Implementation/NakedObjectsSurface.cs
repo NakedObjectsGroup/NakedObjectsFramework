@@ -107,10 +107,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => GetServicesInternal().ToListContextSurface(this, framework));
         }
 
-        public IMenu[] GetMainMenus() {
+        public IMenuFacade[] GetMainMenus() {
           
             var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
-            return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenu>().ToArray();
+            return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenuFacade>().ToArray();
         }
 
         public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {
