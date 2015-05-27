@@ -9,5 +9,10 @@ namespace NakedObjects.Surface {
     public interface ILinkObjectId {
         string DomainType { get; set; }
         string InstanceId { get; set; }
+
+        IOidSurface GetOid(IOidStrategy oidStrategy);
+        IOidSurface GetSid(IOidStrategy oidStrategy);
+
+        string Encode();
     }
 }

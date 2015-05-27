@@ -24,7 +24,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
             Debug.Assert(!(model is INakedObjectSurface), "Cannot get Adapter for Adapter");
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(html.Surface().OidStrategy.GetObjectId(nakedObject));
+            return MvcHtmlString.Create(html.Surface().OidFactory.GetLinkOid(nakedObject).Encode());
         }
 
         /// <summary>

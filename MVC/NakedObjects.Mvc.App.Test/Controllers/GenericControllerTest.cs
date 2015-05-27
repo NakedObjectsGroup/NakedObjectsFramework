@@ -230,7 +230,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private string GetObjectId(object obj) {
-            return Surface.OidStrategy.GetObjectId(obj as INakedObjectSurface ?? Surface.GetObject(obj));
+            return Surface.OidFactory.GetLinkOid(obj as INakedObjectSurface ?? Surface.GetObject(obj)).Encode();
         }
 
         protected override void RegisterTypes(IUnityContainer container) {
@@ -240,7 +240,7 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
-            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
 

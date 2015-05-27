@@ -77,6 +77,30 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
+        public IOidSurface RestoreOid(MVCObjectId id) {
+            throw new System.NotImplementedException();
+        }
+
+        public IOidSurface RestoreSid(MVCObjectId id) {
+            throw new System.NotImplementedException();
+        }
+
+        public IOidSurface RestoreOid(LinkObjectId id) {
+            throw new System.NotImplementedException();
+        }
+
+        public IOidSurface RestoreSid(LinkObjectId id) {
+            throw new System.NotImplementedException();
+        }
+
+        public IOidSurface RestoreEncodedOid(string encoded) {
+            throw new System.NotImplementedException();
+        }
+
+        public IOidSurface RestoreTypeIdOid(string typeName, string instanceId) {
+            throw new System.NotImplementedException();
+        }
+
         public INakedObjectsSurface Surface { set; 
             get; }
 

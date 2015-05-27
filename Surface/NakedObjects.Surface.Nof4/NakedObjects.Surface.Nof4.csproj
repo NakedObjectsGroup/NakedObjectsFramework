@@ -133,6 +133,7 @@
     <Compile Include="Context\ActionResultContext.cs" />
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
+    <Compile Include="Utility\EntityOidStrategy.cs" />
     <Compile Include="Utility\ExternalOid.cs" />
     <Compile Include="Implementation\NakedObjectsSurface.cs" />
     <Compile Include="Utility\FrameworkHelper.cs" />

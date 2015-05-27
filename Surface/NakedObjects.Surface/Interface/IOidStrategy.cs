@@ -11,10 +11,14 @@ namespace NakedObjects.Surface {
         INakedObjectsSurface Surface { get; set; }
         object GetDomainObjectByOid(ILinkObjectId objectId);
         object GetServiceByServiceName(ILinkObjectId serviceName);
-   
         // todo to help migration may be able to be removed
-        string GetObjectId(INakedObjectSurface nakedobject);
+        //string GetObjectId(INakedObjectSurface nakedobject);
         INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec);
+       
+        IOidSurface RestoreOid(MVCObjectId id);
+        IOidSurface RestoreSid(MVCObjectId id);
+        IOidSurface RestoreOid(LinkObjectId id);
+        IOidSurface RestoreSid(LinkObjectId id);
     }
 }

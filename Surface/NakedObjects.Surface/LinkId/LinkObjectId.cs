@@ -25,6 +25,18 @@ namespace NakedObjects.Surface {
         public string DomainType { get; set; }
         public string InstanceId { get; set; }
 
+        public IOidSurface GetOid(IOidStrategy oidStrategy) {
+            return oidStrategy.RestoreOid(this);
+        }
+
+        public IOidSurface GetSid(IOidStrategy oidStrategy) {
+            return oidStrategy.RestoreSid(this);
+        }
+
+        public string Encode() {
+            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
+        }
+
         public override string ToString() {
             return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
         }

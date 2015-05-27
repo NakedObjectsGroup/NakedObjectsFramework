@@ -66,11 +66,11 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private string EmployeeId {
-            get { return Surface.OidStrategy.GetObjectId( Surface.GetObject(Employee)); }
+            get { return Surface.OidFactory.GetLinkOid(Surface.GetObject(Employee)).Encode(); }
         }
 
         private string VendorId {
-            get { return Surface.OidStrategy.GetObjectId(Surface.GetObject(Vendor)); }
+            get { return Surface.OidFactory.GetLinkOid(Surface.GetObject(Vendor)).Encode(); }
         }
 
         #region Setup/Teardown
@@ -101,7 +101,7 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
-            container.RegisterType<IOidStrategy, MVCOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
 
         }

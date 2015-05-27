@@ -660,7 +660,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
-                var map = nakedObject.ToEnumerable().ToDictionary(Surface.OidStrategy.GetObjectId, y => y.Object);
+                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidFactory.GetLinkOid(x).Encode(), y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return nakedObject.Select(selected, false);
             }

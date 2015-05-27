@@ -34,7 +34,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private readonly ILinkOidFactory oidFactory;
         private readonly IMessageBrokerSurface messageBroker;
 
-        public NakedObjectsSurface(IOidStrategy oidStrategy, ILinkOidFactory oidFactory,   INakedObjectsFramework framework) {
+        public NakedObjectsSurface(IOidStrategy oidStrategy, ILinkOidFactory oidFactory, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
             this.oidFactory = oidFactory;

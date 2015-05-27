@@ -80,6 +80,30 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetCode(spec);
         }
 
+        public IOidSurface RestoreOid(MVCObjectId id) {
+            throw new NotImplementedException();
+        }
+
+        public IOidSurface RestoreSid(MVCObjectId id) {
+            throw new NotImplementedException();
+        }
+
+        public IOidSurface RestoreOid(LinkObjectId id) {
+            throw new NotImplementedException();
+        }
+
+        public IOidSurface RestoreSid(LinkObjectId id) {
+            throw new NotImplementedException();
+        }
+
+        public IOidSurface RestoreEncodedOid(string encoded) {
+            throw new NotImplementedException();
+        }
+
+        public IOidSurface RestoreTypeIdOid(string typeName, string instanceId) {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private string GetCode(INakedObjectSpecificationSurface spec) {
