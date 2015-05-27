@@ -94,7 +94,6 @@
     <Compile Include="Context\ObjectContext.cs" />
     <Compile Include="Context\ParameterContext.cs" />
     <Compile Include="Context\PropertyContext.cs" />
-    <Compile Include="Implementation\LinkObjectId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context\ActionResultContext.cs" />
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />

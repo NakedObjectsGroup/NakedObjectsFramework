@@ -6,33 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Adapter;
+using System.Linq;
 
-namespace NakedObjects.Surface.Nof4.Implementation {
-    public class MVCObjectId : ILinkObjectId {
-        private readonly string id;
-        public MVCObjectId(INakedObjectAdapter no) {}
-
-        public MVCObjectId(string id) {
-            this.id = id;
+namespace NakedObjects.Surface {
+    public class LinkObjectId : ILinkObjectId {
+        static LinkObjectId() {
+            // default 
+            KeySeparator = "-";
         }
 
-        #region ILinkObjectId Members
-
-        public string DomainType {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+        public LinkObjectId(string id) {
+            var split = id.Split('/');
+            DomainType = split.First();
+            InstanceId = split.LastOrDefault();
         }
 
-        public string InstanceId {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        #endregion
+        public static string KeySeparator { get; set; }
+        public string DomainType { get; set; }
+        public string InstanceId { get; set; }
 
         public override string ToString() {
-            return id;
+            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
         }
     }
 }

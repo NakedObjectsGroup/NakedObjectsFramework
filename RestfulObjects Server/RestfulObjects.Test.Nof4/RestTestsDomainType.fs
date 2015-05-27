@@ -26,6 +26,8 @@ open System.Collections.Generic
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open NakedObjects.Surface.Interface
+
 
 [<TestFixture>]
 type Nof4TestsDomainType() = 
@@ -40,6 +42,8 @@ type Nof4TestsDomainType() =
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType(typeof<ILinkOidFactory>, typeof<KeyFormatLinkOidFactory>, null, (new PerResolveLifetimeManager())) |> ignore
+
             let types = 
                 [| typeof<Immutable>
                    typeof<WithActionViewModel>

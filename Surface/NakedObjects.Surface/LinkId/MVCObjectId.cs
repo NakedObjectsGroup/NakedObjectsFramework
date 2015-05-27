@@ -7,25 +7,26 @@
 
 using System;
 
-namespace NakedObjects.Surface.Nof2.Implementation {
-    public class LinkObjectId : ILinkObjectId {
-        static LinkObjectId() {
-            // default 
-            KeySeparator = "-";
+namespace NakedObjects.Surface {
+    public class MVCObjectId : ILinkObjectId {
+        private readonly string id;
+
+        public MVCObjectId(string id) {
+            this.id = id;
         }
 
-        public LinkObjectId(string domainType, string instanceId) {
-            DomainType = domainType;
-            InstanceId = instanceId;
+        public string DomainType {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
-        public static string KeySeparator { get; set; }
-
-        public string DomainType { get; set; }
-        public string InstanceId { get; set; }
+        public string InstanceId {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
         public override string ToString() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
+            return id;
         }
     }
 }

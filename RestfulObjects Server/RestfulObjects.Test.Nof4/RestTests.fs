@@ -26,6 +26,7 @@ open System.Collections.Generic
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
+open NakedObjects.Surface.Interface
 
 [<TestFixture>]
 type Nof4Tests() = 
@@ -40,6 +41,8 @@ type Nof4Tests() =
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType(typeof<ILinkOidFactory>, typeof<KeyFormatLinkOidFactory>, null, (new PerResolveLifetimeManager())) |> ignore
+
             let types = 
                 [| typeof<Immutable>
                    typeof<WithActionViewModel>
@@ -69,6 +72,9 @@ type Nof4Tests() =
             let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService> |]
             let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
+            
+
+
             ()
         
         [<TestFixtureSetUp>]

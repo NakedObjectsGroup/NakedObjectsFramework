@@ -80,27 +80,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return framework.GetNakedObjectFromId(serviceName.ToString()).GetDomainObject();
         }
 
-        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            INakedObjectAdapter no = ((dynamic) nakedObject).WrappedNakedObject;
-            var id = framework.GetObjectId(no);
-            return new MVCObjectId(id);
-        }
-
-        public ILinkObjectId GetOid(object domainObject) {
-            var no = framework.GetNakedObject(domainObject);
-            var id = framework.GetObjectId(no);
-            return new MVCObjectId(id);
-        }
-
-        public ILinkObjectId GetOid(string servicename) {
-            var service = framework.ServicesManager.GetService(servicename);
-            var id = framework.GetObjectId(service);
-            return new MVCObjectId(id);
-        }
-
-        public ILinkObjectId GetOid(string typeName, string instanceId) {
-           return new MVCObjectId(typeName);
-        }
+       
 
         private  string Encode(IEncodedToStrings encoder) {
             return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);

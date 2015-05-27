@@ -63,21 +63,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            throw new System.NotImplementedException();
-        }
-
-        public ILinkObjectId GetOid(object domainObject) {
-            throw new System.NotImplementedException();
-        }
-
-        public ILinkObjectId GetOid(string servicename) {
-            throw new System.NotImplementedException();
-        }
-
-        public ILinkObjectId GetOid(string typeName, string instanceId) {
-            return new LinkObjectId(typeName, instanceId);
-        }
+       
 
         public string GetObjectId(INakedObjectSurface nakedobject) {
             throw new System.NotImplementedException();

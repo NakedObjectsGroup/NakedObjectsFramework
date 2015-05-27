@@ -51,23 +51,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
             }
         }
 
-        public ILinkObjectId GetOid(INakedObjectSurface nakedObject) {
-            Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
-            return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
-        }
-
-        public ILinkObjectId GetOid(object domainObject) {
-            throw new NotImplementedException();
-        }
-
-        public ILinkObjectId GetOid(string servicename) {
-            return new LinkObjectId(servicename, "");
-        }
-
-        public ILinkObjectId GetOid(string typeName, string instanceId) {
-           return new LinkObjectId(typeName, instanceId);
-        }
-
         public string GetObjectId(INakedObjectSurface nakedobject) {
             throw new NotImplementedException();
         }
