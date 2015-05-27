@@ -18,7 +18,7 @@ namespace NakedObjects.Surface {
         public LinkObjectId(string id) {
             var split = id.Split('/');
             DomainType = split.First();
-            InstanceId = split.LastOrDefault();
+            InstanceId = split.Skip(1).FirstOrDefault();
         }
 
         public static string KeySeparator { get; set; }
