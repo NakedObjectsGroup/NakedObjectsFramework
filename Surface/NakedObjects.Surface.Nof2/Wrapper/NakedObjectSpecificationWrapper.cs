@@ -58,6 +58,10 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return spec.getFullName(); }
         }
 
+        public string ShortName {
+            get { return spec.getShortName(); }
+        }
+
         public string UntitledName { get; private set; }
 
         public bool IsCollection {
@@ -84,7 +88,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return spec.getFields().Select(p => new NakedObjectAssociationWrapper(p, target, Surface)).Cast<INakedObjectAssociationSurface>().OrderBy(a => a.Id).ToArray(); }
         }
 
-        public IMenu Menu { get; private set; }
+        public IMenuFacade Menu { get; private set; }
         public string PresentationHint { get; private set; }
         public bool IsAlwaysImmutable { get; private set; }
         public bool IsImmutableOncePersisted { get; private set; }

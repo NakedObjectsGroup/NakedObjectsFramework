@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
     public class VoidNakedObjectSpecificationWrapper :  INakedObjectSpecificationSurface {
@@ -33,6 +34,10 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public string FullName {
             get { return typeof (void).FullName; }
+        }
+
+        public string ShortName {
+            get { return FullName.Split('.').Last(); }
         }
 
         public string UntitledName { get; private set; }
@@ -72,7 +77,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return new INakedObjectAssociationSurface[] {}; }
         }
 
-        public IMenu Menu { get; private set; }
+        public IMenuFacade Menu { get; private set; }
         public string PresentationHint { get; private set; }
         public bool IsAlwaysImmutable { get; private set; }
         public bool IsImmutableOncePersisted { get; private set; }

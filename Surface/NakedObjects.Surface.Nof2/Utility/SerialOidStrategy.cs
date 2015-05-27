@@ -91,7 +91,8 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public INakedObjectsSurface Surface { set; private get; }
+        public INakedObjectsSurface Surface { set; 
+            get; }
 
         #endregion
 

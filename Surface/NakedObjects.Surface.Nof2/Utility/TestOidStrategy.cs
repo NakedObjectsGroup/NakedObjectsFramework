@@ -82,7 +82,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return GetCode(spec);
         }
 
-        public INakedObjectsSurface Surface { set; private get; }
+        public INakedObjectsSurface Surface { set;  get; }
 
         #endregion
 

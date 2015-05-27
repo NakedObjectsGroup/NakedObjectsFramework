@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof2.Context;
 using NakedObjects.Surface.Nof2.Utility;
 using NakedObjects.Surface.Nof2.Wrapper;
@@ -30,6 +31,8 @@ namespace NakedObjects.Surface.Nof2.Implementation {
         }
 
         #region API
+
+        public ILinkOidFactory OidFactory { get; private set; }
 
         public IOidStrategy OidStrategy {
             get { return oidStrategy; }
@@ -65,7 +68,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             throw new NotImplementedException();
         }
 
-        public IMenu[] GetMainMenus() {
+        public IMenuFacade[] GetMainMenus() {
             throw new NotImplementedException();
         }
 
