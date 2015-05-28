@@ -7,7 +7,6 @@
 
 using System.Web;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {

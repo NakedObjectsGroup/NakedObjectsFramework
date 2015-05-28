@@ -12,7 +12,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {

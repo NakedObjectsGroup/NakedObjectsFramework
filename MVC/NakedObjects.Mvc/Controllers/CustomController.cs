@@ -12,7 +12,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 

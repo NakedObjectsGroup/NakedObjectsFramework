@@ -313,4 +313,10 @@
   <data name="TriState.False" xml:space="preserve">
     <value>False</value>
   </data>
+  <data name="RangeMismatch" xml:space="preserve">
+    <value>Value is outside the range {0} to {1}</value>
+  </data>
+  <data name="MaximumLengthMismatch" xml:space="preserve">
+    <value>Value exceeds the maximum length of {0}</value>
+  </data>
 </root>

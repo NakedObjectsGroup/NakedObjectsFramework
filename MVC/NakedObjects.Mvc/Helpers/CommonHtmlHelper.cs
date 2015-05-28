@@ -2144,7 +2144,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 htmlAttributes["data-val-number"] = MvcUi.InvalidEntry;
                 htmlAttributes["data-val-range-min"] = rangeData.Min;
                 htmlAttributes["data-val-range-max"] = rangeData.Max;
-                htmlAttributes["data-val-range"] = String.Format(Resources.NakedObjects.RangeMismatch, rangeData.Min, rangeData.Max);
+                htmlAttributes["data-val-range"] = String.Format(MvcUi.RangeMismatch, rangeData.Min, rangeData.Max);
             }
         }
 
@@ -2160,7 +2160,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (maxlength > 0) {
                 htmlAttributes["data-val"] = "true";
                 htmlAttributes["data-val-length-max"] = maxlength;
-                htmlAttributes["data-val-length"] = String.Format(Resources.NakedObjects.MaximumLengthMismatch, maxlength);
+                htmlAttributes["data-val-length"] = String.Format(MvcUi.MaximumLengthMismatch, maxlength);
             }
         }
 

@@ -19,7 +19,6 @@ using NakedObjects.Surface.Utility;
 using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
