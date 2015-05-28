@@ -102,7 +102,7 @@ namespace NakedObjects.SystemTest.Menus {
 
         public void QuxAction2() { }
 
-       [Hidden]
+       [Hidden(WhenTo.Always)]
         public void QuxAction3() { }
     }
 

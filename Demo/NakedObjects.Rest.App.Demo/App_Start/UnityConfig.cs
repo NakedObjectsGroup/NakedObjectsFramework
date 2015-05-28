@@ -56,7 +56,7 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
-            container.RegisterType<IOidStrategy, ExternalOid>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());

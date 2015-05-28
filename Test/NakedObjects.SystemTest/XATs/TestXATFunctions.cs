@@ -344,7 +344,7 @@ namespace NakedObjects.SystemTest.XATs {
             [DisplayName("Bar")]
             public string Prop4 { get; set; }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public string Foo { get; set; }
 
             public IDomainObjectContainer Container { set; protected get; }

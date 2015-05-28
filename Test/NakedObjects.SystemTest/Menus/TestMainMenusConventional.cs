@@ -231,7 +231,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
 
         public void QuxAction2() { }
 
-       [Hidden]
+       [Hidden(WhenTo.Always)]
         public void QuxAction3() { }
     }
 

@@ -1220,7 +1220,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public virtual string Prop0 { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Prop1 { get; set; }
 
         [Hidden(WhenTo.OncePersisted)]
