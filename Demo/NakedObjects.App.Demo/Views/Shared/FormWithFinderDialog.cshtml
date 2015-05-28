@@ -4,7 +4,7 @@
 
 @{
     Layout = "~/Views/Shared/_NofLayout.cshtml";
-    ViewBag.Title = (Model.ViewType == FindViewModel.ViewTypes.Dialog) ? MvcHtmlString.Create(Model.ContextAction.Name()) : Html.ObjectTitle(Model.ContextObject);
+    ViewBag.Title = (Model.ViewType == FindViewModel.ViewTypes.Dialog) ? MvcHtmlString.Create(Model.ContextAction.Name) : Html.ObjectTitle(Model.ContextObject);
 }
 
 <div id="body">

@@ -3,7 +3,7 @@
 @model global::NakedObjects.Web.Mvc.Models.FindViewModel
 
 @(Html.Object(Html.ObjectTitle(Model.ContextObject).ToString(), IdConstants.ViewAction, Model.ContextObject))
-@(Html.ObjectActionName(Model.ContextAction.Name()))
+@(Html.ObjectActionName(Model.ContextAction.Name))
 @Html.ValidationSummary(true, MvcUi.ActionError)
 @(Html.UserMessages())
 @{
