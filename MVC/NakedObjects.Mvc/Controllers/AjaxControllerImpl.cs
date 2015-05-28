@@ -106,7 +106,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return GetValue(values, spec, false, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
         }
 
-        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, bool nullEmpty,  out object domainObject) {
+        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, bool nullEmpty, out object domainObject) {
             if (!values.Any()) {
                 domainObject = null;
                 return true;

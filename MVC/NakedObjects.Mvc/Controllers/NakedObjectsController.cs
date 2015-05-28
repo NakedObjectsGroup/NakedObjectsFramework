@@ -560,7 +560,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ModelState.AddModelError(key, pcs.Reason);
                 }
             }
-            catch (NakedObjectsSurfaceException) {  
+            catch (NakedObjectsSurfaceException) {
                 ModelState.AddModelError(key, MvcUi.InvalidEntry);
             }
             finally {

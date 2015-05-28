@@ -353,8 +353,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
         }
 
-      
-
         private bool ApplyEdit(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
             var oid = Surface.OidFactory.GetLinkOid(nakedObject);
 
@@ -650,7 +648,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             else if (filterContext.Exception is PreconditionFailedNOSException) {
                 filterContext.Result = View("ConcurrencyError", (PreconditionFailedNOSException) filterContext.Exception);
                 filterContext.ExceptionHandled = true;
-            }         
+            }
             else if (filterContext.Exception is ObjectResourceNotFoundNOSException) {
                 filterContext.Result = View("DestroyedError");
                 filterContext.ExceptionHandled = true;

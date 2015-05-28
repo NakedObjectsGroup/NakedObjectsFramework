@@ -355,7 +355,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
         #endregion
 
         #region private
-
         private ViewResult InvokeAction(object domainObject, LambdaExpression expression, FormCollection parameters, string viewNameForFailure, string viewNameForSuccess) {
             var nakedObject = GetNakedObject(domainObject);
             MethodInfo methodInfo = GetAction(expression);
