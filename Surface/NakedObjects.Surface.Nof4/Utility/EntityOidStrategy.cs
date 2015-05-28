@@ -73,6 +73,10 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         public object GetDomainObjectByOid(ILinkObjectId objectId) {
+            if (objectId == null) {
+                return null;
+            }
+
             var oid = objectId.GetOid(this);
             return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
         }

@@ -32,9 +32,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (id.Count() == 1) {
                 return new LinkObjectId(id.First());
             }
-   
-               throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
-            
+
+            return null;
         }
 
         public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {

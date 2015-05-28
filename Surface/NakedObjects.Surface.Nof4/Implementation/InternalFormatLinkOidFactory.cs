@@ -15,6 +15,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (id.Count() != 1) {
                 throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
             }
+            if (string.IsNullOrEmpty(id.First())) {
+                return null;
+            }
+
             return new MVCObjectId(id.First());
         }
 
