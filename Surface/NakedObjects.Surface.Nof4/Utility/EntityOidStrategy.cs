@@ -78,7 +78,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         public object GetServiceByServiceName(ILinkObjectId serviceName) {
-            var oid = serviceName.GetOid(this);
+            var oid = serviceName.GetSid(this);
             return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
         }
 

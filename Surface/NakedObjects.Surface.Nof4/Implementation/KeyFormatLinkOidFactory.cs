@@ -25,13 +25,21 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             this.framework = framework;
         }
 
-        public ILinkObjectId GetLinkOid(string id) {
-            return new LinkObjectId(id);
+        public ILinkObjectId GetLinkOid(params string[] id) {
+            if (id.Count() == 2) {
+                return new LinkObjectId(id.First(), id.Last());
+            }
+            if (id.Count() == 1) {
+                return new LinkObjectId(id.First());
+            }
+   
+               throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
+            
         }
 
         public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {
             Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
-            return new LinkObjectId(codeAndKey.Item1 +"/" + codeAndKey.Item2);
+            return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
         }
 
         private string GetCode(INakedObjectSpecificationSurface spec) {

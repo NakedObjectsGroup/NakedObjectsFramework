@@ -15,11 +15,17 @@ namespace NakedObjects.Surface {
             KeySeparator = "-";
         }
 
+        // when using this ctor be aware of encoded values that might include a "/"
         public LinkObjectId(string id) {
             var split = id.Split('/');
             DomainType = split.First();
             InstanceId = split.Skip(1).FirstOrDefault();
         }
+
+         public LinkObjectId(string domainType, string instanceId) {
+             DomainType = domainType;
+             InstanceId = instanceId;
+         }
 
         public static string KeySeparator { get; set; }
         public string DomainType { get; set; }

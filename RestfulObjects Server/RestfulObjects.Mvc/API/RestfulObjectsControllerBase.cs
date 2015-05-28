@@ -741,7 +741,7 @@ namespace RestfulObjects.Mvc {
         #region helpers
 
         private  ILinkObjectId GetLinkOid(string domainType, string instanceId) {
-            return Surface.OidFactory.GetLinkOid(domainType + "/" + instanceId);
+            return Surface.OidFactory.GetLinkOid(domainType, instanceId);
         }
 
 

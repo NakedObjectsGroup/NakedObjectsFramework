@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Surface.Interface {
     public interface ILinkOidFactory {
-        ILinkObjectId GetLinkOid(string id);
+        ILinkObjectId GetLinkOid(params string[] id);
         ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject);
     }
 }

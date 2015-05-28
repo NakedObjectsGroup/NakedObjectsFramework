@@ -38,7 +38,7 @@ type Nof4TestsTypes() =
             let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-            container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType(typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<ILinkOidFactory>, typeof<KeyFormatLinkOidFactory>, null, (new PerResolveLifetimeManager())) |> ignore
 

@@ -11,8 +11,11 @@ using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class InternalFormatLinkOidFactory : ILinkOidFactory {
-        public ILinkObjectId GetLinkOid(string id) {
-            return new MVCObjectId(id);
+        public ILinkObjectId GetLinkOid(params string[] id) {
+            if (id.Count() != 1) {
+                throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
+            }
+            return new MVCObjectId(id.First());
         }
 
         private string Encode(IEncodedToStrings encoder) {

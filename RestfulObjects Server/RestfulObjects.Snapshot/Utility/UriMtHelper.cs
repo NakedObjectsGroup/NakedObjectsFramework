@@ -24,7 +24,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly INakedObjectActionSurface action;
         private readonly INakedObjectAssociationSurface assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
-        private readonly string cachedType; // cache because may not be available at writing time 
+        private  string cachedType; // cache because may not be available at writing time 
         private readonly INakedObjectSurface nakedObject;
         private readonly INakedObjectActionParameterSurface param;
         private readonly Uri prefix;
@@ -56,7 +56,7 @@ namespace RestfulObjects.Snapshot.Utility {
             spec = nakedObject.Specification;
             ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
-            cachedType = oid.DomainType;
+            CachedType = oid.DomainType;
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext)
@@ -66,7 +66,7 @@ namespace RestfulObjects.Snapshot.Utility {
             spec = nakedObject.Specification;
             ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
-            cachedType = oid.DomainType;
+            CachedType = oid.DomainType;
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext)
@@ -74,7 +74,7 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             spec = propertyContext.OwningSpecification;
             cachedId = "";
-            cachedType = spec.DomainTypeName(oidStrategy);
+            CachedType = spec.DomainTypeName(oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext)
@@ -84,7 +84,7 @@ namespace RestfulObjects.Snapshot.Utility {
             spec = nakedObject.Specification;
             ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
-            cachedType = oid.DomainType;
+            CachedType = oid.DomainType;
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextSurface actionTypeContext)
@@ -92,7 +92,7 @@ namespace RestfulObjects.Snapshot.Utility {
             action = actionTypeContext.ActionContext.Action;
             spec = actionTypeContext.OwningSpecification;
             cachedId = "";
-            cachedType = spec.DomainTypeName(oidStrategy);
+            CachedType = spec.DomainTypeName(oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext)
@@ -101,7 +101,7 @@ namespace RestfulObjects.Snapshot.Utility {
             spec = parameterTypeContext.OwningSpecification;
             param = parameterTypeContext.Parameter;
             cachedId = "";
-            cachedType = spec.DomainTypeName(oidStrategy);
+            CachedType = spec.DomainTypeName(oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextSurface parameterContext)
@@ -112,24 +112,24 @@ namespace RestfulObjects.Snapshot.Utility {
             spec = nakedObject.Specification;
             ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(nakedObject);
             cachedId = oid.InstanceId;
-            cachedType = oid.DomainType;
+            CachedType = oid.DomainType;
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec)
             : this(oidStrategy, req) {
             this.spec = spec;
             cachedId = "";
-            cachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
+            CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface assoc)
             : this(oidStrategy ,req) {
             cachedId = "";
             if (assoc.IsCollection) {
-                cachedType = assoc.IsASet ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
+                CachedType = assoc.IsASet ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
             }
             else {
-                cachedType = assoc.Specification.DomainTypeName(oidStrategy);
+                CachedType = assoc.Specification.DomainTypeName(oidStrategy);
             }
         }
 
@@ -137,7 +137,14 @@ namespace RestfulObjects.Snapshot.Utility {
             : this(oidStrategy ,req) {
             typeAction = context.Id;
             cachedId = "";
-            cachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
+            CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
+        }
+
+        private string CachedType {
+            get { return cachedType; }
+            set {
+                cachedType = value;
+            }
         }
 
         private static void DebugLogRequest(HttpRequestMessage req) {
@@ -196,35 +203,35 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public Uri GetDomainTypeUri() {
-            return BuildDomainTypeUri(cachedType);
+            return BuildDomainTypeUri(CachedType);
         }
 
 
         public Uri GetParamTypeUri() {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
 
             var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            return template.BindByPosition(prefix, cachedType, action.Id, param.Id);
+            return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
         }
 
         public Uri GetObjectParamUri() {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
 
             var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            return template.BindByPosition(prefix, cachedType, cachedId, action.Id, param.Id);
+            return template.BindByPosition(prefix, CachedType, cachedId, action.Id, param.Id);
         }
 
         public Uri GetServiceParamUri() {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
 
             var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            return template.BindByPosition(prefix, cachedType, action.Id, param.Id);
+            return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
         }
 
         public Uri GetParamUri() {
@@ -232,26 +239,26 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public Uri GetTypeActionInvokeUri() {
-            CheckArgumentNotNull(cachedType, "domain type");
+            CheckArgumentNotNull(CachedType, "domain type");
             CheckArgumentNotNull(typeAction, "type action");
 
             var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
-            return template.BindByPosition(prefix, cachedType, typeAction);
+            return template.BindByPosition(prefix, CachedType, typeAction);
         }
 
         public Uri GetObjectUri() {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(cachedId, "object key");
 
             var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}");
-            return template.BindByPosition(prefix, cachedType, cachedId);
+            return template.BindByPosition(prefix, CachedType, cachedId);
         }
 
         public Uri GetServiceUri() {
-            CheckArgumentNotNull(cachedType, "service type");
+            CheckArgumentNotNull(CachedType, "service type");
 
             var template = new UriTemplate(SegmentValues.Services + "/{oid}");
-            return template.BindByPosition(prefix, cachedType);
+            return template.BindByPosition(prefix, CachedType);
         }
 
 
@@ -275,20 +282,20 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private Uri GetServiceInvokeUri(string queryString) {
-            CheckArgumentNotNull(cachedType, "service type");
+            CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(action.Id, "action id");
 
             var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
-            return template.BindByPosition(prefix, cachedType, action.Id);
+            return template.BindByPosition(prefix, CachedType, action.Id);
         }
 
         private Uri GetObjectInvokeUri(string queryString) {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(cachedId, "object key");
             CheckArgumentNotNull(action.Id, "action id");
 
             var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectKey}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
-            return template.BindByPosition(prefix, cachedType, cachedId, action.Id);
+            return template.BindByPosition(prefix, CachedType, cachedId, action.Id);
         }
 
         private Uri GetInvokeUri(string queryString) {
@@ -323,10 +330,10 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public Uri GetObjectsPersistUri() {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
 
             var template = new UriTemplate(SegmentValues.Objects + "/{objectType}");
-            return template.BindByPosition(prefix, cachedType);
+            return template.BindByPosition(prefix, CachedType);
         }
 
         public Uri GetRedirectUri(HttpRequestMessage req, string server, string oid) {
@@ -338,33 +345,33 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private Uri GetServiceMemberUri(INakedObjectMemberSurface member, string memberType) {
-            CheckArgumentNotNull(cachedType, "service type");
+            CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
 
 
             var template = new UriTemplate(SegmentValues.Services + "/{id}/{memberType}/{memberId}");
-            return template.BindByPosition(prefix, cachedType, memberType, member.Id);
+            return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
 
         private Uri GetTypeMemberUri(INakedObjectMemberSurface member, string memberType) {
-            CheckArgumentNotNull(cachedType, "domain type");
+            CheckArgumentNotNull(CachedType, "domain type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
 
 
             var template = new UriTemplate(SegmentValues.DomainTypes + "/{objectType}/{memberType}/{memberId}");
-            return template.BindByPosition(prefix, cachedType, memberType, member.Id);
+            return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
 
         private Uri GetObjectMemberUri(INakedObjectMemberSurface member, string memberType) {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
 
 
             var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectId}/{memberType}/{memberId}");
-            return template.BindByPosition(prefix, cachedType, cachedId, memberType, member.Id);
+            return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
         }
 
         private Uri GetMemberUri(INakedObjectMemberSurface member, string memberType) {
@@ -463,11 +470,11 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public Uri GetTypeActionsUri(string actionName) {
-            CheckArgumentNotNull(cachedType, "object type");
+            CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(actionName, "action name");
 
             var template = new UriTemplate(SegmentValues.DomainTypes + "/{class}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
-            return template.BindByPosition(prefix, cachedType, actionName);
+            return template.BindByPosition(prefix, CachedType, actionName);
         }
 
         public string GetObjectMediaType() {
@@ -539,7 +546,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public string GetServiceRelParameter() {
-            return FormatParameter(RelParamValues.ServiceId, cachedType);
+            return FormatParameter(RelParamValues.ServiceId, CachedType);
         }
 
         public string GetRelParametersFor(INakedObjectMemberSurface nakedObjectMemberSurface) {
