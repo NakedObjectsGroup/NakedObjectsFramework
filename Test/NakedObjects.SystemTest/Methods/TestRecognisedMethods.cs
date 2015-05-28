@@ -204,21 +204,6 @@ namespace NakedObjects.SystemTest.Method {
             Assert.AreEqual("Fee", cho[0].Title);
         }
 
-        [TestMethod]
-        public virtual void AutoCompleteIntProperty() {
-            var obj1 = NewTestObject<Auto1>();
-            ITestProperty prop = obj1.GetPropertyByName("Prop1");
-
-            try {
-                prop.GetCompletions("any");
-                Assert.Fail("expect exception");
-            }
-            catch (Exception) {
-                // expected
-            }
-            obj1.GetAction("Auto Complete Prop1");
-        }
-
         #endregion
 
         #region Choices
