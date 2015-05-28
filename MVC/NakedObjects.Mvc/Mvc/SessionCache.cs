@@ -17,7 +17,7 @@ namespace NakedObjects.Web.Mvc {
 
         public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsSurface surface, string key, T domainObject) where T : class {
             var nakedObject = surface.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient ? (object)domainObject : surface.OidFactory.GetLinkOid(nakedObject).Encode()));
+            session.Add(key, (nakedObject.IsTransient ? (object) domainObject : surface.OidFactory.GetLinkOid(nakedObject).Encode()));
         }
 
         public static void AddValueToSession<T>(this HttpSessionStateBase session, string key, T value) where T : struct {
