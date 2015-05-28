@@ -26,6 +26,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem : IMenuItemFacade {
+       
         public string Controller { get; set; }
         public string Action { get; set; }
         public object RouteValues { get; set; }
@@ -35,7 +36,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public string Name { get; set; }
         public string Id { get; set; }
-        public object Wrapped { get; private set; }
+        public object Wrapped { get; set; }
 
         #endregion
     }
@@ -1659,7 +1660,7 @@ namespace NakedObjects.Web.Mvc.Html {
             tag.AddCssClass(IdConstants.ObjectName);
 
             if (context.IsHidden) {
-                var suggestedItem = html.GetSuggestedItem(id, (INakedObjectSurface) null);
+                var suggestedItem = html.GetSuggestedItem(id, null);
                 string valueId = suggestedItem == null ? String.Empty : html.Surface().OidFactory.GetLinkOid(suggestedItem).Encode();
                 tag.InnerHtml += html.CustomEncrypted(id, valueId);
             }

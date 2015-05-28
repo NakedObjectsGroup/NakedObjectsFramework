@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient && nakedObject.IsUserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(Surface, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
-                return AppropriateView(controlData, (INakedObjectSurface) null);
+                return AppropriateView(controlData, null);
             }
             string property = DisplaySingleProperty(controlData, controlData.DataDict);
             return AppropriateView(controlData, nakedObject, null, property);
