@@ -22,7 +22,6 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Surface.Utility.Restricted;
-using NakedObjects.Util;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {

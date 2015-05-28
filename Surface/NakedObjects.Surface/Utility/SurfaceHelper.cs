@@ -96,9 +96,42 @@ namespace NakedObjects.Surface.Utility.Restricted {
 
             var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
 
-            SurfaceHelper.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
+            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
             return typedCollection.AsQueryable();
         }
+
+        // todo cloned from typeutils move to common helper dll
+
+        private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
+        private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
+        private const string CastleProxyPrefix = "Castle.Proxies.";
+
+        private static bool IsNakedObjectsProxy(string typeName) {
+            return typeName.StartsWith(NakedObjectsProxyPrefix);
+        }
+
+        private static bool IsCastleProxy(string typeName) {
+            return typeName.StartsWith(CastleProxyPrefix);
+        }
+
+        private static bool IsEntityProxy(string typeName) {
+            return typeName.StartsWith(EntityProxyPrefix);
+        }
+
+        private static bool IsProxy(Type type) {
+            return IsProxy(type.FullName ?? "");
+        }
+
+        private static bool IsProxy(string typeName) {
+            return IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
+        }
+
+        public static string GetProxiedTypeFullName(this Type type) {
+            return IsProxy(type) ? type.BaseType.FullName : type.FullName;
+        }
+
+
+
     }
 }
