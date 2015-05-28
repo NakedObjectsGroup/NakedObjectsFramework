@@ -62,7 +62,7 @@ $.extend($.fn, {
 					event.preventDefault();
 				}
 				function handle() {
-					var Hidden(WhenTo.Always), result;
+					var hidden, result;
 					if ( validator.settings.submitHandler ) {
 						if ( validator.submitButton ) {
 							// insert a hidden input as a replacement for the missing submit button
