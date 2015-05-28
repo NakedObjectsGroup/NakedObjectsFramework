@@ -134,12 +134,10 @@
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\EntityOidStrategy.cs" />
-    <Compile Include="Utility\ExternalOid.cs" />
     <Compile Include="Implementation\NakedObjectsSurface.cs" />
     <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MessageBrokerWrapper.cs" />
-    <Compile Include="Utility\MVCOid.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />
     <Compile Include="Wrapper\MenuActionWrapper.cs" />
