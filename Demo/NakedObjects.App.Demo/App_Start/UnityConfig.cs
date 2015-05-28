@@ -15,6 +15,7 @@ using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
@@ -40,7 +41,10 @@ namespace NakedObjects.App.Demo {
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
+
             // surface
+            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerRequestLifetimeManager());
+
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerRequestLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
 

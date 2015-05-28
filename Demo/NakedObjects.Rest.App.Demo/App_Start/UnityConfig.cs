@@ -12,6 +12,7 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
+using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
@@ -56,6 +57,8 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
+            container.RegisterType<ILinkOidFactory, KeyFormatLinkOidFactory>(new PerResolveLifetimeManager());
+
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerResolveLifetimeManager());
 
