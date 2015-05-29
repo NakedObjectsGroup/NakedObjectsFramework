@@ -18,32 +18,32 @@ using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
-    public class KeyFormatLinkOidFactory : ILinkOidFactory {
+    public class KeyFormatOidTranslator : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 
-        public KeyFormatLinkOidFactory(INakedObjectsFramework framework) {
+        public KeyFormatOidTranslator(INakedObjectsFramework framework) {
             this.framework = framework;
         }
 
-        public ILinkObjectId GetLinkOid(params string[] id) {
+        public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Count() == 2) {
-                return new LinkObjectId(id.First(), id.Last());
+                return new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last());
             }
             if (id.Count() == 1) {
-                return new LinkObjectId(id.First());
+                return new OidTranslationSlashSeparatedTypeAndIds(id.First());
             }
 
             return null;
         }
 
-        public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {
+        public IOidTranslation GetOidTranslation(INakedObjectSurface nakedObject) {
             if (nakedObject.IsViewModel) {
                 var vm = ((NakedObjectWrapper)nakedObject).WrappedNakedObject;
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
             Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
-            return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
+            return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
         }
 
         private string GetCode(INakedObjectSpecificationSurface spec) {

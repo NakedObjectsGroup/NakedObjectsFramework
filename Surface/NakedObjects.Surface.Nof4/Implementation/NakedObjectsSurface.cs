@@ -31,13 +31,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
     public class NakedObjectsSurface : INakedObjectsSurface {
         private readonly INakedObjectsFramework framework;
         private readonly IOidStrategy oidStrategy;
-        private readonly ILinkOidFactory oidFactory;
+        private readonly IOidTranslator oidTranslator;
         private readonly IMessageBrokerSurface messageBroker;
 
-        public NakedObjectsSurface(IOidStrategy oidStrategy, ILinkOidFactory oidFactory, INakedObjectsFramework framework) {
+        public NakedObjectsSurface(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
-            this.oidFactory = oidFactory;
+            this.oidTranslator = oidTranslator;
             this.framework = framework;
             messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
         }
@@ -73,9 +73,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => framework.Session.Principal);
         }
 
-        public ILinkOidFactory OidFactory
+        public IOidTranslator OidTranslator
         {
-            get { return oidFactory; }
+            get { return oidTranslator; }
         }
 
         public IOidStrategy OidStrategy {
@@ -99,7 +99,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 Select(GetSpecificationWrapper).ToArray());
         }
 
-        public ObjectContextSurface GetService(ILinkObjectId serviceName) {
+        public ObjectContextSurface GetService(IOidTranslation serviceName) {
             return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this, framework));
         }
 
@@ -194,61 +194,61 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
        
-        public ObjectContextSurface GetObject(ILinkObjectId oid) {
+        public ObjectContextSurface GetObject(IOidTranslation oid) {
             return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }
 
-        public ObjectContextSurface PutObject(ILinkObjectId oid, ArgumentsContext arguments) {
+        public ObjectContextSurface PutObject(IOidTranslation oid, ArgumentsContext arguments) {
             return MapErrors(() => ChangeObject(GetObjectAsNakedObject(oid), arguments));
         }
 
-        public PropertyContextSurface GetProperty(ILinkObjectId oid, string propertyName) {
+        public PropertyContextSurface GetProperty(IOidTranslation oid, string propertyName) {
             return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextSurface(this, framework));
         }
 
-        public ListContextSurface GetPropertyCompletions(ILinkObjectId objectId, string propertyName, ArgumentsContext arguments) {
+        public ListContextSurface GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContext arguments) {
             return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextSurface(this, framework));
         }
 
-        public ListContextSurface GetParameterCompletions(ILinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments) {
+        public ListContextSurface GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContext arguments) {
             return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
         }
 
-        public ListContextSurface GetServiceParameterCompletions(ILinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments) {
+        public ListContextSurface GetServiceParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContext arguments) {
             return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
         }
 
-        public ActionContextSurface GetServiceAction(ILinkObjectId serviceName, string actionName) {
+        public ActionContextSurface GetServiceAction(IOidTranslation serviceName, string actionName) {
             return MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextSurface(this, framework));
         }
 
-        public ActionContextSurface GetObjectAction(ILinkObjectId objectId, string actionName) {
+        public ActionContextSurface GetObjectAction(IOidTranslation objectId, string actionName) {
             return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextSurface(this, framework));
         }
 
-        public PropertyContextSurface PutProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument) {
+        public PropertyContextSurface PutProperty(IOidTranslation objectId, string propertyName, ArgumentContext argument) {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-        public PropertyContextSurface DeleteProperty(ILinkObjectId objectId, string propertyName, ArgumentContext argument) {
+        public PropertyContextSurface DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContext argument) {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-        public ActionResultContextSurface ExecuteListAction(ILinkObjectId[] list, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments) {
+        public ActionResultContextSurface ExecuteListAction(IOidTranslation[] list, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnList(list, elementSpec, actionName);
                 return ExecuteAction(actionContext, arguments);
             });
         }
 
-        public ActionResultContextSurface ExecuteObjectAction(ILinkObjectId objectId, string actionName, ArgumentsContext arguments) {
+        public ActionResultContextSurface ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnObject(objectId, actionName);
                 return ExecuteAction(actionContext, arguments);
             });
         }
 
-        public ActionResultContextSurface ExecuteServiceAction(ILinkObjectId serviceName, string actionName, ArgumentsContext arguments) {
+        public ActionResultContextSurface ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnService(serviceName, actionName);
                 return ExecuteAction(actionContext, arguments);
@@ -800,13 +800,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
         }
 
-        private INakedObjectAdapter GetObjectAsNakedObject(ILinkObjectId objectId) {
+        private INakedObjectAdapter GetObjectAsNakedObject(IOidTranslation objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
 
 
-        private INakedObjectAdapter GetServiceAsNakedObject(ILinkObjectId serviceName) {
+        private INakedObjectAdapter GetServiceAsNakedObject(IOidTranslation serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
@@ -940,19 +940,19 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
-        private ActionContext GetInvokeActionOnList(ILinkObjectId[] list, INakedObjectSpecificationSurface elementSpec, string actionName) {
+        private ActionContext GetInvokeActionOnList(IOidTranslation[] list, INakedObjectSpecificationSurface elementSpec, string actionName) {
             var domainCollection = list.Select(id => oidStrategy.GetDomainObjectByOid(id));
             var nakedObject = MakeTypedCollection(elementSpec.GetUnderlyingType(), domainCollection);
             return GetAction(actionName, nakedObject);
         }
 
 
-        private ActionContext GetInvokeActionOnObject(ILinkObjectId objectId, string actionName) {
+        private ActionContext GetInvokeActionOnObject(IOidTranslation objectId, string actionName) {
             INakedObjectAdapter nakedObject = GetObjectAsNakedObject(objectId);
             return GetAction(actionName, nakedObject);
         }
 
-        private ActionContext GetInvokeActionOnService(ILinkObjectId serviceName, string actionName) {
+        private ActionContext GetInvokeActionOnService(IOidTranslation serviceName, string actionName) {
             INakedObjectAdapter nakedObject = GetServiceAsNakedObject(serviceName);
             return GetAction(actionName, nakedObject);
         }
@@ -982,15 +982,17 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private ObjectContext GetObjectInternal(ILinkObjectId oid) {
+        private ObjectContext GetObjectInternal(IOidTranslation oid) {
             INakedObjectAdapter nakedObject = GetObjectAsNakedObject(oid);
             return GetObjectContext(nakedObject);
         }
 
-        private ObjectContext GetServiceInternal(ILinkObjectId serviceName) {
+        private ObjectContext GetServiceInternal(IOidTranslation serviceName) {
             INakedObjectAdapter nakedObject = GetServiceAsNakedObject(serviceName);
             return GetObjectContext(nakedObject);
         }
+
+    
 
         private ITypeSpec GetDomainTypeInternal(string domainTypeId) {
             try {

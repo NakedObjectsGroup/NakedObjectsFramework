@@ -7,7 +7,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
         private readonly string keySeparator;
 
         public DefaultKeyCodeMapper() {
-            keySeparator = LinkObjectId.KeySeparator;
+            keySeparator = OidTranslationSlashSeparatedTypeAndIds.KeySeparator;
         }
 
         public string[] KeyFromCode(string code, Type type) {

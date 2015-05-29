@@ -12,14 +12,14 @@ using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
-    public class InternalFormatLinkOidFactory : ILinkOidFactory {
+    public class InternalFormatOidTranslator : IOidTranslator {
         private readonly ILifecycleManager lifecycleManager;
 
-        public InternalFormatLinkOidFactory(ILifecycleManager lifecycleManager) {
+        public InternalFormatOidTranslator(ILifecycleManager lifecycleManager) {
             this.lifecycleManager = lifecycleManager;
         }
 
-        public ILinkObjectId GetLinkOid(params string[] id) {
+        public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Count() != 1) {
                 throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
             }
@@ -27,7 +27,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-            return new MVCObjectId(id.First());
+            return new OidTranslationSemiColonSeparatedList(id.First());
         }
 
         private string Encode(IEncodedToStrings encoder) {
@@ -51,7 +51,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return Encode(((IEncodedToStrings)oid.Value));
         }
 
-        public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {
+        public IOidTranslation GetOidTranslation(INakedObjectSurface nakedObject) {
 
             if (nakedObject.IsViewModel) {
                 var vm = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
@@ -60,7 +60,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             var oid = nakedObject.Oid;
             var id = GetObjectId(oid);
-            return GetLinkOid(id);
+            return GetOidTranslation(id);
         }
     }
 }

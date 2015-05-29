@@ -19,7 +19,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
 
         #region IOidStrategy Members
 
-        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+        public object GetDomainObjectByOid(IOidTranslation objectId) {
             Type type = ValidateObjectId(objectId);
             string[] keys = GetKeys(objectId.InstanceId, type);
 
@@ -40,7 +40,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return results.elementAt(0).getObject();
         }
 
-        public object GetServiceByServiceName(ILinkObjectId serviceName) {
+        public object GetServiceByServiceName(IOidTranslation serviceName) {
             Type type = ValidateServiceId(serviceName);
 
             try {
@@ -65,19 +65,19 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return GetCode(spec);
         }
 
-        public IOidSurface RestoreOid(MVCObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id) {
             throw new NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(MVCObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id) {
             throw new NotImplementedException();
         }
 
-        public IOidSurface RestoreOid(LinkObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(LinkObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new NotImplementedException();
         }
 
@@ -139,16 +139,16 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return encodedTypeAndKeys.Split('-');
         }
 
-        protected static Type ValidateServiceId(ILinkObjectId objectId) {
+        protected static Type ValidateServiceId(IOidTranslation objectId) {
             return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        protected static Type ValidateObjectId(ILinkObjectId objectId) {
+        protected static Type ValidateObjectId(IOidTranslation objectId) {
             return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
         }
 
 
-        private static Type ValidateId(ILinkObjectId objectId, Action onError) {
+        private static Type ValidateId(IOidTranslation objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {
                 throw new BadRequestNOSException();
             }

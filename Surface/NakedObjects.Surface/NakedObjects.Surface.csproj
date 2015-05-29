@@ -96,8 +96,8 @@
     <Compile Include="Interface\ArgumentsContext.cs" />
     <Compile Include="Interface\AttachmentContext.cs" />
     <Compile Include="Interface\IConsentSurface.cs" />
-    <Compile Include="Interface\ILinkObjectId.cs" />
-    <Compile Include="Interface\ILinkOidFactory.cs" />
+    <Compile Include="Interface\IOidTranslation.cs" />
+    <Compile Include="Interface\IOidTranslator.cs" />
     <Compile Include="Interface\IMenuFacade.cs" />
     <Compile Include="Interface\IMenuActionFacade.cs" />
     <Compile Include="Interface\IMenuItemFacade.cs" />
@@ -116,8 +116,8 @@
     <Compile Include="Interface\ISurfaceHolder.cs" />
     <Compile Include="Interface\IOidSurface.cs" />
     <Compile Include="Interface\IVersionSurface.cs" />
-    <Compile Include="LinkId\LinkObjectId.cs" />
-    <Compile Include="LinkId\MVCObjectId.cs" />
+    <Compile Include="LinkId\OidTranslationSlashSeparatedTypeAndIds.cs" />
+    <Compile Include="LinkId\OidTranslationSemiColonSeparatedList.cs" />
     <Compile Include="Utility\IdConstants.cs" />
     <Compile Include="Interface\IIdHelper.cs" />
     <Compile Include="Interface\IMessageBrokerSurface.cs" />

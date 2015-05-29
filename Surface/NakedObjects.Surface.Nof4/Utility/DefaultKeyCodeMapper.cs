@@ -15,7 +15,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         private readonly string keySeparator;
 
         public DefaultKeyCodeMapper() {
-            keySeparator = LinkObjectId.KeySeparator;
+            keySeparator = OidTranslationSlashSeparatedTypeAndIds.KeySeparator;
         }
 
         #region IKeyCodeMapper Members

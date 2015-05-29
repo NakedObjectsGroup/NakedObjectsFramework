@@ -6,30 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 
 namespace NakedObjects.Surface {
-    public class LinkObjectId : ILinkObjectId {
-        static LinkObjectId() {
-            // default 
-            KeySeparator = "-";
+    public class OidTranslationSemiColonSeparatedList : IOidTranslation {
+        private readonly string id;
+
+        public OidTranslationSemiColonSeparatedList(string id) {
+            this.id = id;
         }
 
-        // when using this ctor be aware of encoded values that might include a "/"
-        public LinkObjectId(string id) {
-            var split = id.Split('/');
-            DomainType = split.First();
-            InstanceId = split.Skip(1).FirstOrDefault();
+        public string DomainType {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
-         public LinkObjectId(string domainType, string instanceId) {
-             DomainType = domainType;
-             InstanceId = instanceId;
-         }
-
-        public static string KeySeparator { get; set; }
-        public string DomainType { get; set; }
-        public string InstanceId { get; set; }
+        public string InstanceId {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
         public IOidSurface GetOid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreOid(this);
@@ -40,11 +34,16 @@ namespace NakedObjects.Surface {
         }
 
         public string Encode() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
+            return id;
         }
 
         public override string ToString() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
+            return id;
         }
+
+        public string[] Tokenize() {
+            return id.Split(';');
+        }
+
     }
 }

@@ -33,7 +33,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
 
-        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+        public object GetDomainObjectByOid(IOidTranslation objectId) {
             throw new System.NotImplementedException();
         }
 
@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public object GetServiceByServiceName(ILinkObjectId serviceName) {
+        public object GetServiceByServiceName(IOidTranslation serviceName) {
             throw new System.NotImplementedException();
         }
 
@@ -71,19 +71,19 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreOid(MVCObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(MVCObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreOid(LinkObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(LinkObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new System.NotImplementedException();
         }
 

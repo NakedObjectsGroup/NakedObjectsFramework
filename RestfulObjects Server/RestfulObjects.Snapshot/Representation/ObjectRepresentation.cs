@@ -148,7 +148,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            ILinkObjectId oid = oidStrategy.Surface.OidFactory.GetLinkOid(objectContext.Target);
+            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService) {

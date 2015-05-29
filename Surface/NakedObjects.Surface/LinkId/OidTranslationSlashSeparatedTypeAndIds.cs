@@ -6,24 +6,30 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 
 namespace NakedObjects.Surface {
-    public class MVCObjectId : ILinkObjectId {
-        private readonly string id;
-
-        public MVCObjectId(string id) {
-            this.id = id;
+    public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
+        static OidTranslationSlashSeparatedTypeAndIds() {
+            // default 
+            KeySeparator = "-";
         }
 
-        public string DomainType {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+        // when using this ctor be aware of encoded values that might include a "/"
+        public OidTranslationSlashSeparatedTypeAndIds(string id) {
+            var split = id.Split('/');
+            DomainType = split.First();
+            InstanceId = split.Skip(1).FirstOrDefault();
         }
 
-        public string InstanceId {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+         public OidTranslationSlashSeparatedTypeAndIds(string domainType, string instanceId) {
+             DomainType = domainType;
+             InstanceId = instanceId;
+         }
+
+        public static string KeySeparator { get; set; }
+        public string DomainType { get; set; }
+        public string InstanceId { get; set; }
 
         public IOidSurface GetOid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreOid(this);
@@ -34,16 +40,11 @@ namespace NakedObjects.Surface {
         }
 
         public string Encode() {
-            return id;
+            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
         }
 
         public override string ToString() {
-            return id;
+            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
         }
-
-        public string[] Tokenize() {
-            return id.Split(';');
-        }
-
     }
 }

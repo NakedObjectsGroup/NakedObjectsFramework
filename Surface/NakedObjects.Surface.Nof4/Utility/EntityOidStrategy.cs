@@ -72,7 +72,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return RestoreObject(framework, oid);
         }
 
-        public object GetDomainObjectByOid(ILinkObjectId objectId) {
+        public object GetDomainObjectByOid(IOidTranslation objectId) {
             if (objectId == null) {
                 return null;
             }
@@ -81,7 +81,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
         }
 
-        public object GetServiceByServiceName(ILinkObjectId serviceName) {
+        public object GetServiceByServiceName(IOidTranslation serviceName) {
             var oid = serviceName.GetSid(this);
             return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
         }
@@ -123,17 +123,17 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetCode(spec);
         }
 
-        public IOidSurface RestoreOid(MVCObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
             return new OidWrapper(oid);
         }
 
-        public IOidSurface RestoreSid(MVCObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
             return new OidWrapper(oid);
         }
 
-        public IOidSurface RestoreOid(LinkObjectId id) {
+        public IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
 
             Type type = ValidateObjectId(id);
             string[] keys = GetKeys(id.InstanceId, type);
@@ -147,7 +147,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         }
 
-        public IOidSurface RestoreSid(LinkObjectId id) {
+        public IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             Type type = ValidateServiceId(id);
             IServiceSpec spec;
             try {
@@ -270,15 +270,15 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetTypeCodeMapper().CodeFromType(type);
         }
 
-        private Type ValidateServiceId(ILinkObjectId objectId) {
+        private Type ValidateServiceId(IOidTranslation objectId) {
             return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        private Type ValidateObjectId(ILinkObjectId objectId) {
+        private Type ValidateObjectId(IOidTranslation objectId) {
             return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        private Type ValidateId(ILinkObjectId objectId, Action onError) {
+        private Type ValidateId(IOidTranslation objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {
                 throw new BadRequestNOSException();
             }

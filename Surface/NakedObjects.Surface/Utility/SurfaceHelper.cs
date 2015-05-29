@@ -57,7 +57,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
         }
 
         private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
-            var oid = surface.OidFactory.GetLinkOid(id);
+            var oid = surface.OidTranslator.GetOidTranslation(id);
             return surface.GetObject(oid).Target;
         }
 
