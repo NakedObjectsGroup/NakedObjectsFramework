@@ -86,6 +86,10 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Surface.7.1.0-alpha\lib\net451\NakedObjects.Surface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-alpha\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
@@ -196,10 +200,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
-      <Project>{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}</Project>
-      <Name>NakedObjects.Surface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.MvcResources\NakedObjects.MvcResources.csproj">
       <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
       <Name>NakedObjects.MvcResources</Name>
