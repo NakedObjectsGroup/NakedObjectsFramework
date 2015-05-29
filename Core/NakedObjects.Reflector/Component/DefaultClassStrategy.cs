@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Component {
 
         public bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
+            return !IsTypeMarkedUpToBeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
                    (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
@@ -77,8 +77,9 @@ namespace NakedObjects.Reflect.Component {
 
         #endregion
 
-        private bool IsTypeIgnored(Type type) {
-            return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+        private bool IsTypeMarkedUpToBeIgnored(Type type) {
+            var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
+            return attr != null && attr.ReflectionScope == ReflectOver.None;
         }
 
         private bool IsNamespaceMatch(Type type) {

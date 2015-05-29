@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    ///     Removes any calls to <c>Init</c>
+    ///     Removes any methods on a type that handle events.
     /// </summary>
     public sealed class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveEventHandlerMethodsFacetFactory(int numericOrder)

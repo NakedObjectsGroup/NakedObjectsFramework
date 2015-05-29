@@ -9,8 +9,9 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Instructs NakedObjects to ignore a property or action. It will not be introspected.
+    ///     Instructs NakedObjects to include (reflect over) a property or action. Typically used where
+    ///     the type has been marked up with [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)].
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class NakedObjectsIgnoreAttribute : Attribute { }
+    public class NakedObjectsIncludeAttribute : Attribute { }
 }

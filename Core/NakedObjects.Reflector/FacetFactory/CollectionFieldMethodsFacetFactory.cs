@@ -68,10 +68,10 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             IList<Type> collectionTypes = BuildCollectionTypes(candidates);
-            return candidates.Where(property => property.GetGetMethod() != null &&
-                                                property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
-                                                collectionTypes.Contains(property.PropertyType)).ToList();
+            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToList();
+            return PropertiesToBeIntrospected(candidates, classStrategy);
         }
+
+
     }
 }

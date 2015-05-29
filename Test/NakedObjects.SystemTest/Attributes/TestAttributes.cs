@@ -69,6 +69,12 @@ namespace NakedObjects.SystemTest.Attributes {
                     typeof(SimpleRepository<Maxlength1>),
                     typeof(SimpleRepository<Maxlength2>),
                     typeof(SimpleRepository<NakedObjectsIgnore1>),
+                    typeof(SimpleRepository<NakedObjectsIgnore2>), //But this one won't be visible
+                    typeof(SimpleRepository<NakedObjectsIgnore3>),
+                    typeof(SimpleRepository<NakedObjectsIgnore4>),
+                    typeof(SimpleRepository<NakedObjectsIgnore5>),
+                    typeof(SimpleRepository<NakedObjectsIgnore6>),
+                    typeof(SimpleRepository<NakedObjectsIgnore7>),
                     typeof(SimpleRepository<Named1>),
                     typeof(SimpleRepository<Range1>),
                     typeof(SimpleRepository<Regex1>),
@@ -114,13 +120,13 @@ namespace NakedObjects.SystemTest.Attributes {
             var testActions = NewTestObject<Contributee>().Actions;
             Assert.AreEqual(1, testActions.Count());
             Assert.AreEqual("Contributed Action", testActions[0].Name);
-            
+
         }
 
         [TestMethod]
         public virtual void CollectionContributed() {
             var testObj = NewTestObject<Contributee2>();
-                var obj = testObj.GetDomainObject();
+            var obj = testObj.GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
             var testActions = testObj.Actions;
@@ -592,12 +598,48 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #endregion
 
-        #region NakedObjectsIgnore
+        #region Scope of reflection (NakedObjectsType, NakedObjectsIgnore, NakedObjectsInclude
         [TestMethod]
-        public virtual void NakedObjectsIgnoreOnPropertyCollectionAndMethod() {
+        public virtual void NakedObjectsIgnore_OnIndividualMembers() {
             var obj = NewTestObject<NakedObjectsIgnore1>();
-            Assert.AreEqual(0, obj.Properties.Count());
+            Assert.AreEqual(3, obj.Properties.Count());
+            Assert.AreEqual(1, obj.Actions.Count());
+        }
+
+        [TestMethod]
+        public virtual void NakedObjectsType_ReflectOver_All() {
+            var obj = NewTestObject<NakedObjectsIgnore3>();
+            //results should be same as for NakedObjectsIgnore1:
+            Assert.AreEqual(3, obj.Properties.Count());
+            Assert.AreEqual(1, obj.Actions.Count());
+        }
+
+        [TestMethod]
+        public virtual void NakedObjectsType_ReflectOver_TypeOnly() {
+            var obj = NewTestObject<NakedObjectsIgnore4>();
             Assert.AreEqual(0, obj.Actions.Count());
+            Assert.AreEqual(0, obj.Properties.Count());
+        }
+
+        [TestMethod]
+        public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly() {
+            var obj = NewTestObject<NakedObjectsIgnore5>();
+            Assert.AreEqual(1, obj.Actions.Count());
+            Assert.AreEqual(2, obj.Properties.Count());
+        }
+
+        [TestMethod]
+        public virtual void NakedObjectsType_ReflectOver_TypeOnly_OnSubClass() {
+            var obj = NewTestObject<NakedObjectsIgnore6>();
+            Assert.AreEqual(0, obj.Actions.Count());
+            Assert.AreEqual(0, obj.Properties.Count());
+        }
+
+        [TestMethod]
+        public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly_OnSubClass() {
+            var obj = NewTestObject<NakedObjectsIgnore7>();
+            Assert.AreEqual(2, obj.Actions.Count());
+            Assert.AreEqual(3, obj.Properties.Count());
         }
         #endregion
 
@@ -1063,6 +1105,9 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Maxlength2> Maxlength2s { get; set; }
         public DbSet<NakedObjectsIgnore1> NakedObjectsIgnore1s { get; set; }
         public DbSet<NakedObjectsIgnore2> NakedObjectsIgnore2s { get; set; }
+        public DbSet<NakedObjectsIgnore3> NakedObjectsIgnore3s { get; set; }
+        public DbSet<NakedObjectsIgnore4> NakedObjectsIgnore4s { get; set; }
+        public DbSet<NakedObjectsIgnore5> NakedObjectsIgnore5s { get; set; }
         public DbSet<Named1> Named1s { get; set; }
         public DbSet<Range1> Range1s { get; set; }
         public DbSet<Regex1> Regex1s { get; set; }
@@ -1389,36 +1434,159 @@ namespace NakedObjects.SystemTest.Attributes {
     #endregion
 
     #region NakedObjectsIgnore
-
     public class NakedObjectsIgnore1 {
 
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        [NakedObjectsIgnore]
+        public virtual int ValueProp1 { get; set; }
+
         public virtual NakedObjectsIgnore1 RefProp { get; set; }
 
+        [NakedObjectsIgnore]
+        public virtual NakedObjectsIgnore1 RefPropIgnored { get; set; }
+        
         public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
 
-        [NakedObjectsIgnore]
         public ICollection<NakedObjectsIgnore1> Coll { get; set; }
 
-       public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
-
         [NakedObjectsIgnore]
+        public ICollection<NakedObjectsIgnore1> CollIgnored { get; set; }
+
+        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
+
         public void Action() { }
 
+        [NakedObjectsIgnore]
+        public void ActionIgnored() { }
 
         public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
 
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {  }
-
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
     }
 
-     [NakedObjectsIgnore]
+    [NakedObjectsType(ReflectOver.None)]
     public class NakedObjectsIgnore2 {
-         public virtual int Id { get; set; }
+        public virtual int Id { get; set; }
+
+        public virtual int ValueProp1 { get; set; }
     }
+
+    [NakedObjectsType(ReflectOver.All)]
+    public class NakedObjectsIgnore3  {
+        [NakedObjectsIgnore]
+        public virtual int Id { get; set; }
+
+        public virtual int ValueProp1 { get; set; }
+
+        public virtual NakedObjectsIgnore1 RefProp { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual NakedObjectsIgnore1 RefPropIgnored { get; set; }
+
+        public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
+
+        public ICollection<NakedObjectsIgnore1> Coll { get; set; }
+
+        [NakedObjectsIgnore]
+        public ICollection<NakedObjectsIgnore1> CollIgnored { get; set; }
+
+        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
+
+        public void Action() { }
+
+        [NakedObjectsIgnore]
+        public void ActionIgnored() { }
+
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+    }
+
+    [NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
+    public class NakedObjectsIgnore4 {
+        [NakedObjectsIgnore]
+        public virtual int Id { get; set; }
+
+        public virtual int ValueProp1 { get; set; }
+
+        public virtual NakedObjectsIgnore1 RefProp { get; set; }
+
+        [NakedObjectsIgnore]
+        public virtual NakedObjectsIgnore1 RefPropIgnored { get; set; }
+
+        public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
+
+        public ICollection<NakedObjectsIgnore1> Coll { get; set; }
+
+        [NakedObjectsIgnore]
+        public ICollection<NakedObjectsIgnore1> CollIgnored { get; set; }
+
+        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
+
+        public void Action() { }
+
+        [NakedObjectsIgnore]
+        public void ActionIgnored() { }
+
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+    }
+
+        [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
+    public class NakedObjectsIgnore5 {
+      
+        public virtual int Id { get; set; }
+
+        public virtual NakedObjectsIgnore1 RefProp { get; set; }
+
+        [NakedObjectsInclude]
+        public virtual NakedObjectsIgnore1 RefProp2 { get; set; }
+
+        [NakedObjectsInclude] //Should have no impact if scope is AllMembers
+        public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
+
+        public ICollection<NakedObjectsIgnore1> Coll { get; set; }
+
+        [NakedObjectsInclude]
+        public ICollection<NakedObjectsIgnore1> Coll2 { get; set; }
+
+        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
+
+        [NakedObjectsInclude] 
+        public void Action() { }
+
+        public void Action2() { }
+
+        [NakedObjectsInclude] //Should still be ignored, because return type is ignored
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+    }
+
+
+        public class NakedObjectsIgnore6 : NakedObjectsIgnore4{
+  
+            public virtual string Prop3 { get; set; }
+
+            public void Action2() { }
+
+            public void Action3() { }
+        }
+
+        public class NakedObjectsIgnore7 : NakedObjectsIgnore5 {
+
+            public virtual string Prop3 { get; set; }
+
+            [NakedObjectsInclude]
+            public virtual string Prop4 { get; set; }
+
+            [NakedObjectsInclude]
+            public void Action3() { }
+
+            public void Action4() { }
+        }
 
     #endregion
 

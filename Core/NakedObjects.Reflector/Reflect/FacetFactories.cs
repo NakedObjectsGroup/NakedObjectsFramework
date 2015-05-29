@@ -29,6 +29,7 @@ namespace NakedObjects.Reflect {
                 typeof (RemoveInitMethodFacetFactory),
                 typeof (RemoveDynamicProxyMethodsFacetFactory),
                 typeof (RemoveEventHandlerMethodsFacetFactory),
+                typeof (RemoveIgnoredMethodsFacetFactory),
                 typeof (TypeMarkerFacetFactory),
                 // must be before any other FacetFactories that install MandatoryFacet.class facets
                 typeof (MandatoryDefaultFacetFactory),

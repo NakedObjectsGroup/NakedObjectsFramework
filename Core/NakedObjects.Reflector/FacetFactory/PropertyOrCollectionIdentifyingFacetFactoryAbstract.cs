@@ -9,6 +9,11 @@ using System;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
+using System.Reflection;
+using NakedObjects.Core;
+using System.Collections.Generic;
+using NakedObjects.Architecture.Component;
+using System.Linq;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
@@ -17,6 +22,31 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         protected static bool IsCollectionOrArray(Type type) {
             return CollectionUtils.IsCollection(type);
+        }
+
+        protected bool IsPropertyIncluded(PropertyInfo property) {
+            if (property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) return false;
+            var attr = property.DeclaringType.GetCustomAttribute<NakedObjectsTypeAttribute>();
+            if (attr == null) return true;
+            switch (attr.ReflectionScope) {
+                case ReflectOver.All:
+                    return true; //Because we checked for NakedObjectsIgnore earlier.
+                case ReflectOver.TypeOnlyNoMembers:
+                    return false;
+                case ReflectOver.ExplicitlyIncludedMembersOnly:
+                    return property.GetCustomAttribute<NakedObjectsIncludeAttribute>() != null;
+                case ReflectOver.None:
+                    throw new ReflectionException("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None");
+                default:
+                    throw new ReflectionException(String.Format("Unhandled value for ReflectOver: {0}", attr.ReflectionScope));
+            }
+        }
+
+        protected IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            return candidates.Where(property => property.GetGetMethod() != null &&
+                                                classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
+                                                IsPropertyIncluded(property)
+                                    ).ToList();
         }
     }
 }

@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
+using NakedObjects.Core;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
@@ -205,10 +206,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(property => property.GetGetMethod() != null &&
-                                                property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).ToList();
+            candidates = candidates.Where(property => !CollectionUtils.IsQueryable(property.PropertyType)).ToList();
+            return PropertiesToBeIntrospected(candidates, classStrategy);
         }
     }
 }

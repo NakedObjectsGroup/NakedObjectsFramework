@@ -76,9 +76,11 @@
     <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="Attributes\AuthorizePropertyAttribute.cs" />
     <Compile Include="Attributes\ContributedActionAttribute.cs" />
+    <Compile Include="Attributes\NakedObjectsIncludeAttribute.cs" />
     <Compile Include="Attributes\FindMenuAttribute.cs" />
     <Compile Include="Attributes\FinderActionAttribute.cs" />
     <Compile Include="Attributes\FieldOrderAttribute.cs" />
+    <Compile Include="Attributes\NakedObjectsTypeAttribute.cs" />
     <Compile Include="Attributes\PresentationHintAttribute.cs" />
     <Compile Include="Enums\Ajax.cs" />
     <Compile Include="Attributes\TableViewAttribute.cs" />
