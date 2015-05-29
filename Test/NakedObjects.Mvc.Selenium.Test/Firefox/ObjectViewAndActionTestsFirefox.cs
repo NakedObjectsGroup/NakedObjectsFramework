@@ -51,8 +51,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-       
-
         public override void InvokeActionParmsReturn() {
             DoInvokeActionParmsReturn();
         }
@@ -63,13 +61,13 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore
+       
         public override void InvokeActionOnViewModel() {
             DoInvokeActionOnViewModel();
         }
 
         [TestMethod]
-        [Ignore] // temp ignore
+      
         public override void InvokeActionOnViewModelReturnCollection() {
             DoInvokeActionOnViewModelReturnCollection();
         }
@@ -142,7 +140,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore
+      
         public override void AutoCompleteOnActionDialogFailingToSelectValidOption() {
             DoAutoCompleteOnActionDialogFailingToSelectValidOption();
         }

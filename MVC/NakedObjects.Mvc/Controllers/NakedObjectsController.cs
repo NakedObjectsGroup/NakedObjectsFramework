@@ -140,7 +140,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             return propertyName == null ? View(nakedObject.IsNotPersistent ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
-                View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.Object, propertyName));
+                View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject<object>(), propertyName));
         }
 
         public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, object value) {
@@ -178,7 +178,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                     if (parm.IsChoicesEnabled == Choices.Multiple || !CheckForAndAddCollectionMementoNew(name, values, controlData)) {
                         var itemSpec = parm.ElementType;
-                        var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : GetNakedObjectFromId(v).Object).ToList();
+                        var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : GetNakedObjectFromId(v).GetDomainObject<object>()).ToList();
 
                         if (itemvalues.Any()) {
                             var no = Surface.GetObject(itemvalues);
@@ -233,7 +233,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             var collectionValue = value as IEnumerable;
             if (!parm.Specification.IsCollection || collectionValue == null) {
-                return GetNakedObjectFromId(stringValue).Object;
+                return GetNakedObjectFromId(stringValue).GetDomainObject<object>();
             }
 
             return Surface.GetTypedCollection(parm, collectionValue);
@@ -659,7 +659,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
-                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidFactory.GetLinkOid(x).Encode(), y => y.Object);
+                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidFactory.GetLinkOid(x).Encode(), y => y.GetDomainObject<object>());
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return nakedObject.Select(selected, false);
             }
