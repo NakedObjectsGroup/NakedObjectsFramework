@@ -37,6 +37,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {
+            if (nakedObject.IsViewModel) {
+                var vm = ((NakedObjectWrapper)nakedObject).WrappedNakedObject;
+                framework.LifecycleManager.PopulateViewModelKeys(vm);
+            }
+
             Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
             return new LinkObjectId(codeAndKey.Item1, codeAndKey.Item2);
         }

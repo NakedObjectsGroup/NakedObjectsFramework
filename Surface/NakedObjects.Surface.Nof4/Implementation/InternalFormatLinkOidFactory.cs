@@ -7,10 +7,18 @@
 
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Surface.Interface;
+using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class InternalFormatLinkOidFactory : ILinkOidFactory {
+        private readonly ILifecycleManager lifecycleManager;
+
+        public InternalFormatLinkOidFactory(ILifecycleManager lifecycleManager) {
+            this.lifecycleManager = lifecycleManager;
+        }
+
         public ILinkObjectId GetLinkOid(params string[] id) {
             if (id.Count() != 1) {
                 throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
@@ -44,6 +52,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public ILinkObjectId GetLinkOid(INakedObjectSurface nakedObject) {
+
+            if (nakedObject.IsViewModel) {
+                var vm = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
+                lifecycleManager.PopulateViewModelKeys(vm);
+            }
+
             var oid = nakedObject.Oid;
             var id = GetObjectId(oid);
             return GetLinkOid(id);
