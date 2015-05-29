@@ -11,6 +11,6 @@ namespace NakedObjects {
     /// <summary>
     ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class| AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class NakedObjectsIgnoreAttribute : Attribute {}
 }
