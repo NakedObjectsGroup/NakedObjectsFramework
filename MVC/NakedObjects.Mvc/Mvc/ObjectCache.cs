@@ -200,7 +200,9 @@ namespace NakedObjects.Web.Mvc {
         }
 
         private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsSurface surface, INakedObjectSurface nakedObject, string url, ObjectFlag flag) {
-            string objectId = surface.OidFactory.GetLinkOid(nakedObject).Encode();
+            var loid = surface.OidFactory.GetLinkOid(nakedObject);
+
+            string objectId = loid == null ? "" : loid.Encode();
             cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url};
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
