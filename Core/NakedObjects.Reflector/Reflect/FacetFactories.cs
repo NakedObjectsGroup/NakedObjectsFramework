@@ -26,7 +26,6 @@ namespace NakedObjects.Reflect {
                 typeof (SystemClassMethodFilteringFactory),
                 typeof (SystemClassPropertyFilteringFactory),
                 typeof (RemoveSuperclassMethodsFacetFactory),
-                typeof (RemoveInitMethodFacetFactory),
                 typeof (RemoveDynamicProxyMethodsFacetFactory),
                 typeof (RemoveEventHandlerMethodsFacetFactory),
                 typeof (RemoveIgnoredMethodsFacetFactory),

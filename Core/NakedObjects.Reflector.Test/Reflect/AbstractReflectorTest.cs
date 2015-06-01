@@ -24,7 +24,6 @@ namespace NakedObjects.Reflect.Test {
             new IteratorFilteringFacetFactory(1),
             new SystemClassMethodFilteringFactory(2),
             new RemoveSuperclassMethodsFacetFactory(3),
-            new RemoveInitMethodFacetFactory(4),
             new RemoveDynamicProxyMethodsFacetFactory(5),
             new RemoveEventHandlerMethodsFacetFactory(6),
             new TypeMarkerFacetFactory(7),

@@ -204,7 +204,6 @@
     <Compile Include="FacetFactory\RegExAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveDynamicProxyMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactory.cs" />
-    <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
     <Compile Include="Reflect\Introspector.cs" />
     <Compile Include="Component\Reflector.cs" />
