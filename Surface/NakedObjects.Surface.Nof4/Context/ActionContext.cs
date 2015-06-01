@@ -30,7 +30,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ActionContextSurface ToActionContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public ActionContextSurface ToActionContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
             var ac = new ActionContextSurface {
                 Action = new NakedObjectActionWrapper(Action, surface, framework, OverloadedUniqueId ?? ""),
                 VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface, framework)).ToArray()

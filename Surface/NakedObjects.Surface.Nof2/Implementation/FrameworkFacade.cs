@@ -21,11 +21,11 @@ using LogWrapper = NakedObjects.Surface.Utility.LogWrapper;
 using User = org.nakedobjects.application.control.User;
 
 namespace NakedObjects.Surface.Nof2.Implementation {
-    public class NakedObjectsSurface : INakedObjectsSurface {
+    public class FrameworkFacade : IFrameworkFacade {
         private readonly IOidStrategy oidStrategy;
 
 
-        public NakedObjectsSurface(IOidStrategy oidStrategy) {
+        public FrameworkFacade(IOidStrategy oidStrategy) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
         }
@@ -64,7 +64,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this));
         }
 
-        ListContextSurface INakedObjectsSurface.GetServices() {
+        ListContextSurface IFrameworkFacade.GetServices() {
             throw new NotImplementedException();
         }
 

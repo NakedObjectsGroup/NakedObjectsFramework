@@ -68,7 +68,7 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         private IIdHelper IdHelper { get { return new IdHelper(); } }
-        protected INakedObjectsSurface Surface { get; set; }
+        protected IFrameworkFacade Surface { get; set; }
         protected IMessageBroker MessageBroker { get; set; }
 
         protected override void RegisterTypes(IUnityContainer container) {
@@ -76,7 +76,7 @@ namespace MvcTestApp.Tests.Helpers {
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("SystemHelperTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
@@ -182,7 +182,7 @@ namespace MvcTestApp.Tests.Helpers {
             InitializeNakedObjectsFramework(this);
             RunFixturesOnce();
             StartTest();
-            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
             controller = new DummyController();

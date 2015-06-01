@@ -24,7 +24,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
 
-        public NakedObjectAssociationWrapper(IAssociationSpec assoc, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public NakedObjectAssociationWrapper(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(surface, "surface is null");
@@ -221,7 +221,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         public bool IsFile {
             get { return assoc.IsFile(framework); }

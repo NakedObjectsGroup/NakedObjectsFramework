@@ -51,10 +51,10 @@ namespace NakedObjects.Mvc.App {
 
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
 
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>("RestSurface", new PerRequestLifetimeManager(), new InjectionConstructor(typeof(IOidStrategy), new ResolvedParameter<IOidTranslator>("KeyOid"), typeof(INakedObjectsFramework)));
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>("RestSurface", new PerRequestLifetimeManager(), new InjectionConstructor(typeof(IOidStrategy), new ResolvedParameter<IOidTranslator>("KeyOid"), typeof(INakedObjectsFramework)));
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerRequestLifetimeManager());
 
-            container.RegisterType<RestfulObjectsController, RestfulObjectsController>(new PerResolveLifetimeManager(), new InjectionConstructor(new ResolvedParameter<INakedObjectsSurface>("RestSurface")));
+            container.RegisterType<RestfulObjectsController, RestfulObjectsController>(new PerResolveLifetimeManager(), new InjectionConstructor(new ResolvedParameter<IFrameworkFacade>("RestSurface")));
 
 
             //Externals

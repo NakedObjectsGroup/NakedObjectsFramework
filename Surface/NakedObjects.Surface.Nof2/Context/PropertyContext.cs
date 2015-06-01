@@ -19,7 +19,7 @@ namespace NakedObjects.Surface.Nof2.Context {
             get { return Property.getSpecification(); }
         }
 
-        public PropertyContextSurface ToPropertyContextSurface(INakedObjectsSurface surface) {
+        public PropertyContextSurface ToPropertyContextSurface(IFrameworkFacade surface) {
             var pc = new PropertyContextSurface {
                                                     Property = new NakedObjectAssociationWrapper(Property, Target, surface),
                                                     Mutated = Mutated,

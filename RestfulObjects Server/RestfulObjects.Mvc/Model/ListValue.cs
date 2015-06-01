@@ -26,7 +26,7 @@ namespace RestfulObjects.Mvc.Model {
 
         #region IValue Members
 
-        public object GetValue(INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+        public object GetValue(IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
             object[] items = internalValue.Select(iv => iv.GetValue(surface, helper, oidStrategy)).ToArray();
 
             if (items.Any()) {

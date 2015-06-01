@@ -86,12 +86,12 @@ namespace MvcTestApp.Tests.Helpers {
 
         #region Setup/Teardown
 
-        protected INakedObjectsSurface Surface { get; set; }
+        protected IFrameworkFacade Surface { get; set; }
         protected IMessageBroker MessageBroker { get; set; }
 
         protected override void StartTest() {
             base.StartTest();
-            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
         }
@@ -125,7 +125,7 @@ namespace MvcTestApp.Tests.Helpers {
             config.UsingCodeFirstContext(() => new MvcTestContext("CustomHtmlHelperTest"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());

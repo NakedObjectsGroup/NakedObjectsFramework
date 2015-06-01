@@ -23,7 +23,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectWrapper : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 
-        protected NakedObjectWrapper(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        protected NakedObjectWrapper(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -147,7 +147,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return WrappedNakedObject.Oid == null ? null : new OidWrapper(WrappedNakedObject.Oid); }
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         public bool IsPaged {
             get {
@@ -215,7 +215,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        public static NakedObjectWrapper Wrap(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public static NakedObjectWrapper Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
             return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface, framework);
         }
 

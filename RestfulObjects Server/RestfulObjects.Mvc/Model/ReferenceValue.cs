@@ -26,13 +26,13 @@ namespace RestfulObjects.Mvc.Model {
 
         #region IValue Members
 
-        public object GetValue(INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+        public object GetValue(IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
             return GetObjectByHref(internalValue, surface, helper, oidStrategy);
         }
 
         #endregion
 
-        private object GetObjectByHref(string href, INakedObjectsSurface surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+        private object GetObjectByHref(string href, IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
             string[] oids = helper.GetObjectId(href);
             if (oids != null) {
                 // todo this is clunky 

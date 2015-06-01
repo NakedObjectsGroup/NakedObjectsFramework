@@ -25,9 +25,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
         private readonly IIdHelper idHelper;
         private readonly IOidStrategy oidStrategy;
-        private readonly INakedObjectsSurface surface;
+        private readonly IFrameworkFacade surface;
 
-        protected NakedObjectsController(INakedObjectsSurface surface,
+        protected NakedObjectsController(IFrameworkFacade surface,
                                          IIdHelper idHelper) {
             this.surface = surface;
             oidStrategy = surface.OidStrategy;
@@ -36,7 +36,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
-        protected INakedObjectsSurface Surface {
+        protected IFrameworkFacade Surface {
             get { return surface; }
         }
 

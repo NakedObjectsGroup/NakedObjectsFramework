@@ -36,7 +36,7 @@ type Nof2Tests() = class
     member x.RegisterTypes (container : IUnityContainer) = 
           container.RegisterType(typeof<RestfulObjectsController>, typeof<RestfulObjectsController>, null, (new PerResolveLifetimeManager())) |> ignore
           container.RegisterType(typeof<IOidStrategy>, typeof<TestOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
-          container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
+          container.RegisterType(typeof<IFrameworkFacade>, typeof<FrameworkFacade>, null, (new PerResolveLifetimeManager())) |> ignore
         
     member x.UnityContainer : IUnityContainer = 
         let c = new UnityContainer()

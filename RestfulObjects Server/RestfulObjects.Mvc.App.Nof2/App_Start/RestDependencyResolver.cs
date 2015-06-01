@@ -14,12 +14,12 @@ using NakedObjects.Surface.Nof2.Utility;
 
 namespace MvcTestApp.App_Start {
     public class RestDependencyResolver : IDependencyResolver {
-        private NakedObjectsSurface surface;
+        private FrameworkFacade surface;
 
-        public NakedObjectsSurface Surface {
+        public FrameworkFacade Surface {
             get {
                 if (surface == null) {
-                    surface = new NakedObjectsSurface(new TestOidStrategy());
+                    surface = new FrameworkFacade(new TestOidStrategy());
                 }
 
                 return surface;
@@ -31,7 +31,7 @@ namespace MvcTestApp.App_Start {
         public object GetService(Type serviceType) {
             if (typeof(ApiController).IsAssignableFrom(serviceType)) {
                 object obj = Activator.CreateInstance(serviceType);
-                PropertyInfo surfaceProperty = obj.GetType().GetProperties().SingleOrDefault(p => p.PropertyType == typeof(INakedObjectsSurface));
+                PropertyInfo surfaceProperty = obj.GetType().GetProperties().SingleOrDefault(p => p.PropertyType == typeof(IFrameworkFacade));
                 if (surfaceProperty != null) {
                     surfaceProperty.SetValue(obj, Surface, null);
                 }

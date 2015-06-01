@@ -13,7 +13,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         private readonly ActionWrapper action;
         private readonly Naked target;
 
-        public NakedObjectActionWrapper(ActionWrapper action, Naked target, INakedObjectsSurface surface) {
+        public NakedObjectActionWrapper(ActionWrapper action, Naked target, IFrameworkFacade surface) {
             this.action = action;
             this.target = target;
             Surface = surface;
@@ -120,7 +120,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
        
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
         
     }
 }

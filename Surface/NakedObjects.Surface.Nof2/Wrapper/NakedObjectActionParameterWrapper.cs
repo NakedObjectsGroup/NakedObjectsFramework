@@ -18,7 +18,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;
 
-        public NakedObjectActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, INakedObjectsSurface surface) {
+        public NakedObjectActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.target = target;
             Surface = surface;
@@ -124,7 +124,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             throw new NotImplementedException();
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         #endregion
 

@@ -65,7 +65,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return this; }
         }
 
-        public IObjectFacade GetValue(INakedObjectsSurface surface) {
+        public IObjectFacade GetValue(IFrameworkFacade surface) {
             return Property.GetNakedObject(Target);
         }
 
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return Action; }
         }
 
-        public ParameterContext[] GetParameterContexts(INakedObjectsSurface surface) {
+        public ParameterContext[] GetParameterContexts(IFrameworkFacade surface) {
             if (parameterContexts == null) {
                 parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContext(IdHelper, EmbeddedInObject, Target, Action, p, true)).ToArray();
 

@@ -89,7 +89,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new NotImplementedException();
         }
 
-        public INakedObjectsSurface Surface { set;  get; }
+        public IFrameworkFacade Surface { set;  get; }
 
         #endregion
 

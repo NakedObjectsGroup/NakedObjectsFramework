@@ -15,7 +15,7 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
-        public GenericController(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper)  {
+        public GenericController(IFrameworkFacade surface,  IIdHelper idHelper) : base(surface, idHelper)  {
             // Uncomment this if you wish to have NakedObject Container and services injected 
             //nakedObjectsFramework.DomainObjectInjector.InjectInto(this);
         }

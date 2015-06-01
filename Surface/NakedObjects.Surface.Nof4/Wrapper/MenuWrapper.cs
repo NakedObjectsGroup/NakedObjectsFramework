@@ -13,7 +13,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuWrapper : IMenuFacade {
         public object Wrapped { get; private set; }
 
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade surface, INakedObjectsFramework framework) {
             var immutable = menu as IMenuActionImmutable;
             if (immutable != null) {
                 return new MenuActionWrapper(immutable, surface, framework);
@@ -23,7 +23,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return menuImmutable != null ? (IMenuItemFacade) new MenuWrapper(menuImmutable, surface, framework) : new MenuItemWrapper(menu);
         }
 
-        public MenuWrapper(IMenuImmutable wrapped, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public MenuWrapper(IMenuImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
             Wrapped = wrapped;
             MenuItems = wrapped.MenuItems.Select(i => Wrap(i, surface, framework)).ToList();
             Name = wrapped.Name;

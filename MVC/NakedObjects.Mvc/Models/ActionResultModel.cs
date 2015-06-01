@@ -33,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         #endregion
 
-        public static ActionResultModel Create(INakedObjectsSurface surface, INakedObjectActionSurface action, IObjectFacade nakedObject, int page, int pageSize, string format) {
+        public static ActionResultModel Create(IFrameworkFacade surface, INakedObjectActionSurface action, IObjectFacade nakedObject, int page, int pageSize, string format) {
             var result = (IEnumerable) nakedObject.Object;
             Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);

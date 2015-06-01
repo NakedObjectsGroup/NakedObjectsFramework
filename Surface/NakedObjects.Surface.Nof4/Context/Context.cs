@@ -25,7 +25,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public abstract ITypeSpec Specification { get; }
 
-        protected T ToContextSurface<T>(T context, INakedObjectsSurface surface, INakedObjectsFramework framework) where T : ContextSurface {
+        protected T ToContextSurface<T>(T context, IFrameworkFacade surface, INakedObjectsFramework framework) where T : ContextSurface {
             context.Target = NakedObjectWrapper.Wrap(Target, surface, framework);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;

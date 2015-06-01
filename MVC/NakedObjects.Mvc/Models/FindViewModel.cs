@@ -31,7 +31,7 @@ namespace NakedObjects.Web.Mvc.Models {
         public INakedObjectActionSurface ContextAction { get; set; }
         public string PropertyName { get; set; }
 
-        public string DialogClass(INakedObjectsSurface framework) {
+        public string DialogClass(IFrameworkFacade framework) {
             if (ViewType == ViewTypes.Dialog) {
                 return ContextAction.ReturnType.IsFile ? IdConstants.DialogNameFileClass : IdConstants.DialogNameClass;
             }

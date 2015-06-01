@@ -30,7 +30,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Where(a => a.IsVisible(nakedObject));
         }
 
-        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, IObjectFacade nakedObject) {
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
 
                 var elementSpec = nakedObject.ElementSpecification;
@@ -98,7 +98,7 @@ namespace MvcTestApp.Tests.Controllers {
             return framework.GetObjectId(nakedObject);
         }
 
-        public static string GetObjectTypeName(this INakedObjectsSurface surface, object model) {
+        public static string GetObjectTypeName(this IFrameworkFacade surface, object model) {
             var nakedObject = surface.GetObject(model);
             return nakedObject.Specification.ShortName;
         }
@@ -277,22 +277,22 @@ namespace MvcTestApp.Tests.Controllers {
 
     
 
-        private static IObjectFacade GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade surface, string id) {
             var oid = surface.OidTranslator.GetOidTranslation(id);
             return surface.GetObject(oid).Target;
         }
 
-        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementType;
             return GetTypedCollection(surface, collectionValue, collectionitemSpec);
         }
 
-        public static object GetTypedCollection(this INakedObjectsSurface surface, INakedObjectAssociationSurface featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade surface, INakedObjectAssociationSurface featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementSpecification;
             return GetTypedCollection(surface, collectionValue, collectionitemSpec);
         }
 
-        private static object GetTypedCollection(INakedObjectsSurface surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
+        private static object GetTypedCollection(IFrameworkFacade surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();

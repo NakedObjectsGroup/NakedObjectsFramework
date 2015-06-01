@@ -117,7 +117,7 @@ namespace NakedObjects.Web.Mvc.Models {
             }
         }
 
-        public IObjectFacade GetNakedObject(INakedObjectsSurface surface) {
+        public IObjectFacade GetNakedObject(IFrameworkFacade surface) {
             if (nakedObjectSurface == null) {
                 var link = surface.OidTranslator.GetOidTranslation(Id);
 
@@ -137,7 +137,7 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObjectSurface;
         }
 
-        public INakedObjectActionSurface GetAction(INakedObjectsSurface surface) {
+        public INakedObjectActionSurface GetAction(IFrameworkFacade surface) {
             if (nakedObjectAction == null) {
                 var no = GetNakedObject(surface);
                 INakedObjectActionSurface action;

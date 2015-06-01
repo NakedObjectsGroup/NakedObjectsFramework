@@ -25,7 +25,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
 
-        public NakedObjectActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public NakedObjectActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
@@ -189,7 +189,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper) nakedObject).WrappedNakedObject), Surface, framework);
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         public bool IsFindMenuEnabled {
             get { return (nakedObjectActionParameter is IOneToOneActionParameterSpec) && ((IOneToOneActionParameterSpec) nakedObjectActionParameter).IsFindMenuEnabled; }

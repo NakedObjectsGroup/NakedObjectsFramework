@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Menu;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuActionWrapper : IMenuActionFacade, IMenuItemFacade {
 
-        public MenuActionWrapper(IMenuActionImmutable wrapped, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public MenuActionWrapper(IMenuActionImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;

@@ -28,13 +28,13 @@ using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
-    public class NakedObjectsSurface : INakedObjectsSurface {
+    public class FrameworkFacade : IFrameworkFacade {
         private readonly INakedObjectsFramework framework;
         private readonly IOidStrategy oidStrategy;
         private readonly IOidTranslator oidTranslator;
         private readonly IMessageBrokerSurface messageBroker;
 
-        public NakedObjectsSurface(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
+        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
             this.oidTranslator = oidTranslator;
@@ -42,7 +42,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
         }
 
-        #region INakedObjectsSurface Members
+        #region IFrameworkFacade Members
 
         public ObjectContextSurface GetImage(string imageId) {
             return null;
@@ -1035,9 +1035,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             private readonly INakedObjectsFramework framework;
             private readonly IActionParameterSpec parm;
             private readonly IOneToOneAssociationSpec prop;
-            private readonly INakedObjectsSurface surface;
+            private readonly IFrameworkFacade surface;
 
-            private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            private PropParmAdapter(object p, IFrameworkFacade surface, INakedObjectsFramework framework) {
                 this.surface = surface;
                 this.framework = framework;
                 if (p == null) {
@@ -1045,13 +1045,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
             }
 
-            public PropParmAdapter(IOneToOneAssociationSpec prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
+            public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade surface, INakedObjectsFramework framework)
                 : this((object) prop, surface, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
             }
 
-            public PropParmAdapter(IActionParameterSpec parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
+            public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade surface, INakedObjectsFramework framework)
                 : this((object) parm, surface, framework) {
                 this.parm = parm;
                 CheckAutocompleOrConditional();

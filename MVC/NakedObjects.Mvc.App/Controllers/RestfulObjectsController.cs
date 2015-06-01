@@ -15,7 +15,7 @@ using RestfulObjects.Mvc.Model;
 
 namespace NakedObjects.Mvc.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(INakedObjectsSurface surface) : base(surface) {
+        public RestfulObjectsController(IFrameworkFacade surface) : base(surface) {
             
         }
 

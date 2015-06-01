@@ -104,7 +104,7 @@
     <Compile Include="Utility\OStoreOidStrategy.cs" />
     <Compile Include="Utility\SerialOidStrategy.cs" />
     <Compile Include="Utility\TestOidStrategy.cs" />
-    <Compile Include="Implementation\NakedObjectsSurface.cs" />
+    <Compile Include="Implementation\FrameworkFacade.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />
     <Compile Include="Wrapper\ActionWrapper.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />

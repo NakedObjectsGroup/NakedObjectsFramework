@@ -18,7 +18,7 @@ using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        public AjaxControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
@@ -162,7 +162,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-        public static bool IsParseableOrCollectionOfParseable(INakedObjectsSurface surface, INakedObjectActionParameterSurface parmSpec) {
+        public static bool IsParseableOrCollectionOfParseable(IFrameworkFacade surface, INakedObjectActionParameterSurface parmSpec) {
             var spec = parmSpec.Specification;
             return spec.IsParseable || (spec.IsCollection && parmSpec.ElementType.IsParseable);
         }

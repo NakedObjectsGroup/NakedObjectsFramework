@@ -12,7 +12,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class SystemControllerImpl : NakedObjectsController {
-        protected SystemControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected SystemControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         public virtual ActionResult ClearHistory(bool clearAll) {
             object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);

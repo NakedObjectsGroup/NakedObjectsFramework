@@ -8,7 +8,7 @@
 namespace NakedObjects.Surface {
     public interface IOidStrategy {
         // todo make public get while refactoring
-        INakedObjectsSurface Surface { get; set; }
+        IFrameworkFacade Surface { get; set; }
         object GetDomainObjectByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);
        

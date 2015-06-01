@@ -37,7 +37,7 @@ namespace NakedObjects.Surface.Nof2.Context {
             get { return Result == null ? ActionContext.Action.getReturnType() : Result.Specification; }
         }
 
-        public ActionResultContextSurface ToActionResultContextSurface(INakedObjectsSurface surface) {
+        public ActionResultContextSurface ToActionResultContextSurface(IFrameworkFacade surface) {
             var ac = new ActionResultContextSurface {
                                                         Result = Result == null ? null : Result.ToObjectContextSurface(surface),
                                                         ActionContext = ActionContext.ToActionContextSurface(surface),

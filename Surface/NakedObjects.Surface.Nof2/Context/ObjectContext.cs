@@ -30,7 +30,7 @@ namespace NakedObjects.Surface.Nof2.Context {
 
         public bool Mutated { get; set; }
 
-        public ObjectContextSurface ToObjectContextSurface(INakedObjectsSurface surface) {
+        public ObjectContextSurface ToObjectContextSurface(IFrameworkFacade surface) {
             var oc = new ObjectContextSurface {
                                                   VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextSurface(surface)).ToArray(),
                                                   VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextSurface(surface)).ToArray(),

@@ -18,7 +18,7 @@ namespace NakedObjects.Surface.Nof2.Context {
             get { return Parameter.getSpecification(); }
         }
 
-        public ParameterContextSurface ToParameterContextSurface(INakedObjectsSurface surface) {
+        public ParameterContextSurface ToParameterContextSurface(IFrameworkFacade surface) {
             var pc = new ParameterContextSurface {
                                                      Parameter = new NakedObjectActionParameterWrapper(Parameter, Target, surface),
                                                      Target = new NakedObjectWrapper(Target, surface),

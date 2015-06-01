@@ -17,7 +17,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected CustomController(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions

@@ -20,7 +20,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly string overloadedUniqueId;
 
 
-        public NakedObjectActionWrapper(IActionSpec action, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public NakedObjectActionWrapper(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(action, "Action is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
@@ -128,7 +128,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return new NakedObjectSpecificationWrapper(action.OnSpec, Surface, framework); }
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         #endregion
 

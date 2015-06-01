@@ -17,7 +17,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         private readonly NakedObjectField assoc;
         private readonly Naked target;
 
-        public NakedObjectAssociationWrapper(NakedObjectField assoc, Naked target, INakedObjectsSurface surface) {
+        public NakedObjectAssociationWrapper(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
             this.assoc = assoc;
             this.target = target;
             Surface = surface;
@@ -194,7 +194,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return nakedObject.TitleString;
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         #endregion
 

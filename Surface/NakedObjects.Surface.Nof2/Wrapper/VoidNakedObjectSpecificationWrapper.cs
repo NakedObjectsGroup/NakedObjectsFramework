@@ -138,6 +138,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
        
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
     }
 }

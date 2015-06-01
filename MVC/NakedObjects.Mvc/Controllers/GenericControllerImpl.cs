@@ -23,7 +23,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(INakedObjectsSurface surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected GenericControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {

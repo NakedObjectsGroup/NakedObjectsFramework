@@ -134,7 +134,7 @@
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\EntityOidStrategy.cs" />
-    <Compile Include="Implementation\NakedObjectsSurface.cs" />
+    <Compile Include="Implementation\FrameworkFacade.cs" />
     <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MessageBrokerWrapper.cs" />

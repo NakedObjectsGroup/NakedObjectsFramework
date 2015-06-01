@@ -87,7 +87,7 @@ namespace MvcTestApp.Tests.Controllers {
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
 
@@ -396,7 +396,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void TestJsonp() {
             const string data = "testData";
-            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            var mockSurface = new Mock<IFrameworkFacade>().Object;
             //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
             AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(mockSurface, null).Jsonp(data, "application/json", Encoding.UTF8);
@@ -421,7 +421,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void TestJsonpDefaults() {
             const string data = "testData";
-            var mockSurface = new Mock<INakedObjectsSurface>().Object;
+            var mockSurface = new Mock<IFrameworkFacade>().Object;
             //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
             AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(mockSurface, null).Jsonp(data);
@@ -580,10 +580,10 @@ namespace MvcTestApp.Tests.Controllers {
             mocks = new ContextMocks(controller);
         }
 
-        protected INakedObjectsSurface Surface { get; set; }
+        protected IFrameworkFacade Surface { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic) Surface).Framework;
         }
 

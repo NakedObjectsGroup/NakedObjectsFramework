@@ -36,7 +36,7 @@ namespace RestfulObjects.Mvc {
             DefaultPageSize = 20;
         }
 
-        protected RestfulObjectsControllerBase(INakedObjectsSurface surface) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade surface) {
             Surface = surface;
             OidStrategy = surface.OidStrategy;
         }
@@ -62,7 +62,7 @@ namespace RestfulObjects.Mvc {
             set { RestSnapshot.AcceptHeaderStrict = value; }
         }
 
-        protected INakedObjectsSurface Surface { get; set; }
+        protected IFrameworkFacade Surface { get; set; }
         public IOidStrategy OidStrategy { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {

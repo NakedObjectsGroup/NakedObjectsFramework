@@ -10,12 +10,12 @@ using NakedObjects.Surface;
 
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
-        public static void AddObjectToSession(this HttpSessionStateBase session, INakedObjectsSurface surface, string key, object domainObject) {
+        public static void AddObjectToSession(this HttpSessionStateBase session, IFrameworkFacade surface, string key, object domainObject) {
             var nakedObject = surface.GetObject(domainObject);
             session.Add(key, (nakedObject.IsTransient ? domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
 
-        public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsSurface surface, string key, T domainObject) where T : class {
+        public static void AddObjectToSession<T>(this HttpSessionStateBase session, IFrameworkFacade surface, string key, T domainObject) where T : class {
             var nakedObject = surface.GetObject(domainObject);
             session.Add(key, (nakedObject.IsTransient ? (object) domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
@@ -42,7 +42,7 @@ namespace NakedObjects.Web.Mvc {
             return null;
         }
 
-        private static IObjectFacade GetNakedObjectFromId(string id, INakedObjectsSurface surface) {
+        private static IObjectFacade GetNakedObjectFromId(string id, IFrameworkFacade surface) {
             if (string.IsNullOrEmpty(id)) {
                 return null;
             }
@@ -51,7 +51,7 @@ namespace NakedObjects.Web.Mvc {
             return surface.GetObject(oid).Target;
         }
 
-        public static object GetObjectFromSession(this HttpSessionStateBase session, INakedObjectsSurface surface, string key) {
+        public static object GetObjectFromSession(this HttpSessionStateBase session, IFrameworkFacade surface, string key) {
             object rawValue = session[key];
 
             if (rawValue == null) {
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc {
             return rawValue;
         }
 
-        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, INakedObjectsSurface surface, string key) where T : class {
+        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, IFrameworkFacade surface, string key) where T : class {
             object rawValue = session[key];
 
             if (rawValue == null) {

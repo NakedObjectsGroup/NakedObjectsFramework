@@ -95,11 +95,11 @@ namespace MvcTestApp.Tests.Controllers {
             mocks = new ContextMocks(controller);
         }
 
-        protected INakedObjectsSurface Surface { get; set; }
+        protected IFrameworkFacade Surface { get; set; }
         protected IMessageBroker MessageBroker { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<INakedObjectsSurface>();
+            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
         }
@@ -113,7 +113,7 @@ namespace MvcTestApp.Tests.Controllers {
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
@@ -235,7 +235,7 @@ namespace MvcTestApp.Tests.Controllers {
         #region Nested type: CustomControllerWrapper
 
         private class CustomControllerWrapper : CustomController {
-            public CustomControllerWrapper(INakedObjectsSurface surface,  IIdHelper idHelper) : base(surface, idHelper)  {}
+            public CustomControllerWrapper(IFrameworkFacade surface,  IIdHelper idHelper) : base(surface, idHelper)  {}
 
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);

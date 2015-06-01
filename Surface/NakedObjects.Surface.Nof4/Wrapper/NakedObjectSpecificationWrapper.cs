@@ -21,7 +21,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;
 
-        public NakedObjectSpecificationWrapper(ITypeSpec spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public NakedObjectSpecificationWrapper(ITypeSpec spec, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(spec, "Spec is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -207,7 +207,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return new INakedObjectActionSurface[] {};
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         public bool Equals(INakedObjectSpecificationSurface other) {
             return Equals((object) other);

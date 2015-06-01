@@ -10,7 +10,7 @@ using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectsSurface {
+    public interface IFrameworkFacade {
         IOidTranslator OidTranslator { get; }
         IOidStrategy OidStrategy { get; }
         IMessageBrokerSurface MessageBroker { get; }

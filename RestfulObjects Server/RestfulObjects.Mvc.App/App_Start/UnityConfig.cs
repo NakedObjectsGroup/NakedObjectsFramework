@@ -56,7 +56,7 @@ namespace MvcTestApp {
 
             // surface
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));

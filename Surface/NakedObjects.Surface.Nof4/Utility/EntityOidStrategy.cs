@@ -29,7 +29,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         #region IOidStrategy Members
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
 
         private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {

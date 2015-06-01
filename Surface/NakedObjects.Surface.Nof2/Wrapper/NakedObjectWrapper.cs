@@ -17,7 +17,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
     public class NakedObjectWrapper : IObjectFacade {
         private readonly Naked nakedObject;
 
-        public NakedObjectWrapper(Naked nakedObject, INakedObjectsSurface surface) {
+        public NakedObjectWrapper(Naked nakedObject, IFrameworkFacade surface) {
             this.nakedObject = nakedObject;
             Surface = surface;
         }
@@ -130,7 +130,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return new OidWrapper(nakedObject.getOid()); }
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
 
         #endregion
 

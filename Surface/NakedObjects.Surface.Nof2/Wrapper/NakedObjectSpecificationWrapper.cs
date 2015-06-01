@@ -17,7 +17,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;
 
-        public NakedObjectSpecificationWrapper(NakedObjectSpecification spec, Naked target, INakedObjectsSurface surface) {
+        public NakedObjectSpecificationWrapper(NakedObjectSpecification spec, Naked target, IFrameworkFacade surface) {
             this.spec = spec;
             this.target = target;
             Surface = surface;
@@ -180,6 +180,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
        
 
 
-        public INakedObjectsSurface Surface { get; set; }
+        public IFrameworkFacade Surface { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace NakedObjects.Surface.Utility {
         public const string NofServices = "Services";
         public const string NofMainMenus = "NofMainMenus";
         public const string NoFramework = "NakedObjectsFramework";
-        public const string NoSurface = "NakedObjectsSurface";
+        public const string NoSurface = "FrameworkFacade";
         public const string IdHelper = "IdHelper";
         public const string Controller = "controller";
         public const string SystemMessages = "Messages";

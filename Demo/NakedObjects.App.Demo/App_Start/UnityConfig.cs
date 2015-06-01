@@ -48,7 +48,7 @@ namespace NakedObjects.App.Demo {
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerRequestLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
 
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerRequestLifetimeManager());
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
