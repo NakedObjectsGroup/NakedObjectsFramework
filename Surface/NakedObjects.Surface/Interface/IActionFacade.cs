@@ -13,7 +13,7 @@ namespace NakedObjects.Surface {
         ITypeFacade ReturnType { get; }
         ITypeFacade ElementType { get; }
         int ParameterCount { get; }
-        INakedObjectActionParameterSurface[] Parameters { get; }
+        IActionParameterFacade[] Parameters { get; }
         ITypeFacade OnType { get; }
         string PresentationHint { get; }
         int PageSize { get; }

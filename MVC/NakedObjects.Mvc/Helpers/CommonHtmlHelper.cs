@@ -60,7 +60,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region internal api
 
-        internal static MvcHtmlString PropertyListWithFilter(this HtmlHelper html, object domainObject, Func<INakedObjectAssociationSurface, bool> filter, Func<INakedObjectAssociationSurface, int> order) {
+        internal static MvcHtmlString PropertyListWithFilter(this HtmlHelper html, object domainObject, Func<IAssociationFacade, bool> filter, Func<IAssociationFacade, int> order) {
             var nakedObject = html.Surface().GetObject(domainObject);
             bool anyEditableFields;
             IEnumerable<ElementDescriptor> viewObjectFields = html.ViewObjectFields(nakedObject, null, filter, order, out anyEditableFields);
@@ -71,7 +71,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 anyEditableFields);
         }
 
-        internal static MvcHtmlString PropertyListEditWithFilter(this HtmlHelper html, object domainObject, Func<INakedObjectAssociationSurface, bool> filter, Func<INakedObjectAssociationSurface, int> order) {
+        internal static MvcHtmlString PropertyListEditWithFilter(this HtmlHelper html, object domainObject, Func<IAssociationFacade, bool> filter, Func<IAssociationFacade, int> order) {
             var nakedObject = html.Surface().GetObject(domainObject);
             return html.BuildEditContainer(nakedObject,
                 html.EditObjectFields(nakedObject, null, filter, order),
@@ -296,8 +296,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString GetStandaloneCollection(this HtmlHelper html,
                                                               IObjectFacade collectionNakedObject,
-                                                              Func<INakedObjectAssociationSurface, bool> filter,
-                                                              Func<INakedObjectAssociationSurface, int> order,
+                                                              Func<IAssociationFacade, bool> filter,
+                                                              Func<IAssociationFacade, int> order,
                                                               bool withTitle) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.CollectionTableName);
@@ -308,7 +308,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return loid == null ? null : loid.Encode();
         }
 
-        private static MvcHtmlString GetStandalone(HtmlHelper html, IObjectFacade collectionNakedObject, Func<INakedObjectAssociationSurface, bool> filter, Func<INakedObjectAssociationSurface, int> order, TagBuilder tag, bool withTitle) {
+        private static MvcHtmlString GetStandalone(HtmlHelper html, IObjectFacade collectionNakedObject, Func<IAssociationFacade, bool> filter, Func<IAssociationFacade, int> order, TagBuilder tag, bool withTitle) {
             Func<IObjectFacade, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
             string menu = collectionNakedObject.Specification.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
@@ -326,7 +326,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString GetStandaloneList(this HtmlHelper html,
                                                         IObjectFacade collectionNakedObject,
-                                                        Func<INakedObjectAssociationSurface, int> order) {
+                                                        Func<IAssociationFacade, int> order) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdConstants.CollectionListName);
             return GetStandalone(html, collectionNakedObject, x => false, order, tag, true);
@@ -370,15 +370,15 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        private static IEnumerable<Tuple<INakedObjectAssociationSurface, IObjectFacade>> Items(this INakedObjectAssociationSurface assoc, HtmlHelper html, IObjectFacade target) {
-            return assoc.GetNakedObject(target).ToEnumerable().Select(no => new Tuple<INakedObjectAssociationSurface, IObjectFacade>(assoc, no));
+        private static IEnumerable<Tuple<IAssociationFacade, IObjectFacade>> Items(this IAssociationFacade assoc, HtmlHelper html, IObjectFacade target) {
+            return assoc.GetNakedObject(target).ToEnumerable().Select(no => new Tuple<IAssociationFacade, IObjectFacade>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
                                                                         IObjectFacade nakedObject,
                                                                         PropertyContext parentContext,
-                                                                        Func<INakedObjectAssociationSurface, bool> filter,
-                                                                        Func<INakedObjectAssociationSurface, int> order,
+                                                                        Func<IAssociationFacade, bool> filter,
+                                                                        Func<IAssociationFacade, int> order,
                                                                         bool noFinder = false,
                                                                         IList<ElementDescriptor> childElements = null,
                                                                         string idToAddTo = null) {
@@ -430,10 +430,10 @@ namespace NakedObjects.Web.Mvc.Html {
             return elements;
         }
 
-        private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, IObjectFacade nakedObject, Func<INakedObjectAssociationSurface, string> idFunc) {
+        private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, IObjectFacade nakedObject, Func<IAssociationFacade, string> idFunc) {
             var objectSpec = nakedObject.Specification;
 
-            var concurrencyFields = objectSpec == null ? new INakedObjectAssociationSurface[] {} : objectSpec.Properties.Where(p => p.IsConcurrency);
+            var concurrencyFields = objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Where(p => p.IsConcurrency);
             return concurrencyFields.Select(property => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(new PropertyContext(html.IdHelper(), nakedObject, property, false), idFunc(property), true)
@@ -695,7 +695,7 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        internal static IEnumerable<ElementDescriptor> ViewObjectFields(this HtmlHelper html, IObjectFacade nakedObject, PropertyContext parentContext, Func<INakedObjectAssociationSurface, bool> filter, Func<INakedObjectAssociationSurface, int> order, out bool anyEditableFields) {
+        internal static IEnumerable<ElementDescriptor> ViewObjectFields(this HtmlHelper html, IObjectFacade nakedObject, PropertyContext parentContext, Func<IAssociationFacade, bool> filter, Func<IAssociationFacade, int> order, out bool anyEditableFields) {
             var query = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject)).Where(filter);
 
             if (order != null) {
@@ -783,7 +783,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                           string propertyName) {
             var nakedObject = html.Surface().GetObject(subEditObject);
 
-            Func<INakedObjectAssociationSurface, bool> filterCollections = x => !x.IsCollection;
+            Func<IAssociationFacade, bool> filterCollections = x => !x.IsCollection;
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
                 IdConstants.FieldContainerName,
@@ -841,8 +841,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string CollectionTable(this HtmlHelper html,
                                               IObjectFacade collectionNakedObject,
                                               Func<IObjectFacade, string> linkFunc,
-                                              Func<INakedObjectAssociationSurface, bool> filter,
-                                              Func<INakedObjectAssociationSurface, int> order,
+                                              Func<IAssociationFacade, bool> filter,
+                                              Func<IAssociationFacade, int> order,
                                               bool isStandalone,
                                               bool withSelection,
                                               bool withTitle,
@@ -1064,13 +1064,13 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.TextBox(context.GetAutoCompleteFieldId(), title, htmlAttributes).ToHtmlString();
         }
 
-        private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectAssociationSurface holder, string completionAjaxUrl) {
+        private static RouteValueDictionary CreateAutoCompleteAttributes(IAssociationFacade holder, string completionAjaxUrl) {
             int minLength = holder.AutoCompleteMinLength;
             var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
             return attrs;
         }
 
-        private static RouteValueDictionary CreateAutoCompleteAttributes(INakedObjectActionParameterSurface holder, string completionAjaxUrl) {
+        private static RouteValueDictionary CreateAutoCompleteAttributes(IActionParameterFacade holder, string completionAjaxUrl) {
             int minLength = holder.AutoCompleteMinLength;
             var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
             return attrs;
@@ -1098,7 +1098,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetTextOrRefFieldValue(propertyContext, valueNakedObject, inTable);
         }
 
-        private static string GetEnumFieldValue(INakedObjectAssociationSurface property, IObjectFacade valueNakedObject) {
+        private static string GetEnumFieldValue(IAssociationFacade property, IObjectFacade valueNakedObject) {
             return property.GetTitle(valueNakedObject);
         }
 
@@ -1641,11 +1641,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetReferenceParameter(context, id, tooltip, childElements, context.Parameter.Id == propertyName);
         }
 
-        private static INakedObjectAssociationSurface[] CollectionAssociations(this HtmlHelper html,
+        private static IAssociationFacade[] CollectionAssociations(this HtmlHelper html,
                                                                                IObjectFacade[] collection,
                                                                                ITypeFacade collectionSpec,
-                                                                               Func<INakedObjectAssociationSurface, bool> filter,
-                                                                               Func<INakedObjectAssociationSurface, int> order) {
+                                                                               Func<IAssociationFacade, bool> filter,
+                                                                               Func<IAssociationFacade, int> order) {
             var assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
 
             if (order != null) {
@@ -1793,8 +1793,8 @@ namespace NakedObjects.Web.Mvc.Html {
             bool any = collectionNakedObject.ToEnumerable().Any();
             Func<IObjectFacade, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
-            Func<INakedObjectAssociationSurface, bool> filterFunc;
-            Func<INakedObjectAssociationSurface, int> orderFunc;
+            Func<IAssociationFacade, bool> filterFunc;
+            Func<IAssociationFacade, int> orderFunc;
             bool withTitle;
 
             GetTableColumnInfo(propertyContext.Property, out filterFunc, out orderFunc, out withTitle);
@@ -1803,19 +1803,19 @@ namespace NakedObjects.Web.Mvc.Html {
                    html.CollectionTable(collectionNakedObject, linkFunc, filterFunc, orderFunc, false, false, withTitle);
         }
 
-        internal static void GetTableColumnInfo(IActionFacade holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
+        internal static void GetTableColumnInfo(IActionFacade holder, out Func<IAssociationFacade, bool> filterFunc, out Func<IAssociationFacade, int> orderFunc, out bool withTitle) {
             var tableViewData = holder == null ? null : holder.TableViewData;
 
             GetTableColumnInfo(out filterFunc, out orderFunc, out withTitle, tableViewData);
         }
 
-        internal static void GetTableColumnInfo(INakedObjectAssociationSurface holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
+        internal static void GetTableColumnInfo(IAssociationFacade holder, out Func<IAssociationFacade, bool> filterFunc, out Func<IAssociationFacade, int> orderFunc, out bool withTitle) {
             var tableViewData = holder == null ? null : holder.TableViewData;
 
             GetTableColumnInfo(out filterFunc, out orderFunc, out withTitle, tableViewData);
         }
 
-        private static void GetTableColumnInfo(out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle, Tuple<bool, string[]> tableViewData) {
+        private static void GetTableColumnInfo(out Func<IAssociationFacade, bool> filterFunc, out Func<IAssociationFacade, int> orderFunc, out bool withTitle, Tuple<bool, string[]> tableViewData) {
             if (tableViewData == null) {
                 filterFunc = x => true;
                 orderFunc = null;
@@ -1829,7 +1829,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        internal static bool RenderEagerly(INakedObjectAssociationSurface holder) {
+        internal static bool RenderEagerly(IAssociationFacade holder) {
             return holder.RenderEagerly;
         }
 
@@ -1837,7 +1837,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return holder != null && holder.RenderEagerly;
         }
 
-        internal static bool DoNotCount(INakedObjectAssociationSurface holder) {
+        internal static bool DoNotCount(IAssociationFacade holder) {
             return holder.DoNotCount;
         }
 
@@ -2587,11 +2587,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region private
 
-        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectAssociationSurface holder, IObjectFacade nakedObject) {
+        private static string GetDisplayTitle(this HtmlHelper html, IAssociationFacade holder, IObjectFacade nakedObject) {
             return holder.GetMaskedValue(nakedObject);
         }
 
-        private static string GetDisplayTitle(this HtmlHelper html, INakedObjectActionParameterSurface holder, IObjectFacade nakedObject) {
+        private static string GetDisplayTitle(this HtmlHelper html, IActionParameterFacade holder, IObjectFacade nakedObject) {
             return holder.GetMaskedValue(nakedObject);
         }
 

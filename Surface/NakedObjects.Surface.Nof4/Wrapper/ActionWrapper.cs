@@ -112,8 +112,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return action.ParameterCount; }
         }
 
-        public INakedObjectActionParameterSurface[] Parameters {
-            get { return action.Parameters.Select(p => new NakedObjectActionParameterWrapper(p, Surface, framework, overloadedUniqueId)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
+        public IActionParameterFacade[] Parameters {
+            get { return action.Parameters.Select(p => new ActionParameterWrapper(p, Surface, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {

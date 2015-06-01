@@ -19,8 +19,8 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, IActionFacade action = null) {
             var nakedObject = html.Surface().GetObject(collection);
 
-            Func<INakedObjectAssociationSurface, bool> filterFunc;
-            Func<INakedObjectAssociationSurface, int> orderFunc;
+            Func<IAssociationFacade, bool> filterFunc;
+            Func<IAssociationFacade, int> orderFunc;
             bool withTitle;
 
             if (action == null || action.ReturnType.IsVoid) {

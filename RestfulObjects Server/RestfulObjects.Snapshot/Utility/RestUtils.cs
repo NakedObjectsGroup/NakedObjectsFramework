@@ -131,11 +131,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, INakedObjectAssociationSurface property, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IAssociationFacade property, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy ,item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IActionParameterFacade parameter, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy, item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
@@ -143,7 +143,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return no == null ? "" : no.TitleString;
         }
 
-        public static string SafeGetTitle(INakedObjectAssociationSurface property, IObjectFacade valueNakedObject) {
+        public static string SafeGetTitle(IAssociationFacade property, IObjectFacade valueNakedObject) {
             return valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
         }
 

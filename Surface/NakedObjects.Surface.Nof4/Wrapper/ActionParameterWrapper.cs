@@ -20,12 +20,12 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectActionParameterWrapper : INakedObjectActionParameterSurface {
+    public class ActionParameterWrapper : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
         private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
 
-        public NakedObjectActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter; }
         }
 
-        #region INakedObjectActionParameterSurface Members
+        #region IActionParameterFacade Members
 
         public IDictionary<string, object> ExtensionData {
             get {
@@ -251,7 +251,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        private INakedObjectAdapter GetValue(INakedObjectActionParameterSurface parm, object rawValue) {
+        private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
             if (rawValue == null || rawValue is string && string.IsNullOrEmpty(rawValue as string)) {
                 return null;
             }
@@ -290,14 +290,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectActionParameterWrapper = obj as NakedObjectActionParameterWrapper;
+            var nakedObjectActionParameterWrapper = obj as ActionParameterWrapper;
             if (nakedObjectActionParameterWrapper != null) {
                 return Equals(nakedObjectActionParameterWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectActionParameterWrapper other) {
+        public bool Equals(ActionParameterWrapper other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);

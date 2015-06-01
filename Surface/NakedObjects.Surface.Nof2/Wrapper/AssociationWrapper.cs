@@ -13,11 +13,11 @@ using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectAssociationWrapper : INakedObjectAssociationSurface {
+    public class AssociationWrapper : IAssociationFacade {
         private readonly NakedObjectField assoc;
         private readonly Naked target;
 
-        public NakedObjectAssociationWrapper(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
+        public AssociationWrapper(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
             this.assoc = assoc;
             this.target = target;
             Surface = surface;
@@ -30,7 +30,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             }
         }
 
-        #region INakedObjectAssociationSurface Members
+        #region IAssociationFacade Members
 
         public int MemberOrder {
             get { return 0; }
@@ -111,7 +111,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
         }
 
-        Choices INakedObjectAssociationSurface.IsChoicesEnabled {
+        Choices IAssociationFacade.IsChoicesEnabled {
             get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
         }
 
@@ -204,14 +204,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectAssociationWrapper = obj as NakedObjectAssociationWrapper;
+            var nakedObjectAssociationWrapper = obj as AssociationWrapper;
             if (nakedObjectAssociationWrapper != null) {
                 return Equals(nakedObjectAssociationWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectAssociationWrapper other) {
+        public bool Equals(AssociationWrapper other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.assoc, assoc);

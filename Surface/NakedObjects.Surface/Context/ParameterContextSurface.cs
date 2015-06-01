@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Surface {
     public class ParameterContextSurface : ContextSurface {
-        public INakedObjectActionParameterSurface Parameter { get; set; }
+        public IActionParameterFacade Parameter { get; set; }
 
         public override string Id {
             get { return Parameter.Id; }

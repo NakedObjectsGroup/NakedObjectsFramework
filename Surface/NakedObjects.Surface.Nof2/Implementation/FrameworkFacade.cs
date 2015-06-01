@@ -95,7 +95,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
         public PropertyContextSurface GetProperty(IOidTranslation oid, string propertyName) {
             return MapErrors(() => {
                                  PropertyContext pc = GetProperty(GetObjectAsNakedObject(oid), propertyName);
-                                 return new PropertyContextSurface {Target = new NakedObjectWrapper(pc.Target, this), Property = new NakedObjectAssociationWrapper(pc.Property, pc.Target, this)};
+                                 return new PropertyContextSurface {Target = new NakedObjectWrapper(pc.Target, this), Property = new AssociationWrapper(pc.Property, pc.Target, this)};
                              });
         }
 
@@ -185,7 +185,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                                  Tuple<NakedObjectField, NakedObjectSpecification> pc = GetPropertyTypeInternal(typeName, propertyName);
 
                                  return new PropertyTypeContextSurface {
-                                                                           Property = new NakedObjectAssociationWrapper(pc.Item1, null, this),
+                                                                           Property = new AssociationWrapper(pc.Item1, null, this),
                                                                            OwningSpecification = new TypeFacade(pc.Item2, null, this)
                                                                        };
                              });
@@ -209,7 +209,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                                  return new ParameterTypeContextSurface {
                                                                             Action = new ActionFacade(pc.Item1, null, this),
                                                                             OwningSpecification = new TypeFacade(pc.Item2, null, this),
-                                                                            Parameter = new NakedObjectActionParameterWrapper(pc.Item3, null, this)
+                                                                            Parameter = new ActionParameterWrapper(pc.Item3, null, this)
                                                                         };
                              });
         }

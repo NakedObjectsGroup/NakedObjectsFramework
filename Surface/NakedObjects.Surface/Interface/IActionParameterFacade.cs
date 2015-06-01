@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectActionParameterSurface :  ISurfaceHolder {
+    public interface IActionParameterFacade :  ISurfaceHolder {
         ITypeFacade Specification { get; }
         ITypeFacade ElementType { get; }
         IActionFacade Action { get; }

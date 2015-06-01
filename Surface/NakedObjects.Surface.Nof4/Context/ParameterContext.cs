@@ -26,7 +26,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public ParameterContextSurface ToParameterContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
             var pc = new ParameterContextSurface {
-                Parameter = new NakedObjectActionParameterWrapper(Parameter, surface, framework, OverloadedUniqueId ?? ""),
+                Parameter = new ActionParameterWrapper(Parameter, surface, framework, OverloadedUniqueId ?? ""),
                 Action = new ActionWrapper(Action, surface, framework, OverloadedUniqueId ?? "")
             };
             return ToContextSurface(pc, surface, framework);

@@ -11,14 +11,14 @@ using RestfulObjects.Snapshot.Constants;
 namespace RestfulObjects.Snapshot.Utility {
     public class ChoiceRelType : ObjectRelType {
         private readonly IMemberFacade member;
-        private readonly INakedObjectActionParameterSurface parameter;
+        private readonly IActionParameterFacade parameter;
         private ChoiceRelType(UriMtHelper helper) : base(RelValues.Choice, helper) {}
 
-        public ChoiceRelType(INakedObjectAssociationSurface property, UriMtHelper helper) : this(helper) {
+        public ChoiceRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) {
             member = property;
         }
 
-        public ChoiceRelType(INakedObjectActionParameterSurface parameter, UriMtHelper helper)
+        public ChoiceRelType(IActionParameterFacade parameter, UriMtHelper helper)
             : this(helper) {
             this.parameter = parameter;
         }

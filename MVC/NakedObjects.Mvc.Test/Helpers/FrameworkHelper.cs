@@ -282,12 +282,12 @@ namespace MvcTestApp.Tests.Helpers {
             return surface.GetObject(oid).Target;
         }
 
-        public static object GetTypedCollection(this IFrameworkFacade surface, INakedObjectActionParameterSurface featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade surface, IActionParameterFacade featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementType;
             return GetTypedCollection(surface, collectionValue, collectionitemSpec);
         }
 
-        public static object GetTypedCollection(this IFrameworkFacade surface, INakedObjectAssociationSurface featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade surface, IAssociationFacade featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementSpecification;
             return GetTypedCollection(surface, collectionValue, collectionitemSpec);
         }

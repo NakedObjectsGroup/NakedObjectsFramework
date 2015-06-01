@@ -73,8 +73,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #region ITypeFacade Members
 
-        public INakedObjectAssociationSurface[] Properties {
-            get { return new INakedObjectAssociationSurface[] {}; }
+        public IAssociationFacade[] Properties {
+            get { return new IAssociationFacade[] {}; }
         }
 
         public IMenuFacade Menu { get; private set; }

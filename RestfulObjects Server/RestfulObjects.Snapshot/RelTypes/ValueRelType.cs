@@ -13,7 +13,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly IMemberFacade member;
         public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) {}
 
-        public ValueRelType(INakedObjectAssociationSurface property, UriMtHelper helper) : this(helper) {
+        public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) {
             member = property;
         }
 

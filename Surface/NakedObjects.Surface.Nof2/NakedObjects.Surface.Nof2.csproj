@@ -109,8 +109,8 @@
     <Compile Include="Wrapper\ActionWrapper.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectActionParameterWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectAssociationWrapper.cs" />
+    <Compile Include="Wrapper\ActionParameterWrapper.cs" />
+    <Compile Include="Wrapper\AssociationWrapper.cs" />
     <Compile Include="Wrapper\TypeFacade.cs" />
     <Compile Include="Wrapper\OidWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectWrapper.cs" />

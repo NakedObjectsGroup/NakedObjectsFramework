@@ -84,8 +84,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsBoolean { get; private set; }
         public bool IsEnum { get; private set; }
 
-        public INakedObjectAssociationSurface[] Properties {
-            get { return spec.getFields().Select(p => new NakedObjectAssociationWrapper(p, target, Surface)).Cast<INakedObjectAssociationSurface>().OrderBy(a => a.Id).ToArray(); }
+        public IAssociationFacade[] Properties {
+            get { return spec.getFields().Select(p => new AssociationWrapper(p, target, Surface)).Cast<IAssociationFacade>().OrderBy(a => a.Id).ToArray(); }
         }
 
         public IMenuFacade Menu { get; private set; }

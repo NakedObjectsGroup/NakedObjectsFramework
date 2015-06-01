@@ -20,7 +20,7 @@ namespace NakedObjects.Surface.Nof2.Context {
 
         public ParameterContextSurface ToParameterContextSurface(IFrameworkFacade surface) {
             var pc = new ParameterContextSurface {
-                                                     Parameter = new NakedObjectActionParameterWrapper(Parameter, Target, surface),
+                                                     Parameter = new ActionParameterWrapper(Parameter, Target, surface),
                                                      Target = new NakedObjectWrapper(Target, surface),
                                                      Action = new ActionFacade(Action, Target, surface)
                                                  };

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
     public interface ITypeFacade : ISurfaceHolder, IEquatable<ITypeFacade> {
-        INakedObjectAssociationSurface[] Properties { get; }
+        IAssociationFacade[] Properties { get; }
         IMenuFacade Menu { get; }
         string PresentationHint { get; }
         bool IsAlwaysImmutable { get; }

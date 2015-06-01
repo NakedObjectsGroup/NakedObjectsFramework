@@ -14,11 +14,11 @@ using NakedObjects.Surface.Nof2.Context;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectActionParameterWrapper : INakedObjectActionParameterSurface {
+    public class ActionParameterWrapper : IActionParameterFacade {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;
 
-        public NakedObjectActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
+        public ActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.target = target;
             Surface = surface;
@@ -28,7 +28,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return nakedObjectActionParameter.isChoicesEnabled(); }
         }
 
-        #region INakedObjectActionParameterSurface Members
+        #region IActionParameterFacade Members
 
         public ITypeFacade Specification {
             get { return new TypeFacade(nakedObjectActionParameter.getSpecification(), target, Surface); }
@@ -44,7 +44,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return nakedObjectActionParameter.getId(); }
         }
 
-        Choices INakedObjectActionParameterSurface.IsChoicesEnabled {
+        Choices IActionParameterFacade.IsChoicesEnabled {
             get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
         }
 
@@ -133,14 +133,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectActionParameterWrapper = obj as NakedObjectActionParameterWrapper;
+            var nakedObjectActionParameterWrapper = obj as ActionParameterWrapper;
             if (nakedObjectActionParameterWrapper != null) {
                 return Equals(nakedObjectActionParameterWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectActionParameterWrapper other) {
+        public bool Equals(ActionParameterWrapper other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);

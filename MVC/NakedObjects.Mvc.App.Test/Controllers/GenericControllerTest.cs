@@ -406,10 +406,10 @@ namespace MvcTestApp.Tests.Controllers {
             var timePeriodSpec = Surface.GetDomainType(typeof (TimePeriod).FullName);
 
             var assocN = shiftSpec.Properties.Single(p => p.Id == "Name");
-            INakedObjectAssociationSurface assocTp = shiftSpec.Properties.Single(p => p.Id == "Times");
+            IAssociationFacade assocTp = shiftSpec.Properties.Single(p => p.Id == "Times");
 
-            INakedObjectAssociationSurface assocT1 = timePeriodSpec.Properties.Single(p => p.Id == "StartTime");
-            INakedObjectAssociationSurface assocT2 = timePeriodSpec.Properties.Single(p => p.Id == "EndTime");
+            IAssociationFacade assocT1 = timePeriodSpec.Properties.Single(p => p.Id == "StartTime");
+            IAssociationFacade assocT2 = timePeriodSpec.Properties.Single(p => p.Id == "EndTime");
 
             string idN = IdHelper.GetFieldInputId((shift), (assocN));
             string idT1 = IdHelper.GetInlineFieldInputId((assocTp), (timePeriod), (assocT1));
@@ -1288,7 +1288,7 @@ namespace MvcTestApp.Tests.Controllers {
             Employee report1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
             Employee report2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
             IObjectFacade employeeNakedObject = Surface.GetObject(employee);
-            INakedObjectAssociationSurface collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
+            IAssociationFacade collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
                 {IdConstants.DisplayFormatFieldId, "Addresses=list"},
@@ -1589,7 +1589,7 @@ namespace MvcTestApp.Tests.Controllers {
             var form = new FormCollection {{"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0"}, {"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0"}};
 
             IObjectFacade order = Surface.GetObject(Order);
-            INakedObjectAssociationSurface assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
+            IAssociationFacade assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
             IActionFacade action = order.Specification.GetActionLeafNodes().Single(a => a.Id == "AddNewSalesReasons");
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));
@@ -1618,7 +1618,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
             IObjectFacade order = Surface.GetObject(Order);
-            INakedObjectAssociationSurface assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
+            IAssociationFacade assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
             IActionFacade action = order.Specification.GetActionLeafNodes().Single(a => a.Id == "AddNewSalesReasonsByCategories");
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));

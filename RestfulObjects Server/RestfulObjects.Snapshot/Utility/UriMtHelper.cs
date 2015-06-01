@@ -22,11 +22,11 @@ namespace RestfulObjects.Snapshot.Utility {
         public static Func<string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly IActionFacade action;
-        private readonly INakedObjectAssociationSurface assoc;
+        private readonly IAssociationFacade assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
         private  string cachedType; // cache because may not be available at writing time 
         private readonly IObjectFacade nakedObject;
-        private readonly INakedObjectActionParameterSurface param;
+        private readonly IActionParameterFacade param;
         private readonly Uri prefix;
         private readonly ITypeFacade spec;
         private readonly string typeAction;
@@ -122,7 +122,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface assoc)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade assoc)
             : this(oidStrategy ,req) {
             cachedId = "";
             if (assoc.IsCollection) {
@@ -554,16 +554,16 @@ namespace RestfulObjects.Snapshot.Utility {
                 return FormatParameter(RelParamValues.Action, nakedObjectMemberSurface.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
             }
 
-            if (nakedObjectMemberSurface is INakedObjectAssociationSurface) {
-                var associationSurface = (INakedObjectAssociationSurface) nakedObjectMemberSurface;
+            if (nakedObjectMemberSurface is IAssociationFacade) {
+                var associationSurface = (IAssociationFacade) nakedObjectMemberSurface;
                 return FormatParameter(associationSurface.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationSurface.Id);
             }
 
             throw new ArgumentException("Unexpected type:" + nakedObjectMemberSurface.GetType());
         }
 
-        public string GetRelParametersFor(INakedObjectActionParameterSurface nakedObjectActionParameterSurface) {
-            return FormatParameter(RelParamValues.Action, nakedObjectActionParameterSurface.Action.Id) + FormatParameter(RelParamValues.Param, nakedObjectActionParameterSurface.Id);
+        public string GetRelParametersFor(IActionParameterFacade actionParameterFacade) {
+            return FormatParameter(RelParamValues.Action, actionParameterFacade.Action.Id) + FormatParameter(RelParamValues.Param, actionParameterFacade.Id);
         }
 
         public string GetRelParametersFor(string name) {

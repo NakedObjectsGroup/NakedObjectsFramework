@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject<object>(), propertyName));
         }
 
-        public void ValidateParameter(IActionFacade action, INakedObjectActionParameterSurface parm, IObjectFacade targetNakedObject, object value) {
+        public void ValidateParameter(IActionFacade action, IActionParameterFacade parm, IObjectFacade targetNakedObject, object value) {
             var isValid = parm.IsValid(targetNakedObject, value);
 
             if (!isValid.IsAllowed) {
@@ -209,12 +209,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal object GetParameterValue(INakedObjectActionParameterSurface parm, string name, ObjectAndControlData controlData) {
+        internal object GetParameterValue(IActionParameterFacade parm, string name, ObjectAndControlData controlData) {
             object value = GetRawParameterValue(parm, controlData, name);
             return GetParameterValue(parm, value);
         }
 
-        internal object GetParameterValue(INakedObjectActionParameterSurface parm, object value) {
+        internal object GetParameterValue(IActionParameterFacade parm, object value) {
             if (value == null) {
                 return null;
             }
@@ -239,7 +239,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Surface.GetTypedCollection(parm, collectionValue);
         }
 
-        private static object GetRawParameterValue(INakedObjectActionParameterSurface parm, ObjectAndControlData controlData, string name) {
+        private static object GetRawParameterValue(IActionParameterFacade parm, ObjectAndControlData controlData, string name) {
             var form = controlData.Form;
             ValueProviderResult vp = form.GetValue(name);
             string[] values = vp == null ? null : (string[]) vp.RawValue;
@@ -394,7 +394,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal object GetObjectValue(INakedObjectAssociationSurface assoc, IObjectFacade targetNakedObject, object value) {
+        internal object GetObjectValue(IAssociationFacade assoc, IObjectFacade targetNakedObject, object value) {
             if (value == null) {
                 return null;
             }
@@ -417,12 +417,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return null;
         }
 
-        internal void CheckConcurrency(IObjectFacade nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, IObjectFacade, INakedObjectAssociationSurface, string> idFunc) {
+        internal void CheckConcurrency(IObjectFacade nakedObject, IAssociationFacade parent, ObjectAndControlData controlData, Func<IAssociationFacade, IObjectFacade, IAssociationFacade, string> idFunc) {
             var objectSpec = nakedObject.Specification;
-            var concurrencyFields = objectSpec == null ? new List<INakedObjectAssociationSurface>() : objectSpec.Properties.Where(p => p.IsConcurrency).ToList();
+            var concurrencyFields = objectSpec == null ? new List<IAssociationFacade>() : objectSpec.Properties.Where(p => p.IsConcurrency).ToList();
 
             if (!nakedObject.IsTransient && concurrencyFields.Any()) {
-                IEnumerable<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
+                IEnumerable<Tuple<IAssociationFacade, object>> fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, concurrencyFields, controlData, idFunc);
 
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
@@ -449,20 +449,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        protected void GetUsableAndVisibleFields(IObjectFacade nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
+        protected void GetUsableAndVisibleFields(IObjectFacade nakedObject, ObjectAndControlData controlData, IAssociationFacade parent, out List<IAssociationFacade> usableAndVisibleFields, out List<Tuple<IAssociationFacade, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
 
-        protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(IObjectFacade nakedObject,
-                                                                                                               INakedObjectAssociationSurface parent,
-                                                                                                               IEnumerable<INakedObjectAssociationSurface> associations,
+        protected static IEnumerable<Tuple<IAssociationFacade, object>> GetFieldsAndMatchingValues(IObjectFacade nakedObject,
+                                                                                                               IAssociationFacade parent,
+                                                                                                               IEnumerable<IAssociationFacade> associations,
                                                                                                                ObjectAndControlData controlData,
-                                                                                                               Func<INakedObjectAssociationSurface, IObjectFacade, INakedObjectAssociationSurface, string> idFunc) {
+                                                                                                               Func<IAssociationFacade, IObjectFacade, IAssociationFacade, string> idFunc) {
             foreach (var assoc in associations.Where(a => !a.IsInline)) {
                 string name = idFunc(parent, nakedObject, assoc);
                 object newValue = GetValueFromForm(controlData, name);
-                yield return new Tuple<INakedObjectAssociationSurface, object>(assoc, newValue);
+                yield return new Tuple<IAssociationFacade, object>(assoc, newValue);
             }
         }
 
@@ -476,13 +476,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return controlData.Files.ContainsKey(name) ? controlData.Files[name] : null;
         }
 
-        internal void AddErrorAndAttemptedValue(IObjectFacade nakedObject, string newValue, INakedObjectAssociationSurface assoc, string errorText, INakedObjectAssociationSurface parent = null) {
+        internal void AddErrorAndAttemptedValue(IObjectFacade nakedObject, string newValue, IAssociationFacade assoc, string errorText, IAssociationFacade parent = null) {
             string key = GetFieldInputId(parent, nakedObject, assoc);
             ModelState.AddModelError(key, errorText);
             AddAttemptedValue(key, assoc.Specification.IsParseable ? (object) newValue : GetNakedObjectFromId(newValue));
         }
 
-        internal void AddAttemptedValuesNew(IObjectFacade nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
+        internal void AddAttemptedValuesNew(IObjectFacade nakedObject, ObjectAndControlData controlData, IAssociationFacade parent = null) {
             foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject) || p.IsConcurrency)) {
                 string name = GetFieldInputId(parent, nakedObject, assoc);
                 string value = GetValueFromForm(controlData, name) as string;
@@ -506,8 +506,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal ArgumentsContext ConvertForSave(IObjectFacade nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
-            List<INakedObjectAssociationSurface> usableAndVisibleFields;
-            List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues;
+            List<IAssociationFacade> usableAndVisibleFields;
+            List<Tuple<IAssociationFacade, object>> fieldsAndMatchingValues;
             GetUsableAndVisibleFields(nakedObject, controlData, null, out usableAndVisibleFields, out fieldsAndMatchingValues);
 
             var ac = new ArgumentsContext {
@@ -527,24 +527,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ac;
         }
 
-        internal void RefreshTransient(IObjectFacade nakedObject, FormCollection form, INakedObjectAssociationSurface parent = null) {
+        internal void RefreshTransient(IObjectFacade nakedObject, FormCollection form, IAssociationFacade parent = null) {
             if (nakedObject.IsTransient) {
                 var ac = Convert(form);
                 Surface.RefreshObject(nakedObject, ac);
             }
         }
 
-        protected string GetFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetFieldInputId(IAssociationFacade parent, IObjectFacade nakedObject, IAssociationFacade assoc) {
             return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
-        protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetConcurrencyFieldInputId(IAssociationFacade parent, IObjectFacade nakedObject, IAssociationFacade assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
 
-        internal void ValidateAssociation(IObjectFacade nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
+        internal void ValidateAssociation(IObjectFacade nakedObject, IAssociationFacade oneToOneAssoc, object attemptedValue, IAssociationFacade parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
             try {
                 var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);

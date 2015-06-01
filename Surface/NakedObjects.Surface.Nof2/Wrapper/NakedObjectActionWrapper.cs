@@ -80,8 +80,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return action.getParameterCount(); }
         }
 
-        public INakedObjectActionParameterSurface[] Parameters {
-            get { return action.GetParameters((NakedReference) target).Select(p => new NakedObjectActionParameterWrapper(p, target, Surface)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
+        public IActionParameterFacade[] Parameters {
+            get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterWrapper(p, target, Surface)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {

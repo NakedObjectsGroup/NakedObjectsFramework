@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectAssociationSurface : IMemberFacade {
+    public interface IAssociationFacade : IMemberFacade {
         ITypeFacade Specification { get; }
         ITypeFacade ElementSpecification { get; }
         Choices IsChoicesEnabled { get; }

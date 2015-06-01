@@ -20,11 +20,11 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectAssociationWrapper : INakedObjectAssociationSurface {
+    public class AssociationWrapper : IAssociationFacade {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
 
-        public NakedObjectAssociationWrapper(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public AssociationWrapper(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(surface, "surface is null");
@@ -38,7 +38,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return assoc; }
         }
 
-        #region INakedObjectAssociationSurface Members
+        #region IAssociationFacade Members
 
         public IDictionary<string, object> ExtensionData {
             get {
@@ -331,14 +331,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectAssociationWrapper = obj as NakedObjectAssociationWrapper;
+            var nakedObjectAssociationWrapper = obj as AssociationWrapper;
             if (nakedObjectAssociationWrapper != null) {
                 return Equals(nakedObjectAssociationWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectAssociationWrapper other) {
+        public bool Equals(AssociationWrapper other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.assoc, assoc);

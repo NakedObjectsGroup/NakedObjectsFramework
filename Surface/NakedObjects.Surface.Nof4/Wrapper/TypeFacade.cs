@@ -150,10 +150,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.ContainsFacet<IComplexTypeFacet>(); }
         }
 
-        public INakedObjectAssociationSurface[] Properties {
+        public IAssociationFacade[] Properties {
             get {
                 var objectSpec = spec as IObjectSpec;
-                return objectSpec == null ? new INakedObjectAssociationSurface[] {} : objectSpec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray();
+                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationWrapper(p, Surface, framework)).Cast<IAssociationFacade>().ToArray();
             }
         }
 

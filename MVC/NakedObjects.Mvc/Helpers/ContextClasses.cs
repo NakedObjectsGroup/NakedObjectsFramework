@@ -39,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(IIdHelper idHelper, IObjectFacade target, INakedObjectAssociationSurface property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(IIdHelper idHelper, IObjectFacade target, IAssociationFacade property, bool isEdit, PropertyContext parentContext = null)
             : base(idHelper, target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -52,7 +52,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public PropertyContext ParentContext { get; set; }
-        public INakedObjectAssociationSurface Property { get; set; }
+        public IAssociationFacade Property { get; set; }
 
         public override ISurfaceHolder Feature {
             get { return Property; }
@@ -104,7 +104,7 @@ namespace NakedObjects.Web.Mvc.Html {
     }
 
     internal class ActionContext : FeatureContext {
-        private Func<INakedObjectActionParameterSurface, bool> filter;
+        private Func<IActionParameterFacade, bool> filter;
         private ParameterContext[] parameterContexts;
 
         public ActionContext(IIdHelper idHelper, ActionContext otherContext)
@@ -125,7 +125,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = action;
         }
 
-        public Func<INakedObjectActionParameterSurface, bool> Filter {
+        public Func<IActionParameterFacade, bool> Filter {
             get {
                 if (filter == null) {
                     return x => true;
@@ -161,8 +161,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return parameterContexts;
         }
 
-        public string GetConcurrencyActionInputId(INakedObjectAssociationSurface nakedObjectAssociation) {
-            return IdHelper.GetConcurrencyActionInputId(Target, (Action), (nakedObjectAssociation));
+        public string GetConcurrencyActionInputId(IAssociationFacade association) {
+            return IdHelper.GetConcurrencyActionInputId(Target, (Action), (association));
         }
 
         public string GetActionId() {
@@ -200,14 +200,14 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, IObjectFacade target, IActionFacade action, INakedObjectActionParameterSurface parameter, bool isEdit)
+        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, IObjectFacade target, IActionFacade action, IActionParameterFacade parameter, bool isEdit)
             : base(idhelper, embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;
         }
 
         public bool IsHidden { get; set; }
-        public INakedObjectActionParameterSurface Parameter { get; set; }
+        public IActionParameterFacade Parameter { get; set; }
         public IObjectFacade CustomValue { get; set; }
 
         public override ISurfaceHolder Feature {

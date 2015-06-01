@@ -96,12 +96,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private object GetValue(string[] values, INakedObjectActionParameterSurface parameterSpec, ITypeFacade spec) {
+        private object GetValue(string[] values, IActionParameterFacade parameterSpec, ITypeFacade spec) {
             object domainObject;
             return GetValue(values, spec, true, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
         }
 
-        private object GetValue(string[] values, INakedObjectAssociationSurface propertySpec, ITypeFacade spec) {
+        private object GetValue(string[] values, IAssociationFacade propertySpec, ITypeFacade spec) {
             object domainObject;
             return GetValue(values, spec, false, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
         }
@@ -162,7 +162,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-        public static bool IsParseableOrCollectionOfParseable(IFrameworkFacade surface, INakedObjectActionParameterSurface parmSpec) {
+        public static bool IsParseableOrCollectionOfParseable(IFrameworkFacade surface, IActionParameterFacade parmSpec) {
             var spec = parmSpec.Specification;
             return spec.IsParseable || (spec.IsCollection && parmSpec.ElementType.IsParseable);
         }

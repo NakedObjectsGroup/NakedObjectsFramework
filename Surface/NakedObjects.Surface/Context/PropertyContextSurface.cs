@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Surface {
     public class PropertyContextSurface : ContextSurface {
-        public INakedObjectAssociationSurface Property { get; set; }
+        public IAssociationFacade Property { get; set; }
 
         public bool Mutated { get; set; }
 

@@ -132,7 +132,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 Tuple<IAssociationSpec, IObjectSpec> pc = GetPropertyTypeInternal(typeName, propertyName);
 
                 return new PropertyTypeContextSurface {
-                    Property = new NakedObjectAssociationWrapper(pc.Item1, this, framework),
+                    Property = new AssociationWrapper(pc.Item1, this, framework),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2)
                 };
             });
@@ -155,7 +155,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return new ParameterTypeContextSurface {
                     Action = new ActionWrapper(pc.Item1, this, framework, pc.Item4 ?? ""),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2),
-                    Parameter = new NakedObjectActionParameterWrapper(pc.Item3, this, framework, pc.Item4 ?? "")
+                    Parameter = new ActionParameterWrapper(pc.Item3, this, framework, pc.Item4 ?? "")
                 };
             });
         }

@@ -103,8 +103,8 @@
     <Compile Include="Interface\IMenuItemFacade.cs" />
     <Compile Include="Interface\IObjectFacade.cs" />
     <Compile Include="Interface\IActionFacade.cs" />
-    <Compile Include="Interface\INakedObjectActionParameterSurface.cs" />
-    <Compile Include="Interface\INakedObjectAssociationSurface.cs" />
+    <Compile Include="Interface\IActionParameterFacade.cs" />
+    <Compile Include="Interface\IAssociationFacade.cs" />
     <Compile Include="Interface\IMemberFacade.cs" />
     <Compile Include="Interface\ITypeFacade.cs" />
     <Compile Include="Interface\IFrameworkFacade.cs">

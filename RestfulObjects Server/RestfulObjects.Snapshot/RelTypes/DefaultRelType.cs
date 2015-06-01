@@ -10,10 +10,10 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class DefaultRelType : ObjectRelType {
-        private readonly INakedObjectActionParameterSurface parameter;
+        private readonly IActionParameterFacade parameter;
         private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) {}
 
-        public DefaultRelType(INakedObjectActionParameterSurface parameter, UriMtHelper helper)
+        public DefaultRelType(IActionParameterFacade parameter, UriMtHelper helper)
             : this(helper) {
             this.parameter = parameter;
         }
