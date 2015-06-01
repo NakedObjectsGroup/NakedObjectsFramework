@@ -10,7 +10,7 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class ChoiceRelType : ObjectRelType {
-        private readonly INakedObjectMemberSurface member;
+        private readonly IMemberFacade member;
         private readonly INakedObjectActionParameterSurface parameter;
         private ChoiceRelType(UriMtHelper helper) : base(RelValues.Choice, helper) {}
 

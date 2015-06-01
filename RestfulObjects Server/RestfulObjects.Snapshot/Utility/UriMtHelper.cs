@@ -344,7 +344,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(redirectPrefix, oid);
         }
 
-        private Uri GetServiceMemberUri(INakedObjectMemberSurface member, string memberType) {
+        private Uri GetServiceMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
@@ -354,7 +354,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
 
-        private Uri GetTypeMemberUri(INakedObjectMemberSurface member, string memberType) {
+        private Uri GetTypeMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "domain type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
@@ -364,7 +364,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
 
-        private Uri GetObjectMemberUri(INakedObjectMemberSurface member, string memberType) {
+        private Uri GetObjectMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
@@ -374,11 +374,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
         }
 
-        private Uri GetMemberUri(INakedObjectMemberSurface member, string memberType) {
+        private Uri GetMemberUri(IMemberFacade member, string memberType) {
             return spec.IsService ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
         }
 
-        private Uri ByMemberType(Func<INakedObjectMemberSurface, string, Uri> getUri) {
+        private Uri ByMemberType(Func<IMemberFacade, string, Uri> getUri) {
             if (action != null) {
                 return getUri(action, SegmentValues.Actions);
             }
@@ -542,14 +542,14 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public string GetRelParameters() {
-            return GetRelParametersFor((INakedObjectMemberSurface) action ?? assoc);
+            return GetRelParametersFor((IMemberFacade) action ?? assoc);
         }
 
         public string GetServiceRelParameter() {
             return FormatParameter(RelParamValues.ServiceId, CachedType);
         }
 
-        public string GetRelParametersFor(INakedObjectMemberSurface nakedObjectMemberSurface) {
+        public string GetRelParametersFor(IMemberFacade nakedObjectMemberSurface) {
             if (nakedObjectMemberSurface is INakedObjectActionSurface) {
                 return FormatParameter(RelParamValues.Action, nakedObjectMemberSurface.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
             }

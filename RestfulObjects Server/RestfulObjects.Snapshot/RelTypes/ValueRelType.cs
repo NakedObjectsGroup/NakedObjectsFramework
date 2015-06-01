@@ -10,7 +10,7 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class ValueRelType : ObjectRelType {
-        private readonly INakedObjectMemberSurface member;
+        private readonly IMemberFacade member;
         public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) {}
 
         public ValueRelType(INakedObjectAssociationSurface property, UriMtHelper helper) : this(helper) {
