@@ -15,7 +15,7 @@ using NakedObjects.Facade;
 using NakedObjects.Services;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Facade.Nof4;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {

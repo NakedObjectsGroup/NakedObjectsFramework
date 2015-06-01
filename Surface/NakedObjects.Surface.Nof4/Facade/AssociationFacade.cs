@@ -15,12 +15,11 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
+namespace NakedObjects.Facade.Nof4 {
     public class AssociationFacade : IAssociationFacade {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
@@ -161,7 +160,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IConsentFacade IsUsable(IObjectFacade target) {
             IConsent consent = assoc.IsUsable(((ObjectFacade) target).WrappedNakedObject);
-            return new ConsentWrapper(consent);
+            return new ConsentFacade(consent);
         }
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {

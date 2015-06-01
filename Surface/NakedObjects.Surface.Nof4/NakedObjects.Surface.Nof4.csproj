@@ -134,22 +134,22 @@
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\EntityOidStrategy.cs" />
-    <Compile Include="Implementation\FrameworkFacade.cs" />
+    <Compile Include="Facade\FrameworkFacade.cs" />
     <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MessageBrokerWrapper.cs" />
     <Compile Include="Utility\SurfaceUtils.cs" />
-    <Compile Include="Wrapper\ConsentWrapper.cs" />
-    <Compile Include="Wrapper\MenuActionWrapper.cs" />
-    <Compile Include="Wrapper\MenuItemWrapper.cs" />
-    <Compile Include="Wrapper\MenuWrapper.cs" />
-    <Compile Include="Wrapper\ActionFacade.cs" />
-    <Compile Include="Wrapper\ActionParameterFacade.cs" />
-    <Compile Include="Wrapper\AssociationFacade.cs" />
-    <Compile Include="Wrapper\TypeFacade.cs" />
-    <Compile Include="Wrapper\OidWrapper.cs" />
-    <Compile Include="Wrapper\ObjectFacade.cs" />
-    <Compile Include="Wrapper\VersionWrapper.cs" />
+    <Compile Include="Facade\ConsentFacade.cs" />
+    <Compile Include="Facade\MenuActionFacade.cs" />
+    <Compile Include="Facade\MenuItemFacade.cs" />
+    <Compile Include="Facade\MenuFacade.cs" />
+    <Compile Include="Facade\ActionFacade.cs" />
+    <Compile Include="Facade\ActionParameterFacade.cs" />
+    <Compile Include="Facade\AssociationFacade.cs" />
+    <Compile Include="Facade\TypeFacade.cs" />
+    <Compile Include="Facade\OidFacade.cs" />
+    <Compile Include="Facade\ObjectFacade.cs" />
+    <Compile Include="Facade\VersionFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Surface\NakedObjects.Surface.csproj">
@@ -161,6 +161,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

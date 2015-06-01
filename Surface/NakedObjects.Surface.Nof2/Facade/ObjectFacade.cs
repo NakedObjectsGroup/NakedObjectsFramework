@@ -10,11 +10,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Facade;
+using NakedObjects.Surface;
 using org.nakedobjects.@object;
 using sdm.systems.reflector;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class ObjectFacade : IObjectFacade {
         private readonly Naked nakedObject;
 
@@ -116,7 +116,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsUserPersistable { get; private set; }
 
         public IVersionFacade Version {
-            get { return new VersionWrapper(((NakedReference) nakedObject).getVersion()); }
+            get { return new VersionFacade(((NakedReference) nakedObject).getVersion()); }
         }
 
         public IActionFacade MementoAction { get; private set; }
@@ -124,7 +124,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsPaged { get; private set; }
 
         public IOidFacade Oid {
-            get { return new OidWrapper(nakedObject.getOid()); }
+            get { return new OidFacade(nakedObject.getOid()); }
         }
 
         public IFrameworkFacade Surface { get; set; }

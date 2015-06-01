@@ -11,13 +11,12 @@ using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
+namespace NakedObjects.Facade.Nof4 {
     public class TypeFacade : ITypeFacade {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;
@@ -158,7 +157,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IMenuFacade Menu {
-            get { return new MenuWrapper(spec.Menu, Surface, framework); }
+            get { return new MenuFacade(spec.Menu, Surface, framework); }
         }
 
         public bool IsImmutable(IObjectFacade nakedObject) {

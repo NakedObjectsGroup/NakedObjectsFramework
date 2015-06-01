@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Facade;
 using NakedObjects.Surface.Interface;
-using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Facade.Nof4;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {

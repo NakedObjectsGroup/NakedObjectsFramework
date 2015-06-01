@@ -3,7 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Facade;
-using NakedObjects.Surface.Nof2.Wrapper;
+using NakedObjects.Facade.Nof2;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Context {

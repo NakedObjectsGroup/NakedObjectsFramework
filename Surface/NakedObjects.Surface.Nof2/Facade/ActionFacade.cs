@@ -8,11 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class ActionFacade : IActionFacade {
         private readonly ActionWrapper action;
         private readonly Naked target;
@@ -90,7 +89,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public IConsentFacade IsUsable(IObjectFacade nakedObject) {
-            return new ConsentWrapper(action.isAvailable((NakedReference) (((ObjectFacade) nakedObject).NakedObject)));
+            return new ConsentFacade(action.isAvailable((NakedReference) (((ObjectFacade) nakedObject).NakedObject)));
         }
 
         public ITypeFacade OnType {

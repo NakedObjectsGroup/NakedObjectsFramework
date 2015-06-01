@@ -13,7 +13,7 @@ using org.nakedobjects.@object.control;
 using org.nakedobjects.utility;
 using NotImplementedException = System.NotImplementedException;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class ActionWrapper {
         private readonly object action;
 

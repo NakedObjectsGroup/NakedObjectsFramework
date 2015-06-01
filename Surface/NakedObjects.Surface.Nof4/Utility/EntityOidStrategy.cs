@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Services;
-using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Facade.Nof4;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Utility {
@@ -126,12 +126,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
-            return new OidWrapper(oid);
+            return new OidFacade(oid);
         }
 
         public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
-            return new OidWrapper(oid);
+            return new OidFacade(oid);
         }
 
         public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
@@ -144,7 +144,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 throw new ObjectResourceNotFoundNOSException(id.ToString());
             }
 
-            return new OidWrapper(adapter.Oid);
+            return new OidFacade(adapter.Oid);
 
         }
 
@@ -166,7 +166,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
 
-            return new OidWrapper(service.Oid);
+            return new OidFacade(service.Oid);
         }
 
         #endregion

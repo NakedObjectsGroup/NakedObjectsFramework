@@ -9,12 +9,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 using sdm.systems.application.container;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class TypeFacade : ITypeFacade {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;

@@ -21,19 +21,19 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Nof4;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly INakedObjectsFramework framework;
+        private readonly IMessageBrokerSurface messageBroker;
         private readonly IOidStrategy oidStrategy;
         private readonly IOidTranslator oidTranslator;
-        private readonly IMessageBrokerSurface messageBroker;
 
         public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
@@ -41,6 +41,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             this.oidTranslator = oidTranslator;
             this.framework = framework;
             messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
+        }
+
+        /// <summary>
+        ///  mainly for testing
+        /// </summary>
+        public INakedObjectsFramework Framework {
+            get { return framework; }
         }
 
         #region IFrameworkFacade Members
@@ -74,8 +81,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => framework.Session.Principal);
         }
 
-        public IOidTranslator OidTranslator
-        {
+        public IOidTranslator OidTranslator {
             get { return oidTranslator; }
         }
 
@@ -85,13 +91,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public IMessageBrokerSurface MessageBroker {
             get { return messageBroker; }
-        }
-
-        /// <summary>
-        ///  mainly for testing
-        /// </summary>
-        public INakedObjectsFramework Framework {
-            get { return framework; }
         }
 
         public ITypeFacade[] GetDomainTypes() {
@@ -109,9 +108,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public IMenuFacade[] GetMainMenus() {
-          
             var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
-            return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenuFacade>().ToArray();
+            return menus.Select(m => new MenuFacade(m, this, framework)).Cast<IMenuFacade>().ToArray();
         }
 
         public ObjectContextSurface GetObject(IObjectFacade nakedObject) {
@@ -119,10 +117,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public ObjectContextSurface RefreshObject(IObjectFacade nakedObject, ArgumentsContext arguments) {
-            return MapErrors(() => RefreshObjectInternal(((ObjectFacade)nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
+            return MapErrors(() => RefreshObjectInternal(((ObjectFacade) nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
         }
-
-       
 
         public ITypeFacade GetDomainType(string typeName) {
             return MapErrors(() => GetSpecificationWrapper(GetDomainTypeInternal(typeName)));
@@ -177,9 +173,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-          
-
-
             if (value is string) {
                 adapter = s.GetFacet<IParseableFacet>().ParseTextEntry((string) value, Framework.NakedObjectManager);
             }
@@ -187,14 +180,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 adapter = Framework.GetNakedObject(value);
             }
 
-            return  ObjectFacade.Wrap(adapter, this, Framework);
+            return ObjectFacade.Wrap(adapter, this, Framework);
         }
 
         public IObjectFacade GetObject(object domainObject) {
             return ObjectFacade.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 
-       
         public ObjectContextSurface GetObject(IOidTranslation oid) {
             return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }
@@ -256,6 +248,17 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             });
         }
 
+        public object Wrap(object arm, IObjectFacade oldNakedObject) {
+            var no = ((ObjectFacade) oldNakedObject).WrappedNakedObject;
+            // var oid = framework.OidStrategy.GetOid(arm);
+            var noArm = framework.GetNakedObject(arm);
+            var currentMemento = (ICollectionMemento) no.Oid;
+            var newMemento = currentMemento.NewSelectionMemento(new object[] {}, false);
+            noArm.SetATransientOid(newMemento);
+
+            return noArm.Object;
+        }
+
         #endregion
 
         #region Helpers
@@ -289,7 +292,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public string GetObjectId(INakedObjectAdapter owner) {
-         
             string postFix = "";
 
             if (owner.Spec.IsCollection) {
@@ -302,16 +304,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return owner.Spec.ShortName + postFix;
         }
 
-
         public string GetInlineFieldId(IAssociationSpec parent, INakedObjectAdapter owner, IAssociationSpec assoc) {
-           
-
             return parent.Id + "-" + GetObjectId(owner) + "-" + assoc.Id;
         }
 
-
         public string GetFieldId(INakedObjectAdapter owner, IAssociationSpec assoc) {
-
             return GetObjectId(owner) + "-" + assoc.Id;
         }
 
@@ -320,8 +317,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private string GetFieldInputId(INakedObjectAdapter owner, IAssociationSpec assoc) {
-         
-
             return GetFieldId(owner, assoc) + "-" + InputOrSelect(assoc.ReturnSpec);
         }
 
@@ -335,7 +330,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         // endremove
 
-        private ObjectContext 
+        private ObjectContext
             RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContext arguments, IAssociationSpec parent = null) {
             var oc = new ObjectContext(nakedObject);
 
@@ -344,7 +339,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => !p.IsReadOnly)) {
                     var key = GetFieldInputId(parent, nakedObject, assoc);
                     if (arguments.Values.ContainsKey(key)) {
-
                         object newValue = ((string[]) arguments.Values[key]).First();
 
                         if (assoc.ReturnSpec.IsParseable) {
@@ -368,10 +362,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
 
                 foreach (IOneToManyAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.OfType<IOneToManyAssociationSpec>()) {
-                   string name = GetCollectionItemId(nakedObject, assoc);
+                    string name = GetCollectionItemId(nakedObject, assoc);
 
                     if (arguments.Values.ContainsKey(name)) {
-
                         var items = arguments.Values[name] as string[];
 
                         if (items != null && assoc.Count(nakedObject) == 0) {
@@ -383,8 +376,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
 
                 foreach (IAssociationSpec assoc in (nakedObject.GetObjectSpec()).Properties.Where(p => p.IsInline)) {
-                  
-                    
                     var inlineNakedObject = assoc.GetNakedObject(nakedObject);
                     RefreshObjectInternal(inlineNakedObject, arguments, assoc);
                 }
@@ -392,7 +383,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             return oc;
         }
-
 
         private PropertyContext GetProperty(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
             IAssociationSpec property = GetPropertyInternal(nakedObject, propertyName, onlyVisible);
@@ -502,7 +492,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new Allow();
         }
 
-
         private PropertyContextSurface ChangeProperty(INakedObjectAdapter nakedObject, string propertyName, ArgumentContext argument) {
             ValidateConcurrency(nakedObject, argument.Digest);
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
@@ -541,7 +530,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private static void ValidateConcurrency(INakedObjectAdapter nakedObject, string digest) {
-            if (!string.IsNullOrEmpty(digest) && new VersionWrapper(nakedObject.Version).IsDifferent(digest)) {
+            if (!string.IsNullOrEmpty(digest) && new VersionFacade(nakedObject.Version).IsDifferent(digest)) {
                 throw new PreconditionFailedNOSException();
             }
         }
@@ -557,7 +546,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 // no matching property for argument - consider this a syntax error 
                 throw new BadRequestNOSException(e.Message);
             }
-
 
             var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
 
@@ -577,7 +565,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         }
                     }
 
-                    propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
+                    propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
                         Where(p => p.IsVisible(nakedObject)).
                         Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                 }
@@ -612,7 +600,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         else {
                             framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
                         }
-                        propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
+                        propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
                             Where(p => p.IsVisible(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
@@ -701,7 +689,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return isValid;
         }
 
-
         private bool ConsentHandler(IConsent consent, Context.Context context, Cause cause) {
             if (consent.IsVetoed) {
                 context.Reason = consent.Reason;
@@ -745,7 +732,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new Allow();
         }
 
-
         private INakedObjectAdapter GetValue(IObjectSpec specification, IObjectSpec elementSpec, object rawValue) {
             if (rawValue == null) {
                 return null;
@@ -753,7 +739,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             var fromStreamFacet = specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
-                var httpPostedFileBase = (HttpPostedFileBase)rawValue;
+                var httpPostedFileBase = (HttpPostedFileBase) rawValue;
                 return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, framework.NakedObjectManager);
             }
 
@@ -762,7 +748,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             if (elementSpec != null) {
-
                 if (elementSpec.IsParseable) {
                     var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.NakedObjectManager)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
@@ -773,7 +758,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     return collection;
                 }
             }
-
 
             return framework.NakedObjectManager.CreateAdapter(rawValue, null, null);
         }
@@ -805,7 +789,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
             return framework.NakedObjectManager.CreateAdapter(obj, null, null);
         }
-
 
         private INakedObjectAdapter GetServiceAsNakedObject(IOidTranslation serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
@@ -840,7 +823,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }).ToArray();
         }
 
-
         private Tuple<IActionSpec, string> GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
@@ -872,7 +854,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new Tuple<IActionSpec, string>(action, SurfaceUtils.GetOverloadedUId(action, nakedObject.Spec));
         }
 
-
         private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
             var actionAndUid = GetActionInternal(actionName, nakedObject);
 
@@ -888,7 +869,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return parm;
         }
 
-
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
             var actionAndUid = GetActionInternal(actionName, nakedObject);
             return new ActionContext {
@@ -898,7 +878,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 OverloadedUniqueId = actionAndUid.Item2
             };
         }
-
 
         private Tuple<ActionContext, ITypeSpec> GetActionTypeInternal(string typeName, string actionName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(actionName)) {
@@ -912,7 +891,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 Action = actionAndUid.Item1,
                 VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, spec, actionAndUid.Item2),
                 OverloadedUniqueId = actionAndUid.Item2
-
             };
 
             return new Tuple<ActionContext, ITypeSpec>(actionContext, spec);
@@ -936,7 +914,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private INakedObjectAdapter MakeTypedCollection(Type instanceType, IEnumerable<object> objects) {
-            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
             objects.Where(o => o != null).ForEach(o => typedCollection.Add(o));
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
@@ -946,7 +924,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var nakedObject = MakeTypedCollection(elementSpec.GetUnderlyingType(), domainCollection);
             return GetAction(actionName, nakedObject);
         }
-
 
         private ActionContext GetInvokeActionOnObject(IOidTranslation objectId, string actionName) {
             INakedObjectAdapter nakedObject = GetObjectAsNakedObject(objectId);
@@ -958,7 +935,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return GetAction(actionName, nakedObject);
         }
 
-
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject) {
             if (nakedObject == null) {
                 return null;
@@ -966,7 +942,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
             var objectSpec = nakedObject.Spec as IObjectSpec;
-            IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] { } : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
+            IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
@@ -982,7 +958,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             };
         }
 
-
         private ObjectContext GetObjectInternal(IOidTranslation oid) {
             INakedObjectAdapter nakedObject = GetObjectAsNakedObject(oid);
             return GetObjectContext(nakedObject);
@@ -992,8 +967,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             INakedObjectAdapter nakedObject = GetServiceAsNakedObject(serviceName);
             return GetObjectContext(nakedObject);
         }
-
-    
 
         private ITypeSpec GetDomainTypeInternal(string domainTypeId) {
             try {
@@ -1005,7 +978,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
         }
 
-
         private ObjectContextSurface CreateObject(string typeName, ArgumentsContext arguments) {
             if (string.IsNullOrWhiteSpace(typeName)) {
                 throw new BadRequestNOSException();
@@ -1016,7 +988,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             return SetObject(nakedObject, arguments);
         }
-
 
         private ITypeFacade GetSpecificationWrapper(ITypeSpec spec) {
             return new TypeFacade(spec, this, framework);
@@ -1114,7 +1085,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     return ep.Item2.IsParseable ? "" : null;
                 };
 
-
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
                     value = getValue(ep),
@@ -1180,16 +1150,5 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         #endregion
-
-        public object Wrap(object arm, IObjectFacade oldNakedObject) {
-            var no = ((ObjectFacade)oldNakedObject).WrappedNakedObject;
-            // var oid = framework.OidStrategy.GetOid(arm);
-            var noArm = framework.GetNakedObject(arm);
-            var currentMemento = (ICollectionMemento)no.Oid;
-            var newMemento = currentMemento.NewSelectionMemento(new object[] { }, false);
-            noArm.SetATransientOid(newMemento);
-
-            return noArm.Object;
-        }
     }
 }

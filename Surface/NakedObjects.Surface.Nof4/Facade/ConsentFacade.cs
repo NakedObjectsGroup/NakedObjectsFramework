@@ -7,14 +7,13 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Nof4.Utility;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class ConsentWrapper : IConsentFacade {
+namespace NakedObjects.Facade.Nof4 {
+    public class ConsentFacade : IConsentFacade {
         private readonly IConsent consent;
 
-        public ConsentWrapper(IConsent consent) {
+        public ConsentFacade(IConsent consent) {
             SurfaceUtils.AssertNotNull(consent, "Consent is null");
             this.consent = consent;
         }
@@ -40,14 +39,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var consentWrapper = obj as ConsentWrapper;
+            var consentWrapper = obj as ConsentFacade;
             if (consentWrapper != null) {
                 return Equals(consentWrapper);
             }
             return false;
         }
 
-        public bool Equals(ConsentWrapper other) {
+        public bool Equals(ConsentFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.consent, consent);

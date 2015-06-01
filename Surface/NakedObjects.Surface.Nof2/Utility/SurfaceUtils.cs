@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof2.Context;
-using NakedObjects.Surface.Nof2.Wrapper;
+using NakedObjects.Facade.Nof2;
 using org.nakedobjects.@object;
 using sdm.systems.application;
 using sdm.systems.application.objectstore;

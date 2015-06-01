@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Facade;
 using NakedObjects.Surface.Nof2.Implementation;
-using NakedObjects.Surface.Nof2.Wrapper;
+using NakedObjects.Facade.Nof2;
 using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;

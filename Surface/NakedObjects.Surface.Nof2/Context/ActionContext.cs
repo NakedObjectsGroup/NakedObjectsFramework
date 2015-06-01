@@ -4,7 +4,7 @@
 using System.Linq;
 using NakedObjects.Facade;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Nof2.Wrapper;
+using NakedObjects.Facade.Nof2;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Context {

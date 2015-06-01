@@ -1,18 +1,21 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
+using NakedObjects.Facade.Nof2;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof2.Context;
 using NakedObjects.Surface.Nof2.Utility;
-using NakedObjects.Surface.Nof2.Wrapper;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 using org.nakedobjects.@object.reflect;
@@ -23,7 +26,6 @@ using User = org.nakedobjects.application.control.User;
 namespace NakedObjects.Surface.Nof2.Implementation {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly IOidStrategy oidStrategy;
-
 
         public FrameworkFacade(IOidStrategy oidStrategy) {
             oidStrategy.Surface = this;
@@ -37,6 +39,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
         public IOidStrategy OidStrategy {
             get { return oidStrategy; }
         }
+
         public IMessageBrokerSurface MessageBroker { get; private set; }
 
         public void Start() {
@@ -55,9 +58,9 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public IPrincipal GetUser() {
             return MapErrors(() => {
-                                 string userName = org.nakedobjects.@object.NakedObjects.getCurrentSession().getUserName();
-                                 return new GenericPrincipal(new GenericIdentity(userName), new string[] {});
-                             });
+                string userName = org.nakedobjects.@object.NakedObjects.getCurrentSession().getUserName();
+                return new GenericPrincipal(new GenericIdentity(userName), new string[] {});
+            });
         }
 
         public ObjectContextSurface GetService(IOidTranslation serviceName) {
@@ -94,9 +97,9 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public PropertyContextSurface GetProperty(IOidTranslation oid, string propertyName) {
             return MapErrors(() => {
-                                 PropertyContext pc = GetProperty(GetObjectAsNakedObject(oid), propertyName);
-                                 return new PropertyContextSurface {Target = new ObjectFacade(pc.Target, this), Property = new AssociationFacade(pc.Property, pc.Target, this)};
-                             });
+                PropertyContext pc = GetProperty(GetObjectAsNakedObject(oid), propertyName);
+                return new PropertyContextSurface {Target = new ObjectFacade(pc.Target, this), Property = new AssociationFacade(pc.Property, pc.Target, this)};
+            });
         }
 
         public ListContextSurface GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContext arguments) {
@@ -113,25 +116,24 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public ActionContextSurface GetServiceAction(IOidTranslation serviceName, string actionName) {
             return MapErrors(() => {
-                                 if (string.IsNullOrEmpty(actionName.Trim())) {
-                                     throw new BadRequestNOSException();
-                                 }
+                if (string.IsNullOrEmpty(actionName.Trim())) {
+                    throw new BadRequestNOSException();
+                }
 
-                                 NakedObject nakedObject = GetServiceAsNakedObject(serviceName);
-                                 return GetAction(actionName, nakedObject).ToActionContextSurface(this);
-                             });
+                NakedObject nakedObject = GetServiceAsNakedObject(serviceName);
+                return GetAction(actionName, nakedObject).ToActionContextSurface(this);
+            });
         }
-
 
         public ActionContextSurface GetObjectAction(IOidTranslation objectId, string actionName) {
             return MapErrors(() => {
-                                 if (string.IsNullOrEmpty(actionName.Trim())) {
-                                     throw new BadRequestNOSException();
-                                 }
+                if (string.IsNullOrEmpty(actionName.Trim())) {
+                    throw new BadRequestNOSException();
+                }
 
-                                 NakedObject nakedObject = GetObjectAsNakedObject(objectId);
-                                 return GetAction(actionName, nakedObject).ToActionContextSurface(this);
-                             });
+                NakedObject nakedObject = GetObjectAsNakedObject(objectId);
+                return GetAction(actionName, nakedObject).ToActionContextSurface(this);
+            });
         }
 
         public PropertyContextSurface PutProperty(IOidTranslation objectId, string propertyName, ArgumentContext argument) {
@@ -148,18 +150,18 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public PropertyContextSurface AddToCollection(IOidTranslation objectId, string propertyName, ArgumentContext argument) {
             return MapErrors(() => {
-                                 PropertyContext context = SetupPropertyContext(GetObjectAsNakedObject(objectId), propertyName, argument.Value);
-                                 var property = (OneToManyAssociation) context.Property;
-                                 return ChangeCollection(context, property.validToAdd, property.addElement, argument);
-                             });
+                PropertyContext context = SetupPropertyContext(GetObjectAsNakedObject(objectId), propertyName, argument.Value);
+                var property = (OneToManyAssociation) context.Property;
+                return ChangeCollection(context, property.validToAdd, property.addElement, argument);
+            });
         }
 
         public PropertyContextSurface DeleteFromCollection(IOidTranslation objectId, string propertyName, ArgumentContext argument) {
             return MapErrors(() => {
-                                 PropertyContext context = SetupPropertyContext(GetObjectAsNakedObject(objectId), propertyName, argument.Value);
-                                 var property = (OneToManyAssociation) context.Property;
-                                 return ChangeCollection(context, property.validToRemove, property.removeElement, argument);
-                             });
+                PropertyContext context = SetupPropertyContext(GetObjectAsNakedObject(objectId), propertyName, argument.Value);
+                var property = (OneToManyAssociation) context.Property;
+                return ChangeCollection(context, property.validToRemove, property.removeElement, argument);
+            });
         }
 
         public ObjectContextSurface GetImage(string imageId) {
@@ -172,46 +174,46 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public ITypeFacade GetDomainType(string typeName) {
             return MapErrors(() => {
-                                 NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeName);
-                                 if (spec is NoMemberSpecification) {
-                                     throw new TypeResourceNotFoundNOSException(typeName);
-                                 }
-                                 return new TypeFacade(spec, null, this);
-                             });
+                NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeName);
+                if (spec is NoMemberSpecification) {
+                    throw new TypeResourceNotFoundNOSException(typeName);
+                }
+                return new TypeFacade(spec, null, this);
+            });
         }
 
         public PropertyTypeContextSurface GetPropertyType(string typeName, string propertyName) {
             return MapErrors(() => {
-                                 Tuple<NakedObjectField, NakedObjectSpecification> pc = GetPropertyTypeInternal(typeName, propertyName);
+                Tuple<NakedObjectField, NakedObjectSpecification> pc = GetPropertyTypeInternal(typeName, propertyName);
 
-                                 return new PropertyTypeContextSurface {
-                                                                           Property = new AssociationFacade(pc.Item1, null, this),
-                                                                           OwningSpecification = new TypeFacade(pc.Item2, null, this)
-                                                                       };
-                             });
+                return new PropertyTypeContextSurface {
+                    Property = new AssociationFacade(pc.Item1, null, this),
+                    OwningSpecification = new TypeFacade(pc.Item2, null, this)
+                };
+            });
         }
 
         public ActionTypeContextSurface GetActionType(string typeName, string actionName) {
             return MapErrors(() => {
-                                 Tuple<ActionContext, NakedObjectSpecification> pc = GetActionTypeInternal(typeName, actionName);
+                Tuple<ActionContext, NakedObjectSpecification> pc = GetActionTypeInternal(typeName, actionName);
 
-                                 return new ActionTypeContextSurface {
-                                                                         ActionContext = pc.Item1.ToActionContextSurface(this),
-                                                                         OwningSpecification = new TypeFacade(pc.Item2, null, this)
-                                                                     };
-                             });
+                return new ActionTypeContextSurface {
+                    ActionContext = pc.Item1.ToActionContextSurface(this),
+                    OwningSpecification = new TypeFacade(pc.Item2, null, this)
+                };
+            });
         }
 
         public ParameterTypeContextSurface GetActionParameterType(string typeName, string actionName, string parmName) {
             return MapErrors(() => {
-                                 Tuple<ActionWrapper, NakedObjectSpecification, NakedObjectActionParameter> pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
+                Tuple<ActionWrapper, NakedObjectSpecification, NakedObjectActionParameter> pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
 
-                                 return new ParameterTypeContextSurface {
-                                                                            Action = new ActionFacade(pc.Item1, null, this),
-                                                                            OwningSpecification = new TypeFacade(pc.Item2, null, this),
-                                                                            Parameter = new ActionParameterFacade(pc.Item3, null, this)
-                                                                        };
-                             });
+                return new ParameterTypeContextSurface {
+                    Action = new ActionFacade(pc.Item1, null, this),
+                    OwningSpecification = new TypeFacade(pc.Item2, null, this),
+                    Parameter = new ActionParameterFacade(pc.Item3, null, this)
+                };
+            });
         }
 
         public ObjectContextSurface Persist(string typeName, ArgumentsContext arguments) {
@@ -237,16 +239,16 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
         public ActionResultContextSurface ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
-                                 ActionContext actionContext = GetInvokeActionOnObject(objectId, actionName);
-                                 return ExecuteAction(actionContext, arguments);
-                             });
+                ActionContext actionContext = GetInvokeActionOnObject(objectId, actionName);
+                return ExecuteAction(actionContext, arguments);
+            });
         }
 
         public ActionResultContextSurface ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
-                                 ActionContext actionContext = GetInvokeActionOnService(serviceName, actionName);
-                                 return ExecuteAction(actionContext, arguments);
-                             });
+                ActionContext actionContext = GetInvokeActionOnService(serviceName, actionName);
+                return ExecuteAction(actionContext, arguments);
+            });
         }
 
         #endregion
@@ -307,10 +309,8 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                 }
             }
 
-
             return isValid;
         }
-
 
         private static Consent IsCurrentlyImmutable(NakedObject target) {
             if (target.persistable() == Persistable.IMMUTABLE) {
@@ -395,21 +395,20 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                 IEnumerable<ActionWrapper> actions = nakedObject.getSpecification().GetActionLeafNodes().Where(p => p.isVisible(nakedObject).isAllowed());
                 IEnumerable<NakedObjectField> properties = nakedObject.getSpecification().getFields().Where(p => !p.isHidden() && p.isVisible(nakedObject).isAllowed());
                 return new ObjectContext(nakedObject) {
-                                                          VisibleActions = actions.Select(a => new ActionContext {
-                                                                                                                     Action = a,
-                                                                                                                     Target = nakedObject,
-                                                                                                                     VisibleParameters = GetContextParms(a, nakedObject)
-                                                                                                                 }).ToArray(),
-                                                          VisibleProperties = properties.Select(p => new PropertyContext {
-                                                                                                                             Property = p,
-                                                                                                                             Target = nakedObject
-                                                                                                                         }).ToArray()
-                                                      };
+                    VisibleActions = actions.Select(a => new ActionContext {
+                        Action = a,
+                        Target = nakedObject,
+                        VisibleParameters = GetContextParms(a, nakedObject)
+                    }).ToArray(),
+                    VisibleProperties = properties.Select(p => new PropertyContext {
+                        Property = p,
+                        Target = nakedObject
+                    }).ToArray()
+                };
             }
 
             return new ObjectContext(naked);
         }
-
 
         private ObjectContext GetObjectInternal(IOidTranslation oid) {
             NakedObject nakedObject = GetObjectAsNakedObject(oid);
@@ -434,7 +433,6 @@ namespace NakedObjects.Surface.Nof2.Implementation {
         private Consent IsOfCorrectType(OneToManyAssociation property, PropertyContext context) {
             var collectionNakedObject = (InternalCollectionAdapter) property.get(context.Target);
             NakedObjectSpecification elementSpec = collectionNakedObject.getElementSpecification();
-
 
             if (context.ProposedNakedObject.getSpecification().isOfType(elementSpec)) {
                 return new Allow();
@@ -512,7 +510,6 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             m.Invoke(valueHolder, new object[] {});
         }
 
-
         private void SetAssociation(OneToOneAssociation property, NakedObject target, Naked proposed) {
             if (proposed is NakedObject) {
                 property.setAssociation(target, (NakedObject) proposed);
@@ -539,7 +536,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
         }
 
         private static void ValidateConcurrency(NakedObject nakedObject, string digest) {
-            if (!string.IsNullOrEmpty(digest) && new VersionWrapper(nakedObject.getVersion()).IsDifferent(digest)) {
+            if (!string.IsNullOrEmpty(digest) && new VersionFacade(nakedObject.getVersion()).IsDifferent(digest)) {
                 throw new PreconditionFailedNOSException();
             }
         }
@@ -555,7 +552,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                 // no matching property for argument - consider this a syntax error 
                 throw new BadRequestNOSException(e.Message);
             }
-                      
+
             var objectContext = new ObjectContext(pc.First().Target) {VisibleProperties = pc};
 
             // if we fail we need to display passed in properties - if OK all visible
@@ -606,7 +603,6 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             oc.VisibleProperties = propertiesToDisplay;
             return oc.ToObjectContextSurface(this);
         }
-
 
         private PropertyContextSurface ChangeProperty(NakedObject nakedObject, string propertyName, ArgumentContext argument) {
             ValidateConcurrency(nakedObject, argument.Digest);
@@ -682,9 +678,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                 fields = fields.Where(p => !p.isHidden() && p.isVisible(nakedObject).isAllowed());
             }
 
-
             NakedObjectField property = fields.SingleOrDefault(p => p.getId() == nof2Id);
-
 
             if (property == null) {
                 throw new PropertyResourceNotFoundNOSException(propertyName);
@@ -696,7 +690,6 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
             return new PropertyContext {Target = nakedObject, Property = property};
         }
-
 
         private Tuple<NakedObjectField, NakedObjectSpecification> GetPropertyTypeInternal(string typeName, string propertyName) {
             if (string.IsNullOrEmpty(typeName.Trim()) || string.IsNullOrEmpty(propertyName.Trim())) {

@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Facade;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class MenuActionWrapper : IMenuActionFacade, IMenuItemFacade {
-        public MenuActionWrapper(IMenuActionImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
+namespace NakedObjects.Facade.Nof4 {
+    public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {
+        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;

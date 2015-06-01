@@ -5,17 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Facade;
-using NakedObjects.Surface.Nof4.Utility;
+using org.nakedobjects.@object;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class OidWrapper : IOidFacade {
-        private readonly IOid oid;
+namespace NakedObjects.Facade.Nof2 {
+    public class OidFacade : IOidFacade {
+        private readonly Oid oid;
 
-        public OidWrapper(IOid oid) {
-            SurfaceUtils.AssertNotNull(oid, "Oid is null");
-
+        public OidFacade(Oid oid) {
             this.oid = oid;
         }
 
@@ -28,14 +24,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var oidWrapper = obj as OidWrapper;
+            var oidWrapper = obj as OidFacade;
             if (oidWrapper != null) {
                 return Equals(oidWrapper);
             }
             return false;
         }
 
-        public bool Equals(OidWrapper other) {
+        public bool Equals(OidFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.oid, oid);

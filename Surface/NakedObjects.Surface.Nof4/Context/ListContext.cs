@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
-using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Facade.Nof4;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ListContext {

@@ -8,12 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class AssociationFacade : IAssociationFacade {
         private readonly NakedObjectField assoc;
         private readonly Naked target;
@@ -143,7 +142,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public IConsentFacade IsUsable(IObjectFacade target) {
             Consent consent = assoc.isAvailable((NakedReference) ((ObjectFacade) target).NakedObject);
-            return new ConsentWrapper(consent);
+            return new ConsentFacade(consent);
         }
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {

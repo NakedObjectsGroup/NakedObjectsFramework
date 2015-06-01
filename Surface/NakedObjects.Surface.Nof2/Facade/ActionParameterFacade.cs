@@ -9,12 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof2.Context;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
+namespace NakedObjects.Facade.Nof2 {
     public class ActionParameterFacade : IActionParameterFacade {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;

@@ -15,12 +15,12 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
-using NakedObjects.Facade;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
+namespace NakedObjects.Facade.Nof4 {
     public class ObjectFacade : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 
@@ -140,11 +140,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IVersionFacade Version {
-            get { return new VersionWrapper(WrappedNakedObject.Version); }
+            get { return new VersionFacade(WrappedNakedObject.Version); }
         }
 
         public IOidFacade Oid {
-            get { return WrappedNakedObject.Oid == null ? null : new OidWrapper(WrappedNakedObject.Oid); }
+            get { return WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid); }
         }
 
         public IFrameworkFacade Surface { get; set; }

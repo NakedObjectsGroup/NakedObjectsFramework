@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Facade;
 using org.nakedobjects.@object.control;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class ConsentWrapper : IConsentFacade {
+namespace NakedObjects.Facade.Nof2 {
+    public class ConsentFacade : IConsentFacade {
         private readonly Consent consent;
 
-        public ConsentWrapper(Consent consent) {
+        public ConsentFacade(Consent consent) {
             this.consent = consent;
         }
 
@@ -38,14 +37,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var consentWrapper = obj as ConsentWrapper;
+            var consentWrapper = obj as ConsentFacade;
             if (consentWrapper != null) {
                 return Equals(consentWrapper);
             }
             return false;
         }
 
-        public bool Equals(ConsentWrapper other) {
+        public bool Equals(ConsentFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.consent, consent);

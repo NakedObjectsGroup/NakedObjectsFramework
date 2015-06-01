@@ -8,7 +8,7 @@
 using System.Linq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
-using NakedObjects.Surface.Nof4.Wrapper;
+using NakedObjects.Facade.Nof4;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ActionContext : Context {

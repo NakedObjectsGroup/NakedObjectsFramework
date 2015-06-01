@@ -10,11 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
+namespace NakedObjects.Facade.Nof4 {
     public class ActionFacade : IActionFacade {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
@@ -120,7 +119,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IConsentFacade IsUsable(IObjectFacade nakedObject) {
-            return new ConsentWrapper(action.IsUsable(((ObjectFacade) nakedObject).WrappedNakedObject));
+            return new ConsentFacade(action.IsUsable(((ObjectFacade) nakedObject).WrappedNakedObject));
         }
 
         public ITypeFacade OnType {

@@ -9,15 +9,14 @@ using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using NakedObjects.Facade;
 using Version = org.nakedobjects.@object.Version;
 
-namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class VersionWrapper : IVersionFacade {
+namespace NakedObjects.Facade.Nof2 {
+    public class VersionFacade : IVersionFacade {
         private static readonly MD5CryptoServiceProvider MD5CryptoServiceProvider = new MD5CryptoServiceProvider();
         private readonly Version version;
 
-        public VersionWrapper(Version version) {
+        public VersionFacade(Version version) {
             this.version = version;
         }
 

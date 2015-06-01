@@ -15,12 +15,11 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
-using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
-namespace NakedObjects.Surface.Nof4.Wrapper {
+namespace NakedObjects.Facade.Nof4 {
     public class ActionParameterFacade : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
         private readonly IActionParameterSpec nakedObjectActionParameter;
@@ -170,7 +169,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 consent = new Veto(e.Message); // todo i18n
             }
 
-            return new ConsentWrapper(consent);
+            return new ConsentFacade(consent);
         }
 
         public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
