@@ -32,7 +32,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public ActionContextSurface ToActionContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
             var ac = new ActionContextSurface {
-                Action = new ActionWrapper(Action, surface, framework, OverloadedUniqueId ?? ""),
+                Action = new ActionFacade(Action, surface, framework, OverloadedUniqueId ?? ""),
                 VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface, framework)).ToArray()
             };
             return ToContextSurface(ac, surface, framework);

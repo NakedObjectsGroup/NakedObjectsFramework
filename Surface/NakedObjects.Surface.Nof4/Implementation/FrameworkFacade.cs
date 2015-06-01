@@ -114,11 +114,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public ObjectContextSurface GetObject(IObjectFacade nakedObject) {
-            return MapErrors(() => GetObjectContext(((NakedObjectWrapper) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
+            return MapErrors(() => GetObjectContext(((ObjectFacade) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
         }
 
         public ObjectContextSurface RefreshObject(IObjectFacade nakedObject, ArgumentsContext arguments) {
-            return MapErrors(() => RefreshObjectInternal(((NakedObjectWrapper)nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
+            return MapErrors(() => RefreshObjectInternal(((ObjectFacade)nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
         }
 
        
@@ -132,7 +132,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 Tuple<IAssociationSpec, IObjectSpec> pc = GetPropertyTypeInternal(typeName, propertyName);
 
                 return new PropertyTypeContextSurface {
-                    Property = new AssociationWrapper(pc.Item1, this, framework),
+                    Property = new AssociationFacade(pc.Item1, this, framework),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2)
                 };
             });
@@ -153,9 +153,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
 
                 return new ParameterTypeContextSurface {
-                    Action = new ActionWrapper(pc.Item1, this, framework, pc.Item4 ?? ""),
+                    Action = new ActionFacade(pc.Item1, this, framework, pc.Item4 ?? ""),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2),
-                    Parameter = new ActionParameterWrapper(pc.Item3, this, framework, pc.Item4 ?? "")
+                    Parameter = new ActionParameterFacade(pc.Item3, this, framework, pc.Item4 ?? "")
                 };
             });
         }
@@ -186,11 +186,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 adapter = Framework.GetNakedObject(value);
             }
 
-            return  NakedObjectWrapper.Wrap(adapter, this, Framework);
+            return  ObjectFacade.Wrap(adapter, this, Framework);
         }
 
         public IObjectFacade GetObject(object domainObject) {
-            return NakedObjectWrapper.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
+            return ObjectFacade.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 
        
@@ -1181,7 +1181,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         #endregion
 
         public object Wrap(object arm, IObjectFacade oldNakedObject) {
-            var no = ((NakedObjectWrapper)oldNakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade)oldNakedObject).WrappedNakedObject;
             // var oid = framework.OidStrategy.GetOid(arm);
             var noArm = framework.GetNakedObject(arm);
             var currentMemento = (ICollectionMemento)no.Oid;

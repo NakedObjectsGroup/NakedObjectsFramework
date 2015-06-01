@@ -14,10 +14,10 @@ using org.nakedobjects.@object;
 using sdm.systems.reflector;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectWrapper : IObjectFacade {
+    public class ObjectFacade : IObjectFacade {
         private readonly Naked nakedObject;
 
-        public NakedObjectWrapper(Naked nakedObject, IFrameworkFacade surface) {
+        public ObjectFacade(Naked nakedObject, IFrameworkFacade surface) {
             this.nakedObject = nakedObject;
             Surface = surface;
         }
@@ -57,11 +57,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public IDictionary<string, object> ExtensionData { get; private set; }
 
         public IEnumerable<IObjectFacade> ToEnumerable() {
-            return ((IEnumerable) Object).Cast<object>().Select(o => new NakedObjectWrapper(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), Surface));
+            return ((IEnumerable) Object).Cast<object>().Select(o => new ObjectFacade(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), Surface));
         }
 
         public IObjectFacade Page(int page, int size) {
-            return new NakedObjectWrapper(nakedObject, Surface);
+            return new ObjectFacade(nakedObject, Surface);
         }
 
         public IObjectFacade Select(object[] selection, bool forceEnumerable) {
@@ -91,10 +91,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public void SetIsNotQueryableState(bool state) {
             throw new NotImplementedException();
-        }
-
-        public T GetDomainObject<T>() {
-            return (T) Object;
         }
 
         public PropertyInfo[] GetKeys() {
@@ -134,15 +130,19 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #endregion
 
+        public T GetDomainObject<T>() {
+            return (T) Object;
+        }
+
         public override bool Equals(object obj) {
-            var nakedObjectWrapper = obj as NakedObjectWrapper;
+            var nakedObjectWrapper = obj as ObjectFacade;
             if (nakedObjectWrapper != null) {
                 return Equals(nakedObjectWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectWrapper other) {
+        public bool Equals(ObjectFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObject, nakedObject);

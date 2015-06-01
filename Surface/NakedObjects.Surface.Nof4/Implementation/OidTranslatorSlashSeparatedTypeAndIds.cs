@@ -38,7 +38,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
             if (nakedObject.IsViewModel) {
-                var vm = ((NakedObjectWrapper)nakedObject).WrappedNakedObject;
+                var vm = ((ObjectFacade)nakedObject).WrappedNakedObject;
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
@@ -64,7 +64,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((NakedObjectWrapper)nakedObjectForKey).WrappedNakedObject;
+            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade)nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);

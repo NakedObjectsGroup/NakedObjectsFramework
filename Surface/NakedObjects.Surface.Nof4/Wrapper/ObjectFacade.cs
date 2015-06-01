@@ -20,10 +20,10 @@ using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectWrapper : IObjectFacade {
+    public class ObjectFacade : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 
-        protected NakedObjectWrapper(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -73,7 +73,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-
         public ITypeFacade Specification {
             get { return new TypeFacade(WrappedNakedObject.Spec, Surface, framework); }
         }
@@ -92,17 +91,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<IObjectFacade> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new NakedObjectWrapper(no, Surface, framework));
+            return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, Surface, framework));
         }
 
         // todo move into adapterutils
 
         public IObjectFacade Page(int page, int size) {
-            return new NakedObjectWrapper(Page(WrappedNakedObject, page, size), Surface, framework);
+            return new ObjectFacade(Page(WrappedNakedObject, page, size), Surface, framework);
         }
 
         public IObjectFacade Select(object[] selection, bool forceEnumerable) {
-            return new NakedObjectWrapper(Select(WrappedNakedObject, selection, forceEnumerable), Surface, framework);
+            return new ObjectFacade(Select(WrappedNakedObject, selection, forceEnumerable), Surface, framework);
         }
 
         public int Count() {
@@ -171,7 +170,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IActionFacade MementoAction {
             get {
                 var mementoOid = WrappedNakedObject.Oid as ICollectionMemento;
-                return mementoOid == null ? null : new ActionWrapper(mementoOid.Action, Surface, framework, "");
+                return mementoOid == null ? null : new ActionFacade(mementoOid.Action, Surface, framework, "");
             }
         }
 
@@ -215,8 +214,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        public static NakedObjectWrapper Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
-            return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface, framework);
+        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
+            return nakedObject == null ? null : new ObjectFacade(nakedObject, surface, framework);
         }
 
         private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) {
@@ -247,14 +246,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectWrapper = obj as NakedObjectWrapper;
+            var nakedObjectWrapper = obj as ObjectFacade;
             if (nakedObjectWrapper != null) {
                 return Equals(nakedObjectWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectWrapper other) {
+        public bool Equals(ObjectFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.WrappedNakedObject, WrappedNakedObject);

@@ -9,7 +9,6 @@ using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuItemWrapper : IMenuItemFacade {
-
         public MenuItemWrapper(IMenuItemImmutable wrapped) {
             Wrapped = wrapped;
             Name = wrapped.Name;

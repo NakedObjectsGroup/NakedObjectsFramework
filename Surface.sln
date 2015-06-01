@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface.Nof4", "Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj", "{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface", "Surface\NakedObjects.Surface\NakedObjects.Surface.csproj", "{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}"
@@ -17,10 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7501EC
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface.Nof2", "Surface\NakedObjects.Surface.Nof2\NakedObjects.Surface.Nof2.csproj", "{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = development.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -44,8 +45,19 @@ Global
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|x86.ActiveCfg = Release|x86
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|x86.Build.0 = Release|x86
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|x86.ActiveCfg = Debug|x86
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|x86.Build.0 = Debug|x86
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Release|x86.ActiveCfg = Release|x86
+		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = development.vsmdi
 	EndGlobalSection
 EndGlobal

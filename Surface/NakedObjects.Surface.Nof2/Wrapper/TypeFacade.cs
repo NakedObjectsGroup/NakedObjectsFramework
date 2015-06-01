@@ -1,19 +1,20 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 using sdm.systems.application.container;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class TypeFacade :  ITypeFacade {
+    public class TypeFacade : ITypeFacade {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;
 
@@ -21,6 +22,19 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             this.spec = spec;
             this.target = target;
             Surface = surface;
+        }
+
+        protected bool IsASet {
+            get { return false; }
+        }
+
+        public ITypeFacade ElementType {
+            get {
+                if (IsCollection) {
+                    return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface);
+                }
+                return null;
+            }
         }
 
         #region ITypeFacade Members
@@ -72,10 +86,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return spec.isObject(); }
         }
 
-        protected bool IsASet {
-            get { return false; }
-        }
-
         public bool IsAggregated { get; private set; }
         public bool IsImage { get; private set; }
         public bool IsFileAttachment { get; private set; }
@@ -85,7 +95,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsEnum { get; private set; }
 
         public IAssociationFacade[] Properties {
-            get { return spec.getFields().Select(p => new AssociationWrapper(p, target, Surface)).Cast<IAssociationFacade>().OrderBy(a => a.Id).ToArray(); }
+            get { return spec.getFields().Select(p => new AssociationFacade(p, target, Surface)).Cast<IAssociationFacade>().OrderBy(a => a.Id).ToArray(); }
         }
 
         public IMenuFacade Menu { get; private set; }
@@ -118,21 +128,12 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public string GetIconName(IObjectFacade nakedObject) {
-            string iconName = nakedObject == null ? "" : ((NakedReference) ((NakedObjectWrapper) nakedObject).NakedObject).getIconName();
+            string iconName = nakedObject == null ? "" : ((NakedReference) ((ObjectFacade) nakedObject).NakedObject).getIconName();
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
 
         public IActionFacade[] GetActionLeafNodes() {
             return spec.GetActionLeafNodes().Select(a => new ActionFacade(a, target, Surface)).Cast<IActionFacade>().OrderBy(a => a.Id).ToArray();
-        }
-
-        public ITypeFacade ElementType {
-            get {
-                if (IsCollection) {
-                    return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface);
-                }
-                return null;
-            }
         }
 
         public bool IsOfType(ITypeFacade otherSpec) {
@@ -153,11 +154,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             throw new NotImplementedException();
         }
 
-        #endregion
-
         public bool Equals(ITypeFacade other) {
             throw new NotImplementedException();
         }
+
+        public IFrameworkFacade Surface { get; set; }
+
+        #endregion
 
         public override bool Equals(object obj) {
             var nakedObjectSpecificationWrapper = obj as TypeFacade;
@@ -168,18 +171,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public bool Equals(TypeFacade other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.spec, spec);
         }
 
         public override int GetHashCode() {
             return (spec != null ? spec.GetHashCode() : 0);
         }
-
-       
-
-
-        public IFrameworkFacade Surface { get; set; }
     }
 }

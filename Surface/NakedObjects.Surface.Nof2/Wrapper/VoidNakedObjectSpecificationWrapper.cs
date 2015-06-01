@@ -1,13 +1,22 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class VoidNakedObjectSpecificationWrapper :  ITypeFacade {
+    public class VoidTypeFacade : ITypeFacade {
+        public ITypeFacade ElementType {
+            get { return null; }
+        }
+
+        #region ITypeFacade Members
+
         public bool IsComplexType { get; private set; }
 
         public bool IsParseable {
@@ -71,8 +80,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsBoolean { get; private set; }
         public bool IsEnum { get; private set; }
 
-        #region ITypeFacade Members
-
         public IAssociationFacade[] Properties {
             get { return new IAssociationFacade[] {}; }
         }
@@ -98,10 +105,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new IActionFacade[] {};
         }
 
-        public ITypeFacade ElementType {
-            get { return null; }
-        }
-
         public bool IsOfType(ITypeFacade otherSpec) {
             return false;
         }
@@ -118,14 +121,16 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             throw new NotImplementedException();
         }
 
-        #endregion
-
         public bool Equals(ITypeFacade other) {
             throw new NotImplementedException();
         }
 
+        public IFrameworkFacade Surface { get; set; }
+
+        #endregion
+
         public override bool Equals(object obj) {
-            var nakedObjectSpecificationWrapper = obj as VoidNakedObjectSpecificationWrapper;
+            var nakedObjectSpecificationWrapper = obj as VoidTypeFacade;
             if (nakedObjectSpecificationWrapper != null) {
                 return true;
             }
@@ -135,9 +140,5 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public override int GetHashCode() {
             return (GetType().GetHashCode());
         }
-
-       
-
-        public IFrameworkFacade Surface { get; set; }
     }
 }

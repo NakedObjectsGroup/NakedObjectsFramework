@@ -219,7 +219,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
                 IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-                fieldId = GetInlineFieldInputId(new AssociationWrapper(parent, null, null), nakedObjectSurface, propertyFacade);
+                fieldId = GetInlineFieldInputId(new AssociationFacade(parent, null, null), nakedObjectSurface, propertyFacade);
             }
             else {
                 fieldId = GetFieldInputId(nakedObjectSurface, propertyFacade);

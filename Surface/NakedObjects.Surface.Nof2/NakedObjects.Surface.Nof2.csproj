@@ -108,12 +108,12 @@
     <Compile Include="Utility\SurfaceUtils.cs" />
     <Compile Include="Wrapper\ActionWrapper.cs" />
     <Compile Include="Wrapper\ConsentWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />
-    <Compile Include="Wrapper\ActionParameterWrapper.cs" />
-    <Compile Include="Wrapper\AssociationWrapper.cs" />
+    <Compile Include="Wrapper\ActionFacade.cs" />
+    <Compile Include="Wrapper\ActionParameterFacade.cs" />
+    <Compile Include="Wrapper\AssociationFacade.cs" />
     <Compile Include="Wrapper\TypeFacade.cs" />
     <Compile Include="Wrapper\OidWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectWrapper.cs" />
+    <Compile Include="Wrapper\ObjectFacade.cs" />
     <Compile Include="Wrapper\VersionWrapper.cs" />
     <Compile Include="Wrapper\VoidNakedObjectSpecificationWrapper.cs" />
   </ItemGroup>

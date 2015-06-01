@@ -54,7 +54,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
 
             if (nakedObject.IsViewModel) {
-                var vm = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
+                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
                 lifecycleManager.PopulateViewModelKeys(vm);
             }
 

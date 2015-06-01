@@ -99,8 +99,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec.FullName; }
         }
 
-        public string ShortName
-        {
+        public string ShortName {
             get { return spec.ShortName; }
         }
 
@@ -153,7 +152,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IAssociationFacade[] Properties {
             get {
                 var objectSpec = spec as IObjectSpec;
-                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationWrapper(p, Surface, framework)).Cast<IAssociationFacade>().ToArray();
+                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationFacade(p, Surface, framework)).Cast<IAssociationFacade>().ToArray();
             }
         }
 
@@ -166,17 +165,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string GetIconName(IObjectFacade nakedObject) {
-            return spec.GetIconName(nakedObject == null ? null : ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return spec.GetIconName(nakedObject == null ? null : ((ObjectFacade) nakedObject).WrappedNakedObject);
         }
 
         public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = SurfaceUtils.GetActionsandUidFromSpec(spec);
-            return actionsAndUid.Select(a => new ActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
+            return actionsAndUid.Select(a => new ActionFacade(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade nakedObject) {
             if (IsCollection) {
-                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
+                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new TypeFacade(elementSpec, Surface, framework);
             }
@@ -194,7 +193,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IActionFacade[] GetCollectionContributedActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetCollectionContributedActions().Select(a => new ActionWrapper(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
             }
             return new IActionFacade[] {};
         }
@@ -202,7 +201,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IActionFacade[] GetFinderActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetFinderActions().Select(a => new ActionWrapper(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetFinderActions().Select(a => new ActionFacade(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
             }
             return new IActionFacade[] {};
         }

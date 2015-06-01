@@ -9,16 +9,15 @@ using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuActionWrapper : IMenuActionFacade, IMenuItemFacade {
-
         public MenuActionWrapper(IMenuActionImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;
             var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
-            Action = new ActionWrapper(action, surface, framework, "");
+            Action = new ActionFacade(action, surface, framework, "");
         }
 
-        #region IMenuAction Members
+        #region IMenuActionFacade Members
 
         public IActionFacade Action { get; private set; }
 

@@ -21,7 +21,7 @@ namespace NakedObjects.Surface.Nof2.Context {
 
         public PropertyContextSurface ToPropertyContextSurface(IFrameworkFacade surface) {
             var pc = new PropertyContextSurface {
-                                                    Property = new AssociationWrapper(Property, Target, surface),
+                                                    Property = new AssociationFacade(Property, Target, surface),
                                                     Mutated = Mutated,
                                                 };
 

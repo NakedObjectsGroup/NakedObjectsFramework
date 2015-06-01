@@ -13,11 +13,11 @@ using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class AssociationWrapper : IAssociationFacade {
+    public class AssociationFacade : IAssociationFacade {
         private readonly NakedObjectField assoc;
         private readonly Naked target;
 
-        public AssociationWrapper(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
+        public AssociationFacade(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
             this.assoc = assoc;
             this.target = target;
             Surface = surface;
@@ -141,17 +141,17 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public IConsentSurface IsUsable(IObjectFacade target) {
-            Consent consent = assoc.isAvailable((NakedReference) ((NakedObjectWrapper) target).NakedObject);
+            Consent consent = assoc.isAvailable((NakedReference) ((ObjectFacade) target).NakedObject);
             return new ConsentWrapper(consent);
         }
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {
-            Naked result = assoc.get((NakedObject) ((NakedObjectWrapper) target).NakedObject);
-            return result == null ? null : new NakedObjectWrapper(result, Surface);
+            Naked result = assoc.get((NakedObject) ((ObjectFacade) target).NakedObject);
+            return result == null ? null : new ObjectFacade(result, Surface);
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
-            return !assoc.isHidden() && assoc.isVisible((NakedReference) ((NakedObjectWrapper) nakedObject).NakedObject).isAllowed();
+            return !assoc.isHidden() && assoc.isVisible((NakedReference) ((ObjectFacade) nakedObject).NakedObject).isAllowed();
         }
 
         public bool IsEager(IObjectFacade nakedObject) {
@@ -176,7 +176,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public int Count(IObjectFacade nakedObject) {
             if (IsCollection) {
-                var result = (NakedCollection) assoc.get((NakedObject) ((NakedObjectWrapper) nakedObject).NakedObject);
+                var result = (NakedCollection) assoc.get((NakedObject) ((ObjectFacade) nakedObject).NakedObject);
                 return result.size();
             }
             return 0;
@@ -204,14 +204,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectAssociationWrapper = obj as AssociationWrapper;
+            var nakedObjectAssociationWrapper = obj as AssociationFacade;
             if (nakedObjectAssociationWrapper != null) {
                 return Equals(nakedObjectAssociationWrapper);
             }
             return false;
         }
 
-        public bool Equals(AssociationWrapper other) {
+        public bool Equals(AssociationFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.assoc, assoc);

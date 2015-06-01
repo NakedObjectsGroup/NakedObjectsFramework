@@ -20,12 +20,12 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class ActionParameterWrapper : IActionParameterFacade {
+    public class ActionParameterFacade : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
         private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
 
-        public ActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
@@ -112,7 +112,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IActionFacade Action {
-            get { return new ActionWrapper(nakedObjectActionParameter.Action, Surface, framework, overloadedUniqueId ?? ""); }
+            get { return new ActionFacade(nakedObjectActionParameter.Action, Surface, framework, overloadedUniqueId ?? ""); }
         }
 
         public string Id {
@@ -137,7 +137,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
             var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => GetValue(a.parm, a.Value));
 
-            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
+            return nakedObjectActionParameter.GetChoices(((ObjectFacade) nakedObject).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
@@ -150,12 +150,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             if (valueNakedObject == null) {
                 return null;
             }
-            var no = ((NakedObjectWrapper) valueNakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade) valueNakedObject).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
         public IConsentSurface IsValid(IObjectFacade target, object value) {
-            var t = ((NakedObjectWrapper) target).WrappedNakedObject;
+            var t = ((ObjectFacade) target).WrappedNakedObject;
 
             IConsent consent;
             try {
@@ -178,15 +178,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper) nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
+            return nakedObjectActionParameter.GetCompletions(((ObjectFacade) nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper) nakedObject).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
+            return nakedObjectActionParameter.GetDefaultType(((ObjectFacade) nakedObject).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
         }
 
         public IObjectFacade GetDefault(IObjectFacade nakedObject) {
-            return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper) nakedObject).WrappedNakedObject), Surface, framework);
+            return ObjectFacade.Wrap(nakedObjectActionParameter.GetDefault(((ObjectFacade) nakedObject).WrappedNakedObject), Surface, framework);
         }
 
         public IFrameworkFacade Surface { get; set; }
@@ -290,14 +290,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectActionParameterWrapper = obj as ActionParameterWrapper;
+            var nakedObjectActionParameterWrapper = obj as ActionParameterFacade;
             if (nakedObjectActionParameterWrapper != null) {
                 return Equals(nakedObjectActionParameterWrapper);
             }
             return false;
         }
 
-        public bool Equals(ActionParameterWrapper other) {
+        public bool Equals(ActionParameterFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);

@@ -14,18 +14,16 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class ActionWrapper :  IActionFacade {
+    public class ActionFacade : IActionFacade {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
-
-        public ActionWrapper(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionFacade(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(action, "Action is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
             SurfaceUtils.AssertNotNull(surface, "surface is null");
-
 
             this.action = action;
             this.framework = framework;
@@ -33,12 +31,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Surface = surface;
         }
 
-        public IActionSpec WrappedSpec { get { return action; } }
-
+        public IActionSpec WrappedSpec {
+            get { return action; }
+        }
 
         public ITypeFacade Specification {
             get { return new TypeFacade(action.ReturnSpec, Surface, framework); }
         }
+
+        #region IActionFacade Members
 
         public bool IsContributed {
             get { return action.IsContributedMethod; }
@@ -59,7 +60,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return extData.Any() ? extData : null;
             }
         }
-
 
         public string Description {
             get { return action.Description; }
@@ -91,8 +91,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        #region IActionFacade Members
-
         public string Id {
             get { return action.Id + overloadedUniqueId; }
         }
@@ -113,15 +111,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IActionParameterFacade[] Parameters {
-            get { return action.Parameters.Select(p => new ActionParameterWrapper(p, Surface, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
+            get { return action.Parameters.Select(p => new ActionParameterFacade(p, Surface, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
-            return action.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return action.IsVisible(((ObjectFacade) nakedObject).WrappedNakedObject);
         }
 
         public IConsentSurface IsUsable(IObjectFacade nakedObject) {
-            return new ConsentWrapper(action.IsUsable(((NakedObjectWrapper) nakedObject).WrappedNakedObject));
+            return new ConsentWrapper(action.IsUsable(((ObjectFacade) nakedObject).WrappedNakedObject));
         }
 
         public ITypeFacade OnType {
@@ -129,28 +127,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IFrameworkFacade Surface { get; set; }
-
-        #endregion
-
-        public override bool Equals(object obj) {
-            var nakedObjectActionWrapper = obj as ActionWrapper;
-            if (nakedObjectActionWrapper != null) {
-                return Equals(nakedObjectActionWrapper);
-            }
-            return false;
-        }
-
-        public bool Equals(ActionWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.action, action);
-        }
-
-        public override int GetHashCode() {
-            return (action != null ? action.GetHashCode() : 0);
-        }
-
-      
 
         public bool RenderEagerly {
             get {
@@ -167,17 +143,34 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public int PageSize {
-            get {
-                return action.GetFacet<IPageSizeFacet>().Value;
-            }
+            get { return action.GetFacet<IPageSizeFacet>().Value; }
         }
-
 
         public string PresentationHint {
             get {
                 var hintFacet = action.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? null : hintFacet.Value;
             }
+        }
+
+        #endregion
+
+        public override bool Equals(object obj) {
+            var nakedObjectActionWrapper = obj as ActionFacade;
+            if (nakedObjectActionWrapper != null) {
+                return Equals(nakedObjectActionWrapper);
+            }
+            return false;
+        }
+
+        public bool Equals(ActionFacade other) {
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
+            return Equals(other.action, action);
+        }
+
+        public override int GetHashCode() {
+            return (action != null ? action.GetHashCode() : 0);
         }
     }
 }

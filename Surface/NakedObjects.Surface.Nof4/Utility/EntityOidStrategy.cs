@@ -109,7 +109,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         //}
 
         //public string GetObjectId(IObjectFacade nakedobject) {
-        //    var no = ((NakedObjectWrapper)nakedobject).WrappedNakedObject;
+        //    var no = ((ObjectFacade)nakedobject).WrappedNakedObject;
         //    return GetObjectId(no);
         //}
 
@@ -189,7 +189,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         private string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((NakedObjectWrapper)nakedObjectForKey).WrappedNakedObject;
+            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade)nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);

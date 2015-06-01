@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +12,7 @@ using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class ActionFacade :  IActionFacade {
+    public class ActionFacade : IActionFacade {
         private readonly ActionWrapper action;
         private readonly Naked target;
 
@@ -22,9 +25,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public ITypeFacade Specification {
             get {
                 NakedObjectSpecification rt = action.getReturnType();
-                return rt == null ? (ITypeFacade) new VoidNakedObjectSpecificationWrapper() : new TypeFacade(action.getReturnType(), target, Surface);
+                return rt == null ? (ITypeFacade) new VoidTypeFacade() : new TypeFacade(action.getReturnType(), target, Surface);
             }
         }
+
+        protected int MemberOrder {
+            get { return 0; }
+        }
+
+        #region IActionFacade Members
 
         public bool IsContributed {
             get { return false; }
@@ -37,7 +46,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public IDictionary<string, object> ExtensionData { get; private set; }
         public Tuple<bool, string[]> TableViewData { get; private set; }
         public bool RenderEagerly { get; private set; }
-
         public int PageSize { get; private set; }
 
         public string Name {
@@ -56,12 +64,6 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return false; }
         }
 
-        protected int MemberOrder {
-            get { return 0; }
-        }
-
-        #region IActionFacade Members
-
         public string Id {
             get { return action.getId(); }
         }
@@ -71,9 +73,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public ITypeFacade ElementType {
-            get {
-                return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof(object).FullName), null, Surface);
-            }
+            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
         }
 
         public int ParameterCount {
@@ -81,15 +81,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public IActionParameterFacade[] Parameters {
-            get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterWrapper(p, target, Surface)).Cast<IActionParameterFacade>().ToArray(); }
+            get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterFacade(p, target, Surface)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
-            return action.isVisible((NakedReference) (((NakedObjectWrapper) nakedObject).NakedObject)).isAllowed();
+            return action.isVisible((NakedReference) (((ObjectFacade) nakedObject).NakedObject)).isAllowed();
         }
 
         public IConsentSurface IsUsable(IObjectFacade nakedObject) {
-            return new ConsentWrapper(action.isAvailable((NakedReference) (((NakedObjectWrapper) nakedObject).NakedObject)));
+            return new ConsentWrapper(action.isAvailable((NakedReference) (((ObjectFacade) nakedObject).NakedObject)));
         }
 
         public ITypeFacade OnType {
@@ -97,6 +97,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public string PresentationHint { get; private set; }
+        public IFrameworkFacade Surface { get; set; }
 
         #endregion
 
@@ -109,18 +110,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         }
 
         public bool Equals(ActionFacade other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.action, action);
         }
 
         public override int GetHashCode() {
             return (action != null ? action.GetHashCode() : 0);
         }
-
-       
-
-        public IFrameworkFacade Surface { get; set; }
-        
     }
 }

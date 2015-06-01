@@ -15,7 +15,6 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public OidWrapper(IOid oid) {
             SurfaceUtils.AssertNotNull(oid, "Oid is null");
 
-
             this.oid = oid;
         }
 
@@ -36,8 +35,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool Equals(OidWrapper other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.oid, oid);
         }
 

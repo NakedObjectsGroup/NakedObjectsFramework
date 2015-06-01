@@ -20,11 +20,11 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class AssociationWrapper : IAssociationFacade {
+    public class AssociationFacade : IAssociationFacade {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
 
-        public AssociationWrapper(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(surface, "surface is null");
@@ -159,17 +159,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IConsentSurface IsUsable(IObjectFacade target) {
-            IConsent consent = assoc.IsUsable(((NakedObjectWrapper) target).WrappedNakedObject);
+            IConsent consent = assoc.IsUsable(((ObjectFacade) target).WrappedNakedObject);
             return new ConsentWrapper(consent);
         }
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {
-            INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
-            return NakedObjectWrapper.Wrap(result, Surface, framework);
+            INakedObjectAdapter result = assoc.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
+            return ObjectFacade.Wrap(result, Surface, framework);
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
-            return assoc.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return assoc.IsVisible(((ObjectFacade) nakedObject).WrappedNakedObject);
         }
 
         public bool IsEager(IObjectFacade nakedObject) {
@@ -180,7 +180,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             var pnv = parameterNameValues == null ? null : parameterNameValues.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
@@ -195,12 +195,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
         public int Count(IObjectFacade target) {
             if (IsCollection) {
-                INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
+                INakedObjectAdapter result = assoc.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
                 return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
             }
             return 0;
@@ -210,7 +210,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             var enumFacet = assoc.GetFacet<IEnumFacet>();
 
             if (enumFacet != null) {
-                return enumFacet.GetTitle(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+                return enumFacet.GetTitle(((ObjectFacade) nakedObject).WrappedNakedObject);
             }
 
             var mask = assoc.GetFacet<IMaskFacet>();
@@ -218,7 +218,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return nakedObject.TitleString;
             }
             var titleFacet = ((TypeFacade) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
+            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
         }
 
         public IFrameworkFacade Surface { get; set; }
@@ -278,12 +278,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             if (valueNakedObject == null) {
                 return null;
             }
-            var no = ((NakedObjectWrapper) valueNakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade) valueNakedObject).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
         public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            var no = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade) nakedObject).WrappedNakedObject;
             return assoc.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 
@@ -331,14 +331,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectAssociationWrapper = obj as AssociationWrapper;
+            var nakedObjectAssociationWrapper = obj as AssociationFacade;
             if (nakedObjectAssociationWrapper != null) {
                 return Equals(nakedObjectAssociationWrapper);
             }
             return false;
         }
 
-        public bool Equals(AssociationWrapper other) {
+        public bool Equals(AssociationFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.assoc, assoc);

@@ -14,11 +14,11 @@ using NakedObjects.Surface.Nof2.Context;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class ActionParameterWrapper : IActionParameterFacade {
+    public class ActionParameterFacade : IActionParameterFacade {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;
 
-        public ActionParameterWrapper(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
+        public ActionParameterFacade(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.target = target;
             Surface = surface;
@@ -105,11 +105,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public IDictionary<string, object> ExtensionData { get; private set; }
 
         public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            return nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject) != null;
+            return nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject) != null;
         }
 
         public IObjectFacade GetDefault(IObjectFacade nakedObject) {
-            return new NakedObjectWrapper(nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject), Surface);
+            return new ObjectFacade(nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject), Surface);
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
@@ -129,18 +129,18 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         #endregion
 
         public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, IObjectFacade> parameterNameValues) {
-            return nakedObjectActionParameter.getChoices(((NakedObjectWrapper) nakedObject).NakedObject).Select(no => new NakedObjectWrapper(no, Surface)).Cast<IObjectFacade>().ToArray();
+            return nakedObjectActionParameter.getChoices(((ObjectFacade) nakedObject).NakedObject).Select(no => new ObjectFacade(no, Surface)).Cast<IObjectFacade>().ToArray();
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectActionParameterWrapper = obj as ActionParameterWrapper;
+            var nakedObjectActionParameterWrapper = obj as ActionParameterFacade;
             if (nakedObjectActionParameterWrapper != null) {
                 return Equals(nakedObjectActionParameterWrapper);
             }
             return false;
         }
 
-        public bool Equals(ActionParameterWrapper other) {
+        public bool Equals(ActionParameterFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);
@@ -149,7 +149,5 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public override int GetHashCode() {
             return (nakedObjectActionParameter != null ? nakedObjectActionParameter.GetHashCode() : 0);
         }
-
-       
     }
 }

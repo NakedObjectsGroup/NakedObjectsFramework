@@ -143,12 +143,12 @@
     <Compile Include="Wrapper\MenuActionWrapper.cs" />
     <Compile Include="Wrapper\MenuItemWrapper.cs" />
     <Compile Include="Wrapper\MenuWrapper.cs" />
-    <Compile Include="Wrapper\ActionWrapper.cs" />
-    <Compile Include="Wrapper\ActionParameterWrapper.cs" />
-    <Compile Include="Wrapper\AssociationWrapper.cs" />
+    <Compile Include="Wrapper\ActionFacade.cs" />
+    <Compile Include="Wrapper\ActionParameterFacade.cs" />
+    <Compile Include="Wrapper\AssociationFacade.cs" />
     <Compile Include="Wrapper\TypeFacade.cs" />
     <Compile Include="Wrapper\OidWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectWrapper.cs" />
+    <Compile Include="Wrapper\ObjectFacade.cs" />
     <Compile Include="Wrapper\VersionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
