@@ -77,27 +77,27 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id) {
+        public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id) {
+        public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
+        public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
+        public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreEncodedOid(string encoded) {
+        public IOidFacade RestoreEncodedOid(string encoded) {
             throw new System.NotImplementedException();
         }
 
-        public IOidSurface RestoreTypeIdOid(string typeName, string instanceId) {
+        public IOidFacade RestoreTypeIdOid(string typeName, string instanceId) {
             throw new System.NotImplementedException();
         }
 

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class OidWrapper : IOidSurface {
+    public class OidWrapper : IOidFacade {
         private readonly IOid oid;
 
         public OidWrapper(IOid oid) {
@@ -18,7 +18,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             this.oid = oid;
         }
 
-        #region IOidSurface Members
+        #region IOidFacade Members
 
         public object Value {
             get { return oid; }

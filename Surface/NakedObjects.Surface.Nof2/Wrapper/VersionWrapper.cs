@@ -12,7 +12,7 @@ using System.Text;
 using Version = org.nakedobjects.@object.Version;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class VersionWrapper : IVersionSurface {
+    public class VersionWrapper : IVersionFacade {
         private static readonly MD5CryptoServiceProvider MD5CryptoServiceProvider = new MD5CryptoServiceProvider();
         private readonly Version version;
 
@@ -32,7 +32,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             }
         }
 
-        #region IVersionSurface Members
+        #region IVersionFacade Members
 
         public string Digest {
             get {

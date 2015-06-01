@@ -45,7 +45,7 @@ namespace NakedObjects.Surface {
         bool IsConcurrency { get; }
         IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
-        IConsentSurface IsUsable(IObjectFacade target);
+        IConsentFacade IsUsable(IObjectFacade target);
         IObjectFacade GetNakedObject(IObjectFacade target);
         bool IsVisible(IObjectFacade nakedObject);
         bool IsEager(IObjectFacade nakedObject);

@@ -41,7 +41,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static MemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
-            IConsentSurface consent = propertyContext.Property.IsUsable(propertyContext.Target);
+            IConsentFacade consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
 
             if (consent.IsVetoed) {

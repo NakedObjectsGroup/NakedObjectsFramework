@@ -9,14 +9,14 @@ using System;
 using org.nakedobjects.@object.control;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class ConsentWrapper : IConsentSurface {
+    public class ConsentWrapper : IConsentFacade {
         private readonly Consent consent;
 
         public ConsentWrapper(Consent consent) {
             this.consent = consent;
         }
 
-        #region IConsentSurface Members
+        #region IConsentFacade Members
 
         public bool IsAllowed {
             get { return consent.isAllowed(); }

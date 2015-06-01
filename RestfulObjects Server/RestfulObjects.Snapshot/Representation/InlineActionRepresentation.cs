@@ -30,7 +30,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public MapRepresentation Parameters { get; set; }
 
         public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
-            IConsentSurface consent = actionContext.Action.IsUsable(actionContext.Target);
+            IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
             var actionRepresentationStrategy = new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags);
             if (consent.IsVetoed) {

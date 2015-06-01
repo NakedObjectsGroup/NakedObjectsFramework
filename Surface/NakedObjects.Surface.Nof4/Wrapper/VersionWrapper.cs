@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class VersionWrapper : IVersionSurface {
+    public class VersionWrapper : IVersionFacade {
         private readonly IVersion version;
 
         public VersionWrapper(IVersion version) {
@@ -23,7 +23,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return version.Time; }
         }
 
-        #region IVersionSurface Members
+        #region IVersionFacade Members
 
         public string Digest {
             get { return version.Digest; }

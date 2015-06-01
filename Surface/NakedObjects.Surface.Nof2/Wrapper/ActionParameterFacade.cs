@@ -120,7 +120,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return valueNakedObject.TitleString;
         }
 
-        public IConsentSurface IsValid(IObjectFacade target, object value) {
+        public IConsentFacade IsValid(IObjectFacade target, object value) {
             throw new NotImplementedException();
         }
 

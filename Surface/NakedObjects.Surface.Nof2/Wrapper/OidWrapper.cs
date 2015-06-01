@@ -8,14 +8,14 @@
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class OidWrapper : IOidSurface {
+    public class OidWrapper : IOidFacade {
         private readonly Oid oid;
 
         public OidWrapper(Oid oid) {
             this.oid = oid;
         }
 
-        #region IOidSurface Members
+        #region IOidFacade Members
 
         public object Value {
             get { return oid; }

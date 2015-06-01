@@ -158,7 +158,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public IConsentSurface IsUsable(IObjectFacade target) {
+        public IConsentFacade IsUsable(IObjectFacade target) {
             IConsent consent = assoc.IsUsable(((ObjectFacade) target).WrappedNakedObject);
             return new ConsentWrapper(consent);
         }

@@ -13,8 +13,8 @@ namespace NakedObjects.Surface {
         ITypeFacade Specification { get; }
         ITypeFacade ElementSpecification { get; }
         object Object { get; }
-        IOidSurface Oid { get; }
-        IVersionSurface Version { get; }
+        IOidFacade Oid { get; }
+        IVersionFacade Version { get; }
         IActionFacade MementoAction { get; }
         string EnumIntegralValue { get; }
         bool IsPaged { get; }

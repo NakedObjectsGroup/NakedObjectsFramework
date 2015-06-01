@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class ConsentWrapper : IConsentSurface {
+    public class ConsentWrapper : IConsentFacade {
         private readonly IConsent consent;
 
         public ConsentWrapper(IConsent consent) {
@@ -18,7 +18,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             this.consent = consent;
         }
 
-        #region IConsentSurface Members
+        #region IConsentFacade Members
 
         public bool IsAllowed {
             get { return consent.IsAllowed; }

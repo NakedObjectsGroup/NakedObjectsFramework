@@ -15,9 +15,9 @@ namespace NakedObjects.Surface {
         ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(ITypeFacade spec);
        
-        IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id);
-        IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id);
-        IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);
-        IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id);
+        IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id);
+        IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id);
+        IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);
+        IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id);
     }
 }

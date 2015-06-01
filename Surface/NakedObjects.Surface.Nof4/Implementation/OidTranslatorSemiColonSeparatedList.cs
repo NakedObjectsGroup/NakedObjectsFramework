@@ -47,7 +47,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         //    return GetObjectId(nakedObject.Oid);
         //}
 
-        private string GetObjectId(IOidSurface oid) {
+        private string GetObjectId(IOidFacade oid) {
             return Encode(((IEncodedToStrings)oid.Value));
         }
 

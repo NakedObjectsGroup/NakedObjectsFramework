@@ -586,7 +586,7 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsentSurface consent, out string value, out RouteValueDictionary attributes) {
+        internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsentFacade consent, out string value, out RouteValueDictionary attributes) {
             value = actionContext.Action.Name;
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),

@@ -140,7 +140,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             }
         }
 
-        public IConsentSurface IsUsable(IObjectFacade target) {
+        public IConsentFacade IsUsable(IObjectFacade target) {
             Consent consent = assoc.isAvailable((NakedReference) ((ObjectFacade) target).NakedObject);
             return new ConsentWrapper(consent);
         }

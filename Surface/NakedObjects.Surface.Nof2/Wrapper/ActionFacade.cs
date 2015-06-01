@@ -88,7 +88,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return action.isVisible((NakedReference) (((ObjectFacade) nakedObject).NakedObject)).isAllowed();
         }
 
-        public IConsentSurface IsUsable(IObjectFacade nakedObject) {
+        public IConsentFacade IsUsable(IObjectFacade nakedObject) {
             return new ConsentWrapper(action.isAvailable((NakedReference) (((ObjectFacade) nakedObject).NakedObject)));
         }
 

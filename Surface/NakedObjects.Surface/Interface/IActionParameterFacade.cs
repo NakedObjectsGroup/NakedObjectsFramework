@@ -45,6 +45,6 @@ namespace NakedObjects.Surface {
         Tuple<string, ITypeFacade>[] GetChoicesParameters();
         string GetMaskedValue(IObjectFacade valueNakedObject);
         // todo not really same as other interfaces - more PutValue with validate only ? 
-        IConsentSurface IsValid(IObjectFacade target, object value);
+        IConsentFacade IsValid(IObjectFacade target, object value);
     }
 }

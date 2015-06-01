@@ -123,17 +123,17 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetCode(spec);
         }
 
-        public IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id) {
+        public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
             return new OidWrapper(oid);
         }
 
-        public IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id) {
+        public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
             return new OidWrapper(oid);
         }
 
-        public IOidSurface RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
+        public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
 
             Type type = ValidateObjectId(id);
             string[] keys = GetKeys(id.InstanceId, type);
@@ -147,7 +147,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         }
 
-        public IOidSurface RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
+        public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             Type type = ValidateServiceId(id);
             IServiceSpec spec;
             try {

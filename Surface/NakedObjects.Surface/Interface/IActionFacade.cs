@@ -27,6 +27,6 @@ namespace NakedObjects.Surface {
         Tuple<bool, string[]> TableViewData { get; }
         bool RenderEagerly { get; }
         bool IsVisible(IObjectFacade nakedObject);
-        IConsentSurface IsUsable(IObjectFacade nakedObject);
+        IConsentFacade IsUsable(IObjectFacade nakedObject);
     }
 }

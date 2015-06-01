@@ -25,11 +25,11 @@ namespace NakedObjects.Surface {
             set { throw new NotImplementedException(); }
         }
 
-        public IOidSurface GetOid(IOidStrategy oidStrategy) {
+        public IOidFacade GetOid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreOid(this);
         }
 
-        public IOidSurface GetSid(IOidStrategy oidStrategy) {
+        public IOidFacade GetSid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreSid(this);
         }
 

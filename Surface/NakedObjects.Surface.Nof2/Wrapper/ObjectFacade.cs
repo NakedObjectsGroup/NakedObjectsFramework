@@ -114,7 +114,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsDestroyed { get; private set; }
         public bool IsUserPersistable { get; private set; }
 
-        public IVersionSurface Version {
+        public IVersionFacade Version {
             get { return new VersionWrapper(((NakedReference) nakedObject).getVersion()); }
         }
 
@@ -122,7 +122,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public string EnumIntegralValue { get; private set; }
         public bool IsPaged { get; private set; }
 
-        public IOidSurface Oid {
+        public IOidFacade Oid {
             get { return new OidWrapper(nakedObject.getOid()); }
         }
 

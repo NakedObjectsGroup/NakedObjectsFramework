@@ -35,7 +35,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
-            IConsentSurface consent = propertyContext.Property.IsUsable(propertyContext.Target);
+            IConsentFacade consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
             if (consent.IsVetoed) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));

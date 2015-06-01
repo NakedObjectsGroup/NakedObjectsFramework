@@ -154,7 +154,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
-        public IConsentSurface IsValid(IObjectFacade target, object value) {
+        public IConsentFacade IsValid(IObjectFacade target, object value) {
             var t = ((ObjectFacade) target).WrappedNakedObject;
 
             IConsent consent;

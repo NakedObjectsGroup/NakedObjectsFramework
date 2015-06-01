@@ -31,11 +31,11 @@ namespace NakedObjects.Surface {
         public string DomainType { get; set; }
         public string InstanceId { get; set; }
 
-        public IOidSurface GetOid(IOidStrategy oidStrategy) {
+        public IOidFacade GetOid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreOid(this);
         }
 
-        public IOidSurface GetSid(IOidStrategy oidStrategy) {
+        public IOidFacade GetSid(IOidStrategy oidStrategy) {
             return oidStrategy.RestoreSid(this);
         }
 

@@ -138,11 +138,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
         }
 
-        public IVersionSurface Version {
+        public IVersionFacade Version {
             get { return new VersionWrapper(WrappedNakedObject.Version); }
         }
 
-        public IOidSurface Oid {
+        public IOidFacade Oid {
             get { return WrappedNakedObject.Oid == null ? null : new OidWrapper(WrappedNakedObject.Oid); }
         }
 
