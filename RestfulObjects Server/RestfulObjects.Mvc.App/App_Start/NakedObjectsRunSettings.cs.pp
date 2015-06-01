@@ -6,15 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 
 namespace $rootnamespace$ {
-    public class NakedObjectsSettings {
+    public class NakedObjectsRunSettings {
 
-	    public static string RestRoot {
-            get { return ""; }
-        }
+		private static string[] ModelNamespaces { 
+            get {
+                return new string[] {}; //Add top-level namespace(s) that cover the domain model
+            }			
+		}
         
 		private static Type[] Types {
             get {
@@ -30,25 +34,19 @@ namespace $rootnamespace$ {
             }
         }
 
-        //private static Type[] AssociatedTypes() {
-        //    var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-        //    return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
-        //}
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            //config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
-            //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            //config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
             return config;
         }
 
-		public static IMenuBuilder[] MainMenus(IMenuFactory factory) {
+		public static IMenu[] MainMenus(IMenuFactory factory) {
             //e.g. var menu1 = factory.NewMenu<MyService1>(true); //then add to returned array
-            return new IMenuBuilder[] {  };
+            return new IMenu[] {  };
         }
     }
 }

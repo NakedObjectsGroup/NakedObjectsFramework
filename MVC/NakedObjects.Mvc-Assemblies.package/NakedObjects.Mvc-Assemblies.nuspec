@@ -19,8 +19,6 @@
       <dependency id="Microsoft.AspNet.Identity.Owin" version="[2.2.0, 3.0)" />
       <dependency id="NakedObjects.Core" version="[7.1.0-alpha, 8)" />
       <dependency id="RestfulObjects.Mvc" version="[7.1.0-alpha, 8)" />
-      <dependency id="Unity.Mvc" version="[3.5.1404.0, 4.0)" />
-      <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)" />
     </dependencies>
   </metadata>
 </package>

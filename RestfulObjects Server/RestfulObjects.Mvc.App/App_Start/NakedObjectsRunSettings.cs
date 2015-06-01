@@ -14,11 +14,8 @@ using RestfulObjects.Test.Data;
 
 namespace MvcTestApp {
     public static class NakedObjectsRunSettings {
-        public static string RestRoot {
-            get { return ""; }
-        }
 
-        private static string[] Namespaces {
+        private static string[] ModelNamespaces {
             get {
                 return new[] { "MvcTestApp" };
             }
@@ -47,7 +44,7 @@ namespace MvcTestApp {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Namespaces, MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

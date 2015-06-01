@@ -19,6 +19,8 @@
       <dependency id="jQuery.UI.Combined" version="[1.11.3, 2.0)" />
       <dependency id="jQuery.Validation" version="[1.13.1, 2.0)" />
       <dependency id="Microsoft.jQuery.Unobtrusive.Validation" version="[3.2.3, 4.0)" />
+      <dependency id="Unity.Mvc" version="[3.5.1404.0, 4.0)" />
+      <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)" />
     </dependencies>
   </metadata>
 </package>

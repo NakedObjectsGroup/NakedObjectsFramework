@@ -112,7 +112,7 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\unchecked.png"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\nakedobjects.ico"/>
 
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Controllers*\*.*" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Controllers*\*.*" Exclude="**\AccountController.cs"/>
 
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Scripts*\ui\**\*.*"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Scripts*\NakedObjects-Ajax.js"/>
@@ -131,6 +131,9 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RouteConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityWebApiActivator.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RestfulObjectsActivator.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RestfulObjectsConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
     </ItemGroup>
 
@@ -138,13 +141,15 @@
     <!--<Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\src\%(RecursiveDir)"/>-->
 
     <ItemGroup>
-      <ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs;**\HomeController.cs"/>
+      <ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\AccountController.cs"/>
       
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\BundleConfig.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsActivator.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RouteConfig.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityConfig.cs"/>
       <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityMvcActivator.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RestfulObjectsConfig.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RestfulObjectsActivator.cs"/>
     </ItemGroup>
 
     <FileUpdate Files="@(ToUpdatePartialNamespace)"

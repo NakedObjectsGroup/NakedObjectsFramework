@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 using NakedObjects.Web.Mvc.Models;
 using System.Linq;
 using System.Data.Entity.Core.Objects.DataClasses;
@@ -23,7 +24,7 @@ namespace $rootnamespace$ {
     public class NakedObjectsRunSettings {
 
 	   public static string RestRoot {
-            get { return "Rest"; }
+            get { return null; }
         }
 
 		private static string[] ModelNamespaces { 

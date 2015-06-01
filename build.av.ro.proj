@@ -102,27 +102,7 @@
 
     <Copy SourceFiles="@(RestApiSrc)" DestinationFolder="$(ROPath)\$(ROMVC).package\src\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>    
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs.pp"/>       
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>
-    </ItemGroup>
-
     <Copy SourceFiles="@(RestSrcFiles)" DestinationFolder="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)" />
-
-    <ItemGroup>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsActivator.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>       
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\Controllers*\RestfulObjectsController.cs"/>
-    </ItemGroup>
-
-    <FileUpdate Files="@(ToUpdateRo)"
-							 RegEx= 'MvcTestApp'
-							 ReplacementText ='$rootnamespace$'/>
-
-    <Move SourceFiles="@(ToUpdateRo)" DestinationFiles="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
 
     <Exec WorkingDirectory="$(ROPath)\$(ROMVC).package" Command="nuget pack $(ROMVC).nuspec -Symbols" />
     <ItemGroup>
@@ -135,14 +115,17 @@
   </Target>
 
   <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
-    
 
     <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>    
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\WebApiConfig.cs"/>
-
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
@@ -151,10 +134,12 @@
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityConfig.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityWebApiActivator.cs"/>
       <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\WebApiConfig.cs"/>
-
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
        
-
     <FileUpdate Files="@(ROSUpdate)"
 							 RegEx= 'MvcTestApp'
 							 ReplacementText ='$rootnamespace$'/>
