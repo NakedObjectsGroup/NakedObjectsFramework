@@ -24,8 +24,9 @@ open NakedObjects.Core.Configuration
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open System.Data.Entity.Core.Objects
-open NakedObjects.Surface.Interface
 open NakedObjects.Facade
+open NakedObjects.Facade.Translation
+
 
 
 

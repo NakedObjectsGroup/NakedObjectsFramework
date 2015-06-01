@@ -7,6 +7,7 @@ using System.Reflection;
 using NakedObjects.Facade;
 using NakedObjects.Surface.Nof2.Implementation;
 using NakedObjects.Facade.Nof2;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;

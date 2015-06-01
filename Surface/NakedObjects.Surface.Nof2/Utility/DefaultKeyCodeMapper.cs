@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Surface.Nof2.Implementation;
 
 namespace NakedObjects.Surface.Nof2.Utility {

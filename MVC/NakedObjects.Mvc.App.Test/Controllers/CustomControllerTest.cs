@@ -26,7 +26,7 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
-using NakedObjects.Surface.Interface;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Xat;
 using NUnit.Framework;

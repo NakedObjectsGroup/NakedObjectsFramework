@@ -96,8 +96,8 @@
     <Compile Include="Context\ArgumentsContext.cs" />
     <Compile Include="Context\AttachmentContext.cs" />
     <Compile Include="Facade\IConsentFacade.cs" />
-    <Compile Include="Interface\IOidTranslation.cs" />
-    <Compile Include="Interface\IOidTranslator.cs" />
+    <Compile Include="Translation\IOidTranslation.cs" />
+    <Compile Include="Translation\IOidTranslator.cs" />
     <Compile Include="Facade\IMenuFacade.cs" />
     <Compile Include="Facade\IMenuActionFacade.cs" />
     <Compile Include="Facade\IMenuItemFacade.cs" />
@@ -116,8 +116,8 @@
     <Compile Include="Interface\ISurfaceHolder.cs" />
     <Compile Include="Facade\IOidFacade.cs" />
     <Compile Include="Facade\IVersionFacade.cs" />
-    <Compile Include="LinkId\OidTranslationSlashSeparatedTypeAndIds.cs" />
-    <Compile Include="LinkId\OidTranslationSemiColonSeparatedList.cs" />
+    <Compile Include="Translation\OidTranslationSlashSeparatedTypeAndIds.cs" />
+    <Compile Include="Translation\OidTranslationSemiColonSeparatedList.cs" />
     <Compile Include="Utility\IdConstants.cs" />
     <Compile Include="Interface\IIdHelper.cs" />
     <Compile Include="Interface\IMessageBrokerSurface.cs" />

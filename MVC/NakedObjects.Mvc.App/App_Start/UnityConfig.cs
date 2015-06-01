@@ -12,6 +12,7 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -21,9 +22,7 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Mvc.App.Controllers;
-using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Utility;
-using ProfileManager = NakedObjects.Meta.Profile.ProfileManager;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>

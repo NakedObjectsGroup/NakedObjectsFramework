@@ -9,8 +9,8 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Facade;
-using NakedObjects.Surface.Interface;
 using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Translation;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {

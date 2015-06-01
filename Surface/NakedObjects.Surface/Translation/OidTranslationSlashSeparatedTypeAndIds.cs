@@ -7,9 +7,9 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Facade;
+using NakedObjects.Surface;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
         static OidTranslationSlashSeparatedTypeAndIds() {
             // default 
@@ -23,12 +23,15 @@ namespace NakedObjects.Surface {
             InstanceId = split.Skip(1).FirstOrDefault();
         }
 
-         public OidTranslationSlashSeparatedTypeAndIds(string domainType, string instanceId) {
-             DomainType = domainType;
-             InstanceId = instanceId;
-         }
+        public OidTranslationSlashSeparatedTypeAndIds(string domainType, string instanceId) {
+            DomainType = domainType;
+            InstanceId = instanceId;
+        }
 
         public static string KeySeparator { get; set; }
+
+        #region IOidTranslation Members
+
         public string DomainType { get; set; }
         public string InstanceId { get; set; }
 
@@ -43,6 +46,8 @@ namespace NakedObjects.Surface {
         public string Encode() {
             return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
         }
+
+        #endregion
 
         public override string ToString() {
             return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);

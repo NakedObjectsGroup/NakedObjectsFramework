@@ -18,6 +18,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;

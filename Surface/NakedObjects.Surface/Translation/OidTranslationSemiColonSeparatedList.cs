@@ -6,15 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Facade;
+using NakedObjects.Surface;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade.Translation {
     public class OidTranslationSemiColonSeparatedList : IOidTranslation {
         private readonly string id;
 
         public OidTranslationSemiColonSeparatedList(string id) {
             this.id = id;
         }
+
+        #region IOidTranslation Members
 
         public string DomainType {
             get { throw new NotImplementedException(); }
@@ -38,6 +40,8 @@ namespace NakedObjects.Surface {
             return id;
         }
 
+        #endregion
+
         public override string ToString() {
             return id;
         }
@@ -45,6 +49,5 @@ namespace NakedObjects.Surface {
         public string[] Tokenize() {
             return id.Split(';');
         }
-
     }
 }

@@ -5,16 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
+using NakedObjects.Surface;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade.Translation {
     public interface IOidTranslation {
         string DomainType { get; set; }
         string InstanceId { get; set; }
-
         IOidFacade GetOid(IOidStrategy oidStrategy);
         IOidFacade GetSid(IOidStrategy oidStrategy);
-
         string Encode();
     }
 }

@@ -17,6 +17,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Services;
 using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Utility {
