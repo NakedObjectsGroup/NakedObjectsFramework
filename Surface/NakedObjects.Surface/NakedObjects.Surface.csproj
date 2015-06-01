@@ -92,9 +92,9 @@
     <Compile Include="Exception\ResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\ServiceResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\WithContextNOSException.cs" />
-    <Compile Include="Interface\ArgumentContext.cs" />
-    <Compile Include="Interface\ArgumentsContext.cs" />
-    <Compile Include="Interface\AttachmentContext.cs" />
+    <Compile Include="Context\ArgumentContext.cs" />
+    <Compile Include="Context\ArgumentsContext.cs" />
+    <Compile Include="Context\AttachmentContext.cs" />
     <Compile Include="Facade\IConsentFacade.cs" />
     <Compile Include="Interface\IOidTranslation.cs" />
     <Compile Include="Interface\IOidTranslator.cs" />
