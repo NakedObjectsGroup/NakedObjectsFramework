@@ -108,11 +108,11 @@ namespace RestfulObjects.Snapshot.Representations {
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        private IDictionary<string, object> GetCustomExtensions(INakedObjectSurface nakedObject) {
+        private IDictionary<string, object> GetCustomExtensions(IObjectFacade nakedObject) {
             return nakedObject.ExtensionData == null ? null : nakedObject.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
         }
 
-        private void SetExtensions(INakedObjectSurface nakedObject) {
+        private void SetExtensions(IObjectFacade nakedObject) {
             if (Flags.SimpleDomainModel) {
                 Extensions = RestUtils.GetExtensions(friendlyname: nakedObject.Specification.SingularName,
                     description: nakedObject.Specification.Description,
@@ -134,7 +134,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, INakedObjectSurface target, HttpRequestMessage req, RestControlFlags flags) {
+        public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
             ObjectContextSurface oc = target.Surface.GetObject(target);
             return Create(oidStrategy ,oc, req, flags);
         }

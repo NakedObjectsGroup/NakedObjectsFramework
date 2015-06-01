@@ -35,7 +35,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetHeader(INakedObjectSurface target) {
+        private void SetHeader(IObjectFacade target) {
             caching = CacheType.Transactional;
             SetEtag(target);
         }

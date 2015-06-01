@@ -12,12 +12,12 @@ namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
         public static void AddObjectToSession(this HttpSessionStateBase session, INakedObjectsSurface surface, string key, object domainObject) {
             var nakedObject = surface.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient ? domainObject : surface.OidFactory.GetLinkOid(nakedObject).Encode()));
+            session.Add(key, (nakedObject.IsTransient ? domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
 
         public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsSurface surface, string key, T domainObject) where T : class {
             var nakedObject = surface.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient ? (object) domainObject : surface.OidFactory.GetLinkOid(nakedObject).Encode()));
+            session.Add(key, (nakedObject.IsTransient ? (object) domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
 
         public static void AddValueToSession<T>(this HttpSessionStateBase session, string key, T value) where T : struct {
@@ -42,12 +42,12 @@ namespace NakedObjects.Web.Mvc {
             return null;
         }
 
-        private static INakedObjectSurface GetNakedObjectFromId(string id, INakedObjectsSurface surface) {
+        private static IObjectFacade GetNakedObjectFromId(string id, INakedObjectsSurface surface) {
             if (string.IsNullOrEmpty(id)) {
                 return null;
             }
 
-            var oid = surface.OidFactory.GetLinkOid(id);
+            var oid = surface.OidTranslator.GetOidTranslation(id);
             return surface.GetObject(oid).Target;
         }
 

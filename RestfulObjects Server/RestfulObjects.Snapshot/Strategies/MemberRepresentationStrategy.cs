@@ -30,7 +30,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy , req, propertyContext));
         }
 
-        public INakedObjectSurface GetTarget() {
+        public IObjectFacade GetTarget() {
             return propertyContext.Target;
         }
 
@@ -39,7 +39,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected string GetAttachmentFileName(PropertyContextSurface context) {
-            INakedObjectSurface no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetNakedObject(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }
 

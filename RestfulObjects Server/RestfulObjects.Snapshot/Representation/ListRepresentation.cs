@@ -29,7 +29,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextSurface actionContext)
             : base(oidStrategy, flags) {
-            INakedObjectSurface list;
+            IObjectFacade list;
 
             if (flags.PageSize > 0 && objectContext.Target.Count() > flags.PageSize) {
                 warnings.Add(string.Format("Result contains more than {0} objects only returning the first {0}", flags.PageSize));
@@ -90,7 +90,7 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface no) {
+        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no) {
             var helper = new UriMtHelper(oidStrategy ,req, no);
             ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 

@@ -44,26 +44,26 @@ namespace RestfulObjects.Snapshot.Representations {
             return contentType;
         }
 
-        private void SetHeader(INakedObjectSurface target) {
+        private void SetHeader(IObjectFacade target) {
             caching = CacheType.Transactional;
             SetEtag(target);
         }
 
         private void SetContentType(PropertyContextSurface context) {
-            INakedObjectSurface no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetNakedObject(context.Target);
             string mtv = no != null ? no.GetAttachment().MimeType : AttachmentContext.DefaultMimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
         private void SetContentDisposition(PropertyContextSurface context) {
-            INakedObjectSurface no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetNakedObject(context.Target);
             string cd = no != null ? no.GetAttachment().ContentDisposition : AttachmentContext.DefaultContentDisposition;
             string fn = no != null ? no.GetAttachment().FileName : AttachmentContext.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }
 
         private void SetStream(PropertyContextSurface context) {
-            INakedObjectSurface no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetNakedObject(context.Target);
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 

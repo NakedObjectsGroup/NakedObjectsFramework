@@ -140,41 +140,41 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             }
         }
 
-        public IConsentSurface IsUsable(INakedObjectSurface target) {
+        public IConsentSurface IsUsable(IObjectFacade target) {
             Consent consent = assoc.isAvailable((NakedReference) ((NakedObjectWrapper) target).NakedObject);
             return new ConsentWrapper(consent);
         }
 
-        public INakedObjectSurface GetNakedObject(INakedObjectSurface target) {
+        public IObjectFacade GetNakedObject(IObjectFacade target) {
             Naked result = assoc.get((NakedObject) ((NakedObjectWrapper) target).NakedObject);
             return result == null ? null : new NakedObjectWrapper(result, Surface);
         }
 
-        public bool IsVisible(INakedObjectSurface nakedObject) {
+        public bool IsVisible(IObjectFacade nakedObject) {
             return !assoc.isHidden() && assoc.isVisible((NakedReference) ((NakedObjectWrapper) nakedObject).NakedObject).isAllowed();
         }
 
-        public bool IsEager(INakedObjectSurface nakedObject) {
+        public bool IsEager(IObjectFacade nakedObject) {
             return false;
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
-            return new INakedObjectSurface[] {};
+        public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
+            return new IObjectFacade[] {};
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
             return new Tuple<string, INakedObjectSpecificationSurface>[] {};
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
-            return new Tuple<INakedObjectSurface, string>[] {};
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
+            return new Tuple<IObjectFacade, string>[] {};
         }
 
-        public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
-            return new INakedObjectSurface[] {};
+        public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
+            return new IObjectFacade[] {};
         }
 
-        public int Count(INakedObjectSurface nakedObject) {
+        public int Count(IObjectFacade nakedObject) {
             if (IsCollection) {
                 var result = (NakedCollection) assoc.get((NakedObject) ((NakedObjectWrapper) nakedObject).NakedObject);
                 return result.size();
@@ -182,15 +182,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return 0;
         }
 
-        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade valueNakedObject) {
             throw new NotImplementedException();
         }
 
-        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
             throw new NotImplementedException();
         }
 
-        public string GetTitle(INakedObjectSurface nakedObject) {
+        public string GetTitle(IObjectFacade nakedObject) {
             return nakedObject.TitleString;
         }
 
@@ -198,7 +198,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #endregion
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
+        public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, IObjectFacade> parameterNameValues) {
             // return ((OneToOneFeature) assoc).GetChoices(((NakedObject2) target).NakedObject, null).Select(no => new NakedObject2(no)).ToArray();
             return null;
         }

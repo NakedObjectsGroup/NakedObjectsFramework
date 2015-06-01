@@ -63,16 +63,16 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsPassword { get; private set; }
         public bool IsFindMenuEnabled { get; private set; }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
             //return GetChoices(nakedObject,  )
-            return new INakedObjectSurface[] {};
+            return new IObjectFacade[] {};
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
             throw new NotImplementedException();
         }
 
-        public INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm) {
+        public IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm) {
             throw new NotImplementedException();
         }
 
@@ -104,11 +104,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public int AutoCompleteMinLength { get; private set; }
         public IDictionary<string, object> ExtensionData { get; private set; }
 
-        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
             return nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject) != null;
         }
 
-        public INakedObjectSurface GetDefault(INakedObjectSurface nakedObject) {
+        public IObjectFacade GetDefault(IObjectFacade nakedObject) {
             return new NakedObjectWrapper(nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject), Surface);
         }
 
@@ -116,11 +116,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new Tuple<string, INakedObjectSpecificationSurface>[] {};
         }
 
-        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade valueNakedObject) {
             return valueNakedObject.TitleString;
         }
 
-        public IConsentSurface IsValid(INakedObjectSurface target, object value) {
+        public IConsentSurface IsValid(IObjectFacade target, object value) {
             throw new NotImplementedException();
         }
 
@@ -128,8 +128,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #endregion
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
-            return nakedObjectActionParameter.getChoices(((NakedObjectWrapper) nakedObject).NakedObject).Select(no => new NakedObjectWrapper(no, Surface)).Cast<INakedObjectSurface>().ToArray();
+        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, IObjectFacade> parameterNameValues) {
+            return nakedObjectActionParameter.getChoices(((NakedObjectWrapper) nakedObject).NakedObject).Select(no => new NakedObjectWrapper(no, Surface)).Cast<IObjectFacade>().ToArray();
         }
 
         public override bool Equals(object obj) {

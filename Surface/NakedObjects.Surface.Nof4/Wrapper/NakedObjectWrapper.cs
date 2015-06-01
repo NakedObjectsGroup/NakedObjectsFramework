@@ -20,7 +20,7 @@ using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectWrapper : INakedObjectSurface {
+    public class NakedObjectWrapper : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 
         protected NakedObjectWrapper(INakedObjectAdapter nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectAdapter WrappedNakedObject { get; private set; }
 
-        #region INakedObjectSurface Members
+        #region IObjectFacade Members
 
         public bool IsTransient {
             get { return WrappedNakedObject.ResolveState.IsTransient(); }
@@ -91,17 +91,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return WrappedNakedObject.Object; }
         }
 
-        public IEnumerable<INakedObjectSurface> ToEnumerable() {
+        public IEnumerable<IObjectFacade> ToEnumerable() {
             return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new NakedObjectWrapper(no, Surface, framework));
         }
 
         // todo move into adapterutils
 
-        public INakedObjectSurface Page(int page, int size) {
+        public IObjectFacade Page(int page, int size) {
             return new NakedObjectWrapper(Page(WrappedNakedObject, page, size), Surface, framework);
         }
 
-        public INakedObjectSurface Select(object[] selection, bool forceEnumerable) {
+        public IObjectFacade Select(object[] selection, bool forceEnumerable) {
             return new NakedObjectWrapper(Select(WrappedNakedObject, selection, forceEnumerable), Surface, framework);
         }
 

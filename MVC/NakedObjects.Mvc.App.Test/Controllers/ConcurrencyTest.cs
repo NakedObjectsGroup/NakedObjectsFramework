@@ -101,7 +101,7 @@ namespace MvcTestApp.Tests.Controllers {
 
        
 
-        public FormCollection GetFormForStoreEdit(INakedObjectSurface store,
+        public FormCollection GetFormForStoreEdit(IObjectFacade store,
                                                   string storeName,
                                                   string salesPerson,
                                                   string modifiedDate,

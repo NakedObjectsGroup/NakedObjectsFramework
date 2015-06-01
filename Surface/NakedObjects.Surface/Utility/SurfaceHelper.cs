@@ -14,7 +14,7 @@ using System.Linq;
 namespace NakedObjects.Surface.Utility.Restricted {
     public static class SurfaceHelper {
 
-        public static T GetDomainObject<T>(this INakedObjectSurface nakedObject) {
+        public static T GetDomainObject<T>(this IObjectFacade nakedObject) {
             return nakedObject == null ? default(T) : (T) nakedObject.Object;
         }
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
             }
         }
 
-        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
@@ -51,12 +51,12 @@ namespace NakedObjects.Surface.Utility.Restricted {
             return nakedObject.Specification.ShortName;
         }
 
-        public static string IconName(INakedObjectSurface nakedObject) {
+        public static string IconName(IObjectFacade nakedObject) {
             string name = nakedObject.Specification.GetIconName(nakedObject);
             return name.Contains(".") ? name : name + ".png";
         }
 
-        private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+        private static IObjectFacade GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
             var oid = surface.OidTranslator.GetOidTranslation(id);
             return surface.GetObject(oid).Target;
         }

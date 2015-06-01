@@ -119,31 +119,31 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any()) {
-                INakedObjectSurface[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
+                IObjectFacade[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
                 object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy ,req, c, propertyContext.Property, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, INakedObjectSurface item, ChoiceRelType relType, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, ChoiceRelType relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
             object value = ObjectToPredefinedType(item.Object);
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, INakedObjectAssociationSurface property, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy ,item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy, item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
-        public static string SafeGetTitle(INakedObjectSurface no) {
+        public static string SafeGetTitle(IObjectFacade no) {
             return no == null ? "" : no.TitleString;
         }
 
-        public static string SafeGetTitle(INakedObjectAssociationSurface property, INakedObjectSurface valueNakedObject) {
+        public static string SafeGetTitle(INakedObjectAssociationSurface property, IObjectFacade valueNakedObject) {
             return valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
         }
 

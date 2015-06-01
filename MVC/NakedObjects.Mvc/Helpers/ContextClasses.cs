@@ -18,18 +18,18 @@ namespace NakedObjects.Web.Mvc.Html {
             Target = otherContext.Target;
         }
 
-        protected ObjectContext(IIdHelper idHelper, INakedObjectSurface target) {
+        protected ObjectContext(IIdHelper idHelper, IObjectFacade target) {
             IdHelper = idHelper;
             Target = target;
         }
 
         protected IIdHelper IdHelper { get; set; }
-        public INakedObjectSurface Target { get; set; }
+        public IObjectFacade Target { get; set; }
     }
 
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(IIdHelper idHelper, ObjectContext otherContext) : base(idHelper, otherContext) {}
-        protected FeatureContext(IIdHelper idHelper, INakedObjectSurface target) : base(idHelper, target) {}
+        protected FeatureContext(IIdHelper idHelper, IObjectFacade target) : base(idHelper, target) {}
         public abstract ISurfaceHolder Feature { get; }
     }
 
@@ -39,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(IIdHelper idHelper, INakedObjectSurface target, INakedObjectAssociationSurface property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(IIdHelper idHelper, IObjectFacade target, INakedObjectAssociationSurface property, bool isEdit, PropertyContext parentContext = null)
             : base(idHelper, target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = parentContext;
         }
 
-        public INakedObjectSurface OriginalTarget {
+        public IObjectFacade OriginalTarget {
             get { return ParentContext == null ? Target : ParentContext.OriginalTarget; }
         }
 
@@ -65,7 +65,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return this; }
         }
 
-        public INakedObjectSurface GetValue(INakedObjectsSurface surface) {
+        public IObjectFacade GetValue(INakedObjectsSurface surface) {
             return Property.GetNakedObject(Target);
         }
 
@@ -113,13 +113,13 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = otherContext.Action;
         }
 
-        public ActionContext(IIdHelper idHelper, INakedObjectSurface target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, IObjectFacade target, INakedObjectActionSurface action)
             : base(idHelper, target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(IIdHelper idHelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, bool embeddedInObject, IObjectFacade target, INakedObjectActionSurface action)
             : base(idHelper, target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -200,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, INakedObjectSurface target, INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter, bool isEdit)
+        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, IObjectFacade target, INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter, bool isEdit)
             : base(idhelper, embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;
@@ -208,7 +208,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public bool IsHidden { get; set; }
         public INakedObjectActionParameterSurface Parameter { get; set; }
-        public INakedObjectSurface CustomValue { get; set; }
+        public IObjectFacade CustomValue { get; set; }
 
         public override ISurfaceHolder Feature {
             get { return Parameter; }

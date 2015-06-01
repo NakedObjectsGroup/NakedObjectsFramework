@@ -45,17 +45,17 @@ namespace NakedObjects.Surface {
         bool IsConcurrency { get; }
         IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
-        IConsentSurface IsUsable(INakedObjectSurface target);
-        INakedObjectSurface GetNakedObject(INakedObjectSurface target);
-        bool IsVisible(INakedObjectSurface nakedObject);
-        bool IsEager(INakedObjectSurface nakedObject);
-        INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues);
+        IConsentSurface IsUsable(IObjectFacade target);
+        IObjectFacade GetNakedObject(IObjectFacade target);
+        bool IsVisible(IObjectFacade nakedObject);
+        bool IsEager(IObjectFacade nakedObject);
+        IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues);
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
-        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues);
-        INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm);
-        string GetTitle(INakedObjectSurface nakedObject);
-        int Count(INakedObjectSurface target);
-        string GetMaskedValue(INakedObjectSurface valueNakedObject);
-        bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);
+        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues);
+        IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm);
+        string GetTitle(IObjectFacade nakedObject);
+        int Count(IObjectFacade target);
+        string GetMaskedValue(IObjectFacade valueNakedObject);
+        bool DefaultTypeIsExplicit(IObjectFacade nakedObject);
     }
 }

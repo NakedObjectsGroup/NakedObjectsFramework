@@ -113,11 +113,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return menus.Select(m => new MenuWrapper(m ,this, framework)).Cast<IMenuFacade>().ToArray();
         }
 
-        public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {
+        public ObjectContextSurface GetObject(IObjectFacade nakedObject) {
             return MapErrors(() => GetObjectContext(((NakedObjectWrapper) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
         }
 
-        public ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments) {
+        public ObjectContextSurface RefreshObject(IObjectFacade nakedObject, ArgumentsContext arguments) {
             return MapErrors(() => RefreshObjectInternal(((NakedObjectWrapper)nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
         }
 
@@ -168,7 +168,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new UserCredentials(user, password, new List<string>());
         }
 
-        public INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec, object value) {
+        public IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object value) {
             var s = ((NakedObjectSpecificationWrapper) spec).WrappedValue;
             INakedObjectAdapter adapter;
 
@@ -189,7 +189,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return  NakedObjectWrapper.Wrap(adapter, this, Framework);
         }
 
-        public INakedObjectSurface GetObject(object domainObject) {
+        public IObjectFacade GetObject(object domainObject) {
             return NakedObjectWrapper.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 
@@ -1180,7 +1180,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         #endregion
 
-        public object Wrap(object arm, INakedObjectSurface oldNakedObject) {
+        public object Wrap(object arm, IObjectFacade oldNakedObject) {
             var no = ((NakedObjectWrapper)oldNakedObject).WrappedNakedObject;
             // var oid = framework.OidStrategy.GetOid(arm);
             var noArm = framework.GetNakedObject(arm);

@@ -171,7 +171,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
-            var oid = Surface.OidFactory.GetLinkOid(Id);
+            var oid = Surface.OidTranslator.GetOidTranslation(Id);
             var tgt = Surface.GetObject(oid).Target;
 
             var p = Surface.GetProperty(oid, PropertyId);
@@ -207,7 +207,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return ExecuteAction(controlData, filteredNakedObject, targetAction);
             }
             else {
-                var oid = Surface.OidFactory.GetLinkOid(targetNakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
                 var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
 
                 //var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
@@ -215,14 +215,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private INakedObjectSurface GetResult(ActionResultContextSurface context) {
+        private IObjectFacade GetResult(ActionResultContextSurface context) {
             if (context.HasResult) {
                 return context.Result.Target;
             }
             return null;
         }
 
-        private ActionResult ExecuteAction(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
+        private ActionResult ExecuteAction(ObjectAndControlData controlData, IObjectFacade nakedObject, INakedObjectActionSurface action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
@@ -230,14 +230,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
 
                 if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
-                    var oids = nakedObject.ToEnumerable().Select(no => Surface.OidFactory.GetLinkOid(no)).ToArray();
+                    var oids = nakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
                     var spec = nakedObject.ElementSpecification;
 
                     var ar = Surface.ExecuteListAction(oids, spec, action.Id, ac);
                     return AppropriateView(controlData, GetResult(ar), action);
                 }
                 else {
-                    var oid = Surface.OidFactory.GetLinkOid(nakedObject);
+                    var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
                     var ar = Surface.ExecuteObjectAction(oid, action.Id, ac);
 
                     return AppropriateView(controlData, GetResult(ar), action);
@@ -246,7 +246,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (!action.Parameters.Any()) {
                 var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
-                var oid = Surface.OidFactory.GetLinkOid(nakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
                 var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
 
                 return AppropriateView(controlData, GetResult(result), action);
@@ -289,13 +289,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ActionResultContextSurface ar;
 
             if (targetNakedObject.Specification.IsCollection && !targetNakedObject.Specification.IsParseable) {
-                var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidFactory.GetLinkOid(no)).ToArray();
+                var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
                 var spec = targetNakedObject.ElementSpecification;
 
                 ar = Surface.ExecuteListAction(oids, spec, targetAction.Id, ac);
             }
             else {
-                var oid = Surface.OidFactory.GetLinkOid(targetNakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
                 ar = Surface.ExecuteObjectAction(oid, targetAction.Id, ac);
             }
 
@@ -341,7 +341,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = contextAction, PropertyName = propertyName});
         }
 
-        private ActionResult SelectSingleItem(INakedObjectSurface nakedObject, INakedObjectActionSurface action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
+        private ActionResult SelectSingleItem(IObjectFacade nakedObject, INakedObjectActionSurface action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
             var property = DisplaySingleProperty(controlData, selectedItem);
 
             if (action == null) {
@@ -353,8 +353,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
         }
 
-        private bool ApplyEdit(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
-            var oid = Surface.OidFactory.GetLinkOid(nakedObject);
+        private bool ApplyEdit(IObjectFacade nakedObject, ObjectAndControlData controlData) {
+            var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
 
             var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) && p.IsUsable(nakedObject).IsAllowed);
             var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, null, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
@@ -428,7 +428,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var ok = ApplyEdit(nakedObject, controlData);
             if (ok) {
                 string targetActionId = controlData.DataDict["targetActionId"];
-                var oid = Surface.OidFactory.GetLinkOid(nakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
                 var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
                 return ExecuteAction(controlData, nakedObject, targetAction);
             }
@@ -470,7 +470,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : contextNakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == contextActionId);
             var subEditObject = GetNakedObjectFromId(subEditObjectId);
 
-            var oid = Surface.OidFactory.GetLinkOid(subEditObject);
+            var oid = Surface.OidTranslator.GetOidTranslation(subEditObject);
             var ac = ConvertForSave(subEditObject, controlData);
 
             var result = Surface.PutObject(oid, ac);
@@ -518,7 +518,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
 
-            var oid = Surface.OidFactory.GetLinkOid(targetNakedObject);
+            var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
             var parms = GetParameterValues(targetAction, controlData);
             var context = Surface.ExecuteObjectAction(oid, targetActionId, parms);
 
@@ -562,7 +562,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private string GetObjectId(object domainObject) {
             var no = Surface.GetObject(domainObject);
-            return Surface.OidFactory.GetLinkOid(no).ToString();
+            return Surface.OidTranslator.GetOidTranslation(no).ToString();
         }
 
         private ActionResult ActionAsFind(ObjectAndControlData controlData) {
@@ -579,7 +579,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
             if (targetAction.ParameterCount == 0) {
-                var oid = Surface.OidFactory.GetLinkOid(targetNakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
 
                 var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContext() {
                     Values = new Dictionary<string, object>(),
@@ -616,7 +616,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             });
         }
 
-        private static IEnumerable GetResultAsEnumerable(INakedObjectSurface result, INakedObjectActionSurface contextAction, string propertyName) {
+        private static IEnumerable GetResultAsEnumerable(IObjectFacade result, INakedObjectActionSurface contextAction, string propertyName) {
             if (result != null) {
                 if (result.Specification.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
                     return (IEnumerable) result.Object;

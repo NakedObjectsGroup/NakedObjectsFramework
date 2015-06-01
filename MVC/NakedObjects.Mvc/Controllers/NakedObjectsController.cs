@@ -95,7 +95,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
-        internal ActionResult AppropriateView(ObjectAndControlData controlData, INakedObjectSurface nakedObject, INakedObjectActionSurface action = null, string propertyName = null) {
+        internal ActionResult AppropriateView(ObjectAndControlData controlData, IObjectFacade nakedObject, INakedObjectActionSurface action = null, string propertyName = null) {
             if (nakedObject == null) {
                 // no object to go to 
                 // if action on object go to that object. 
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject<object>(), propertyName));
         }
 
-        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, INakedObjectSurface targetNakedObject, object value) {
+        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, IObjectFacade targetNakedObject, object value) {
             var isValid = parm.IsValid(targetNakedObject, value);
 
             if (!isValid.IsAllowed) {
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool CheckForAndAddCollectionMementoNew(string name, string[] values, ObjectAndControlData controlData) {
             if (values.Count() == 1) {
-                var oid = Surface.OidFactory.GetLinkOid(values.First());
+                var oid = Surface.OidTranslator.GetOidTranslation(values.First());
                 var nakedObject = Surface.GetObject(oid).Target;
 
                 if (nakedObject != null && nakedObject.IsCollectionMemento) {
@@ -262,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return new ArgumentsContext() {Values = values, ValidateOnly = false};
         }
 
-        internal void SetContextObjectAsParameterValue(INakedObjectActionSurface targetAction, INakedObjectSurface contextNakedObject) {
+        internal void SetContextObjectAsParameterValue(INakedObjectActionSurface targetAction, IObjectFacade contextNakedObject) {
             if (targetAction.Parameters.Any(p => p.Specification.IsOfType(contextNakedObject.Specification))) {
                 foreach (var parm in targetAction.Parameters) {
                     if (parm.Specification.IsOfType(contextNakedObject.Specification)) {
@@ -337,7 +337,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void SetDefaults(INakedObjectSurface nakedObject, INakedObjectActionSurface action) {
+        internal void SetDefaults(IObjectFacade nakedObject, INakedObjectActionSurface action) {
             foreach (var parm in action.Parameters) {
                 var value = parm.GetDefault(nakedObject);
 
@@ -351,7 +351,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        protected INakedObjectSurface GetNakedObject(object domainObject) {
+        protected IObjectFacade GetNakedObject(object domainObject) {
             if (domainObject == null) {
                 return null;
             }
@@ -359,20 +359,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Surface.GetObject(domainObject);
         }
 
-        protected INakedObjectSurface GetNakedObjectFromId(string id) {
+        protected IObjectFacade GetNakedObjectFromId(string id) {
             if (string.IsNullOrEmpty(id)) {
                 return null;
             }
 
-            var oid = Surface.OidFactory.GetLinkOid(id);
+            var oid = Surface.OidTranslator.GetOidTranslation(id);
             return Surface.GetObject(oid).Target;
         }
 
-        internal void SetSelectedReferences(INakedObjectSurface nakedObject, IDictionary<string, string> dict) {
+        internal void SetSelectedReferences(IObjectFacade nakedObject, IDictionary<string, string> dict) {
             var refItems = (nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.Specification.IsParseable)).Where(a => dict.ContainsKey(a.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(a => ValidateAssociation(nakedObject, a, dict[a.Id]));
-                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => GetNakedObjectFromId(dict[a.Id]));
+                Dictionary<string, IObjectFacade> items = refItems.ToDictionary(a => IdHelper.GetFieldInputId(nakedObject, a), a => GetNakedObjectFromId(dict[a.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
@@ -380,21 +380,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetSelectedParameters(INakedObjectActionSurface action) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
-                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
+                Dictionary<string, IObjectFacade> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
 
-        internal void SetSelectedParameters(INakedObjectSurface nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
+        internal void SetSelectedParameters(IObjectFacade nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).GetDomainObject<object>()));
-                Dictionary<string, INakedObjectSurface> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
+                Dictionary<string, IObjectFacade> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(dict[p.Id]));
                 items.ForEach(kvp => ViewData[kvp.Key] = kvp.Value);
             }
         }
 
-        internal object GetObjectValue(INakedObjectAssociationSurface assoc, INakedObjectSurface targetNakedObject, object value) {
+        internal object GetObjectValue(INakedObjectAssociationSurface assoc, IObjectFacade targetNakedObject, object value) {
             if (value == null) {
                 return null;
             }
@@ -411,13 +411,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!assoc.IsCollection) {
-                return Surface.OidStrategy.GetDomainObjectByOid(Surface.OidFactory.GetLinkOid(value.ToString()));
+                return Surface.OidStrategy.GetDomainObjectByOid(Surface.OidTranslator.GetOidTranslation(value.ToString()));
             }
             // collection 
             return null;
         }
 
-        internal void CheckConcurrency(INakedObjectSurface nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+        internal void CheckConcurrency(IObjectFacade nakedObject, INakedObjectAssociationSurface parent, ObjectAndControlData controlData, Func<INakedObjectAssociationSurface, IObjectFacade, INakedObjectAssociationSurface, string> idFunc) {
             var objectSpec = nakedObject.Specification;
             var concurrencyFields = objectSpec == null ? new List<INakedObjectAssociationSurface>() : objectSpec.Properties.Where(p => p.IsConcurrency).ToList();
 
@@ -449,16 +449,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        protected void GetUsableAndVisibleFields(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
+        protected void GetUsableAndVisibleFields(IObjectFacade nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent, out List<INakedObjectAssociationSurface> usableAndVisibleFields, out List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
 
-        protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(INakedObjectSurface nakedObject,
+        protected static IEnumerable<Tuple<INakedObjectAssociationSurface, object>> GetFieldsAndMatchingValues(IObjectFacade nakedObject,
                                                                                                                INakedObjectAssociationSurface parent,
                                                                                                                IEnumerable<INakedObjectAssociationSurface> associations,
                                                                                                                ObjectAndControlData controlData,
-                                                                                                               Func<INakedObjectAssociationSurface, INakedObjectSurface, INakedObjectAssociationSurface, string> idFunc) {
+                                                                                                               Func<INakedObjectAssociationSurface, IObjectFacade, INakedObjectAssociationSurface, string> idFunc) {
             foreach (var assoc in associations.Where(a => !a.IsInline)) {
                 string name = idFunc(parent, nakedObject, assoc);
                 object newValue = GetValueFromForm(controlData, name);
@@ -476,13 +476,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return controlData.Files.ContainsKey(name) ? controlData.Files[name] : null;
         }
 
-        internal void AddErrorAndAttemptedValue(INakedObjectSurface nakedObject, string newValue, INakedObjectAssociationSurface assoc, string errorText, INakedObjectAssociationSurface parent = null) {
+        internal void AddErrorAndAttemptedValue(IObjectFacade nakedObject, string newValue, INakedObjectAssociationSurface assoc, string errorText, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, assoc);
             ModelState.AddModelError(key, errorText);
             AddAttemptedValue(key, assoc.Specification.IsParseable ? (object) newValue : GetNakedObjectFromId(newValue));
         }
 
-        internal void AddAttemptedValuesNew(INakedObjectSurface nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
+        internal void AddAttemptedValuesNew(IObjectFacade nakedObject, ObjectAndControlData controlData, INakedObjectAssociationSurface parent = null) {
             foreach (var assoc in nakedObject.Specification.Properties.Where(p => p.IsUsable(nakedObject).IsAllowed && p.IsVisible(nakedObject) || p.IsConcurrency)) {
                 string name = GetFieldInputId(parent, nakedObject, assoc);
                 string value = GetValueFromForm(controlData, name) as string;
@@ -505,7 +505,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal ArgumentsContext ConvertForSave(INakedObjectSurface nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
+        internal ArgumentsContext ConvertForSave(IObjectFacade nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
             List<INakedObjectAssociationSurface> usableAndVisibleFields;
             List<Tuple<INakedObjectAssociationSurface, object>> fieldsAndMatchingValues;
             GetUsableAndVisibleFields(nakedObject, controlData, null, out usableAndVisibleFields, out fieldsAndMatchingValues);
@@ -527,27 +527,27 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ac;
         }
 
-        internal void RefreshTransient(INakedObjectSurface nakedObject, FormCollection form, INakedObjectAssociationSurface parent = null) {
+        internal void RefreshTransient(IObjectFacade nakedObject, FormCollection form, INakedObjectAssociationSurface parent = null) {
             if (nakedObject.IsTransient) {
                 var ac = Convert(form);
                 Surface.RefreshObject(nakedObject, ac);
             }
         }
 
-        protected string GetFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineFieldInputId(parent, nakedObject, assoc);
         }
 
-        protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, INakedObjectSurface nakedObject, INakedObjectAssociationSurface assoc) {
+        protected string GetConcurrencyFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade nakedObject, INakedObjectAssociationSurface assoc) {
             return parent == null ? IdHelper.GetConcurrencyFieldInputId(nakedObject, assoc) :
                 IdHelper.GetInlineConcurrencyFieldInputId(parent, nakedObject, assoc);
         }
 
-        internal void ValidateAssociation(INakedObjectSurface nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
+        internal void ValidateAssociation(IObjectFacade nakedObject, INakedObjectAssociationSurface oneToOneAssoc, object attemptedValue, INakedObjectAssociationSurface parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
             try {
-                var oid = Surface.OidFactory.GetLinkOid(nakedObject);
+                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
 
                 var ac = new ArgumentContext {
                     Value = attemptedValue,
@@ -572,7 +572,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));
         }
 
-        internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, INakedObjectSurface targetNakedObject) {
+        internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, IObjectFacade targetNakedObject) {
             return action.IsContributed && !action.OnType.Equals(targetNakedObject.Specification);
         }
 
@@ -599,7 +599,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ViewData.Add(IdConstants.NofEncryptDecrypt, EncryptDecryptService);
         }
 
-        internal void SetPagingValues(ObjectAndControlData controlData, INakedObjectSurface nakedObject) {
+        internal void SetPagingValues(ObjectAndControlData controlData, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsCollection) {
                 int sink1, sink2;
                 CurrentlyPaging(controlData, nakedObject.Count(), out sink1, out sink2);
@@ -644,7 +644,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return action != null ? action.PageSize : 0;
         }
 
-        internal INakedObjectSurface Page(INakedObjectSurface nakedObject, int collectionSize, ObjectAndControlData controlData) {
+        internal IObjectFacade Page(IObjectFacade nakedObject, int collectionSize, ObjectAndControlData controlData) {
             int page, pageSize;
 
             if (CurrentlyPaging(controlData, collectionSize, out page, out pageSize) && !nakedObject.IsPaged) {
@@ -655,11 +655,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return nakedObject.Page(1, collectionSize);
         }
 
-        internal INakedObjectSurface FilterCollection(INakedObjectSurface nakedObject, ObjectAndControlData controlData) {
+        internal IObjectFacade FilterCollection(IObjectFacade nakedObject, ObjectAndControlData controlData) {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
-                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidFactory.GetLinkOid(x).Encode(), y => y.GetDomainObject<object>());
+                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidTranslator.GetOidTranslation(x).Encode(), y => y.GetDomainObject<object>());
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return nakedObject.Select(selected, false);
             }

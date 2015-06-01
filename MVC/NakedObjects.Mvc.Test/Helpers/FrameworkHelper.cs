@@ -30,7 +30,7 @@ namespace MvcTestApp.Tests.Helpers {
                 Where(a => a.IsVisible(nakedObject));
         }
 
-        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
 
                 var elementSpec = nakedObject.ElementSpecification;
@@ -248,7 +248,7 @@ namespace MvcTestApp.Tests.Helpers {
             return spec != null && (spec.IsImage(framework) || spec.IsFileAttachment(framework) || spec.ContainsFacet<IArrayValueFacet<byte>>());
         }
 
-        public static string IconName(INakedObjectSurface nakedObject) {
+        public static string IconName(IObjectFacade nakedObject) {
             string name = nakedObject.Specification.GetIconName(nakedObject);
             return name.Contains(".") ? name : name + ".png";
         }
@@ -277,8 +277,8 @@ namespace MvcTestApp.Tests.Helpers {
 
     
 
-        private static INakedObjectSurface GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
-            var oid = surface.OidFactory.GetLinkOid(id);
+        private static IObjectFacade GetNakedObjectFromId(INakedObjectsSurface surface, string id) {
+            var oid = surface.OidTranslator.GetOidTranslation(id);
             return surface.GetObject(oid).Target;
         }
 

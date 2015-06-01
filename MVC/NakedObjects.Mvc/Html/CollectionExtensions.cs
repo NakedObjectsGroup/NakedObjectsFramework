@@ -48,7 +48,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdConstants.ListDisplayFormat) {
             var adapter = html.Surface().GetObject(domainObject);
-            IEnumerable<INakedObjectSurface> collections = adapter.Specification.Properties.Where(p => p.IsCollection).Select(a => a.GetNakedObject(adapter));
+            IEnumerable<IObjectFacade> collections = adapter.Specification.Properties.Where(p => p.IsCollection).Select(a => a.GetNakedObject(adapter));
             return collections.Select(c => html.Collection(c.ToEnumerable(), null, defaultTo)).ToArray();
         }
 

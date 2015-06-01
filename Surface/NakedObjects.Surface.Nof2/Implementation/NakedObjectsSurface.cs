@@ -76,11 +76,11 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return MapErrors(() => SurfaceUtils.GetServicesInternal().Select(s => new ObjectContext(s).ToObjectContextSurface(this)).ToArray());
         }
 
-        public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {
+        public ObjectContextSurface GetObject(IObjectFacade nakedObject) {
             throw new NotImplementedException();
         }
 
-        public ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments) {
+        public ObjectContextSurface RefreshObject(IObjectFacade nakedObject, ArgumentsContext arguments) {
             throw new NotImplementedException();
         }
 
@@ -223,15 +223,15 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return new UserCredentials("WELFARE\\sdmtraining3", password, new List<string>());
         }
 
-        public INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec, object domainObject) {
+        public IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object domainObject) {
             throw new NotImplementedException();
         }
 
-        public INakedObjectSurface GetObject(object domainObject) {
+        public IObjectFacade GetObject(object domainObject) {
             throw new NotImplementedException();
         }
 
-        public object Wrap(object arm, INakedObjectSurface oldNakedObject) {
+        public object Wrap(object arm, IObjectFacade oldNakedObject) {
             throw new NotImplementedException();
         }
 

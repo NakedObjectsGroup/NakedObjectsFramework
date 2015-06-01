@@ -86,7 +86,7 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface no) {
+        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no) {
             var helper = new UriMtHelper(oidStrategy ,req, no);
             var rt = new ObjectRelType(RelValues.Element, helper);
 

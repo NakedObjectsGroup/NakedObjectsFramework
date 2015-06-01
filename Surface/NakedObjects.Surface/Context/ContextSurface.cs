@@ -9,13 +9,13 @@ namespace NakedObjects.Surface {
     public abstract class ContextSurface {
         public abstract string Id { get; }
 
-        public virtual INakedObjectSurface Target { get; set; }
+        public virtual IObjectFacade Target { get; set; }
 
         public virtual string Reason { get; set; }
 
         public virtual Cause ErrorCause { get; set; }
 
-        public virtual INakedObjectSurface ProposedNakedObject { get; set; }
+        public virtual IObjectFacade ProposedNakedObject { get; set; }
 
         public virtual object ProposedValue { get; set; }
 

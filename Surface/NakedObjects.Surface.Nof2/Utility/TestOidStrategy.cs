@@ -51,7 +51,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             }
         }
 
-        public string GetObjectId(INakedObjectSurface nakedobject) {
+        public string GetObjectId(IObjectFacade nakedobject) {
             throw new NotImplementedException();
         }
 
@@ -93,12 +93,12 @@ namespace NakedObjects.Surface.Nof2.Utility {
 
         #endregion
 
-        protected Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {
+        protected Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             var code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
         }
 
-        protected static string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
+        protected static string GetKeyValues(IObjectFacade nakedObjectForKey) {
             PropertyInfo keyProperty = nakedObjectForKey.Object.GetType().GetProperty("Id");
 
             if (keyProperty != null) {

@@ -20,8 +20,8 @@ namespace NakedObjects.Surface {
         ObjectContextSurface GetService(IOidTranslation serviceName);
         ListContextSurface GetServices();
         IMenuFacade[] GetMainMenus();
-        ObjectContextSurface GetObject(INakedObjectSurface nakedObject);
-        ObjectContextSurface RefreshObject(INakedObjectSurface nakedObject, ArgumentsContext arguments);
+        ObjectContextSurface GetObject(IObjectFacade nakedObject);
+        ObjectContextSurface RefreshObject(IObjectFacade nakedObject, ArgumentsContext arguments);
         ObjectContextSurface GetObject(IOidTranslation objectId);
         ObjectContextSurface PutObject(IOidTranslation objectId, ArgumentsContext arguments);
         PropertyContextSurface GetProperty(IOidTranslation objectId, string propertyName);
@@ -45,9 +45,9 @@ namespace NakedObjects.Surface {
         UserCredentials Validate(string user, string password);
         // todo this to help the transition may be able to be removed after
 
-        INakedObjectSurface GetObject(INakedObjectSpecificationSurface spec, object domainObject);
-        INakedObjectSurface GetObject(object domainObject);
+        IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object domainObject);
+        IObjectFacade GetObject(object domainObject);
         // todo temp wrap - probably remove actionresult model ? 
-        object Wrap(object arm, INakedObjectSurface oldNakedObject);
+        object Wrap(object arm, IObjectFacade oldNakedObject);
     }
 }

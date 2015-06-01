@@ -25,7 +25,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly INakedObjectAssociationSurface assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
         private  string cachedType; // cache because may not be available at writing time 
-        private readonly INakedObjectSurface nakedObject;
+        private readonly IObjectFacade nakedObject;
         private readonly INakedObjectActionParameterSurface param;
         private readonly Uri prefix;
         private readonly INakedObjectSpecificationSurface spec;
@@ -51,7 +51,7 @@ namespace RestfulObjects.Snapshot.Utility {
             DebugLogRequest(req);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSurface nakedObject) : this(oidStrategy ,req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade nakedObject) : this(oidStrategy ,req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
             IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(nakedObject);
@@ -442,7 +442,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public MediaTypeHeaderValue GetAttachmentMediaType() {
-            INakedObjectSurface no = assoc.GetNakedObject(nakedObject);
+            IObjectFacade no = assoc.GetNakedObject(nakedObject);
             string mtv = no != null ? no.GetAttachment().MimeType : "";
             return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? "image/bmp" : mtv);
         }

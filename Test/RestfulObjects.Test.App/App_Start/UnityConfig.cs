@@ -57,7 +57,7 @@ namespace RestfulObjects.Test.App {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // surface
-            container.RegisterType<ILinkOidFactory, KeyFormatLinkOidFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerResolveLifetimeManager());
 

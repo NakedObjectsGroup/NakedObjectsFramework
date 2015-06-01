@@ -84,7 +84,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextSurface> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             OptionalProperty[] memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToArray();
-            INakedObjectSurface target = contexts.First().Target;
+            IObjectFacade target = contexts.First().Target;
             MapRepresentation mapRepresentation;
 
             if (format == Format.Full) {

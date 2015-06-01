@@ -33,7 +33,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return Flags;
         }
 
-        public INakedObjectSurface GetTarget() {
+        public IObjectFacade GetTarget() {
             return actionContext.Target;
         }
 
@@ -46,7 +46,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private ParameterRepresentation GetParameter(INakedObjectActionParameterSurface parameter) {
-            INakedObjectSurface nakedObject = actionContext.Target;
+            IObjectFacade nakedObject = actionContext.Target;
             return ParameterRepresentation.Create(OidStrategy,req, nakedObject, parameter, Flags);
         }
 

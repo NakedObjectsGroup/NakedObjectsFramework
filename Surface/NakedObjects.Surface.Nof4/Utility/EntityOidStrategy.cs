@@ -108,7 +108,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         //    return framework.GetObjectId(nakedObject);
         //}
 
-        //public string GetObjectId(INakedObjectSurface nakedobject) {
+        //public string GetObjectId(IObjectFacade nakedobject) {
         //    var no = ((NakedObjectWrapper)nakedobject).WrappedNakedObject;
         //    return GetObjectId(no);
         //}
@@ -175,7 +175,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return GetCode(TypeUtils.GetType(spec.FullName));
         }
 
-        private Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {
+        private Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             string code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
         }
@@ -187,7 +187,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return (string)Convert.ChangeType(obj, typeof(string)); // better ? 
         }
 
-        private string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
+        private string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
             INakedObjectAdapter wrappedNakedObject = ((NakedObjectWrapper)nakedObjectForKey).WrappedNakedObject;
 

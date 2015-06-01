@@ -109,15 +109,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return IsASet; }
         }
 
-        public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
+        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
             return ElementType;
         }
 
-        bool INakedObjectSpecificationSurface.IsImmutable(INakedObjectSurface nakedObject) {
+        bool INakedObjectSpecificationSurface.IsImmutable(IObjectFacade nakedObject) {
             return IsService;
         }
 
-        public string GetIconName(INakedObjectSurface nakedObject) {
+        public string GetIconName(IObjectFacade nakedObject) {
             string iconName = nakedObject == null ? "" : ((NakedReference) ((NakedObjectWrapper) nakedObject).NakedObject).getIconName();
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }

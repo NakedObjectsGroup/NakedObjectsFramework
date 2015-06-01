@@ -14,7 +14,7 @@ using org.nakedobjects.@object;
 using sdm.systems.reflector;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectWrapper : INakedObjectSurface {
+    public class NakedObjectWrapper : IObjectFacade {
         private readonly Naked nakedObject;
 
         public NakedObjectWrapper(Naked nakedObject, INakedObjectsSurface surface) {
@@ -26,7 +26,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return nakedObject; }
         }
 
-        #region INakedObjectSurface Members
+        #region IObjectFacade Members
 
         public INakedObjectSpecificationSurface Specification {
             get { return new NakedObjectSpecificationWrapper(NakedObject.getSpecification(), NakedObject, Surface); }
@@ -56,15 +56,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsViewModel { get; private set; }
         public IDictionary<string, object> ExtensionData { get; private set; }
 
-        public IEnumerable<INakedObjectSurface> ToEnumerable() {
+        public IEnumerable<IObjectFacade> ToEnumerable() {
             return ((IEnumerable) Object).Cast<object>().Select(o => new NakedObjectWrapper(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), Surface));
         }
 
-        public INakedObjectSurface Page(int page, int size) {
+        public IObjectFacade Page(int page, int size) {
             return new NakedObjectWrapper(nakedObject, Surface);
         }
 
-        public INakedObjectSurface Select(object[] selection, bool forceEnumerable) {
+        public IObjectFacade Select(object[] selection, bool forceEnumerable) {
             throw new NotImplementedException();
         }
 

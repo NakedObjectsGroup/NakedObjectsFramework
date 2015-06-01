@@ -45,7 +45,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public string GetOidAsString(INakedObjectSurface nakedObject) {
+        public string GetOidAsString(IObjectFacade nakedObject) {
             // don't know if services need to be handled differently 
 
             //if (nakedObject.Specification.IsService) {
@@ -54,12 +54,12 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return nakedObject.Oid.ToString();
         }
 
-        public string[] GetTypeAndKeyAsStrings(INakedObjectSurface nakedObject) {
+        public string[] GetTypeAndKeyAsStrings(IObjectFacade nakedObject) {
             throw new System.NotImplementedException();
         }
 
        
-        public string GetObjectId(INakedObjectSurface nakedobject) {
+        public string GetObjectId(IObjectFacade nakedobject) {
             throw new System.NotImplementedException();
         }
 

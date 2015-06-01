@@ -13,7 +13,7 @@ namespace NakedObjects.Surface {
 
         public ActionContextSurface ActionContext { get; set; }
 
-        public override INakedObjectSurface Target {
+        public override IObjectFacade Target {
             get { return ActionContext.Target; }
         }
 

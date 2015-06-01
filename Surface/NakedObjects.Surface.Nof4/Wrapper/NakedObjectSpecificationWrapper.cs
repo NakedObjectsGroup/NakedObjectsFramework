@@ -161,11 +161,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return new MenuWrapper(spec.Menu, Surface, framework); }
         }
 
-        public bool IsImmutable(INakedObjectSurface nakedObject) {
+        public bool IsImmutable(IObjectFacade nakedObject) {
             return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !nakedObject.IsTransient);
         }
 
-        public string GetIconName(INakedObjectSurface nakedObject) {
+        public string GetIconName(IObjectFacade nakedObject) {
             return spec.GetIconName(nakedObject == null ? null : ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
@@ -174,7 +174,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<INakedObjectActionSurface>().ToArray();
         }
 
-        public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
+        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
             if (IsCollection) {
                 var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);

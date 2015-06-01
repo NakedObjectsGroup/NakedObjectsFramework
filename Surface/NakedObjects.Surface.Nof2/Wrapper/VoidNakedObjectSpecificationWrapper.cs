@@ -82,15 +82,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsAlwaysImmutable { get; private set; }
         public bool IsImmutableOncePersisted { get; private set; }
 
-        public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
+        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
             throw new NotImplementedException();
         }
 
-        bool INakedObjectSpecificationSurface.IsImmutable(INakedObjectSurface nakedObject) {
+        bool INakedObjectSpecificationSurface.IsImmutable(IObjectFacade nakedObject) {
             return false;
         }
 
-        public string GetIconName(INakedObjectSurface nakedObject) {
+        public string GetIconName(IObjectFacade nakedObject) {
             return null;
         }
 

@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the id for an action dialog
         /// </summary>
         public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, INakedObjectActionSurface action) {
-            INakedObjectSurface nakedObject = html.Surface().GetObject(domainObject);
+            IObjectFacade nakedObject = html.Surface().GetObject(domainObject);
             return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(nakedObject, action));
         }
 

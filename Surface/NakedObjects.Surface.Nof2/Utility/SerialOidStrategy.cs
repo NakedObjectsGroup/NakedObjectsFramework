@@ -52,20 +52,20 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public string GetOidAsString(INakedObjectSurface nakedObject) {
+        public string GetOidAsString(IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsService) {
                 return nakedObject.Specification.FullName;
             }
             return nakedObject.Oid.ToString();
         }
 
-        public string[] GetTypeAndKeyAsStrings(INakedObjectSurface nakedObject) {
+        public string[] GetTypeAndKeyAsStrings(IObjectFacade nakedObject) {
             throw new System.NotImplementedException();
         }
 
        
 
-        public string GetObjectId(INakedObjectSurface nakedobject) {
+        public string GetObjectId(IObjectFacade nakedobject) {
             throw new System.NotImplementedException();
         }
 

@@ -30,7 +30,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        protected void SetHeader(INakedObjectSurface target) {
+        protected void SetHeader(IObjectFacade target) {
             SetEtag(target);
         }
 

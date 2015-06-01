@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectSurface :  ISurfaceHolder {
+    public interface IObjectFacade :  ISurfaceHolder {
         INakedObjectSpecificationSurface Specification { get; }
         INakedObjectSpecificationSurface ElementSpecification { get; }
         object Object { get; }
@@ -28,10 +28,10 @@ namespace NakedObjects.Surface {
         bool IsViewModelEditView { get; }
         bool IsViewModel { get; }
         IDictionary<string, object> ExtensionData { get; }
-        IEnumerable<INakedObjectSurface> ToEnumerable();
+        IEnumerable<IObjectFacade> ToEnumerable();
         PropertyInfo[] GetKeys();
-        INakedObjectSurface Page(int page, int size);
-        INakedObjectSurface Select(object[] selection, bool forceEnumerable);
+        IObjectFacade Page(int page, int size);
+        IObjectFacade Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContext GetAttachment();
         object[] GetSelected();

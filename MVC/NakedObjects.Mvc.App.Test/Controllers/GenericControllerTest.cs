@@ -66,7 +66,7 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        private INakedObjectSurface GetService(string name) {
+        private IObjectFacade GetService(string name) {
             return Surface.GetServices().List.SingleOrDefault(s => s.Specification.ShortName == name);
         }
 
@@ -161,11 +161,11 @@ namespace MvcTestApp.Tests.Controllers {
             get { return GetObjectId(Product); }
         }
 
-        private INakedObjectSurface EmployeeRepo {
+        private IObjectFacade EmployeeRepo {
             get { return GetService("EmployeeRepository"); }
         }
 
-        private INakedObjectSurface OrderContributedActions {
+        private IObjectFacade OrderContributedActions {
             get { return GetService("OrderContributedActions"); }
         }
 
@@ -173,7 +173,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return GetObjectId(OrderContributedActions); }
         }
 
-        private INakedObjectSurface ProductRepo {
+        private IObjectFacade ProductRepo {
             get { return GetService("ProductRepository"); }
         }
 
@@ -185,7 +185,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return GetObjectId(ProductRepo); }
         }
 
-        private INakedObjectSurface OrderRepo {
+        private IObjectFacade OrderRepo {
             get { return GetService("OrderRepository"); }
         }
 
@@ -193,7 +193,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return GetObjectId(OrderRepo); }
         }
 
-        private INakedObjectSurface OrderContrib {
+        private IObjectFacade OrderContrib {
             get { return GetService("OrderContributedActions"); }
         }
 
@@ -201,7 +201,7 @@ namespace MvcTestApp.Tests.Controllers {
             get { return GetObjectId(OrderContrib); }
         }
 
-        private INakedObjectSurface CustomerRepo {
+        private IObjectFacade CustomerRepo {
             get { return GetService("CustomerRepository"); }
         }
 
@@ -230,7 +230,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private string GetObjectId(object obj) {
-            return Surface.OidFactory.GetLinkOid(obj as INakedObjectSurface ?? Surface.GetObject(obj)).Encode();
+            return Surface.OidTranslator.GetOidTranslation(obj as IObjectFacade ?? Surface.GetObject(obj)).Encode();
         }
 
         protected override void RegisterTypes(IUnityContainer container) {
@@ -242,7 +242,7 @@ namespace MvcTestApp.Tests.Controllers {
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
-            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
 
         }
 
@@ -316,7 +316,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetObjectId(GetBoundedInstance<T>(title).GetDomainObject());
         }
 
-        private FormCollection GetFormForFindEmployeeByName(INakedObjectSurface employeeRepo, string firstName, string secondName) {
+        private FormCollection GetFormForFindEmployeeByName(IObjectFacade employeeRepo, string firstName, string secondName) {
             INakedObjectActionSurface actionFindEmployeeByname = employeeRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindEmployeeByName");
 
             var parmFirstName = actionFindEmployeeByname.Parameters[0];
@@ -331,7 +331,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForFindSalesPersonByName(INakedObjectSurface salesRepo, string firstName, string secondName) {
+        private FormCollection GetFormForFindSalesPersonByName(IObjectFacade salesRepo, string firstName, string secondName) {
             var action = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindSalesPersonByName");
 
             var parmFirstName = action.Parameters[0];
@@ -346,7 +346,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForFindContactByName(INakedObjectSurface contactRepo, string firstName, string secondName) {
+        private FormCollection GetFormForFindContactByName(IObjectFacade contactRepo, string firstName, string secondName) {
             INakedObjectActionSurface action = contactRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindContactByName");
 
             var parmFirstName = action.Parameters[0];
@@ -361,7 +361,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForBestSpecialOffer(INakedObjectSurface productRepo, string quantity) {
+        private FormCollection GetFormForBestSpecialOffer(IObjectFacade productRepo, string quantity) {
             INakedObjectActionSurface action = productRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "BestSpecialOffer");
             var parmQuantity = action.Parameters[0];
             string idQuantity = IdHelper.GetParameterInputId((action), (parmQuantity));
@@ -370,7 +370,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForChangePassword(INakedObjectSurface contact, string p1, string p2, string p3) {
+        private FormCollection GetFormForChangePassword(IObjectFacade contact, string p1, string p2, string p3) {
             INakedObjectActionSurface action = contact.Specification.GetActionLeafNodes().Single(a => a.Id == "ChangePassword");
             var pp1 = action.Parameters[0];
             var pp2 = action.Parameters[1];
@@ -387,7 +387,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForListProductsBySubCategory(INakedObjectSurface productRepo, string pscId) {
+        private FormCollection GetFormForListProductsBySubCategory(IObjectFacade productRepo, string pscId) {
             INakedObjectActionSurface action = productRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ListProductsBySubCategory");
             var parmPsc = action.Parameters[0];
             string idPsc = IdHelper.GetParameterInputId((action), (parmPsc));
@@ -397,8 +397,8 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private FormCollection GetFormForShiftEdit(INakedObjectSurface shift,
-                                                   INakedObjectSurface timePeriod,
+        private FormCollection GetFormForShiftEdit(IObjectFacade shift,
+                                                   IObjectFacade timePeriod,
                                                    string t1,
                                                    string t2,
                                                    out IDictionary<string, string> idToRawValue) {
@@ -424,7 +424,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private FormCollection GetFormForVendorEdit(INakedObjectSurface vendor,
+        private FormCollection GetFormForVendorEdit(IObjectFacade vendor,
                                                     string accountNumber,
                                                     string name,
                                                     string creditRating,
@@ -459,7 +459,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        public FormCollection GetFormForStoreEdit(INakedObjectSurface store,
+        public FormCollection GetFormForStoreEdit(IObjectFacade store,
                                                   string storeName,
                                                   string salesPerson,
                                                   string modifiedDate,
@@ -482,7 +482,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private FormCollection GetFormForCeditCardEdit(INakedObjectSurface creditCard,
+        private FormCollection GetFormForCeditCardEdit(IObjectFacade creditCard,
                                                        string cardType,
                                                        string cardNumber,
                                                        string expiryMonth,
@@ -532,11 +532,11 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private static INakedObjectActionSurface GetAction(INakedObjectSurface owner, string id) {
+        private static INakedObjectActionSurface GetAction(IObjectFacade owner, string id) {
             return owner.Specification.GetActionLeafNodes().Single(a => a.Id == id);
         }
 
-        //private INakedObjectSurface GetService(string serviceName) {
+        //private IObjectFacade GetService(string serviceName) {
         //    return Surface.GetServices().List.SingleOrDefault(s => s.Specification.FullName.Split('.').Last() == serviceName);
         //}
 
@@ -576,7 +576,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditSaveValidationOk(Vendor vendor, bool saveAndClose = false) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObjectSurface adaptedVendor = Surface.GetObject(vendor);
+            IObjectFacade adaptedVendor = Surface.GetObject(vendor);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = GetObjectId(vendor)};
@@ -609,7 +609,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditApplyActionValidationOk(Vendor vendor) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObjectSurface adaptedVendor = Surface.GetObject(vendor);
+            IObjectFacade adaptedVendor = Surface.GetObject(vendor);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = GetObjectId(vendor)};
@@ -634,8 +634,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditInlineSaveValidationOk(Shift shift, int i) {
-            INakedObjectSurface adaptedShift = Surface.GetObject(shift);
-            INakedObjectSurface adaptedTimePeriod = Surface.GetObject(shift.Times);
+            IObjectFacade adaptedShift = Surface.GetObject(shift);
+            IObjectFacade adaptedTimePeriod = Surface.GetObject(shift.Times);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.AddHours(i).ToString(), DateTime.Now.AddHours(i).AddHours(8).ToString(), out idToRawvalue);
 
@@ -657,7 +657,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditSaveValidationFail(Vendor vendor) {
-            INakedObjectSurface adaptedVendor = Surface.GetObject(vendor);
+            IObjectFacade adaptedVendor = Surface.GetObject(vendor);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, "", "", "", "", "", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = GetObjectId(vendor)};
@@ -673,8 +673,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditInlineSaveValidationFail(Shift shift) {
-            INakedObjectSurface adaptedShift = Surface.GetObject(shift);
-            INakedObjectSurface adaptedTimePeriod = Surface.GetObject(shift.Times);
+            IObjectFacade adaptedShift = Surface.GetObject(shift);
+            IObjectFacade adaptedTimePeriod = Surface.GetObject(shift.Times);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), "invalid", out idToRawvalue);
 
@@ -691,7 +691,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditSaveValidationFailEmptyForm(Individual individual) {
-            INakedObjectSurface nakedObject = Surface.GetObject(individual);
+            IObjectFacade nakedObject = Surface.GetObject(individual);
 
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = GetObjectId(individual)};
@@ -1287,7 +1287,7 @@ namespace MvcTestApp.Tests.Controllers {
             Employee employee = TransientEmployee;
             Employee report1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
             Employee report2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
-            INakedObjectSurface employeeNakedObject = Surface.GetObject(employee);
+            IObjectFacade employeeNakedObject = Surface.GetObject(employee);
             INakedObjectAssociationSurface collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
@@ -1310,7 +1310,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test, Ignore] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
         public void EditSaveConcurrencyFail() {
             Store store = Store;
-            INakedObjectSurface adaptedStore = Surface.GetObject(store);
+            IObjectFacade adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
             string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
@@ -1334,7 +1334,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test, Ignore] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
         public void EditSaveConcurrencyOk() {
             Store store = Store;
-            INakedObjectSurface adaptedStore = Surface.GetObject(store);
+            IObjectFacade adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
@@ -1488,7 +1488,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void InvokeActionAsFindParmsForAction() {
             INakedObjectActionSurface action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObjectSurface contactRepo = GetService("ContactRepository");
+            IObjectFacade contactRepo = GetService("ContactRepository");
             INakedObjectActionSurface findByName = contactRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
@@ -1507,7 +1507,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void InvokeActionAsFindParmsForActionWithParms() {
             INakedObjectActionSurface action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObjectSurface contactRepo = GetService("ContactRepository");
+            IObjectFacade contactRepo = GetService("ContactRepository");
             INakedObjectActionSurface findByName = contactRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
@@ -1530,7 +1530,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store transientStore = TransientStore;
             var adaptedStore = Surface.GetObject(store);
             INakedObjectActionSurface action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObjectSurface contactRepo = GetService("ContactRepository");
+            IObjectFacade contactRepo = GetService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
             INakedObjectActionSurface findByName = contactRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
@@ -1555,7 +1555,7 @@ namespace MvcTestApp.Tests.Controllers {
             Vendor transientVendor = TransientVendor;
             var adaptedStore = Surface.GetObject(store);
             INakedObjectActionSurface action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObjectSurface contactRepo = GetService("ContactRepository");
+            IObjectFacade contactRepo = GetService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
             INakedObjectActionSurface findByName = contactRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
@@ -1566,7 +1566,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&subEditObjectId=" + GetObjectId(transientVendor) +
                           "&targetObjectId=" + GetObjectId(contactRepo);
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObjectSurface adaptedVendor = Surface.GetObject(transientVendor);
+            IObjectFacade adaptedVendor = Surface.GetObject(transientVendor);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsSave = data};
@@ -1588,7 +1588,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var form = new FormCollection {{"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0"}, {"SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0"}};
 
-            INakedObjectSurface order = Surface.GetObject(Order);
+            IObjectFacade order = Surface.GetObject(Order);
             INakedObjectAssociationSurface assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
             INakedObjectActionSurface action = order.Specification.GetActionLeafNodes().Single(a => a.Id == "AddNewSalesReasons");
 
@@ -1617,7 +1617,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"1");
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
-            INakedObjectSurface order = Surface.GetObject(Order);
+            IObjectFacade order = Surface.GetObject(Order);
             INakedObjectAssociationSurface assocMD = order.Specification.Properties.Single(p => p.Id == "ModifiedDate");
             INakedObjectActionSurface action = order.Specification.GetActionLeafNodes().Single(a => a.Id == "AddNewSalesReasonsByCategories");
 
@@ -1788,7 +1788,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store transientStore = TransientStore;
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSurface salesRepo = GetService("SalesRepository");
+            IObjectFacade salesRepo = GetService("SalesRepository");
             INakedObjectActionSurface spAction = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
@@ -1812,7 +1812,7 @@ namespace MvcTestApp.Tests.Controllers {
             Vendor transientVendor = TransientVendor;
             var adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSurface salesRepo = GetService("SalesRepository");
+            IObjectFacade salesRepo = GetService("SalesRepository");
             INakedObjectActionSurface spAction = salesRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
@@ -1823,7 +1823,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&contextActionId=";
 
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObjectSurface adaptedVendor = Surface.GetObject(transientVendor);
+            IObjectFacade adaptedVendor = Surface.GetObject(transientVendor);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
 
@@ -1888,7 +1888,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsNotSet() {
-            INakedObjectSurface adaptedProduct = Surface.GetObject(Product);
+            IObjectFacade adaptedProduct = Surface.GetObject(Product);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -1902,7 +1902,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsSet() {
-            INakedObjectSurface adaptedProduct = Surface.GetObject(Product);
+            IObjectFacade adaptedProduct = Surface.GetObject(Product);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "1");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 

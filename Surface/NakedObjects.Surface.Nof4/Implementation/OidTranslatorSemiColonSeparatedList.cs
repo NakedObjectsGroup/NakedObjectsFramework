@@ -12,10 +12,10 @@ using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
-    public class InternalFormatOidTranslator : IOidTranslator {
+    public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
         private readonly ILifecycleManager lifecycleManager;
 
-        public InternalFormatOidTranslator(ILifecycleManager lifecycleManager) {
+        public OidTranslatorSemiColonSeparatedList(ILifecycleManager lifecycleManager) {
             this.lifecycleManager = lifecycleManager;
         }
 
@@ -51,7 +51,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return Encode(((IEncodedToStrings)oid.Value));
         }
 
-        public IOidTranslation GetOidTranslation(INakedObjectSurface nakedObject) {
+        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
 
             if (nakedObject.IsViewModel) {
                 var vm = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;

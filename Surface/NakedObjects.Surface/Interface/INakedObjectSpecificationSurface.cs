@@ -40,9 +40,9 @@ namespace NakedObjects.Surface {
         IDictionary<string, object> ExtensionData { get; }
         bool IsBoolean { get; }
         bool IsEnum { get; }
-        INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject);
-        bool IsImmutable(INakedObjectSurface nakedObject);
-        string GetIconName(INakedObjectSurface nakedObject);
+        INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject);
+        bool IsImmutable(IObjectFacade nakedObject);
+        string GetIconName(IObjectFacade nakedObject);
         INakedObjectActionSurface[] GetActionLeafNodes();
         bool IsOfType(INakedObjectSpecificationSurface otherSpec);
         Type GetUnderlyingType();

@@ -120,7 +120,7 @@ namespace RestfulObjects.Snapshot.Representations {
             m.Content.Headers.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
         }
 
-        protected void SetEtag(INakedObjectSurface target) {
+        protected void SetEtag(IObjectFacade target) {
             if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
                 string digest = target.Version.Digest;
                 if (digest != null) {
@@ -253,8 +253,8 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        protected static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface property, INakedObjectSurface target, RestControlFlags flags, bool valueOnly = false) {
-            INakedObjectSurface valueNakedObject = property.GetNakedObject(target);
+        protected static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectAssociationSurface property, IObjectFacade target, RestControlFlags flags, bool valueOnly = false) {
+            IObjectFacade valueNakedObject = property.GetNakedObject(target);
             string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
             if (valueNakedObject == null) {

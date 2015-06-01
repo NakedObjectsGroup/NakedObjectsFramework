@@ -38,7 +38,7 @@ namespace NakedObjects.Web.Mvc.Models {
         private IDictionary<string, string> dataDict;
         public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
         private INakedObjectActionSurface nakedObjectAction;
-        private INakedObjectSurface nakedObjectSurface;
+        private IObjectFacade nakedObjectSurface;
 
         public SubActionType SubAction {
             get {
@@ -117,9 +117,9 @@ namespace NakedObjects.Web.Mvc.Models {
             }
         }
 
-        public INakedObjectSurface GetNakedObject(INakedObjectsSurface surface) {
+        public IObjectFacade GetNakedObject(INakedObjectsSurface surface) {
             if (nakedObjectSurface == null) {
-                var link = surface.OidFactory.GetLinkOid(Id);
+                var link = surface.OidTranslator.GetOidTranslation(Id);
 
                 // hack
                 try {
@@ -148,7 +148,7 @@ namespace NakedObjects.Web.Mvc.Models {
                     action = elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(no)).Single(a => a.Id == ActionId);
                 }
                 else {
-                    var id = surface.OidFactory.GetLinkOid(no);
+                    var id = surface.OidTranslator.GetOidTranslation(no);
                     action = surface.GetObjectAction(id, ActionId).Action;
                 }
 

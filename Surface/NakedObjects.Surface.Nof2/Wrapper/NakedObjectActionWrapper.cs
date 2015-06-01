@@ -84,11 +84,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return action.GetParameters((NakedReference) target).Select(p => new NakedObjectActionParameterWrapper(p, target, Surface)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
         }
 
-        public bool IsVisible(INakedObjectSurface nakedObject) {
+        public bool IsVisible(IObjectFacade nakedObject) {
             return action.isVisible((NakedReference) (((NakedObjectWrapper) nakedObject).NakedObject)).isAllowed();
         }
 
-        public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
+        public IConsentSurface IsUsable(IObjectFacade nakedObject) {
             return new ConsentWrapper(action.isAvailable((NakedReference) (((NakedObjectWrapper) nakedObject).NakedObject)));
         }
 

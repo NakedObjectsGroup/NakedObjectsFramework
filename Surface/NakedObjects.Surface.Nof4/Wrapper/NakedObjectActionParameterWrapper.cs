@@ -132,19 +132,19 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter.IsAutoCompleteEnabled; }
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
             var otherParms = parameterNameValues == null ? null : parameterNameValues.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
 
             var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => GetValue(a.parm, a.Value));
 
-            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
+            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
-        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade valueNakedObject) {
             var mask = nakedObjectActionParameter.GetFacet<IMaskFacet>();
 
             if (valueNakedObject == null) {
@@ -154,7 +154,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
-        public IConsentSurface IsValid(INakedObjectSurface target, object value) {
+        public IConsentSurface IsValid(IObjectFacade target, object value) {
             var t = ((NakedObjectWrapper) target).WrappedNakedObject;
 
             IConsent consent;
@@ -172,20 +172,20 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return new ConsentWrapper(consent);
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues) {
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
             var choices = GetChoices(nakedObject, parameterNameValues);
-            return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString)).ToArray();
+            return choices.Select(c => new Tuple<IObjectFacade, string>(c, c.TitleString)).ToArray();
         }
 
-        public INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper) nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
+        public IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm) {
+            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper) nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
         }
 
-        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
             return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper) nakedObject).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
         }
 
-        public INakedObjectSurface GetDefault(INakedObjectSurface nakedObject) {
+        public IObjectFacade GetDefault(IObjectFacade nakedObject) {
             return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper) nakedObject).WrappedNakedObject), Surface, framework);
         }
 

@@ -86,7 +86,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             IDictionary<string, object> custom = propertyContext.Property.ExtensionData;
 
             if (IsUnconditionalChoices()) {
-                Tuple<INakedObjectSurface, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
+                Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy ,req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();

@@ -148,7 +148,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-        private IDictionary<string, object> GetOtherValues(INakedObjectSurface nakedObject) {
+        private IDictionary<string, object> GetOtherValues(IObjectFacade nakedObject) {
             var results = new Dictionary<string, object>();
             var parms = new FormCollection(HttpContext.Request.Params);
 
@@ -177,7 +177,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (p.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
-                    string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidFactory.GetLinkOid(o).ToString()).ToArray();
+                    string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
 
                     choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
                 }
@@ -194,7 +194,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (assoc.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
-                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(o => Surface.OidFactory.GetLinkOid(o).ToString()).ToArray();
+                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(o => Surface.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
 
                     choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
@@ -202,24 +202,24 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(choices);
         }
 
-        public static string IconName(INakedObjectSurface nakedObject) {
+        public static string IconName(IObjectFacade nakedObject) {
             string name = nakedObject.Specification.GetIconName(nakedObject);
             return name.Contains(".") ? name : name + ".png";
         }
 
-        private string GetIconSrc(INakedObjectSurface nakedObject) {
+        private string GetIconSrc(IObjectFacade nakedObject) {
             var url = new UrlHelper(ControllerContext.RequestContext);
             return url.Content("~/Images/" + IconName(nakedObject));
         }
 
-        private string GetIconAlt(INakedObjectSurface nakedObject) {
+        private string GetIconAlt(IObjectFacade nakedObject) {
             return nakedObject.Specification.SingularName;
         }
 
-        private object GetCompletionData(INakedObjectSurface nakedObject, INakedObjectSpecificationSurface spec) {
+        private object GetCompletionData(IObjectFacade nakedObject, INakedObjectSpecificationSurface spec) {
             string label = nakedObject.TitleString;
             string value = nakedObject.TitleString;
-            string link = spec.IsParseable ? label : Surface.OidFactory.GetLinkOid(nakedObject).ToString();
+            string link = spec.IsParseable ? label : Surface.OidTranslator.GetOidTranslation(nakedObject).ToString();
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);
             return new {label, value, link, src, alt};

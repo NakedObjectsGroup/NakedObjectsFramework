@@ -158,29 +158,29 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public IConsentSurface IsUsable(INakedObjectSurface target) {
+        public IConsentSurface IsUsable(IObjectFacade target) {
             IConsent consent = assoc.IsUsable(((NakedObjectWrapper) target).WrappedNakedObject);
             return new ConsentWrapper(consent);
         }
 
-        public INakedObjectSurface GetNakedObject(INakedObjectSurface target) {
+        public IObjectFacade GetNakedObject(IObjectFacade target) {
             INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
             return NakedObjectWrapper.Wrap(result, Surface, framework);
         }
 
-        public bool IsVisible(INakedObjectSurface nakedObject) {
+        public bool IsVisible(IObjectFacade nakedObject) {
             return assoc.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
-        public bool IsEager(INakedObjectSurface nakedObject) {
+        public bool IsEager(IObjectFacade nakedObject) {
             return ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
                    assoc.ContainsFacet<IEagerlyFacet>();
         }
 
-        public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
+        public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             var pnv = parameterNameValues == null ? null : parameterNameValues.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
@@ -188,17 +188,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, INakedObjectSpecificationSurface>[0];
         }
 
-        public Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface target, IDictionary<string, object> parameterNameValues) {
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var choices = GetChoices(target, parameterNameValues);
-            return choices.Select(c => new Tuple<INakedObjectSurface, string>(c, c.TitleString)).ToArray();
+            return choices.Select(c => new Tuple<IObjectFacade, string>(c, c.TitleString)).ToArray();
         }
 
-        public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
+        public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
-        public int Count(INakedObjectSurface target) {
+        public int Count(IObjectFacade target) {
             if (IsCollection) {
                 INakedObjectAdapter result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
                 return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
@@ -206,7 +206,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return 0;
         }
 
-        public string GetTitle(INakedObjectSurface nakedObject) {
+        public string GetTitle(IObjectFacade nakedObject) {
             var enumFacet = assoc.GetFacet<IEnumFacet>();
 
             if (enumFacet != null) {
@@ -272,7 +272,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         // todo move common assoc/parameter code into helper or baseclass
-        public string GetMaskedValue(INakedObjectSurface valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade valueNakedObject) {
             var mask = assoc.GetFacet<IMaskFacet>();
 
             if (valueNakedObject == null) {
@@ -282,7 +282,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
-        public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
+        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
             var no = ((NakedObjectWrapper) nakedObject).WrappedNakedObject;
             return assoc.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }

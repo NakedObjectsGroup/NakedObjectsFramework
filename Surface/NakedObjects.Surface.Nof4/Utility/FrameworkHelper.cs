@@ -27,7 +27,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
                 Where(a => a.IsVisible(nakedObject));
         }
 
-        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, INakedObjectSurface nakedObject) {
+        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this INakedObjectsSurface surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
 
                 var elementSpec = nakedObject.ElementSpecification;

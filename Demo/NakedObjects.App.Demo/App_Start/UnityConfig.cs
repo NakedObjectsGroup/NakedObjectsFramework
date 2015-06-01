@@ -43,7 +43,7 @@ namespace NakedObjects.App.Demo {
 
 
             // surface
-            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerRequestLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerRequestLifetimeManager());
 
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerRequestLifetimeManager());
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());

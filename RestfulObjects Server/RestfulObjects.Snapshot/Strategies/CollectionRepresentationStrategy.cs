@@ -15,7 +15,7 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
     public class CollectionRepresentationStrategy : MemberRepresentationStrategy {
-        private readonly INakedObjectSurface collection;
+        private readonly IObjectFacade collection;
 
 
         public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
@@ -44,7 +44,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return collection.ToEnumerable().Select(CreateValueLink).ToArray();
         }
 
-        private LinkRepresentation CreateValueLink(INakedObjectSurface no) {
+        private LinkRepresentation CreateValueLink(IObjectFacade no) {
             return LinkRepresentation.Create(OidStrategy ,new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, no)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }

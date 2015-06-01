@@ -116,11 +116,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return action.Parameters.Select(p => new NakedObjectActionParameterWrapper(p, Surface, framework, overloadedUniqueId)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
         }
 
-        public bool IsVisible(INakedObjectSurface nakedObject) {
+        public bool IsVisible(IObjectFacade nakedObject) {
             return action.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
-        public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
+        public IConsentSurface IsUsable(IObjectFacade nakedObject) {
             return new ConsentWrapper(action.IsUsable(((NakedObjectWrapper) nakedObject).WrappedNakedObject));
         }
 

@@ -18,10 +18,10 @@ using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
-    public class KeyFormatOidTranslator : IOidTranslator {
+    public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 
-        public KeyFormatOidTranslator(INakedObjectsFramework framework) {
+        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) {
             this.framework = framework;
         }
 
@@ -36,7 +36,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return null;
         }
 
-        public IOidTranslation GetOidTranslation(INakedObjectSurface nakedObject) {
+        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
             if (nakedObject.IsViewModel) {
                 var vm = ((NakedObjectWrapper)nakedObject).WrappedNakedObject;
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
@@ -50,7 +50,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return GetCode(TypeUtils.GetType(spec.FullName));
         }
 
-        protected Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {
+        protected Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             string code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
         }
@@ -62,7 +62,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return (string)Convert.ChangeType(obj, typeof(string)); // better ? 
         }
 
-        protected string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
+        protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
             INakedObjectAdapter wrappedNakedObject = ((NakedObjectWrapper)nakedObjectForKey).WrappedNakedObject;
 

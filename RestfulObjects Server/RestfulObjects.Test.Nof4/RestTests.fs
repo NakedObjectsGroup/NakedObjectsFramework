@@ -41,7 +41,7 @@ type Nof4Tests() =
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
-            container.RegisterType(typeof<IOidTranslator>, typeof<KeyFormatOidTranslator>, null, (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType(typeof<IOidTranslator>, typeof<OidTranslatorSlashSeparatedTypeAndIds>, null, (new PerResolveLifetimeManager())) |> ignore
 
             let types = 
                 [| typeof<Immutable>

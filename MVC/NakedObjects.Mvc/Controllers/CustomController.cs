@@ -311,7 +311,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         protected bool SaveObject<T>(FormCollection form, ref T obj) {
             var naked = GetNakedObject(obj);
 
-            var oid = Surface.OidFactory.GetLinkOid(naked);
+            var oid = Surface.OidTranslator.GetOidTranslation(naked);
             var ac = Convert(form);
 
             var result = Surface.PutObject(oid, ac);
@@ -349,7 +349,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Obtains the Id for the specified object
         /// </summary>
         //protected string GetIdFromObject(object domainObject) {
-        //    return Surface.OidFactory.GetLinkOid(domainObject).ToString();
+        //    return Surface.OidTranslator.GetOidTranslation(domainObject).ToString();
         //}
 
         #endregion
@@ -367,7 +367,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return InvokeAction(nakedObject, methodInfo.Name, parameters, viewNameForFailure, viewNameForSuccess);
         }
 
-        private T InvokeAction<T>(INakedObjectSurface nakedObject, LambdaExpression expression, FormCollection parameters, out bool valid) {
+        private T InvokeAction<T>(IObjectFacade nakedObject, LambdaExpression expression, FormCollection parameters, out bool valid) {
             MethodInfo methodInfo = GetAction(expression);
             var nakedObjectAction = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == methodInfo.Name);
             return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
@@ -380,9 +380,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return default(T);
         }
 
-        private T InvokeAction<T>(INakedObjectSurface nakedObject, INakedObjectActionSurface action, FormCollection parameters, out bool valid) {
+        private T InvokeAction<T>(IObjectFacade nakedObject, INakedObjectActionSurface action, FormCollection parameters, out bool valid) {
             ArgumentsContext ac;
-            ILinkObjectId oid = Surface.OidFactory.GetLinkOid(nakedObject);
+            IOidTranslation oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
             ActionResultContextSurface contextSurface;
 
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
@@ -405,7 +405,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return default(T);
         }
 
-        private ViewResult InvokeAction(INakedObjectSurface nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+        private ViewResult InvokeAction(IObjectFacade nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
             bool valid;
             var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
             return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.Object);

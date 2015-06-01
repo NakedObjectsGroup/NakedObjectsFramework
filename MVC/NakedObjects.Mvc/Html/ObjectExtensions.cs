@@ -21,9 +21,9 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get the object id
         /// </summary>
         public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
-            Debug.Assert(!(model is INakedObjectSurface), "Cannot get Adapter for Adapter");
+            Debug.Assert(!(model is IObjectFacade), "Cannot get Adapter for Adapter");
             var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(html.Surface().OidFactory.GetLinkOid(nakedObject).Encode());
+            return MvcHtmlString.Create(html.Surface().OidTranslator.GetOidTranslation(nakedObject).Encode());
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.ObjectTitle(nakedObject);
         }
 
-        public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObjectSurface nakedObject) {
+        public static MvcHtmlString ObjectTitle(this HtmlHelper html, IObjectFacade nakedObject) {
             string title = nakedObject.TitleString;
             return MvcHtmlString.Create(title);
         }
@@ -128,7 +128,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
         }
 
-        private static string GetCollectionTitle(INakedObjectSurface nakedObject, HtmlHelper html) {
+        private static string GetCollectionTitle(IObjectFacade nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;
             int count = nakedObject.ToEnumerable().Count();
             if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {

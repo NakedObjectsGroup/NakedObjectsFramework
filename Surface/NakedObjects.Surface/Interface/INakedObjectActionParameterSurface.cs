@@ -37,14 +37,14 @@ namespace NakedObjects.Surface {
         int AutoCompleteMinLength { get; }
         IDictionary<string, object> ExtensionData { get; }
         bool IsFindMenuEnabled { get; }
-        INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
-        Tuple<INakedObjectSurface, string>[] GetChoicesAndTitles(INakedObjectSurface nakedObject, IDictionary<string, object> parameterNameValues);
-        INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm);
-        bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject);
-        INakedObjectSurface GetDefault(INakedObjectSurface nakedObject);
+        IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues);
+        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues);
+        IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm);
+        bool DefaultTypeIsExplicit(IObjectFacade nakedObject);
+        IObjectFacade GetDefault(IObjectFacade nakedObject);
         Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
-        string GetMaskedValue(INakedObjectSurface valueNakedObject);
+        string GetMaskedValue(IObjectFacade valueNakedObject);
         // todo not really same as other interfaces - more PutValue with validate only ? 
-        IConsentSurface IsValid(INakedObjectSurface target, object value);
+        IConsentSurface IsValid(IObjectFacade target, object value);
     }
 }

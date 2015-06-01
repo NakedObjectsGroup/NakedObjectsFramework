@@ -89,7 +89,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerResolveLifetimeManager());
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-            container.RegisterType<ILinkOidFactory, InternalFormatLinkOidFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
 
         }
 

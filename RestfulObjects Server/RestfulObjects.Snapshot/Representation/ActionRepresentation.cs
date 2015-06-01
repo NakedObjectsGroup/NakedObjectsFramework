@@ -37,7 +37,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Links)]
         public LinkRepresentation[] Links { get; set; }
 
-        private void SetHeader(INakedObjectSurface target) {
+        private void SetHeader(IObjectFacade target) {
             caching = CacheType.Transactional;
             SetEtag(target);
         }
