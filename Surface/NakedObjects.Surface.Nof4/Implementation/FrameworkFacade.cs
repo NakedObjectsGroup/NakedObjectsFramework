@@ -153,7 +153,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
 
                 return new ParameterTypeContextSurface {
-                    Action = new NakedObjectActionWrapper(pc.Item1, this, framework, pc.Item4 ?? ""),
+                    Action = new ActionWrapper(pc.Item1, this, framework, pc.Item4 ?? ""),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2),
                     Parameter = new NakedObjectActionParameterWrapper(pc.Item3, this, framework, pc.Item4 ?? "")
                 };

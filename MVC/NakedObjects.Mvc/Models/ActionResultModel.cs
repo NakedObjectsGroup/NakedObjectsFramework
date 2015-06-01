@@ -14,12 +14,12 @@ using NakedObjects.Surface;
 
 namespace NakedObjects.Web.Mvc.Models {
     public abstract class ActionResultModel : IEnumerable {
-        protected ActionResultModel(INakedObjectActionSurface action, IEnumerable result) {
+        protected ActionResultModel(IActionFacade action, IEnumerable result) {
             Action = action;
             Result = result;
         }
 
-        public INakedObjectActionSurface Action { get; private set; }
+        public IActionFacade Action { get; private set; }
         public IEnumerable Result { get; private set; }
         public int PageSize { get; set; }
         public int Page { get; set; }
@@ -33,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         #endregion
 
-        public static ActionResultModel Create(IFrameworkFacade surface, INakedObjectActionSurface action, IObjectFacade nakedObject, int page, int pageSize, string format) {
+        public static ActionResultModel Create(IFrameworkFacade surface, IActionFacade action, IObjectFacade nakedObject, int page, int pageSize, string format) {
             var result = (IEnumerable) nakedObject.Object;
             Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Models {
     }
 
     public class ActionResultModel<T> : ActionResultModel, IEnumerable<T> {
-        public ActionResultModel(INakedObjectActionSurface action, IEnumerable<T> result)
+        public ActionResultModel(IActionFacade action, IEnumerable<T> result)
             : base(action, result) {
             Result = result;
         }
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Models {
     }
 
     public class ActionResultModelQ<T> : ActionResultModel<T>, IQueryable<T> {
-        public ActionResultModelQ(INakedObjectActionSurface action, IQueryable<T> result)
+        public ActionResultModelQ(IActionFacade action, IQueryable<T> result)
             : base(action, result) {
             Result = result;
         }

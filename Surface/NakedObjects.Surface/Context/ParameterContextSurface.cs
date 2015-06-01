@@ -21,6 +21,6 @@ namespace NakedObjects.Surface {
             get { return Parameter.ElementType; }
         }
 
-        public INakedObjectActionSurface Action { get; set; }
+        public IActionFacade Action { get; set; }
     }
 }

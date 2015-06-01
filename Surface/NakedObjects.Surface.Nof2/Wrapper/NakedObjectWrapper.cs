@@ -122,7 +122,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return new VersionWrapper(((NakedReference) nakedObject).getVersion()); }
         }
 
-        public INakedObjectActionSurface MementoAction { get; private set; }
+        public IActionFacade MementoAction { get; private set; }
         public string EnumIntegralValue { get; private set; }
         public bool IsPaged { get; private set; }
 

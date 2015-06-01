@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Surface {
     public class ActionContextSurface : ContextSurface {
-        public INakedObjectActionSurface Action { get; set; }
+        public IActionFacade Action { get; set; }
 
         public override string Id {
             get { return Action.Id; }

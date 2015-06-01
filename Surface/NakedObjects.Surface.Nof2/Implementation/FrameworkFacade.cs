@@ -207,7 +207,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
                                  Tuple<ActionWrapper, NakedObjectSpecification, NakedObjectActionParameter> pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
 
                                  return new ParameterTypeContextSurface {
-                                                                            Action = new NakedObjectActionWrapper(pc.Item1, null, this),
+                                                                            Action = new ActionFacade(pc.Item1, null, this),
                                                                             OwningSpecification = new TypeFacade(pc.Item2, null, this),
                                                                             Parameter = new NakedObjectActionParameterWrapper(pc.Item3, null, this)
                                                                         };

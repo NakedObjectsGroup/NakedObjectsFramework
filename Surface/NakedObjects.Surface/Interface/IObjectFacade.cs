@@ -15,7 +15,7 @@ namespace NakedObjects.Surface {
         object Object { get; }
         IOidSurface Oid { get; }
         IVersionSurface Version { get; }
-        INakedObjectActionSurface MementoAction { get; }
+        IActionFacade MementoAction { get; }
         string EnumIntegralValue { get; }
         bool IsPaged { get; }
         bool IsCollectionMemento { get; }

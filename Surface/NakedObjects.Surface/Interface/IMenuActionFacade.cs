@@ -7,6 +7,6 @@
 
 namespace NakedObjects.Surface {
     public interface IMenuActionFacade {
-        INakedObjectActionSurface Action { get; }
+        IActionFacade Action { get; }
     }
 }

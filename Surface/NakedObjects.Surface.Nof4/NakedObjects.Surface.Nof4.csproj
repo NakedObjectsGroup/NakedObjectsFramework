@@ -143,7 +143,7 @@
     <Compile Include="Wrapper\MenuActionWrapper.cs" />
     <Compile Include="Wrapper\MenuItemWrapper.cs" />
     <Compile Include="Wrapper\MenuWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />
+    <Compile Include="Wrapper\ActionWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionParameterWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectAssociationWrapper.cs" />
     <Compile Include="Wrapper\TypeFacade.cs" />

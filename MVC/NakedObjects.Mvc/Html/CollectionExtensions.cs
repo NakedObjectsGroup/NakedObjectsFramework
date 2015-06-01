@@ -16,7 +16,7 @@ using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
-        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
+        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, IActionFacade action = null) {
             var nakedObject = html.Surface().GetObject(collection);
 
             Func<INakedObjectAssociationSurface, bool> filterFunc;
@@ -33,14 +33,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetStandaloneCollection(nakedObject, filterFunc, orderFunc, withTitle);
         }
 
-        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action = null) {
+        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, IActionFacade action = null) {
             var nakedObject = html.Surface().GetObject(collection);
             return html.GetStandaloneList(nakedObject, null);
         }
 
         #region all
 
-        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action, string defaultTo = IdConstants.ListDisplayFormat) {
+        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, IActionFacade action, string defaultTo = IdConstants.ListDisplayFormat) {
             bool renderEagerly = CommonHtmlHelper.RenderEagerly(action);
             string displayType = DefaultFormat(html, renderEagerly ? IdConstants.TableDisplayFormat : defaultTo);
             return displayType == IdConstants.TableDisplayFormat ? CollectionTableInternal(html, collection, action) : CollectionListInternal(html, collection, action);
@@ -52,11 +52,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return collections.Select(c => html.Collection(c.ToEnumerable(), null, defaultTo)).ToArray();
         }
 
-        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
+        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, IActionFacade action) {
             return html.Collection(collection, action, IdConstants.TableDisplayFormat);
         }
 
-        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, INakedObjectActionSurface action) {
+        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, IActionFacade action) {
             return html.Collection(collection, action);
         }
 

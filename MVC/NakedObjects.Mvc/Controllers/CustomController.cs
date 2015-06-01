@@ -380,7 +380,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return default(T);
         }
 
-        private T InvokeAction<T>(IObjectFacade nakedObject, INakedObjectActionSurface action, FormCollection parameters, out bool valid) {
+        private T InvokeAction<T>(IObjectFacade nakedObject, IActionFacade action, FormCollection parameters, out bool valid) {
             ArgumentsContext ac;
             IOidTranslation oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
             ActionResultContextSurface contextSurface;

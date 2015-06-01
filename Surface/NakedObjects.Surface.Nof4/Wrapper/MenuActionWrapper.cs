@@ -15,12 +15,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             Name = wrapped.Name;
             Id = wrapped.Id;
             var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
-            Action = new NakedObjectActionWrapper(action, surface, framework, "");
+            Action = new ActionWrapper(action, surface, framework, "");
         }
 
         #region IMenuAction Members
 
-        public INakedObjectActionSurface Action { get; private set; }
+        public IActionFacade Action { get; private set; }
 
         #endregion
 

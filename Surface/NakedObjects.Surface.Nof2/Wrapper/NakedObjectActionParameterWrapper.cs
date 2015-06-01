@@ -36,8 +36,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         public ITypeFacade ElementType { get; private set; }
 
-        public INakedObjectActionSurface Action {
-            get { return new NakedObjectActionWrapper(nakedObjectActionParameter.getAction(), target, Surface); }
+        public IActionFacade Action {
+            get { return new ActionFacade(nakedObjectActionParameter.getAction(), target, Surface); }
         }
 
         public string Id {

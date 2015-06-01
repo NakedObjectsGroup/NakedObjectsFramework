@@ -22,7 +22,7 @@ namespace NakedObjects.Surface.Nof2.Context {
             var pc = new ParameterContextSurface {
                                                      Parameter = new NakedObjectActionParameterWrapper(Parameter, Target, surface),
                                                      Target = new NakedObjectWrapper(Target, surface),
-                                                     Action = new NakedObjectActionWrapper(Action, Target, surface)
+                                                     Action = new ActionFacade(Action, Target, surface)
                                                  };
             return ToContextSurface(pc, surface);
         }

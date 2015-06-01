@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectActionSurface : IMemberFacade {
+    public interface IActionFacade : IMemberFacade {
         ITypeFacade ReturnType { get; }
         ITypeFacade ElementType { get; }
         int ParameterCount { get; }

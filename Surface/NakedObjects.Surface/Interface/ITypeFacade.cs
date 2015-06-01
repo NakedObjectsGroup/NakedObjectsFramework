@@ -43,10 +43,10 @@ namespace NakedObjects.Surface {
         ITypeFacade GetElementType(IObjectFacade nakedObject);
         bool IsImmutable(IObjectFacade nakedObject);
         string GetIconName(IObjectFacade nakedObject);
-        INakedObjectActionSurface[] GetActionLeafNodes();
+        IActionFacade[] GetActionLeafNodes();
         bool IsOfType(ITypeFacade otherSpec);
         Type GetUnderlyingType();
-        INakedObjectActionSurface[] GetCollectionContributedActions();
-        INakedObjectActionSurface[] GetFinderActions();
+        IActionFacade[] GetCollectionContributedActions();
+        IActionFacade[] GetFinderActions();
     }
 }

@@ -169,9 +169,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return spec.GetIconName(nakedObject == null ? null : ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
-        public INakedObjectActionSurface[] GetActionLeafNodes() {
+        public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = SurfaceUtils.GetActionsandUidFromSpec(spec);
-            return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<INakedObjectActionSurface>().ToArray();
+            return actionsAndUid.Select(a => new ActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade nakedObject) {
@@ -191,20 +191,20 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return TypeUtils.GetType(spec.FullName);
         }
 
-        public INakedObjectActionSurface[] GetCollectionContributedActions() {
+        public IActionFacade[] GetCollectionContributedActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetCollectionContributedActions().Select(a => new NakedObjectActionWrapper(a, Surface, framework, "")).Cast<INakedObjectActionSurface>().ToArray();
+                return objectSpec.GetCollectionContributedActions().Select(a => new ActionWrapper(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
             }
-            return new INakedObjectActionSurface[] {};
+            return new IActionFacade[] {};
         }
 
-        public INakedObjectActionSurface[] GetFinderActions() {
+        public IActionFacade[] GetFinderActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetFinderActions().Select(a => new NakedObjectActionWrapper(a, Surface, framework, "")).Cast<INakedObjectActionSurface>().ToArray();
+                return objectSpec.GetFinderActions().Select(a => new ActionWrapper(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
             }
-            return new INakedObjectActionSurface[] {};
+            return new IActionFacade[] {};
         }
 
         public IFrameworkFacade Surface { get; set; }

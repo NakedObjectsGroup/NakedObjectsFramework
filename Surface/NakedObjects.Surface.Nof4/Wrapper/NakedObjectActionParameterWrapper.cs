@@ -111,8 +111,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public INakedObjectActionSurface Action {
-            get { return new NakedObjectActionWrapper(nakedObjectActionParameter.Action, Surface, framework, overloadedUniqueId ?? ""); }
+        public IActionFacade Action {
+            get { return new ActionWrapper(nakedObjectActionParameter.Action, Surface, framework, overloadedUniqueId ?? ""); }
         }
 
         public string Id {

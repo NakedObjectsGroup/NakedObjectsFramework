@@ -94,7 +94,7 @@ namespace RestfulObjects.Snapshot.Representations {
         private void SetMembers(ITypeFacade spec, HttpRequestMessage req) {
             INakedObjectAssociationSurface[] properties = spec.Properties.Where(p => !p.IsCollection).ToArray();
             INakedObjectAssociationSurface[] collections = spec.Properties.Where(p => p.IsCollection).ToArray();
-            INakedObjectActionSurface[] actions = spec.GetActionLeafNodes();
+            IActionFacade[] actions = spec.GetActionLeafNodes();
 
             IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.Property, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = p, OwningSpecification = spec })), Flags));
             IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Collection, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = c, OwningSpecification = spec })), Flags));

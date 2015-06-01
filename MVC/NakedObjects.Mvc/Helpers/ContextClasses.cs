@@ -113,13 +113,13 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = otherContext.Action;
         }
 
-        public ActionContext(IIdHelper idHelper, IObjectFacade target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, IObjectFacade target, IActionFacade action)
             : base(idHelper, target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(IIdHelper idHelper, bool embeddedInObject, IObjectFacade target, INakedObjectActionSurface action)
+        public ActionContext(IIdHelper idHelper, bool embeddedInObject, IObjectFacade target, IActionFacade action)
             : base(idHelper, target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -136,7 +136,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public bool EmbeddedInObject { get; set; }
-        public INakedObjectActionSurface Action { get; set; }
+        public IActionFacade Action { get; set; }
         public RouteValueDictionary ParameterValues { get; set; }
 
         public override ISurfaceHolder Feature {
@@ -200,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, IObjectFacade target, INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter, bool isEdit)
+        public ParameterContext(IIdHelper idhelper, bool embeddedInObject, IObjectFacade target, IActionFacade action, INakedObjectActionParameterSurface parameter, bool isEdit)
             : base(idhelper, embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;

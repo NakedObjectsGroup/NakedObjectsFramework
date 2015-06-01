@@ -9,11 +9,11 @@ using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectActionWrapper :  INakedObjectActionSurface {
+    public class ActionFacade :  IActionFacade {
         private readonly ActionWrapper action;
         private readonly Naked target;
 
-        public NakedObjectActionWrapper(ActionWrapper action, Naked target, IFrameworkFacade surface) {
+        public ActionFacade(ActionWrapper action, Naked target, IFrameworkFacade surface) {
             this.action = action;
             this.target = target;
             Surface = surface;
@@ -30,7 +30,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return false; }
         }
 
-        int INakedObjectActionSurface.MemberOrder {
+        int IActionFacade.MemberOrder {
             get { return MemberOrder; }
         }
 
@@ -60,7 +60,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return 0; }
         }
 
-        #region INakedObjectActionSurface Members
+        #region IActionFacade Members
 
         public string Id {
             get { return action.getId(); }
@@ -101,14 +101,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var nakedObjectActionWrapper = obj as NakedObjectActionWrapper;
+            var nakedObjectActionWrapper = obj as ActionFacade;
             if (nakedObjectActionWrapper != null) {
                 return Equals(nakedObjectActionWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectActionWrapper other) {
+        public bool Equals(ActionFacade other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return Equals(other.action, action);

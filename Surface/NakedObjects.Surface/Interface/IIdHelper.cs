@@ -17,20 +17,20 @@ namespace NakedObjects.Surface {
         string GetInlineFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade owner, INakedObjectAssociationSurface assoc);
         string GetConcurrencyFieldInputId(IObjectFacade owner, INakedObjectAssociationSurface assoc);
         string GetInlineConcurrencyFieldInputId(INakedObjectAssociationSurface parent, IObjectFacade owner, INakedObjectAssociationSurface assoc);
-        string GetConcurrencyActionInputId(IObjectFacade owner, INakedObjectActionSurface action, INakedObjectAssociationSurface assoc);
-        string GetActionId(IObjectFacade owner, INakedObjectActionSurface action);
-        string GetActionDialogId(IObjectFacade owner, INakedObjectActionSurface action);
-        string GetSubMenuId(IObjectFacade owner, INakedObjectActionSurface action);
+        string GetConcurrencyActionInputId(IObjectFacade owner, IActionFacade action, INakedObjectAssociationSurface assoc);
+        string GetActionId(IObjectFacade owner, IActionFacade action);
+        string GetActionDialogId(IObjectFacade owner, IActionFacade action);
+        string GetSubMenuId(IObjectFacade owner, IActionFacade action);
         string GetSubMenuId(IObjectFacade owner, IObjectFacade service);
-        string GetFindMenuId(IObjectFacade nakedObject, INakedObjectActionSurface action, string propertyName);
-        string GetParameterId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
-        string GetParameterInputId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
-        string GetParameterAutoCompleteId(INakedObjectActionSurface action, INakedObjectActionParameterSurface parameter);
+        string GetFindMenuId(IObjectFacade nakedObject, IActionFacade action, string propertyName);
+        string GetParameterId(IActionFacade action, INakedObjectActionParameterSurface parameter);
+        string GetParameterInputId(IActionFacade action, INakedObjectActionParameterSurface parameter);
+        string GetParameterAutoCompleteId(IActionFacade action, INakedObjectActionParameterSurface parameter);
         string GetCollectionContainerId(IObjectFacade collection);
         string GetActionContainerId(IObjectFacade nakedObject);
         string GetServiceContainerId(IObjectFacade nakedObject);
         string GetFieldContainerId(IObjectFacade nakedObject);
-        string GetParameterContainerId(INakedObjectActionSurface action);
+        string GetParameterContainerId(IActionFacade action);
         string GetGenericActionId(IObjectFacade owner, string type);
         string GetActionLabel(IObjectFacade nakedObject);
         string GetServiceLabel(IObjectFacade nakedObject);
@@ -38,7 +38,7 @@ namespace NakedObjects.Surface {
         string GetMandatoryIndicator();
         string MakeId(params string[] ids);
         bool KeyPrefixIs(string key, string match);
-        string GetActionId(string propertyName, INakedObjectActionSurface actionContextAction, IObjectFacade actionContextTarget, IObjectFacade targetActionContextTarget, INakedObjectActionSurface targetActionContextAction);
+        string GetActionId(string propertyName, IActionFacade actionContextAction, IObjectFacade actionContextTarget, IObjectFacade targetActionContextTarget, IActionFacade targetActionContextAction);
         string GetAggregateFieldInputId(IObjectFacade nakedObjectSurface, INakedObjectAssociationSurface propertySurface);
     }
 }

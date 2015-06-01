@@ -14,7 +14,7 @@ namespace NakedObjects.Surface {
     public interface INakedObjectActionParameterSurface :  ISurfaceHolder {
         ITypeFacade Specification { get; }
         ITypeFacade ElementType { get; }
-        INakedObjectActionSurface Action { get; }
+        IActionFacade Action { get; }
         string Id { get; }
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }

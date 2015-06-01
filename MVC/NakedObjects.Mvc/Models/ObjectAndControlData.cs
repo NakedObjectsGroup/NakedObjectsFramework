@@ -37,7 +37,7 @@ namespace NakedObjects.Web.Mvc.Models {
 
         private IDictionary<string, string> dataDict;
         public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
-        private INakedObjectActionSurface nakedObjectAction;
+        private IActionFacade nakedObjectAction;
         private IObjectFacade nakedObjectSurface;
 
         public SubActionType SubAction {
@@ -137,10 +137,10 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObjectSurface;
         }
 
-        public INakedObjectActionSurface GetAction(IFrameworkFacade surface) {
+        public IActionFacade GetAction(IFrameworkFacade surface) {
             if (nakedObjectAction == null) {
                 var no = GetNakedObject(surface);
-                INakedObjectActionSurface action;
+                IActionFacade action;
 
                 if (no.Specification.IsCollection) {
                     var elementSpec = no.ElementSpecification;

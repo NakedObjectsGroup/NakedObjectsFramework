@@ -24,7 +24,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the id for an action dialog
         /// </summary>
-        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, INakedObjectActionSurface action) {
+        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionFacade action) {
             IObjectFacade nakedObject = html.Surface().GetObject(domainObject);
             return MvcHtmlString.Create(html.IdHelper().GetActionDialogId(nakedObject, action));
         }
@@ -46,8 +46,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ParameterList(this HtmlHelper html,
                                                   object contextObject,
                                                   object targetObject,
-                                                  INakedObjectActionSurface contextAction,
-                                                  INakedObjectActionSurface targetAction,
+                                                  IActionFacade contextAction,
+                                                  IActionFacade targetAction,
                                                   string propertyName,
                                                   IEnumerable collection) {
             var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction);
@@ -61,8 +61,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ParameterListWith(this HtmlHelper html,
                                                       object contextObject,
                                                       object targetObject,
-                                                      INakedObjectActionSurface contextAction,
-                                                      INakedObjectActionSurface targetAction,
+                                                      IActionFacade contextAction,
+                                                      IActionFacade targetAction,
                                                       string propertyName,
                                                       IEnumerable collection) {
             var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(contextObject), contextAction) {Filter = x => x.Id == propertyName};
@@ -70,7 +70,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
 
-        private static MvcHtmlString ParameterList(INakedObjectActionSurface contextAction, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
+        private static MvcHtmlString ParameterList(IActionFacade contextAction, object targetObject, IActionFacade targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
             if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
                 return html.ParameterList(actionContext);
             }
@@ -85,7 +85,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the parameters of an action for display within a form
         /// </summary>
-        public static MvcHtmlString ParameterList(this HtmlHelper html, object context, INakedObjectActionSurface action) {
+        public static MvcHtmlString ParameterList(this HtmlHelper html, object context, IActionFacade action) {
             var actionContext = new ActionContext(html.IdHelper(), false, html.Surface().GetObject(context), action);
             return html.ParameterList(actionContext);
         }
@@ -497,7 +497,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(html.IdHelper(), nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
         }
 
-        private static void ValidateParamValues(INakedObjectActionSurface action, object paramValues) {
+        private static void ValidateParamValues(IActionFacade action, object paramValues) {
             if (paramValues != null && action.Parameters.Select(p => p.Specification).Any(s => s.IsCollection)) {
                 throw new NotSupportedException("Cannot pass collection as parameter value to custom ObjectAction");
             }

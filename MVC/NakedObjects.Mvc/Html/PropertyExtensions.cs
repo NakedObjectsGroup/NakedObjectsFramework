@@ -385,7 +385,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
+        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, IActionFacade targetAction, string propertyName, IEnumerable actionResult) {
             var nakedObject = html.Surface().GetObject(contextObject);
             var target = html.Surface().GetObject(targetObject);
             return html.BuildEditContainer(nakedObject,
@@ -404,7 +404,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, INakedObjectActionSurface targetAction, string propertyName, IEnumerable actionResult) {
+        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, IActionFacade targetAction, string propertyName, IEnumerable actionResult) {
             var nakedObject = html.Surface().GetObject(contextObject);
             var target = html.Surface().GetObject(targetObject);
             return html.BuildEditContainer(nakedObject,

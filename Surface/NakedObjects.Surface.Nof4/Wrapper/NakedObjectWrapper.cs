@@ -168,10 +168,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return WrappedNakedObject.ResolveState.IsDestroyed(); }
         }
 
-        public INakedObjectActionSurface MementoAction {
+        public IActionFacade MementoAction {
             get {
                 var mementoOid = WrappedNakedObject.Oid as ICollectionMemento;
-                return mementoOid == null ? null : new NakedObjectActionWrapper(mementoOid.Action, Surface, framework, "");
+                return mementoOid == null ? null : new ActionWrapper(mementoOid.Action, Surface, framework, "");
             }
         }
 

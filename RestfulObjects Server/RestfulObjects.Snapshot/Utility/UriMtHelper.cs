@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public static Func<HttpRequestMessage, string> GetAuthority;
         public static Func<string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
-        private readonly INakedObjectActionSurface action;
+        private readonly IActionFacade action;
         private readonly INakedObjectAssociationSurface assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
         private  string cachedType; // cache because may not be available at writing time 
@@ -550,7 +550,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public string GetRelParametersFor(IMemberFacade nakedObjectMemberSurface) {
-            if (nakedObjectMemberSurface is INakedObjectActionSurface) {
+            if (nakedObjectMemberSurface is IActionFacade) {
                 return FormatParameter(RelParamValues.Action, nakedObjectMemberSurface.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
             }
 

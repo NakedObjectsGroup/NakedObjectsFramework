@@ -95,7 +95,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
-        internal ActionResult AppropriateView(ObjectAndControlData controlData, IObjectFacade nakedObject, INakedObjectActionSurface action = null, string propertyName = null) {
+        internal ActionResult AppropriateView(ObjectAndControlData controlData, IObjectFacade nakedObject, IActionFacade action = null, string propertyName = null) {
             if (nakedObject == null) {
                 // no object to go to 
                 // if action on object go to that object. 
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject<object>(), propertyName));
         }
 
-        public void ValidateParameter(INakedObjectActionSurface action, INakedObjectActionParameterSurface parm, IObjectFacade targetNakedObject, object value) {
+        public void ValidateParameter(IActionFacade action, INakedObjectActionParameterSurface parm, IObjectFacade targetNakedObject, object value) {
             var isValid = parm.IsValid(targetNakedObject, value);
 
             if (!isValid.IsAllowed) {
@@ -256,13 +256,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.First();
         }
 
-        internal ArgumentsContext GetParameterValues(INakedObjectActionSurface action, ObjectAndControlData controlData) {
+        internal ArgumentsContext GetParameterValues(IActionFacade action, ObjectAndControlData controlData) {
             var values = action.Parameters.Select(parm => new {Id = IdHelper.GetParameterInputId(action, parm), Parm = parm}).ToDictionary(a => a.Parm.Id, a => GetParameterValue(a.Parm, a.Id, controlData));
 
             return new ArgumentsContext() {Values = values, ValidateOnly = false};
         }
 
-        internal void SetContextObjectAsParameterValue(INakedObjectActionSurface targetAction, IObjectFacade contextNakedObject) {
+        internal void SetContextObjectAsParameterValue(IActionFacade targetAction, IObjectFacade contextNakedObject) {
             if (targetAction.Parameters.Any(p => p.Specification.IsOfType(contextNakedObject.Specification))) {
                 foreach (var parm in targetAction.Parameters) {
                     if (parm.Specification.IsOfType(contextNakedObject.Specification)) {
@@ -337,7 +337,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void SetDefaults(IObjectFacade nakedObject, INakedObjectActionSurface action) {
+        internal void SetDefaults(IObjectFacade nakedObject, IActionFacade action) {
             foreach (var parm in action.Parameters) {
                 var value = parm.GetDefault(nakedObject);
 
@@ -377,7 +377,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void SetSelectedParameters(INakedObjectActionSurface action) {
+        internal void SetSelectedParameters(IActionFacade action) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => ValueProvider.GetValue(p.Id) != null).ToList();
             if (refItems.Any()) {
                 Dictionary<string, IObjectFacade> items = refItems.ToDictionary(p => IdHelper.GetParameterInputId(action, p), p => GetNakedObjectFromId(ValueProvider.GetValue(p.Id).AttemptedValue));
@@ -385,7 +385,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal void SetSelectedParameters(IObjectFacade nakedObject, INakedObjectActionSurface action, IDictionary<string, string> dict) {
+        internal void SetSelectedParameters(IObjectFacade nakedObject, IActionFacade action, IDictionary<string, string> dict) {
             var refItems = action.Parameters.Where(p => !p.Specification.IsCollection && !p.Specification.IsParseable).Where(p => dict.ContainsKey(p.Id)).ToList();
             if (refItems.Any()) {
                 refItems.ForEach(p => ValidateParameter(action, p, nakedObject, GetNakedObjectFromId(dict[p.Id]).GetDomainObject<object>()));
@@ -572,7 +572,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ModelState.SetModelValue(key, new ValueProviderResult(value, value == null ? string.Empty : value.ToString(), null));
         }
 
-        internal static bool ActionExecutingAsContributed(INakedObjectActionSurface action, IObjectFacade targetNakedObject) {
+        internal static bool ActionExecutingAsContributed(IActionFacade action, IObjectFacade targetNakedObject) {
             return action.IsContributed && !action.OnType.Equals(targetNakedObject.Specification);
         }
 

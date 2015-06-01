@@ -208,7 +208,7 @@ namespace NakedObjects.Web.Mvc.Html {
             fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
         }
 
-        private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, IObjectFacade nakedObject, INakedObjectActionSurface action, TagBuilder fieldSet) {
+        private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, IObjectFacade nakedObject, IActionFacade action, TagBuilder fieldSet) {
             var parameters = new HashSet<string>(action.Parameters.SelectMany(p => p.GetChoicesParameters()).Select(t => t.Item1));
             // check the names match 
 
@@ -707,7 +707,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(html.IdHelper(), nakedObject, property, false, parentContext)));
         }
 
-        internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<INakedObjectActionSurface> allActions, INakedObjectActionSurface action) {
+        internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionFacade> allActions, IActionFacade action) {
             return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
         }
 
@@ -1803,7 +1803,7 @@ namespace NakedObjects.Web.Mvc.Html {
                    html.CollectionTable(collectionNakedObject, linkFunc, filterFunc, orderFunc, false, false, withTitle);
         }
 
-        internal static void GetTableColumnInfo(INakedObjectActionSurface holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
+        internal static void GetTableColumnInfo(IActionFacade holder, out Func<INakedObjectAssociationSurface, bool> filterFunc, out Func<INakedObjectAssociationSurface, int> orderFunc, out bool withTitle) {
             var tableViewData = holder == null ? null : holder.TableViewData;
 
             GetTableColumnInfo(out filterFunc, out orderFunc, out withTitle, tableViewData);
@@ -1833,7 +1833,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return holder.RenderEagerly;
         }
 
-        internal static bool RenderEagerly(INakedObjectActionSurface holder) {
+        internal static bool RenderEagerly(IActionFacade holder) {
             return holder != null && holder.RenderEagerly;
         }
 
@@ -2653,7 +2653,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(html.IdHelper(), nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
         }
 
-        private static INakedObjectActionSurface GetActionByMethodInfo(this HtmlHelper html, IObjectFacade nakedObject, MethodInfo methodInfo) {
+        private static IActionFacade GetActionByMethodInfo(this HtmlHelper html, IObjectFacade nakedObject, MethodInfo methodInfo) {
             return nakedObject.Specification.GetActionLeafNodes().
                 Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
         }

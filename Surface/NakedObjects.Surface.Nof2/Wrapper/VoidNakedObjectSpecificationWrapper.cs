@@ -94,8 +94,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return null;
         }
 
-        public INakedObjectActionSurface[] GetActionLeafNodes() {
-            return new INakedObjectActionSurface[] {};
+        public IActionFacade[] GetActionLeafNodes() {
+            return new IActionFacade[] {};
         }
 
         public ITypeFacade ElementType {
@@ -110,11 +110,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return typeof (void);
         }
 
-        public INakedObjectActionSurface[] GetCollectionContributedActions() {
+        public IActionFacade[] GetCollectionContributedActions() {
             throw new NotImplementedException();
         }
 
-        public INakedObjectActionSurface[] GetFinderActions() {
+        public IActionFacade[] GetFinderActions() {
             throw new NotImplementedException();
         }
 

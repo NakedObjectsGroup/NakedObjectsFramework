@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Surface {
     public class ParameterTypeContextSurface {
-        public INakedObjectActionSurface Action { get; set; }
+        public IActionFacade Action { get; set; }
         public ITypeFacade OwningSpecification { get; set; }
         public INakedObjectActionParameterSurface Parameter { get; set; }
     }

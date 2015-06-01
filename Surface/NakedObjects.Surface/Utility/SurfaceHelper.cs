@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
             }
         }
 
-        public static IEnumerable<INakedObjectActionSurface> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
+        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);

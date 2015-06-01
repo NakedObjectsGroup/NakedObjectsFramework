@@ -134,7 +134,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.ToArray();
         }
 
-        private IDictionary<string, object> GetOtherValues(INakedObjectActionSurface action) {
+        private IDictionary<string, object> GetOtherValues(IActionFacade action) {
             var results = new Dictionary<string, object>();
             var parms = new FormCollection(HttpContext.Request.Params);
 

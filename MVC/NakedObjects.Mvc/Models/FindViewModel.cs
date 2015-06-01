@@ -26,9 +26,9 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public IEnumerable ActionResult { get; set; }
         public object TargetObject { get; set; }
-        public INakedObjectActionSurface TargetAction { get; set; }
+        public IActionFacade TargetAction { get; set; }
         public object ContextObject { get; set; }
-        public INakedObjectActionSurface ContextAction { get; set; }
+        public IActionFacade ContextAction { get; set; }
         public string PropertyName { get; set; }
 
         public string DialogClass(IFrameworkFacade framework) {

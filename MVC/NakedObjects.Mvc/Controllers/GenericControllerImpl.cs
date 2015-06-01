@@ -222,7 +222,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return null;
         }
 
-        private ActionResult ExecuteAction(ObjectAndControlData controlData, IObjectFacade nakedObject, INakedObjectActionSurface action) {
+        private ActionResult ExecuteAction(ObjectAndControlData controlData, IObjectFacade nakedObject, IActionFacade action) {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
@@ -341,7 +341,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = contextAction, PropertyName = propertyName});
         }
 
-        private ActionResult SelectSingleItem(IObjectFacade nakedObject, INakedObjectActionSurface action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
+        private ActionResult SelectSingleItem(IObjectFacade nakedObject, IActionFacade action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
             var property = DisplaySingleProperty(controlData, selectedItem);
 
             if (action == null) {
@@ -552,7 +552,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             });
         }
 
-        private static bool ContextParameterIsCollection(INakedObjectActionSurface contextAction, string propertyName) {
+        private static bool ContextParameterIsCollection(IActionFacade contextAction, string propertyName) {
             if (contextAction != null) {
                 var parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
                 return parameter.Specification.IsCollection;
@@ -616,7 +616,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             });
         }
 
-        private static IEnumerable GetResultAsEnumerable(IObjectFacade result, INakedObjectActionSurface contextAction, string propertyName) {
+        private static IEnumerable GetResultAsEnumerable(IObjectFacade result, IActionFacade contextAction, string propertyName) {
             if (result != null) {
                 if (result.Specification.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
                     return (IEnumerable) result.Object;

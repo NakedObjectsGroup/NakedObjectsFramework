@@ -14,13 +14,13 @@ using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectActionWrapper :  INakedObjectActionSurface {
+    public class ActionWrapper :  IActionFacade {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
 
-        public NakedObjectActionWrapper(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public ActionWrapper(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             SurfaceUtils.AssertNotNull(action, "Action is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
             SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
@@ -91,7 +91,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        #region INakedObjectActionSurface Members
+        #region IActionFacade Members
 
         public string Id {
             get { return action.Id + overloadedUniqueId; }
@@ -133,14 +133,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var nakedObjectActionWrapper = obj as NakedObjectActionWrapper;
+            var nakedObjectActionWrapper = obj as ActionWrapper;
             if (nakedObjectActionWrapper != null) {
                 return Equals(nakedObjectActionWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectActionWrapper other) {
+        public bool Equals(ActionWrapper other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return Equals(other.action, action);

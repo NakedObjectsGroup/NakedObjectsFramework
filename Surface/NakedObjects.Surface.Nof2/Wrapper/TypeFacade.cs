@@ -122,8 +122,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
 
-        public INakedObjectActionSurface[] GetActionLeafNodes() {
-            return spec.GetActionLeafNodes().Select(a => new NakedObjectActionWrapper(a, target, Surface)).Cast<INakedObjectActionSurface>().OrderBy(a => a.Id).ToArray();
+        public IActionFacade[] GetActionLeafNodes() {
+            return spec.GetActionLeafNodes().Select(a => new ActionFacade(a, target, Surface)).Cast<IActionFacade>().OrderBy(a => a.Id).ToArray();
         }
 
         public ITypeFacade ElementType {
@@ -145,11 +145,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(type => type != null);
         }
 
-        public INakedObjectActionSurface[] GetCollectionContributedActions() {
+        public IActionFacade[] GetCollectionContributedActions() {
             throw new NotImplementedException();
         }
 
-        public INakedObjectActionSurface[] GetFinderActions() {
+        public IActionFacade[] GetFinderActions() {
             throw new NotImplementedException();
         }
 
