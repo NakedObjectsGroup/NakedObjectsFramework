@@ -30,6 +30,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade;
 using NakedObjects.Menu;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;

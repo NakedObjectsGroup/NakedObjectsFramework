@@ -6,6 +6,8 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Facade;
+
 
 namespace NakedObjects.Test.App.Controllers {
 

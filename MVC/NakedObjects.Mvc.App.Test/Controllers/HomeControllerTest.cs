@@ -13,6 +13,7 @@ using Microsoft.Practices.Unity;
 using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
+using NakedObjects.Facade;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;

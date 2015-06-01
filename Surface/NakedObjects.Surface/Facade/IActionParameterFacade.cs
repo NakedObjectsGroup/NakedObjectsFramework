@@ -8,10 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 
-namespace NakedObjects.Surface {
-    public interface IActionParameterFacade :  ISurfaceHolder {
+namespace NakedObjects.Facade {
+    public interface IActionParameterFacade : ISurfaceHolder {
         ITypeFacade Specification { get; }
         ITypeFacade ElementType { get; }
         IActionFacade Action { get; }

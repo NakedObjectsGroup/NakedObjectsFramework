@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NakedObjects.Facade;
 
 namespace NakedObjects.Surface.Utility.Restricted {
     public static class SurfaceHelper {

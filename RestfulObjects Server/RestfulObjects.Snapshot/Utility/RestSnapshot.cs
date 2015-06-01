@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Web.Http;
 using Common.Logging;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using RestfulObjects.Snapshot.Constants;

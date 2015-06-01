@@ -7,6 +7,7 @@
 
 using System;
 using Common.Logging;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Utility;
 

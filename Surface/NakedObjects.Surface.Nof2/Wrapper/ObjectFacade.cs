@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Facade;
 using org.nakedobjects.@object;
 using sdm.systems.reflector;
 

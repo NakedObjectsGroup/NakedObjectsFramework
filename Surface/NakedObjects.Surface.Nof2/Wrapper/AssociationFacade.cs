@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;

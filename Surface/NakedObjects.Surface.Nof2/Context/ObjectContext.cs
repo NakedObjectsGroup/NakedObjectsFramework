@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Linq;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using org.nakedobjects.@object;
 

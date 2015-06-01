@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Facade;
 using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {

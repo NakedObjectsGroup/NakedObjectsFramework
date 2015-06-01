@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Facade;
 using NakedObjects.Services;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Utility;

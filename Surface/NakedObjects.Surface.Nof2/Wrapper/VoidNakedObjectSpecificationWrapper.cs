@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Facade;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
     public class VoidTypeFacade : ITypeFacade {

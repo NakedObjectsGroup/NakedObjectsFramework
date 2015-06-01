@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NakedObjects.Surface.Context;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public interface IAssociationFacade : IMemberFacade {
         ITypeFacade Specification { get; }
         ITypeFacade ElementSpecification { get; }

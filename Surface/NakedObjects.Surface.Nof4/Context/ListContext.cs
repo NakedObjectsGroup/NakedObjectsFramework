@@ -8,6 +8,7 @@
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Wrapper;
 

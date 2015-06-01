@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 

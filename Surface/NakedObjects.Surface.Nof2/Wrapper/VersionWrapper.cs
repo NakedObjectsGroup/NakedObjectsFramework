@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using NakedObjects.Facade;
 using Version = org.nakedobjects.@object.Version;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
@@ -17,7 +18,6 @@ using org.nakedobjects.@object.control;
 using org.nakedobjects.@object.reflect;
 using org.nakedobjects.reflector.java.control;
 using sdm.systems.reflector;
-using LogWrapper = NakedObjects.Surface.Utility.LogWrapper;
 using User = org.nakedobjects.application.control.User;
 
 namespace NakedObjects.Surface.Nof2.Implementation {

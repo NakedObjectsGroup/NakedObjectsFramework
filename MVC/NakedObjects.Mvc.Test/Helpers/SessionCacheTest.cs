@@ -21,6 +21,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;

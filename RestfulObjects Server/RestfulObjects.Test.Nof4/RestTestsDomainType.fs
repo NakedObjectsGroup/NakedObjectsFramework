@@ -27,6 +27,7 @@ open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Surface.Interface
+open NakedObjects.Facade
 
 
 [<TestFixture>]

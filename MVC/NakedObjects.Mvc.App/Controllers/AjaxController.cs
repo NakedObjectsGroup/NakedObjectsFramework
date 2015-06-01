@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 

@@ -4,7 +4,7 @@
 
 using Common.Logging;
 using NakedObjects.Surface.Utility;
-
+//using LogManager = org.apache.log4j.LogManager;
 
 namespace NakedObjects.Surface.Nof2.Utility {
     public class LogWrapper : ILogWrapper {

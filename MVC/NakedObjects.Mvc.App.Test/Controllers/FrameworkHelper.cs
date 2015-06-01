@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 using NakedObjects.Util;

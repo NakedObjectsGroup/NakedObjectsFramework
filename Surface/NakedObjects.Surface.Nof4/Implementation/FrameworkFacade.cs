@@ -20,6 +20,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Surface.Nof4.Context;

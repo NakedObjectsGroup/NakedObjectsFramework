@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Web.Routing;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;
 

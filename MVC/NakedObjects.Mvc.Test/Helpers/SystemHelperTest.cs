@@ -19,6 +19,7 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
+using NakedObjects.Facade;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;

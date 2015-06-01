@@ -12,6 +12,8 @@ using System.Web.Http.ModelBinding;
 using NakedObjects.Surface;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Model;
+using NakedObjects.Facade;
+
 
 namespace NakedObjects.Test.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {

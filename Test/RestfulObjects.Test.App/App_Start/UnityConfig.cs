@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Facade;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Interface;

@@ -12,10 +12,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
+using NakedObjects.Facade;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
+
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class GenericControllerImpl : NakedObjectsController {

@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Facade;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class MenuWrapper : IMenuFacade {

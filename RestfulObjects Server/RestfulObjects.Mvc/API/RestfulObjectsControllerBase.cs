@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using Common.Logging;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility;

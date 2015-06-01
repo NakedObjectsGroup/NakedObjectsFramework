@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Facade;
 using NakedObjects.Surface.Nof2.Implementation;
 using NakedObjects.Surface.Nof2.Wrapper;
 using NakedObjects.Surface.Utility;

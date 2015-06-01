@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 
 namespace NakedObjects.Web.Mvc.Models {

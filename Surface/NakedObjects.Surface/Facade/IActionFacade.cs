@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public interface IActionFacade : IMemberFacade {
         ITypeFacade ReturnType { get; }
         ITypeFacade ElementType { get; }

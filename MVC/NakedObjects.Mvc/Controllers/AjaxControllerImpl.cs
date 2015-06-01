@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility.Restricted;
