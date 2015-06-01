@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof2.Implementation;
 using NakedObjects.Surface.Nof2.Utility;

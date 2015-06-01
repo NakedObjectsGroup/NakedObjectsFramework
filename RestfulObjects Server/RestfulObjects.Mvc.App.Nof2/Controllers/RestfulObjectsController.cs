@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Model;

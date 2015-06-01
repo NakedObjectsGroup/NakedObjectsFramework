@@ -100,7 +100,6 @@
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\IKeyCodeMapper.cs" />
     <Compile Include="Utility\ITypeCodeMapper.cs" />
-    <Compile Include="Utility\LogWrapper.cs" />
     <Compile Include="Utility\OStoreOidStrategy.cs" />
     <Compile Include="Utility\SerialOidStrategy.cs" />
     <Compile Include="Utility\TestOidStrategy.cs" />

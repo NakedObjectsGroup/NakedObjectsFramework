@@ -16,6 +16,7 @@ open MvcTestApp.Controllers
 open NakedObjects.Surface
 open NakedObjects.Surface.Nof2.Implementation
 open NakedObjects.Surface.Nof2.Utility
+open NakedObjects.Facade
 
 [<TestFixture>]
 type Nof2Tests() = class      
