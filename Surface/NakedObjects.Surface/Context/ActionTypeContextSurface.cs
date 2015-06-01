@@ -8,6 +8,6 @@
 namespace NakedObjects.Surface {
     public class ActionTypeContextSurface {
         public ActionContextSurface ActionContext { get; set; }
-        public INakedObjectSpecificationSurface OwningSpecification { get; set; }
+        public ITypeFacade OwningSpecification { get; set; }
     }
 }

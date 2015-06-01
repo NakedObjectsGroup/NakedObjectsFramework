@@ -21,11 +21,11 @@ namespace NakedObjects.Surface {
             get { return ActionContext.Action.Id; }
         }
 
-        public override INakedObjectSpecificationSurface Specification {
+        public override ITypeFacade Specification {
             get { return Result == null ? ActionContext.Specification : Result.Specification; }
         }
 
-        public override INakedObjectSpecificationSurface ElementSpecification {
+        public override ITypeFacade ElementSpecification {
             get { return Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification; }
         }
     }

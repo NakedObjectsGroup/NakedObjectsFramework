@@ -128,15 +128,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             }
         }
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(assoc.ReturnSpec, Surface, framework); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(assoc.ReturnSpec, Surface, framework); }
         }
 
-        public INakedObjectSpecificationSurface ElementSpecification {
+        public ITypeFacade ElementSpecification {
             get {
                 var coll = assoc as IOneToManyAssociationSpec;
                 var elementSpec = coll == null ? null : coll.ElementSpec;
-                return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+                return elementSpec == null ? null : new TypeFacade(elementSpec, Surface, framework);
             }
         }
 
@@ -173,7 +173,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsEager(IObjectFacade nakedObject) {
-            return ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
+            return ((TypeFacade) nakedObject.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
                    assoc.ContainsFacet<IEagerlyFacet>();
         }
 
@@ -183,9 +183,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
-        public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
+        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, INakedObjectSpecificationSurface>[0];
+            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, ITypeFacade>[0];
         }
 
         public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
@@ -217,7 +217,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             if (mask == null) {
                 return nakedObject.TitleString;
             }
-            var titleFacet = ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
+            var titleFacet = ((TypeFacade) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
             return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
         }
 
@@ -326,8 +326,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
-            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+        private Tuple<string, ITypeFacade> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
+            return new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, Surface, framework));
         }
 
         public override bool Equals(object obj) {

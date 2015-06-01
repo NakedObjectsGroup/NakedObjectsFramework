@@ -142,7 +142,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-        public ActionResultContextSurface ExecuteListAction(IOidTranslation[] objectId, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments) {
+        public ActionResultContextSurface ExecuteListAction(IOidTranslation[] objectId, ITypeFacade elementSpec, string actionName, ArgumentsContext arguments) {
             throw new NotImplementedException();
         }
 
@@ -166,17 +166,17 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return null;
         }
 
-        public INakedObjectSpecificationSurface[] GetDomainTypes() {
-            return MapErrors(() => org.nakedobjects.@object.NakedObjects.getSpecificationLoader().allSpecifications().Select(s => new NakedObjectSpecificationWrapper(s, null, this)).Cast<INakedObjectSpecificationSurface>().ToArray());
+        public ITypeFacade[] GetDomainTypes() {
+            return MapErrors(() => org.nakedobjects.@object.NakedObjects.getSpecificationLoader().allSpecifications().Select(s => new TypeFacade(s, null, this)).Cast<ITypeFacade>().ToArray());
         }
 
-        public INakedObjectSpecificationSurface GetDomainType(string typeName) {
+        public ITypeFacade GetDomainType(string typeName) {
             return MapErrors(() => {
                                  NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeName);
                                  if (spec is NoMemberSpecification) {
                                      throw new TypeResourceNotFoundNOSException(typeName);
                                  }
-                                 return new NakedObjectSpecificationWrapper(spec, null, this);
+                                 return new TypeFacade(spec, null, this);
                              });
         }
 
@@ -186,7 +186,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
                                  return new PropertyTypeContextSurface {
                                                                            Property = new NakedObjectAssociationWrapper(pc.Item1, null, this),
-                                                                           OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, null, this)
+                                                                           OwningSpecification = new TypeFacade(pc.Item2, null, this)
                                                                        };
                              });
         }
@@ -197,7 +197,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
                                  return new ActionTypeContextSurface {
                                                                          ActionContext = pc.Item1.ToActionContextSurface(this),
-                                                                         OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, null, this)
+                                                                         OwningSpecification = new TypeFacade(pc.Item2, null, this)
                                                                      };
                              });
         }
@@ -208,7 +208,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
 
                                  return new ParameterTypeContextSurface {
                                                                             Action = new NakedObjectActionWrapper(pc.Item1, null, this),
-                                                                            OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, null, this),
+                                                                            OwningSpecification = new TypeFacade(pc.Item2, null, this),
                                                                             Parameter = new NakedObjectActionParameterWrapper(pc.Item3, null, this)
                                                                         };
                              });
@@ -223,7 +223,7 @@ namespace NakedObjects.Surface.Nof2.Implementation {
             return new UserCredentials("WELFARE\\sdmtraining3", password, new List<string>());
         }
 
-        public IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object domainObject) {
+        public IObjectFacade GetObject(ITypeFacade spec, object domainObject) {
             throw new NotImplementedException();
         }
 

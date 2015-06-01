@@ -8,6 +8,6 @@
 namespace NakedObjects.Surface {
     public class PropertyTypeContextSurface {
         public INakedObjectAssociationSurface Property { get; set; }
-        public INakedObjectSpecificationSurface OwningSpecification { get; set; }
+        public ITypeFacade OwningSpecification { get; set; }
     }
 }

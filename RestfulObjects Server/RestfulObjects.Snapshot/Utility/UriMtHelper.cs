@@ -28,7 +28,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly IObjectFacade nakedObject;
         private readonly INakedObjectActionParameterSurface param;
         private readonly Uri prefix;
-        private readonly INakedObjectSpecificationSurface spec;
+        private readonly ITypeFacade spec;
         private readonly string typeAction;
 
         // for testing to allow to be stubbed 
@@ -115,7 +115,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec)
             : this(oidStrategy, req) {
             this.spec = spec;
             cachedId = "";
@@ -492,7 +492,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
 
-        private string GetParameterValue(RestControlFlags flags, INakedObjectSpecificationSurface parameterValueSpec) {
+        private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
             if (flags.SimpleDomainModel) {
                 return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
             }
@@ -503,7 +503,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
-            INakedObjectSpecificationSurface specToUse = param == null ? spec : param.Specification;
+            ITypeFacade specToUse = param == null ? spec : param.Specification;
             string typeName = specToUse == null ? typeof (object).FullName : specToUse.DomainTypeName(oidStrategy);
             string parameterValue = GetParameterValue(flags, typeName);
             mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
@@ -526,9 +526,9 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public void AddActionResultRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
-            INakedObjectSpecificationSurface resultSpec = action.ReturnType;
+            ITypeFacade resultSpec = action.ReturnType;
             bool isCollection = resultSpec.IsCollection && !resultSpec.IsParseable;
-            INakedObjectSpecificationSurface parameterValueSpec = isCollection ? action.ElementType : resultSpec;
+            ITypeFacade parameterValueSpec = isCollection ? action.ElementType : resultSpec;
             string parameterValue = GetParameterValue(flags, parameterValueSpec);
 
             if (parameterValue != null) {

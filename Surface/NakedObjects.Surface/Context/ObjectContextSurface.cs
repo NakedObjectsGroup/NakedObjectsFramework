@@ -17,11 +17,11 @@ namespace NakedObjects.Surface {
             get { throw new NotImplementedException(); }
         }
 
-        public override INakedObjectSpecificationSurface Specification {
+        public override ITypeFacade Specification {
             get { return Target.Specification; }
         }
 
-        public override INakedObjectSpecificationSurface ElementSpecification {
+        public override ITypeFacade ElementSpecification {
             get { return Target.ElementSpecification; }
         }
 

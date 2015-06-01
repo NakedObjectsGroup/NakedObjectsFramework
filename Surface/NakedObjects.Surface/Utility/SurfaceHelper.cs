@@ -75,7 +75,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
             return item == null ? new List<T>() : new List<T> {item};
         }
 
-        private static object GetTypedCollection(IFrameworkFacade surface, IEnumerable collectionValue, INakedObjectSpecificationSurface collectionitemSpec) {
+        private static object GetTypedCollection(IFrameworkFacade surface, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();

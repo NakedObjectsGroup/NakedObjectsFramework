@@ -28,14 +28,14 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #region IObjectFacade Members
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(NakedObject.getSpecification(), NakedObject, Surface); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(NakedObject.getSpecification(), NakedObject, Surface); }
         }
 
-        public INakedObjectSpecificationSurface ElementSpecification {
+        public ITypeFacade ElementSpecification {
             get {
                 if (nakedObject is InternalCollectionAdapter) {
-                    return new NakedObjectSpecificationWrapper(((InternalCollectionAdapter) nakedObject).getElementSpecification(), null, Surface);
+                    return new TypeFacade(((InternalCollectionAdapter) nakedObject).getElementSpecification(), null, Surface);
                 }
                 return null;
             }
@@ -108,7 +108,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get {
                 var nakedRef = nakedObject as NakedReference;
                 if (nakedRef != null) {
-                    return nakedRef.getResolveState().isTransient() && !(new NakedObjectSpecificationWrapper(nakedRef.getSpecification(), nakedRef, Surface).IsService);
+                    return nakedRef.getResolveState().isTransient() && !(new TypeFacade(nakedRef.getSpecification(), nakedRef, Surface).IsService);
                 }
 
                 return false;

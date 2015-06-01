@@ -968,10 +968,10 @@ namespace RestfulObjects.Mvc {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 
-            INakedObjectSpecificationSurface thisSpecification = Surface.GetDomainType(context.TypeName);
+            ITypeFacade thisSpecification = Surface.GetDomainType(context.TypeName);
             IValue parameter = arguments.Map[context.ParameterId];
             object value = parameter.GetValue(Surface, new UriMtHelper(OidStrategy ,Request), OidStrategy);
-            var otherSpecification = (INakedObjectSpecificationSurface) (value is INakedObjectSpecificationSurface ? value : Surface.GetDomainType((string) value));
+            var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : Surface.GetDomainType((string) value));
             context.ThisSpecification = thisSpecification;
             context.OtherSpecification = otherSpecification;
             return context;

@@ -74,16 +74,16 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(WrappedNakedObject.Spec, Surface, framework); }
         }
 
-        public INakedObjectSpecificationSurface ElementSpecification {
+        public ITypeFacade ElementSpecification {
             get {
                 ITypeOfFacet typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
                 var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-                return new NakedObjectSpecificationWrapper(spec, Surface, framework);
+                return new TypeFacade(spec, Surface, framework);
             }
         }
 

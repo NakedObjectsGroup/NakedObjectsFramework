@@ -41,7 +41,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 opts.Add(extensions);
             }
             else {
-                Tuple<string, INakedObjectSpecificationSurface>[] parms = propertyContext.Property.GetChoicesParameters();
+                Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
                 OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy ,req, pnt, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);

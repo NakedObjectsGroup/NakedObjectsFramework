@@ -13,17 +13,17 @@ using org.nakedobjects.@object;
 using sdm.systems.application.container;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class NakedObjectSpecificationWrapper :  INakedObjectSpecificationSurface {
+    public class TypeFacade :  ITypeFacade {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;
 
-        public NakedObjectSpecificationWrapper(NakedObjectSpecification spec, Naked target, IFrameworkFacade surface) {
+        public TypeFacade(NakedObjectSpecification spec, Naked target, IFrameworkFacade surface) {
             this.spec = spec;
             this.target = target;
             Surface = surface;
         }
 
-        #region INakedObjectSpecificationSurface Members
+        #region ITypeFacade Members
 
         public bool IsComplexType { get; private set; }
 
@@ -105,15 +105,15 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return ""; }
         }
 
-        bool INakedObjectSpecificationSurface.IsASet {
+        bool ITypeFacade.IsASet {
             get { return IsASet; }
         }
 
-        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
             return ElementType;
         }
 
-        bool INakedObjectSpecificationSurface.IsImmutable(IObjectFacade nakedObject) {
+        bool ITypeFacade.IsImmutable(IObjectFacade nakedObject) {
             return IsService;
         }
 
@@ -126,17 +126,17 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return spec.GetActionLeafNodes().Select(a => new NakedObjectActionWrapper(a, target, Surface)).Cast<INakedObjectActionSurface>().OrderBy(a => a.Id).ToArray();
         }
 
-        public INakedObjectSpecificationSurface ElementType {
+        public ITypeFacade ElementType {
             get {
                 if (IsCollection) {
-                    return new NakedObjectSpecificationWrapper(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface);
+                    return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface);
                 }
                 return null;
             }
         }
 
-        public bool IsOfType(INakedObjectSpecificationSurface otherSpec) {
-            return spec.isOfType(((NakedObjectSpecificationWrapper) otherSpec).spec);
+        public bool IsOfType(ITypeFacade otherSpec) {
+            return spec.isOfType(((TypeFacade) otherSpec).spec);
         }
 
         public Type GetUnderlyingType() {
@@ -155,19 +155,19 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #endregion
 
-        public bool Equals(INakedObjectSpecificationSurface other) {
+        public bool Equals(ITypeFacade other) {
             throw new NotImplementedException();
         }
 
         public override bool Equals(object obj) {
-            var nakedObjectSpecificationWrapper = obj as NakedObjectSpecificationWrapper;
+            var nakedObjectSpecificationWrapper = obj as TypeFacade;
             if (nakedObjectSpecificationWrapper != null) {
                 return Equals(nakedObjectSpecificationWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectSpecificationWrapper other) {
+        public bool Equals(TypeFacade other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return Equals(other.spec, spec);

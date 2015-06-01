@@ -103,12 +103,12 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return null; }
         }
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(assoc.getSpecification(), target, Surface); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(assoc.getSpecification(), target, Surface); }
         }
 
-        public INakedObjectSpecificationSurface ElementSpecification {
-            get { return new NakedObjectSpecificationWrapper(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
+        public ITypeFacade ElementSpecification {
+            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
         }
 
         Choices INakedObjectAssociationSurface.IsChoicesEnabled {
@@ -162,8 +162,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new IObjectFacade[] {};
         }
 
-        public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
-            return new Tuple<string, INakedObjectSpecificationSurface>[] {};
+        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
+            return new Tuple<string, ITypeFacade>[] {};
         }
 
         public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {

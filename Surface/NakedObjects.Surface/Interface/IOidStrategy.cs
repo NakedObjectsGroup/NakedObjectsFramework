@@ -12,8 +12,8 @@ namespace NakedObjects.Surface {
         object GetDomainObjectByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);
        
-        INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType);
-        string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec);
+        ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
+        string GetLinkDomainTypeBySpecification(ITypeFacade spec);
        
         IOidSurface RestoreOid(OidTranslationSemiColonSeparatedList id);
         IOidSurface RestoreSid(OidTranslationSemiColonSeparatedList id);

@@ -8,9 +8,9 @@
 namespace NakedObjects.Surface {
     public class ChoiceContextSurface : ContextSurface {
         private readonly string id;
-        private readonly INakedObjectSpecificationSurface spec;
+        private readonly ITypeFacade spec;
 
-        public ChoiceContextSurface(string id, INakedObjectSpecificationSurface spec) {
+        public ChoiceContextSurface(string id, ITypeFacade spec) {
             this.id = id;
             this.spec = spec;
         }
@@ -19,11 +19,11 @@ namespace NakedObjects.Surface {
             get { return id; }
         }
 
-        public override INakedObjectSpecificationSurface Specification {
+        public override ITypeFacade Specification {
             get { return spec; }
         }
 
-        public override INakedObjectSpecificationSurface ElementSpecification {
+        public override ITypeFacade ElementSpecification {
             get { return null; }
         }
     }

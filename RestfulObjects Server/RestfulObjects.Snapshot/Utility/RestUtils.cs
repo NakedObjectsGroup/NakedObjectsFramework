@@ -50,8 +50,8 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       string pattern,
                                                       int? memberOrder,
                                                       IDictionary<string, object> customExtensions,
-                                                      INakedObjectSpecificationSurface returnType,
-                                                      INakedObjectSpecificationSurface elementType, 
+                                                      ITypeFacade returnType,
+                                                      ITypeFacade elementType, 
                                                       IOidStrategy oidStrategy) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
@@ -204,7 +204,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
         }
 
-        public static PredefinedType? SpecToPredefinedType(INakedObjectSpecificationSurface spec) {
+        public static PredefinedType? SpecToPredefinedType(ITypeFacade spec) {
             if (spec.IsFileAttachment || spec.IsImage) {
                 return PredefinedType.Blob;
             }
@@ -216,17 +216,17 @@ namespace RestfulObjects.Snapshot.Utility {
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
+        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
             return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName(oidStrategy);
         }
 
-        public static bool IsPredefined(INakedObjectSpecificationSurface spec) {
+        public static bool IsPredefined(ITypeFacade spec) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
             return pdt.HasValue;
         }
 
-        public static Tuple<string, string> SpecToTypeAndFormatString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
+        public static Tuple<string, string> SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
 
             if (pdt.HasValue) {
@@ -252,11 +252,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return new Tuple<string, string>(spec.DomainTypeName(oidStrategy), null);
         }
 
-        public static string DomainTypeName(this INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
+        public static string DomainTypeName(this ITypeFacade spec, IOidStrategy oidStrategy) {
             return oidStrategy.GetLinkDomainTypeBySpecification(spec);
         }
 
-        public static bool IsBlobOrClob(INakedObjectSpecificationSurface spec) {
+        public static bool IsBlobOrClob(ITypeFacade spec) {
             if (spec.IsParseable || spec.IsCollection) {
                 Type underlyingType = spec.GetUnderlyingType();
                 PredefinedType pdt = TypeToPredefinedType(underlyingType);
@@ -265,7 +265,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return false;
         }
 
-        public static bool IsAttachment(INakedObjectSpecificationSurface spec) {
+        public static bool IsAttachment(ITypeFacade spec) {
             return (spec.IsImage || spec.IsFileAttachment);
         }
 
@@ -275,7 +275,7 @@ namespace RestfulObjects.Snapshot.Utility {
                    mediaType == "application/json";
         }
 
-        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, INakedObjectSpecificationSurface> pnt, RestControlFlags flags) {
+        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (flags.FormalDomainModel) {

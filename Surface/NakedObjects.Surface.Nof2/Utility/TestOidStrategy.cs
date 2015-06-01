@@ -55,13 +55,13 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new NotImplementedException();
         }
 
-        public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
+        public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(type.FullName);
-            return new NakedObjectSpecificationWrapper(spec, null, Surface);
+            return new TypeFacade(spec, null, Surface);
         }
 
-        public string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec) {
+        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
             return GetCode(spec);
         }
 
@@ -127,7 +127,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return GetTypeCodeMapper().CodeFromType(type);
         }
 
-        private static string GetCode(INakedObjectSpecificationSurface spec) {
+        private static string GetCode(ITypeFacade spec) {
             return GetCode(SurfaceUtils.GetType(spec.FullName));
         }
 

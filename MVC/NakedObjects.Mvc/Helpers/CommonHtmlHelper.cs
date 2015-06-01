@@ -818,7 +818,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetSelectionCollection(collectionNakedObject, targetNakedObject, propertyName);
         }
 
-        private static string FinderActions(this HtmlHelper html, INakedObjectSpecificationSurface spec, ActionContext actionContext, string propertyName) {
+        private static string FinderActions(this HtmlHelper html, ITypeFacade spec, ActionContext actionContext, string propertyName) {
             if (spec.IsCollection) {
                 return String.Empty; // We don't want Finder menu rendered on any collection field
             }
@@ -1390,7 +1390,7 @@ namespace NakedObjects.Web.Mvc.Html {
             //throw new UnexpectedCallException(string.Format("Unexpected context type {0}", context.GetType()));
         }
 
-        private static IObjectFacade GetAndParseValueAsNakedObject(this HtmlHelper html, INakedObjectSpecificationSurface spec, object value) {
+        private static IObjectFacade GetAndParseValueAsNakedObject(this HtmlHelper html, ITypeFacade spec, object value) {
             return html.Surface().GetObject(spec, value);
         }
 
@@ -1593,7 +1593,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return tag.ToString();
         }
 
-        private static ElementDescriptor RecentlyViewedAction(this HtmlHelper html, INakedObjectSpecificationSurface spec, ActionContext actionContext, string propertyName) {
+        private static ElementDescriptor RecentlyViewedAction(this HtmlHelper html, ITypeFacade spec, ActionContext actionContext, string propertyName) {
             return new ElementDescriptor {
                 TagType = "button",
                 Value = MvcUi.RecentlyViewed,
@@ -1643,7 +1643,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static INakedObjectAssociationSurface[] CollectionAssociations(this HtmlHelper html,
                                                                                IObjectFacade[] collection,
-                                                                               INakedObjectSpecificationSurface collectionSpec,
+                                                                               ITypeFacade collectionSpec,
                                                                                Func<INakedObjectAssociationSurface, bool> filter,
                                                                                Func<INakedObjectAssociationSurface, int> order) {
             var assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
@@ -2561,7 +2561,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static ElementDescriptor GetActionElementDescriptor(this HtmlHelper html,
                                                                     ActionContext targetActionContext,
                                                                     ActionContext actionContext,
-                                                                    INakedObjectSpecificationSurface spec,
+                                                                    ITypeFacade spec,
                                                                     string propertyName,
                                                                     Tuple<bool, string> disabled = null) {
             return html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
@@ -2569,7 +2569,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static IList<ElementDescriptor> FinderActionsForField(this HtmlHelper html,
                                                                       ActionContext actionContext,
-                                                                      INakedObjectSpecificationSurface fieldSpec,
+                                                                      ITypeFacade fieldSpec,
                                                                       string propertyName) {
             var finderActions = fieldSpec.GetFinderActions();
             var descriptors = new List<ElementDescriptor>();

@@ -96,17 +96,17 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private object GetValue(string[] values, INakedObjectActionParameterSurface parameterSpec, INakedObjectSpecificationSurface spec) {
+        private object GetValue(string[] values, INakedObjectActionParameterSurface parameterSpec, ITypeFacade spec) {
             object domainObject;
             return GetValue(values, spec, true, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
         }
 
-        private object GetValue(string[] values, INakedObjectAssociationSurface propertySpec, INakedObjectSpecificationSurface spec) {
+        private object GetValue(string[] values, INakedObjectAssociationSurface propertySpec, ITypeFacade spec) {
             object domainObject;
             return GetValue(values, spec, false, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
         }
 
-        private bool GetValue(string[] values, INakedObjectSpecificationSurface spec, bool nullEmpty, out object domainObject) {
+        private bool GetValue(string[] values, ITypeFacade spec, bool nullEmpty, out object domainObject) {
             if (!values.Any()) {
                 domainObject = null;
                 return true;
@@ -216,7 +216,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return nakedObject.Specification.SingularName;
         }
 
-        private object GetCompletionData(IObjectFacade nakedObject, INakedObjectSpecificationSurface spec) {
+        private object GetCompletionData(IObjectFacade nakedObject, ITypeFacade spec) {
             string label = nakedObject.TitleString;
             string value = nakedObject.TitleString;
             string link = spec.IsParseable ? label : Surface.OidTranslator.GetOidTranslation(nakedObject).ToString();

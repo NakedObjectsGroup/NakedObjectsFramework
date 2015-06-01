@@ -93,7 +93,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             get { return framework; }
         }
 
-        public INakedObjectSpecificationSurface[] GetDomainTypes() {
+        public ITypeFacade[] GetDomainTypes() {
             return MapErrors(() => framework.MetamodelManager.AllSpecs.
                 Where(s => !IsGenericType(s)).
                 Select(GetSpecificationWrapper).ToArray());
@@ -123,7 +123,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
        
 
-        public INakedObjectSpecificationSurface GetDomainType(string typeName) {
+        public ITypeFacade GetDomainType(string typeName) {
             return MapErrors(() => GetSpecificationWrapper(GetDomainTypeInternal(typeName)));
         }
 
@@ -168,8 +168,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new UserCredentials(user, password, new List<string>());
         }
 
-        public IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object value) {
-            var s = ((NakedObjectSpecificationWrapper) spec).WrappedValue;
+        public IObjectFacade GetObject(ITypeFacade spec, object value) {
+            var s = ((TypeFacade) spec).WrappedValue;
             INakedObjectAdapter adapter;
 
             if (value == null) {
@@ -234,7 +234,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-        public ActionResultContextSurface ExecuteListAction(IOidTranslation[] list, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments) {
+        public ActionResultContextSurface ExecuteListAction(IOidTranslation[] list, ITypeFacade elementSpec, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnList(list, elementSpec, actionName);
                 return ExecuteAction(actionContext, arguments);
@@ -940,7 +940,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
-        private ActionContext GetInvokeActionOnList(IOidTranslation[] list, INakedObjectSpecificationSurface elementSpec, string actionName) {
+        private ActionContext GetInvokeActionOnList(IOidTranslation[] list, ITypeFacade elementSpec, string actionName) {
             var domainCollection = list.Select(id => oidStrategy.GetDomainObjectByOid(id));
             var nakedObject = MakeTypedCollection(elementSpec.GetUnderlyingType(), domainCollection);
             return GetAction(actionName, nakedObject);
@@ -996,7 +996,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ITypeSpec GetDomainTypeInternal(string domainTypeId) {
             try {
-                var spec = (NakedObjectSpecificationWrapper) oidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
+                var spec = (TypeFacade) oidStrategy.GetSpecificationByLinkDomainType(domainTypeId);
                 return spec.WrappedValue;
             }
             catch (Exception) {
@@ -1017,8 +1017,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private INakedObjectSpecificationSurface GetSpecificationWrapper(ITypeSpec spec) {
-            return new NakedObjectSpecificationWrapper(spec, this, framework);
+        private ITypeFacade GetSpecificationWrapper(ITypeSpec spec) {
+            return new TypeFacade(spec, this, framework);
         }
 
         private static bool IsGenericType(ITypeSpec spec) {
@@ -1087,8 +1087,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return IsAutoCompleteEnabled ? GetAutocompleteList(nakedObject, arguments) : GetConditionalList(nakedObject, arguments);
             }
 
-            private INakedObjectSpecificationSurface GetSpecificationWrapper(IObjectSpec spec) {
-                return new NakedObjectSpecificationWrapper(spec, surface, framework);
+            private ITypeFacade GetSpecificationWrapper(IObjectSpec spec) {
+                return new TypeFacade(spec, surface, framework);
             }
 
             private INakedObjectAdapter[] GetConditionalList(INakedObjectAdapter nakedObject, ArgumentsContext arguments) {

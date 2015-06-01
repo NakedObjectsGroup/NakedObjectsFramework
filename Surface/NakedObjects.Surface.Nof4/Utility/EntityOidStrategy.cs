@@ -113,13 +113,13 @@ namespace NakedObjects.Surface.Nof4.Utility {
         //    return GetObjectId(no);
         //}
 
-        public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
+        public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
-            return new NakedObjectSpecificationWrapper(spec, Surface, framework);
+            return new TypeFacade(spec, Surface, framework);
         }
 
-        public string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec) {
+        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
             return GetCode(spec);
         }
 
@@ -171,7 +171,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         #endregion
 
 
-        private string GetCode(INakedObjectSpecificationSurface spec) {
+        private string GetCode(ITypeFacade spec) {
             return GetCode(TypeUtils.GetType(spec.FullName));
         }
 

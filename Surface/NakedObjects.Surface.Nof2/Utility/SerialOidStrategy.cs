@@ -69,11 +69,11 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new System.NotImplementedException();
         }
 
-        public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
+        public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             throw new System.NotImplementedException();
         }
 
-        public string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec) {
+        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
             throw new System.NotImplementedException();
         }
 

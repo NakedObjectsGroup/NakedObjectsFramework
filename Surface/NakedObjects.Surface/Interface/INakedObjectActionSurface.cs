@@ -10,11 +10,11 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectActionSurface : INakedObjectMemberSurface {
-        INakedObjectSpecificationSurface ReturnType { get; }
-        INakedObjectSpecificationSurface ElementType { get; }
+        ITypeFacade ReturnType { get; }
+        ITypeFacade ElementType { get; }
         int ParameterCount { get; }
         INakedObjectActionParameterSurface[] Parameters { get; }
-        INakedObjectSpecificationSurface OnType { get; }
+        ITypeFacade OnType { get; }
         string PresentationHint { get; }
         int PageSize { get; }
         string Name { get; }

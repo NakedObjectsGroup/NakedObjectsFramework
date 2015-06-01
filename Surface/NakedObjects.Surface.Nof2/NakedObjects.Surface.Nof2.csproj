@@ -111,7 +111,7 @@
     <Compile Include="Wrapper\NakedObjectActionWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectActionParameterWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectAssociationWrapper.cs" />
-    <Compile Include="Wrapper\NakedObjectSpecificationWrapper.cs" />
+    <Compile Include="Wrapper\TypeFacade.cs" />
     <Compile Include="Wrapper\OidWrapper.cs" />
     <Compile Include="Wrapper\NakedObjectWrapper.cs" />
     <Compile Include="Wrapper\VersionWrapper.cs" />

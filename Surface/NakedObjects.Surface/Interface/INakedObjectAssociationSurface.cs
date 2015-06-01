@@ -12,8 +12,8 @@ using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectAssociationSurface : INakedObjectMemberSurface {
-        INakedObjectSpecificationSurface Specification { get; }
-        INakedObjectSpecificationSurface ElementSpecification { get; }
+        ITypeFacade Specification { get; }
+        ITypeFacade ElementSpecification { get; }
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         bool IsFile { get; }
@@ -50,7 +50,7 @@ namespace NakedObjects.Surface {
         bool IsVisible(IObjectFacade nakedObject);
         bool IsEager(IObjectFacade nakedObject);
         IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues);
-        Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
+        Tuple<string, ITypeFacade>[] GetChoicesParameters();
         Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues);
         IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm);
         string GetTitle(IObjectFacade nakedObject);

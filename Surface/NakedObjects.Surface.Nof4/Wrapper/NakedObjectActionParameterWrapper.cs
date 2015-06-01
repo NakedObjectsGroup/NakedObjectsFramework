@@ -99,15 +99,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObjectActionParameter.Number; }
         }
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.Spec, Surface, framework); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(nakedObjectActionParameter.Spec, Surface, framework); }
         }
 
-        public INakedObjectSpecificationSurface ElementType {
+        public ITypeFacade ElementType {
             get {
                 var parm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
                 var elementSpec = parm == null ? null : parm.ElementSpec;
-                return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+                return elementSpec == null ? null : new TypeFacade(elementSpec, Surface, framework);
             }
         }
 
@@ -140,7 +140,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, pnv).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray();
         }
 
-        public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
+        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
@@ -285,8 +285,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return framework.GetNakedObject(rawValue);
         }
 
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
-            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+        private Tuple<string, ITypeFacade> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
+            return new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, Surface, framework));
         }
 
         public override bool Equals(object obj) {

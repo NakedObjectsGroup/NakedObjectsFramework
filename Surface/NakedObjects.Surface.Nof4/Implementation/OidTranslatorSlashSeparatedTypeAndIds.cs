@@ -46,7 +46,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
         }
 
-        private string GetCode(INakedObjectSpecificationSurface spec) {
+        private string GetCode(ITypeFacade spec) {
             return GetCode(TypeUtils.GetType(spec.FullName));
         }
 

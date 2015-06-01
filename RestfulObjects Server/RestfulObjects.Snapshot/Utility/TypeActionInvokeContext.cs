@@ -51,7 +51,7 @@ namespace RestfulObjects.Snapshot.Utility {
             get { return aType == ActionType.IsSubtypeOf ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification); }
         }
 
-        public INakedObjectSpecificationSurface ThisSpecification { get; set; }
-        public INakedObjectSpecificationSurface OtherSpecification { get; set; }
+        public ITypeFacade ThisSpecification { get; set; }
+        public ITypeFacade OtherSpecification { get; set; }
     }
 }

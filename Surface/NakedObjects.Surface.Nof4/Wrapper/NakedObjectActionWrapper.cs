@@ -36,8 +36,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public IActionSpec WrappedSpec { get { return action; } }
 
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(action.ReturnSpec, Surface, framework); }
         }
 
         public bool IsContributed {
@@ -97,14 +97,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return action.Id + overloadedUniqueId; }
         }
 
-        public INakedObjectSpecificationSurface ReturnType {
-            get { return new NakedObjectSpecificationWrapper(action.ReturnSpec, Surface, framework); }
+        public ITypeFacade ReturnType {
+            get { return new TypeFacade(action.ReturnSpec, Surface, framework); }
         }
 
-        public INakedObjectSpecificationSurface ElementType {
+        public ITypeFacade ElementType {
             get {
                 var elementSpec = action.ElementSpec;
-                return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+                return elementSpec == null ? null : new TypeFacade(elementSpec, Surface, framework);
             }
         }
 
@@ -124,8 +124,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return new ConsentWrapper(action.IsUsable(((NakedObjectWrapper) nakedObject).WrappedNakedObject));
         }
 
-        public INakedObjectSpecificationSurface OnType {
-            get { return new NakedObjectSpecificationWrapper(action.OnSpec, Surface, framework); }
+        public ITypeFacade OnType {
+            get { return new TypeFacade(action.OnSpec, Surface, framework); }
         }
 
         public IFrameworkFacade Surface { get; set; }

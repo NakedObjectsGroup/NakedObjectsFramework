@@ -60,7 +60,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 opts.Add(extensions);
             }
             else {
-                Tuple<string, INakedObjectSpecificationSurface>[] parms = parameter.GetChoicesParameters();
+                Tuple<string, ITypeFacade>[] parms = parameter.GetChoicesParameters();
                 OptionalProperty[] args = parms.Select(tuple => RestUtils.CreateArgumentProperty(OidStrategy ,req, tuple, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);

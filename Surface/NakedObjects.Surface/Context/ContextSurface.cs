@@ -19,8 +19,8 @@ namespace NakedObjects.Surface {
 
         public virtual object ProposedValue { get; set; }
 
-        public abstract INakedObjectSpecificationSurface Specification { get; }
+        public abstract ITypeFacade Specification { get; }
 
-        public abstract INakedObjectSpecificationSurface ElementSpecification { get; }
+        public abstract ITypeFacade ElementSpecification { get; }
     }
 }

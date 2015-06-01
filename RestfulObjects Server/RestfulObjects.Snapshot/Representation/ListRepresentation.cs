@@ -46,7 +46,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(false);
         }
 
-        private ListRepresentation(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
+        private ListRepresentation(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Value = specs.Select(s => CreateDomainLink(oidStrategy ,req, s)).ToArray();
             SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = new[] {LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
         }
 
-        private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec) {
+        private void SetLinks(HttpRequestMessage req, ITypeFacade spec) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
@@ -97,7 +97,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec) {
+        private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec) {
             return LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
         }
 
@@ -109,7 +109,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return new ListRepresentation(oidStrategy ,actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
 
-        internal static Representation Create(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags) {
+        internal static Representation Create(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags) {
             // filter out System types
             specs = specs.Where(s => !s.FullName.StartsWith("System.") && !s.FullName.StartsWith("Microsoft.")).ToArray();
             // filter out predefined types

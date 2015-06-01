@@ -12,8 +12,8 @@ using NakedObjects.Surface.Context;
 
 namespace NakedObjects.Surface {
     public interface INakedObjectActionParameterSurface :  ISurfaceHolder {
-        INakedObjectSpecificationSurface Specification { get; }
-        INakedObjectSpecificationSurface ElementType { get; }
+        ITypeFacade Specification { get; }
+        ITypeFacade ElementType { get; }
         INakedObjectActionSurface Action { get; }
         string Id { get; }
         Choices IsChoicesEnabled { get; }
@@ -42,7 +42,7 @@ namespace NakedObjects.Surface {
         IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm);
         bool DefaultTypeIsExplicit(IObjectFacade nakedObject);
         IObjectFacade GetDefault(IObjectFacade nakedObject);
-        Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters();
+        Tuple<string, ITypeFacade>[] GetChoicesParameters();
         string GetMaskedValue(IObjectFacade valueNakedObject);
         // todo not really same as other interfaces - more PutValue with validate only ? 
         IConsentSurface IsValid(IObjectFacade target, object value);

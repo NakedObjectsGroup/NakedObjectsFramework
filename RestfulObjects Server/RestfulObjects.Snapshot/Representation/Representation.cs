@@ -237,7 +237,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        protected static void AddStringProperties(INakedObjectSpecificationSurface spec, int? maxLength, string pattern, Dictionary<string, object> exts) {
+        protected static void AddStringProperties(ITypeFacade spec, int? maxLength, string pattern, Dictionary<string, object> exts) {
             if (spec.IsParseable) {
                 if (maxLength != null) {
                     exts.Add(JsonPropertyNames.MaxLength, maxLength);

@@ -30,11 +30,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #region INakedObjectActionParameterSurface Members
 
-        public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.getSpecification(), target, Surface); }
+        public ITypeFacade Specification {
+            get { return new TypeFacade(nakedObjectActionParameter.getSpecification(), target, Surface); }
         }
 
-        public INakedObjectSpecificationSurface ElementType { get; private set; }
+        public ITypeFacade ElementType { get; private set; }
 
         public INakedObjectActionSurface Action {
             get { return new NakedObjectActionWrapper(nakedObjectActionParameter.getAction(), target, Surface); }
@@ -112,8 +112,8 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new NakedObjectWrapper(nakedObjectActionParameter.getDefault(((NakedObjectWrapper) nakedObject).NakedObject), Surface);
         }
 
-        public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
-            return new Tuple<string, INakedObjectSpecificationSurface>[] {};
+        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
+            return new Tuple<string, ITypeFacade>[] {};
         }
 
         public string GetMaskedValue(IObjectFacade valueNakedObject) {

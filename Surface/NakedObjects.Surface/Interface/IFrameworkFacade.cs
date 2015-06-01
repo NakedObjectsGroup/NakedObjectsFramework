@@ -32,12 +32,12 @@ namespace NakedObjects.Surface {
         ActionContextSurface GetObjectAction(IOidTranslation objectId, string actionName);
         PropertyContextSurface PutProperty(IOidTranslation objectId, string propertyName, ArgumentContext argument);
         PropertyContextSurface DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContext argument);
-        ActionResultContextSurface ExecuteListAction(IOidTranslation[] objectId, INakedObjectSpecificationSurface elementSpec, string actionName, ArgumentsContext arguments);
+        ActionResultContextSurface ExecuteListAction(IOidTranslation[] objectId, ITypeFacade elementSpec, string actionName, ArgumentsContext arguments);
         ActionResultContextSurface ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContext arguments);
         ActionResultContextSurface ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContext arguments);
         ObjectContextSurface GetImage(string imageId);
-        INakedObjectSpecificationSurface[] GetDomainTypes();
-        INakedObjectSpecificationSurface GetDomainType(string typeName);
+        ITypeFacade[] GetDomainTypes();
+        ITypeFacade GetDomainType(string typeName);
         PropertyTypeContextSurface GetPropertyType(string typeName, string propertyName);
         ActionTypeContextSurface GetActionType(string typeName, string actionName);
         ParameterTypeContextSurface GetActionParameterType(string typeName, string actionName, string parmName);
@@ -45,7 +45,7 @@ namespace NakedObjects.Surface {
         UserCredentials Validate(string user, string password);
         // todo this to help the transition may be able to be removed after
 
-        IObjectFacade GetObject(INakedObjectSpecificationSurface spec, object domainObject);
+        IObjectFacade GetObject(ITypeFacade spec, object domainObject);
         IObjectFacade GetObject(object domainObject);
         // todo temp wrap - probably remove actionresult model ? 
         object Wrap(object arm, IObjectFacade oldNakedObject);

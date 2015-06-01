@@ -106,7 +106,7 @@
     <Compile Include="Interface\INakedObjectActionParameterSurface.cs" />
     <Compile Include="Interface\INakedObjectAssociationSurface.cs" />
     <Compile Include="Interface\INakedObjectMemberSurface.cs" />
-    <Compile Include="Interface\INakedObjectSpecificationSurface.cs" />
+    <Compile Include="Interface\ITypeFacade.cs" />
     <Compile Include="Interface\IFrameworkFacade.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -10,8 +10,8 @@ using System.Reflection;
 
 namespace NakedObjects.Surface {
     public interface IObjectFacade :  ISurfaceHolder {
-        INakedObjectSpecificationSurface Specification { get; }
-        INakedObjectSpecificationSurface ElementSpecification { get; }
+        ITypeFacade Specification { get; }
+        ITypeFacade ElementSpecification { get; }
         object Object { get; }
         IOidSurface Oid { get; }
         IVersionSurface Version { get; }

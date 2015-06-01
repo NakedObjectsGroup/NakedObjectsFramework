@@ -17,11 +17,11 @@ using NakedObjects.Util;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
-    public class NakedObjectSpecificationWrapper : INakedObjectSpecificationSurface {
+    public class TypeFacade : ITypeFacade {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;
 
-        public NakedObjectSpecificationWrapper(ITypeSpec spec, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public TypeFacade(ITypeSpec spec, IFrameworkFacade surface, INakedObjectsFramework framework) {
             SurfaceUtils.AssertNotNull(spec, "Spec is null");
             SurfaceUtils.AssertNotNull(surface, "Surface is null");
             SurfaceUtils.AssertNotNull(framework, "framework is null");
@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return spec; }
         }
 
-        #region INakedObjectSpecificationSurface Members
+        #region ITypeFacade Members
 
         public IDictionary<string, object> ExtensionData {
             get {
@@ -174,17 +174,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<INakedObjectActionSurface>().ToArray();
         }
 
-        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
             if (IsCollection) {
                 var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-                return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+                return new TypeFacade(elementSpec, Surface, framework);
             }
             return null;
         }
 
-        public bool IsOfType(INakedObjectSpecificationSurface otherSpec) {
-            return spec.IsOfType(((NakedObjectSpecificationWrapper) otherSpec).spec);
+        public bool IsOfType(ITypeFacade otherSpec) {
+            return spec.IsOfType(((TypeFacade) otherSpec).spec);
         }
 
         public Type GetUnderlyingType() {
@@ -209,7 +209,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public IFrameworkFacade Surface { get; set; }
 
-        public bool Equals(INakedObjectSpecificationSurface other) {
+        public bool Equals(ITypeFacade other) {
             return Equals((object) other);
         }
 
@@ -231,14 +231,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #endregion
 
         public override bool Equals(object obj) {
-            var nakedObjectSpecificationWrapper = obj as NakedObjectSpecificationWrapper;
+            var nakedObjectSpecificationWrapper = obj as TypeFacade;
             if (nakedObjectSpecificationWrapper != null) {
                 return Equals(nakedObjectSpecificationWrapper);
             }
             return false;
         }
 
-        public bool Equals(NakedObjectSpecificationWrapper other) {
+        public bool Equals(TypeFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
             return Equals(other.spec, spec);

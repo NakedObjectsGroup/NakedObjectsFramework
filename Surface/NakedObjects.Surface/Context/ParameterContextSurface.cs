@@ -13,11 +13,11 @@ namespace NakedObjects.Surface {
             get { return Parameter.Id; }
         }
 
-        public override INakedObjectSpecificationSurface Specification {
+        public override ITypeFacade Specification {
             get { return Parameter.Specification; }
         }
 
-        public override INakedObjectSpecificationSurface ElementSpecification {
+        public override ITypeFacade ElementSpecification {
             get { return Parameter.ElementType; }
         }
 

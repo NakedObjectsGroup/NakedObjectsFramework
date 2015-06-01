@@ -68,7 +68,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RelType parentRelType) {
+        private void SetLinks(HttpRequestMessage req, ITypeFacade spec, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy ,parentRelType, Flags),
                 LinkRepresentation.Create(OidStrategy,SelfRelType, Flags)

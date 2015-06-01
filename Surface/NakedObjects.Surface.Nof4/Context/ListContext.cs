@@ -19,7 +19,7 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public ListContextSurface ToListContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
             return new ListContextSurface {
-                ElementType = new NakedObjectSpecificationWrapper(ElementType, surface, framework),
+                ElementType = new TypeFacade(ElementType, surface, framework),
                 List = List.Select(no => NakedObjectWrapper.Wrap(no, surface, framework)).Cast<IObjectFacade>().ToArray(),
                 IsListOfServices = IsListOfServices
             };

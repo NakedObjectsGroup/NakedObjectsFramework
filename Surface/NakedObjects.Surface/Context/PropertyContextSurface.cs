@@ -15,11 +15,11 @@ namespace NakedObjects.Surface {
             get { return Property.Id; }
         }
 
-        public override INakedObjectSpecificationSurface Specification {
+        public override ITypeFacade Specification {
             get { return Property.Specification; }
         }
 
-        public override INakedObjectSpecificationSurface ElementSpecification {
+        public override ITypeFacade ElementSpecification {
             get { return Property.ElementSpecification; }
         }
     }

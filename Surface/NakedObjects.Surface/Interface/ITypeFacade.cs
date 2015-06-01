@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Surface {
-    public interface INakedObjectSpecificationSurface : ISurfaceHolder, IEquatable<INakedObjectSpecificationSurface> {
+    public interface ITypeFacade : ISurfaceHolder, IEquatable<ITypeFacade> {
         INakedObjectAssociationSurface[] Properties { get; }
         IMenuFacade Menu { get; }
         string PresentationHint { get; }
@@ -40,11 +40,11 @@ namespace NakedObjects.Surface {
         IDictionary<string, object> ExtensionData { get; }
         bool IsBoolean { get; }
         bool IsEnum { get; }
-        INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject);
+        ITypeFacade GetElementType(IObjectFacade nakedObject);
         bool IsImmutable(IObjectFacade nakedObject);
         string GetIconName(IObjectFacade nakedObject);
         INakedObjectActionSurface[] GetActionLeafNodes();
-        bool IsOfType(INakedObjectSpecificationSurface otherSpec);
+        bool IsOfType(ITypeFacade otherSpec);
         Type GetUnderlyingType();
         INakedObjectActionSurface[] GetCollectionContributedActions();
         INakedObjectActionSurface[] GetFinderActions();

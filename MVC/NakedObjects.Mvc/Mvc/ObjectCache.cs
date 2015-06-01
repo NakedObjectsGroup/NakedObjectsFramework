@@ -131,17 +131,17 @@ namespace NakedObjects.Web.Mvc {
             return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(framework, kvp.Key));
         }
 
-        private static bool SameSpec(string name, INakedObjectSpecificationSurface otherSpec, IFrameworkFacade surface) {
+        private static bool SameSpec(string name, ITypeFacade otherSpec, IFrameworkFacade surface) {
             var thisSpec = surface.GetDomainType(name);
             return thisSpec.IsOfType(otherSpec);
         }
 
-        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, INakedObjectSpecificationSurface spec, ObjectFlag flag) {
+        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag) {
             session.ClearDestroyedObjectsOfType(surface, spec, flag);
             return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, surface)).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(surface, kvp.Key));
         }
 
-        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, INakedObjectSpecificationSurface spec, ObjectFlag flag = ObjectFlag.None) {
+        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
             return session.GetAndTidyCachedNakedObjectsOfType(surface, spec, flag).Select(no => no.Object);
         }
 
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.Mvc {
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, INakedObjectSpecificationSurface spec, ObjectFlag flag = ObjectFlag.None) {
+        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
             List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, surface)).Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, surface)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));

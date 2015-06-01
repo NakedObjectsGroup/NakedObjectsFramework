@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedObjects.Surface.Nof2.Wrapper {
-    public class VoidNakedObjectSpecificationWrapper :  INakedObjectSpecificationSurface {
+    public class VoidNakedObjectSpecificationWrapper :  ITypeFacade {
         public bool IsComplexType { get; private set; }
 
         public bool IsParseable {
@@ -71,7 +71,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsBoolean { get; private set; }
         public bool IsEnum { get; private set; }
 
-        #region INakedObjectSpecificationSurface Members
+        #region ITypeFacade Members
 
         public INakedObjectAssociationSurface[] Properties {
             get { return new INakedObjectAssociationSurface[] {}; }
@@ -82,11 +82,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
         public bool IsAlwaysImmutable { get; private set; }
         public bool IsImmutableOncePersisted { get; private set; }
 
-        public INakedObjectSpecificationSurface GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
             throw new NotImplementedException();
         }
 
-        bool INakedObjectSpecificationSurface.IsImmutable(IObjectFacade nakedObject) {
+        bool ITypeFacade.IsImmutable(IObjectFacade nakedObject) {
             return false;
         }
 
@@ -98,11 +98,11 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new INakedObjectActionSurface[] {};
         }
 
-        public INakedObjectSpecificationSurface ElementType {
+        public ITypeFacade ElementType {
             get { return null; }
         }
 
-        public bool IsOfType(INakedObjectSpecificationSurface otherSpec) {
+        public bool IsOfType(ITypeFacade otherSpec) {
             return false;
         }
 
@@ -120,7 +120,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
 
         #endregion
 
-        public bool Equals(INakedObjectSpecificationSurface other) {
+        public bool Equals(ITypeFacade other) {
             throw new NotImplementedException();
         }
 

@@ -19,10 +19,10 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             Surface = surface;
         }
 
-        public INakedObjectSpecificationSurface Specification {
+        public ITypeFacade Specification {
             get {
                 NakedObjectSpecification rt = action.getReturnType();
-                return rt == null ? (INakedObjectSpecificationSurface) new VoidNakedObjectSpecificationWrapper() : new NakedObjectSpecificationWrapper(action.getReturnType(), target, Surface);
+                return rt == null ? (ITypeFacade) new VoidNakedObjectSpecificationWrapper() : new TypeFacade(action.getReturnType(), target, Surface);
             }
         }
 
@@ -66,13 +66,13 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             get { return action.getId(); }
         }
 
-        public INakedObjectSpecificationSurface ReturnType {
+        public ITypeFacade ReturnType {
             get { return Specification; }
         }
 
-        public INakedObjectSpecificationSurface ElementType {
+        public ITypeFacade ElementType {
             get {
-                return new NakedObjectSpecificationWrapper(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof(object).FullName), null, Surface);
+                return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof(object).FullName), null, Surface);
             }
         }
 
@@ -92,7 +92,7 @@ namespace NakedObjects.Surface.Nof2.Wrapper {
             return new ConsentWrapper(action.isAvailable((NakedReference) (((NakedObjectWrapper) nakedObject).NakedObject)));
         }
 
-        public INakedObjectSpecificationSurface OnType {
+        public ITypeFacade OnType {
             get { throw new NotImplementedException(); }
         }
 

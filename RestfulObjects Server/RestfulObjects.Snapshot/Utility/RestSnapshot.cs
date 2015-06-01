@@ -177,7 +177,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, INakedObjectSpecificationSurface[] specs, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:TypeList");
 
@@ -188,7 +188,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, INakedObjectSpecificationSurface spec, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ITypeFacade spec, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:DomainType");
 

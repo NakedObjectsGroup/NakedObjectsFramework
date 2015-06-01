@@ -17,7 +17,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class DomainTypeRepresentation : Representation {
-        protected DomainTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags)
+        protected DomainTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec, RestControlFlags flags)
             : base(oidStrategy, flags) {
             var helper = new UriMtHelper(oidStrategy, req, spec);
             SelfRelType = new DomainTypeRelType(RelValues.Self, helper);
@@ -71,7 +71,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }.ToArray();
         }
 
-        private void SetScalars(INakedObjectSpecificationSurface spec) {
+        private void SetScalars(ITypeFacade spec) {
             Name = spec.FullName;
             DomainType = spec.DomainTypeName(OidStrategy);
             FriendlyName = spec.SingularName;
@@ -80,7 +80,7 @@ namespace RestfulObjects.Snapshot.Representations {
             IsService = spec.IsService;
         }
 
-        private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
+        private void SetTypeActions(ITypeFacade spec, HttpRequestMessage req) {
             TypeActions = new[] {
                 LinkRepresentation.Create(OidStrategy,new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
@@ -91,7 +91,7 @@ namespace RestfulObjects.Snapshot.Representations {
             };
         }
 
-        private void SetMembers(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
+        private void SetMembers(ITypeFacade spec, HttpRequestMessage req) {
             INakedObjectAssociationSurface[] properties = spec.Properties.Where(p => !p.IsCollection).ToArray();
             INakedObjectAssociationSurface[] collections = spec.Properties.Where(p => p.IsCollection).ToArray();
             INakedObjectActionSurface[] actions = spec.GetActionLeafNodes();
@@ -107,7 +107,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        public static DomainTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) {
+        public static DomainTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec, RestControlFlags flags) {
             return new DomainTypeRepresentation(oidStrategy ,req, spec, flags);
         }
     }
