@@ -340,12 +340,32 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual(0, productLine.FindElements(By.CssSelector(".nof-object a")).Count());
             Assert.AreEqual(0, productClass.FindElements(By.CssSelector(".nof-object a")).Count());
-            // unselect defaults 
-            //productLine.SelectListBoxItems(br, "M", "S");
+
+            // unselect all - check mandatory
+
+            productLine.SelectListBoxItems(br, "M", "S");
             productClass.SelectListBoxItems(br, "H");
-            // then select these
-            //productLine.SelectListBoxItems(br, "M");
-            //productClass.SelectListBoxItems(br, "L");
+
+            Thread.Sleep(1000);
+
+            var valMsg1 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductLine .field-validation-error")));
+            var valMsg2 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")));
+            Assert.AreEqual("Mandatory", valMsg1.Text);
+            Assert.AreEqual("Mandatory", valMsg2.Text);
+
+            // select line (only) 
+
+            productLine.SelectListBoxItems(br, "M");
+
+            Thread.Sleep(1000);
+
+            var valMsg3 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")));
+            Assert.AreEqual("Mandatory", valMsg3.Text);
+
+            Assert.AreEqual(0, br.FindElements(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")).Count());
+
+          
+            productClass.SelectListBoxItems(br, "L");
 
             var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
 
