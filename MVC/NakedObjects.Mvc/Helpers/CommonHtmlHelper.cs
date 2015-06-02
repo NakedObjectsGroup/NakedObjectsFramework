@@ -1413,6 +1413,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                     if (errors.Any()) {
                         errors.ForEach(e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
+                        return null;
                     }
                 }
                 if (context.Parameter.Specification.IsParseable) {
