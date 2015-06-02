@@ -1404,7 +1404,8 @@ namespace NakedObjects.Web.Mvc.Html {
             ModelState modelState = html.ViewData.ModelState.TryGetValue(id, out modelState) ? modelState : null;
 
             if (modelState != null && modelState.Value != null) {
-                object rawvalue = modelState.Value.RawValue;
+                var modelValue = modelState.Value.RawValue as IObjectFacade;
+                object rawvalue = modelValue == null ? modelState.Value.RawValue : modelValue.GetDomainObject<object>();
                 if (clear) {
                     // only clear the value and keep any error 
                     ModelErrorCollection errors = modelState.Errors;
@@ -1426,7 +1427,6 @@ namespace NakedObjects.Web.Mvc.Html {
                     var itemSpec = context.Parameter.ElementType;
 
                     if (itemSpec.IsParseable) {
-                        // todo this may not work
                         return html.GetAndParseValueAsNakedObject(context, rawvalue);
                     }
 
