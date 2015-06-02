@@ -76,6 +76,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         [TestMethod]
+        public override void ActionMultipleChoicesConditionalEnumValidateMandatory() {
+            DoActionMultipleChoicesConditionalEnumValidateMandatory();
+        }
+
+        [TestMethod]
         public override void ActionMultipleChoicesValidateFail() {
             DoActionMultipleChoicesValidateFail();
         }

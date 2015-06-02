@@ -75,6 +75,10 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         public override void ActionMultipleChoicesConditionalEnum() {
             DoActionMultipleChoicesConditionalEnum();
         }
+        [TestMethod]
+        public override void ActionMultipleChoicesConditionalEnumValidateMandatory() {
+            DoActionMultipleChoicesConditionalEnumValidateMandatory();
+        }
 
         [TestMethod]
         public override void ActionMultipleChoicesDomainObject() {

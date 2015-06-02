@@ -331,6 +331,31 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.FindElement(By.CssSelector(".nof-object")).Text);
         }
 
+
+        public void DoActionMultipleChoicesConditionalEnumValidateMandatory() {
+            Login();
+
+            var productLine = wait.ClickAndWait("#ProductRepository-FindByProductLinesAndClasses button", "#ProductRepository-FindByProductLinesAndClasses-ProductLine");
+            var productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
+
+            Assert.AreEqual(0, productLine.FindElements(By.CssSelector(".nof-object a")).Count());
+            Assert.AreEqual(0, productClass.FindElements(By.CssSelector(".nof-object a")).Count());
+            // unselect defaults 
+            //productLine.SelectListBoxItems(br, "M", "S");
+            productClass.SelectListBoxItems(br, "H");
+            // then select these
+            //productLine.SelectListBoxItems(br, "M");
+            //productClass.SelectListBoxItems(br, "L");
+
+            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
+
+            ok.Click();
+
+            wait.Until(wd => wd.Title == "20 Products");
+
+            Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.FindElement(By.CssSelector(".nof-object")).Text);
+        }
+
         public void DoActionMultipleChoicesDomainObject() {
             Login();
             var orderNumber = wait.ClickAndWait("#OrderRepository-FindOrder button", "#OrderRepository-FindOrder-OrderNumber-Input");
@@ -390,6 +415,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void ActionMultipleChoicesEnum();
 
         public abstract void ActionMultipleChoicesConditionalEnum();
+
+        public abstract void ActionMultipleChoicesConditionalEnumValidateMandatory();
 
         public abstract void ActionMultipleChoicesDomainObject();
 
