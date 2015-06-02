@@ -76,7 +76,11 @@ namespace NakedObjects.Surface.Utility.Restricted {
             return item == null ? new List<T>() : new List<T> {item};
         }
 
-        private static object GetTypedCollection(IFrameworkFacade surface, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {
+        private static IObjectFacade SafeGetObjectFromId(this IFrameworkFacade surface, string id) {
+            return string.IsNullOrWhiteSpace(id) ? null : GetNakedObjectFromId(surface, id);
+        }
+
+        private static object GetTypedCollection(this IFrameworkFacade surface, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();
@@ -88,14 +92,15 @@ namespace NakedObjects.Surface.Utility.Restricted {
 
             // need to check if collection is actually a collection memento 
             if (rawCollection.Count() == 1) {
-                var firstObj = GetNakedObjectFromId(surface, rawCollection.First());
+                var id = rawCollection.First();
+                var firstObj = SafeGetObjectFromId(surface, id);
 
                 if (firstObj != null && firstObj.IsCollectionMemento) {
                     return firstObj.Object;
                 }
             }
 
-            var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
+            var objCollection = rawCollection.Select(s => SafeGetObjectFromId(surface, s).GetDomainObject<object>()).ToArray();
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 

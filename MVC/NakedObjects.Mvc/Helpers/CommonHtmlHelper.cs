@@ -1412,7 +1412,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     html.ViewData.ModelState.Remove(id);
 
                     if (errors.Any()) {
-                        SurfaceHelper.ForEach(errors, e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
+                        errors.ForEach(e => html.ViewData.ModelState.AddModelError(id, e.ErrorMessage));
                     }
                 }
                 if (context.Parameter.Specification.IsParseable) {
@@ -1420,7 +1420,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
 
                 if (!context.Parameter.Specification.IsCollection) {
-                    return (IObjectFacade) rawvalue;
+                    return modelValue;
                 }
 
                 if (context.Parameter.Specification.IsCollection) {
@@ -1430,10 +1430,10 @@ namespace NakedObjects.Web.Mvc.Html {
                         return html.GetAndParseValueAsNakedObject(context, rawvalue);
                     }
 
-                    return (IObjectFacade) rawvalue;
+                    return modelValue;
                 }
 
-                return context.Parameter.Specification.IsParseable ? html.GetAndParseValueAsNakedObject(context, rawvalue) : (IObjectFacade) rawvalue;
+                return context.Parameter.Specification.IsParseable ? html.GetAndParseValueAsNakedObject(context, rawvalue) : modelValue;
             }
             return null;
         }
