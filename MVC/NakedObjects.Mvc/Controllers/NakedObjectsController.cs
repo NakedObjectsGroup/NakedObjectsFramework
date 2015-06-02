@@ -221,9 +221,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (parm.Specification.IsStream) {
-                // todo not sure about this couple surface to http?
-                // create stream wrapper ? 
-                //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
                 return (HttpPostedFileBase) value;
             }
 
@@ -399,11 +396,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (value == null) {
                 return null;
             }
-            // todo
+
             if (assoc.Specification.IsStream) {
-                // todo not sure about this couple surface to http?
-                // create stream wrapper ? 
-                //    return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.NakedObjectManager);
                 return (HttpPostedFileBase) value;
             }
 
