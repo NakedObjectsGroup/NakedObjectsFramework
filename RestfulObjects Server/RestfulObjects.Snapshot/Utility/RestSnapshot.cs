@@ -45,13 +45,13 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        private RestSnapshot(IOidStrategy oidStrategy, ContextSurface context, HttpRequestMessage req, bool validateAsJson)
+        private RestSnapshot(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req, bool validateAsJson)
             : this(oidStrategy, req, validateAsJson) {
             logger.DebugFormat("RestSnapshot:{0}", context.GetType().FullName);
             CheckForRedirection(oidStrategy, context, req);
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        public RestSnapshot(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy,objectContext, req, true) {
             populator = () => {
                 this.httpStatusCode = httpStatusCode;
@@ -60,7 +60,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,actionResultContext, req, true) {
             populator = () => {
                 representation = ActionResultRepresentation.Create(oidStrategy ,req, actionResultContext, flags);
@@ -68,7 +68,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:ServicesList");
             populator = () => {
@@ -77,7 +77,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:propertyprompt");
             populator = () => {
@@ -86,7 +86,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:parameterprompt");
             populator = () => {
@@ -95,7 +95,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value = false)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value = false)
             : this(oidStrategy,propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
             populator = () => {
@@ -110,7 +110,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyTypeContextSurface propertyTypeContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyTypeContextFacade propertyTypeContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", propertyTypeContext.GetType().FullName);
             populator = () => {
@@ -119,7 +119,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ActionContextSurface actionContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,actionContext, req, true) {
             populator = () => {
                 representation = ActionRepresentation.Create(oidStrategy ,req, actionContext, flags);
@@ -127,7 +127,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ActionTypeContextSurface actionTypeContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ActionTypeContextFacade actionTypeContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", actionTypeContext.GetType().FullName);
 
@@ -137,7 +137,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ParameterTypeContextSurface parameterTypeContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterTypeContextFacade parameterTypeContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:{0}", parameterTypeContext.GetType().FullName);
 
@@ -272,9 +272,9 @@ namespace RestfulObjects.Snapshot.Utility {
             return msg;
         }
 
-        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextSurface context, HttpRequestMessage req) {
-            var ocs = context as ObjectContextSurface;
-            var arcs = context as ActionResultContextSurface;
+        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
+            var ocs = context as ObjectContextFacade;
+            var arcs = context as ActionResultContextFacade;
             Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.Redirected : null);
 
             if (redirected != null) {
@@ -283,7 +283,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        private static void FilterBlobsAndClobs(PropertyContextSurface propertyContext, RestControlFlags flags) {
+        private static void FilterBlobsAndClobs(PropertyContextFacade propertyContext, RestControlFlags flags) {
             if (!flags.BlobsClobs) {
                 if (RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
                     throw new PropertyResourceNotFoundNOSException(propertyContext.Id);
@@ -378,8 +378,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 if (contextNosException.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable)) {
                     representation = NullRepresentation.Create();
                 }
-                else if (contextNosException.ContextSurface != null) {
-                    representation = ArgumentsRepresentation.Create(oidStrategy , req, contextNosException.ContextSurface, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
+                else if (contextNosException.ContextFacade != null) {
+                    representation = ArgumentsRepresentation.Create(oidStrategy , req, contextNosException.ContextFacade, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
                 }
                 else if (contextNosException.Contexts.Any()) {
                     representation = ArgumentsRepresentation.Create(oidStrategy, req, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));

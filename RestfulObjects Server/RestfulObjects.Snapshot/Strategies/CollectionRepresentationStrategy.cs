@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         private readonly IObjectFacade collection;
 
 
-        public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+        public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy ,req, propertyContext, flags) {
             collection = propertyContext.Property.GetNakedObject(propertyContext.Target);
         }

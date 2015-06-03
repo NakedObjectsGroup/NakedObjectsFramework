@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionTypeRepresentation : Representation {
-        protected ActionTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextSurface actionTypeContext, RestControlFlags flags)
+        protected ActionTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextFacade actionTypeContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, actionTypeContext));
             SetScalars(actionTypeContext);
@@ -60,7 +60,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        private void SetScalars(ActionTypeContextSurface actionTypeContext) {
+        private void SetScalars(ActionTypeContextFacade actionTypeContext) {
             Id = actionTypeContext.ActionContext.Id;
             FriendlyName = actionTypeContext.ActionContext.Action.Name;
             Description = actionTypeContext.ActionContext.Action.Description;
@@ -68,9 +68,9 @@ namespace RestfulObjects.Snapshot.Representations {
             MemberOrder = actionTypeContext.ActionContext.Action.MemberOrder;
         }
 
-        private void SetParameters(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext) {
+        private void SetParameters(HttpRequestMessage req, ActionTypeContextFacade actionTypeContext) {
             IEnumerable<LinkRepresentation> parms = actionTypeContext.ActionContext.VisibleParameters.
-                Select(p => LinkRepresentation.Create(OidStrategy,new ParamTypeRelType(new UriMtHelper(OidStrategy, req, new ParameterTypeContextSurface {
+                Select(p => LinkRepresentation.Create(OidStrategy,new ParamTypeRelType(new UriMtHelper(OidStrategy, req, new ParameterTypeContextFacade {
                     Action = actionTypeContext.ActionContext.Action,
                     OwningSpecification = actionTypeContext.OwningSpecification,
                     Parameter = p.Parameter
@@ -78,7 +78,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Parameters = parms.ToArray();
         }
 
-        private void SetLinks(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext) {
+        private void SetLinks(HttpRequestMessage req, ActionTypeContextFacade actionTypeContext) {
             var domainTypeUri = new UriMtHelper(OidStrategy, req, actionTypeContext);
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
@@ -94,7 +94,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
 
-        public static ActionTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextSurface actionTypeContext, RestControlFlags flags) {
+        public static ActionTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextFacade actionTypeContext, RestControlFlags flags) {
             return new ActionTypeRepresentation(oidStrategy, req, actionTypeContext, flags);
         }
     }

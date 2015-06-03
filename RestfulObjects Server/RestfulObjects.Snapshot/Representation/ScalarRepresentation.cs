@@ -16,7 +16,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ScalarRepresentation : Representation {
-        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags)
+        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(objectContext);
             SetLinks(req, objectContext);
@@ -32,11 +32,11 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetScalars(ObjectContextSurface objectContext) {
+        private void SetScalars(ObjectContextFacade objectContext) {
             Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
         }
 
-        private void SetLinks(HttpRequestMessage req, ObjectContextSurface objectContext) {
+        private void SetLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
@@ -49,7 +49,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
             return new ScalarRepresentation(oidStrategy, req, objectContext, flags);
         }
     }

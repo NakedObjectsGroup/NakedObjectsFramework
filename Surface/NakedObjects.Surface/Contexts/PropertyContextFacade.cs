@@ -5,28 +5,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
-
 namespace NakedObjects.Facade.Contexts {
-    public class ChoiceContextSurface : ContextSurface {
-        private readonly string id;
-        private readonly ITypeFacade spec;
-
-        public ChoiceContextSurface(string id, ITypeFacade spec) {
-            this.id = id;
-            this.spec = spec;
-        }
+    public class PropertyContextFacade : ContextFacade {
+        public IAssociationFacade Property { get; set; }
+        public bool Mutated { get; set; }
 
         public override string Id {
-            get { return id; }
+            get { return Property.Id; }
         }
 
         public override ITypeFacade Specification {
-            get { return spec; }
+            get { return Property.Specification; }
         }
 
         public override ITypeFacade ElementSpecification {
-            get { return null; }
+            get { return Property.ElementSpecification; }
         }
     }
 }

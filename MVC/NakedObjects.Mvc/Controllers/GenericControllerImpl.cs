@@ -218,7 +218,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private IObjectFacade GetResult(ActionResultContextSurface context) {
+        private IObjectFacade GetResult(ActionResultContextFacade context) {
             if (context.HasResult) {
                 return context.Result.Target;
             }
@@ -230,7 +230,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
 
-                var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                var ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
 
                 if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                     var oids = nakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
@@ -248,7 +248,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!action.Parameters.Any()) {
-                var ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                var ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
                 var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
                 var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
 
@@ -271,7 +271,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
 
-        private bool HasError(ActionResultContextSurface ar) {
+        private bool HasError(ActionResultContextFacade ar) {
             return !string.IsNullOrEmpty(ar.ActionContext.Reason) || ar.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason));
         }
 
@@ -289,7 +289,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetSelectedParameters(targetAction);
 
             var ac = GetParameterValues(targetAction, controlData);
-            ActionResultContextSurface ar;
+            ActionResultContextFacade ar;
 
             if (targetNakedObject.Specification.IsCollection && !targetNakedObject.Specification.IsParseable) {
                 var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
@@ -366,7 +366,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
 
-            var ac = new ArgumentsContext {
+            var ac = new ArgumentsContextFacade {
                 Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => GetObjectValue(f.Item1, nakedObject, f.Item2)),
                 ValidateOnly = false
             };
@@ -584,7 +584,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (targetAction.ParameterCount == 0) {
                 var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
 
-                var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContext() {
+                var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContextFacade() {
                     Values = new Dictionary<string, object>(),
                     ValidateOnly = false
                 });

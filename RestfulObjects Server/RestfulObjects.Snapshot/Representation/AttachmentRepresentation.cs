@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 
-        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetContentType(propertyContext);
             SetContentDisposition(propertyContext);
@@ -51,26 +51,26 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        private void SetContentType(PropertyContextSurface context) {
+        private void SetContentType(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetNakedObject(context.Target);
-            string mtv = no != null ? no.GetAttachment().MimeType : AttachmentContext.DefaultMimeType;
+            string mtv = no != null ? no.GetAttachment().MimeType : AttachmentContextFacade.DefaultMimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
-        private void SetContentDisposition(PropertyContextSurface context) {
+        private void SetContentDisposition(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetNakedObject(context.Target);
-            string cd = no != null ? no.GetAttachment().ContentDisposition : AttachmentContext.DefaultContentDisposition;
-            string fn = no != null ? no.GetAttachment().FileName : AttachmentContext.DefaultFileName;
+            string cd = no != null ? no.GetAttachment().ContentDisposition : AttachmentContextFacade.DefaultContentDisposition;
+            string fn = no != null ? no.GetAttachment().FileName : AttachmentContextFacade.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }
 
-        private void SetStream(PropertyContextSurface context) {
+        private void SetStream(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetNakedObject(context.Target);
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 
 
-        public static Representation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) {
+        public static Representation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             return new AttachmentRepresentation(oidStrategy,req, propertyContext, flags);
         }
     }

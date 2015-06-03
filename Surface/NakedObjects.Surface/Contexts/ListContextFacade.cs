@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Facade.Contexts {
-    public class ArgumentContext {
-        public object Value { get; set; }
-        public bool ValidateOnly { get; set; }
-        public string Digest { get; set; }
+    public class ListContextFacade {
+        public ITypeFacade ElementType { get; set; }
+        public IObjectFacade[] List { get; set; }
+        public bool IsListOfServices { get; set; }
     }
 }

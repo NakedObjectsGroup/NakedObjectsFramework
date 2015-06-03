@@ -27,7 +27,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         #endregion
 
-        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequestMessage req, ContextSurface context, RestControlFlags flags) {
+        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, RestControlFlags flags) {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
@@ -44,7 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return value;
         }
 
-        private static MapRepresentation CreateMap(ContextSurface context, object obj) {
+        private static MapRepresentation CreateMap(ContextFacade context, object obj) {
             var opts = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Value, obj)};
             if (!string.IsNullOrEmpty(context.Reason)) {
                 opts.Add(new OptionalProperty(JsonPropertyNames.InvalidReason, context.Reason));
@@ -52,9 +52,9 @@ namespace RestfulObjects.Snapshot.Representations {
             return Create(opts.ToArray());
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextSurface context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            var objectContextSurface = context as ObjectContextSurface;
-            var actionResultContextSurface = context as ActionResultContextSurface;
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+            var objectContextSurface = context as ObjectContextFacade;
+            var actionResultContextSurface = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
 
 
@@ -84,7 +84,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextSurface> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             OptionalProperty[] memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToArray();
             IObjectFacade target = contexts.First().Target;
             MapRepresentation mapRepresentation;

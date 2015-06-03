@@ -19,7 +19,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionResultRepresentation : Representation {
-        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags)
+        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextFacade actionResult, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, actionResult.ActionContext));
             SetResultType(actionResult);
@@ -45,11 +45,11 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req, ActionResultContextSurface actionResult) {
+        private void SetLinks(HttpRequestMessage req, ActionResultContextFacade actionResult) {
             Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
         }
 
-        private void SetResultType(ActionResultContextSurface actionResult) {
+        private void SetResultType(ActionResultContextFacade actionResult) {
             if (actionResult.Specification.IsParseable) {
                 ResultType = ResultTypes.Scalar;
             }
@@ -61,10 +61,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        private MapRepresentation CreateArguments(HttpRequestMessage req, ActionResultContextSurface actionResult) {
+        private MapRepresentation CreateArguments(HttpRequestMessage req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();
 
-            foreach (ParameterContextSurface visibleParamContext in actionResult.ActionContext.VisibleParameters) {
+            foreach (ParameterContextFacade visibleParamContext in actionResult.ActionContext.VisibleParameters) {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
@@ -95,7 +95,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return MapRepresentation.Create(optionalProperties.ToArray());
         }
 
-        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) {
+        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextFacade actionResult, RestControlFlags flags) {
             if (actionResult.HasResult) {
                 IRepresentation result;
 

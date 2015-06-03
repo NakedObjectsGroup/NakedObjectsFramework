@@ -11,31 +11,31 @@ using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Surface {
     public abstract class WithContextNOSException : NakedObjectsSurfaceException {
-        private IList<ContextSurface> contexts;
+        private IList<ContextFacade> contexts;
 
         protected WithContextNOSException() {}
         protected WithContextNOSException(string message) : base(message) {}
         protected WithContextNOSException(string message, Exception e) : base(message, e) {}
 
-        protected WithContextNOSException(string message, IList<ContextSurface> contexts) : base(message) {
+        protected WithContextNOSException(string message, IList<ContextFacade> contexts) : base(message) {
             Contexts = contexts;
         }
 
-        protected WithContextNOSException(string message, ContextSurface context)
+        protected WithContextNOSException(string message, ContextFacade context)
             : base(message) {
-            ContextSurface = context;
+            ContextFacade = context;
         }
 
-        public IList<ContextSurface> Contexts {
+        public IList<ContextFacade> Contexts {
             get {
                 if (contexts == null) {
-                    return ContextSurface == null ? new ContextSurface[] {} : new[] {ContextSurface};
+                    return ContextFacade == null ? new ContextFacade[] {} : new[] {ContextFacade};
                 }
                 return contexts;
             }
             private set { contexts = value; }
         }
 
-        public ContextSurface ContextSurface { get; private set; }
+        public ContextFacade ContextFacade { get; private set; }
     }
 }

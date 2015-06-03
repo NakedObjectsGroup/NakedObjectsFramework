@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ListRepresentation : Representation {
-        protected ListRepresentation(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected ListRepresentation(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Value = listContext.List.Select(c => CreateObjectLink(oidStrategy ,req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req, listContext.ElementType));
@@ -27,7 +27,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextSurface actionContext)
+        protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
             IObjectFacade list;
 
@@ -82,7 +82,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetLinks(HttpRequestMessage req, ActionContextSurface actionContext) {
+        private void SetLinks(HttpRequestMessage req, ActionContextFacade actionContext) {
             SetLinks(req, actionContext.ElementSpecification);
         }
 
@@ -101,11 +101,11 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
             return new ListRepresentation(oidStrategy ,listContext, req, flags);
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextSurface actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
             return new ListRepresentation(oidStrategy ,actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
 

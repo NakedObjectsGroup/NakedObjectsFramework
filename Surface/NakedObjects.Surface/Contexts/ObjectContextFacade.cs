@@ -5,12 +5,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
+using System;
 
 namespace NakedObjects.Facade.Contexts {
-    public class ListContextSurface {
-        public ITypeFacade ElementType { get; set; }
-        public IObjectFacade[] List { get; set; }
-        public bool IsListOfServices { get; set; }
+    public class ObjectContextFacade : ContextFacade {
+        public bool Mutated { get; set; }
+        public Tuple<string, string> Redirected { get; set; }
+
+        public override string Id {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override ITypeFacade Specification {
+            get { return Target.Specification; }
+        }
+
+        public override ITypeFacade ElementSpecification {
+            get { return Target.ElementSpecification; }
+        }
+
+        public PropertyContextFacade[] VisibleProperties { get; set; }
+        public ActionContextFacade[] VisibleActions { get; set; }
     }
 }

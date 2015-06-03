@@ -31,7 +31,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.HasChoices)]
         public bool HasChoices { get; set; }
 
-        public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy ,req, propertyContext.Property, propertyContext.Target, flags)));
             }

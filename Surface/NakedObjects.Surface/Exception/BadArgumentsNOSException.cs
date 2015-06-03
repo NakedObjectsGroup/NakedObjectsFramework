@@ -10,9 +10,9 @@ using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Surface {
     public class BadArgumentsNOSException : WithContextNOSException {
-        public BadArgumentsNOSException(string message, IList<ContextSurface> contexts) : base(message, contexts) {}
+        public BadArgumentsNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) {}
 
-        public BadArgumentsNOSException(string message, ContextSurface context)
+        public BadArgumentsNOSException(string message, ContextFacade context)
             : base(message, context) {}
     }
 }

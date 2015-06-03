@@ -22,8 +22,8 @@ namespace NakedObjects.Surface.Nof2.Context {
             get { return Property.getSpecification(); }
         }
 
-        public PropertyContextSurface ToPropertyContextSurface(IFrameworkFacade surface) {
-            var pc = new PropertyContextSurface {
+        public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface) {
+            var pc = new PropertyContextFacade {
                                                     Property = new AssociationFacade(Property, Target, surface),
                                                     Mutated = Mutated,
                                                 };

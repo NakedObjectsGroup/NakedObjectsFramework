@@ -31,7 +31,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Parameters)]
         public MapRepresentation Parameters { get; set; }
 
-        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
+        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
             var actionRepresentationStrategy = new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags);

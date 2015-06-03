@@ -26,7 +26,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Value)]
         public LinkRepresentation[] Value { get; set; }
 
-        public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy ,req, propertyContext, flags);
             if (optionals.Count == 0) {
                 return new CollectionRepresentation(oidStrategy ,collectionRepresentationStrategy);

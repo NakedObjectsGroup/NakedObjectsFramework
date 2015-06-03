@@ -254,10 +254,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return values.First();
         }
 
-        internal ArgumentsContext GetParameterValues(IActionFacade action, ObjectAndControlData controlData) {
+        internal ArgumentsContextFacade GetParameterValues(IActionFacade action, ObjectAndControlData controlData) {
             var values = action.Parameters.Select(parm => new {Id = IdHelper.GetParameterInputId(action, parm), Parm = parm}).ToDictionary(a => a.Parm.Id, a => GetParameterValue(a.Parm, a.Id, controlData));
 
-            return new ArgumentsContext() {Values = values, ValidateOnly = false};
+            return new ArgumentsContextFacade() {Values = values, ValidateOnly = false};
         }
 
         internal void SetContextObjectAsParameterValue(IActionFacade targetAction, IObjectFacade contextNakedObject) {
@@ -500,12 +500,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal ArgumentsContext ConvertForSave(IObjectFacade nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
+        internal ArgumentsContextFacade ConvertForSave(IObjectFacade nakedObject, ObjectAndControlData controlData, bool validateOnly = false) {
             List<IAssociationFacade> usableAndVisibleFields;
             List<Tuple<IAssociationFacade, object>> fieldsAndMatchingValues;
             GetUsableAndVisibleFields(nakedObject, controlData, null, out usableAndVisibleFields, out fieldsAndMatchingValues);
 
-            var ac = new ArgumentsContext {
+            var ac = new ArgumentsContextFacade {
                 ValidateOnly = validateOnly,
                 Values = fieldsAndMatchingValues.ToDictionary(t => t.Item1.Id, f => GetObjectValue(f.Item1, nakedObject, f.Item2))
             };
@@ -513,8 +513,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return ac;
         }
 
-        internal ArgumentsContext Convert(FormCollection form, bool validateOnly = false) {
-            var ac = new ArgumentsContext {
+        internal ArgumentsContextFacade Convert(FormCollection form, bool validateOnly = false) {
+            var ac = new ArgumentsContextFacade {
                 ValidateOnly = validateOnly,
                 Values = form.AllKeys.ToDictionary(k => k, k => form.GetValue(k).RawValue)
             };
@@ -544,7 +544,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             try {
                 var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
 
-                var ac = new ArgumentContext {
+                var ac = new ArgumentContextFacade {
                     Value = attemptedValue,
                     ValidateOnly = true
                 };
@@ -716,7 +716,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        protected bool HasError(ObjectContextSurface ar) {
+        protected bool HasError(ObjectContextFacade ar) {
             return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
         }
 

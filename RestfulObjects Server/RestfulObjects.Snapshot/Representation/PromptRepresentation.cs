@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
-        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(listContext, propertyContext, req);
@@ -28,7 +28,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parmContext.Id);
             SetChoices(listContext, parmContext, req);
@@ -52,11 +52,11 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Choices)]
         public object[] Choices { get; set; }
 
-        private void SetChoices(ListContextSurface listContext, PropertyContextSurface propertyContext, HttpRequestMessage req) {
+        private void SetChoices(ListContextFacade listContext, PropertyContextFacade propertyContext, HttpRequestMessage req) {
             Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy,req, c, propertyContext.Property, Flags)).ToArray();
         }
 
-        private void SetChoices(ListContextSurface listContext, ParameterContextSurface paramContext, HttpRequestMessage req) {
+        private void SetChoices(ListContextFacade listContext, ParameterContextFacade paramContext, HttpRequestMessage req) {
             Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy,req, c, paramContext.Parameter, Flags)).ToArray();
         }
 
@@ -93,11 +93,11 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
             return new PromptRepresentation(oidStrategy ,propertyContext, listContext, req, flags);
         }
 
-        public static Representation Create(IOidStrategy oidStrategy, ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static Representation Create(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
             return new PromptRepresentation(oidStrategy ,parmContext, listContext, req, flags);
         }
     }

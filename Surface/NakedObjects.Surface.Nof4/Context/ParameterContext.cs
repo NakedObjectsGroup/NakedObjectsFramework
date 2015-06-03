@@ -26,8 +26,8 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ParameterContextSurface ToParameterContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
-            var pc = new ParameterContextSurface {
+        public ParameterContextFacade ToParameterContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+            var pc = new ParameterContextFacade {
                 Parameter = new ActionParameterFacade(Parameter, surface, framework, OverloadedUniqueId ?? ""),
                 Action = new ActionFacade(Action, surface, framework, OverloadedUniqueId ?? "")
             };

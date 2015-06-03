@@ -5,11 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
-
 namespace NakedObjects.Facade.Contexts {
-    public class ActionTypeContextSurface {
-        public ActionContextSurface ActionContext { get; set; }
+    public class PropertyTypeContextFacade {
+        public IAssociationFacade Property { get; set; }
         public ITypeFacade OwningSpecification { get; set; }
     }
 }

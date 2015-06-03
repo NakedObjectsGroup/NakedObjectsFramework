@@ -32,7 +32,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Size)]
         public int Size { get; set; }
 
-        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsEager(propertyContext.Target) && !propertyContext.Target.IsTransient) {
                 IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetNakedObject(propertyContext.Target).ToEnumerable();
                 IEnumerable<LinkRepresentation> items = collectionItems.Select(i => LinkRepresentation.Create(oidStrategy ,new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i))));

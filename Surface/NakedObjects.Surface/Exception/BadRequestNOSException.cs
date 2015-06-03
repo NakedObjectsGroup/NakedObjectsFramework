@@ -14,7 +14,7 @@ namespace NakedObjects.Surface {
         public BadRequestNOSException() {}
         public BadRequestNOSException(string message) : base(message) {}
         public BadRequestNOSException(string message, Exception e) : base(message, e) {}
-        public BadRequestNOSException(string message, IList<ContextSurface> contexts) : base(message, contexts) {}
-        public BadRequestNOSException(string message, ContextSurface context) : base(message, context) {}
+        public BadRequestNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) {}
+        public BadRequestNOSException(string message, ContextFacade context) : base(message, context) {}
     }
 }

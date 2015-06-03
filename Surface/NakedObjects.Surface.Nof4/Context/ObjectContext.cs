@@ -44,8 +44,8 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public ActionContext[] VisibleActions { get; set; }
 
-        public ObjectContextSurface ToObjectContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
-            var oc = new ObjectContextSurface {
+        public ObjectContextFacade ToObjectContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+            var oc = new ObjectContextFacade {
                 VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextSurface(surface, framework)).ToArray(),
                 VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextSurface(surface, framework)).ToArray(),
                 Mutated = Mutated,

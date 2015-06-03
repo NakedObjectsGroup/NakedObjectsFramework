@@ -42,8 +42,8 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return ActionContext.Action.ReturnSpec; }
         }
 
-        public ActionResultContextSurface ToActionResultContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
-            var ac = new ActionResultContextSurface {
+        public ActionResultContextFacade ToActionResultContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+            var ac = new ActionResultContextFacade {
                 Result = Result == null ? null : Result.ToObjectContextSurface(surface, framework),
                 ActionContext = ActionContext.ToActionContextSurface(surface, framework),
                 HasResult = HasResult

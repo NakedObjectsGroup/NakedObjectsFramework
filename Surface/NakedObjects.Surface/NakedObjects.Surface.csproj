@@ -63,17 +63,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexts\ActionContextSurface.cs" />
+    <Compile Include="Contexts\ActionContextFacade.cs" />
     <Compile Include="Contexts\Choices.cs" />
-    <Compile Include="Contexts\ContextSurface.cs" />
-    <Compile Include="Contexts\ActionResultContextSurface.cs" />
+    <Compile Include="Contexts\ContextFacade.cs" />
+    <Compile Include="Contexts\ActionResultContextFacade.cs" />
     <Compile Include="Contexts\Cause.cs" />
-    <Compile Include="Contexts\ActionTypeContextSurface.cs" />
-    <Compile Include="Contexts\ChoiceContextSurface.cs" />
-    <Compile Include="Contexts\ListContextSurface.cs" />
-    <Compile Include="Contexts\ParameterTypeContextSurface.cs" />
-    <Compile Include="Contexts\PropertyTypeContextSurface.cs" />
-    <Compile Include="Contexts\ObjectContextSurface.cs" />
+    <Compile Include="Contexts\ActionTypeContextFacade.cs" />
+    <Compile Include="Contexts\ChoiceContextFacade.cs" />
+    <Compile Include="Contexts\ListContextFacade.cs" />
+    <Compile Include="Contexts\ParameterTypeContextFacade.cs" />
+    <Compile Include="Contexts\PropertyTypeContextFacade.cs" />
+    <Compile Include="Contexts\ObjectContextFacade.cs" />
     <Compile Include="Exception\ActionResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\BadArgumentsNOSException.cs" />
     <Compile Include="Exception\BadRequestNOSException.cs" />
@@ -92,9 +92,9 @@
     <Compile Include="Exception\ResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\ServiceResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\WithContextNOSException.cs" />
-    <Compile Include="Contexts\ArgumentContext.cs" />
-    <Compile Include="Contexts\ArgumentsContext.cs" />
-    <Compile Include="Contexts\AttachmentContext.cs" />
+    <Compile Include="Contexts\ArgumentContextFacade.cs" />
+    <Compile Include="Contexts\ArgumentsContextFacade.cs" />
+    <Compile Include="Contexts\AttachmentContextFacade.cs" />
     <Compile Include="Facade\IConsentFacade.cs" />
     <Compile Include="Translation\IOidTranslation.cs" />
     <Compile Include="Translation\IOidTranslator.cs" />
@@ -110,8 +110,8 @@
     <Compile Include="Facade\IFrameworkFacade.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contexts\ParameterContextSurface.cs" />
-    <Compile Include="Contexts\PropertyContextSurface.cs" />
+    <Compile Include="Contexts\ParameterContextFacade.cs" />
+    <Compile Include="Contexts\PropertyContextFacade.cs" />
     <Compile Include="Exception\NakedObjectsSurfaceException.cs" />
     <Compile Include="Interface\ISurfaceHolder.cs" />
     <Compile Include="Facade\IOidFacade.cs" />

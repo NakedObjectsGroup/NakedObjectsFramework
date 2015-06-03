@@ -28,7 +28,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public bool HasChoices { get; set; }
 
 
-        public static PropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static PropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy ,req, propertyContext.Property, propertyContext.Target, flags)));
             }

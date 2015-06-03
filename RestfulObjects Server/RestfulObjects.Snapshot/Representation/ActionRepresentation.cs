@@ -44,7 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags) {
+        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             return new ActionRepresentation(oidStrategy, new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags));
         }
     }

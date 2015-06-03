@@ -26,8 +26,8 @@ namespace NakedObjects.Surface.Nof2.Context {
             set { parameters = value; }
         }
 
-        public ActionContextSurface ToActionContextSurface(IFrameworkFacade surface) {
-            var ac = new ActionContextSurface {
+        public ActionContextFacade ToActionContextSurface(IFrameworkFacade surface) {
+            var ac = new ActionContextFacade {
                                                   Action = new ActionFacade(Action, Target, surface),
                                                   VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface)).ToArray()
                                               };

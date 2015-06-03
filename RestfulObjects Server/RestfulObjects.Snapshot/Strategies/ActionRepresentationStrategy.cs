@@ -18,12 +18,12 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
     public class ActionRepresentationStrategy : AbstractStrategy {
-        private readonly ActionContextSurface actionContext;
+        private readonly ActionContextFacade actionContext;
         private readonly IEnumerable<ParameterRepresentation> parameterList;
         private readonly HttpRequestMessage req;
         private readonly RelType self;
 
-        public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext, RestControlFlags flags)
+        public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             this.req = req;
             this.actionContext = actionContext;
@@ -93,9 +93,9 @@ namespace RestfulObjects.Snapshot.Strategies {
             return tempLinks.ToArray();
         }
 
-        private LinkRepresentation CreateActionParamLink(ParameterContextSurface p) {
+        private LinkRepresentation CreateActionParamLink(ParameterContextFacade p) {
             return LinkRepresentation.Create(OidStrategy, new ParamTypeRelType(new UriMtHelper(OidStrategy, req,
-                new ParameterTypeContextSurface {
+                new ParameterTypeContextFacade {
                     Action = actionContext.Action,
                     OwningSpecification = actionContext.Target.Specification,
                     Parameter = p.Parameter
@@ -106,7 +106,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         private LinkRepresentation CreateDescribedByLink() {
             return LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.DescribedBy,
                 new UriMtHelper(OidStrategy, req,
-                    new ActionTypeContextSurface {
+                    new ActionTypeContextFacade {
                         ActionContext = actionContext,
                         OwningSpecification = actionContext.Target.Specification
                     })), Flags);

@@ -79,7 +79,7 @@ namespace NakedObjects.Facade.Nof2 {
             return 0;
         }
 
-        public AttachmentContext GetAttachment() {
+        public AttachmentContextFacade GetAttachment() {
             throw new NotImplementedException();
         }
 

@@ -24,8 +24,8 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Property.ReturnSpec; }
         }
 
-        public PropertyContextSurface ToPropertyContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
-            var pc = new PropertyContextSurface {
+        public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+            var pc = new PropertyContextFacade {
                 Property = new AssociationFacade(Property, surface, framework),
                 Mutated = Mutated,
             };

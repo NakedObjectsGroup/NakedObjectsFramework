@@ -46,7 +46,7 @@ namespace RestfulObjects.Snapshot.Representations {
         private LinkRepresentation CreatePromptLink(HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter) {
             var opts = new List<OptionalProperty>();
 
-            var parameterContext = new ParameterContextSurface {
+            var parameterContext = new ParameterContextFacade {
                 Action = parameter.Action,
                 Target = nakedObject,
                 Parameter = parameter
@@ -74,7 +74,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
 
             if (Flags.FormalDomainModel) {
-                var parameterTypeContextSurface = new ParameterTypeContextSurface {
+                var parameterTypeContextSurface = new ParameterTypeContextFacade {
                     Action = parameter.Action,
                     OwningSpecification = nakedObject.Specification,
                     Parameter = parameter

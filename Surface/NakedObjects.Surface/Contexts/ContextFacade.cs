@@ -5,24 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
-
 namespace NakedObjects.Facade.Contexts {
-    public class PropertyContextSurface : ContextSurface {
-        public IAssociationFacade Property { get; set; }
-
-        public bool Mutated { get; set; }
-
-        public override string Id {
-            get { return Property.Id; }
-        }
-
-        public override ITypeFacade Specification {
-            get { return Property.Specification; }
-        }
-
-        public override ITypeFacade ElementSpecification {
-            get { return Property.ElementSpecification; }
-        }
+    public abstract class ContextFacade {
+        public abstract string Id { get; }
+        public virtual IObjectFacade Target { get; set; }
+        public virtual string Reason { get; set; }
+        public virtual Cause ErrorCause { get; set; }
+        public virtual IObjectFacade ProposedNakedObject { get; set; }
+        public virtual object ProposedValue { get; set; }
+        public abstract ITypeFacade Specification { get; }
+        public abstract ITypeFacade ElementSpecification { get; }
     }
 }

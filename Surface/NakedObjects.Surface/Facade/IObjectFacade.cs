@@ -35,7 +35,7 @@ namespace NakedObjects.Facade {
         IObjectFacade Page(int page, int size);
         IObjectFacade Select(object[] selection, bool forceEnumerable);
         int Count();
-        AttachmentContext GetAttachment();
+        AttachmentContextFacade GetAttachment();
         object[] GetSelected();
         void Resolve();
         void SetIsNotQueryableState(bool state);

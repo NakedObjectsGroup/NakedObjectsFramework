@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class CollectionTypeRepresentation : MemberTypeRepresentation {
-        protected CollectionTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+        protected CollectionTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {
             SetScalars(propertyContext);
             SetLinks(req, propertyContext);
@@ -27,18 +27,18 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.PluralName)]
         public string PluralName { get; set; }
 
-        private void SetScalars(PropertyTypeContextSurface propertyContext) {
+        private void SetScalars(PropertyTypeContextFacade propertyContext) {
             PluralName = propertyContext.Property.ElementSpecification.PluralName;
         }
 
-        private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
+        private void SetLinks(HttpRequestMessage req, PropertyTypeContextFacade propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
             tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy ,req, propertyContext.Property)), Flags));
             tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy ,req, propertyContext.Property.ElementSpecification)), Flags));
             Links = tempLinks.ToArray();
         }
 
-        public new static CollectionTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
+        public new static CollectionTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags) {
             return new CollectionTypeRepresentation(oidStrategy ,req, propertyContext, flags);
         }
     }

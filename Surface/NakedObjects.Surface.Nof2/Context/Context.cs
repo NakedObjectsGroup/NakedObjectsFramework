@@ -42,7 +42,7 @@ namespace NakedObjects.Surface.Nof2.Context {
 
         public abstract NakedObjectSpecification Specification { get; }
 
-        protected T ToContextSurface<T>(T context, IFrameworkFacade surface) where T : ContextSurface {
+        protected T ToContextSurface<T>(T context, IFrameworkFacade surface) where T : ContextFacade {
             context.Target = Target == null ? (NakedTarget == null ? null : new ObjectFacade(NakedTarget, surface)) : new ObjectFacade(Target, surface);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;

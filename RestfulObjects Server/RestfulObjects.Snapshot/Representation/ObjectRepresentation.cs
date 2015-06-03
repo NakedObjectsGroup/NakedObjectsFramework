@@ -20,7 +20,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ObjectRepresentation : Representation {
-        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags)
+        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             var objectUri = new UriMtHelper(oidStrategy ,req, objectContext.Target);
             SetScalars(objectContext);
@@ -42,16 +42,16 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private void SetScalars(ObjectContextSurface objectContext) {
+        private void SetScalars(ObjectContextFacade objectContext) {
             Title = objectContext.Target.TitleString;
         }
 
-        private void SetHeader(ObjectContextSurface objectContext) {
+        private void SetHeader(ObjectContextFacade objectContext) {
             caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
             SetEtag(objectContext.Target);
         }
 
-        private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextSurface objectContext) {
+        private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
             if (!objectContext.Mutated && !objectContext.Target.IsTransient) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
@@ -67,15 +67,15 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetMembers(ObjectContextSurface objectContext, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
-            PropertyContextSurface[] visiblePropertiesAndCollections = objectContext.VisibleProperties;
+        private void SetMembers(ObjectContextFacade objectContext, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
+            PropertyContextFacade[] visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
             if (!Flags.BlobsClobs) {
                 // filter any blobs and clobs 
                 visiblePropertiesAndCollections = visiblePropertiesAndCollections.Where(vp => !RestUtils.IsBlobOrClob(vp.Specification)).ToArray();
             }
 
-            PropertyContextSurface[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
+            PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
             if (!objectContext.Target.IsTransient && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
@@ -138,11 +138,11 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
-            ObjectContextSurface oc = target.Surface.GetObject(target);
+            ObjectContextFacade oc = target.Surface.GetObject(target);
             return Create(oidStrategy ,oc, req, flags);
         }
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
             if (objectContext.Target != null && (objectContext.Specification.IsService || !objectContext.Target.IsTransient)) {
                 return CreateObjectWithOptionals(oidStrategy ,objectContext, req, flags);
             }
@@ -150,7 +150,7 @@ namespace RestfulObjects.Snapshot.Representations {
             return new ObjectRepresentation(oidStrategy ,req, objectContext, flags);
         }
 
-        private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
             IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();

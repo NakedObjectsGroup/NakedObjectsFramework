@@ -62,7 +62,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext)
             : this(oidStrategy ,req) {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext)
             : this(oidStrategy ,req) {
             assoc = propertyContext.Property;
             spec = propertyContext.OwningSpecification;
@@ -80,7 +80,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = spec.DomainTypeName(oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextSurface actionContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
             : this(oidStrategy ,req) {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
@@ -90,7 +90,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextSurface actionTypeContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextFacade actionTypeContext)
             : this(oidStrategy ,req) {
             action = actionTypeContext.ActionContext.Action;
             spec = actionTypeContext.OwningSpecification;
@@ -98,7 +98,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = spec.DomainTypeName(oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext)
             : this(oidStrategy ,req) {
             action = parameterTypeContext.Action;
             spec = parameterTypeContext.OwningSpecification;
@@ -107,7 +107,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = spec.DomainTypeName(oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextSurface parameterContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextFacade parameterContext)
             : this(oidStrategy ,req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;

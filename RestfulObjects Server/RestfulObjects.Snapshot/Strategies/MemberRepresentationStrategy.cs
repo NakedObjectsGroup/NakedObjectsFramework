@@ -20,11 +20,11 @@ namespace RestfulObjects.Snapshot.Strategies {
     [DataContract]
     public abstract class MemberRepresentationStrategy : AbstractStrategy {
         private readonly UriMtHelper objectUri;
-        protected readonly PropertyContextSurface propertyContext;
+        protected readonly PropertyContextFacade propertyContext;
         protected readonly HttpRequestMessage req;
         private readonly RelType self;
 
-        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags)
+        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy ,flags) {
             this.req = req;
             this.propertyContext = propertyContext;
@@ -40,13 +40,13 @@ namespace RestfulObjects.Snapshot.Strategies {
             return propertyContext.Property.Id;
         }
 
-        protected string GetAttachmentFileName(PropertyContextSurface context) {
+        protected string GetAttachmentFileName(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetNakedObject(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }
 
         private LinkRepresentation CreateDescribedByLink() {
-            return LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface {
+            return LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, new PropertyTypeContextFacade {
                 Property = propertyContext.Property,
                 OwningSpecification = propertyContext.Target.Specification
             })), Flags);

@@ -17,7 +17,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PropertyTypeRepresentation : MemberTypeRepresentation {
-        protected PropertyTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+        protected PropertyTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {
             SetScalars(propertyContext);
             SetLinks(req, propertyContext);
@@ -26,18 +26,18 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Optional)]
         public bool Optional { get; set; }
 
-        private void SetScalars(PropertyTypeContextSurface propertyContext) {
+        private void SetScalars(PropertyTypeContextFacade propertyContext) {
             Id = propertyContext.Property.Id;
             Optional = !propertyContext.Property.IsMandatory;
         }
 
-        private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
+        private void SetLinks(HttpRequestMessage req, PropertyTypeContextFacade propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
             tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy ,req, propertyContext.Property.Specification)), Flags));
             Links = tempLinks.ToArray();
         }
 
-        public new static PropertyTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
+        public new static PropertyTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags) {
             return new PropertyTypeRepresentation(oidStrategy ,req, propertyContext, flags);
         }
     }

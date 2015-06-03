@@ -5,13 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-
 namespace NakedObjects.Facade.Contexts {
-    public class ArgumentsContext {
-        public IDictionary<string, object> Values { get; set; }
+    public class ArgumentContextFacade {
+        public object Value { get; set; }
         public bool ValidateOnly { get; set; }
         public string Digest { get; set; }
-        public string SearchTerm { get; set; }
     }
 }

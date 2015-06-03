@@ -18,7 +18,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ParameterTypeRepresentation : Representation {
-        protected ParameterTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags)
+        protected ParameterTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parameterTypeContext);
             SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, parameterTypeContext));
@@ -59,7 +59,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        private void SetScalars(ParameterTypeContextSurface parameterTypeContext) {
+        private void SetScalars(ParameterTypeContextFacade parameterTypeContext) {
             Id = parameterTypeContext.Parameter.Id;
             Number = parameterTypeContext.Parameter.Number;
             Name = parameterTypeContext.Parameter.Id;
@@ -68,7 +68,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Optional = !parameterTypeContext.Parameter.IsMandatory;
         }
 
-        private void SetLinks(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext) {
+        private void SetLinks(HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext) {
             var domainTypeUri = new UriMtHelper(OidStrategy, req, parameterTypeContext);
 
             var tempLinks = new List<LinkRepresentation> {
@@ -81,7 +81,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
 
-        public static ParameterTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) {
+        public static ParameterTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext, RestControlFlags flags) {
             if (!parameterTypeContext.Parameter.Specification.IsParseable) {
                 return new ParameterTypeRepresentation(oidStrategy ,req, parameterTypeContext, flags);
             }

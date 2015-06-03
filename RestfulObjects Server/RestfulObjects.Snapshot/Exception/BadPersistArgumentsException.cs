@@ -11,7 +11,7 @@ using NakedObjects.Surface;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class BadPersistArgumentsException : BadArgumentsNOSException {
-        public BadPersistArgumentsException(string message, IList<ContextSurface> contexts, RestControlFlags flags) : base(message, contexts) {
+        public BadPersistArgumentsException(string message, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, contexts) {
             Flags = flags;
         }
 

@@ -19,7 +19,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class MemberTypeRepresentation : Representation {
-        protected MemberTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags)
+        protected MemberTypeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
@@ -45,7 +45,7 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetScalars(PropertyTypeContextSurface propertyContext) {
+        private void SetScalars(PropertyTypeContextFacade propertyContext) {
             Id = propertyContext.Property.Id;
             FriendlyName = propertyContext.Property.Name;
             Description = propertyContext.Property.Description;
@@ -60,7 +60,7 @@ namespace RestfulObjects.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        protected IList<LinkRepresentation> CreateLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
+        protected IList<LinkRepresentation> CreateLinks(HttpRequestMessage req, PropertyTypeContextFacade propertyContext) {
             var domainTypeUri = new UriMtHelper(OidStrategy, req, propertyContext);
             return new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
@@ -69,7 +69,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
 
-        public static MemberTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) {
+        public static MemberTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags) {
             if (propertyContext.Property.IsCollection) {
                 return CollectionTypeRepresentation.Create(oidStrategy , req, propertyContext, flags);
             }

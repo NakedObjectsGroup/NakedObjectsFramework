@@ -1,33 +1,26 @@
-﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Facade;
-
 namespace NakedObjects.Facade.Contexts {
-    public class ObjectContextSurface : ContextSurface {
-        public bool Mutated { get; set; }
-
-        public Tuple<string, string> Redirected { get; set; }
+    public class ParameterContextFacade : ContextFacade {
+        public IActionParameterFacade Parameter { get; set; }
 
         public override string Id {
-            get { throw new NotImplementedException(); }
+            get { return Parameter.Id; }
         }
 
         public override ITypeFacade Specification {
-            get { return Target.Specification; }
+            get { return Parameter.Specification; }
         }
 
         public override ITypeFacade ElementSpecification {
-            get { return Target.ElementSpecification; }
+            get { return Parameter.ElementType; }
         }
 
-        public PropertyContextSurface[] VisibleProperties { get; set; }
-
-        public ActionContextSurface[] VisibleActions { get; set; }
+        public IActionFacade Action { get; set; }
     }
 }

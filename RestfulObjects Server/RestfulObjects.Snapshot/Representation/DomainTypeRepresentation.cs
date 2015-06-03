@@ -98,9 +98,9 @@ namespace RestfulObjects.Snapshot.Representations {
             IAssociationFacade[] collections = spec.Properties.Where(p => p.IsCollection).ToArray();
             IActionFacade[] actions = spec.GetActionLeafNodes();
 
-            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.Property, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = p, OwningSpecification = spec })), Flags));
-            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Collection, new UriMtHelper(OidStrategy, req, new PropertyTypeContextSurface { Property = c, OwningSpecification = spec })), Flags));
-            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Action, new UriMtHelper(OidStrategy, req, new ActionTypeContextSurface { ActionContext = new ActionContextSurface { Action = a }, OwningSpecification = spec })), Flags));
+            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.Property, new UriMtHelper(OidStrategy, req, new PropertyTypeContextFacade { Property = p, OwningSpecification = spec })), Flags));
+            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Collection, new UriMtHelper(OidStrategy, req, new PropertyTypeContextFacade { Property = c, OwningSpecification = spec })), Flags));
+            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(OidStrategy ,new TypeMemberRelType(RelValues.Action, new UriMtHelper(OidStrategy, req, new ActionTypeContextFacade { ActionContext = new ActionContextFacade { Action = a }, OwningSpecification = spec })), Flags));
 
             Members = propertyMembers.Union(collectionMembers).Union(actionMembers).ToArray();
         }

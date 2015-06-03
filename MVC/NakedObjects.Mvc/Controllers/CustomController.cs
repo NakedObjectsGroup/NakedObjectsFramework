@@ -376,33 +376,33 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
         }
 
-        private T GetResult<T>(ActionResultContextSurface contextSurface) {
-            if (contextSurface.HasResult) {
-                return (T) contextSurface.Result.Target.Object;
+        private T GetResult<T>(ActionResultContextFacade contextFacade) {
+            if (contextFacade.HasResult) {
+                return (T) contextFacade.Result.Target.Object;
             }
             return default(T);
         }
 
         private T InvokeAction<T>(IObjectFacade nakedObject, IActionFacade action, FormCollection parameters, out bool valid) {
-            ArgumentsContext ac;
+            ArgumentsContextFacade ac;
             IOidTranslation oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
-            ActionResultContextSurface contextSurface;
+            ActionResultContextFacade contextFacade;
 
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
-                ac = new ArgumentsContext() {Values = new Dictionary<string, object>(), ValidateOnly = false};
-                contextSurface = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                contextFacade = Surface.ExecuteObjectAction(oid, action.Id, ac);
             }
             else {
                 ac = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-                contextSurface = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                contextFacade = Surface.ExecuteObjectAction(oid, action.Id, ac);
             }
 
-            valid = contextSurface.HasResult;
+            valid = contextFacade.HasResult;
 
             if (valid) {
-                return GetResult<T>(contextSurface);
+                return GetResult<T>(contextFacade);
             }
 
             return default(T);

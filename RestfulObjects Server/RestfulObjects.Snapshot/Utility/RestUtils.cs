@@ -117,7 +117,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
 
-        public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any()) {
                 IObjectFacade[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
                 object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy ,req, c, propertyContext.Property, flags)).ToArray();

@@ -110,9 +110,9 @@ namespace NakedObjects.Facade.Nof4 {
             return WrappedNakedObject.GetAsQueryable().Count();
         }
 
-        public AttachmentContext GetAttachment() {
+        public AttachmentContextFacade GetAttachment() {
             var fa = WrappedNakedObject.Object as FileAttachment;
-            var context = new AttachmentContext();
+            var context = new AttachmentContextFacade();
 
             if (fa != null) {
                 context.Content = fa.GetResourceAsStream();

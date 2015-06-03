@@ -32,8 +32,8 @@ namespace NakedObjects.Surface.Nof2.Context {
 
         public bool Mutated { get; set; }
 
-        public ObjectContextSurface ToObjectContextSurface(IFrameworkFacade surface) {
-            var oc = new ObjectContextSurface {
+        public ObjectContextFacade ToObjectContextSurface(IFrameworkFacade surface) {
+            var oc = new ObjectContextFacade {
                                                   VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextSurface(surface)).ToArray(),
                                                   VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextSurface(surface)).ToArray(),
                                                   Mutated = Mutated

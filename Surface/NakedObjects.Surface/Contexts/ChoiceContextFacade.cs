@@ -5,24 +5,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
-
 namespace NakedObjects.Facade.Contexts {
-    public abstract class ContextSurface {
-        public abstract string Id { get; }
+    public class ChoiceContextFacade : ContextFacade {
+        private readonly string id;
+        private readonly ITypeFacade spec;
 
-        public virtual IObjectFacade Target { get; set; }
+        public ChoiceContextFacade(string id, ITypeFacade spec) {
+            this.id = id;
+            this.spec = spec;
+        }
 
-        public virtual string Reason { get; set; }
+        public override string Id {
+            get { return id; }
+        }
 
-        public virtual Cause ErrorCause { get; set; }
+        public override ITypeFacade Specification {
+            get { return spec; }
+        }
 
-        public virtual IObjectFacade ProposedNakedObject { get; set; }
-
-        public virtual object ProposedValue { get; set; }
-
-        public abstract ITypeFacade Specification { get; }
-
-        public abstract ITypeFacade ElementSpecification { get; }
+        public override ITypeFacade ElementSpecification {
+            get { return null; }
+        }
     }
 }
