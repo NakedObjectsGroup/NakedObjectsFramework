@@ -346,32 +346,28 @@ namespace NakedObjects.Mvc.Selenium.Test {
             productLine.SelectListBoxItems(br, "M", "S");
             productClass.SelectListBoxItems(br, "H");
 
-            Thread.Sleep(1000);
 
-            var valMsg1 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductLine .field-validation-error")));
-            var valMsg2 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")));
+            var valMsg1 = wait.ClickAndWait(".nof-ok", "#ProductRepository-FindByProductLinesAndClasses-ProductLine .field-validation-error");
+            var valMsg2 = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error"));
             Assert.AreEqual("Mandatory", valMsg1.Text);
             Assert.AreEqual("Mandatory", valMsg2.Text);
 
             // select line (only) 
-
+            productLine = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductLine"));
             productLine.SelectListBoxItems(br, "M");
 
-            Thread.Sleep(1000);
+            wait.ClickAndWait(".nof-ok", wd => !wd.FindElements(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductLine .field-validation-error")).Any());
 
-            var valMsg3 = wait.Until(wd => wd.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")));
-            Assert.AreEqual("Mandatory", valMsg3.Text);
+            valMsg2 = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error"));
 
-            Assert.AreEqual(0, br.FindElements(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass .field-validation-error")).Count());
+            Assert.AreEqual("Mandatory", valMsg2.Text);
 
-          
+            Assert.AreEqual(0, br.FindElements(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductLine .field-validation-error")).Count());
+
+            productClass = br.FindElement(By.CssSelector("#ProductRepository-FindByProductLinesAndClasses-ProductClass"));
             productClass.SelectListBoxItems(br, "L");
 
-            var ok = wait.Until(wd => wd.FindElement(By.CssSelector(".nof-ok")));
-
-            ok.Click();
-
-            wait.Until(wd => wd.Title == "20 Products");
+            wait.ClickAndWait(".nof-ok", wd => wd.Title == "20 Products");
 
             Assert.AreEqual("Find By Product Lines And Classes: Query Result: Viewing 20 of 26 Products", br.FindElement(By.CssSelector(".nof-object")).Text);
         }
