@@ -7,7 +7,7 @@
 
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade.Contexts {
     public class ActionContextSurface : ContextSurface {
         public IActionFacade Action { get; set; }
 

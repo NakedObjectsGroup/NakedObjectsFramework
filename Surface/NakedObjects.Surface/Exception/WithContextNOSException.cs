@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Surface {
     public abstract class WithContextNOSException : NakedObjectsSurfaceException {

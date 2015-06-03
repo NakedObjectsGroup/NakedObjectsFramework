@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility;

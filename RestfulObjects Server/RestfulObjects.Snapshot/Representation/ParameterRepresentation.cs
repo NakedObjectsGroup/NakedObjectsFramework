@@ -11,9 +11,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Context;
-using NakedObjects.Surface.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 

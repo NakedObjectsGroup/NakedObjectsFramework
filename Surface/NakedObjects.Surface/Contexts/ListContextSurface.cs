@@ -5,13 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
+using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
-    public class ArgumentsContext {
-        public IDictionary<string, object> Values { get; set; }
-        public bool ValidateOnly { get; set; }
-        public string Digest { get; set; }
-        public string SearchTerm { get; set; }
+namespace NakedObjects.Facade.Contexts {
+    public class ListContextSurface {
+        public ITypeFacade ElementType { get; set; }
+        public IObjectFacade[] List { get; set; }
+        public bool IsListOfServices { get; set; }
     }
 }

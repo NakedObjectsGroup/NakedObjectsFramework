@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Utility;
 

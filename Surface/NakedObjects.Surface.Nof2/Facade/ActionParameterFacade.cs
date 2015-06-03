@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NakedObjects.Surface.Context;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface.Nof2.Context;
 using org.nakedobjects.@object;
 

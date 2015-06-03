@@ -5,16 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using NakedObjects.Facade.Contexts;
-
-namespace NakedObjects.Surface {
-    public class BadRequestNOSException : WithContextNOSException {
-        public BadRequestNOSException() {}
-        public BadRequestNOSException(string message) : base(message) {}
-        public BadRequestNOSException(string message, Exception e) : base(message, e) {}
-        public BadRequestNOSException(string message, IList<ContextSurface> contexts) : base(message, contexts) {}
-        public BadRequestNOSException(string message, ContextSurface context) : base(message, context) {}
-    }
+namespace NakedObjects.Facade.Contexts {
+    public enum Cause {
+        None,
+        Disabled,
+        Immutable,
+        WrongType,
+        Other
+    };
 }

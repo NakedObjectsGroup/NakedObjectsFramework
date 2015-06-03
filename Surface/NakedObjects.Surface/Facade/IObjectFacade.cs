@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface;
 
 namespace NakedObjects.Facade {

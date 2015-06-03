@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Nof4;
 
 namespace NakedObjects.Surface.Nof4.Context {

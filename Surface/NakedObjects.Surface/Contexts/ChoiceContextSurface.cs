@@ -7,9 +7,26 @@
 
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
-    public class PropertyTypeContextSurface {
-        public IAssociationFacade Property { get; set; }
-        public ITypeFacade OwningSpecification { get; set; }
+namespace NakedObjects.Facade.Contexts {
+    public class ChoiceContextSurface : ContextSurface {
+        private readonly string id;
+        private readonly ITypeFacade spec;
+
+        public ChoiceContextSurface(string id, ITypeFacade spec) {
+            this.id = id;
+            this.spec = spec;
+        }
+
+        public override string Id {
+            get { return id; }
+        }
+
+        public override ITypeFacade Specification {
+            get { return spec; }
+        }
+
+        public override ITypeFacade ElementSpecification {
+            get { return null; }
+        }
     }
 }

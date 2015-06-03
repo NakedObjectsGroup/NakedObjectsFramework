@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Context;
 
 
 namespace NakedObjects.Facade {

@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using NakedObjects.Surface.Context;
+using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade {
     public interface IAssociationFacade : IMemberFacade {

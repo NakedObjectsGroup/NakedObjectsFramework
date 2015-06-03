@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
-using NakedObjects.Surface.Context;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 

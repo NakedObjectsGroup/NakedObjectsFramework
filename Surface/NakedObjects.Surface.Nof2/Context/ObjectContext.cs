@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface;
 using org.nakedobjects.@object;
 

@@ -7,7 +7,7 @@
 
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade.Contexts {
     public abstract class ContextSurface {
         public abstract string Id { get; }
 

@@ -7,22 +7,22 @@
 
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
-    public class ParameterContextSurface : ContextSurface {
-        public IActionParameterFacade Parameter { get; set; }
+namespace NakedObjects.Facade.Contexts {
+    public class PropertyContextSurface : ContextSurface {
+        public IAssociationFacade Property { get; set; }
+
+        public bool Mutated { get; set; }
 
         public override string Id {
-            get { return Parameter.Id; }
+            get { return Property.Id; }
         }
 
         public override ITypeFacade Specification {
-            get { return Parameter.Specification; }
+            get { return Property.Specification; }
         }
 
         public override ITypeFacade ElementSpecification {
-            get { return Parameter.ElementType; }
+            get { return Property.ElementSpecification; }
         }
-
-        public IActionFacade Action { get; set; }
     }
 }

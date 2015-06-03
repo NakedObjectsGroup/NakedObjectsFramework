@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ActionResultContext : Context {

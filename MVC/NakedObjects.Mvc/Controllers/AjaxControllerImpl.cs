@@ -13,8 +13,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface;
-using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Controllers {

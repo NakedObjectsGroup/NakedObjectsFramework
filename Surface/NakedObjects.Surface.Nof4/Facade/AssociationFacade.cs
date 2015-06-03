@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
-using NakedObjects.Surface.Context;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 

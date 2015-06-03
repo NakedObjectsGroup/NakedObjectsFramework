@@ -13,6 +13,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
 using NakedObjects.Resources;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Utility.Restricted;
