@@ -12,13 +12,13 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Util;
 
-namespace NakedObjects.Surface.Nof4.Implementation {
+namespace NakedObjects.Facade.Impl.Implementation {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 

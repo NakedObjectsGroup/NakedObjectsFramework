@@ -11,9 +11,10 @@ using System.Web;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Impl;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface.Nof4.Implementation;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Implementation;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Unity;
 
 namespace MvcTestApp {

@@ -22,13 +22,13 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface.Nof4.Context;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Context;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Util;
 
-namespace NakedObjects.Surface.Nof4.Implementation {
+namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly INakedObjectsFramework framework;
         private readonly IMessageBrokerSurface messageBroker;

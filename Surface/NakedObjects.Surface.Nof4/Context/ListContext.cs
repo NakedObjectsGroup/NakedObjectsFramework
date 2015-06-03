@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Surface.Nof4.Context {
+namespace NakedObjects.Facade.Impl.Context {
     public class ListContext {
         public INakedObjectAdapter[] List { get; set; }
         public IObjectSpec ElementType { get; set; }

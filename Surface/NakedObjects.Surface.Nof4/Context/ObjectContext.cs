@@ -13,7 +13,7 @@ using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Redirect;
 
-namespace NakedObjects.Surface.Nof4.Context {
+namespace NakedObjects.Facade.Impl.Context {
     public class ObjectContext : Context {
         public ObjectContext(INakedObjectAdapter target) {
             Target = target;

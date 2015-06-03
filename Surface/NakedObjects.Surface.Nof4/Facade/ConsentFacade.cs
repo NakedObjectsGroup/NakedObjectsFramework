@@ -7,9 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class ConsentFacade : IConsentFacade {
         private readonly IConsent consent;
 

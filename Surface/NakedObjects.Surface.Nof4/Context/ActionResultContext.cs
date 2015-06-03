@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 
-namespace NakedObjects.Surface.Nof4.Context {
+namespace NakedObjects.Facade.Impl.Context {
     public class ActionResultContext : Context {
         private bool hasResult;
         private ObjectContext result;

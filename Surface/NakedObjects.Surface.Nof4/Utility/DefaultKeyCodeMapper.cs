@@ -10,7 +10,7 @@ using System.Linq;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     public class DefaultKeyCodeMapper : IKeyCodeMapper {
         private readonly string keySeparator;
 

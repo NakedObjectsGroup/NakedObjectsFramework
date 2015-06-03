@@ -17,9 +17,9 @@ using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class AssociationFacade : IAssociationFacade {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;

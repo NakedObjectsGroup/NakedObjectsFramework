@@ -12,11 +12,11 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Utility;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class TypeFacade : ITypeFacade {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;

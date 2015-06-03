@@ -11,9 +11,9 @@ using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade.Utility;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class ActionFacade : IActionFacade {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;

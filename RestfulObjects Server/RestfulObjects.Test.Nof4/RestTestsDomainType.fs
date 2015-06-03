@@ -14,9 +14,8 @@ open RestfulObjects.Snapshot.Utility
 open System.Web.Http
 open Microsoft.Practices.Unity
 open RestfulObjects.Test.Data
-open NakedObjects.Surface.Nof4.Implementation
-open NakedObjects.Surface.Nof4.Utility
-open NakedObjects.Surface
+open NakedObjects.Facade.Impl.Implementation
+open NakedObjects.Facade.Impl.Utility
 open MvcTestApp.Controllers
 open NakedObjects.Rest.Test.RestTestsHelpers
 open NakedObjects.Architecture.Configuration
@@ -28,6 +27,8 @@ open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
+open NakedObjects.Facade.Impl
+
 
 
 

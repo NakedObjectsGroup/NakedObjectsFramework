@@ -16,7 +16,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 
 namespace RestfulObjects.Test.App {
     public class BasicAuthenticationHandler : DelegatingHandler {

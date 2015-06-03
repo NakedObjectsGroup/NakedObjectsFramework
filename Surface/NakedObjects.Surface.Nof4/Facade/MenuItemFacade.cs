@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Menu;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class MenuItemFacade : IMenuItemFacade {
         public MenuItemFacade(IMenuItemImmutable wrapped) {
             Wrapped = wrapped;

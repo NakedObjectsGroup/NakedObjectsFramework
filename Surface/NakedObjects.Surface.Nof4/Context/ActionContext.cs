@@ -9,9 +9,9 @@ using System.Linq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Surface.Nof4.Context {
+namespace NakedObjects.Facade.Impl.Context {
     public class ActionContext : Context {
         private ParameterContext[] parameters;
 

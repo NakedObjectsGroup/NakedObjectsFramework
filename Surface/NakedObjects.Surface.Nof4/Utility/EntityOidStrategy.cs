@@ -15,12 +15,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
 using NakedObjects.Util;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
         private readonly INakedObjectsFramework framework;
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidStrategy));

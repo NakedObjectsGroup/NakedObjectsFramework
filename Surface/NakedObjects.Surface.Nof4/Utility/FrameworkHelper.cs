@@ -21,7 +21,7 @@ using NakedObjects.Facade;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     internal static class FrameworkHelper {
         public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             return nakedObject.Spec.GetActions().Where(a => a.IsUsable(nakedObject).IsAllowed).

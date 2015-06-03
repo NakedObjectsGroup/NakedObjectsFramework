@@ -8,7 +8,7 @@
     <ProjectGuid>{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NakedObjects.Surface.Nof4</RootNamespace>
+    <RootNamespace>NakedObjects.Facade.Impl</RootNamespace>
     <AssemblyName>NakedObjects.Surface.Nof4</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -8,7 +8,6 @@
 using System.Web.Mvc;
 using System.Web.UI;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 
 namespace NakedObjects.Mvc.App.Controllers {

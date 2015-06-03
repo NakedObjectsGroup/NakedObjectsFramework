@@ -7,9 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Utility;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class VersionFacade : IVersionFacade {
         private readonly IVersion version;
 

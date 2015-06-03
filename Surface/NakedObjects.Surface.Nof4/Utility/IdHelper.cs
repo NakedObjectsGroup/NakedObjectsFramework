@@ -10,11 +10,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Nof4;
+using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     public class IdHelper : IIdHelper {
         private const string Sep = "-";
 

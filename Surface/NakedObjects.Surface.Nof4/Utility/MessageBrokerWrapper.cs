@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Component;
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     public class MessageBrokerWrapper : IMessageBrokerSurface {
         private readonly IMessageBroker messageBroker;
 

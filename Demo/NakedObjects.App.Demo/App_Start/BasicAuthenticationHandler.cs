@@ -16,7 +16,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 
 namespace NakedObjects.App.Demo {
     public class BasicAuthenticationHandler : DelegatingHandler {

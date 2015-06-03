@@ -4,7 +4,6 @@
 
 using System.Web.Mvc;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
 

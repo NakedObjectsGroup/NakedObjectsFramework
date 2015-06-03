@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Menu;
 
-namespace NakedObjects.Facade.Nof4 {
+namespace NakedObjects.Facade.Impl {
     public class MenuFacade : IMenuFacade {
         public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
             Wrapped = wrapped;

@@ -25,13 +25,14 @@ using NakedObjects.Facade.Utility;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
-using NakedObjects.Surface.Nof4.Implementation;
-using NakedObjects.Surface.Nof4.Utility;
+using NakedObjects.Facade.Impl.Implementation;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade.Impl;
 using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {

@@ -8,19 +8,20 @@
 using System;
 using System.Security.Principal;
 using System.Web;
+
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Impl;
+using NakedObjects.Facade.Impl.Implementation;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Nof4.Implementation;
-using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Mvc.App {

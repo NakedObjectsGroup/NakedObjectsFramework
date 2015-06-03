@@ -15,7 +15,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface.Nof4.Utility {
+namespace NakedObjects.Facade.Impl.Utility {
     public static class SurfaceUtils {
         public static NakedObjectsSurfaceException Map(Exception e) {
             // map to appropriate exception 

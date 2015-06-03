@@ -4,7 +4,7 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module NakedObjects.Rest.Test.Nof4
+module NakedObjects.Rest.Test.Impl
 
 open NUnit.Framework
 open RestfulObjects.Mvc
@@ -14,9 +14,8 @@ open RestfulObjects.Snapshot.Utility
 open System.Web.Http
 open Microsoft.Practices.Unity
 open RestfulObjects.Test.Data
-open NakedObjects.Surface.Nof4.Implementation
-open NakedObjects.Surface.Nof4.Utility
-open NakedObjects.Surface
+open NakedObjects.Facade.Impl.Implementation
+open NakedObjects.Facade.Impl.Utility
 open MvcTestApp.Controllers
 open NakedObjects.Rest.Test.RestTestsHelpers
 open NakedObjects.Architecture.Configuration
@@ -28,7 +27,7 @@ open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
-
+open NakedObjects.Facade.Impl
 
 [<TestFixture>]
 type Nof4Tests() = 

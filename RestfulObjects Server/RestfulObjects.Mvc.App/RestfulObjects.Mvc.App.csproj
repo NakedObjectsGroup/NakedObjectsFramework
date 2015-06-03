@@ -204,7 +204,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj">
       <Project>{9aeb1ea4-e7a0-42e5-b5c8-0629e61ecf0d}</Project>
-      <Name>NakedObjects.Surface.Nof4</Name>
+      <Name>NakedObjects.Facade.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
       <Project>{ec9af8ed-fc49-4e1b-8e45-3450641ae561}</Project>
