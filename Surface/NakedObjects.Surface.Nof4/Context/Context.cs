@@ -7,24 +7,16 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public abstract class Context {
         public abstract string Id { get; }
-
         public INakedObjectAdapter Target { get; set; }
-
         public string Reason { get; set; }
-
         public Cause ErrorCause { get; set; }
-
         public INakedObjectAdapter ProposedNakedObject { get; set; }
-
         public object ProposedValue { get; set; }
-
         public abstract ITypeSpec Specification { get; }
 
         protected T ToContextSurface<T>(T context, IFrameworkFacade surface, INakedObjectsFramework framework) where T : ContextFacade {

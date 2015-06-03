@@ -9,13 +9,15 @@ using System;
 
 namespace NakedObjects.Facade {
     public class PreconditionFailedNOSException : NakedObjectsSurfaceException {
-        public IObjectFacade SourceNakedObject { get; private set; }
         public PreconditionFailedNOSException() {}
         public PreconditionFailedNOSException(string message) : base(message) {}
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) {}
+
         public PreconditionFailedNOSException(IObjectFacade sourceNakedObject) {
             SourceNakedObject = sourceNakedObject;
         }
+
+        public IObjectFacade SourceNakedObject { get; private set; }
 
         public override string Message {
             get { return "Object changed by another user"; }

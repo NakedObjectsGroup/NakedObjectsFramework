@@ -7,14 +7,11 @@
 
 using System.Linq;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public class ActionContext : Context {
         private ParameterContext[] parameters;
-
         public IActionSpec Action { get; set; }
 
         public override string Id {

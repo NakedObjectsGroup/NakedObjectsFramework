@@ -13,6 +13,11 @@ using System.Linq;
 
 namespace NakedObjects.Facade.Utility.Restricted {
     public static class SurfaceHelper {
+        // todo cloned from typeutils move to common helper dll
+
+        private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
+        private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
+        private const string CastleProxyPrefix = "Castle.Proxies.";
 
         public static T GetDomainObject<T>(this IObjectFacade nakedObject) {
             return nakedObject == null ? default(T) : (T) nakedObject.Object;
@@ -43,8 +48,6 @@ namespace NakedObjects.Facade.Utility.Restricted {
             }
             return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
         }
-
-       
 
         public static string GetObjectTypeShortName(this IFrameworkFacade surface, object model) {
             var nakedObject = surface.GetObject(model);
@@ -83,7 +86,7 @@ namespace NakedObjects.Facade.Utility.Restricted {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();
-            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();
@@ -105,12 +108,6 @@ namespace NakedObjects.Facade.Utility.Restricted {
 
             return typedCollection.AsQueryable();
         }
-
-        // todo cloned from typeutils move to common helper dll
-
-        private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
-        private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
-        private const string CastleProxyPrefix = "Castle.Proxies.";
 
         private static bool IsNakedObjectsProxy(string typeName) {
             return typeName.StartsWith(NakedObjectsProxyPrefix);
@@ -135,8 +132,5 @@ namespace NakedObjects.Facade.Utility.Restricted {
         public static string GetProxiedTypeFullName(this Type type) {
             return IsProxy(type) ? type.BaseType.FullName : type.FullName;
         }
-
-
-
     }
 }

@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
-using NakedObjects.Facade;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -30,7 +29,6 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
-
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
@@ -268,7 +266,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             object[] objCollection;
 
             Type instanceType = TypeUtils.GetType(collectionitemSpec.FullName);
-            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager).Object).ToArray();
@@ -286,11 +284,10 @@ namespace NakedObjects.Facade.Impl.Utility {
                 objCollection = rawCollection.Select(s => framework.GetNakedObjectFromId(s).GetDomainObject()).ToArray();
             }
 
-            objCollection.Where(o => o != null). ForEach(o => typedCollection.Add(o));
+            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
-      
 
         public static INakedObjectAdapter GetTypedCollection(this INakedObjectsFramework framework, ISpecification featureSpec, IEnumerable collectionValue) {
             IObjectSpec collectionitemSpec = framework.MetamodelManager.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);

@@ -10,12 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Nof2;
+using NakedObjects.Facade.Nof2.Context;
+using NakedObjects.Facade.Nof2.Utility;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface.Nof2.Context;
-using NakedObjects.Surface.Nof2.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 using org.nakedobjects.@object.reflect;
@@ -23,7 +21,7 @@ using org.nakedobjects.reflector.java.control;
 using sdm.systems.reflector;
 using User = org.nakedobjects.application.control.User;
 
-namespace NakedObjects.Surface.Nof2.Implementation {
+namespace NakedObjects.Facade.Nof2.Implementation {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly IOidStrategy oidStrategy;
 

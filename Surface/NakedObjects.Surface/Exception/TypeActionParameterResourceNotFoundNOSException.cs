@@ -15,7 +15,6 @@ namespace NakedObjects.Facade {
         }
 
         public string DomainId { get; private set; }
-
         public string ParmId { get; private set; }
 
         public override string Message {

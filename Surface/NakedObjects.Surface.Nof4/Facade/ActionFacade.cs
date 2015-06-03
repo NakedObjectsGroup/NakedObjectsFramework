@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Facade.Impl {
     public class ActionFacade : IActionFacade {

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Facade;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class MessageBrokerWrapper : IMessageBrokerSurface {
@@ -15,6 +14,8 @@ namespace NakedObjects.Facade.Impl.Utility {
         public MessageBrokerWrapper(IMessageBroker messageBroker) {
             this.messageBroker = messageBroker;
         }
+
+        #region IMessageBrokerSurface Members
 
         public string[] PeekMessages {
             get { return messageBroker.PeekMessages; }
@@ -51,5 +52,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         public void EnsureEmpty() {
             messageBroker.EnsureEmpty();
         }
+
+        #endregion
     }
 }

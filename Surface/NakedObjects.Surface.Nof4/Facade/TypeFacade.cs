@@ -11,8 +11,8 @@ using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 

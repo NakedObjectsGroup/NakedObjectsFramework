@@ -8,8 +8,6 @@
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Translation;
 
 namespace NakedObjects.Facade.Impl.Implementation {
@@ -19,6 +17,8 @@ namespace NakedObjects.Facade.Impl.Implementation {
         public OidTranslatorSemiColonSeparatedList(ILifecycleManager lifecycleManager) {
             this.lifecycleManager = lifecycleManager;
         }
+
+        #region IOidTranslator Members
 
         public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Count() != 1) {
@@ -31,10 +31,23 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return new OidTranslationSemiColonSeparatedList(id.First());
         }
 
+        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
+            if (nakedObject.IsViewModel) {
+                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
+                lifecycleManager.PopulateViewModelKeys(vm);
+            }
+
+            var oid = nakedObject.Oid;
+            var id = GetObjectId(oid);
+            return GetOidTranslation(id);
+        }
+
+        #endregion
+
         private string Encode(IEncodedToStrings encoder) {
             return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
         }
-     
+
         // todo is this best place for this
         //private string GetObjectId(INakedObjectAdapter nakedObject) {
         //    if (nakedObject.Spec.IsViewModel) {
@@ -49,19 +62,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
         //}
 
         private string GetObjectId(IOidFacade oid) {
-            return Encode(((IEncodedToStrings)oid.Value));
-        }
-
-        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
-
-            if (nakedObject.IsViewModel) {
-                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
-                lifecycleManager.PopulateViewModelKeys(vm);
-            }
-
-            var oid = nakedObject.Oid;
-            var id = GetObjectId(oid);
-            return GetOidTranslation(id);
+            return Encode(((IEncodedToStrings) oid.Value));
         }
     }
 }

@@ -6,14 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public class PropertyContext : Context {
         public IAssociationSpec Property { get; set; }
-
         public bool Mutated { get; set; }
 
         public override string Id {

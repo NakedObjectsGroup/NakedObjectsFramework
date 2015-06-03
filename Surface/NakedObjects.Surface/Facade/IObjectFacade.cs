@@ -38,6 +38,5 @@ namespace NakedObjects.Facade {
         object[] GetSelected();
         void Resolve();
         void SetIsNotQueryableState(bool state);
-       
     }
 }

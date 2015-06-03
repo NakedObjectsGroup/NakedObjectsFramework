@@ -8,11 +8,9 @@
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Impl;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public class ListContext {
         public INakedObjectAdapter[] List { get; set; }
         public IObjectSpec ElementType { get; set; }

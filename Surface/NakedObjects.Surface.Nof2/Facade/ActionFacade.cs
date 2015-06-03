@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Surface.Nof2.Utility;
+using NakedObjects.Facade.Nof2.Utility;
 using org.nakedobjects.@object;
 
 namespace NakedObjects.Facade.Nof2 {

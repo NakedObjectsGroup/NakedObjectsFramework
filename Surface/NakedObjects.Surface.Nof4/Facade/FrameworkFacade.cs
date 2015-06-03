@@ -20,12 +20,10 @@ using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Impl;
-using NakedObjects.Facade.Translation;
-using NakedObjects.Facade.Impl.Context;
+using NakedObjects.Facade.Impl.Contexts;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
@@ -689,7 +687,7 @@ namespace NakedObjects.Facade.Impl {
             return isValid;
         }
 
-        private bool ConsentHandler(IConsent consent, Context.Context context, Cause cause) {
+        private bool ConsentHandler(IConsent consent, Context context, Cause cause) {
             if (consent.IsVetoed) {
                 context.Reason = consent.Reason;
                 context.ErrorCause = cause;

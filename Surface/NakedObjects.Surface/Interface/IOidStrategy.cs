@@ -13,10 +13,8 @@ namespace NakedObjects.Facade {
         IFrameworkFacade Surface { get; set; }
         object GetDomainObjectByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);
-       
         ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(ITypeFacade spec);
-       
         IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id);
         IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id);
         IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);

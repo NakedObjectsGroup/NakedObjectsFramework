@@ -12,7 +12,6 @@ using NakedObjects.Facade.Contexts;
 namespace NakedObjects.Facade {
     public abstract class WithContextNOSException : NakedObjectsSurfaceException {
         private IList<ContextFacade> contexts;
-
         protected WithContextNOSException() {}
         protected WithContextNOSException(string message) : base(message) {}
         protected WithContextNOSException(string message, Exception e) : base(message, e) {}

@@ -14,16 +14,14 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidStrategy));
         private readonly INakedObjectsFramework framework;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidStrategy));
 
         public EntityOidStrategy(INakedObjectsFramework framework) {
             this.framework = framework;
@@ -32,47 +30,6 @@ namespace NakedObjects.Facade.Impl.Utility {
         #region IOidStrategy Members
 
         public IFrameworkFacade Surface { get; set; }
-
-
-        private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
-            return memento.RecoverCollection();
-        }
-
-        private static INakedObjectAdapter RestoreInline(INakedObjectsFramework framework, IAggregateOid aggregateOid) {
-            IOid parentOid = aggregateOid.ParentOid;
-            INakedObjectAdapter parent = RestoreObject(framework, parentOid);
-            IAssociationSpec assoc = parent.GetObjectSpec().Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
-
-            return assoc.GetNakedObject(parent);
-        }
-
-        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) {
-            return framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
-        }
-
-        public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) {
-            return oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
-        }
-
-        private INakedObjectAdapter GetAdapterByOid(IOid oid) {
-            if (oid == null) {
-                return null;
-            }
-
-            if (oid is ICollectionMemento) {
-                return RestoreCollection(oid as ICollectionMemento);
-            }
-
-            if (oid is IAggregateOid) {
-                return RestoreInline(framework, oid as IAggregateOid);
-            }
-
-            if (oid is IViewModelOid) {
-                return RestoreViewModel(framework, oid as IViewModelOid);
-            }
-
-            return RestoreObject(framework, oid);
-        }
 
         public object GetDomainObjectByOid(IOidTranslation objectId) {
             if (objectId == null) {
@@ -136,7 +93,6 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
-
             Type type = ValidateObjectId(id);
             string[] keys = GetKeys(id.InstanceId, type);
             var adapter = GetObject(keys, type);
@@ -146,14 +102,13 @@ namespace NakedObjects.Facade.Impl.Utility {
             }
 
             return new OidFacade(adapter.Oid);
-
         }
 
         public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
             Type type = ValidateServiceId(id);
             IServiceSpec spec;
             try {
-                spec = (IServiceSpec)framework.MetamodelManager.GetSpecification(type);
+                spec = (IServiceSpec) framework.MetamodelManager.GetSpecification(type);
             }
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
@@ -162,7 +117,7 @@ namespace NakedObjects.Facade.Impl.Utility {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
             INakedObjectAdapter service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
-       
+
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -172,6 +127,45 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         #endregion
 
+        private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
+            return memento.RecoverCollection();
+        }
+
+        private static INakedObjectAdapter RestoreInline(INakedObjectsFramework framework, IAggregateOid aggregateOid) {
+            IOid parentOid = aggregateOid.ParentOid;
+            INakedObjectAdapter parent = RestoreObject(framework, parentOid);
+            IAssociationSpec assoc = parent.GetObjectSpec().Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
+
+            return assoc.GetNakedObject(parent);
+        }
+
+        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) {
+            return framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
+        }
+
+        public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) {
+            return oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
+        }
+
+        private INakedObjectAdapter GetAdapterByOid(IOid oid) {
+            if (oid == null) {
+                return null;
+            }
+
+            if (oid is ICollectionMemento) {
+                return RestoreCollection(oid as ICollectionMemento);
+            }
+
+            if (oid is IAggregateOid) {
+                return RestoreInline(framework, oid as IAggregateOid);
+            }
+
+            if (oid is IViewModelOid) {
+                return RestoreViewModel(framework, oid as IViewModelOid);
+            }
+
+            return RestoreObject(framework, oid);
+        }
 
         private string GetCode(ITypeFacade spec) {
             return GetCode(TypeUtils.GetType(spec.FullName));
@@ -184,14 +178,14 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         private string KeyRepresentation(object obj) {
             if (obj is DateTime) {
-                obj = ((DateTime)obj).Ticks;
+                obj = ((DateTime) obj).Ticks;
             }
-            return (string)Convert.ChangeType(obj, typeof(string)); // better ? 
+            return (string) Convert.ChangeType(obj, typeof (string)); // better ? 
         }
 
         private string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade)nakedObjectForKey).WrappedNakedObject;
+            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
@@ -205,7 +199,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         private static object CoerceType(Type type, string value) {
-            if (type == typeof(DateTime)) {
+            if (type == typeof (DateTime)) {
                 long ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
@@ -221,9 +215,8 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         private INakedObjectAdapter GetObject(string[] keys, Type type) {
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
-            return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec)spec) : GetDomainObject(keys, type);
+            return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec) spec) : GetDomainObject(keys, type);
         }
-
 
         private INakedObjectAdapter GetDomainObject(string[] keys, Type type) {
             try {
@@ -255,12 +248,12 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
         private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 
@@ -293,6 +286,5 @@ namespace NakedObjects.Facade.Impl.Utility {
 
             return type;
         }
-
     }
 }

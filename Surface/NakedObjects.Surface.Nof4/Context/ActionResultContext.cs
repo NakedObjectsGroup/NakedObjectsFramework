@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public class ActionResultContext : Context {
         private bool hasResult;
         private ObjectContext result;
-
 
         public ObjectContext Result {
             get { return result; }
@@ -49,12 +47,10 @@ namespace NakedObjects.Facade.Impl.Context {
                 HasResult = HasResult
             };
 
-
             if (Reason == null) {
                 Reason = ActionContext.Reason;
                 ErrorCause = ActionContext.ErrorCause;
             }
-
 
             return ToContextSurface(ac, surface, framework);
         }

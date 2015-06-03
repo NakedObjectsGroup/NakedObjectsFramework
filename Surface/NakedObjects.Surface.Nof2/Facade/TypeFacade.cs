@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Surface.Nof2.Utility;
+using NakedObjects.Facade.Nof2.Utility;
 using org.nakedobjects.@object;
 using sdm.systems.application.container;
 

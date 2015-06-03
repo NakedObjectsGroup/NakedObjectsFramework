@@ -11,11 +11,9 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Impl;
+using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
-using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Implementation {
@@ -25,6 +23,8 @@ namespace NakedObjects.Facade.Impl.Implementation {
         public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) {
             this.framework = framework;
         }
+
+        #region IOidTranslator Members
 
         public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Count() == 2) {
@@ -39,13 +39,15 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
             if (nakedObject.IsViewModel) {
-                var vm = ((ObjectFacade)nakedObject).WrappedNakedObject;
+                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
             Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
             return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
         }
+
+        #endregion
 
         private string GetCode(ITypeFacade spec) {
             return GetCode(TypeUtils.GetType(spec.FullName));
@@ -58,14 +60,14 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         private string KeyRepresentation(object obj) {
             if (obj is DateTime) {
-                obj = ((DateTime)obj).Ticks;
+                obj = ((DateTime) obj).Ticks;
             }
-            return (string)Convert.ChangeType(obj, typeof(string)); // better ? 
+            return (string) Convert.ChangeType(obj, typeof (string)); // better ? 
         }
 
         protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade)nakedObjectForKey).WrappedNakedObject;
+            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
@@ -79,7 +81,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
         }
 
         private static object CoerceType(Type type, string value) {
-            if (type == typeof(DateTime)) {
+            if (type == typeof (DateTime)) {
                 long ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
@@ -93,14 +95,13 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
         }
 
-
         private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
         private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper)framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 

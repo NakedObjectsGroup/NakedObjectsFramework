@@ -1,19 +1,20 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Nof2;
 using NakedObjects.Facade.Translation;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;
 using sdm.systems.application.value;
 using Action = System.Action;
 
-namespace NakedObjects.Surface.Nof2.Utility {
+namespace NakedObjects.Facade.Nof2.Utility {
     // Strategy based on each object having a key called 'Id' 
     public class TestOidStrategy : IOidStrategy {
         private const string sep = "-";
@@ -52,10 +53,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
             }
         }
 
-        public string GetObjectId(IObjectFacade nakedobject) {
-            throw new NotImplementedException();
-        }
-
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(type.FullName);
@@ -82,6 +79,14 @@ namespace NakedObjects.Surface.Nof2.Utility {
             throw new NotImplementedException();
         }
 
+        public IFrameworkFacade Surface { set; get; }
+
+        #endregion
+
+        public string GetObjectId(IObjectFacade nakedobject) {
+            throw new NotImplementedException();
+        }
+
         public IOidFacade RestoreEncodedOid(string encoded) {
             throw new NotImplementedException();
         }
@@ -89,10 +94,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
         public IOidFacade RestoreTypeIdOid(string typeName, string instanceId) {
             throw new NotImplementedException();
         }
-
-        public IFrameworkFacade Surface { set;  get; }
-
-        #endregion
 
         protected Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             var code = GetCode(nakedObject.Specification);
@@ -112,7 +113,7 @@ namespace NakedObjects.Surface.Nof2.Utility {
 
         private static ITypeCodeMapper GetTypeCodeMapper() {
             // if required introduce some form of indirection here 
-            return  new DefaultTypeCodeMapper();
+            return new DefaultTypeCodeMapper();
         }
 
         private static IKeyCodeMapper GetKeyCodeMapper() {
@@ -147,7 +148,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
         protected static Type ValidateObjectId(IOidTranslation objectId) {
             return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
         }
-
 
         private static Type ValidateId(IOidTranslation objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {

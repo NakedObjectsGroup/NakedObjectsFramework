@@ -1,20 +1,21 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Nof2;
-using NakedObjects.Surface.Nof2.Context;
+using NakedObjects.Facade.Nof2.Context;
 using org.nakedobjects.@object;
 using sdm.systems.application;
 using sdm.systems.application.objectstore;
 using Action = org.nakedobjects.@object.Action;
 
-namespace NakedObjects.Surface.Nof2.Utility {
+namespace NakedObjects.Facade.Nof2.Utility {
     public static class SurfaceUtils {
         public static NakedObjectsSurfaceException Map(Exception e) {
             // map to appropriate exception 
@@ -50,7 +51,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return result.Select(r => new ActionWrapper(r)).ToArray();
         }
 
-
         public static ActionWrapper[] GetActionLeafNodes(this NakedObjectSpecification spec) {
             return spec.GetObjectActions().SelectMany(GetActionLeafNodes).OrderBy(a => a.getId()).ToArray();
         }
@@ -62,7 +62,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
         private static string GetShortName(NakedObjectSpecification spec) {
             return spec.getFullName().Split('.').Last();
         }
-
 
         public static NakedObjectActionParameter[] GetParameters(this ActionWrapper action, NakedReference obj) {
             var parms = new List<NakedObjectActionParameter>();
@@ -88,7 +87,6 @@ namespace NakedObjects.Surface.Nof2.Utility {
             return parameterTypes.Select(nakedObjectSpecification => new NakedObjectActionParameter(GetShortName(nakedObjectSpecification), index++, nakedObjectSpecification, action, null, null)).ToArray();
         }
 
-
         public static NakedObject[] GetServicesInternal() {
             var cc = (ClientComponents) ClientSpringContext.SharedClientSpringContext.GetObject("ClientComponents");
             IEnumerable<NakedObject> repositories = cc.Repositories.Values.Cast<object>().Select(o => org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterForElseCreateAdapterForTransient(o));
@@ -107,12 +105,10 @@ namespace NakedObjects.Surface.Nof2.Utility {
         //    return repositories.ToArray();
         //}
 
-
         //public static IObjectStore GetObjectResolver() {
         //    var os = (IObjectStore) ServerSpringContexts.SdmRequestSpringContext.GetObject("NOFObjectStore");
         //    return os;
         //}
-
 
         // cloned from typeutils 
         public static Type GetTypeFromLoadedAssemblies(string typeName) {

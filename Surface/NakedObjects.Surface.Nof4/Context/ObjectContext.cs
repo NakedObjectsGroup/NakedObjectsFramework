@@ -9,11 +9,10 @@ using System;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Redirect;
 
-namespace NakedObjects.Facade.Impl.Context {
+namespace NakedObjects.Facade.Impl.Contexts {
     public class ObjectContext : Context {
         public ObjectContext(INakedObjectAdapter target) {
             Target = target;
@@ -41,7 +40,6 @@ namespace NakedObjects.Facade.Impl.Context {
         }
 
         public PropertyContext[] VisibleProperties { get; set; }
-
         public ActionContext[] VisibleActions { get; set; }
 
         public ObjectContextFacade ToObjectContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {

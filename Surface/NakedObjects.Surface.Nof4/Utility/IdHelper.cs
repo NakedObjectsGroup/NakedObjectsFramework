@@ -9,23 +9,18 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class IdHelper : IIdHelper {
         private const string Sep = "-";
-
         private const string InputName = "Input";
         private const string SelectName = "Select";
         private const string ConcurrencyName = "Concurrency";
         private const string AutoCompleteName = "AutoComplete";
 
-        private string InputOrSelect(ITypeSpec spec) {
-            return (spec.IsParseable ? InputName : SelectName);
-        }
+        #region IIdHelper Members
 
         public string GetDisplayFormatId(string id) {
             return MakeId(id, IdConstants.DisplayFormatFieldId);
@@ -52,32 +47,32 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string GetFieldId(IObjectFacade owner, IAssociationFacade assocFacade) {
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
 
             return GetObjectId(owner) + Sep + assoc.Id;
         }
 
         public string GetInlineFieldId(IAssociationFacade parentFacade, IObjectFacade owner, IAssociationFacade assocFacade) {
-            IAssociationSpec parent = ((dynamic)parentFacade).WrappedSpec;
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec parent = ((dynamic) parentFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
 
             return parent.Id + Sep + GetObjectId(owner) + Sep + assoc.Id;
         }
 
         public string GetFieldInputId(IObjectFacade owner, IAssociationFacade assocFacade) {
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
 
             return GetFieldId(owner, assocFacade) + Sep + InputOrSelect(assoc.ReturnSpec);
         }
 
         public string GetFieldAutoCompleteId(string id, IObjectFacade owner, IAssociationFacade assocFacade) {
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
 
             return assoc.ReturnSpec.IsParseable ? id : id + Sep + AutoCompleteName;
         }
 
         public string GetInlineFieldInputId(IAssociationFacade parent, IObjectFacade owner, IAssociationFacade assocFacade) {
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
 
             return GetInlineFieldId(parent, owner, assocFacade) + Sep + InputOrSelect(assoc.ReturnSpec);
         }
@@ -91,22 +86,21 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string GetConcurrencyActionInputId(IObjectFacade owner, IActionFacade action, IAssociationFacade assocFacade) {
-            IAssociationSpec assoc = ((dynamic)assocFacade).WrappedSpec;
+            IAssociationSpec assoc = ((dynamic) assocFacade).WrappedSpec;
             return GetActionId(owner, action) + Sep + assoc.Id + Sep + ConcurrencyName;
         }
 
         public string GetActionId(IObjectFacade owner, IActionFacade actionFacade) {
-            IActionSpec action = ((dynamic)actionFacade).WrappedSpec;
+            IActionSpec action = ((dynamic) actionFacade).WrappedSpec;
             return GetObjectId(owner) + Sep + action.Id;
         }
 
         public string GetActionId(string propertyName, IActionFacade actionContextActionFacade, IObjectFacade actionContextTargetSurface, IObjectFacade targetActionContextTargetSurface, IActionFacade targetActionContextActionFacade) {
             IActionSpec actionContextAction = actionContextActionFacade == null ? null : ((dynamic) actionContextActionFacade).WrappedSpec;
             INakedObjectAdapter actionContextTarget = actionContextTargetSurface == null ? null : ((dynamic) actionContextTargetSurface).WrappedNakedObject;
-            IActionSpec targetActionContextAction = targetActionContextActionFacade == null ? null : ((dynamic)targetActionContextActionFacade).WrappedSpec;
-            INakedObjectAdapter targetActionContextTarget = targetActionContextTargetSurface == null ? null : ((dynamic)targetActionContextTargetSurface).WrappedNakedObject;
+            IActionSpec targetActionContextAction = targetActionContextActionFacade == null ? null : ((dynamic) targetActionContextActionFacade).WrappedSpec;
+            INakedObjectAdapter targetActionContextTarget = targetActionContextTargetSurface == null ? null : ((dynamic) targetActionContextTargetSurface).WrappedNakedObject;
 
-            
             string contextActionName = actionContextAction == null ? "" : actionContextAction.Id + Sep;
             string contextNakedObjectId = actionContextTarget == null || actionContextTarget == targetActionContextTarget ? "" : GetObjectId(actionContextTargetSurface) + Sep;
             string propertyId = string.IsNullOrEmpty(propertyName) ? "" : NameUtils.CapitalizeName(propertyName) + Sep;
@@ -114,51 +108,47 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string GetActionDialogId(IObjectFacade owner, IActionFacade actionFacade) {
-            IActionSpec action = ((dynamic)actionFacade).WrappedSpec;
+            IActionSpec action = ((dynamic) actionFacade).WrappedSpec;
 
             return GetObjectId(owner) + Sep + action.Id + Sep + IdConstants.DialogName;
         }
 
-        private string EnsureEndsWithColon(string id) {
-            return id.EndsWith(":") ? id : id + ":";
-        }
-
         public string GetSubMenuId(IObjectFacade owner, IActionFacade actionFacade) {
-            IActionSpec action = ((dynamic)actionFacade).WrappedSpec;
+            IActionSpec action = ((dynamic) actionFacade).WrappedSpec;
 
             return EnsureEndsWithColon(GetObjectId(owner) + Sep + action.Id.Split('.').Last());
         }
 
         public string GetSubMenuId(IObjectFacade owner, IObjectFacade serviceSurface) {
-            INakedObjectAdapter service = ((dynamic)serviceSurface).WrappedNakedObject;
+            INakedObjectAdapter service = ((dynamic) serviceSurface).WrappedNakedObject;
             return EnsureEndsWithColon(GetObjectId(owner) + Sep + service.Spec.ShortName);
         }
 
         public string GetFindMenuId(IObjectFacade nakedObject, IActionFacade actionFacade, string propertyName) {
-            IActionSpec action =  actionFacade == null ? null : ((dynamic)actionFacade).WrappedSpec;
+            IActionSpec action = actionFacade == null ? null : ((dynamic) actionFacade).WrappedSpec;
             string contextActionName = action == null ? "" : Sep + action.Id;
             return GetObjectId(nakedObject) + contextActionName + Sep + NameUtils.CapitalizeName(propertyName) + Sep + IdConstants.FindMenuName;
         }
 
         public string GetParameterId(IActionFacade actionFacade, IActionParameterFacade parameterFacade) {
-            IActionParameterSpec parameter = ((dynamic)parameterFacade).WrappedSpec;
-            IActionSpec action = ((dynamic)actionFacade).WrappedSpec;
+            IActionParameterSpec parameter = ((dynamic) parameterFacade).WrappedSpec;
+            IActionSpec action = ((dynamic) actionFacade).WrappedSpec;
             return action.OnSpec.ShortName + Sep + action.Id + Sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
         public string GetParameterInputId(IActionFacade action, IActionParameterFacade parameterFacade) {
-            IActionParameterSpec parameter = ((dynamic)parameterFacade).WrappedSpec;
+            IActionParameterSpec parameter = ((dynamic) parameterFacade).WrappedSpec;
             return GetParameterId(action, parameterFacade) + Sep + InputOrSelect(parameter.Spec);
         }
 
         public string GetParameterAutoCompleteId(IActionFacade action, IActionParameterFacade parameterFacade) {
-            IActionParameterSpec parameter = ((dynamic)parameterFacade).WrappedSpec;
+            IActionParameterSpec parameter = ((dynamic) parameterFacade).WrappedSpec;
             var id = GetParameterInputId(action, parameterFacade);
             return parameter.Spec.IsParseable ? id : id + Sep + AutoCompleteName;
         }
 
         public string GetCollectionContainerId(IObjectFacade collectionSurface) {
-            INakedObjectAdapter collection = ((dynamic)collectionSurface).WrappedNakedObject;
+            INakedObjectAdapter collection = ((dynamic) collectionSurface).WrappedNakedObject;
 
             return IdConstants.CollContainerName + Sep + collection.Spec.ShortName;
         }
@@ -176,13 +166,13 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string GetParameterContainerId(IActionFacade actionFacade) {
-            IActionSpec action = ((dynamic)actionFacade).WrappedSpec;
+            IActionSpec action = ((dynamic) actionFacade).WrappedSpec;
 
             return action.Id + Sep + IdConstants.ParamListName;
         }
 
         public string GetGenericActionId(IObjectFacade ownerSurface, string type) {
-            INakedObjectAdapter owner = ((dynamic)ownerSurface).WrappedNakedObject;
+            INakedObjectAdapter owner = ((dynamic) ownerSurface).WrappedNakedObject;
 
             return IdConstants.ActionName + Sep + owner.Spec.ShortName + Sep + type;
         }
@@ -192,7 +182,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string GetServiceLabel(IObjectFacade nakedObjectSurface) {
-            INakedObjectAdapter nakedObject = ((dynamic)nakedObjectSurface).WrappedNakedObject;
+            INakedObjectAdapter nakedObject = ((dynamic) nakedObjectSurface).WrappedNakedObject;
 
             return nakedObject.TitleString();
         }
@@ -215,11 +205,11 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public string GetAggregateFieldInputId(IObjectFacade nakedObjectSurface, IAssociationFacade propertyFacade) {
             string fieldId;
-            INakedObjectAdapter nakedObject = ((dynamic)nakedObjectSurface).WrappedNakedObject;
+            INakedObjectAdapter nakedObject = ((dynamic) nakedObjectSurface).WrappedNakedObject;
 
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
-                IAssociationSpec parent = ((IObjectSpec)aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
+                IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
                 fieldId = GetInlineFieldInputId(new AssociationFacade(parent, null, null), nakedObjectSurface, propertyFacade);
             }
             else {
@@ -228,5 +218,14 @@ namespace NakedObjects.Facade.Impl.Utility {
             return fieldId;
         }
 
+        #endregion
+
+        private string InputOrSelect(ITypeSpec spec) {
+            return (spec.IsParseable ? InputName : SelectName);
+        }
+
+        private string EnsureEndsWithColon(string id) {
+            return id.EndsWith(":") ? id : id + ":";
+        }
     }
 }
