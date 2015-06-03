@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedObjects.Facade.Contexts;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public class BadArgumentsNOSException : WithContextNOSException {
         public BadArgumentsNOSException(string message, IList<ContextFacade> contexts) : base(message, contexts) {}
 

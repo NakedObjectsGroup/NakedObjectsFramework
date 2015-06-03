@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public class GeneralErrorNOSException : NakedObjectsSurfaceException {
         public GeneralErrorNOSException(Exception e) : base(e.Message, e) {}
 

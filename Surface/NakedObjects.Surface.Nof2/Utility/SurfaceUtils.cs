@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Facade;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof2.Context;
 using NakedObjects.Facade.Nof2;

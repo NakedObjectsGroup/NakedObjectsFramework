@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Facade;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public class PreconditionFailedNOSException : NakedObjectsSurfaceException {
         public IObjectFacade SourceNakedObject { get; private set; }
         public PreconditionFailedNOSException() {}

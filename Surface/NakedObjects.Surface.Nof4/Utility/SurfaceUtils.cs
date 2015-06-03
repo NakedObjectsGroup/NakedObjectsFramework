@@ -13,6 +13,7 @@ using System.Threading;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
+using NakedObjects.Facade;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public static class SurfaceUtils {

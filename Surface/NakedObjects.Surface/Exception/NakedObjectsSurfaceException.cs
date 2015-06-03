@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public class NakedObjectsSurfaceException : Exception {
         public NakedObjectsSurfaceException(string message, Exception e) : base(message, e) {}
 
