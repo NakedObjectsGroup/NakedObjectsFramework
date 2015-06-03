@@ -12,8 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {

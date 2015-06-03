@@ -8,24 +8,24 @@ namespace AdventureWorksModel
         public ContactCreditCardMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ContactID, t.CreditCardID });
+            HasKey(t => new { t.ContactID, t.CreditCardID });
 
             // Properties
-            this.Property(t => t.ContactID)
+            Property(t => t.ContactID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.CreditCardID)
+            Property(t => t.CreditCardID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("ContactCreditCard", "Sales");
-            this.Property(t => t.ContactID).HasColumnName("ContactID");
-            this.Property(t => t.CreditCardID).HasColumnName("CreditCardID");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ContactCreditCard", "Sales");
+            Property(t => t.ContactID).HasColumnName("ContactID");
+            Property(t => t.CreditCardID).HasColumnName("CreditCardID");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID); ;
-            this.HasRequired(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID); ;
+            HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID); ;
+            HasRequired(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID); ;
 
         }
     }

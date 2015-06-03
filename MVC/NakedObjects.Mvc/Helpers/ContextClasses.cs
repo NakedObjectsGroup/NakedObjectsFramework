@@ -9,8 +9,7 @@ using System;
 using System.Linq;
 using System.Web.Routing;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
@@ -446,7 +445,7 @@ namespace AdventureWorksModel {
             return new[] {
                 "Payment on delivery",
                 "Leave parcel with neighbour",
-                "Leave parcel round back",
+                "Leave parcel round back"
             };
         }
 

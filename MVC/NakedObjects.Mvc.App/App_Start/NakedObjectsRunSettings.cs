@@ -6,23 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Menu;
-using NakedObjects.Meta.Audit;
-using System.Collections.Generic;
-using NakedObjects.Meta.Authorization;
-using NakedObjects.Meta.Profile;
-using NakedObjects.Profile;
-using NakedObjects.Services;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>
@@ -35,7 +29,7 @@ namespace NakedObjects.Mvc.App {
 
         private static string[] ModelNamespaces {
             get {
-                return new string[] {"AdventureWorksModel"};
+                return new[] {"AdventureWorksModel"};
             }
         }
 
@@ -54,7 +48,7 @@ namespace NakedObjects.Mvc.App {
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
-                    typeof (SimpleEncryptDecrypt),
+                    typeof (SimpleEncryptDecrypt)
                 };
             }
         }
@@ -110,7 +104,7 @@ namespace NakedObjects.Mvc.App {
         public static IMenu[] MainMenus(IMenuFactory factory) {
             var customerMenu = factory.NewMenu<CustomerRepository>(false);
             CustomerRepository.Menu(customerMenu);
-            return new IMenu[] {
+            return new[] {
                     customerMenu,
                     factory.NewMenu<OrderRepository>(true),
                     factory.NewMenu<ProductRepository>(true),

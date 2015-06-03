@@ -1,14 +1,13 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Facade;
-using NakedObjects.Surface.Nof2.Implementation;
 using NakedObjects.Facade.Nof2;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;
 using sdm.systems.application.value;

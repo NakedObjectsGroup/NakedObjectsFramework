@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Facade;
 
 namespace NakedObjects.Facade {
     public class PreconditionFailedNOSException : NakedObjectsSurfaceException {
@@ -15,7 +14,7 @@ namespace NakedObjects.Facade {
         public PreconditionFailedNOSException(string message) : base(message) {}
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) {}
         public PreconditionFailedNOSException(IObjectFacade sourceNakedObject) {
-            this.SourceNakedObject = sourceNakedObject;
+            SourceNakedObject = sourceNakedObject;
         }
 
         public override string Message {

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 
 namespace NakedObjects.Web.Mvc {
     public static class ObjectCache {
@@ -26,7 +25,7 @@ namespace NakedObjects.Web.Mvc {
         private const string NoneBucket = "ObjectCache";
         private const string BreadCrumbBucket = "BreadCrumbCache";
         public const int CacheSize = 100;
-        private static readonly string[] Bucket = new[] {NoneBucket, BreadCrumbBucket};
+        private static readonly string[] Bucket = {NoneBucket, BreadCrumbBucket};
 
         public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             var nakedObject = surface.GetObject(domainObject);

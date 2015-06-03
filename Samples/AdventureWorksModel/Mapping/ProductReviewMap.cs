@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,33 +7,33 @@ namespace AdventureWorksModel
         public ProductReviewMap()
         {
             // Primary Key
-            this.HasKey(t => t.ProductReviewID);
+            HasKey(t => t.ProductReviewID);
 
             // Properties
-            this.Property(t => t.ReviewerName)
+            Property(t => t.ReviewerName)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.EmailAddress)
+            Property(t => t.EmailAddress)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.Comments)
+            Property(t => t.Comments)
                 .HasMaxLength(3850);
 
             // Table & Column Mappings
-            this.ToTable("ProductReview", "Production");
-            this.Property(t => t.ProductReviewID).HasColumnName("ProductReviewID");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.ReviewerName).HasColumnName("ReviewerName");
-            this.Property(t => t.ReviewDate).HasColumnName("ReviewDate");
-            this.Property(t => t.EmailAddress).HasColumnName("EmailAddress");
-            this.Property(t => t.Rating).HasColumnName("Rating");
-            this.Property(t => t.Comments).HasColumnName("Comments");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductReview", "Production");
+            Property(t => t.ProductReviewID).HasColumnName("ProductReviewID");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.ReviewerName).HasColumnName("ReviewerName");
+            Property(t => t.ReviewDate).HasColumnName("ReviewDate");
+            Property(t => t.EmailAddress).HasColumnName("EmailAddress");
+            Property(t => t.Rating).HasColumnName("Rating");
+            Property(t => t.Comments).HasColumnName("Comments");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product)
+            HasRequired(t => t.Product)
                 .WithMany(t => t.ProductReviews)
                 .HasForeignKey(d => d.ProductID);
 

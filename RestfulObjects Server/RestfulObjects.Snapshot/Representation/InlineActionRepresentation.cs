@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Strategies;
 using RestfulObjects.Snapshot.Utility;

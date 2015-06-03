@@ -8,27 +8,27 @@ namespace AdventureWorksModel
         public ProductProductPhotoMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ProductID, t.ProductPhotoID });
+            HasKey(t => new { t.ProductID, t.ProductPhotoID });
 
             // Properties
-            this.Property(t => t.ProductID)
+            Property(t => t.ProductID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.ProductPhotoID)
+            Property(t => t.ProductPhotoID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("ProductProductPhoto", "Production");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
-            this.Property(t => t.Primary).HasColumnName("Primary");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductProductPhoto", "Production");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
+            Property(t => t.Primary).HasColumnName("Primary");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product)
+            HasRequired(t => t.Product)
                 .WithMany(t => t.ProductProductPhoto)
                 .HasForeignKey(d => d.ProductID);
-            this.HasRequired(t => t.ProductPhoto)
+            HasRequired(t => t.ProductPhoto)
                 .WithMany(t => t.ProductProductPhoto)
                 .HasForeignKey(d => d.ProductPhotoID);
 

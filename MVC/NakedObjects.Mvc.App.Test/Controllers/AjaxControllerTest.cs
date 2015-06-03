@@ -235,7 +235,7 @@ namespace MvcTestApp.Tests.Controllers {
             const string parm2Id = "ChoicesRepository-AnAction-Parm2-Input0";
             const string parm3Id = "ChoicesRepository-AnAction-Parm3-Input0";
 
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
             Assert.IsInstanceOf<IDictionary<string, string[][]>>(result.Data);
@@ -295,7 +295,7 @@ namespace MvcTestApp.Tests.Controllers {
             const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
             const string parm3Id = "ChoicesRepository-AnActionMultiple-Parm3-Select0";
 
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
             Assert.IsInstanceOf<IDictionary<string, string[][]>>(result.Data);
@@ -410,7 +410,7 @@ namespace MvcTestApp.Tests.Controllers {
             mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
             mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
             mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
-            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() {{"callback", "testCallbackValue"}});
+            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection {{"callback", "testCallbackValue"}});
 
             jsonpResult.ExecuteResult(mockControllerContext.Object);
 
@@ -435,7 +435,7 @@ namespace MvcTestApp.Tests.Controllers {
             mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
             mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
             mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
-            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() {{"callback", "testCallbackValue"}});
+            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection {{"callback", "testCallbackValue"}});
 
             jsonpResult.ExecuteResult(mockControllerContext.Object);
 
@@ -584,7 +584,7 @@ namespace MvcTestApp.Tests.Controllers {
         protected IFrameworkFacade Surface { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic) Surface).Framework;
         }
 

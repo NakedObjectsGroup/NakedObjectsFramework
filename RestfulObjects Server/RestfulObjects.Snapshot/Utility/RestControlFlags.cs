@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class RestControlFlags {

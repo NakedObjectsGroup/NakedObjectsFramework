@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,62 +7,62 @@ namespace AdventureWorksModel
         public ContactMap()
         {
             // Primary Key
-            this.HasKey(t => t.ContactID);
+            HasKey(t => t.ContactID);
 
             //Ignores
-            this.Ignore(t => t.InitialPassword);
-            this.Ignore(t => t.ContactType);
-            this.Ignore(t => t.Contactee);
+            Ignore(t => t.InitialPassword);
+            Ignore(t => t.ContactType);
+            Ignore(t => t.Contactee);
 
             // Properties
-            this.Property(t => t.Title)
+            Property(t => t.Title)
                 .HasMaxLength(8);
 
-            this.Property(t => t.FirstName)
+            Property(t => t.FirstName)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.MiddleName)
+            Property(t => t.MiddleName)
                 .HasMaxLength(50);
 
-            this.Property(t => t.LastName)
+            Property(t => t.LastName)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.Suffix)
+            Property(t => t.Suffix)
                 .HasMaxLength(10);
 
-            this.Property(t => t.EmailAddress)
+            Property(t => t.EmailAddress)
                 .HasMaxLength(50);
 
-            this.Property(t => t.Phone)
+            Property(t => t.Phone)
                 .HasMaxLength(25);
 
-            this.Property(t => t.PasswordHash)
+            Property(t => t.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(128);
 
-            this.Property(t => t.PasswordSalt)
+            Property(t => t.PasswordSalt)
                 .IsRequired()
                 .HasMaxLength(10);
 
             // Table & Column Mappings
-            this.ToTable("Contact", "Person");
-            this.Property(t => t.ContactID).HasColumnName("ContactID");
-            this.Property(t => t.NameStyle).HasColumnName("NameStyle");
-            this.Property(t => t.Title).HasColumnName("Title");
-            this.Property(t => t.FirstName).HasColumnName("FirstName");
-            this.Property(t => t.MiddleName).HasColumnName("MiddleName");
-            this.Property(t => t.LastName).HasColumnName("LastName");
-            this.Property(t => t.Suffix).HasColumnName("Suffix");
-            this.Property(t => t.EmailAddress).HasColumnName("EmailAddress");
-            this.Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
-            this.Property(t => t.Phone).HasColumnName("Phone");
-            this.Property(t => t.PasswordHash).HasColumnName("PasswordHash");
-            this.Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
-            this.Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("Contact", "Person");
+            Property(t => t.ContactID).HasColumnName("ContactID");
+            Property(t => t.NameStyle).HasColumnName("NameStyle");
+            Property(t => t.Title).HasColumnName("Title");
+            Property(t => t.FirstName).HasColumnName("FirstName");
+            Property(t => t.MiddleName).HasColumnName("MiddleName");
+            Property(t => t.LastName).HasColumnName("LastName");
+            Property(t => t.Suffix).HasColumnName("Suffix");
+            Property(t => t.EmailAddress).HasColumnName("EmailAddress");
+            Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
+            Property(t => t.Phone).HasColumnName("Phone");
+            Property(t => t.PasswordHash).HasColumnName("PasswordHash");
+            Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
+            Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

@@ -8,26 +8,26 @@ namespace AdventureWorksModel
         public ProductModelIllustrationMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ProductModelID, t.IllustrationID });
+            HasKey(t => new { t.ProductModelID, t.IllustrationID });
 
             // Properties
-            this.Property(t => t.ProductModelID)
+            Property(t => t.ProductModelID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.IllustrationID)
+            Property(t => t.IllustrationID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("ProductModelIllustration", "Production");
-            this.Property(t => t.ProductModelID).HasColumnName("ProductModelID");
-            this.Property(t => t.IllustrationID).HasColumnName("IllustrationID");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductModelIllustration", "Production");
+            Property(t => t.ProductModelID).HasColumnName("ProductModelID");
+            Property(t => t.IllustrationID).HasColumnName("IllustrationID");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Illustration)
+            HasRequired(t => t.Illustration)
                 .WithMany(t => t.ProductModelIllustration)
                 .HasForeignKey(d => d.IllustrationID);
-            this.HasRequired(t => t.ProductModel)
+            HasRequired(t => t.ProductModel)
                 .WithMany(t => t.ProductModelIllustration)
                 .HasForeignKey(d => d.ProductModelID);
 

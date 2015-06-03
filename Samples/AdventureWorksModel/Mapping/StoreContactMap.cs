@@ -8,27 +8,27 @@ namespace AdventureWorksModel
         public StoreContactMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.CustomerID, t.ContactID });
+            HasKey(t => new { t.CustomerID, t.ContactID });
 
             // Properties
-            this.Property(t => t.CustomerID)
+            Property(t => t.CustomerID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.ContactID)
+            Property(t => t.ContactID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("StoreContact", "Sales");
-            this.Property(t => t.CustomerID).HasColumnName("CustomerID");
-            this.Property(t => t.ContactID).HasColumnName("ContactID");
-            this.Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("StoreContact", "Sales");
+            Property(t => t.CustomerID).HasColumnName("CustomerID");
+            Property(t => t.ContactID).HasColumnName("ContactID");
+            Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
-            this.HasRequired(t => t.ContactType).WithMany().HasForeignKey(t => t.ContactTypeID);
-            this.HasRequired(t => t.Store)
+            HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
+            HasRequired(t => t.ContactType).WithMany().HasForeignKey(t => t.ContactTypeID);
+            HasRequired(t => t.Store)
                 .WithMany(t => t.Contacts)
                 .HasForeignKey(d => d.CustomerID);
 

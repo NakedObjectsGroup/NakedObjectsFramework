@@ -8,7 +8,7 @@
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Security.Principal;
-using NakedObjects.Surface;
+using NakedObjects.Facade;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 

@@ -16,9 +16,8 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Facade.Nof4 {

@@ -18,15 +18,15 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
+using NakedObjects.Core.Util;
 using NakedObjects.DatabaseHelpers;
+using NakedObjects.Facade;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Core.Util;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Translation;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -49,7 +49,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         protected override Type[] Types {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (ObjectQuery<string>)
                 };
             }
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Controllers {
         protected IMessageBroker MessageBroker { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
         }

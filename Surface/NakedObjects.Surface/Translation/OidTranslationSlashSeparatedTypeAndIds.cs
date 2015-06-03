@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Surface;
 
 namespace NakedObjects.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {

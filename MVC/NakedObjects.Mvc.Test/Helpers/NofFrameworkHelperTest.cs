@@ -21,7 +21,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

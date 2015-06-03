@@ -10,7 +10,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.Facade;
@@ -20,9 +19,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -89,7 +86,7 @@ namespace MvcTestApp.Tests.Controllers {
         protected IFrameworkFacade Surface { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
         }
 

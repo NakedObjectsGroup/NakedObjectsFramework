@@ -12,10 +12,10 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Facade;
-using NakedObjects.Services;
-using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Facade.Nof4;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Services;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {

@@ -15,7 +15,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NakedObjects.Surface;
+using NakedObjects.Facade;
 
 namespace MvcTestApp {
     public class BasicAuthenticationHandler : DelegatingHandler {

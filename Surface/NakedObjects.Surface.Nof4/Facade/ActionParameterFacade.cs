@@ -16,8 +16,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Facade.Nof4 {
     public class ActionParameterFacade : IActionParameterFacade {

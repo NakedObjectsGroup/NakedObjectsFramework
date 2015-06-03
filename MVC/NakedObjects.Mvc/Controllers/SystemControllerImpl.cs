@@ -7,8 +7,7 @@
 
 using System.Web.Mvc;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {

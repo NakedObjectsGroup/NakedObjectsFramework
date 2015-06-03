@@ -12,7 +12,7 @@ namespace Expenses {
         public abstract class Journey : AbstractExpenseItem {
             #region Description
 
-            [Disabled()]
+            [Disabled]
             public override string Description {
                 get { return base.Description; }
                 set { base.Description = value; }

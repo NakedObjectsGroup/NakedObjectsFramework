@@ -4,7 +4,6 @@
 
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 using NakedObjects.Facade.Nof2;
 using org.nakedobjects.@object;
 

@@ -19,8 +19,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -45,7 +43,7 @@ namespace MvcTestApp.Tests.Controllers {
             if (nakedObject.Spec.IsQueryable) {
                 var metamodel = framework.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
             }
@@ -314,7 +312,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objCollection = rawCollection.Select(s => GetNakedObjectFromId(surface, s).Object).ToArray();
 
-            CollectionUtils.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
+            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
             return typedCollection.AsQueryable();
         }
@@ -343,7 +341,7 @@ namespace MvcTestApp.Tests.Controllers {
                 objCollection = rawCollection.Select(s => framework.GetNakedObjectFromId(s).GetDomainObject()).ToArray();
             }
 
-            CollectionUtils.ForEach(objCollection.Where(o => o != null), o => typedCollection.Add(o));
+            objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
             return framework.NakedObjectManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }

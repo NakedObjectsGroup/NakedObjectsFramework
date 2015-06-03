@@ -57,7 +57,7 @@ namespace AdventureWorksModel {
         public virtual int? MaxQty { get; set; }
 
         public virtual string[] ChoicesCategory() {
-            return new string[] {"Reseller", "Customer"};
+            return new[] {"Reseller", "Customer"};
         }
 
         public virtual DateTime DefaultStartDate() {

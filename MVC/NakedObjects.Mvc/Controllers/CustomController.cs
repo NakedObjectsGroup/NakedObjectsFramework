@@ -14,8 +14,7 @@ using System.Web.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility.Restricted;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -391,7 +390,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
-                ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
                 contextFacade = Surface.ExecuteObjectAction(oid, action.Id, ac);
             }
             else {

@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Runtime.Serialization;
-using NakedObjects.Surface;
+using NakedObjects.Facade;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 

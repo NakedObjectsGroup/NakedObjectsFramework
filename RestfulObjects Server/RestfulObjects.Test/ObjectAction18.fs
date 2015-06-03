@@ -2872,7 +2872,7 @@ let VerifyInvalidAction refType oType oid f (api : RestfulObjectsControllerBase)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Surface.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 let GetInvalidActionPropertyObject(api : RestfulObjectsControllerBase) = 

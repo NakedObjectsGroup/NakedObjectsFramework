@@ -8,29 +8,29 @@ namespace AdventureWorksModel
         public SalesTerritoryHistoryMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.SalesPersonID, t.SalesTerritoryID, t.StartDate });
+            HasKey(t => new { t.SalesPersonID, t.SalesTerritoryID, t.StartDate });
 
             // Properties
-            this.Property(t => t.SalesPersonID)
+            Property(t => t.SalesPersonID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.SalesTerritoryID)
+            Property(t => t.SalesTerritoryID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("SalesTerritoryHistory", "Sales");
-            this.Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
-            this.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
-            this.Property(t => t.StartDate).HasColumnName("StartDate");
-            this.Property(t => t.EndDate).HasColumnName("EndDate");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("SalesTerritoryHistory", "Sales");
+            Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
+            Property(t => t.StartDate).HasColumnName("StartDate");
+            Property(t => t.EndDate).HasColumnName("EndDate");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.SalesPerson)
+            HasRequired(t => t.SalesPerson)
                 .WithMany(t => t.TerritoryHistory)
                 .HasForeignKey(d => d.SalesPersonID);
-            this.HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
+            HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }
     }

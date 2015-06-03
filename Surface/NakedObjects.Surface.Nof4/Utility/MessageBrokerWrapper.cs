@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public class MessageBrokerWrapper : IMessageBrokerSurface {

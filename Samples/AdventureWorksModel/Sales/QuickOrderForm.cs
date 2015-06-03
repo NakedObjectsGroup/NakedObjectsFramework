@@ -21,7 +21,7 @@ namespace AdventureWorksModel.Sales {
 
         [Title]
         public string Description {
-            get { return Number.ToString() + " x " + Product.Name; }
+            get { return Number + " x " + Product.Name; }
         }
 
         #region IViewModel Members

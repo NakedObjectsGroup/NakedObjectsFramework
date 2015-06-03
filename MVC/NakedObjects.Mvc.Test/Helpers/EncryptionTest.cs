@@ -17,9 +17,9 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -32,7 +32,7 @@ namespace MvcTestApp.Tests.Helpers {
         private ContextMocks mocks;
 
         protected override Type[] Types {
-            get { return new Type[] {typeof (Employee), typeof (AbstractExpenseItem)}; }
+            get { return new[] {typeof (Employee), typeof (AbstractExpenseItem)}; }
         }
 
         protected override string[] Namespaces {

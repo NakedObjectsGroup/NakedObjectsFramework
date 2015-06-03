@@ -8,32 +8,32 @@ namespace AdventureWorksModel
         public PurchaseOrderDetailMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.PurchaseOrderID, t.PurchaseOrderDetailID });
+            HasKey(t => new { t.PurchaseOrderID, t.PurchaseOrderDetailID });
 
             // Properties
-            this.Property(t => t.PurchaseOrderID)
+            Property(t => t.PurchaseOrderID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.PurchaseOrderDetailID)
+            Property(t => t.PurchaseOrderDetailID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // Table & Column Mappings
-            this.ToTable("PurchaseOrderDetail", "Purchasing");
-            this.Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
-            this.Property(t => t.PurchaseOrderDetailID).HasColumnName("PurchaseOrderDetailID");
-            this.Property(t => t.DueDate).HasColumnName("DueDate");
-            this.Property(t => t.OrderQty).HasColumnName("OrderQty");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.UnitPrice).HasColumnName("UnitPrice");
-            this.Property(t => t.LineTotal).HasColumnName("LineTotal");
-            this.Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
-            this.Property(t => t.RejectedQty).HasColumnName("RejectedQty");
-            this.Property(t => t.StockedQty).HasColumnName("StockedQty");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("PurchaseOrderDetail", "Purchasing");
+            Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
+            Property(t => t.PurchaseOrderDetailID).HasColumnName("PurchaseOrderDetailID");
+            Property(t => t.DueDate).HasColumnName("DueDate");
+            Property(t => t.OrderQty).HasColumnName("OrderQty");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.UnitPrice).HasColumnName("UnitPrice");
+            Property(t => t.LineTotal).HasColumnName("LineTotal");
+            Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
+            Property(t => t.RejectedQty).HasColumnName("RejectedQty");
+            Property(t => t.StockedQty).HasColumnName("StockedQty");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
-            this.HasRequired(t => t.PurchaseOrderHeader)
+            HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            HasRequired(t => t.PurchaseOrderHeader)
                 .WithMany(t => t.Details)
                 .HasForeignKey(d => d.PurchaseOrderID);
 

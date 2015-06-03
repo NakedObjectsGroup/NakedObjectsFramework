@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Surface {
+namespace NakedObjects.Facade {
     public class UserCredentials {
         public UserCredentials(string user, string password, List<string> roles) {
             User = user;

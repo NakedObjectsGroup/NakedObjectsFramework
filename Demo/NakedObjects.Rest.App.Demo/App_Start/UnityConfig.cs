@@ -13,10 +13,8 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Rest.App.Demo {

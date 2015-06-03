@@ -7,8 +7,7 @@
 
 using System.Collections;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class FindViewModel {

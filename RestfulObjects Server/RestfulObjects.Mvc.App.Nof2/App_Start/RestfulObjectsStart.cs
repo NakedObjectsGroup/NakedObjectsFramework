@@ -4,12 +4,13 @@
 
 using System.Web.Http;
 using System.Web.Routing;
+using MvcTestApp.App_Start;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Media;
 using WebActivator;
 
-[assembly: PreApplicationStartMethod(typeof (MvcTestApp.App_Start.RestfulObjectsStart), "PreStart")]
-[assembly: PostApplicationStartMethod(typeof (MvcTestApp.App_Start.RestfulObjectsStart), "PostStart")]
+[assembly: PreApplicationStartMethod(typeof (RestfulObjectsStart), "PreStart")]
+[assembly: PostApplicationStartMethod(typeof (RestfulObjectsStart), "PostStart")]
 
 namespace MvcTestApp.App_Start {
     public static class RestfulObjectsStart {

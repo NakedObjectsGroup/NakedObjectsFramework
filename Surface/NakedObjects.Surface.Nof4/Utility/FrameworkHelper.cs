@@ -42,7 +42,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (nakedObject.Spec.IsQueryable) {
                 var metamodel = framework.MetamodelManager.Metamodel;
                 IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut);
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
             }

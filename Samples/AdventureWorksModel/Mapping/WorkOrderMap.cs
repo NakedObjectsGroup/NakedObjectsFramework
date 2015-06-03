@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,25 +7,25 @@ namespace AdventureWorksModel
         public WorkOrderMap()
         {
             // Primary Key
-            this.HasKey(t => t.WorkOrderID);
+            HasKey(t => t.WorkOrderID);
 
             // Properties
             // Table & Column Mappings
-            this.ToTable("WorkOrder", "Production");
-            this.Property(t => t.WorkOrderID).HasColumnName("WorkOrderID");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.OrderQty).HasColumnName("OrderQty");
-            this.Property(t => t.StockedQty).HasColumnName("StockedQty");
-            this.Property(t => t.ScrappedQty).HasColumnName("ScrappedQty");
-            this.Property(t => t.StartDate).HasColumnName("StartDate");
-            this.Property(t => t.EndDate).HasColumnName("EndDate");
-            this.Property(t => t.DueDate).HasColumnName("DueDate");
-            this.Property(t => t.ScrapReasonID).HasColumnName("ScrapReasonID");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("WorkOrder", "Production");
+            Property(t => t.WorkOrderID).HasColumnName("WorkOrderID");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.OrderQty).HasColumnName("OrderQty");
+            Property(t => t.StockedQty).HasColumnName("StockedQty");
+            Property(t => t.ScrappedQty).HasColumnName("ScrappedQty");
+            Property(t => t.StartDate).HasColumnName("StartDate");
+            Property(t => t.EndDate).HasColumnName("EndDate");
+            Property(t => t.DueDate).HasColumnName("DueDate");
+            Property(t => t.ScrapReasonID).HasColumnName("ScrapReasonID");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
-            this.HasOptional(t => t.ScrapReason).WithMany().HasForeignKey(t => t.ScrapReasonID);
+            HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            HasOptional(t => t.ScrapReason).WithMany().HasForeignKey(t => t.ScrapReasonID);
 
         }
     }

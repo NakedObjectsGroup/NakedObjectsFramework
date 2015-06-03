@@ -19,20 +19,19 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Component;
-using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
 using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
@@ -309,7 +308,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
             var form = new FormCollection();
-            CollectionUtils.ForEach(nameValues, kvp => form.Add(kvp.Key, kvp.Value));
+            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
             return form;
         }
 
@@ -367,7 +366,7 @@ namespace MvcTestApp.Tests.Controllers {
             var parmQuantity = action.Parameters[0];
             string idQuantity = IdHelper.GetParameterInputId((action), (parmQuantity));
             return GetForm(new Dictionary<string, string> {
-                {idQuantity, quantity},
+                {idQuantity, quantity}
             });
         }
 
@@ -384,7 +383,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(new Dictionary<string, string> {
                 {idP1, p1},
                 {idP2, p2},
-                {idP3, p3},
+                {idP3, p3}
             });
         }
 
@@ -394,7 +393,7 @@ namespace MvcTestApp.Tests.Controllers {
             string idPsc = IdHelper.GetParameterInputId((action), (parmPsc));
 
             return GetForm(new Dictionary<string, string> {
-                {idPsc, pscId},
+                {idPsc, pscId}
             });
         }
 
@@ -504,7 +503,7 @@ namespace MvcTestApp.Tests.Controllers {
                 {idCT, cardType},
                 {idCN, cardNumber},
                 {idEM, expiryMonth},
-                {idEY, expiryYear},
+                {idEY, expiryYear}
             };
 
             return GetForm(idToRawValue);
@@ -514,7 +513,7 @@ namespace MvcTestApp.Tests.Controllers {
             var parmContact = action.Parameters[0];
             string idContact = IdHelper.GetParameterInputId((action), (parmContact));
             idToRawValue = new Dictionary<string, string> {
-                {idContact, contact},
+                {idContact, contact}
             };
             return GetForm(idToRawValue);
         }
@@ -528,7 +527,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             idToRawValue = new Dictionary<string, string> {
                 {idCust, cust},
-                {idCopy, copy.ToString()},
+                {idCopy, copy.ToString()}
             };
             return GetForm(idToRawValue);
         }
@@ -917,7 +916,7 @@ namespace MvcTestApp.Tests.Controllers {
                 {"checkboxAll", @"true,false"},
                 {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;63150;False;;0", "false,false"},
                 {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;57033;False;;0", "false,false"},
-                {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;51798;False;;0", "false,false"},
+                {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;51798;False;;0", "false,false"}
             };
 
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
@@ -1454,7 +1453,7 @@ namespace MvcTestApp.Tests.Controllers {
                 {"checkboxAll", @"true,false"},
                 {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;71936;False;;0", "true,false"},
                 {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;57033;False;;0", "true,false"},
-                {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;51798;False;;0", "true,false"},
+                {"AdventureWorksModel.SalesOrderHeader;1;System.Int32;51798;False;;0", "true,false"}
             };
 
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
@@ -2182,7 +2181,7 @@ namespace MvcTestApp.Tests.Controllers {
         protected IMessageBroker MessageBroker { get; set; }
 
         protected override void StartTest() {
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic) Surface).Framework;
             MessageBroker =  NakedObjectsFramework.MessageBroker;
         }

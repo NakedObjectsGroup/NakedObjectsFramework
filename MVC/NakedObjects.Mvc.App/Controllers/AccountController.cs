@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using NakedObjects.Mvc.App.Models;
-
 
 namespace NakedObjects.Mvc.App.Controllers
 {
@@ -52,10 +47,7 @@ namespace NakedObjects.Mvc.App.Controllers
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+                ModelState.AddModelError("", "Invalid username or password.");
             }
 
             // If we got this far, something failed, redisplay form
@@ -79,17 +71,14 @@ namespace NakedObjects.Mvc.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
+                    await SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    AddErrors(result);
-                }
+                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
@@ -148,10 +137,7 @@ namespace NakedObjects.Mvc.App.Controllers
                     {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
             else
@@ -170,10 +156,7 @@ namespace NakedObjects.Mvc.App.Controllers
                     {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
 
@@ -207,16 +190,13 @@ namespace NakedObjects.Mvc.App.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, false);
                 return RedirectToLocal(returnUrl);
             }
-            else
-            {
-                // If the user does not have an account, then prompt the user to create an account
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
-            }
+            // If the user does not have an account, then prompt the user to create an account
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
         }
 
         //
@@ -266,14 +246,14 @@ namespace NakedObjects.Mvc.App.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAsync(user, isPersistent: false);
+                        await SignInAsync(user, false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -336,7 +316,7 @@ namespace NakedObjects.Mvc.App.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
         }
 
         private void AddErrors(IdentityResult result)
@@ -365,16 +345,12 @@ namespace NakedObjects.Mvc.App.Controllers
             Error
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
+        private ActionResult RedirectToLocal(string returnUrl) {
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         private class ChallengeResult : HttpUnauthorizedResult
@@ -396,7 +372,7 @@ namespace NakedObjects.Mvc.App.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;

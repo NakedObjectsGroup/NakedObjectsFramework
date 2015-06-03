@@ -1,13 +1,11 @@
 // Copyright � Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System.Web.Mvc;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Models;
-using NakedObjects.Facade;
-
 
 namespace NakedObjects.Test.App.Controllers {
 

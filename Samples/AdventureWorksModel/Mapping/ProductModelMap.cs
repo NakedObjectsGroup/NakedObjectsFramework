@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,21 +7,21 @@ namespace AdventureWorksModel
         public ProductModelMap()
         {
             // Primary Key
-            this.HasKey(t => t.ProductModelID);
+            HasKey(t => t.ProductModelID);
 
             // Properties
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("ProductModel", "Production");
-            this.Property(t => t.ProductModelID).HasColumnName("ProductModelID");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.CatalogDescription).HasColumnName("CatalogDescription");
-            this.Property(t => t.Instructions).HasColumnName("Instructions");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductModel", "Production");
+            Property(t => t.ProductModelID).HasColumnName("ProductModelID");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.CatalogDescription).HasColumnName("CatalogDescription");
+            Property(t => t.Instructions).HasColumnName("Instructions");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

@@ -18,8 +18,6 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 

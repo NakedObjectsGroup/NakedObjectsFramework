@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,31 +7,31 @@ namespace AdventureWorksModel
         public CreditCardMap()
         {
             // Primary Key
-            this.HasKey(t => t.CreditCardID);
+            HasKey(t => t.CreditCardID);
 
             //Ignores
-            this.Ignore(t => t.Creator);
-            this.Ignore(t => t.ForContact);
-            this.Ignore(t => t.ContactCreditCard);
-            this.Ignore(t => t.ObfuscatedNumber);
+            Ignore(t => t.Creator);
+            Ignore(t => t.ForContact);
+            Ignore(t => t.ContactCreditCard);
+            Ignore(t => t.ObfuscatedNumber);
 
             // Properties
-            this.Property(t => t.CardType)
+            Property(t => t.CardType)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.CardNumber)
+            Property(t => t.CardNumber)
                 .IsRequired()
                 .HasMaxLength(25);
 
             // Table & Column Mappings
-            this.ToTable("CreditCard", "Sales");
-            this.Property(t => t.CreditCardID).HasColumnName("CreditCardID");
-            this.Property(t => t.CardType).HasColumnName("CardType");
-            this.Property(t => t.CardNumber).HasColumnName("CardNumber");
-            this.Property(t => t.ExpMonth).HasColumnName("ExpMonth");
-            this.Property(t => t.ExpYear).HasColumnName("ExpYear");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("CreditCard", "Sales");
+            Property(t => t.CreditCardID).HasColumnName("CreditCardID");
+            Property(t => t.CardType).HasColumnName("CardType");
+            Property(t => t.CardNumber).HasColumnName("CardNumber");
+            Property(t => t.ExpMonth).HasColumnName("ExpMonth");
+            Property(t => t.ExpYear).HasColumnName("ExpYear");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
           
         }
     }

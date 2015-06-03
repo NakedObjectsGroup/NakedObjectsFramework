@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,32 +7,32 @@ namespace AdventureWorksModel
         public CurrencyRateMap()
         {
             // Primary Key
-            this.HasKey(t => t.CurrencyRateID);
+            HasKey(t => t.CurrencyRateID);
 
             // Properties
-            this.Property(t => t.FromCurrencyCode)
+            Property(t => t.FromCurrencyCode)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(3);
 
-            this.Property(t => t.ToCurrencyCode)
+            Property(t => t.ToCurrencyCode)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(3);
 
             // Table & Column Mappings
-            this.ToTable("CurrencyRate", "Sales");
-            this.Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
-            this.Property(t => t.CurrencyRateDate).HasColumnName("CurrencyRateDate");
-            this.Property(t => t.FromCurrencyCode).HasColumnName("FromCurrencyCode");
-            this.Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
-            this.Property(t => t.AverageRate).HasColumnName("AverageRate");
-            this.Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("CurrencyRate", "Sales");
+            Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
+            Property(t => t.CurrencyRateDate).HasColumnName("CurrencyRateDate");
+            Property(t => t.FromCurrencyCode).HasColumnName("FromCurrencyCode");
+            Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
+            Property(t => t.AverageRate).HasColumnName("AverageRate");
+            Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
-            this.HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
+            HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);
+            HasRequired(t => t.Currency1).WithMany().HasForeignKey(t => t.ToCurrencyCode);
 
         }
     }

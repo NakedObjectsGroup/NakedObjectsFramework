@@ -20,10 +20,9 @@ using System.Web.Routing;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
-using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
@@ -398,7 +397,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsVisible(nakedObject)).
                     Select(property => new ElementDescriptor {
                         TagType = "div",
-                        Value = html.GetEditValue(new PropertyContext(html.IdHelper(), nakedObject, property, true, parentContext), childElements, property.Id == idToAddTo, noFinder),
+                        Value = html.GetEditValue(new PropertyContext(html.IdHelper(), nakedObject, property, true, parentContext), childElements, property.Id == idToAddTo, noFinder)
                     });
 
                 visibleElements = visibleElements.Union(hiddenElements);
@@ -455,7 +454,7 @@ namespace NakedObjects.Web.Mvc.Html {
                         value = "true",
                         @class = IdConstants.CheckboxClass,
                         id = IdConstants.Checkbox + index++
-                    }),
+                    })
                 });
             }
 
@@ -562,7 +561,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     id,
                     @class = IdConstants.ActionName,
                     method = "post",
-                    action = html.GenerateUrl(actionName, controllerName, routeValues),
+                    action = html.GenerateUrl(actionName, controllerName, routeValues)
                 }),
                 Value = innerHtml.WrapInDivTag()
             };
@@ -671,7 +670,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 action = html.GenerateUrl(Action(actionContext.Action.Id), controllerName, new RouteValueDictionary(routeValues)),
                 method = "post",
                 id = actionContext.GetActionId(),
-                @class = actionContext.GetActionClass(),
+                @class = actionContext.GetActionClass()
             });
             return tagType;
         }
@@ -1053,7 +1052,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetAutoCompleteTextBox(this HtmlHelper html, ParameterContext context, RouteValueDictionary htmlAttributes, IObjectFacade valueNakedObject) {
             string completionAjaxUrl = html.GenerateUrl("GetActionCompletions", "Ajax", new RouteValueDictionary(new {id = Encode(html.Surface().OidTranslator.GetOidTranslation(context.Target)), actionName = context.Action.Id, parameterIndex = context.Parameter.Number}));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Parameter, completionAjaxUrl);
-            SurfaceHelper.ForEach(attrs, kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
+            attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Parameter, valueNakedObject);
             return html.TextBox(context.GetParameterAutoCompleteId(), title, htmlAttributes).ToHtmlString();
         }
@@ -1061,7 +1060,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetAutoCompleteTextBox(this HtmlHelper html, PropertyContext context, RouteValueDictionary htmlAttributes, IObjectFacade valueNakedObject) {
             string completionAjaxUrl = html.GenerateUrl("GetPropertyCompletions", "Ajax", new RouteValueDictionary(new {id = Encode(html.Surface().OidTranslator.GetOidTranslation(context.Target)), propertyId = context.Property.Id}));
             RouteValueDictionary attrs = CreateAutoCompleteAttributes(context.Property, completionAjaxUrl);
-            SurfaceHelper.ForEach(attrs, kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
+            attrs.ForEach(kvp => htmlAttributes.Add(kvp.Key, kvp.Value));
             string title = valueNakedObject == null ? "" : html.GetDisplayTitle(context.Property, valueNakedObject);
             return html.TextBox(context.GetAutoCompleteFieldId(), title, htmlAttributes).ToHtmlString();
         }
@@ -1511,7 +1510,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return new List<SelectListItem> {
                 new SelectListItem {Text = MvcUi.TriState_NotSet, Value = "", Selected = !isChecked.HasValue},
                 new SelectListItem {Text = MvcUi.TriState_True, Value = "true", Selected = isChecked.HasValue && isChecked.Value},
-                new SelectListItem {Text = MvcUi.TriState_False, Value = "false", Selected = isChecked.HasValue && !isChecked.Value},
+                new SelectListItem {Text = MvcUi.TriState_False, Value = "false", Selected = isChecked.HasValue && !isChecked.Value}
             };
         }
 
@@ -1687,7 +1686,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 string url = html.GenerateUrl("ValidateParameter", "Ajax", new RouteValueDictionary(new {
                     id = Encode(html.Surface().OidTranslator.GetOidTranslation(context.Target)),
                     actionName = context.Action.Id,
-                    parameterName = context.Parameter.Id,
+                    parameterName = context.Parameter.Id
                 }));
 
                 tag.MergeAttribute("data-validate", url);

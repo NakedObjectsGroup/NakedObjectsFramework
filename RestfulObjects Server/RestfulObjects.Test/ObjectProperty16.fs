@@ -1291,7 +1291,7 @@ let GetInvalidProperty(api : RestfulObjectsControllerBase) =
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Surface.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 // 404    

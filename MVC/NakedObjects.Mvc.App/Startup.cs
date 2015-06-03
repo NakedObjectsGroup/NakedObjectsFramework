@@ -1,7 +1,8 @@
 ﻿using Microsoft.Owin;
+using NakedObjects.Mvc.App;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(NakedObjects.Mvc.App.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 namespace NakedObjects.Mvc.App
 {
     public partial class Startup

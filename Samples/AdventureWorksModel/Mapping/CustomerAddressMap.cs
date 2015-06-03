@@ -8,27 +8,27 @@ namespace AdventureWorksModel
         public CustomerAddressMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.CustomerID, t.AddressID });
+            HasKey(t => new { t.CustomerID, t.AddressID });
 
             // Properties
-            this.Property(t => t.CustomerID)
+            Property(t => t.CustomerID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.AddressID)
+            Property(t => t.AddressID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("CustomerAddress", "Sales");
-            this.Property(t => t.CustomerID).HasColumnName("CustomerID");
-            this.Property(t => t.AddressID).HasColumnName("AddressID");
-            this.Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("CustomerAddress", "Sales");
+            Property(t => t.CustomerID).HasColumnName("CustomerID");
+            Property(t => t.AddressID).HasColumnName("AddressID");
+            Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
-            this.HasRequired(t => t.AddressType).WithMany().HasForeignKey(t => t.AddressTypeID);
-            this.HasRequired(t => t.Customer).WithMany(c => c.Addresses).HasForeignKey(t => t.CustomerID);
+            HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
+            HasRequired(t => t.AddressType).WithMany().HasForeignKey(t => t.AddressTypeID);
+            HasRequired(t => t.Customer).WithMany(c => c.Addresses).HasForeignKey(t => t.CustomerID);
         }
     }
 }

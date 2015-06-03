@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,23 +7,23 @@ namespace AdventureWorksModel
         public CultureMap()
         {
             // Primary Key
-            this.HasKey(t => t.CultureID);
+            HasKey(t => t.CultureID);
 
             // Properties
-            this.Property(t => t.CultureID)
+            Property(t => t.CultureID)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(6);
 
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("Culture", "Production");
-            this.Property(t => t.CultureID).HasColumnName("CultureID");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("Culture", "Production");
+            Property(t => t.CultureID).HasColumnName("CultureID");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

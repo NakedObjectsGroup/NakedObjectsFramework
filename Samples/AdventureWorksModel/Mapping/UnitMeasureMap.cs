@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,23 +7,23 @@ namespace AdventureWorksModel
         public UnitMeasureMap()
         {
             // Primary Key
-            this.HasKey(t => t.UnitMeasureCode);
+            HasKey(t => t.UnitMeasureCode);
 
             // Properties
-            this.Property(t => t.UnitMeasureCode)
+            Property(t => t.UnitMeasureCode)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(3);
 
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("UnitMeasure", "Production");
-            this.Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("UnitMeasure", "Production");
+            Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

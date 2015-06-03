@@ -4,7 +4,6 @@
 
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 using NakedObjects.Facade.Nof2;
 using org.nakedobjects.@object;
 
@@ -25,7 +24,7 @@ namespace NakedObjects.Surface.Nof2.Context {
         public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface) {
             var pc = new PropertyContextFacade {
                                                     Property = new AssociationFacade(Property, Target, surface),
-                                                    Mutated = Mutated,
+                                                    Mutated = Mutated
                                                 };
 
             return ToContextSurface(pc, surface);

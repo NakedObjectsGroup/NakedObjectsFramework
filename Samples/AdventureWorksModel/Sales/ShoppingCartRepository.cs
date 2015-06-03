@@ -48,7 +48,7 @@ namespace AdventureWorksModel {
             item.Product = product;
             item.Quantity = 1;
             item.DateCreated = DateTime.Now;
-            Persist<ShoppingCartItem>(ref item);
+            Persist(ref item);
             InformUser("1 x " + product.Name + " added to Cart");
             return Cart();
         }
@@ -107,7 +107,7 @@ namespace AdventureWorksModel {
         public void AddAllItemsInCartToOrder(SalesOrderHeader order) {
             foreach (ShoppingCartItem item in Cart()) {
                 var detail = order.AddNewDetail(item.Product, (short) item.Quantity);
-                Container.Persist<SalesOrderDetail>(ref detail);
+                Container.Persist(ref detail);
             }
             EmptyCart();
         }

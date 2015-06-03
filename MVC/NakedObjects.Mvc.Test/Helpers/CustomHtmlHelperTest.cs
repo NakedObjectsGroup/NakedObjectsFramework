@@ -24,12 +24,11 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -59,7 +58,7 @@ namespace MvcTestApp.Tests.Helpers {
 
                 var tempIt = new List<CustomHelperTestClass>().Where(i => true).Select(i => i);
 
-                var types3 = new Type[] {tempIt.GetType()};
+                var types3 = new[] {tempIt.GetType()};
 
                 return types1.Union(types2).Union(types3).ToArray();
             }
@@ -92,7 +91,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         protected override void StartTest() {
             base.StartTest();
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
         }
@@ -1024,7 +1023,7 @@ namespace MvcTestApp.Tests.Helpers {
                 new CustomMenuItem {
                     Controller = "ControllerName",
                     Action = "ActionName1",
-                    MemberOrder = 5,
+                    MemberOrder = 5
                 }
                 ).ToString(),
                 "MenuWithCustomItems");
@@ -1041,7 +1040,7 @@ namespace MvcTestApp.Tests.Helpers {
                 new CustomMenuItem {
                     Controller = "ControllerName",
                     Action = "ActionName1",
-                    MemberOrder = 5,
+                    MemberOrder = 5
                 }
                 ).ToString(),
                 "MenuWithOnlyCustomItems");
@@ -1953,7 +1952,7 @@ namespace MvcTestApp.Tests.Helpers {
                 new CustomMenuItem {
                     Controller = "ControllerName",
                     Action = "ActionName1",
-                    MemberOrder = 5,
+                    MemberOrder = 5
                 }
                 ).ToString(),
                 "ServiceWithCustomItems");
@@ -1963,7 +1962,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void SingleServiceMenu() {
             SetupViewData(new object());
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
-            string s = MenuExtensions.MainMenu(mocks.HtmlHelper, ts).ToString();
+            string s = mocks.HtmlHelper.MainMenu(ts).ToString();
             CheckResults("SingleServiceMenu", s);
         }
 

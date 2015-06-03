@@ -124,7 +124,7 @@ namespace Expenses {
                 return query.ToList();
             }
 
-            [FinderAction()]
+            [FinderAction]
             [MemberOrder(2)]
             [Eagerly(EagerlyAttribute.Do.Rendering)]
             [TableView(false, "Status", "DateCreated", "Approver")]
@@ -132,7 +132,7 @@ namespace Expenses {
                 return FindClaims(MeAsEmployee(), status, description);
             }
 
-            [FinderAction()]
+            [FinderAction]
             [MemberOrder(3)]
             public virtual IList<Claim> FindMyClaimsByEnumStatus(ClaimStatusEnum eStatus) {
                 ClaimStatus status = FindClaimStatus(eStatus.ToString());
@@ -140,7 +140,7 @@ namespace Expenses {
                 return FindClaims(MeAsEmployee(), status, null);
             }
 
-            [FinderAction()]
+            [FinderAction]
             [MemberOrder(1)]
             public virtual IList<Claim> MyRecentClaims() {
                 return FindClaims(MeAsEmployee(), null, null);
@@ -154,7 +154,7 @@ namespace Expenses {
                 throw new Exception("Current user is not an Employee");
             }
 
-            [FinderAction()]
+            [FinderAction]
             [MemberOrder(1)]
             public virtual Claim CreateNewClaim([StringLength(100)] string description) {
                 return CreateNewClaim(MeAsEmployee(), description);
@@ -165,7 +165,7 @@ namespace Expenses {
                 return DefaultUniqueClaimDescription(MeAsEmployee());
             }
 
-            [FinderAction()]
+            [FinderAction]
             [MemberOrder(4)]
             public virtual IList<Claim> ClaimsAwaitingMyApproval() {
                 return FindClaimsAwaitingApprovalBy(MeAsEmployee());

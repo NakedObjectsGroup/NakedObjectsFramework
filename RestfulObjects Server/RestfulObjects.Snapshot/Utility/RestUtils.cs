@@ -12,7 +12,6 @@ using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
 

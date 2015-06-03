@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,23 +7,23 @@ namespace AdventureWorksModel
         public ProductSubcategoryMap()
         {
             // Primary Key
-            this.HasKey(t => t.ProductSubcategoryID);
+            HasKey(t => t.ProductSubcategoryID);
 
             // Properties
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("ProductSubcategory", "Production");
-            this.Property(t => t.ProductSubcategoryID).HasColumnName("ProductSubcategoryID");
-            this.Property(t => t.ProductCategoryID).HasColumnName("ProductCategoryID");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductSubcategory", "Production");
+            Property(t => t.ProductSubcategoryID).HasColumnName("ProductSubcategoryID");
+            Property(t => t.ProductCategoryID).HasColumnName("ProductCategoryID");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.ProductCategory)
+            HasRequired(t => t.ProductCategory)
                 .WithMany(t => t.ProductSubcategory)
                 .HasForeignKey(d => d.ProductCategoryID);
 

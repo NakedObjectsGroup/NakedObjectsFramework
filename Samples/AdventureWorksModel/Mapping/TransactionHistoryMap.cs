@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,28 +7,28 @@ namespace AdventureWorksModel
         public TransactionHistoryMap()
         {
             // Primary Key
-            this.HasKey(t => t.TransactionID);
+            HasKey(t => t.TransactionID);
 
             // Properties
-            this.Property(t => t.TransactionType)
+            Property(t => t.TransactionType)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(1);
 
             // Table & Column Mappings
-            this.ToTable("TransactionHistory", "Production");
-            this.Property(t => t.TransactionID).HasColumnName("TransactionID");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.ReferenceOrderID).HasColumnName("ReferenceOrderID");
-            this.Property(t => t.ReferenceOrderLineID).HasColumnName("ReferenceOrderLineID");
-            this.Property(t => t.TransactionDate).HasColumnName("TransactionDate");
-            this.Property(t => t.TransactionType).HasColumnName("TransactionType");
-            this.Property(t => t.Quantity).HasColumnName("Quantity");
-            this.Property(t => t.ActualCost).HasColumnName("ActualCost");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("TransactionHistory", "Production");
+            Property(t => t.TransactionID).HasColumnName("TransactionID");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.ReferenceOrderID).HasColumnName("ReferenceOrderID");
+            Property(t => t.ReferenceOrderLineID).HasColumnName("ReferenceOrderLineID");
+            Property(t => t.TransactionDate).HasColumnName("TransactionDate");
+            Property(t => t.TransactionType).HasColumnName("TransactionType");
+            Property(t => t.Quantity).HasColumnName("Quantity");
+            Property(t => t.ActualCost).HasColumnName("ActualCost");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
 
         }
     }

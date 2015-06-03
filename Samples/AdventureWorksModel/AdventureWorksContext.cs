@@ -1,9 +1,8 @@
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 
 namespace AdventureWorksModel
 {
-    public partial class AdventureWorksContext : DbContext
+    public class AdventureWorksContext : DbContext
     {
         static AdventureWorksContext()
         {

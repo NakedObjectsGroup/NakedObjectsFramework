@@ -8,22 +8,22 @@ namespace AdventureWorksModel
         public SalesPersonQuotaHistoryMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.SalesPersonID, t.QuotaDate });
+            HasKey(t => new { t.SalesPersonID, t.QuotaDate });
 
             // Properties
-            this.Property(t => t.SalesPersonID)
+            Property(t => t.SalesPersonID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("SalesPersonQuotaHistory", "Sales");
-            this.Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
-            this.Property(t => t.QuotaDate).HasColumnName("QuotaDate");
-            this.Property(t => t.SalesQuota).HasColumnName("SalesQuota");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("SalesPersonQuotaHistory", "Sales");
+            Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            Property(t => t.QuotaDate).HasColumnName("QuotaDate");
+            Property(t => t.SalesQuota).HasColumnName("SalesQuota");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.SalesPerson)
+            HasRequired(t => t.SalesPerson)
                 .WithMany(t => t.QuotaHistory)
                 .HasForeignKey(d => d.SalesPersonID);
 

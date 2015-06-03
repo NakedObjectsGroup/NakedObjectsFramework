@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class BadPersistArgumentsException : BadArgumentsNOSException {

@@ -113,7 +113,7 @@ namespace AdventureWorksModel {
         }
 
         public virtual string[] ChoicesCardType() {
-            return new string[] {"Vista", "Distinguish", "SuperiorCard", "ColonialVoice"};
+            return new[] {"Vista", "Distinguish", "SuperiorCard", "ColonialVoice"};
         }
 
         public virtual string ValidateCardNumber(string cardNumber) {

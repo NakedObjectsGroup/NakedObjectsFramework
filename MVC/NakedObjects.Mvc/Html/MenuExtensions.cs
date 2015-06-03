@@ -11,10 +11,9 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
-using NakedObjects.Surface.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
@@ -81,7 +80,7 @@ namespace NakedObjects.Web.Mvc.Html {
                         TagType = "div",
                         Value = item.Name,
                         Attributes = new RouteValueDictionary(new {
-                            @id = id,
+                            id,
                             @class = IdConstants.ActionName,
                             title = MvcUi.DuplicateAction
                         })

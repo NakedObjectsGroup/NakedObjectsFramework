@@ -12,9 +12,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
-using NakedObjects.Surface.Utility.Restricted;
+using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
@@ -260,7 +259,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var nakedObject = html.Surface().GetObject(domainObject);
             IEnumerable<string> collections = nakedObject.Specification.Properties.Where(p => p.IsCollection && p.IsVisible(nakedObject)).Select(p => p.Id);
 
-            return collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
+            return collections.Select(c => html.PropertyListWith(domainObject, c)).ToArray();
         }
 
         /// <summary>

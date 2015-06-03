@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,23 +7,23 @@ namespace AdventureWorksModel
         public ProductPhotoMap()
         {
             // Primary Key
-            this.HasKey(t => t.ProductPhotoID);
+            HasKey(t => t.ProductPhotoID);
 
             // Properties
-            this.Property(t => t.ThumbnailPhotoFileName)
+            Property(t => t.ThumbnailPhotoFileName)
                 .HasMaxLength(50);
 
-            this.Property(t => t.LargePhotoFileName)
+            Property(t => t.LargePhotoFileName)
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("ProductPhoto", "Production");
-            this.Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
-            this.Property(t => t.ThumbNailPhoto).HasColumnName("ThumbNailPhoto");
-            this.Property(t => t.ThumbnailPhotoFileName).HasColumnName("ThumbnailPhotoFileName");
-            this.Property(t => t.LargePhoto).HasColumnName("LargePhoto");
-            this.Property(t => t.LargePhotoFileName).HasColumnName("LargePhotoFileName");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductPhoto", "Production");
+            Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
+            Property(t => t.ThumbNailPhoto).HasColumnName("ThumbNailPhoto");
+            Property(t => t.ThumbnailPhotoFileName).HasColumnName("ThumbnailPhotoFileName");
+            Property(t => t.LargePhoto).HasColumnName("LargePhoto");
+            Property(t => t.LargePhotoFileName).HasColumnName("LargePhotoFileName");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

@@ -7,7 +7,7 @@
 
 using System;
 using System.Web.Mvc;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
@@ -15,7 +15,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         [Obsolete("Use MenuExtensions#MainMenus")]
         public static MvcHtmlString Services(this HtmlHelper html) {
-            return MenuExtensions.MainMenus(html);
+            return html.MainMenus();
         }
 
         //TODO: Mark obsolete when Menus refactoring complete

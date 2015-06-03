@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -25,14 +24,12 @@ using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
@@ -369,7 +366,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         protected override void StartTest() {
             base.StartTest();
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
         }

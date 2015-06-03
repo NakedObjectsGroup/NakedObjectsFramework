@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,24 +7,24 @@ namespace AdventureWorksModel
         public ShoppingCartItemMap()
         {
             // Primary Key
-            this.HasKey(t => t.ShoppingCartItemID);
+            HasKey(t => t.ShoppingCartItemID);
 
             // Properties
-            this.Property(t => t.ShoppingCartID)
+            Property(t => t.ShoppingCartID)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("ShoppingCartItem", "Sales");
-            this.Property(t => t.ShoppingCartItemID).HasColumnName("ShoppingCartItemID");
-            this.Property(t => t.ShoppingCartID).HasColumnName("ShoppingCartID");
-            this.Property(t => t.Quantity).HasColumnName("Quantity");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.DateCreated).HasColumnName("DateCreated");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ShoppingCartItem", "Sales");
+            Property(t => t.ShoppingCartItemID).HasColumnName("ShoppingCartItemID");
+            Property(t => t.ShoppingCartID).HasColumnName("ShoppingCartID");
+            Property(t => t.Quantity).HasColumnName("Quantity");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.DateCreated).HasColumnName("DateCreated");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
 
         }
     }

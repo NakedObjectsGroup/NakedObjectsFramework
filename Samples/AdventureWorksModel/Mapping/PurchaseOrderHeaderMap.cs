@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,29 +7,29 @@ namespace AdventureWorksModel
         public PurchaseOrderHeaderMap()
         {
             // Primary Key
-            this.HasKey(t => t.PurchaseOrderID);
+            HasKey(t => t.PurchaseOrderID);
 
             // Properties
             // Table & Column Mappings
-            this.ToTable("PurchaseOrderHeader", "Purchasing");
-            this.Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
-            this.Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
-            this.Property(t => t.Status).HasColumnName("Status");
-            this.Property(t => t.OrderPlacedByID).HasColumnName("EmployeeID");
-            this.Property(t => t.VendorID).HasColumnName("VendorID");
-            this.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
-            this.Property(t => t.OrderDate).HasColumnName("OrderDate");
-            this.Property(t => t.ShipDate).HasColumnName("ShipDate");
-            this.Property(t => t.SubTotal).HasColumnName("SubTotal");
-            this.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
-            this.Property(t => t.Freight).HasColumnName("Freight");
-            this.Property(t => t.TotalDue).HasColumnName("TotalDue");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("PurchaseOrderHeader", "Purchasing");
+            Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
+            Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
+            Property(t => t.Status).HasColumnName("Status");
+            Property(t => t.OrderPlacedByID).HasColumnName("EmployeeID");
+            Property(t => t.VendorID).HasColumnName("VendorID");
+            Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
+            Property(t => t.OrderDate).HasColumnName("OrderDate");
+            Property(t => t.ShipDate).HasColumnName("ShipDate");
+            Property(t => t.SubTotal).HasColumnName("SubTotal");
+            Property(t => t.TaxAmt).HasColumnName("TaxAmt");
+            Property(t => t.Freight).HasColumnName("Freight");
+            Property(t => t.TotalDue).HasColumnName("TotalDue");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
-            this.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
-            this.HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
+            HasRequired(t => t.OrderPlacedBy).WithMany().HasForeignKey(t => t.OrderPlacedByID);
+            HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            HasRequired(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorID);
 
         }
     }

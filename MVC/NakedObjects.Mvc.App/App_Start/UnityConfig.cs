@@ -15,14 +15,13 @@ using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
+using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;
-using NakedObjects.Meta.Profile;
-using NakedObjects.Mvc.App.Controllers;
-using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Mvc.App {
     /// <summary>

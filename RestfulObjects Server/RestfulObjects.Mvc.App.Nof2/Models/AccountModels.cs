@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Globalization;
-using System.Web.Mvc;
-using System.Web.Security;
 
 namespace RestfulObjects.Mvc.App.Nof2.Models {
     public class UsersContext : DbContext {
@@ -19,7 +14,7 @@ namespace RestfulObjects.Mvc.App.Nof2.Models {
     [Table("UserProfile")]
     public class UserProfile {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
     }

@@ -12,7 +12,6 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Unity;

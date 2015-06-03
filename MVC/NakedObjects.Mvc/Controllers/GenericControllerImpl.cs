@@ -11,13 +11,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
-using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
+using Common.Logging;
+using NakedObjects.Facade.Utility.Restricted;
 
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -230,7 +229,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
 
-                var ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                var ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
 
                 if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
                     var oids = nakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
@@ -248,7 +247,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!action.Parameters.Any()) {
-                var ac = new ArgumentsContextFacade() {Values = new Dictionary<string, object>(), ValidateOnly = false};
+                var ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
                 var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
                 var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
 
@@ -584,7 +583,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (targetAction.ParameterCount == 0) {
                 var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
 
-                var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContextFacade() {
+                var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContextFacade {
                     Values = new Dictionary<string, object>(),
                     ValidateOnly = false
                 });

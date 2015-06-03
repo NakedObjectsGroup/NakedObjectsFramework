@@ -32,20 +32,17 @@ using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Menu;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Surface.Utility;
-using NakedObjects.Surface.Utility.Restricted;
-using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-
 
 namespace MvcTestApp.Tests.Helpers {
     public static class StringHelper {
@@ -79,7 +76,7 @@ namespace MvcTestApp.Tests.Helpers {
                 var types2 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
                     GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
 
-                var types3 = new Type[] {
+                var types3 = new[] {
                     typeof (EnumerableQuery<string>),
                     typeof (ObjectQuery<Claim>),
                     typeof (Claim),
@@ -87,7 +84,7 @@ namespace MvcTestApp.Tests.Helpers {
                     typeof (Employee[]),
                     typeof (Claim[]),
                     typeof (ProjectCode[]),
-                    typeof (Object[]),
+                    typeof (Object[])
                 };
 
                 return types1.Union(types2).Union(types3).ToArray();
@@ -136,7 +133,7 @@ namespace MvcTestApp.Tests.Helpers {
         [SetUp]
         public void SetupTest() {
             StartTest();
-            Surface = this.GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
             NakedObjectsFramework = ((dynamic)Surface).Framework;
             MessageBroker = NakedObjectsFramework.MessageBroker;
             controller = new DummyController();
@@ -471,7 +468,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForEmptyCollection", s);
         }
@@ -500,7 +497,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForOneElementCollectionNoPage", s);
         }
@@ -539,7 +536,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForOneElementCollection", s);
         }
@@ -560,7 +557,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForOneElementCollectionPage1", s);
         }
@@ -607,7 +604,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForOneElementCollectionPage2", s);
         }
@@ -670,7 +667,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForEmptyCollection", s);
         }
@@ -683,7 +680,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForOneElementCollectionNoPage", s);
         }
@@ -696,7 +693,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForOneElementCollectionWithMultiline", s);
         }
@@ -717,7 +714,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForOneElementCollection", s);
         }
@@ -738,7 +735,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForOneElementCollectionPage1", s);
         }
@@ -759,7 +756,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionViewForOneElementCollectionPage2", s);
         }
@@ -772,7 +769,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("CollectionListViewForOneElementCollectionWithMultiline", s);
         }
@@ -1213,7 +1210,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
-            string s = mocks.HtmlHelper.PropertyListEdit(claim, null, (IActionFacade) null, "Approver", new[] {emp}).ToString();
+            string s = mocks.HtmlHelper.PropertyListEdit(claim, null, null, "Approver", new[] {emp}).ToString();
 
             CheckResults("ObjectEditFieldsWithFinder", s);
         }
@@ -1582,7 +1579,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForEmptyCollection", s);
         }
@@ -1611,7 +1608,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForOneElementCollection", s);
         }
@@ -1642,7 +1639,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForOneElementCollectionWithMultiline", s);
         }
@@ -1681,7 +1678,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForPagedCollection", s);
         }
@@ -1702,7 +1699,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForPagedCollectionPage1", s);
         }
@@ -1749,7 +1746,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableListViewForPagedCollectionPage2", s);
         }
@@ -1829,7 +1826,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForEmptyCollection", s);
         }
@@ -1842,7 +1839,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForOneElementCollection", s);
         }
@@ -1855,7 +1852,7 @@ namespace MvcTestApp.Tests.Helpers {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForOneElementCollectionWithMultiline", s);
         }
@@ -1876,7 +1873,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForPagedCollection", s);
         }
@@ -1897,7 +1894,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade)null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForPagedCollectionPage1", s);
         }
@@ -1918,7 +1915,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             mocks.ViewDataContainer.Object.ViewData[IdConstants.PagingData] = pagingData;
 
-            string s = mocks.HtmlHelper.CollectionTable(collection, (IActionFacade) null).ToString();
+            string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
 
             CheckResults("QueryableViewForPagedCollectionPage2", s);
         }

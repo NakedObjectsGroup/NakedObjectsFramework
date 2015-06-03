@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,72 +7,72 @@ namespace AdventureWorksModel
         public SalesOrderHeaderMap()
         {
             // Primary Key
-            this.HasKey(t => t.SalesOrderID);
+            HasKey(t => t.SalesOrderID);
 
             //Ignores
-            this.Ignore(t => t.AddItemsFromCart);
+            Ignore(t => t.AddItemsFromCart);
 
             // Properties
-            this.Property(t => t.SalesOrderNumber)
+            Property(t => t.SalesOrderNumber)
                 .IsRequired()
                 .HasMaxLength(25);
 
-            this.Property(t => t.PurchaseOrderNumber)
+            Property(t => t.PurchaseOrderNumber)
                 .HasMaxLength(25);
 
-            this.Property(t => t.AccountNumber)
+            Property(t => t.AccountNumber)
                 .HasMaxLength(15);
 
-            this.Property(t => t.CreditCardApprovalCode)
+            Property(t => t.CreditCardApprovalCode)
                 .HasMaxLength(15);
 
-            this.Property(t => t.Comment)
+            Property(t => t.Comment)
                 .HasMaxLength(128);
 
             // Table & Column Mappings
-            this.ToTable("SalesOrderHeader", "Sales");
-            this.Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
-            this.Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
-            this.Property(t => t.OrderDate).HasColumnName("OrderDate");
-            this.Property(t => t.DueDate).HasColumnName("DueDate");
-            this.Property(t => t.ShipDate).HasColumnName("ShipDate");
-            this.Property(t => t.Status).HasColumnName("Status");
-            this.Property(t => t.OnlineOrder).HasColumnName("OnlineOrderFlag");
-            this.Property(t => t.SalesOrderNumber).HasColumnName("SalesOrderNumber");
-            this.Property(t => t.PurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");
-            this.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
-            this.Property(t => t.CustomerID).HasColumnName("CustomerID");
-            this.Property(t => t.ContactID).HasColumnName("ContactID");
-            this.Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
-            this.Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
-            this.Property(t => t.BillingAddressID).HasColumnName("BillToAddressID");
-            this.Property(t => t.ShippingAddressID).HasColumnName("ShipToAddressID");
-            this.Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
-            this.Property(t => t.CreditCardID).HasColumnName("CreditCardID");
-            this.Property(t => t.CreditCardApprovalCode).HasColumnName("CreditCardApprovalCode");
-            this.Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
-            this.Property(t => t.SubTotal).HasColumnName("SubTotal");
-            this.Property(t => t.TaxAmt).HasColumnName("TaxAmt");
-            this.Property(t => t.Freight).HasColumnName("Freight");
-            this.Property(t => t.TotalDue).HasColumnName("TotalDue");
-            this.Property(t => t.Comment).HasColumnName("Comment");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("SalesOrderHeader", "Sales");
+            Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
+            Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
+            Property(t => t.OrderDate).HasColumnName("OrderDate");
+            Property(t => t.DueDate).HasColumnName("DueDate");
+            Property(t => t.ShipDate).HasColumnName("ShipDate");
+            Property(t => t.Status).HasColumnName("Status");
+            Property(t => t.OnlineOrder).HasColumnName("OnlineOrderFlag");
+            Property(t => t.SalesOrderNumber).HasColumnName("SalesOrderNumber");
+            Property(t => t.PurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");
+            Property(t => t.AccountNumber).HasColumnName("AccountNumber");
+            Property(t => t.CustomerID).HasColumnName("CustomerID");
+            Property(t => t.ContactID).HasColumnName("ContactID");
+            Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
+            Property(t => t.BillingAddressID).HasColumnName("BillToAddressID");
+            Property(t => t.ShippingAddressID).HasColumnName("ShipToAddressID");
+            Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
+            Property(t => t.CreditCardID).HasColumnName("CreditCardID");
+            Property(t => t.CreditCardApprovalCode).HasColumnName("CreditCardApprovalCode");
+            Property(t => t.CurrencyRateID).HasColumnName("CurrencyRateID");
+            Property(t => t.SubTotal).HasColumnName("SubTotal");
+            Property(t => t.TaxAmt).HasColumnName("TaxAmt");
+            Property(t => t.Freight).HasColumnName("Freight");
+            Property(t => t.TotalDue).HasColumnName("TotalDue");
+            Property(t => t.Comment).HasColumnName("Comment");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
-            this.HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
-            this.HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
-            this.HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
-            this.HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
-            this.HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
-            this.HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
-            this.HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
-            this.HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
+            HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
+            HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
+            HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
+            HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
+            HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
+            HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
+            HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
+            HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
+            HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
 
             // not mapped 
-            this.Ignore(t => t.StoreContact);
+            Ignore(t => t.StoreContact);
         }
     }
 }

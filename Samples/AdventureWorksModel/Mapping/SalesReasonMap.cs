@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,23 +7,23 @@ namespace AdventureWorksModel
         public SalesReasonMap()
         {
             // Primary Key
-            this.HasKey(t => t.SalesReasonID);
+            HasKey(t => t.SalesReasonID);
 
             // Properties
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.ReasonType)
+            Property(t => t.ReasonType)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("SalesReason", "Sales");
-            this.Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.ReasonType).HasColumnName("ReasonType");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("SalesReason", "Sales");
+            Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.ReasonType).HasColumnName("ReasonType");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

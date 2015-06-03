@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,36 +7,36 @@ namespace AdventureWorksModel
         public StateProvinceMap()
         {
             // Primary Key
-            this.HasKey(t => t.StateProvinceID);
+            HasKey(t => t.StateProvinceID);
 
             // Properties
-            this.Property(t => t.StateProvinceCode)
+            Property(t => t.StateProvinceCode)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(3);
 
-            this.Property(t => t.CountryRegionCode)
+            Property(t => t.CountryRegionCode)
                 .IsRequired()
                 .HasMaxLength(3);
 
-            this.Property(t => t.Name)
+            Property(t => t.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("StateProvince", "Person");
-            this.Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
-            this.Property(t => t.StateProvinceCode).HasColumnName("StateProvinceCode");
-            this.Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
-            this.Property(t => t.IsOnlyStateProvinceFlag).HasColumnName("IsOnlyStateProvinceFlag");
-            this.Property(t => t.Name).HasColumnName("Name");
-            this.Property(t => t.TerritoryID).HasColumnName("TerritoryID");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("StateProvince", "Person");
+            Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
+            Property(t => t.StateProvinceCode).HasColumnName("StateProvinceCode");
+            Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
+            Property(t => t.IsOnlyStateProvinceFlag).HasColumnName("IsOnlyStateProvinceFlag");
+            Property(t => t.Name).HasColumnName("Name");
+            Property(t => t.TerritoryID).HasColumnName("TerritoryID");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
-            this.HasRequired(t => t.SalesTerritory)
+            HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);
+            HasRequired(t => t.SalesTerritory)
                 .WithMany(t => t.StateProvince)
                 .HasForeignKey(d => d.TerritoryID);
 

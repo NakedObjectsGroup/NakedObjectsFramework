@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Nof4;
-using NakedObjects.Surface.Utility;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Utility {

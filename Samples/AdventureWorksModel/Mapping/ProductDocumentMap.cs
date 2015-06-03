@@ -8,24 +8,24 @@ namespace AdventureWorksModel
         public ProductDocumentMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ProductID, t.DocumentID });
+            HasKey(t => new { t.ProductID, t.DocumentID });
 
             // Properties
-            this.Property(t => t.ProductID)
+            Property(t => t.ProductID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.DocumentID)
+            Property(t => t.DocumentID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("ProductDocument", "Production");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.DocumentID).HasColumnName("DocumentID");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductDocument", "Production");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.DocumentID).HasColumnName("DocumentID");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Document).WithMany().HasForeignKey(t => t.DocumentID);
-            this.HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
+            HasRequired(t => t.Document).WithMany().HasForeignKey(t => t.DocumentID);
+            HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
 
         }
     }

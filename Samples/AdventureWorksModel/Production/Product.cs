@@ -259,7 +259,7 @@ namespace AdventureWorksModel {
 
         #region ProductModel
         [NakedObjectsIgnore]
-        public virtual Nullable<int> ProductModelID { get; set; }
+        public virtual int? ProductModelID { get; set; }
 
         [Optionally]
         [MemberOrder(10)]
@@ -428,10 +428,8 @@ namespace AdventureWorksModel {
             if (best != null) {
                 return best;
             }
-            else {
-                SpecialOffer none = SpecialOfferRepository.NoDiscount();
-                return SpecialOfferRepository.AssociateSpecialOfferWithProduct(none, this);
-            }
+            SpecialOffer none = SpecialOfferRepository.NoDiscount();
+            return SpecialOfferRepository.AssociateSpecialOfferWithProduct(none, this);
         }
 
         #endregion

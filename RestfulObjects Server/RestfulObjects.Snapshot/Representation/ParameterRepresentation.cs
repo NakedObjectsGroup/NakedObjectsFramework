@@ -12,7 +12,6 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -111,20 +110,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name,
-                    description: parameter.Description,
-                    pluralName: null,
-                    domainType: null,
-                    isService: null,
-                    hasParams: null,
-                    optional: !parameter.IsMandatory,
-                    maxLength: parameter.MaxLength,
-                    pattern: parameter.Pattern,
-                    memberOrder: null,
-                    customExtensions: custom,
-                    returnType: parameter.Specification,
-                    elementType: parameter.ElementType,
-                    oidStrategy: OidStrategy);
+                Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
             }
             else {
                 Extensions = MapRepresentation.Create();

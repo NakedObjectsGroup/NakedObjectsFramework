@@ -8,22 +8,22 @@ namespace AdventureWorksModel
         public EmployeePayHistoryMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.EmployeeID, t.RateChangeDate });
+            HasKey(t => new { t.EmployeeID, t.RateChangeDate });
 
             // Properties
-            this.Property(t => t.EmployeeID)
+            Property(t => t.EmployeeID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("EmployeePayHistory", "HumanResources");
-            this.Property(t => t.EmployeeID).HasColumnName("EmployeeID");
-            this.Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
-            this.Property(t => t.Rate).HasColumnName("Rate");
-            this.Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("EmployeePayHistory", "HumanResources");
+            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
+            Property(t => t.Rate).HasColumnName("Rate");
+            Property(t => t.PayFrequency).HasColumnName("PayFrequency");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Employee)
+            HasRequired(t => t.Employee)
                 .WithMany(t => t.PayHistory)
                 .HasForeignKey(d => d.EmployeeID);
 

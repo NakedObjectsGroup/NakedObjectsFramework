@@ -8,31 +8,31 @@ namespace AdventureWorksModel
         public ProductModelProductDescriptionCultureMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.ProductModelID, t.ProductDescriptionID, t.CultureID });
+            HasKey(t => new { t.ProductModelID, t.ProductDescriptionID, t.CultureID });
 
             // Properties
-            this.Property(t => t.ProductModelID)
+            Property(t => t.ProductModelID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.ProductDescriptionID)
+            Property(t => t.ProductDescriptionID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.CultureID)
+            Property(t => t.CultureID)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(6);
 
             // Table & Column Mappings
-            this.ToTable("ProductModelProductDescriptionCulture", "Production");
-            this.Property(t => t.ProductModelID).HasColumnName("ProductModelID");
-            this.Property(t => t.ProductDescriptionID).HasColumnName("ProductDescriptionID");
-            this.Property(t => t.CultureID).HasColumnName("CultureID");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("ProductModelProductDescriptionCulture", "Production");
+            Property(t => t.ProductModelID).HasColumnName("ProductModelID");
+            Property(t => t.ProductDescriptionID).HasColumnName("ProductDescriptionID");
+            Property(t => t.CultureID).HasColumnName("CultureID");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);
-            this.HasRequired(t => t.ProductDescription).WithMany().HasForeignKey(t => t.ProductDescriptionID);
-            this.HasRequired(t => t.ProductModel)
+            HasRequired(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);
+            HasRequired(t => t.ProductDescription).WithMany().HasForeignKey(t => t.ProductDescriptionID);
+            HasRequired(t => t.ProductModel)
                 .WithMany(t => t.ProductModelProductDescriptionCulture)
                 .HasForeignKey(d => d.ProductModelID);
 

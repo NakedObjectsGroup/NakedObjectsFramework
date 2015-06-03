@@ -10,9 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NakedObjects.Facade;
 
-namespace NakedObjects.Surface.Utility.Restricted {
+namespace NakedObjects.Facade.Utility.Restricted {
     public static class SurfaceHelper {
 
         public static T GetDomainObject<T>(this IObjectFacade nakedObject) {
@@ -20,7 +19,7 @@ namespace NakedObjects.Surface.Utility.Restricted {
         }
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
-            Array.ForEach<T>(toIterate, action);
+            Array.ForEach(toIterate, action);
         }
 
         public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T> action) {

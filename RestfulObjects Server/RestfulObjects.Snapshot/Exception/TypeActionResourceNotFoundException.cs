@@ -7,7 +7,6 @@
 
 using System;
 using NakedObjects.Facade;
-using NakedObjects.Surface;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class TypeActionResourceNotFoundException : ResourceNotFoundNOSException {

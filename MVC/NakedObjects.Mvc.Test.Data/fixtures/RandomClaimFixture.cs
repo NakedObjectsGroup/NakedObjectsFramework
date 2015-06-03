@@ -88,18 +88,18 @@ namespace Expenses.Fixtures {
         }
 
         private void PopulateJourney(Journey journey) {
-            journey.Origin = (new string[] {"London", "New York", "Tokyo"})[random.Next(3)];
-            journey.Destination = (new string[] {"Chicago", "Sydney", "Berlin"})[random.Next(3)];
+            journey.Origin = (new[] {"London", "New York", "Tokyo"})[random.Next(3)];
+            journey.Destination = (new[] {"Chicago", "Sydney", "Berlin"})[random.Next(3)];
             journey.Amount = (RandomAmount);
             journey.ReturnJourney = Convert.ToBoolean(((random.Next()%2 == 0) ? false : true));
         }
 
         private void PopulateAirfare(Airfare airfare) {
-            airfare.AirlineAndFlight = (new string[] {"BA", "Air France", "RyanAir"})[random.Next(3)];
+            airfare.AirlineAndFlight = (new[] {"BA", "Air France", "RyanAir"})[random.Next(3)];
         }
 
         private void PopulateCarRental(CarRental rental) {
-            rental.RentalCompany = (new string[] {"Avis", "EasyCar", "Hertz"})[random.Next(3)];
+            rental.RentalCompany = (new[] {"Avis", "EasyCar", "Hertz"})[random.Next(3)];
             rental.NumberOfDays = random.Next(14) + 1;
         }
 
@@ -117,7 +117,7 @@ namespace Expenses.Fixtures {
         }
 
         private void PopulateHotel(Hotel item) {
-            item.HotelURL = (new string[] {"The Grand", "The Ritz", "Albert at Bay"})[random.Next(3)];
+            item.HotelURL = (new[] {"The Grand", "The Ritz", "Albert at Bay"})[random.Next(3)];
             item.Accommodation = (RandomAmount);
             item.Food = (RandomAmount);
             item.Other = (RandomAmount);

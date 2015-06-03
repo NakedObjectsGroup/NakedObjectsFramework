@@ -22,7 +22,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
@@ -47,7 +46,7 @@ namespace MvcTestApp.Tests.Helpers {
                 var types2 = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "NakedObjects.Mvc.Test.Data").
                     GetTypes().Where(t => t.FullName.StartsWith("MvcTestApp.Tests.Helpers") && t.IsPublic).ToArray();
 
-                var types3 = new Type[] {typeof (IEnumerable<Claim>)};
+                var types3 = new[] {typeof (IEnumerable<Claim>)};
 
                 return types1.Union(types2).Union(types3).ToArray();
             }

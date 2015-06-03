@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -8,14 +7,14 @@ namespace AdventureWorksModel
         public IllustrationMap()
         {
             // Primary Key
-            this.HasKey(t => t.IllustrationID);
+            HasKey(t => t.IllustrationID);
 
             // Properties
             // Table & Column Mappings
-            this.ToTable("Illustration", "Production");
-            this.Property(t => t.IllustrationID).HasColumnName("IllustrationID");
-            this.Property(t => t.Diagram).HasColumnName("Diagram");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("Illustration", "Production");
+            Property(t => t.IllustrationID).HasColumnName("IllustrationID");
+            Property(t => t.Diagram).HasColumnName("Diagram");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

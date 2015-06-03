@@ -13,9 +13,8 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Html {
@@ -163,7 +162,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Create menu from actions of domainObject. (Just delegates to MenuExtenions#ObjectMenu)
         /// </summary>
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject) {
-            return MenuExtensions.ObjectMenu(html, domainObject);
+            return html.ObjectMenu(domainObject);
         }
 
         /// <summary>

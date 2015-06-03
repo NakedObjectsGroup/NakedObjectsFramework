@@ -14,10 +14,9 @@ using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
-using NakedObjects.Surface.Utility.Restricted;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
@@ -257,7 +256,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal ArgumentsContextFacade GetParameterValues(IActionFacade action, ObjectAndControlData controlData) {
             var values = action.Parameters.Select(parm => new {Id = IdHelper.GetParameterInputId(action, parm), Parm = parm}).ToDictionary(a => a.Parm.Id, a => GetParameterValue(a.Parm, a.Id, controlData));
 
-            return new ArgumentsContextFacade() {Values = values, ValidateOnly = false};
+            return new ArgumentsContextFacade {Values = values, ValidateOnly = false};
         }
 
         internal void SetContextObjectAsParameterValue(IActionFacade targetAction, IObjectFacade contextNakedObject) {

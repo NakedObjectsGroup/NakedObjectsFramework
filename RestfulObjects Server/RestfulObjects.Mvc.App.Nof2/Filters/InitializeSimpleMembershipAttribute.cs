@@ -3,11 +3,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
-using WebMatrix.WebData;
 using RestfulObjects.Mvc.App.Nof2.Models;
+using WebMatrix.WebData;
 
 namespace RestfulObjects.Mvc.App.Nof2.Filters {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class InitializeSimpleMembershipAttribute : ActionFilterAttribute {
         private static SimpleMembershipInitializer _initializer;
         private static object _initializerLock = new object();
@@ -30,7 +30,7 @@ namespace RestfulObjects.Mvc.App.Nof2.Filters {
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", true);
                 }
                 catch (Exception ex) {
                     throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);

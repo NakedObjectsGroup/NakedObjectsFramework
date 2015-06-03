@@ -13,8 +13,8 @@ using NakedObjects.Value;
 namespace Expenses.Currencies {
     [Bounded, Immutable(WhenTo.OncePersisted)]
     public class Currency {
-        private byte[] currencyFile = new byte[] {};
-        private byte[] currencyImage = new byte[] {};
+        private byte[] currencyFile = {};
+        private byte[] currencyImage = {};
 
         [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }

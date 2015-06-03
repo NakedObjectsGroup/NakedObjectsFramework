@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Surface;
 
 namespace NakedObjects.Facade {
     public interface ITypeFacade : ISurfaceHolder, IEquatable<ITypeFacade> {

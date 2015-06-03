@@ -97,7 +97,7 @@ namespace AdventureWorksModel {
 
         #region Manager
         [NakedObjectsIgnore]
-        public virtual Nullable<int> ManagerID { get; set; }
+        public virtual int? ManagerID { get; set; }
 
         [Optionally]
         [MemberOrder(30)]

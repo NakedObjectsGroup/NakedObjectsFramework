@@ -8,27 +8,27 @@ namespace AdventureWorksModel
         public SpecialOfferProductMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.SpecialOfferID, t.ProductID });
+            HasKey(t => new { t.SpecialOfferID, t.ProductID });
 
             // Properties
-            this.Property(t => t.SpecialOfferID)
+            Property(t => t.SpecialOfferID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.ProductID)
+            Property(t => t.ProductID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            this.ToTable("SpecialOfferProduct", "Sales");
-            this.Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
-            this.Property(t => t.ProductID).HasColumnName("ProductID");
-            this.Property(t => t.rowguid).HasColumnName("rowguid");
-            this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            ToTable("SpecialOfferProduct", "Sales");
+            Property(t => t.SpecialOfferID).HasColumnName("SpecialOfferID");
+            Property(t => t.ProductID).HasColumnName("ProductID");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            this.HasRequired(t => t.Product)
+            HasRequired(t => t.Product)
                 .WithMany(t => t.SpecialOfferProduct)
                 .HasForeignKey(d => d.ProductID);
-            this.HasRequired(t => t.SpecialOffer).WithMany().HasForeignKey(t => t.SpecialOfferID);
+            HasRequired(t => t.SpecialOffer).WithMany().HasForeignKey(t => t.SpecialOfferID);
 
         }
     }

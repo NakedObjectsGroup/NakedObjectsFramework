@@ -11,9 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Resources;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Utility;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {

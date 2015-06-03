@@ -1,12 +1,11 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System;
 using System.Linq;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface;
-using NakedObjects.Surface.Nof2.Implementation;
-using NakedObjects.Surface.Utility;
 using org.nakedobjects.@object;
 using org.nakedobjects.@object.persistence;
 
@@ -43,15 +42,15 @@ namespace NakedObjects.Surface.Nof2.Utility {
 
 
         public object GetDomainObjectByOid(IOidTranslation objectId) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public object GetDomainObjectByTypeAndKey(string objectType, string objectKey) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public object GetServiceByServiceName(IOidTranslation serviceName) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string GetOidAsString(IObjectFacade nakedObject) {
@@ -62,45 +61,45 @@ namespace NakedObjects.Surface.Nof2.Utility {
         }
 
         public string[] GetTypeAndKeyAsStrings(IObjectFacade nakedObject) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
        
 
         public string GetObjectId(IObjectFacade nakedobject) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreEncodedOid(string encoded) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IOidFacade RestoreTypeIdOid(string typeName, string instanceId) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IFrameworkFacade Surface { set; 

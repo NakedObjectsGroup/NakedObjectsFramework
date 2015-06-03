@@ -8,8 +8,6 @@
 using System.Security.Principal;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Surface;
-
 
 namespace NakedObjects.Facade {
     public interface IFrameworkFacade {
