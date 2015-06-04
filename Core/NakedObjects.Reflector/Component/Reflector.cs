@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Component {
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
         static Reflector() {
-            Log = LogManager.GetLogger(typeof (Reflector));
+            Log = LogManager.GetLogger(typeof(Reflector));
         }
 
         public Reflector(IClassStrategy classStrategy,
@@ -94,11 +94,19 @@ namespace NakedObjects.Reflect.Component {
 
         public ITypeSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
-            return (ITypeSpecBuilder) metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
+            return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 
         public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
-            return (T) LoadSpecification(type);
+            var spec = LoadSpecification(type);
+            try {
+                return (T)spec;
+            } catch (Exception) {
+                throw new ReflectionException(string.Format(
+                    "Specification for type {0} is {1}: cannot be cast to {2}",
+                    type.Name, spec.GetType().Name, typeof(T).Name
+                    ));
+            }
         }
 
         public void Reflect() {
@@ -126,7 +134,7 @@ namespace NakedObjects.Reflect.Component {
 
         private Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
-                return type.GetGenericTypeDefinition().MakeGenericType(typeof (object));
+                return type.GetGenericTypeDefinition().MakeGenericType(typeof(object));
             }
             return type;
         }
@@ -179,7 +187,7 @@ namespace NakedObjects.Reflect.Component {
             IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
                 if (serviceType != spec.Type) {
-                    var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
+                    var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
                     IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
                     List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
                     foreach (IActionSpecImmutable action in matchingActionsForObject) {
@@ -199,7 +207,7 @@ namespace NakedObjects.Reflect.Component {
         private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
             foreach (Type serviceType in services) {
-                var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
+                var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
                 List<IActionSpecImmutable> matchingActions =
                     serviceSpecification.ObjectActions.
                         Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
@@ -238,7 +246,7 @@ namespace NakedObjects.Reflect.Component {
         private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
-            return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
+            return IsService(type) ? (ITypeSpecBuilder)ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
         private bool IsService(Type type) {
