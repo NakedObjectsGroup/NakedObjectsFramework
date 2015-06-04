@@ -20,6 +20,15 @@ namespace Expenses.RecordedActions {
             return m_recordedActionRepository.allRecordedActions(context);
         }
 
+        /// <summary>
+        /// This is to test the effect (on menus) of a contributed action that has been hidden (e.g. by authorization)
+        /// </summary>
+        /// <param name="context"></param>
+        [Hidden]
+        public void HiddenContributedAction([ContributedAction(SubMenu = "Recorded Actions", Id = "Claim-RecordedActionContributedActions:")] IRecordedActionContext context) {
+
+        }
+
         #region Injected Services
 
         #region Injected: RecordedActionRepository
