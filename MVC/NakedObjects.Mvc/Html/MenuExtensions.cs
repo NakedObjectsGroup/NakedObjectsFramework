@@ -183,8 +183,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 @class = IdHelper.SubMenuName,
                 @id = subMenu.Id
             });
-            var visibleSubMenuItems = subMenu.MenuItems.Select(item => html.MenuItemAsElementDescriptor(item, nakedObject, isEdit));
-            if (visibleSubMenuItems.Any(x => x != null)) {
+            var visibleSubMenuItems = subMenu.MenuItems.Select(item => html.MenuItemAsElementDescriptor(item, nakedObject, isEdit)).Where(x => x != null);
+            if (visibleSubMenuItems.Any()) {
                 return new ElementDescriptor {
                     TagType = tagType,
                     Value = value,

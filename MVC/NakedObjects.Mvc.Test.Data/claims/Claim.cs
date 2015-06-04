@@ -595,6 +595,10 @@ namespace Expenses {
             }
 
             #endregion
+
+            //This is to test the effect (on menus) of an action that has been hidden (e.g. by authorization)
+            [Hidden]
+            public void HiddenAction() { }
         }
     }
 }
