@@ -24,19 +24,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
         private readonly IIdHelper idHelper;
         private readonly IOidStrategy oidStrategy;
-        private readonly IFrameworkFacade surface;
+        private readonly IFrameworkFacade facade;
 
-        protected NakedObjectsController(IFrameworkFacade surface,
+        protected NakedObjectsController(IFrameworkFacade facade,
                                          IIdHelper idHelper) {
-            this.surface = surface;
-            oidStrategy = surface.OidStrategy;
+            this.facade = facade;
+            oidStrategy = facade.OidStrategy;
             this.idHelper = idHelper;
         }
 
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
-        protected IFrameworkFacade Surface {
-            get { return surface; }
+        protected IFrameworkFacade Facade {
+            get { return facade; }
         }
 
         protected IOidStrategy OidStrategy {
@@ -52,32 +52,32 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetControllerName(object domainObject) {
-            string controllerName = Surface.GetObjectTypeShortName(domainObject);
+            string controllerName = Facade.GetObjectTypeShortName(domainObject);
             SetControllerName(controllerName);
         }
 
         protected void SetServices() {
-            ViewData[IdConstants.NofServices] = Surface.GetServices().List.Select(no => no.Object);
+            ViewData[IdConstants.NofServices] = Facade.GetServices().List.Select(no => no.Object);
         }
 
         protected void SetSurface() {
-            ViewData[IdConstants.NoSurface] = Surface;
+            ViewData[IdConstants.NoSurface] = Facade;
             ViewData[IdConstants.IdHelper] = IdHelper;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
             SetServices();
             SetSurface();
-            Surface.Start();
+            Facade.Start();
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
             if (filterContext.Exception == null) {
-                Surface.End(true);
+                Facade.End(true);
             }
             else {
                 try {
-                    Surface.End(false);
+                    Facade.End(false);
                 }
                 catch {
                     // fail abort silently 
@@ -89,8 +89,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal ActionResult RedirectHome() {
-            TempData[IdConstants.NofMessages] = Surface.MessageBroker.Messages;
-            TempData[IdConstants.NofWarnings] = Surface.MessageBroker.Warnings;
+            TempData[IdConstants.NofMessages] = Facade.MessageBroker.Messages;
+            TempData[IdConstants.NofWarnings] = Facade.MessageBroker.Warnings;
             return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
         }
 
@@ -101,15 +101,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 // if action on collection go to collection 
                 // if action on service go to last object 
 
-                nakedObject = controlData.GetNakedObject(Surface);
+                nakedObject = controlData.GetNakedObject(Facade);
 
                 if (nakedObject.Specification.IsService) {
-                    object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);
+                    object lastObject = Session.LastObject(Facade, ObjectCache.ObjectFlag.BreadCrumb);
                     if (lastObject == null) {
                         return RedirectHome();
                     }
 
-                    nakedObject = Surface.GetObject(lastObject);
+                    nakedObject = Facade.GetObject(lastObject);
                 }
             }
 
@@ -128,7 +128,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 int page, pageSize;
                 CurrentlyPaging(controlData, collectionSize, out page, out pageSize);
                 var format = ViewData["NofCollectionFormat"] as string;
-                return View("StandaloneTable", ActionResultModel.Create(Surface, action, nakedObject, page, pageSize, format));
+                return View("StandaloneTable", ActionResultModel.Create(Facade, action, nakedObject, page, pageSize, format));
             }
             // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering   
             ViewData.Remove(IdConstants.PagingData);
@@ -152,8 +152,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool CheckForAndAddCollectionMementoNew(string name, string[] values, ObjectAndControlData controlData) {
             if (values.Count() == 1) {
-                var oid = Surface.OidTranslator.GetOidTranslation(values.First());
-                var nakedObject = Surface.GetObject(oid).Target;
+                var oid = Facade.OidTranslator.GetOidTranslation(values.First());
+                var nakedObject = Facade.GetObject(oid).Target;
 
                 if (nakedObject != null && nakedObject.IsCollectionMemento) {
                     nakedObject = FilterCollection(nakedObject, controlData);
@@ -165,7 +165,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void AddAttemptedValues(ObjectAndControlData controlData) {
-            var action = controlData.GetAction(Surface);
+            var action = controlData.GetAction(Facade);
             var form = controlData.Form;
             foreach (var parm in action.Parameters) {
                 string name = IdHelper.GetParameterInputId(action, parm);
@@ -180,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : GetNakedObjectFromId(v).GetDomainObject<object>()).ToList();
 
                         if (itemvalues.Any()) {
-                            var no = Surface.GetObject(itemvalues);
+                            var no = Facade.GetObject(itemvalues);
 
                             AddAttemptedValue(name, no);
                         }
@@ -232,7 +232,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return GetNakedObjectFromId(stringValue).GetDomainObject<object>();
             }
 
-            return Surface.GetTypedCollection(parm, collectionValue);
+            return Facade.GetTypedCollection(parm, collectionValue);
         }
 
         private static object GetRawParameterValue(IActionParameterFacade parm, ObjectAndControlData controlData, string name) {
@@ -271,7 +271,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         protected string DisplaySingleProperty(ObjectAndControlData controlData, IDictionary<string, string> data) {
             if (Request.IsAjaxRequest()) {
-                var nakedObject = controlData.GetNakedObject(Surface);
+                var nakedObject = controlData.GetNakedObject(Facade);
                 if (controlData.SubAction == ObjectAndControlData.SubActionType.Redisplay) {
                     var assocs = nakedObject.Specification.Properties.Where(p => p.IsCollection && !p.Specification.IsParseable);
                     var item = assocs.SingleOrDefault(a => data.ContainsKey(a.Id));
@@ -283,7 +283,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     return item == null ? null : item.Id;
                 }
                 {
-                    var parms = controlData.GetAction(Surface).Parameters;
+                    var parms = controlData.GetAction(Facade).Parameters;
                     var item = parms.SingleOrDefault(p => data.ContainsKey(p.Id));
                     return item == null ? null : item.Id;
                 }
@@ -352,7 +352,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
 
-            return Surface.GetObject(domainObject);
+            return Facade.GetObject(domainObject);
         }
 
         protected IObjectFacade GetNakedObjectFromId(string id) {
@@ -360,8 +360,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return null;
             }
 
-            var oid = Surface.OidTranslator.GetOidTranslation(id);
-            return Surface.GetObject(oid).Target;
+            var oid = Facade.OidTranslator.GetOidTranslation(id);
+            return Facade.GetObject(oid).Target;
         }
 
         internal void SetSelectedReferences(IObjectFacade nakedObject, IDictionary<string, string> dict) {
@@ -404,7 +404,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (!assoc.IsCollection) {
-                return Surface.OidStrategy.GetDomainObjectByOid(Surface.OidTranslator.GetOidTranslation(value.ToString()));
+                return Facade.OidStrategy.GetDomainObjectByOid(Facade.OidTranslator.GetOidTranslation(value.ToString()));
             }
             // collection 
             return null;
@@ -523,7 +523,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void RefreshTransient(IObjectFacade nakedObject, FormCollection form, IAssociationFacade parent = null) {
             if (nakedObject.IsTransient) {
                 var ac = Convert(form);
-                Surface.RefreshObject(nakedObject, ac);
+                Facade.RefreshObject(nakedObject, ac);
             }
         }
 
@@ -540,14 +540,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void ValidateAssociation(IObjectFacade nakedObject, IAssociationFacade oneToOneAssoc, object attemptedValue, IAssociationFacade parent = null) {
             string key = GetFieldInputId(parent, nakedObject, oneToOneAssoc);
             try {
-                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
+                var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
 
                 var ac = new ArgumentContextFacade {
                     Value = attemptedValue,
                     ValidateOnly = true
                 };
 
-                var pcs = Surface.PutProperty(oid, oneToOneAssoc.Id, ac);
+                var pcs = Facade.PutProperty(oid, oneToOneAssoc.Id, ac);
 
                 if (!string.IsNullOrEmpty(pcs.Reason)) {
                     ModelState.AddModelError(key, pcs.Reason);
@@ -570,8 +570,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal void SetMessagesAndWarnings() {
-            string[] messages = Surface.MessageBroker.Messages;
-            string[] warnings = Surface.MessageBroker.Warnings;
+            string[] messages = Facade.MessageBroker.Messages;
+            string[] warnings = Facade.MessageBroker.Warnings;
 
             var existingMessages = TempData[IdConstants.NofMessages];
             var existingWarnings = TempData[IdConstants.NofWarnings];
@@ -633,7 +633,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return int.Parse(controlData.PageSize);
             }
 
-            var action = controlData.GetAction(Surface);
+            var action = controlData.GetAction(Facade);
             return action != null ? action.PageSize : 0;
         }
 
@@ -652,7 +652,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection) {
                 nakedObject = Page(nakedObject, nakedObject.Count(), controlData);
-                var map = nakedObject.ToEnumerable().ToDictionary(x => Surface.OidTranslator.GetOidTranslation(x).Encode(), y => y.GetDomainObject<object>());
+                var map = nakedObject.ToEnumerable().ToDictionary(x => Facade.OidTranslator.GetOidTranslation(x).Encode(), y => y.GetDomainObject<object>());
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return nakedObject.Select(selected, false);
             }

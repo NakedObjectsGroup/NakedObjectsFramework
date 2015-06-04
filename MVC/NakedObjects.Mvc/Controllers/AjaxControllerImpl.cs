@@ -18,7 +18,7 @@ using NakedObjects.Facade.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
-        public AjaxControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        public AjaxControllerImpl(IFrameworkFacade facade, IIdHelper idHelper) : base(facade, idHelper) {}
 
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
@@ -98,12 +98,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private object GetValue(string[] values, IActionParameterFacade parameterSpec, ITypeFacade spec) {
             object domainObject;
-            return GetValue(values, spec, true, out domainObject) ? domainObject : Surface.GetTypedCollection(parameterSpec, values);
+            return GetValue(values, spec, true, out domainObject) ? domainObject : Facade.GetTypedCollection(parameterSpec, values);
         }
 
         private object GetValue(string[] values, IAssociationFacade propertySpec, ITypeFacade spec) {
             object domainObject;
-            return GetValue(values, spec, false, out domainObject) ? domainObject : Surface.GetTypedCollection(propertySpec, values);
+            return GetValue(values, spec, false, out domainObject) ? domainObject : Facade.GetTypedCollection(propertySpec, values);
         }
 
         private bool GetValue(string[] values, ITypeFacade spec, bool nullEmpty, out object domainObject) {
@@ -177,7 +177,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (p.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
-                    string[] value = IsParseableOrCollectionOfParseable(Surface, p) ? content : nakedObjectChoices.Select(o => Surface.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
+                    string[] value = IsParseableOrCollectionOfParseable(Facade, p) ? content : nakedObjectChoices.Select(o => Facade.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
 
                     choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
                 }
@@ -194,7 +194,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (assoc.IsChoicesEnabled != Choices.NotEnabled) {
                     var nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString).ToArray();
-                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(o => Surface.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
+                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(o => Facade.OidTranslator.GetOidTranslation(o).ToString()).ToArray();
 
                     choices[IdHelper.GetAggregateFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
@@ -219,7 +219,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private object GetCompletionData(IObjectFacade nakedObject, ITypeFacade spec) {
             string label = nakedObject.TitleString;
             string value = nakedObject.TitleString;
-            string link = spec.IsParseable ? label : Surface.OidTranslator.GetOidTranslation(nakedObject).ToString();
+            string link = spec.IsParseable ? label : Facade.OidTranslator.GetOidTranslation(nakedObject).ToString();
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);
             return new {label, value, link, src, alt};

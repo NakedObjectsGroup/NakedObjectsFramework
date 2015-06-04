@@ -538,7 +538,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         //private IObjectFacade GetService(string serviceName) {
-        //    return Surface.GetServices().List.SingleOrDefault(s => s.Specification.FullName.Split('.').Last() == serviceName);
+        //    return facade.GetServices().List.SingleOrDefault(s => s.Specification.FullName.Split('.').Last() == serviceName);
         //}
 
         private static void AssertNameAndParms(ViewResult result, string name, int? count, object contextObject, IActionFacade contextAction, object targetObject, IActionFacade targetAction, string pName) {

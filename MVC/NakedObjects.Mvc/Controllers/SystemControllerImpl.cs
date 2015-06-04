@@ -12,16 +12,16 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class SystemControllerImpl : NakedObjectsController {
-        protected SystemControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected SystemControllerImpl(IFrameworkFacade facade, IIdHelper idHelper) : base(facade, idHelper) {}
 
         public virtual ActionResult ClearHistory(bool clearAll) {
-            object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);
+            object lastObject = Session.LastObject(Facade, ObjectCache.ObjectFlag.BreadCrumb);
             Session.ClearCachedObjects(ObjectCache.ObjectFlag.BreadCrumb);
             if (lastObject == null || clearAll) {
                 return RedirectToAction(IdConstants.IndexAction, IdConstants.HomeName);
             }
             SetControllerName(lastObject);
-            return View(Surface.GetObject(lastObject));
+            return View(Facade.GetObject(lastObject));
         }
 
         public virtual ActionResult ClearHistoryItem(string id, string nextId, ObjectAndControlData controlData) {
@@ -31,7 +31,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual ActionResult ClearHistoryOthers(string id, ObjectAndControlData controlData) {
             var nakedObject = GetNakedObjectFromId(id);
-            Session.RemoveOthersFromCache(Surface, nakedObject.Object, ObjectCache.ObjectFlag.BreadCrumb);
+            Session.RemoveOthersFromCache(Facade, nakedObject.Object, ObjectCache.ObjectFlag.BreadCrumb);
             SetNewCollectionFormats(controlData);
             SetControllerName(nakedObject.Object);
             return AppropriateView(controlData, nakedObject);

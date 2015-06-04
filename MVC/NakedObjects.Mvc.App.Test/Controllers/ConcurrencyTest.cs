@@ -137,7 +137,7 @@ namespace MvcTestApp.Tests.Controllers {
         ////  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
         //public void EditSaveEFConcurrencyFail() {
         //    Store store = Store;
-        //    var adaptedStore = Surface.
+        //    var adaptedStore = facade.
         //    IDictionary<string, string> idToRawvalue;
 
         //    FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);

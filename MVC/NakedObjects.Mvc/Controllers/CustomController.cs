@@ -19,7 +19,7 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
-        protected CustomController(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected CustomController(IFrameworkFacade facade, IIdHelper idHelper) : base(facade, idHelper) {}
 
         #region Actions
 
@@ -312,10 +312,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         protected bool SaveObject<T>(FormCollection form, ref T obj) {
             var naked = GetNakedObject(obj);
 
-            var oid = Surface.OidTranslator.GetOidTranslation(naked);
+            var oid = Facade.OidTranslator.GetOidTranslation(naked);
             var ac = Convert(form);
 
-            var result = Surface.PutObject(oid, ac);
+            var result = Facade.PutObject(oid, ac);
             var error = HasError(result);
 
             obj = error ? default(T) : result.Target.GetDomainObject<T>();
@@ -350,7 +350,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Obtains the Id for the specified object
         /// </summary>
         //protected string GetIdFromObject(object domainObject) {
-        //    return Surface.OidTranslator.GetOidTranslation(domainObject).ToString();
+        //    return facade.OidTranslator.GetOidTranslation(domainObject).ToString();
         //}
 
         #endregion
@@ -383,18 +383,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private T InvokeAction<T>(IObjectFacade nakedObject, IActionFacade action, FormCollection parameters, out bool valid) {
             ArgumentsContextFacade ac;
-            IOidTranslation oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
+            IOidTranslation oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
             ActionResultContextFacade contextFacade;
 
             if (ActionExecutingAsContributed(action, nakedObject) && action.ParameterCount == 1) {
                 // contributed action being invoked with a single parm that is the current target
                 // no dialog - go straight through 
                 ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
-                contextFacade = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                contextFacade = Facade.ExecuteObjectAction(oid, action.Id, ac);
             }
             else {
                 ac = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-                contextFacade = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                contextFacade = Facade.ExecuteObjectAction(oid, action.Id, ac);
             }
 
             valid = contextFacade.HasResult;

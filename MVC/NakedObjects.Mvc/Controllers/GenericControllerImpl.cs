@@ -25,14 +25,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         #region actions
 
-        protected GenericControllerImpl(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
+        protected GenericControllerImpl(IFrameworkFacade facade, IIdHelper idHelper) : base(facade, idHelper) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
             Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                          controlData.SubAction == ObjectAndControlData.SubActionType.None);
 
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             nakedObject = FilterCollection(nakedObject, controlData);
             SetNewCollectionFormats(controlData);
             return AppropriateView(controlData, nakedObject);
@@ -41,7 +41,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         [HttpGet]
         public virtual ActionResult EditObject(ObjectAndControlData controlData) {
             Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            return View("ObjectEdit", controlData.GetNakedObject(Surface).Object);
+            return View("ObjectEdit", controlData.GetNakedObject(Facade).Object);
         }
 
         [HttpPost]
@@ -52,7 +52,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                          controlData.SubAction == ObjectAndControlData.SubActionType.Details ||
                          controlData.SubAction == ObjectAndControlData.SubActionType.Cancel ||
                          controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            var nakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
+            var nakedObject = FilterCollection(controlData.GetNakedObject(Facade), controlData);
             SetExistingCollectionFormats(form);
             SetNewCollectionFormats(controlData);
 
@@ -60,7 +60,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel && nakedObject.IsTransient && nakedObject.IsUserPersistable) {
                 // remove from cache and return to last object 
-                Session.RemoveFromCache(Surface, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
+                Session.RemoveFromCache(Facade, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
                 return AppropriateView(controlData, null);
             }
             string property = DisplaySingleProperty(controlData, controlData.DataDict);
@@ -71,7 +71,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual ActionResult EditObject(ObjectAndControlData controlData, FormCollection form) {
             Decrypt(form);
             controlData.Form = form;
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             SetExistingCollectionFormats(form);
 
             if (nakedObject.IsNotPersistent) {
@@ -101,7 +101,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             controlData.Form = form;
             AddFilesToControlData(controlData);
 
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             RefreshTransient(nakedObject, form);
             SetExistingCollectionFormats(form);
             AddAttemptedValuesNew(nakedObject, controlData);
@@ -132,8 +132,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         [HttpGet]
         public virtual ActionResult Action(ObjectAndControlData controlData) {
-            var no = controlData.GetNakedObject(Surface);
-            var action = controlData.GetAction(Surface);
+            var no = controlData.GetNakedObject(Facade);
+            var action = controlData.GetAction(Facade);
 
             return View("ActionDialog", new FindViewModel {
                 ContextObject = no.Object,
@@ -173,10 +173,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
-            var oid = Surface.OidTranslator.GetOidTranslation(Id);
-            var tgt = Surface.GetObject(oid).Target;
+            var oid = Facade.OidTranslator.GetOidTranslation(Id);
+            var tgt = Facade.GetObject(oid).Target;
 
-            var p = Surface.GetProperty(oid, PropertyId);
+            var p = Facade.GetProperty(oid, PropertyId);
             var domainObject = p.Property.GetNakedObject(tgt);
 
             return AsFile(domainObject);
@@ -199,7 +199,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var targetAction = elementSpec.GetCollectionContributedActions().Single(a => a.Id == targetActionId);
 
                 if (!filteredNakedObject.ToEnumerable().Any()) {
-                    Surface.MessageBroker.AddWarning("No objects selected");
+                    Facade.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, null);
                 }
 
@@ -209,8 +209,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return ExecuteAction(controlData, filteredNakedObject, targetAction);
             }
             else {
-                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
-                var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
+                var oid = Facade.OidTranslator.GetOidTranslation(targetNakedObject);
+                var targetAction = Facade.GetObjectAction(oid, targetActionId).Action;
 
                 //var targetAction = NakedObjectsContext.GetActions(targetNakedObject).Single(a => a.Id == targetActionId);
                 return ExecuteAction(controlData, targetNakedObject, targetAction);
@@ -232,15 +232,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
 
                 if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
-                    var oids = nakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
+                    var oids = nakedObject.ToEnumerable().Select(no => Facade.OidTranslator.GetOidTranslation(no)).ToArray();
                     var spec = nakedObject.ElementSpecification;
 
-                    var ar = Surface.ExecuteListAction(oids, spec, action.Id, ac);
+                    var ar = Facade.ExecuteListAction(oids, spec, action.Id, ac);
                     return AppropriateView(controlData, GetResult(ar), action);
                 }
                 else {
-                    var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
-                    var ar = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                    var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
+                    var ar = Facade.ExecuteObjectAction(oid, action.Id, ac);
 
                     return AppropriateView(controlData, GetResult(ar), action);
                 }
@@ -248,8 +248,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (!action.Parameters.Any()) {
                 var ac = new ArgumentsContextFacade {Values = new Dictionary<string, object>(), ValidateOnly = false};
-                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
-                var result = Surface.ExecuteObjectAction(oid, action.Id, ac);
+                var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
+                var result = Facade.ExecuteObjectAction(oid, action.Id, ac);
 
                 return AppropriateView(controlData, GetResult(result), action);
             }
@@ -264,8 +264,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult InitialAction(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(Surface);
-            var nakedObjectAction = controlData.GetAction(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
+            var nakedObjectAction = controlData.GetAction(Facade);
             CheckConcurrency(nakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, nakedObjectAction, y));
             return ExecuteAction(controlData, nakedObject, nakedObjectAction);
         }
@@ -275,8 +275,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult ApplyAction(ObjectAndControlData controlData) {
-            var targetNakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
-            var targetAction = controlData.GetAction(Surface);
+            var targetNakedObject = FilterCollection(controlData.GetNakedObject(Facade), controlData);
+            var targetAction = controlData.GetAction(Facade);
 
             CheckConcurrency(targetNakedObject, null, controlData, (z, x, y) => IdHelper.GetConcurrencyActionInputId(x, targetAction, y));
 
@@ -291,14 +291,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ActionResultContextFacade ar;
 
             if (targetNakedObject.Specification.IsCollection && !targetNakedObject.Specification.IsParseable) {
-                var oids = targetNakedObject.ToEnumerable().Select(no => Surface.OidTranslator.GetOidTranslation(no)).ToArray();
+                var oids = targetNakedObject.ToEnumerable().Select(no => Facade.OidTranslator.GetOidTranslation(no)).ToArray();
                 var spec = targetNakedObject.ElementSpecification;
 
-                ar = Surface.ExecuteListAction(oids, spec, targetAction.Id, ac);
+                ar = Facade.ExecuteListAction(oids, spec, targetAction.Id, ac);
             }
             else {
-                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
-                ar = Surface.ExecuteObjectAction(oid, targetAction.Id, ac);
+                var oid = Facade.OidTranslator.GetOidTranslation(targetNakedObject);
+                ar = Facade.ExecuteObjectAction(oid, targetAction.Id, ac);
             }
 
             if (!HasError(ar)) {
@@ -326,11 +326,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            var objectSet = Session.CachedObjectsOfType(Surface, Surface.GetDomainType(spec)).ToList();
+            var objectSet = Session.CachedObjectsOfType(Facade, Facade.GetDomainType(spec)).ToList();
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);
-                Surface.MessageBroker.AddWarning("No objects of appropriate type viewed recently");
+                Facade.MessageBroker.AddWarning("No objects of appropriate type viewed recently");
             }
             var contextNakedObject = FilterCollection(GetNakedObjectFromId(contextObjectId), controlData);
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : contextNakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == contextActionId);
@@ -356,7 +356,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private bool ApplyEdit(IObjectFacade nakedObject, ObjectAndControlData controlData) {
-            var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
+            var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
 
             var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) && p.IsUsable(nakedObject).IsAllowed);
             var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, null, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
@@ -385,7 +385,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return false;
             }
 
-            var res = Surface.PutObject(oid, ac);
+            var res = Facade.PutObject(oid, ac);
 
             if (HasError(res)) {
                 foreach (var parm in res.VisibleProperties) {
@@ -405,33 +405,33 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private ActionResult ApplyEdit(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             var viewName = ApplyEdit(nakedObject, controlData) ? "ObjectView" : "ObjectEdit";
             return View(viewName, nakedObject.Object);
         }
 
         private ActionResult ApplyEditAndClose(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             if (ApplyEdit(nakedObject, controlData)) {
                 // last object or home
-                object lastObject = Session.LastObject(Surface, ObjectCache.ObjectFlag.BreadCrumb);
+                object lastObject = Session.LastObject(Facade, ObjectCache.ObjectFlag.BreadCrumb);
                 if (lastObject == null) {
                     return RedirectHome();
                 }
 
-                nakedObject = Surface.GetObject(lastObject);
+                nakedObject = Facade.GetObject(lastObject);
                 return AppropriateView(controlData, nakedObject);
             }
             return View("ObjectEdit", nakedObject.Object);
         }
 
         private ActionResult ApplyEditAction(ObjectAndControlData controlData) {
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             var ok = ApplyEdit(nakedObject, controlData);
             if (ok) {
                 string targetActionId = controlData.DataDict["targetActionId"];
-                var oid = Surface.OidTranslator.GetOidTranslation(nakedObject);
-                var targetAction = Surface.GetObjectAction(oid, targetActionId).Action;
+                var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
+                var targetAction = Facade.GetObjectAction(oid, targetActionId).Action;
                 return ExecuteAction(controlData, nakedObject, targetAction);
             }
             return View("ViewModel", nakedObject.Object);
@@ -441,18 +441,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetNewCollectionFormats(controlData);
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
             var isEdit = bool.Parse(controlData.DataDict["editMode"]);
-            var nakedObject = controlData.GetNakedObject(Surface);
+            var nakedObject = controlData.GetNakedObject(Facade);
             return property == null ? View(isEdit ? "ObjectEdit" : "ObjectView", nakedObject.Object) :
                 View(isEdit ? "PropertyEdit" : "PropertyView", new PropertyViewModel(nakedObject.Object, property));
         }
 
         private ActionResult Select(ObjectAndControlData controlData) {
-            return SelectSingleItem(controlData.GetNakedObject(Surface), null, controlData, controlData.DataDict);
+            return SelectSingleItem(controlData.GetNakedObject(Facade), null, controlData, controlData.DataDict);
         }
 
         private ActionResult SelectOnAction(ObjectAndControlData controlData) {
-            var nakedObjectAction = controlData.GetAction(Surface);
-            var contextNakedObject = FilterCollection(controlData.GetNakedObject(Surface), controlData);
+            var nakedObjectAction = controlData.GetAction(Facade);
+            var contextNakedObject = FilterCollection(controlData.GetNakedObject(Facade), controlData);
 
             return SelectSingleItem(contextNakedObject, nakedObjectAction, controlData, controlData.DataDict);
         }
@@ -472,10 +472,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : contextNakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == contextActionId);
             var subEditObject = GetNakedObjectFromId(subEditObjectId);
 
-            var oid = Surface.OidTranslator.GetOidTranslation(subEditObject);
+            var oid = Facade.OidTranslator.GetOidTranslation(subEditObject);
             var ac = ConvertForSave(subEditObject, controlData);
 
-            var result = Surface.PutObject(oid, ac);
+            var result = Facade.PutObject(oid, ac);
 
             foreach (var p in result.VisibleProperties) {
                 string key = GetFieldInputId(null, subEditObject, p.Property);
@@ -520,9 +520,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
 
-            var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
+            var oid = Facade.OidTranslator.GetOidTranslation(targetNakedObject);
             var parms = GetParameterValues(targetAction, controlData);
-            var context = Surface.ExecuteObjectAction(oid, targetActionId, parms);
+            var context = Facade.ExecuteObjectAction(oid, targetActionId, parms);
 
             var result = GetResult(context);
 
@@ -563,8 +563,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private string GetObjectId(object domainObject) {
-            var no = Surface.GetObject(domainObject);
-            return Surface.OidTranslator.GetOidTranslation(no).ToString();
+            var no = Facade.GetObject(domainObject);
+            return Facade.OidTranslator.GetOidTranslation(no).ToString();
         }
 
         private ActionResult ActionAsFind(ObjectAndControlData controlData) {
@@ -581,9 +581,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetContextObjectAsParameterValue(targetAction, contextNakedObject);
             if (targetAction.ParameterCount == 0) {
-                var oid = Surface.OidTranslator.GetOidTranslation(targetNakedObject);
+                var oid = Facade.OidTranslator.GetOidTranslation(targetNakedObject);
 
-                var context = Surface.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContextFacade {
+                var context = Facade.ExecuteObjectAction(oid, targetAction.Id, new ArgumentsContextFacade {
                     Values = new Dictionary<string, object>(),
                     ValidateOnly = false
                 });
