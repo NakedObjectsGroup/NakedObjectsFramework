@@ -60,14 +60,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ViewData[IdConstants.NofServices] = Facade.GetServices().List.Select(no => no.Object);
         }
 
-        protected void SetSurface() {
+        protected void SetFacade() {
             ViewData[IdConstants.NoSurface] = Facade;
             ViewData[IdConstants.IdHelper] = IdHelper;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
             SetServices();
-            SetSurface();
+            SetFacade();
             Facade.Start();
         }
 

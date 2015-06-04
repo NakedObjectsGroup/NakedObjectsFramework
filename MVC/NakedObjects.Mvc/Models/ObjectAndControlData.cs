@@ -37,8 +37,8 @@ namespace NakedObjects.Web.Mvc.Models {
 
         private IDictionary<string, string> dataDict;
         public IDictionary<string, HttpPostedFileBase> files = new Dictionary<string, HttpPostedFileBase>();
-        private IActionFacade nakedObjectAction;
-        private IObjectFacade nakedObjectSurface;
+        private IActionFacade actionFacade;
+        private IObjectFacade objectFacade;
 
         public SubActionType SubAction {
             get {
@@ -118,27 +118,27 @@ namespace NakedObjects.Web.Mvc.Models {
         }
 
         public IObjectFacade GetNakedObject(IFrameworkFacade facade) {
-            if (nakedObjectSurface == null) {
+            if (objectFacade == null) {
                 var link = facade.OidTranslator.GetOidTranslation(Id);
 
                 // hack
                 try {
-                    nakedObjectSurface = facade.GetObject(link).Target;
+                    objectFacade = facade.GetObject(link).Target;
                 }
                 catch {
-                    nakedObjectSurface = facade.GetService(link).Target;
+                    objectFacade = facade.GetService(link).Target;
                 }
 
-                if (nakedObjectSurface == null) {
+                if (objectFacade == null) {
                     throw new ObjectNotFoundException();
                 }
             }
 
-            return nakedObjectSurface;
+            return objectFacade;
         }
 
         public IActionFacade GetAction(IFrameworkFacade facade) {
-            if (nakedObjectAction == null) {
+            if (actionFacade == null) {
                 var no = GetNakedObject(facade);
                 IActionFacade action;
 
@@ -152,9 +152,9 @@ namespace NakedObjects.Web.Mvc.Models {
                     action = facade.GetObjectAction(id, ActionId).Action;
                 }
 
-                nakedObjectAction = action.IsUsable(no).IsAllowed ? action : null;
+                actionFacade = action.IsUsable(no).IsAllowed ? action : null;
             }
-            return nakedObjectAction;
+            return actionFacade;
         }
 
         private static string GetName(string nameValue) {

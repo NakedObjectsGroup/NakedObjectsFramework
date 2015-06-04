@@ -20,7 +20,7 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class SystemExtensions {
         private const int DefaultHistorySize = 10;
 
-        public static IFrameworkFacade GetSurface(this HtmlHelper html) {
+        public static IFrameworkFacade GetFacade(this HtmlHelper html) {
             return html.Facade();
         }
 
