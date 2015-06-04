@@ -24,7 +24,9 @@ namespace Expenses.RecordedActions {
         /// This is to test the effect (on menus) of a contributed action that has been hidden (e.g. by authorization)
         /// </summary>
         /// <param name="context"></param>
+#pragma warning disable 618
         [Hidden]
+#pragma warning restore 618
         public void HiddenContributedAction([ContributedAction(SubMenu = "Recorded Actions", Id = "Claim-RecordedActionContributedActions:")] IRecordedActionContext context) {
 
         }
