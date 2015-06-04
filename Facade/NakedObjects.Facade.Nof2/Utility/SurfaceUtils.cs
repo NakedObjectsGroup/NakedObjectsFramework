@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Facade.Nof2.Context;
+using NakedObjects.Facade.Nof2.Contexts;
 using org.nakedobjects.@object;
 using sdm.systems.application;
 using sdm.systems.application.objectstore;

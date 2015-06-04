@@ -12,6 +12,7 @@ using org.nakedobjects.@object;
 using org.nakedobjects.@object.control;
 using org.nakedobjects.utility;
 using NotImplementedException = System.NotImplementedException;
+// ReSharper disable InconsistentNaming
 
 namespace NakedObjects.Facade.Nof2 {
     public class ActionWrapper {

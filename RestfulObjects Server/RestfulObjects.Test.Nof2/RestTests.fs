@@ -13,9 +13,6 @@ open RestfulObjects.Test.TestCase.Nof2
 open Microsoft.Practices.Unity
 open System
 open MvcTestApp.Controllers
-open NakedObjects.Surface
-open NakedObjects.Surface.Nof2.Implementation
-open NakedObjects.Surface.Nof2.Utility
 open NakedObjects.Facade
 
 [<TestFixture>]

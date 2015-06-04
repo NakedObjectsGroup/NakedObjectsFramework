@@ -5,35 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
-    public class ActionContext : Context {
-        private ParameterContext[] parameters;
+namespace NakedObjects.Facade.Nof2.Contexts {
+    public class ParameterContext : Context {
+        public NakedObjectActionParameter Parameter { get; set; }
         public ActionWrapper Action { get; set; }
 
         public override string Id {
-            get { return Action.getId(); }
+            get { return Parameter.getId(); }
         }
 
         public override NakedObjectSpecification Specification {
-            get { return Action.getReturnType(); }
+            get { return Parameter.getSpecification(); }
         }
 
-        public ParameterContext[] VisibleParameters {
-            get { return parameters ?? new ParameterContext[] {}; }
-            set { parameters = value; }
-        }
-
-        public ActionContextFacade ToActionContextSurface(IFrameworkFacade surface) {
-            var ac = new ActionContextFacade {
-                Action = new ActionFacade(Action, Target, surface),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface)).ToArray()
+        public ParameterContextFacade ToParameterContextSurface(IFrameworkFacade surface) {
+            var pc = new ParameterContextFacade {
+                Parameter = new ActionParameterFacade(Parameter, Target, surface),
+                Target = new ObjectFacade(Target, surface),
+                Action = new ActionFacade(Action, Target, surface)
             };
-
-            return ToContextSurface(ac, surface);
+            return ToContextSurface(pc, surface);
         }
     }
 }

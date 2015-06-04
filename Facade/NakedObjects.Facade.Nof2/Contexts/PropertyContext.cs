@@ -8,25 +8,25 @@
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
-    public class ParameterContext : Context {
-        public NakedObjectActionParameter Parameter { get; set; }
-        public ActionWrapper Action { get; set; }
+namespace NakedObjects.Facade.Nof2.Contexts {
+    public class PropertyContext : Context {
+        public NakedObjectField Property { get; set; }
+        public bool Mutated { get; set; }
 
         public override string Id {
-            get { return Parameter.getId(); }
+            get { return Property.getId(); }
         }
 
         public override NakedObjectSpecification Specification {
-            get { return Parameter.getSpecification(); }
+            get { return Property.getSpecification(); }
         }
 
-        public ParameterContextFacade ToParameterContextSurface(IFrameworkFacade surface) {
-            var pc = new ParameterContextFacade {
-                Parameter = new ActionParameterFacade(Parameter, Target, surface),
-                Target = new ObjectFacade(Target, surface),
-                Action = new ActionFacade(Action, Target, surface)
+        public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface) {
+            var pc = new PropertyContextFacade {
+                Property = new AssociationFacade(Property, Target, surface),
+                Mutated = Mutated
             };
+
             return ToContextSurface(pc, surface);
         }
     }

@@ -11,7 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Nof2.Context;
+using NakedObjects.Facade.Nof2.Contexts;
+using NakedObjects.Facade.Nof2.Contexts;
 using NakedObjects.Facade.Nof2.Utility;
 using NakedObjects.Facade.Translation;
 using org.nakedobjects.@object;
@@ -466,7 +467,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             org.nakedobjects.@object.NakedObjects.getInstance().setSession(session);
         }
 
-        private bool ConsentHandler(Consent consent, Context.Context context, Cause cause) {
+        private bool ConsentHandler(Consent consent, Context context, Cause cause) {
             if (consent.isVetoed()) {
                 context.Reason = consent.getReason();
                 context.ErrorCause = cause;

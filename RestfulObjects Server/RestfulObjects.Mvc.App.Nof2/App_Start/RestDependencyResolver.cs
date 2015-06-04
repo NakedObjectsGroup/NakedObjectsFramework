@@ -9,8 +9,8 @@ using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
 using NakedObjects.Facade;
-using NakedObjects.Surface.Nof2.Implementation;
-using NakedObjects.Surface.Nof2.Utility;
+using NakedObjects.Facade.Nof2.Implementation;
+using NakedObjects.Facade.Nof2.Utility;
 
 namespace MvcTestApp.App_Start {
     public class RestDependencyResolver : IDependencyResolver {

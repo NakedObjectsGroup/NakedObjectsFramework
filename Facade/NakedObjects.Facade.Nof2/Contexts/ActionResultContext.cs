@@ -8,7 +8,7 @@
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
+namespace NakedObjects.Facade.Nof2.Contexts {
     public class ActionResultContext : Context {
         private bool hasResult;
         private ObjectContext result;

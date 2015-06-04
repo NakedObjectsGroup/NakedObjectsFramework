@@ -10,7 +10,7 @@ using System.Linq;
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
+namespace NakedObjects.Facade.Nof2.Contexts {
     public class ObjectContext : Context {
         public ObjectContext(NakedObject target) {
             Target = target;

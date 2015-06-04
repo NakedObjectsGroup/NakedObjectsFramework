@@ -109,6 +109,10 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.OAuth.3.2.3\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-alpha\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -371,13 +375,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface.Nof2\NakedObjects.Surface.Nof2.csproj">
-      <Project>{3081bf82-8c5f-4fc6-8ae6-e8d675285f7e}</Project>
-      <Name>NakedObjects.Surface.Nof2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
-      <Project>{ec9af8ed-fc49-4e1b-8e45-3450641ae561}</Project>
-      <Name>NakedObjects.Surface</Name>
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Nof2\NakedObjects.Facade.Nof2.csproj">
+      <Project>{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}</Project>
+      <Name>NakedObjects.Facade.Nof2</Name>
     </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>

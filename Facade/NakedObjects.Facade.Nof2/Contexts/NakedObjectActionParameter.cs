@@ -9,7 +9,7 @@ using System.Linq;
 using NakedObjects.Facade.Nof2.Utility;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
+namespace NakedObjects.Facade.Nof2.Contexts {
     public class NakedObjectActionParameter {
         private readonly ActionWrapper action;
         private readonly object[] choices;

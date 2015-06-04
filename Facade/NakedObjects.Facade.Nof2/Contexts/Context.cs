@@ -8,7 +8,7 @@
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
 
-namespace NakedObjects.Facade.Nof2.Context {
+namespace NakedObjects.Facade.Nof2.Contexts {
     public abstract class Context {
         private string reason;
         public abstract string Id { get; }

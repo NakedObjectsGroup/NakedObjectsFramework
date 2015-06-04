@@ -121,16 +121,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\ActionContext.cs" />
-    <Compile Include="Context\Context.cs" />
-    <Compile Include="Context\ListContext.cs" />
-    <Compile Include="Context\ObjectContext.cs" />
-    <Compile Include="Context\ParameterContext.cs" />
-    <Compile Include="Context\PropertyContext.cs" />
+    <Compile Include="Contexts\ActionContext.cs" />
+    <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Contexts\ListContext.cs" />
+    <Compile Include="Contexts\ObjectContext.cs" />
+    <Compile Include="Contexts\ParameterContext.cs" />
+    <Compile Include="Contexts\PropertyContext.cs" />
     <Compile Include="Implementation\OidTranslatorSlashSeparatedTypeAndIds.cs" />
     <Compile Include="Implementation\OidTranslatorSemiColonSeparatedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Context\ActionResultContext.cs" />
+    <Compile Include="Contexts\ActionResultContext.cs" />
     <Compile Include="Utility\DefaultKeyCodeMapper.cs" />
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\EntityOidStrategy.cs" />
