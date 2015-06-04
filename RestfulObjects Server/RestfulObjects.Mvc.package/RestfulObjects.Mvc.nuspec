@@ -14,7 +14,7 @@
     <summary>Provides a base controller and helper classes for an MVC5-based implementation of Restful Objects</summary>
     <description>Typically this package is only installed as a dependency of another package.</description>
     <dependencies>
-      <dependency id="NakedObjects.Surface" version="[7.1.0-alpha, 8)" />
+      <dependency id="NakedObjects.Facade" version="[1.0.0-alpha, 2)" />
       <dependency id="Newtonsoft.Json" version="[6.0.8, 7.0)" />
       <dependency id="Microsoft.AspNet.WebApi" version="[5.2.3, 6.0)" />
     </dependencies>

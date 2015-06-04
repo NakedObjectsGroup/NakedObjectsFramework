@@ -57,7 +57,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj /t:Clean
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
-	build.sf.proj /t:Clean
+	build.facade.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
 	build.batch.proj /t:Clean
@@ -65,7 +65,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj 
 	build.pm.proj 
 	build.core.proj 
-	build.sf.proj 
+	build.facade.proj 
 	build.ro.proj 
 	build.mvc.proj
 	build.batch.proj 
@@ -84,7 +84,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.ide.proj /t:Clean
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
-		build build.sf.proj /t:Clean
+		build build.facade.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
@@ -92,7 +92,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.ide.proj 
 		build build.pm.proj 
 		build build.core.proj 
-		build build.sf.proj 
+		build build.facade.proj 
 		build build.ro.proj 
 		build build.mvc.proj 
 		build build.batch.proj
@@ -110,7 +110,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj /t:Clean
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
-	build.sf.proj /t:Clean
+	build.facade.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
 	build.batch.proj /t:Clean
@@ -118,7 +118,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj 
 	build.pm.proj 
 	build.core.proj /t:FrameworkPackageNoTest
-	build.sf.proj 
+	build.facade.proj 
 	build.ro.proj /t:RestfulObjectsPackageNoTest
 	build.mvc.proj /t:MvcPackageNoTest
 	build.batch.proj
@@ -137,7 +137,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.ide.proj /t:Clean
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
-		build build.sf.proj /t:Clean
+		build build.facade.proj /t:Clean
 		build build.ro.proj /t:Clean
 		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
@@ -146,7 +146,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.ide.proj 
 		build build.pm.proj 
 		build build.core.proj /t:FrameworkPackageNoTest
-		build build.sf.proj 
+		build build.facade.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
 		build build.mvc.proj /t:MvcPackageNoTest
 		build build.batch.proj
@@ -233,8 +233,8 @@ param($rootPath, $toolsPath, $package, $project)
 	restfulobjects.mvc          
 	restfulobjects.server      
 	nakedobjects.sample.icons
-	nakedobjects.surface.nof4 
-	nakedobjects.surface        
+	nakedobjects.facade.impl 
+	nakedobjects.facade        
 	nakedobjects.mvc.selenium   
 
 	.PARAMETER NewVersion
@@ -261,8 +261,8 @@ param($rootPath, $toolsPath, $package, $project)
 							 "restfulobjects.mvc",            
 							 "restfulobjects.server",         
 							 "nakedobjects.sample.icons",     
-							 "nakedobjects.surface.nof4",     
-							 "nakedobjects.surface",          
+							 "nakedobjects.facade.impl",     
+							 "nakedobjects.facade",          
 							 "nakedobjects.mvc.selenium"     
 	
 		if (!($Package -is [string])){

@@ -87,6 +87,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-alpha\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.Impl.1.0.0-alpha\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.FWResources.dll</HintPath>
@@ -202,14 +210,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj">
-      <Project>{9aeb1ea4-e7a0-42e5-b5c8-0629e61ecf0d}</Project>
-      <Name>NakedObjects.Facade.Impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Surface\NakedObjects.Surface\NakedObjects.Surface.csproj">
-      <Project>{ec9af8ed-fc49-4e1b-8e45-3450641ae561}</Project>
-      <Name>NakedObjects.Surface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Project>{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}</Project>
       <Name>RestfulObjects.Mvc</Name>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NakedObjects.Surface</id>
-    <title>NakedObjects.Surface.Api</title>
-    <version>7.1.0-alpha</version>
+    <id>NakedObjects.Facade</id>
+    <title>NakedObjects.Facade.Api</title>
+    <version>1.0.0-alpha</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
