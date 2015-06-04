@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface.Nof4", "Surface\NakedObjects.Surface.Nof4\NakedObjects.Surface.Nof4.csproj", "{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface", "Surface\NakedObjects.Surface\NakedObjects.Surface.csproj", "{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B12D46A8-A88A-45B2-B202-8E963D3EA652}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
@@ -19,7 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7501EC
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Surface.Nof2", "Surface\NakedObjects.Surface.Nof2\NakedObjects.Surface.Nof2.csproj", "{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Facade", "Facade\NakedObjects.Facade\NakedObjects.Facade.csproj", "{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Facade.Impl", "Facade\NakedObjects.Facade.Impl\NakedObjects.Facade.Impl.csproj", "{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Facade.Nof2", "Facade\NakedObjects.Facade.Nof2\NakedObjects.Facade.Nof2.csproj", "{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +29,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|x86.ActiveCfg = Debug|x86
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|x86.Build.0 = Debug|x86
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|x86.ActiveCfg = Release|x86
-		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|x86.Build.0 = Release|x86
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Debug|x86.ActiveCfg = Debug|x86
@@ -45,6 +37,14 @@ Global
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|x86.ActiveCfg = Release|x86
 		{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}.Release|x86.Build.0 = Release|x86
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|x86.ActiveCfg = Debug|x86
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Debug|x86.Build.0 = Debug|x86
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|x86.ActiveCfg = Release|x86
+		{9AEB1EA4-E7A0-42E5-B5C8-0629E61ECF0D}.Release|x86.Build.0 = Release|x86
 		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3081BF82-8C5F-4FC6-8AE6-E8D675285F7E}.Debug|x86.ActiveCfg = Debug|x86
