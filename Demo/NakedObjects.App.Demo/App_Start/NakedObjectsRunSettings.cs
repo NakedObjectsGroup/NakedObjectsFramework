@@ -6,9 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using NakedObjects.Architecture.Menu;
@@ -16,7 +13,9 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.App.Demo {
@@ -24,29 +23,13 @@ namespace NakedObjects.App.Demo {
     /// Use this class to configure the application running under Naked Objects
     /// </summary>
     public static class NakedObjectsRunSettings {
+        public static string RestRoot {
+            get { return "Rest"; }
+        }
 
         private static string[] ModelNamespaces {
             get {
-                return new string[] { "AdventureWorksModel" };
-            }
-        }
-        /// <summary>
-        /// Specify any types that need to be reflected-over by the framework and that
-        /// will not be discovered via the services
-        /// </summary>
-        private static Type[] Types {
-            get {
-                return new[] {
-                    typeof (EnumerableQuery<object>),
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (ActionResultModelQ<object>),
-                    typeof (CustomerCollectionViewModel),
-                    typeof (OrderLine),
-                    typeof (QuickOrderForm),
-                    typeof (ActionResultModelQ<>),
-                    typeof (ActionResultModel<>)
-                };
+                return new[] {"AdventureWorksModel"};
             }
         }
 
@@ -64,12 +47,29 @@ namespace NakedObjects.App.Demo {
                     typeof (PurchaseOrderRepository),
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
-                    typeof (CustomerContributedActions)
+                    typeof (CustomerContributedActions),
+                    typeof (SimpleEncryptDecrypt)
                 };
             }
         }
 
-        public static ReflectorConfiguration ReflectorConfig() {
+        private static Type[] Types {
+            get {
+                return new[] {
+                    //These types must be registered because they are defined in
+                    //NakedObjects.Mvc, not in Core.
+                    typeof (ActionResultModelQ<>),
+                    typeof (ActionResultModel<>),
+                    //Add any types here that cannot be reached by traversing model from the registered services
+                    typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (QuickOrderForm),
+                    typeof (ProductProductPhoto)
+                };
+            }
+        }
+
+       public static ReflectorConfiguration ReflectorConfig() {
             return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
@@ -84,19 +84,39 @@ namespace NakedObjects.App.Demo {
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
+                return null;
+        }
+
+        public static IProfileConfiguration ProfileConfig() {
             return null;
         }
+
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
+
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] {};
+            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            CustomerRepository.Menu(customerMenu);
+            return new[] {
+                    customerMenu,
+                    factory.NewMenu<OrderRepository>(true),
+                    factory.NewMenu<ProductRepository>(true),
+                    factory.NewMenu<EmployeeRepository>(true),
+                    factory.NewMenu<SalesRepository>(true),
+                    factory.NewMenu<SpecialOfferRepository>(true),
+                    factory.NewMenu<ContactRepository>(true),
+                    factory.NewMenu<VendorRepository>(true),
+                    factory.NewMenu<PurchaseOrderRepository>(true),
+                    factory.NewMenu<WorkOrderRepository>(true),
+                    factory.NewMenu<object>(false, "Empty")
+            };
         }
     }
 }
