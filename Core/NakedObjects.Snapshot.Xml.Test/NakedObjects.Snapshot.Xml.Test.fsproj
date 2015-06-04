@@ -86,12 +86,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\packages\CommonServiceLocation.1.0.0\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
