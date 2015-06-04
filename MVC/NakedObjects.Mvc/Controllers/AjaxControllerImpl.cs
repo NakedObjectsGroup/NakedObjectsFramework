@@ -162,7 +162,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return results;
         }
 
-        public static bool IsParseableOrCollectionOfParseable(IFrameworkFacade surface, IActionParameterFacade parmSpec) {
+        public static bool IsParseableOrCollectionOfParseable(IFrameworkFacade facade, IActionParameterFacade parmSpec) {
             var spec = parmSpec.Specification;
             return spec.IsParseable || (spec.IsCollection && parmSpec.ElementType.IsParseable);
         }

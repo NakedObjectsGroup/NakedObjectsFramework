@@ -10,14 +10,14 @@ using NakedObjects.Facade;
 
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
-        public static void AddObjectToSession(this HttpSessionStateBase session, IFrameworkFacade surface, string key, object domainObject) {
-            var nakedObject = surface.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient ? domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
+        public static void AddObjectToSession(this HttpSessionStateBase session, IFrameworkFacade facade, string key, object domainObject) {
+            var nakedObject = facade.GetObject(domainObject);
+            session.Add(key, (nakedObject.IsTransient ? domainObject : facade.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
 
-        public static void AddObjectToSession<T>(this HttpSessionStateBase session, IFrameworkFacade surface, string key, T domainObject) where T : class {
-            var nakedObject = surface.GetObject(domainObject);
-            session.Add(key, (nakedObject.IsTransient ? (object) domainObject : surface.OidTranslator.GetOidTranslation(nakedObject).Encode()));
+        public static void AddObjectToSession<T>(this HttpSessionStateBase session, IFrameworkFacade facade, string key, T domainObject) where T : class {
+            var nakedObject = facade.GetObject(domainObject);
+            session.Add(key, (nakedObject.IsTransient ? (object) domainObject : facade.OidTranslator.GetOidTranslation(nakedObject).Encode()));
         }
 
         public static void AddValueToSession<T>(this HttpSessionStateBase session, string key, T value) where T : struct {
@@ -42,16 +42,16 @@ namespace NakedObjects.Web.Mvc {
             return null;
         }
 
-        private static IObjectFacade GetNakedObjectFromId(string id, IFrameworkFacade surface) {
+        private static IObjectFacade GetNakedObjectFromId(string id, IFrameworkFacade facade) {
             if (string.IsNullOrEmpty(id)) {
                 return null;
             }
 
-            var oid = surface.OidTranslator.GetOidTranslation(id);
-            return surface.GetObject(oid).Target;
+            var oid = facade.OidTranslator.GetOidTranslation(id);
+            return facade.GetObject(oid).Target;
         }
 
-        public static object GetObjectFromSession(this HttpSessionStateBase session, IFrameworkFacade surface, string key) {
+        public static object GetObjectFromSession(this HttpSessionStateBase session, IFrameworkFacade facade, string key) {
             object rawValue = session[key];
 
             if (rawValue == null) {
@@ -60,13 +60,13 @@ namespace NakedObjects.Web.Mvc {
 
             var s = rawValue as string;
             if (s != null) {
-                return GetNakedObjectFromId(s, surface).Object;
+                return GetNakedObjectFromId(s, facade).Object;
             }
 
             return rawValue;
         }
 
-        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, IFrameworkFacade surface, string key) where T : class {
+        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, IFrameworkFacade facade, string key) where T : class {
             object rawValue = session[key];
 
             if (rawValue == null) {
@@ -78,7 +78,7 @@ namespace NakedObjects.Web.Mvc {
             }
 
             if (rawValue is string) {
-                var obj = GetNakedObjectFromId((string) rawValue, surface).Object;
+                var obj = GetNakedObjectFromId((string) rawValue, facade).Object;
 
                 var fromSession = obj as T;
                 return fromSession;

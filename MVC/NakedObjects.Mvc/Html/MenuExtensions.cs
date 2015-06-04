@@ -32,7 +32,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static MvcHtmlString ObjectMenu(this HtmlHelper html, object domainObject, bool isEdit) {
-            var nakedObject = html.Surface().GetObject(domainObject);
+            var nakedObject = html.Facade().GetObject(domainObject);
             var objectMenu = nakedObject.Specification.Menu;
             return html.MenuAsHtml(objectMenu, nakedObject, isEdit, true);
         }
@@ -43,12 +43,12 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
-            var mainMenus = html.Surface().GetMainMenus();
+            var mainMenus = html.Facade().GetMainMenus();
             return RenderMainMenus(html, mainMenus);
         }
 
         private static IMenuFacade GetMenu(HtmlHelper html, object service) {
-            return html.Surface().GetObject(service).Specification.Menu;
+            return html.Facade().GetObject(service).Specification.Menu;
         }
 
         public static MvcHtmlString MainMenu(this HtmlHelper html, object service) {
@@ -132,7 +132,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (serviceIm == null) {
                     throw new Exception("Action is not on a known service");
                 }
-                nakedObject = html.Surface().GetServices().List.SingleOrDefault(s => s.Specification.Equals(serviceIm));
+                nakedObject = html.Facade().GetServices().List.SingleOrDefault(s => s.Specification.Equals(serviceIm));
             }
 
             if (nakedObject == null) {
@@ -156,7 +156,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Surface().GetObjectTypeShortName(actionContext.Target.Object), new {id = html.Surface().OidTranslator.GetOidTranslation(actionContext.Target).Encode()}, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Facade().GetObjectTypeShortName(actionContext.Target.Object), new {id = html.Facade().OidTranslator.GetOidTranslation(actionContext.Target).Encode()}, out value, out attributes);
             }
 
             return new ElementDescriptor {

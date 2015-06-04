@@ -117,16 +117,16 @@ namespace NakedObjects.Web.Mvc.Models {
             }
         }
 
-        public IObjectFacade GetNakedObject(IFrameworkFacade surface) {
+        public IObjectFacade GetNakedObject(IFrameworkFacade facade) {
             if (nakedObjectSurface == null) {
-                var link = surface.OidTranslator.GetOidTranslation(Id);
+                var link = facade.OidTranslator.GetOidTranslation(Id);
 
                 // hack
                 try {
-                    nakedObjectSurface = surface.GetObject(link).Target;
+                    nakedObjectSurface = facade.GetObject(link).Target;
                 }
                 catch {
-                    nakedObjectSurface = surface.GetService(link).Target;
+                    nakedObjectSurface = facade.GetService(link).Target;
                 }
 
                 if (nakedObjectSurface == null) {
@@ -137,9 +137,9 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObjectSurface;
         }
 
-        public IActionFacade GetAction(IFrameworkFacade surface) {
+        public IActionFacade GetAction(IFrameworkFacade facade) {
             if (nakedObjectAction == null) {
-                var no = GetNakedObject(surface);
+                var no = GetNakedObject(facade);
                 IActionFacade action;
 
                 if (no.Specification.IsCollection) {
@@ -148,8 +148,8 @@ namespace NakedObjects.Web.Mvc.Models {
                     action = elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(no)).Single(a => a.Id == ActionId);
                 }
                 else {
-                    var id = surface.OidTranslator.GetOidTranslation(no);
-                    action = surface.GetObjectAction(id, ActionId).Action;
+                    var id = facade.OidTranslator.GetOidTranslation(no);
+                    action = facade.GetObjectAction(id, ActionId).Action;
                 }
 
                 nakedObjectAction = action.IsUsable(no).IsAllowed ? action : null;

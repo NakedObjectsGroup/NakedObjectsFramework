@@ -22,8 +22,8 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString GetObjectId(this HtmlHelper html, object model) {
             Debug.Assert(!(model is IObjectFacade), "Cannot get Adapter for Adapter");
-            var nakedObject = html.Surface().GetObject(model);
-            return MvcHtmlString.Create(html.Surface().OidTranslator.GetOidTranslation(nakedObject).Encode());
+            var nakedObject = html.Facade().GetObject(model);
+            return MvcHtmlString.Create(html.Facade().OidTranslator.GetOidTranslation(nakedObject).Encode());
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return nakedObject.Specification.PresentationHint;
         }
 
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object has any visible fields
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
-            var nakedObject = html.Surface().GetObject(domainObject);
+            var nakedObject = html.Facade().GetObject(domainObject);
             var objectSpec = nakedObject.Specification;
             return objectSpec != null && objectSpec.Properties.Any(p => p.IsVisible(nakedObject));
         }
@@ -85,7 +85,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object is a not persistent  object
         /// </summary>
         public static bool ObjectIsNotPersistent(this HtmlHelper html, object domainObject) {
-            var nakedObject = html.Surface().GetObject(domainObject);
+            var nakedObject = html.Facade().GetObject(domainObject);
             return nakedObject.IsNotPersistent;
         }
 
@@ -93,7 +93,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Indicate if object is a transient object
         /// </summary>
         public static string TransientFlag(this HtmlHelper html, object domainObject) {
-            var nakedObject = html.Surface().GetObject(domainObject);
+            var nakedObject = html.Facade().GetObject(domainObject);
             return nakedObject.IsTransient ? " " + IdConstants.TransientName : "";
         }
 
@@ -101,7 +101,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object
         /// </summary>
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return html.ObjectTitle(nakedObject);
         }
 
@@ -114,7 +114,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object with icon
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
 
             string title = nakedObject.Specification.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString;
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title;
@@ -122,7 +122,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
-            var nakedObject = html.Surface().GetObject(model.Result);
+            var nakedObject = html.Facade().GetObject(model.Result);
             string title = GetCollectionTitle(nakedObject, html);
             title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdConstants.ObjectName);
@@ -171,7 +171,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name (Title) of object
         /// </summary>
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return MvcHtmlString.Create(nakedObject.TitleString);
         }
 
@@ -193,7 +193,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display description of object
         /// </summary>
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return MvcHtmlString.Create(nakedObject.Specification.Description);
         }
 
@@ -215,7 +215,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get icon name from object
         /// </summary>
         public static MvcHtmlString IconName<TModel>(this HtmlHelper html, TModel model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return MvcHtmlString.Create(nakedObject.Specification.GetIconName(nakedObject));
         }
 
@@ -237,7 +237,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Get short type name from object
         /// </summary>
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
-            var nakedObject = html.Surface().GetObject(model);
+            var nakedObject = html.Facade().GetObject(model);
             return MvcHtmlString.Create(nakedObject.Specification.ShortName);
         }
 

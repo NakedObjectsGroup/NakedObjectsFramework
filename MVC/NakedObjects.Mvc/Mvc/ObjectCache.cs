@@ -27,97 +27,97 @@ namespace NakedObjects.Web.Mvc {
         public const int CacheSize = 100;
         private static readonly string[] Bucket = {NoneBucket, BreadCrumbBucket};
 
-        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
-            var nakedObject = surface.GetObject(domainObject);
-            session.AddToCache(surface, nakedObject, url, flag);
+        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade facade, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = facade.GetObject(domainObject);
+            session.AddToCache(facade, nakedObject, url, flag);
         }
 
-        public static void AddOrUpdateInCache(this HttpSessionStateBase session, IFrameworkFacade surface, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
-            var nakedObject = surface.GetObject(domainObject);
-            session.AddOrUpdateInCache(surface, nakedObject, url, flag);
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, IFrameworkFacade facade, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = facade.GetObject(domainObject);
+            session.AddOrUpdateInCache(facade, nakedObject, url, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade surface, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            var nakedObject = surface.GetObject(domainObject);
-            session.AddToCache(surface, nakedObject, flag);
+        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade facade, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = facade.GetObject(domainObject);
+            session.AddToCache(facade, nakedObject, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade surface, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.AddToCache(surface, nakedObject, null, flag);
+        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade facade, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.AddToCache(facade, nakedObject, null, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade surface, IObjectFacade nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddToCache(this HttpSessionStateBase session, IFrameworkFacade facade, IObjectFacade nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
             if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection) {
                 //session.ClearPreviousTransients(nakedObject, flag);
-                session.GetCache(flag).AddToCache(surface, nakedObject, url, flag);
+                session.GetCache(flag).AddToCache(facade, nakedObject, url, flag);
             }
         }
 
-        public static void AddOrUpdateInCache(this HttpSessionStateBase session, IFrameworkFacade surface, IObjectFacade nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, IFrameworkFacade facade, IObjectFacade nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
             if (!nakedObject.IsTransient || nakedObject.Specification.IsCollection) {
                 //session.ClearPreviousTransients(nakedObject, flag);
-                session.GetCache(flag).AddOrUpdateInCache(surface, nakedObject, url, flag);
+                session.GetCache(flag).AddOrUpdateInCache(facade, nakedObject, url, flag);
             }
         }
 
-        public static void RemoveFromCache(this HttpSessionStateBase session, IFrameworkFacade framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            var nakedObject = framework.GetObject(domainObject);
-            session.RemoveFromCache(framework, nakedObject, flag);
+        public static void RemoveFromCache(this HttpSessionStateBase session, IFrameworkFacade facade, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = facade.GetObject(domainObject);
+            session.RemoveFromCache(facade, nakedObject, flag);
         }
 
-        private static IObjectFacade GetNakedObject(IFrameworkFacade surface, object domainObject) {
-            return surface.GetObject(domainObject);
+        private static IObjectFacade GetNakedObject(IFrameworkFacade facade, object domainObject) {
+            return facade.GetObject(domainObject);
         }
 
-        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade surface, string id) {
-            var oid = surface.OidTranslator.GetOidTranslation(id);
-            return surface.GetObject(oid).Target;
+        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade facade, string id) {
+            var oid = facade.OidTranslator.GetOidTranslation(id);
+            return facade.GetObject(oid).Target;
         }
 
-        public static void RemoveOthersFromCache(this HttpSessionStateBase session, IFrameworkFacade surface, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            var nakedObject = GetNakedObject(surface, domainObject);
-            session.RemoveOthersFromCache(surface, nakedObject, flag);
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, IFrameworkFacade facade, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            var nakedObject = GetNakedObject(facade, domainObject);
+            session.RemoveOthersFromCache(facade, nakedObject, flag);
         }
 
         public static void RemoveOthersFromCache(this HttpSessionStateBase session, string objectId, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveOthersFromCache(objectId);
         }
 
-        public static void RemoveFromCache(this HttpSessionStateBase session, IFrameworkFacade surface, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.GetCache(flag).RemoveFromCache(surface, nakedObject);
+        public static void RemoveFromCache(this HttpSessionStateBase session, IFrameworkFacade facade, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveFromCache(facade, nakedObject);
         }
 
         public static void RemoveFromCache(this HttpSessionStateBase session, string objectId, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveFromCache(objectId);
         }
 
-        public static void RemoveOthersFromCache(this HttpSessionStateBase session, IFrameworkFacade framework, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.GetCache(flag).RemoveOthersFromCache(framework, nakedObject);
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, IFrameworkFacade facade, IObjectFacade nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveOthersFromCache(facade, nakedObject);
         }
 
-        public static object LastObject(this HttpSessionStateBase session, IFrameworkFacade surface, ObjectFlag flag = ObjectFlag.None) {
+        public static object LastObject(this HttpSessionStateBase session, IFrameworkFacade facade, ObjectFlag flag = ObjectFlag.None) {
             KeyValuePair<string, CacheMemento> lastEntry = session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).LastOrDefault();
 
             if (lastEntry.Equals(default(KeyValuePair<string, CacheMemento>))) {
                 return null;
             }
 
-            var lastObject = SafeGetNakedObjectFromId(lastEntry.Key, surface);
+            var lastObject = SafeGetNakedObjectFromId(lastEntry.Key, facade);
 
             if (lastObject == null) {
                 session.GetCache(flag).Remove(lastEntry.Key);
-                return session.LastObject(surface, flag);
+                return session.LastObject(facade, flag);
             }
 
             return lastObject.Object;
         }
 
-        internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, IFrameworkFacade framework, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjects(framework, flag).Where(no => !no.IsDestroyed).Select(no => no.Object);
+        internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, IFrameworkFacade facade, ObjectFlag flag = ObjectFlag.None) {
+            return session.GetAndTidyCachedNakedObjects(facade, flag).Where(no => !no.IsDestroyed).Select(no => no.Object);
         }
 
         public static IEnumerable<string> AllCachedUrls(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
@@ -126,36 +126,36 @@ namespace NakedObjects.Web.Mvc {
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
 
-        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjects(this HttpSessionStateBase session, IFrameworkFacade framework, ObjectFlag flag) {
-            session.ClearDestroyedObjects(framework, flag);
-            return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(framework, kvp.Key));
+        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjects(this HttpSessionStateBase session, IFrameworkFacade facade, ObjectFlag flag) {
+            session.ClearDestroyedObjects(facade, flag);
+            return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(facade, kvp.Key));
         }
 
-        private static bool SameSpec(string name, ITypeFacade otherSpec, IFrameworkFacade surface) {
-            var thisSpec = surface.GetDomainType(name);
+        private static bool SameSpec(string name, ITypeFacade otherSpec, IFrameworkFacade facade) {
+            var thisSpec = facade.GetDomainType(name);
             return thisSpec.IsOfType(otherSpec);
         }
 
-        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag) {
-            session.ClearDestroyedObjectsOfType(surface, spec, flag);
-            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, surface)).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(surface, kvp.Key));
+        private static IEnumerable<IObjectFacade> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade facade, ITypeFacade spec, ObjectFlag flag) {
+            session.ClearDestroyedObjectsOfType(facade, spec, flag);
+            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, facade)).OrderBy(kvp => kvp.Value.Added).Select(kvp => GetNakedObjectFromId(facade, kvp.Key));
         }
 
-        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjectsOfType(surface, spec, flag).Select(no => no.Object);
+        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade facade, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
+            return session.GetAndTidyCachedNakedObjectsOfType(facade, spec, flag).Select(no => no.Object);
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
 
-        private static void ClearDestroyedObjects(this HttpSessionStateBase session, IFrameworkFacade framework, ObjectFlag flag = ObjectFlag.None) {
+        private static void ClearDestroyedObjects(this HttpSessionStateBase session, IFrameworkFacade facade, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, facade)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade surface, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
+        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade facade, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, surface)).Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, surface)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, facade)).Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, facade)}).Where(ao => ao.no == null).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
@@ -165,10 +165,10 @@ namespace NakedObjects.Web.Mvc {
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        private static IObjectFacade SafeGetNakedObjectFromId(string id, IFrameworkFacade surface) {
+        private static IObjectFacade SafeGetNakedObjectFromId(string id, IFrameworkFacade facade) {
             try {
-                var oid = surface.OidTranslator.GetOidTranslation(id);
-                return surface.GetObject(oid).Target;
+                var oid = facade.OidTranslator.GetOidTranslation(id);
+                return facade.GetObject(oid).Target;
             }
             catch (Exception) {
                 return null;
@@ -184,8 +184,8 @@ namespace NakedObjects.Web.Mvc {
             return objs;
         }
 
-        private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade surface, IObjectFacade nakedObject, string url, ObjectFlag flag) {
-            string objectId = surface.OidTranslator.GetOidTranslation(nakedObject).Encode();
+        private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade facade, IObjectFacade nakedObject, string url, ObjectFlag flag) {
+            string objectId = facade.OidTranslator.GetOidTranslation(nakedObject).Encode();
 
             if (cache.ContainsKey(objectId)) {
                 cache[objectId].Spec = nakedObject.Specification.FullName;
@@ -199,8 +199,8 @@ namespace NakedObjects.Web.Mvc {
             }
         }
 
-        private static void AddToCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade surface, IObjectFacade nakedObject, string url, ObjectFlag flag) {
-            var loid = surface.OidTranslator.GetOidTranslation(nakedObject);
+        private static void AddToCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade facade, IObjectFacade nakedObject, string url, ObjectFlag flag) {
+            var loid = facade.OidTranslator.GetOidTranslation(nakedObject);
 
             string objectId = loid == null ? "" : loid.Encode();
             cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url};
@@ -215,16 +215,16 @@ namespace NakedObjects.Web.Mvc {
             cache.Remove(oldestId);
         }
 
-        private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade surface, IObjectFacade nakedObject) {
-            cache.RemoveFromCache(surface.OidTranslator.GetOidTranslation(nakedObject).ToString());
+        private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade facade, IObjectFacade nakedObject) {
+            cache.RemoveFromCache(facade.OidTranslator.GetOidTranslation(nakedObject).ToString());
         }
 
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, string objectId) {
             cache.Remove(objectId);
         }
 
-        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade surface, IObjectFacade nakedObject) {
-            string id = surface.OidTranslator.GetOidTranslation(nakedObject).ToString();
+        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, IFrameworkFacade facade, IObjectFacade nakedObject) {
+            string id = facade.OidTranslator.GetOidTranslation(nakedObject).ToString();
             cache.RemoveOthersFromCache(id);
         }
 

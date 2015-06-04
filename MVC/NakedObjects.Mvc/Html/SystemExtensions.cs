@@ -21,7 +21,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private const int DefaultHistorySize = 10;
 
         public static IFrameworkFacade GetSurface(this HtmlHelper html) {
-            return html.Surface();
+            return html.Facade();
         }
 
         #region system menus
@@ -60,7 +60,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString History(this HtmlHelper html, int count, object domainObject = null, bool clearAll = false) {
             if (domainObject != null && !(domainObject is FindViewModel)) {
                 string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
-                html.ViewContext.HttpContext.Session.AddToCache(html.Surface(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
+                html.ViewContext.HttpContext.Session.AddToCache(html.Facade(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
             }
 
             List<string> urls = html.ViewContext.HttpContext.Session.AllCachedUrls(ObjectCache.ObjectFlag.BreadCrumb).ToList();
@@ -200,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (domainObject != null) {
                 newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdConstants.ViewAction, domainObject).ToString();
                 if (!(domainObject is FindViewModel) && !existingUrls.Contains(newUrl)) {
-                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Surface(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
+                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Facade(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
                 }
             }
 
@@ -269,11 +269,11 @@ namespace NakedObjects.Web.Mvc.Html {
             if (fvm != null) {
                 // if dialog return to target - unless it's a service 
                 object target = fvm.ContextObject;
-                domainObject = html.Surface().GetObject(target).Specification.IsService ? null : target;
+                domainObject = html.Facade().GetObject(target).Specification.IsService ? null : target;
             }
 
             // if target is transient  cancel back to history
-            if (domainObject != null && html.Surface().GetObject(domainObject).IsTransient) {
+            if (domainObject != null && html.Facade().GetObject(domainObject).IsTransient) {
                 domainObject = null;
             }
 

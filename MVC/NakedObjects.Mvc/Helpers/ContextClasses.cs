@@ -65,7 +65,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return this; }
         }
 
-        public IObjectFacade GetValue(IFrameworkFacade surface) {
+        public IObjectFacade GetValue(IFrameworkFacade facade) {
             return Property.GetNakedObject(Target);
         }
 
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return Action; }
         }
 
-        public ParameterContext[] GetParameterContexts(IFrameworkFacade surface) {
+        public ParameterContext[] GetParameterContexts(IFrameworkFacade facade) {
             if (parameterContexts == null) {
                 parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContext(IdHelper, EmbeddedInObject, Target, Action, p, true)).ToArray();
 
@@ -152,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Html {
                         object value;
                         if (ParameterValues.TryGetValue(pc.Parameter.Id, out value)) {
                             pc.IsHidden = true;
-                            pc.CustomValue = surface.GetObject(value);
+                            pc.CustomValue = facade.GetObject(value);
                         }
                     }
                 }
