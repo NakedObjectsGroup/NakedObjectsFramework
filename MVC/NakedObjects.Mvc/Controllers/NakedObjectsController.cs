@@ -17,7 +17,6 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility;
 using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Resources;
-using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
 
@@ -702,7 +701,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                             viewResult.ViewName = "ViewModel";
                         }
                         else if (nakedObject.Specification.IsFile) {
-                            filterContext.Result = AsFile(nakedObject.Object);
+                            filterContext.Result = AsFile(nakedObject);
                         }
                         else if (nakedObject.Specification.IsParseable) {
                             viewResult.ViewName = "ScalarView";
@@ -719,27 +718,29 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return !string.IsNullOrEmpty(ar.Reason) || ar.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason));
         }
 
-        protected FileContentResult AsFile(object domainObject) {
-            if (domainObject is FileAttachment) {
-                var fileAttachment = domainObject as FileAttachment;
-                bool addHeader = !string.IsNullOrWhiteSpace(fileAttachment.DispositionType);
+        protected FileContentResult AsFile(IObjectFacade domainObject) {
+            var fileAttachment = domainObject.GetAttachment();
+
+            if (fileAttachment != null) {
+                bool addHeader = !string.IsNullOrWhiteSpace(fileAttachment.ContentDisposition);
 
                 if (addHeader) {
-                    string dispositionValue = string.Format("{0}; filename={1}", fileAttachment.DispositionType, fileAttachment.Name);
+                    string dispositionValue = string.Format("{0}; filename={1}", fileAttachment.ContentDisposition, fileAttachment.FileName);
                     Response.AddHeader("Content-Disposition", dispositionValue);
                 }
 
-                Stream stream = fileAttachment.GetResourceAsStream();
+                Stream stream = fileAttachment.Content;
                 using (var br = new BinaryReader(stream)) {
                     byte[] bytes = br.ReadBytes((int) stream.Length);
                     var mimeType = fileAttachment.MimeType ?? "image/bmp";
 
                     // need to use different File overloads or will end up with two content-disposition headers 
-                    return addHeader ? File(bytes, mimeType) : File(bytes, mimeType, fileAttachment.Name);
+                    return addHeader ? File(bytes, mimeType) : File(bytes, mimeType, fileAttachment.FileName);
                 }
             }
-            var byteArray = domainObject as byte[];
+            var byteArray = domainObject.GetDomainObject<object>() as byte[];
             return File(byteArray, "application/octet-stream");
         }
+
     }
 }

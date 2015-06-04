@@ -177,7 +177,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var tgt = Surface.GetObject(oid).Target;
 
             var p = Surface.GetProperty(oid, PropertyId);
-            var domainObject = p.Property.GetNakedObject(tgt).Object;
+            var domainObject = p.Property.GetNakedObject(tgt);
 
             return AsFile(domainObject);
         }

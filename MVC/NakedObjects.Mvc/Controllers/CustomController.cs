@@ -20,7 +20,6 @@ using NakedObjects.Web.Mvc.Models;
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
         protected CustomController(IFrameworkFacade surface, IIdHelper idHelper) : base(surface, idHelper) {}
-        public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions
 
@@ -296,12 +295,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Creates and populates the values in a transient object from a form
         /// </summary>
         /// <param name="form">Form to populate from</param>
-        protected T RecreateTransient<T>(FormCollection form) where T : new() {
-            var obj = Container.NewTransientInstance<T>();
-            var naked = GetNakedObject(obj);
-            RefreshTransient(naked, form);
-            return obj;
-        }
+        //protected T RecreateTransient<T>(FormCollection form) where T : new() {
+        //    var obj = Container.NewTransientInstance<T>();
+        //    var naked = GetNakedObject(obj);
+        //    RefreshTransient(naked, form);
+        //    return obj;
+        //}
 
         /// <summary>
         ///     Apply changes from form and attempt to save
