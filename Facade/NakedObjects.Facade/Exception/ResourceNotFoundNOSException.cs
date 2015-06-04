@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Facade {
-    public abstract class ResourceNotFoundNOSException : NakedObjectsSurfaceException {
+    public abstract class ResourceNotFoundNOSException : NakedObjectsFacadeException {
         protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) {
             ResourceId = resourceId;
         }

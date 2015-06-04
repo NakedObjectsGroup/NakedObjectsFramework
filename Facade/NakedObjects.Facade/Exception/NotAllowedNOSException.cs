@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Facade {
-    public class NotAllowedNOSException : NakedObjectsSurfaceException {
+    public class NotAllowedNOSException : NakedObjectsFacadeException {
         public NotAllowedNOSException(string message) : base(message) {}
     }
 
-    public class NoContentNOSException : NakedObjectsSurfaceException {}
+    public class NoContentNOSException : NakedObjectsFacadeException {}
 }

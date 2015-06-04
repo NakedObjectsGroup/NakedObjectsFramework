@@ -811,7 +811,7 @@ namespace RestfulObjects.Mvc {
                 Logger.DebugFormat("HttpResponseException being passed up {0}", e.Message);
                 throw;
             }
-            catch (NakedObjectsSurfaceException e) {
+            catch (NakedObjectsFacadeException e) {
                 return ErrorMsg(e);
             }
             catch (Exception e) {
@@ -829,7 +829,7 @@ namespace RestfulObjects.Mvc {
                 Logger.DebugFormat("HttpResponseException being passed up {0}", e.Message);
                 throw;
             }
-            catch (NakedObjectsSurfaceException e) {
+            catch (NakedObjectsFacadeException e) {
                 return ErrorMsg(e);
             }
             catch (Exception e) {
@@ -839,7 +839,7 @@ namespace RestfulObjects.Mvc {
         }
 
         private HttpResponseMessage ErrorMsg(Exception e) {
-            Logger.InfoFormat("ErrorMsg - NakedObjectsSurfaceException Msg: {0}", e.Message);
+            Logger.InfoFormat("ErrorMsg - NakedObjectsFacadeException Msg: {0}", e.Message);
             return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
         }
 

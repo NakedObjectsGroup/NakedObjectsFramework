@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 
 namespace NakedObjects.Facade.Utility.Restricted {
-    public static class SurfaceHelper {
+    public static class FacadeHelper {
         // todo cloned from typeutils move to common helper dll
 
         private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";

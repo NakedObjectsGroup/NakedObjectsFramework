@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Facade {
-    public class DataUpdateNOSException : NakedObjectsSurfaceException {
+    public class DataUpdateNOSException : NakedObjectsFacadeException {
         public DataUpdateNOSException(Exception e) : base(e) {}
     }
 }

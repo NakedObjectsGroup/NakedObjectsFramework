@@ -345,7 +345,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             try {
                 return f();
             }
-            catch (NakedObjectsSurfaceException) {
+            catch (NakedObjectsFacadeException) {
                 throw;
             }
             catch (Exception e) {

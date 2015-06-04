@@ -8,7 +8,7 @@
 using NakedObjects.Facade;
 
 namespace RestfulObjects.Snapshot.Utility {
-    public class PreconditionHeaderMissingNOSException : NakedObjectsSurfaceException {
+    public class PreconditionHeaderMissingNOSException : NakedObjectsFacadeException {
         public PreconditionHeaderMissingNOSException(string message) : base(message) {}
     }
 }

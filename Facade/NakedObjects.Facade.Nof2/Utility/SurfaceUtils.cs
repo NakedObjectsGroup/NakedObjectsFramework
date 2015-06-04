@@ -17,7 +17,7 @@ using Action = org.nakedobjects.@object.Action;
 
 namespace NakedObjects.Facade.Nof2.Utility {
     public static class SurfaceUtils {
-        public static NakedObjectsSurfaceException Map(Exception e) {
+        public static NakedObjectsFacadeException Map(Exception e) {
             // map to appropriate exception 
 
             //if (e is FindObjectException) {

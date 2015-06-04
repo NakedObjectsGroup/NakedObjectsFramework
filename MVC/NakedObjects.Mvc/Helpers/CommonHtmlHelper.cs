@@ -44,7 +44,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
     internal static class CommonHtmlHelper {
         public static IFrameworkFacade Facade(this HtmlHelper html) {
-            return (IFrameworkFacade) html.ViewData[IdConstants.NoSurface];
+            return (IFrameworkFacade) html.ViewData[IdConstants.NoFacade];
         }
 
         public static IIdHelper IdHelper(this HtmlHelper html) {
@@ -169,7 +169,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             var url = new UrlHelper(html.ViewContext.RequestContext);
             var tag = new TagBuilder("img");
-            tag.MergeAttribute("src", url.Content("~/Images/" + SurfaceHelper.IconName(nakedObject)));
+            tag.MergeAttribute("src", url.Content("~/Images/" + FacadeHelper.IconName(nakedObject)));
             tag.MergeAttribute("alt", nakedObject.Specification.SingularName);
             return tag.ToString(TagRenderMode.SelfClosing);
         }

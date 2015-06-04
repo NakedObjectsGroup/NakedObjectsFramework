@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Facade {
-    public class PreconditionFailedNOSException : NakedObjectsSurfaceException {
+    public class PreconditionFailedNOSException : NakedObjectsFacadeException {
         public PreconditionFailedNOSException() {}
         public PreconditionFailedNOSException(string message) : base(message) {}
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) {}

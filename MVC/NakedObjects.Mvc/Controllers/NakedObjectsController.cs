@@ -61,7 +61,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetFacade() {
-            ViewData[IdConstants.NoSurface] = Facade;
+            ViewData[IdConstants.NoFacade] = Facade;
             ViewData[IdConstants.IdHelper] = IdHelper;
         }
 
@@ -553,7 +553,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ModelState.AddModelError(key, pcs.Reason);
                 }
             }
-            catch (NakedObjectsSurfaceException) {
+            catch (NakedObjectsFacadeException) {
                 ModelState.AddModelError(key, MvcUi.InvalidEntry);
             }
             finally {

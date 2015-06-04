@@ -775,7 +775,7 @@ namespace NakedObjects.Facade.Impl {
             try {
                 return f();
             }
-            catch (NakedObjectsSurfaceException) {
+            catch (NakedObjectsFacadeException) {
                 throw;
             }
             catch (Exception e) {

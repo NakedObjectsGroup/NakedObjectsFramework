@@ -8,7 +8,7 @@
 using System;
 
 namespace NakedObjects.Facade {
-    public class GeneralErrorNOSException : NakedObjectsSurfaceException {
+    public class GeneralErrorNOSException : NakedObjectsFacadeException {
         public GeneralErrorNOSException(Exception e) : base(e.Message, e) {}
 
         public override string Message {

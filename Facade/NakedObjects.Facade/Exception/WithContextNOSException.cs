@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade {
-    public abstract class WithContextNOSException : NakedObjectsSurfaceException {
+    public abstract class WithContextNOSException : NakedObjectsFacadeException {
         private IList<ContextFacade> contexts;
         protected WithContextNOSException() {}
         protected WithContextNOSException(string message) : base(message) {}

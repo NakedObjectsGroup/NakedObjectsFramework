@@ -655,7 +655,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 filterContext.Result = View("DestroyedError");
                 filterContext.ExceptionHandled = true;
             }
-            else if (filterContext.Exception is NakedObjectsSurfaceException) {
+            else if (filterContext.Exception is NakedObjectsFacadeException) {
                 filterContext.Result = View("DomainError", filterContext.Exception);
                 filterContext.ExceptionHandled = true;
             }

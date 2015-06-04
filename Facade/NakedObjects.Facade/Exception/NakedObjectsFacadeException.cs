@@ -8,11 +8,11 @@
 using System;
 
 namespace NakedObjects.Facade {
-    public class NakedObjectsSurfaceException : Exception {
-        public NakedObjectsSurfaceException(string message, Exception e) : base(message, e) {}
-        public NakedObjectsSurfaceException(Exception e) : base("", e) {}
-        public NakedObjectsSurfaceException() {}
-        public NakedObjectsSurfaceException(string message) : base(message) {}
+    public class NakedObjectsFacadeException : Exception {
+        public NakedObjectsFacadeException(string message, Exception e) : base(message, e) {}
+        public NakedObjectsFacadeException(Exception e) : base("", e) {}
+        public NakedObjectsFacadeException() {}
+        public NakedObjectsFacadeException(string message) : base(message) {}
     }
 
     // todo rename to be less coupled to httpstatus code
