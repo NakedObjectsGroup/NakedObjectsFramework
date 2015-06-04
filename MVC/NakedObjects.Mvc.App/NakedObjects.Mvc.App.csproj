@@ -148,6 +148,14 @@
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-alpha\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.Impl.1.0.0-alpha\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.FWResources.dll</HintPath>
       <Private>True</Private>
@@ -174,14 +182,6 @@
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-alpha\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NakedObjects.Surface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Surface.7.1.0-alpha\lib\net451\NakedObjects.Surface.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.1.0-alpha\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
