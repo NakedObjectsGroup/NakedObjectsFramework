@@ -13,7 +13,7 @@ namespace NakedObjects.Facade.Impl {
         private readonly IOid oid;
 
         public OidFacade(IOid oid) {
-            SurfaceUtils.AssertNotNull(oid, "Oid is null");
+            FacadeUtils.AssertNotNull(oid, "Oid is null");
 
             this.oid = oid;
         }

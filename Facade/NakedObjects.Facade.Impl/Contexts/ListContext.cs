@@ -16,10 +16,10 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public IObjectSpec ElementType { get; set; }
         public bool IsListOfServices { get; set; }
 
-        public ListContextFacade ToListContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public ListContextFacade ToListContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             return new ListContextFacade {
-                ElementType = new TypeFacade(ElementType, surface, framework),
-                List = List.Select(no => ObjectFacade.Wrap(no, surface, framework)).Cast<IObjectFacade>().ToArray(),
+                ElementType = new TypeFacade(ElementType, facade, framework),
+                List = List.Select(no => ObjectFacade.Wrap(no, facade, framework)).Cast<IObjectFacade>().ToArray(),
                 IsListOfServices = IsListOfServices
             };
         }

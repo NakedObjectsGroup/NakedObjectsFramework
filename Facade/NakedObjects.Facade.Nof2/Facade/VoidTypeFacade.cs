@@ -125,7 +125,7 @@ namespace NakedObjects.Facade.Nof2 {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 

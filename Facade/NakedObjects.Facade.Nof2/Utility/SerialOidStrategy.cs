@@ -47,7 +47,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { set; get; }
+        public IFrameworkFacade FrameworkFacade { set; get; }
 
         #endregion
 
@@ -109,7 +109,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
             if (string.IsNullOrEmpty(serviceName.Trim())) {
                 throw new BadRequestNOSException();
             }
-            return SurfaceUtils.GetServicesInternal().Where(s => s.getSpecification().getFullName() == serviceName).SingleOrDefault();
+            return FacadeUtils.GetServicesInternal().Where(s => s.getSpecification().getFullName() == serviceName).SingleOrDefault();
         }
     }
 }

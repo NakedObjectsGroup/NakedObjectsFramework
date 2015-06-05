@@ -10,7 +10,7 @@ using System.Reflection;
 using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade {
-    public interface IObjectFacade : ISurfaceHolder {
+    public interface IObjectFacade : IFacadeHolder {
         ITypeFacade Specification { get; }
         ITypeFacade ElementSpecification { get; }
         object Object { get; }

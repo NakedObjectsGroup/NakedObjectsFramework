@@ -113,14 +113,14 @@
     <Compile Include="Contexts\ParameterContextFacade.cs" />
     <Compile Include="Contexts\PropertyContextFacade.cs" />
     <Compile Include="Exception\NakedObjectsFacadeException.cs" />
-    <Compile Include="Interface\ISurfaceHolder.cs" />
+    <Compile Include="Interface\IFacadeHolder.cs" />
     <Compile Include="Facade\IOidFacade.cs" />
     <Compile Include="Facade\IVersionFacade.cs" />
     <Compile Include="Translation\OidTranslationSlashSeparatedTypeAndIds.cs" />
     <Compile Include="Translation\OidTranslationSemiColonSeparatedList.cs" />
     <Compile Include="Utility\IdConstants.cs" />
     <Compile Include="Interface\IIdHelper.cs" />
-    <Compile Include="Interface\IMessageBrokerSurface.cs" />
+    <Compile Include="Interface\IMessageBrokerFacade.cs" />
     <Compile Include="Interface\UserCredentials.cs" />
     <Compile Include="Interface\IOidStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

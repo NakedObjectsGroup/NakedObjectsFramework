@@ -21,13 +21,13 @@ namespace NakedObjects.Facade.Impl.Contexts {
             get { return Property.ReturnSpec; }
         }
 
-        public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new PropertyContextFacade {
-                Property = new AssociationFacade(Property, surface, framework),
+                Property = new AssociationFacade(Property, facade, framework),
                 Mutated = Mutated
             };
 
-            return ToContextSurface(pc, surface, framework);
+            return ToContextFacade(pc, facade, framework);
         }
     }
 }

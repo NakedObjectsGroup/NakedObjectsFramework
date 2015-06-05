@@ -13,7 +13,7 @@ namespace NakedObjects.Facade {
     public interface IFrameworkFacade {
         IOidTranslator OidTranslator { get; }
         IOidStrategy OidStrategy { get; }
-        IMessageBrokerSurface MessageBroker { get; }
+        IMessageBrokerFacade MessageBroker { get; }
         void Start();
         void End(bool success);
         IPrincipal GetUser();

@@ -40,10 +40,10 @@ namespace NakedObjects.Facade.Impl.Contexts {
             get { return ActionContext.Action.ReturnSpec; }
         }
 
-        public ActionResultContextFacade ToActionResultContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionResultContextFacade {
-                Result = Result == null ? null : Result.ToObjectContextSurface(surface, framework),
-                ActionContext = ActionContext.ToActionContextSurface(surface, framework),
+                Result = Result == null ? null : Result.ToObjectContextFacade(facade, framework),
+                ActionContext = ActionContext.ToActionContextFacade(facade, framework),
                 HasResult = HasResult
             };
 
@@ -52,7 +52,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
                 ErrorCause = ActionContext.ErrorCause;
             }
 
-            return ToContextSurface(ac, surface, framework);
+            return ToContextFacade(ac, facade, framework);
         }
     }
 }

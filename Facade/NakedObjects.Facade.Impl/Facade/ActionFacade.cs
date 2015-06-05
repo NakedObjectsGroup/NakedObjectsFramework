@@ -19,16 +19,16 @@ namespace NakedObjects.Facade.Impl {
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
-        public ActionFacade(IActionSpec action, IFrameworkFacade surface, INakedObjectsFramework framework, string overloadedUniqueId) {
-            SurfaceUtils.AssertNotNull(action, "Action is null");
-            SurfaceUtils.AssertNotNull(framework, "framework is null");
-            SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
-            SurfaceUtils.AssertNotNull(surface, "surface is null");
+        public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
+            FacadeUtils.AssertNotNull(action, "Action is null");
+            FacadeUtils.AssertNotNull(framework, "framework is null");
+            FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
+            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
 
             this.action = action;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public IActionSpec WrappedSpec {
@@ -36,7 +36,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(action.ReturnSpec, Surface, framework); }
+            get { return new TypeFacade(action.ReturnSpec, FrameworkFacade, framework); }
         }
 
         #region IActionFacade Members
@@ -96,13 +96,13 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ITypeFacade ReturnType {
-            get { return new TypeFacade(action.ReturnSpec, Surface, framework); }
+            get { return new TypeFacade(action.ReturnSpec, FrameworkFacade, framework); }
         }
 
         public ITypeFacade ElementType {
             get {
                 var elementSpec = action.ElementSpec;
-                return elementSpec == null ? null : new TypeFacade(elementSpec, Surface, framework);
+                return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
         }
 
@@ -111,7 +111,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IActionParameterFacade[] Parameters {
-            get { return action.Parameters.Select(p => new ActionParameterFacade(p, Surface, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
+            get { return action.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
@@ -123,10 +123,10 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ITypeFacade OnType {
-            get { return new TypeFacade(action.OnSpec, Surface, framework); }
+            get { return new TypeFacade(action.OnSpec, FrameworkFacade, framework); }
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool RenderEagerly {
             get {

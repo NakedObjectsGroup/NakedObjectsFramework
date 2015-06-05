@@ -46,7 +46,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
             Type type = ValidateServiceId(serviceName);
 
             try {
-                return SurfaceUtils.GetServicesInternal().Single(s => s.getSpecification().getFullName() == type.FullName).getObject();
+                return FacadeUtils.GetServicesInternal().Single(s => s.getSpecification().getFullName() == type.FullName).getObject();
             }
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(serviceName.DomainType, e);
@@ -56,7 +56,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             NakedObjectSpecification spec = org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(type.FullName);
-            return new TypeFacade(spec, null, Surface);
+            return new TypeFacade(spec, null, FrameworkFacade);
         }
 
         public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
@@ -79,7 +79,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { set; get; }
+        public IFrameworkFacade FrameworkFacade { set; get; }
 
         #endregion
 
@@ -130,7 +130,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
         }
 
         private static string GetCode(ITypeFacade spec) {
-            return GetCode(SurfaceUtils.GetType(spec.FullName));
+            return GetCode(FacadeUtils.GetType(spec.FullName));
         }
 
         private static Type GetType(string typeName) {

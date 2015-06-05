@@ -21,12 +21,12 @@ namespace NakedObjects.Facade.Impl {
         private readonly INakedObjectsFramework framework;
         private readonly ITypeSpec spec;
 
-        public TypeFacade(ITypeSpec spec, IFrameworkFacade surface, INakedObjectsFramework framework) {
-            SurfaceUtils.AssertNotNull(spec, "Spec is null");
-            SurfaceUtils.AssertNotNull(surface, "Surface is null");
-            SurfaceUtils.AssertNotNull(framework, "framework is null");
+        public TypeFacade(ITypeSpec spec, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+            FacadeUtils.AssertNotNull(spec, "Spec is null");
+            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
+            FacadeUtils.AssertNotNull(framework, "framework is null");
 
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
             this.spec = spec;
             this.framework = framework;
         }
@@ -152,12 +152,12 @@ namespace NakedObjects.Facade.Impl {
         public IAssociationFacade[] Properties {
             get {
                 var objectSpec = spec as IObjectSpec;
-                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationFacade(p, Surface, framework)).Cast<IAssociationFacade>().ToArray();
+                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray();
             }
         }
 
         public IMenuFacade Menu {
-            get { return new MenuFacade(spec.Menu, Surface, framework); }
+            get { return new MenuFacade(spec.Menu, FrameworkFacade, framework); }
         }
 
         public bool IsImmutable(IObjectFacade nakedObject) {
@@ -169,15 +169,15 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IActionFacade[] GetActionLeafNodes() {
-            var actionsAndUid = SurfaceUtils.GetActionsandUidFromSpec(spec);
-            return actionsAndUid.Select(a => new ActionFacade(a.Item1, Surface, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
+            var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(spec);
+            return actionsAndUid.Select(a => new ActionFacade(a.Item1, FrameworkFacade, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade nakedObject) {
             if (IsCollection) {
                 var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-                return new TypeFacade(elementSpec, Surface, framework);
+                return new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
             return null;
         }
@@ -193,7 +193,7 @@ namespace NakedObjects.Facade.Impl {
         public IActionFacade[] GetCollectionContributedActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
             return new IActionFacade[] {};
         }
@@ -201,12 +201,12 @@ namespace NakedObjects.Facade.Impl {
         public IActionFacade[] GetFinderActions() {
             var objectSpec = spec as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetFinderActions().Select(a => new ActionFacade(a, Surface, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetFinderActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
             return new IActionFacade[] {};
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool Equals(ITypeFacade other) {
             return Equals((object) other);

@@ -29,7 +29,7 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         #region IOidStrategy Members
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         public object GetDomainObjectByOid(IOidTranslation objectId) {
             if (objectId == null) {
@@ -75,7 +75,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
             ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
-            return new TypeFacade(spec, Surface, framework);
+            return new TypeFacade(spec, FrameworkFacade, framework);
         }
 
         public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {

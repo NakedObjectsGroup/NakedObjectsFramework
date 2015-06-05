@@ -17,10 +17,10 @@ namespace NakedObjects.Facade.Nof2 {
         private readonly NakedObjectField assoc;
         private readonly Naked target;
 
-        public AssociationFacade(NakedObjectField assoc, Naked target, IFrameworkFacade surface) {
+        public AssociationFacade(NakedObjectField assoc, Naked target, IFrameworkFacade frameworkFacade) {
             this.assoc = assoc;
             this.target = target;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public bool IsChoicesEnabled {
@@ -104,11 +104,11 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(assoc.getSpecification(), target, Surface); }
+            get { return new TypeFacade(assoc.getSpecification(), target, FrameworkFacade); }
         }
 
         public ITypeFacade ElementSpecification {
-            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
+            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, FrameworkFacade); }
         }
 
         Choices IAssociationFacade.IsChoicesEnabled {
@@ -147,7 +147,7 @@ namespace NakedObjects.Facade.Nof2 {
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {
             Naked result = assoc.get((NakedObject) ((ObjectFacade) target).NakedObject);
-            return result == null ? null : new ObjectFacade(result, Surface);
+            return result == null ? null : new ObjectFacade(result, FrameworkFacade);
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
@@ -194,7 +194,7 @@ namespace NakedObjects.Facade.Nof2 {
             return nakedObject.TitleString;
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 

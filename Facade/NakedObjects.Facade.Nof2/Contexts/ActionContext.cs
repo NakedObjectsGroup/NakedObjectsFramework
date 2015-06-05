@@ -27,13 +27,13 @@ namespace NakedObjects.Facade.Nof2.Contexts {
             set { parameters = value; }
         }
 
-        public ActionContextFacade ToActionContextSurface(IFrameworkFacade surface) {
+        public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade) {
             var ac = new ActionContextFacade {
-                Action = new ActionFacade(Action, Target, surface),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface)).ToArray()
+                Action = new ActionFacade(Action, Target, facade),
+                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade)).ToArray()
             };
 
-            return ToContextSurface(ac, surface);
+            return ToContextFacade(ac, facade);
         }
     }
 }

@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Facade.Impl {
     public class MenuFacade : IMenuFacade {
-        public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public MenuFacade(IMenuImmutable wrapped, IFrameworkFacade facade, INakedObjectsFramework framework) {
             Wrapped = wrapped;
-            MenuItems = wrapped.MenuItems.Select(i => Wrap(i, surface, framework)).ToList();
+            MenuItems = wrapped.MenuItems.Select(i => Wrap(i, facade, framework)).ToList();
             Name = wrapped.Name;
             Id = wrapped.Id;
         }
@@ -27,14 +27,14 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) {
             var immutable = menu as IMenuActionImmutable;
             if (immutable != null) {
-                return new MenuActionFacade(immutable, surface, framework);
+                return new MenuActionFacade(immutable, facade, framework);
             }
 
             var menuImmutable = menu as IMenuImmutable;
-            return menuImmutable != null ? (IMenuItemFacade) new MenuFacade(menuImmutable, surface, framework) : new MenuItemFacade(menu);
+            return menuImmutable != null ? (IMenuItemFacade) new MenuFacade(menuImmutable, facade, framework) : new MenuItemFacade(menu);
         }
     }
 }

@@ -19,11 +19,11 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public object ProposedValue { get; set; }
         public abstract ITypeSpec Specification { get; }
 
-        protected T ToContextSurface<T>(T context, IFrameworkFacade surface, INakedObjectsFramework framework) where T : ContextFacade {
-            context.Target = ObjectFacade.Wrap(Target, surface, framework);
+        protected T ToContextFacade<T>(T context, IFrameworkFacade facade, INakedObjectsFramework framework) where T : ContextFacade {
+            context.Target = ObjectFacade.Wrap(Target, facade, framework);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;
-            context.ProposedNakedObject = ObjectFacade.Wrap(ProposedNakedObject, surface, framework);
+            context.ProposedNakedObject = ObjectFacade.Wrap(ProposedNakedObject, facade, framework);
             context.ProposedValue = ProposedValue;
 
             return context;

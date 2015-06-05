@@ -29,12 +29,12 @@ using NakedObjects.Util;
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly IMessageBrokerSurface messageBroker;
+        private readonly IMessageBrokerFacade messageBroker;
         private readonly IOidStrategy oidStrategy;
         private readonly IOidTranslator oidTranslator;
 
         public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
-            oidStrategy.Surface = this;
+            oidStrategy.FrameworkFacade = this;
             this.oidStrategy = oidStrategy;
             this.oidTranslator = oidTranslator;
             this.framework = framework;
@@ -87,7 +87,7 @@ namespace NakedObjects.Facade.Impl {
             get { return oidStrategy; }
         }
 
-        public IMessageBrokerSurface MessageBroker {
+        public IMessageBrokerFacade MessageBroker {
             get { return messageBroker; }
         }
 
@@ -98,11 +98,11 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ObjectContextFacade GetService(IOidTranslation serviceName) {
-            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this, framework));
+            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextFacade(this, framework));
         }
 
         public ListContextFacade GetServices() {
-            return MapErrors(() => GetServicesInternal().ToListContextSurface(this, framework));
+            return MapErrors(() => GetServicesInternal().ToListContextFacade(this, framework));
         }
 
         public IMenuFacade[] GetMainMenus() {
@@ -111,11 +111,11 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ObjectContextFacade GetObject(IObjectFacade nakedObject) {
-            return MapErrors(() => GetObjectContext(((ObjectFacade) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
+            return MapErrors(() => GetObjectContext(((ObjectFacade) nakedObject).WrappedNakedObject).ToObjectContextFacade(this, framework));
         }
 
         public ObjectContextFacade RefreshObject(IObjectFacade nakedObject, ArgumentsContextFacade arguments) {
-            return MapErrors(() => RefreshObjectInternal(((ObjectFacade) nakedObject).WrappedNakedObject, arguments).ToObjectContextSurface(this, framework));
+            return MapErrors(() => RefreshObjectInternal(((ObjectFacade) nakedObject).WrappedNakedObject, arguments).ToObjectContextFacade(this, framework));
         }
 
         public ITypeFacade GetDomainType(string typeName) {
@@ -137,7 +137,7 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => {
                 Tuple<ActionContext, ITypeSpec> pc = GetActionTypeInternal(typeName, actionName);
                 return new ActionTypeContextFacade {
-                    ActionContext = pc.Item1.ToActionContextSurface(this, framework),
+                    ActionContext = pc.Item1.ToActionContextFacade(this, framework),
                     OwningSpecification = GetSpecificationWrapper(pc.Item2)
                 };
             });
@@ -186,7 +186,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ObjectContextFacade GetObject(IOidTranslation oid) {
-            return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
+            return MapErrors(() => GetObjectInternal(oid).ToObjectContextFacade(this, framework));
         }
 
         public ObjectContextFacade PutObject(IOidTranslation oid, ArgumentsContextFacade arguments) {
@@ -194,27 +194,27 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public PropertyContextFacade GetProperty(IOidTranslation oid, string propertyName) {
-            return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextSurface(this, framework));
+            return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextFacade(this, framework));
         }
 
         public ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextSurface(this, framework));
+            return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextFacade(this, framework));
         }
 
         public ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
+            return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextFacade(this, framework));
         }
 
         public ListContextFacade GetServiceParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
+            return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextFacade(this, framework));
         }
 
         public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) {
-            return MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextSurface(this, framework));
+            return MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextFacade(this, framework));
         }
 
         public ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName) {
-            return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextSurface(this, framework));
+            return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextFacade(this, framework));
         }
 
         public PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument) {
@@ -520,7 +520,7 @@ namespace NakedObjects.Facade.Impl {
                 }
             }
             context.Mutated = true; // mark as changed even if property not actually changed to stop self rep
-            return context.ToPropertyContextSurface(this, framework);
+            return context.ToPropertyContextFacade(this, framework);
         }
 
         private void SetProperty(PropertyContext context) {
@@ -573,7 +573,7 @@ namespace NakedObjects.Facade.Impl {
             oc.Mutated = true;
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this, framework);
+            return oc.ToObjectContextFacade(this, framework);
         }
 
         private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
@@ -608,7 +608,7 @@ namespace NakedObjects.Facade.Impl {
             ObjectContext oc = GetObjectContext(objectContext.Target);
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this, framework);
+            return oc.ToObjectContextFacade(this, framework);
         }
 
         private bool ValidateParameters(ActionContext actionContext, IDictionary<string, object> rawParms) {
@@ -706,7 +706,7 @@ namespace NakedObjects.Facade.Impl {
                     actionResultContext.Result = GetObjectContext(result);
                 }
             }
-            return actionResultContext.ToActionResultContextSurface(this, framework);
+            return actionResultContext.ToActionResultContextFacade(this, framework);
         }
 
         // TODO either move this into framework or (better?) add a VetoCause enum to Veto and use  
@@ -779,7 +779,7 @@ namespace NakedObjects.Facade.Impl {
                 throw;
             }
             catch (Exception e) {
-                throw SurfaceUtils.Map(e);
+                throw FacadeUtils.Map(e);
             }
         }
 
@@ -827,7 +827,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
-            IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+            IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
             // todo tidy this 
             if (action == null) {
@@ -840,7 +840,7 @@ namespace NakedObjects.Facade.Impl {
 
                     if (elementSpec != null) {
                         actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
-                        action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+                        action = actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
                     }
                 }
             }
@@ -849,7 +849,7 @@ namespace NakedObjects.Facade.Impl {
                 throw new ActionResourceNotFoundNOSException(actionName);
             }
 
-            return new Tuple<IActionSpec, string>(action, SurfaceUtils.GetOverloadedUId(action, nakedObject.Spec));
+            return new Tuple<IActionSpec, string>(action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
         }
 
         private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
@@ -883,7 +883,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             ITypeSpec spec = GetDomainTypeInternal(typeName);
-            var actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
+            var actionAndUid = FacadeUtils.GetActionandUidFromSpec(spec, actionName, typeName);
 
             var actionContext = new ActionContext {
                 Action = actionAndUid.Item1,
@@ -900,7 +900,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             ITypeSpec spec = GetDomainTypeInternal(typeName);
-            Tuple<IActionSpec, string> actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
+            Tuple<IActionSpec, string> actionAndUid = FacadeUtils.GetActionandUidFromSpec(spec, actionName, typeName);
 
             IActionParameterSpec parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
 
@@ -943,7 +943,7 @@ namespace NakedObjects.Facade.Impl {
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
-                VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
+                VisibleActions = actions.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
                     Action = a.action,
                     Target = nakedObject,
                     VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
@@ -1005,24 +1005,24 @@ namespace NakedObjects.Facade.Impl {
             private readonly INakedObjectsFramework framework;
             private readonly IActionParameterSpec parm;
             private readonly IOneToOneAssociationSpec prop;
-            private readonly IFrameworkFacade surface;
+            private readonly IFrameworkFacade frameworkFacade;
 
-            private PropParmAdapter(object p, IFrameworkFacade surface, INakedObjectsFramework framework) {
-                this.surface = surface;
+            private PropParmAdapter(object p, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+                this.frameworkFacade = frameworkFacade;
                 this.framework = framework;
                 if (p == null) {
                     throw new BadRequestNOSException();
                 }
             }
 
-            public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade surface, INakedObjectsFramework framework)
-                : this((object) prop, surface, framework) {
+            public PropParmAdapter(IOneToOneAssociationSpec prop, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework)
+                : this((object) prop, frameworkFacade, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
             }
 
-            public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade surface, INakedObjectsFramework framework)
-                : this((object) parm, surface, framework) {
+            public PropParmAdapter(IActionParameterSpec parm, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework)
+                : this((object) parm, frameworkFacade, framework) {
                 this.parm = parm;
                 CheckAutocompleOrConditional();
             }
@@ -1058,7 +1058,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             private ITypeFacade GetSpecificationWrapper(IObjectSpec spec) {
-                return new TypeFacade(spec, surface, framework);
+                return new TypeFacade(spec, frameworkFacade, framework);
             }
 
             private INakedObjectAdapter[] GetConditionalList(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {

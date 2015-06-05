@@ -9,7 +9,7 @@ namespace NakedObjects.Facade {
     public interface IIdHelper {
         string GetDisplayFormatId(string id);
         string GetCollectionItemId(IObjectFacade owner, IAssociationFacade assoc);
-        string GetObjectId(IObjectFacade owner);
+        string GetObjectId(IObjectFacade objectFacade);
         string GetFieldId(IObjectFacade owner, IAssociationFacade assoc);
         string GetInlineFieldId(IAssociationFacade parent, IObjectFacade owner, IAssociationFacade assoc);
         string GetFieldInputId(IObjectFacade owner, IAssociationFacade assoc);
@@ -21,24 +21,24 @@ namespace NakedObjects.Facade {
         string GetActionId(IObjectFacade owner, IActionFacade action);
         string GetActionDialogId(IObjectFacade owner, IActionFacade action);
         string GetSubMenuId(IObjectFacade owner, IActionFacade action);
-        string GetSubMenuId(IObjectFacade owner, IObjectFacade service);
+        string GetSubMenuId(IObjectFacade owner, IObjectFacade serviceFacade);
         string GetFindMenuId(IObjectFacade nakedObject, IActionFacade action, string propertyName);
         string GetParameterId(IActionFacade action, IActionParameterFacade parameter);
         string GetParameterInputId(IActionFacade action, IActionParameterFacade parameter);
         string GetParameterAutoCompleteId(IActionFacade action, IActionParameterFacade parameter);
-        string GetCollectionContainerId(IObjectFacade collection);
+        string GetCollectionContainerId(IObjectFacade collectionFacade);
         string GetActionContainerId(IObjectFacade nakedObject);
         string GetServiceContainerId(IObjectFacade nakedObject);
         string GetFieldContainerId(IObjectFacade nakedObject);
         string GetParameterContainerId(IActionFacade action);
-        string GetGenericActionId(IObjectFacade owner, string type);
+        string GetGenericActionId(IObjectFacade objectFacade, string type);
         string GetActionLabel(IObjectFacade nakedObject);
-        string GetServiceLabel(IObjectFacade nakedObject);
+        string GetServiceLabel(IObjectFacade objectFacade);
         string GetMandatoryIndicatorClass();
         string GetMandatoryIndicator();
         string MakeId(params string[] ids);
         bool KeyPrefixIs(string key, string match);
-        string GetActionId(string propertyName, IActionFacade actionContextAction, IObjectFacade actionContextTarget, IObjectFacade targetActionContextTarget, IActionFacade targetActionContextAction);
-        string GetAggregateFieldInputId(IObjectFacade nakedObjectSurface, IAssociationFacade propertyFacade);
+        string GetActionId(string propertyName, IActionFacade actionContextAction, IObjectFacade actionObjectFacade, IObjectFacade targetObjectFacade, IActionFacade targetActionFacade);
+        string GetAggregateFieldInputId(IObjectFacade objectFacade, IAssociationFacade propertyFacade);
     }
 }

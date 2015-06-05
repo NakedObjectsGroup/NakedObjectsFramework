@@ -16,16 +16,16 @@ namespace NakedObjects.Facade.Nof2 {
         private readonly ActionWrapper action;
         private readonly Naked target;
 
-        public ActionFacade(ActionWrapper action, Naked target, IFrameworkFacade surface) {
+        public ActionFacade(ActionWrapper action, Naked target, IFrameworkFacade frameworkFacade) {
             this.action = action;
             this.target = target;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public ITypeFacade Specification {
             get {
                 NakedObjectSpecification rt = action.getReturnType();
-                return rt == null ? (ITypeFacade) new VoidTypeFacade() : new TypeFacade(action.getReturnType(), target, Surface);
+                return rt == null ? (ITypeFacade) new VoidTypeFacade() : new TypeFacade(action.getReturnType(), target, FrameworkFacade);
             }
         }
 
@@ -73,7 +73,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public ITypeFacade ElementType {
-            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface); }
+            get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, FrameworkFacade); }
         }
 
         public int ParameterCount {
@@ -81,7 +81,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public IActionParameterFacade[] Parameters {
-            get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterFacade(p, target, Surface)).Cast<IActionParameterFacade>().ToArray(); }
+            get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterFacade(p, target, FrameworkFacade)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
@@ -97,7 +97,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public string PresentationHint { get; private set; }
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 

@@ -14,7 +14,7 @@ namespace NakedObjects.Facade.Impl {
         private readonly IConsent consent;
 
         public ConsentFacade(IConsent consent) {
-            SurfaceUtils.AssertNotNull(consent, "Consent is null");
+            FacadeUtils.AssertNotNull(consent, "Consent is null");
             this.consent = consent;
         }
 

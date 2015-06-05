@@ -18,9 +18,9 @@ namespace NakedObjects.Facade.Nof2 {
     public class ObjectFacade : IObjectFacade {
         private readonly Naked nakedObject;
 
-        public ObjectFacade(Naked nakedObject, IFrameworkFacade surface) {
+        public ObjectFacade(Naked nakedObject, IFrameworkFacade frameworkFacade) {
             this.nakedObject = nakedObject;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public Naked NakedObject {
@@ -30,13 +30,13 @@ namespace NakedObjects.Facade.Nof2 {
         #region IObjectFacade Members
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(NakedObject.getSpecification(), NakedObject, Surface); }
+            get { return new TypeFacade(NakedObject.getSpecification(), NakedObject, FrameworkFacade); }
         }
 
         public ITypeFacade ElementSpecification {
             get {
                 if (nakedObject is InternalCollectionAdapter) {
-                    return new TypeFacade(((InternalCollectionAdapter) nakedObject).getElementSpecification(), null, Surface);
+                    return new TypeFacade(((InternalCollectionAdapter) nakedObject).getElementSpecification(), null, FrameworkFacade);
                 }
                 return null;
             }
@@ -58,11 +58,11 @@ namespace NakedObjects.Facade.Nof2 {
         public IDictionary<string, object> ExtensionData { get; private set; }
 
         public IEnumerable<IObjectFacade> ToEnumerable() {
-            return ((IEnumerable) Object).Cast<object>().Select(o => new ObjectFacade(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), Surface));
+            return ((IEnumerable) Object).Cast<object>().Select(o => new ObjectFacade(org.nakedobjects.@object.NakedObjects.getObjectLoader().getAdapterFor(o), FrameworkFacade));
         }
 
         public IObjectFacade Page(int page, int size) {
-            return new ObjectFacade(nakedObject, Surface);
+            return new ObjectFacade(nakedObject, FrameworkFacade);
         }
 
         public IObjectFacade Select(object[] selection, bool forceEnumerable) {
@@ -105,7 +105,7 @@ namespace NakedObjects.Facade.Nof2 {
             get {
                 var nakedRef = nakedObject as NakedReference;
                 if (nakedRef != null) {
-                    return nakedRef.getResolveState().isTransient() && !(new TypeFacade(nakedRef.getSpecification(), nakedRef, Surface).IsService);
+                    return nakedRef.getResolveState().isTransient() && !(new TypeFacade(nakedRef.getSpecification(), nakedRef, FrameworkFacade).IsService);
                 }
 
                 return false;
@@ -127,7 +127,7 @@ namespace NakedObjects.Facade.Nof2 {
             get { return new OidFacade(nakedObject.getOid()); }
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 

@@ -138,7 +138,7 @@
     <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MessageBrokerWrapper.cs" />
-    <Compile Include="Utility\SurfaceUtils.cs" />
+    <Compile Include="Utility\FacadeUtils.cs" />
     <Compile Include="Facade\ConsentFacade.cs" />
     <Compile Include="Facade\MenuActionFacade.cs" />
     <Compile Include="Facade\MenuItemFacade.cs" />

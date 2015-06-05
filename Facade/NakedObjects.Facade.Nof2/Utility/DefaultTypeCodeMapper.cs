@@ -12,7 +12,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
         #region ITypeCodeMapper Members
 
         public Type TypeFromCode(string code) {
-            return Type.GetType(code) ?? SurfaceUtils.GetTypeFromLoadedAssemblies(code);
+            return Type.GetType(code) ?? FacadeUtils.GetTypeFromLoadedAssemblies(code);
         }
 
         public string CodeFromType(Type type) {

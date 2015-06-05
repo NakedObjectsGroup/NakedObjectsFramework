@@ -42,14 +42,14 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public PropertyContext[] VisibleProperties { get; set; }
         public ActionContext[] VisibleActions { get; set; }
 
-        public ObjectContextFacade ToObjectContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var oc = new ObjectContextFacade {
-                VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextSurface(surface, framework)).ToArray(),
-                VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextSurface(surface, framework)).ToArray(),
+                VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
+                VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
                 Mutated = Mutated,
                 Redirected = Redirected
             };
-            return ToContextSurface(oc, surface, framework);
+            return ToContextFacade(oc, facade, framework);
         }
     }
 }

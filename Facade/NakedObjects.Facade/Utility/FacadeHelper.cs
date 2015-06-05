@@ -40,7 +40,7 @@ namespace NakedObjects.Facade.Utility.Restricted {
             }
         }
 
-        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
+        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade facade, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);
@@ -49,8 +49,8 @@ namespace NakedObjects.Facade.Utility.Restricted {
             return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
         }
 
-        public static string GetObjectTypeShortName(this IFrameworkFacade surface, object model) {
-            var nakedObject = surface.GetObject(model);
+        public static string GetObjectTypeShortName(this IFrameworkFacade facade, object model) {
+            var nakedObject = facade.GetObject(model);
             return nakedObject.Specification.ShortName;
         }
 
@@ -59,30 +59,30 @@ namespace NakedObjects.Facade.Utility.Restricted {
             return name.Contains(".") ? name : name + ".png";
         }
 
-        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade surface, string id) {
-            var oid = surface.OidTranslator.GetOidTranslation(id);
-            return surface.GetObject(oid).Target;
+        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade facade, string id) {
+            var oid = facade.OidTranslator.GetOidTranslation(id);
+            return facade.GetObject(oid).Target;
         }
 
-        public static object GetTypedCollection(this IFrameworkFacade surface, IActionParameterFacade featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade facade, IActionParameterFacade featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementType;
-            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+            return GetTypedCollection(facade, collectionValue, collectionitemSpec);
         }
 
-        public static object GetTypedCollection(this IFrameworkFacade surface, IAssociationFacade featureSpec, IEnumerable collectionValue) {
+        public static object GetTypedCollection(this IFrameworkFacade facade, IAssociationFacade featureSpec, IEnumerable collectionValue) {
             var collectionitemSpec = featureSpec.ElementSpecification;
-            return GetTypedCollection(surface, collectionValue, collectionitemSpec);
+            return GetTypedCollection(facade, collectionValue, collectionitemSpec);
         }
 
         public static List<T> InList<T>(this T item) {
             return item == null ? new List<T>() : new List<T> {item};
         }
 
-        private static IObjectFacade SafeGetObjectFromId(this IFrameworkFacade surface, string id) {
-            return string.IsNullOrWhiteSpace(id) ? null : GetNakedObjectFromId(surface, id);
+        private static IObjectFacade SafeGetObjectFromId(this IFrameworkFacade facade, string id) {
+            return string.IsNullOrWhiteSpace(id) ? null : GetNakedObjectFromId(facade, id);
         }
 
-        private static object GetTypedCollection(this IFrameworkFacade surface, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {
+        private static object GetTypedCollection(this IFrameworkFacade facade, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();
@@ -95,14 +95,14 @@ namespace NakedObjects.Facade.Utility.Restricted {
             // need to check if collection is actually a collection memento 
             if (rawCollection.Count() == 1) {
                 var id = rawCollection.First();
-                var firstObj = SafeGetObjectFromId(surface, id);
+                var firstObj = SafeGetObjectFromId(facade, id);
 
                 if (firstObj != null && firstObj.IsCollectionMemento) {
                     return firstObj.Object;
                 }
             }
 
-            var objCollection = rawCollection.Select(s => SafeGetObjectFromId(surface, s).GetDomainObject<object>()).ToArray();
+            var objCollection = rawCollection.Select(s => SafeGetObjectFromId(facade, s).GetDomainObject<object>()).ToArray();
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 

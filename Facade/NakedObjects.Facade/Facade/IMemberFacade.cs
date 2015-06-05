@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Facade {
-    public interface IMemberFacade : ISurfaceHolder {
+    public interface IMemberFacade : IFacadeHolder {
         string Id { get; }
     }
 }

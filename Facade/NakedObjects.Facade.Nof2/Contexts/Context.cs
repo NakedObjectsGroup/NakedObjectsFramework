@@ -38,11 +38,11 @@ namespace NakedObjects.Facade.Nof2.Contexts {
         public object ProposedValue { get; set; }
         public abstract NakedObjectSpecification Specification { get; }
 
-        protected T ToContextSurface<T>(T context, IFrameworkFacade surface) where T : ContextFacade {
-            context.Target = Target == null ? (NakedTarget == null ? null : new ObjectFacade(NakedTarget, surface)) : new ObjectFacade(Target, surface);
+        protected T ToContextFacade<T>(T context, IFrameworkFacade facade) where T : ContextFacade {
+            context.Target = Target == null ? (NakedTarget == null ? null : new ObjectFacade(NakedTarget, facade)) : new ObjectFacade(Target, facade);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;
-            context.ProposedNakedObject = ProposedNakedObject == null ? null : new ObjectFacade(ProposedNakedObject, surface);
+            context.ProposedNakedObject = ProposedNakedObject == null ? null : new ObjectFacade(ProposedNakedObject, facade);
             context.ProposedValue = ProposedValue;
 
             return context;

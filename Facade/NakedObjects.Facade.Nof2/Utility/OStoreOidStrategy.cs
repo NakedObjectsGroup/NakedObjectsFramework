@@ -47,13 +47,13 @@ namespace NakedObjects.Facade.Nof2.Utility {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { set; get; }
+        public IFrameworkFacade FrameworkFacade { set; get; }
 
         #endregion
 
         public object GetDomainObjectByOid(string objectId) {
             // don't know if I can just cast or if I need to get seperately from spring 
-            //var objectResolver = SurfaceUtils.GetObjectResolver();
+            //var objectResolver = FacadeUtils.GetObjectResolver();
 
             var objectResolver = (IObjectStore) org.nakedobjects.@object.NakedObjects.getObjectPersistor();
 
@@ -106,7 +106,7 @@ namespace NakedObjects.Facade.Nof2.Utility {
             if (string.IsNullOrEmpty(serviceName.Trim())) {
                 throw new BadRequestNOSException();
             }
-            return SurfaceUtils.GetServicesInternal().Where(s => s.getSpecification().getFullName() == serviceName).SingleOrDefault();
+            return FacadeUtils.GetServicesInternal().Where(s => s.getSpecification().getFullName() == serviceName).SingleOrDefault();
         }
     }
 }

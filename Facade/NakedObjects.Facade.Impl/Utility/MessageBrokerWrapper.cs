@@ -8,14 +8,14 @@
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Facade.Impl.Utility {
-    public class MessageBrokerWrapper : IMessageBrokerSurface {
+    public class MessageBrokerWrapper : IMessageBrokerFacade {
         private readonly IMessageBroker messageBroker;
 
         public MessageBrokerWrapper(IMessageBroker messageBroker) {
             this.messageBroker = messageBroker;
         }
 
-        #region IMessageBrokerSurface Members
+        #region IMessageBrokerFacade Members
 
         public string[] PeekMessages {
             get { return messageBroker.PeekMessages; }

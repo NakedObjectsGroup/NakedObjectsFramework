@@ -21,13 +21,13 @@ namespace NakedObjects.Facade.Nof2.Contexts {
             get { return Parameter.getSpecification(); }
         }
 
-        public ParameterContextFacade ToParameterContextSurface(IFrameworkFacade surface) {
+        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade) {
             var pc = new ParameterContextFacade {
-                Parameter = new ActionParameterFacade(Parameter, Target, surface),
-                Target = new ObjectFacade(Target, surface),
-                Action = new ActionFacade(Action, Target, surface)
+                Parameter = new ActionParameterFacade(Parameter, Target, facade),
+                Target = new ObjectFacade(Target, facade),
+                Action = new ActionFacade(Action, Target, facade)
             };
-            return ToContextSurface(pc, surface);
+            return ToContextFacade(pc, facade);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         private readonly IOidStrategy oidStrategy;
 
         public FrameworkFacade(IOidStrategy oidStrategy) {
-            oidStrategy.Surface = this;
+            oidStrategy.FrameworkFacade = this;
             this.oidStrategy = oidStrategy;
         }
 
@@ -39,7 +39,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             get { return oidStrategy; }
         }
 
-        public IMessageBrokerSurface MessageBroker { get; private set; }
+        public IMessageBrokerFacade MessageBroker { get; private set; }
 
         public void Start() {
             SetSession();
@@ -63,7 +63,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         }
 
         public ObjectContextFacade GetService(IOidTranslation serviceName) {
-            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this));
+            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextFacade(this));
         }
 
         ListContextFacade IFrameworkFacade.GetServices() {
@@ -75,7 +75,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         }
 
         public ObjectContextFacade[] GetServices() {
-            return MapErrors(() => SurfaceUtils.GetServicesInternal().Select(s => new ObjectContext(s).ToObjectContextSurface(this)).ToArray());
+            return MapErrors(() => FacadeUtils.GetServicesInternal().Select(s => new ObjectContext(s).ToObjectContextFacade(this)).ToArray());
         }
 
         public ObjectContextFacade GetObject(IObjectFacade nakedObject) {
@@ -87,7 +87,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         }
 
         public ObjectContextFacade GetObject(IOidTranslation oid) {
-            return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this));
+            return MapErrors(() => GetObjectInternal(oid).ToObjectContextFacade(this));
         }
 
         public ObjectContextFacade PutObject(IOidTranslation oid, ArgumentsContextFacade arguments) {
@@ -120,7 +120,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
                 }
 
                 NakedObject nakedObject = GetServiceAsNakedObject(serviceName);
-                return GetAction(actionName, nakedObject).ToActionContextSurface(this);
+                return GetAction(actionName, nakedObject).ToActionContextFacade(this);
             });
         }
 
@@ -131,7 +131,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
                 }
 
                 NakedObject nakedObject = GetObjectAsNakedObject(objectId);
-                return GetAction(actionName, nakedObject).ToActionContextSurface(this);
+                return GetAction(actionName, nakedObject).ToActionContextFacade(this);
             });
         }
 
@@ -197,7 +197,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
                 Tuple<ActionContext, NakedObjectSpecification> pc = GetActionTypeInternal(typeName, actionName);
 
                 return new ActionTypeContextFacade {
-                    ActionContext = pc.Item1.ToActionContextSurface(this),
+                    ActionContext = pc.Item1.ToActionContextFacade(this),
                     OwningSpecification = new TypeFacade(pc.Item2, null, this)
                 };
             });
@@ -328,7 +328,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
                     actionResultContext.Result = GetObjectContext(result);
                 }
             }
-            return actionResultContext.ToActionResultContextSurface(this);
+            return actionResultContext.ToActionResultContextFacade(this);
         }
 
         private static Naked GetValue(NakedObjectSpecification specification, object rawValue) {
@@ -349,7 +349,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
                 throw;
             }
             catch (Exception e) {
-                throw SurfaceUtils.Map(e);
+                throw FacadeUtils.Map(e);
             }
         }
 
@@ -457,7 +457,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             }
 
             context.Mutated = true;
-            return context.ToPropertyContextSurface(this);
+            return context.ToPropertyContextFacade(this);
         }
 
         private void SetSession() {
@@ -567,7 +567,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             oc.Mutated = true;
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this);
+            return oc.ToObjectContextFacade(this);
         }
 
         private ObjectContextFacade SetObject(NakedObject nakedObject, ArgumentsContextFacade arguments) {
@@ -600,12 +600,12 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             oc.Mutated = false;
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this);
+            return oc.ToObjectContextFacade(this);
         }
 
         private PropertyContextFacade ChangeProperty(NakedObject nakedObject, string propertyName, ArgumentContextFacade argument) {
             ValidateConcurrency(nakedObject, argument.Digest);
-            return CanChangeProperty(nakedObject, propertyName, argument.ValidateOnly, argument.Value).ToPropertyContextSurface(this);
+            return CanChangeProperty(nakedObject, propertyName, argument.ValidateOnly, argument.Value).ToPropertyContextFacade(this);
         }
 
         private PropertyContext CanChangeProperty(NakedObject nakedObject, string propertyName, bool validateOnly, object toPut = null) {

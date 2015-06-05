@@ -14,7 +14,7 @@ namespace NakedObjects.Facade.Impl {
         private readonly IVersion version;
 
         public VersionFacade(IVersion version) {
-            SurfaceUtils.AssertNotNull(version, "Version is null");
+            FacadeUtils.AssertNotNull(version, "Version is null");
 
             this.version = version;
         }

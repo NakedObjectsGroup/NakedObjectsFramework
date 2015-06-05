@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 
 namespace NakedObjects.Facade {
-    public interface ITypeFacade : ISurfaceHolder, IEquatable<ITypeFacade> {
+    public interface ITypeFacade : IFacadeHolder, IEquatable<ITypeFacade> {
         IAssociationFacade[] Properties { get; }
         IMenuFacade Menu { get; }
         string PresentationHint { get; }

@@ -16,7 +16,7 @@ using sdm.systems.application.objectstore;
 using Action = org.nakedobjects.@object.Action;
 
 namespace NakedObjects.Facade.Nof2.Utility {
-    public static class SurfaceUtils {
+    public static class FacadeUtils {
         public static NakedObjectsFacadeException Map(Exception e) {
             // map to appropriate exception 
 

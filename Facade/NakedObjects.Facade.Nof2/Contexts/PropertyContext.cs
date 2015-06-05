@@ -21,13 +21,13 @@ namespace NakedObjects.Facade.Nof2.Contexts {
             get { return Property.getSpecification(); }
         }
 
-        public PropertyContextFacade ToPropertyContextSurface(IFrameworkFacade surface) {
+        public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade) {
             var pc = new PropertyContextFacade {
-                Property = new AssociationFacade(Property, Target, surface),
+                Property = new AssociationFacade(Property, Target, facade),
                 Mutated = Mutated
             };
 
-            return ToContextSurface(pc, surface);
+            return ToContextFacade(pc, facade);
         }
     }
 }

@@ -18,10 +18,10 @@ namespace NakedObjects.Facade.Nof2 {
         private readonly NakedObjectSpecification spec;
         private readonly Naked target;
 
-        public TypeFacade(NakedObjectSpecification spec, Naked target, IFrameworkFacade surface) {
+        public TypeFacade(NakedObjectSpecification spec, Naked target, IFrameworkFacade frameworkFacade) {
             this.spec = spec;
             this.target = target;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         protected bool IsASet {
@@ -31,7 +31,7 @@ namespace NakedObjects.Facade.Nof2 {
         public ITypeFacade ElementType {
             get {
                 if (IsCollection) {
-                    return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, Surface);
+                    return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, FrameworkFacade);
                 }
                 return null;
             }
@@ -95,7 +95,7 @@ namespace NakedObjects.Facade.Nof2 {
         public bool IsEnum { get; private set; }
 
         public IAssociationFacade[] Properties {
-            get { return spec.getFields().Select(p => new AssociationFacade(p, target, Surface)).Cast<IAssociationFacade>().OrderBy(a => a.Id).ToArray(); }
+            get { return spec.getFields().Select(p => new AssociationFacade(p, target, FrameworkFacade)).Cast<IAssociationFacade>().OrderBy(a => a.Id).ToArray(); }
         }
 
         public IMenuFacade Menu { get; private set; }
@@ -108,7 +108,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public string PluralName {
-            get { return SurfaceUtils.MakeSpaced(spec.getPluralName()); }
+            get { return FacadeUtils.MakeSpaced(spec.getPluralName()); }
         }
 
         public string Description {
@@ -133,7 +133,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public IActionFacade[] GetActionLeafNodes() {
-            return spec.GetActionLeafNodes().Select(a => new ActionFacade(a, target, Surface)).Cast<IActionFacade>().OrderBy(a => a.Id).ToArray();
+            return spec.GetActionLeafNodes().Select(a => new ActionFacade(a, target, FrameworkFacade)).Cast<IActionFacade>().OrderBy(a => a.Id).ToArray();
         }
 
         public bool IsOfType(ITypeFacade otherSpec) {
@@ -158,7 +158,7 @@ namespace NakedObjects.Facade.Nof2 {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 

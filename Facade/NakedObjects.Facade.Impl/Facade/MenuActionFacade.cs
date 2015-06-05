@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Facade.Impl {
     public class MenuActionFacade : IMenuActionFacade, IMenuItemFacade {
-        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public MenuActionFacade(IMenuActionImmutable wrapped, IFrameworkFacade facade, INakedObjectsFramework framework) {
             Wrapped = wrapped;
             Name = wrapped.Name;
             Id = wrapped.Id;
             var action = framework.MetamodelManager.GetActionSpec(wrapped.Action);
-            Action = new ActionFacade(action, surface, framework, "");
+            Action = new ActionFacade(action, facade, framework, "");
         }
 
         #region IMenuActionFacade Members

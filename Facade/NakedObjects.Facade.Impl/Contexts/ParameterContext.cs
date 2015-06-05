@@ -23,12 +23,12 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ParameterContextFacade ToParameterContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new ParameterContextFacade {
-                Parameter = new ActionParameterFacade(Parameter, surface, framework, OverloadedUniqueId ?? ""),
-                Action = new ActionFacade(Action, surface, framework, OverloadedUniqueId ?? "")
+                Parameter = new ActionParameterFacade(Parameter, facade, framework, OverloadedUniqueId ?? ""),
+                Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? "")
             };
-            return ToContextSurface(pc, surface, framework);
+            return ToContextFacade(pc, facade, framework);
         }
     }
 }

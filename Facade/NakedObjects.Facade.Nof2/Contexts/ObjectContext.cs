@@ -32,13 +32,13 @@ namespace NakedObjects.Facade.Nof2.Contexts {
         public ActionContext[] VisibleActions { get; set; }
         public bool Mutated { get; set; }
 
-        public ObjectContextFacade ToObjectContextSurface(IFrameworkFacade surface) {
+        public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade) {
             var oc = new ObjectContextFacade {
-                VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextSurface(surface)).ToArray(),
-                VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextSurface(surface)).ToArray(),
+                VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextFacade(facade)).ToArray(),
+                VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextFacade(facade)).ToArray(),
                 Mutated = Mutated
             };
-            return ToContextSurface(oc, surface);
+            return ToContextFacade(oc, facade);
         }
     }
 }

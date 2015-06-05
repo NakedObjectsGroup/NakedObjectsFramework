@@ -10,7 +10,7 @@ using NakedObjects.Facade.Translation;
 namespace NakedObjects.Facade {
     public interface IOidStrategy {
         // todo make public get while refactoring
-        IFrameworkFacade Surface { get; set; }
+        IFrameworkFacade FrameworkFacade { get; set; }
         object GetDomainObjectByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);
         ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);

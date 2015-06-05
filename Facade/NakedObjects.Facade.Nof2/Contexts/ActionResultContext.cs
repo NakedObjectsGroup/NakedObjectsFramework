@@ -40,17 +40,17 @@ namespace NakedObjects.Facade.Nof2.Contexts {
             get { return Result == null ? ActionContext.Action.getReturnType() : Result.Specification; }
         }
 
-        public ActionResultContextFacade ToActionResultContextSurface(IFrameworkFacade surface) {
+        public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade) {
             var ac = new ActionResultContextFacade {
-                Result = Result == null ? null : Result.ToObjectContextSurface(surface),
-                ActionContext = ActionContext.ToActionContextSurface(surface),
+                Result = Result == null ? null : Result.ToObjectContextFacade(facade),
+                ActionContext = ActionContext.ToActionContextFacade(facade),
                 HasResult = HasResult
             };
             if (Reason == null) {
                 Reason = ActionContext.Reason;
                 ErrorCause = ActionContext.ErrorCause;
             }
-            return ToContextSurface(ac, surface);
+            return ToContextFacade(ac, facade);
         }
     }
 }

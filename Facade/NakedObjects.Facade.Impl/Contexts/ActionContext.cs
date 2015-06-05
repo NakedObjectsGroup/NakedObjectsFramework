@@ -29,12 +29,12 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ActionContextFacade ToActionContextSurface(IFrameworkFacade surface, INakedObjectsFramework framework) {
+        public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionContextFacade {
-                Action = new ActionFacade(Action, surface, framework, OverloadedUniqueId ?? ""),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface, framework)).ToArray()
+                Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
+                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray()
             };
-            return ToContextSurface(ac, surface, framework);
+            return ToContextFacade(ac, facade, framework);
         }
     }
 }

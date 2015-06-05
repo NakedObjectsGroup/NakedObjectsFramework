@@ -24,14 +24,14 @@ namespace NakedObjects.Facade.Impl {
         private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
 
-        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade surface, INakedObjectsFramework framework) {
-            SurfaceUtils.AssertNotNull(assoc, "Assoc is null");
-            SurfaceUtils.AssertNotNull(framework, "framework is null");
-            SurfaceUtils.AssertNotNull(surface, "surface is null");
+        public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+            FacadeUtils.AssertNotNull(assoc, "Assoc is null");
+            FacadeUtils.AssertNotNull(framework, "framework is null");
+            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
 
             this.assoc = assoc;
             this.framework = framework;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public IAssociationSpec WrappedSpec {
@@ -129,14 +129,14 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(assoc.ReturnSpec, Surface, framework); }
+            get { return new TypeFacade(assoc.ReturnSpec, FrameworkFacade, framework); }
         }
 
         public ITypeFacade ElementSpecification {
             get {
                 var coll = assoc as IOneToManyAssociationSpec;
                 var elementSpec = coll == null ? null : coll.ElementSpec;
-                return elementSpec == null ? null : new TypeFacade(elementSpec, Surface, framework);
+                return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
         }
 
@@ -165,7 +165,7 @@ namespace NakedObjects.Facade.Impl {
 
         public IObjectFacade GetNakedObject(IObjectFacade target) {
             INakedObjectAdapter result = assoc.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
-            return ObjectFacade.Wrap(result, Surface, framework);
+            return ObjectFacade.Wrap(result, FrameworkFacade, framework);
         }
 
         public bool IsVisible(IObjectFacade nakedObject) {
@@ -180,7 +180,7 @@ namespace NakedObjects.Facade.Impl {
         public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             var pnv = parameterNameValues == null ? null : parameterNameValues.ToDictionary(kvp => kvp.Key, kvp => framework.GetNakedObject(kvp.Value));
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
@@ -195,7 +195,7 @@ namespace NakedObjects.Facade.Impl {
 
         public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, Surface, framework)).Cast<IObjectFacade>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((ObjectFacade) target).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray() : null;
         }
 
         public int Count(IObjectFacade target) {
@@ -221,7 +221,7 @@ namespace NakedObjects.Facade.Impl {
             return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool IsFile {
             get { return assoc.IsFile(framework); }
@@ -327,7 +327,7 @@ namespace NakedObjects.Facade.Impl {
         #endregion
 
         private Tuple<string, ITypeFacade> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
-            return new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, Surface, framework));
+            return new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, FrameworkFacade, framework));
         }
 
         public override bool Equals(object obj) {

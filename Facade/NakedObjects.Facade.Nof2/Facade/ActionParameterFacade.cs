@@ -18,10 +18,10 @@ namespace NakedObjects.Facade.Nof2 {
         private readonly NakedObjectActionParameter nakedObjectActionParameter;
         private readonly Naked target;
 
-        public ActionParameterFacade(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade surface) {
+        public ActionParameterFacade(NakedObjectActionParameter nakedObjectActionParameter, Naked target, IFrameworkFacade frameworkFacade) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.target = target;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public bool IsChoicesEnabled {
@@ -31,13 +31,13 @@ namespace NakedObjects.Facade.Nof2 {
         #region IActionParameterFacade Members
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(nakedObjectActionParameter.getSpecification(), target, Surface); }
+            get { return new TypeFacade(nakedObjectActionParameter.getSpecification(), target, FrameworkFacade); }
         }
 
         public ITypeFacade ElementType { get; private set; }
 
         public IActionFacade Action {
-            get { return new ActionFacade(nakedObjectActionParameter.getAction(), target, Surface); }
+            get { return new ActionFacade(nakedObjectActionParameter.getAction(), target, FrameworkFacade); }
         }
 
         public string Id {
@@ -109,7 +109,7 @@ namespace NakedObjects.Facade.Nof2 {
         }
 
         public IObjectFacade GetDefault(IObjectFacade nakedObject) {
-            return new ObjectFacade(nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject), Surface);
+            return new ObjectFacade(nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject), FrameworkFacade);
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
@@ -124,12 +124,12 @@ namespace NakedObjects.Facade.Nof2 {
             throw new NotImplementedException();
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         #endregion
 
         public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, IObjectFacade> parameterNameValues) {
-            return nakedObjectActionParameter.getChoices(((ObjectFacade) nakedObject).NakedObject).Select(no => new ObjectFacade(no, Surface)).Cast<IObjectFacade>().ToArray();
+            return nakedObjectActionParameter.getChoices(((ObjectFacade) nakedObject).NakedObject).Select(no => new ObjectFacade(no, FrameworkFacade)).Cast<IObjectFacade>().ToArray();
         }
 
         public override bool Equals(object obj) {

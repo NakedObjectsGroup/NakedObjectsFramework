@@ -6,15 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Facade {
-    public interface IMessageBrokerSurface {
-        string[] PeekMessages { get; }
-        string[] PeekWarnings { get; }
-        string[] Messages { get; }
-        string[] Warnings { get; }
-        void AddWarning(string message);
-        void AddMessage(string message);
-        void ClearWarnings();
-        void ClearMessages();
-        void EnsureEmpty();
+    public interface IFacadeHolder {
+        IFrameworkFacade FrameworkFacade { get; set; }
     }
 }

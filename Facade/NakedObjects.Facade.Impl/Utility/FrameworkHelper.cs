@@ -27,7 +27,7 @@ namespace NakedObjects.Facade.Impl.Utility {
                 Where(a => a.IsVisible(nakedObject));
         }
 
-        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade surface, IObjectFacade nakedObject) {
+        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade facade, IObjectFacade nakedObject) {
             if (nakedObject.Specification.IsQueryable) {
                 var elementSpec = nakedObject.ElementSpecification;
                 Trace.Assert(elementSpec != null);

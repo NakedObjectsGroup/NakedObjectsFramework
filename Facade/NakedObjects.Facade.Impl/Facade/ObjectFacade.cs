@@ -24,14 +24,14 @@ namespace NakedObjects.Facade.Impl {
     public class ObjectFacade : IObjectFacade {
         private readonly INakedObjectsFramework framework;
 
-        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
-            SurfaceUtils.AssertNotNull(nakedObject, "NakedObject is null");
-            SurfaceUtils.AssertNotNull(surface, "Surface is null");
-            SurfaceUtils.AssertNotNull(framework, "framework is null");
+        protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
+            FacadeUtils.AssertNotNull(nakedObject, "NakedObject is null");
+            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
+            FacadeUtils.AssertNotNull(framework, "framework is null");
 
             WrappedNakedObject = nakedObject;
             this.framework = framework;
-            Surface = surface;
+            FrameworkFacade = frameworkFacade;
         }
 
         public INakedObjectAdapter WrappedNakedObject { get; private set; }
@@ -75,7 +75,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ITypeFacade Specification {
-            get { return new TypeFacade(WrappedNakedObject.Spec, Surface, framework); }
+            get { return new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework); }
         }
 
         public ITypeFacade ElementSpecification {
@@ -83,7 +83,7 @@ namespace NakedObjects.Facade.Impl {
                 ITypeOfFacet typeOfFacet = WrappedNakedObject.GetTypeOfFacetFromSpec();
                 var introspectableSpecification = typeOfFacet.GetValueSpec(WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var spec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
-                return new TypeFacade(spec, Surface, framework);
+                return new TypeFacade(spec, FrameworkFacade, framework);
             }
         }
 
@@ -92,17 +92,17 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IEnumerable<IObjectFacade> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, Surface, framework));
+            return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
         }
 
         // todo move into adapterutils
 
         public IObjectFacade Page(int page, int size) {
-            return new ObjectFacade(Page(WrappedNakedObject, page, size), Surface, framework);
+            return new ObjectFacade(Page(WrappedNakedObject, page, size), FrameworkFacade, framework);
         }
 
         public IObjectFacade Select(object[] selection, bool forceEnumerable) {
-            return new ObjectFacade(Select(WrappedNakedObject, selection, forceEnumerable), Surface, framework);
+            return new ObjectFacade(Select(WrappedNakedObject, selection, forceEnumerable), FrameworkFacade, framework);
         }
 
         public int Count() {
@@ -147,7 +147,7 @@ namespace NakedObjects.Facade.Impl {
             get { return WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid); }
         }
 
-        public IFrameworkFacade Surface { get; set; }
+        public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool IsPaged {
             get {
@@ -171,7 +171,7 @@ namespace NakedObjects.Facade.Impl {
         public IActionFacade MementoAction {
             get {
                 var mementoOid = WrappedNakedObject.Oid as ICollectionMemento;
-                return mementoOid == null ? null : new ActionFacade(mementoOid.Action, Surface, framework, "");
+                return mementoOid == null ? null : new ActionFacade(mementoOid.Action, FrameworkFacade, framework, "");
             }
         }
 
@@ -215,8 +215,8 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade surface, INakedObjectsFramework framework) {
-            return nakedObject == null ? null : new ObjectFacade(nakedObject, surface, framework);
+        public static ObjectFacade Wrap(INakedObjectAdapter nakedObject, IFrameworkFacade facade, INakedObjectsFramework framework) {
+            return nakedObject == null ? null : new ObjectFacade(nakedObject, facade, framework);
         }
 
         private static bool IsNotQueryable(INakedObjectAdapter objectRepresentingCollection) {

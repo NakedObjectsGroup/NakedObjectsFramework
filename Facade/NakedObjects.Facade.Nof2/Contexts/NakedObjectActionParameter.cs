@@ -36,7 +36,7 @@ namespace NakedObjects.Facade.Nof2.Contexts {
         }
 
         public string getName() {
-            return SurfaceUtils.MakeSpaced(SurfaceUtils.Capitalize(id));
+            return FacadeUtils.MakeSpaced(FacadeUtils.Capitalize(id));
         }
 
         public string getDescription() {
