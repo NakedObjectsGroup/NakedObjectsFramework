@@ -43,7 +43,7 @@ namespace NakedObjects.Mvc.App {
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
-            // surface
+            // facade
             container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>("KeyOid", new PerRequestLifetimeManager());
             container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerRequestLifetimeManager());
 
@@ -51,10 +51,10 @@ namespace NakedObjects.Mvc.App {
 
             container.RegisterType<IIdHelper, IdHelper>(new PerRequestLifetimeManager());
 
-            container.RegisterType<IFrameworkFacade, FrameworkFacade>("RestSurface", new PerRequestLifetimeManager(), new InjectionConstructor(typeof(IOidStrategy), new ResolvedParameter<IOidTranslator>("KeyOid"), typeof(INakedObjectsFramework)));
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>("RestFacade", new PerRequestLifetimeManager(), new InjectionConstructor(typeof(IOidStrategy), new ResolvedParameter<IOidTranslator>("KeyOid"), typeof(INakedObjectsFramework)));
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerRequestLifetimeManager());
 
-            container.RegisterType<RestfulObjectsController, RestfulObjectsController>(new PerResolveLifetimeManager(), new InjectionConstructor(new ResolvedParameter<IFrameworkFacade>("RestSurface")));
+            container.RegisterType<RestfulObjectsController, RestfulObjectsController>(new PerResolveLifetimeManager(), new InjectionConstructor(new ResolvedParameter<IFrameworkFacade>("RestFacade")));
 
 
             //Externals
