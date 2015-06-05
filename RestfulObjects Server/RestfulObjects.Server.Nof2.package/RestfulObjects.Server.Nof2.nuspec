@@ -3,13 +3,13 @@
   <metadata>
     <id>RestfulObjects.Server.Nof2</id>
     <version>0.3.0-beta</version>
-	<title>Restful Objects Server (for NOF2)</title>
+    <title>Restful Objects Server (for NOF2)</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Add to an ASP.NET Empty Web Application project to auto-create a Restful Objects API for a domain model running under NOF2</description>
     <dependencies>
-      <dependency id="RestfulObjects.Mvc" version="1.0.1" />
+      <dependency id="RestfulObjects.Mvc" version="[7.1.0-beta, 8)" />
       <dependency id="WebActivator" version="1.5" />
     </dependencies>
     <frameworkAssemblies>
