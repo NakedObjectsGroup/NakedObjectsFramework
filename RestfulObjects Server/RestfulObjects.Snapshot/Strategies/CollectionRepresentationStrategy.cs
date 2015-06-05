@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy ,req, propertyContext, flags) {
-            collection = propertyContext.Property.GetNakedObject(propertyContext.Target);
+            collection = propertyContext.Property.GetValue(propertyContext.Target);
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {

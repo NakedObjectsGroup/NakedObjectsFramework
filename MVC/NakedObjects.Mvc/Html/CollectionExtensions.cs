@@ -48,7 +48,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdConstants.ListDisplayFormat) {
             var adapter = html.Facade().GetObject(domainObject);
-            IEnumerable<IObjectFacade> collections = adapter.Specification.Properties.Where(p => p.IsCollection).Select(a => a.GetNakedObject(adapter));
+            IEnumerable<IObjectFacade> collections = adapter.Specification.Properties.Where(p => p.IsCollection).Select(a => a.GetValue(adapter));
             return collections.Select(c => html.Collection(c.ToEnumerable(), null, defaultTo)).ToArray();
         }
 
@@ -62,7 +62,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             var adapter = html.Facade().GetObject(domainObject);
-            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetNakedObject(adapter)});
+            var collections = adapter.Specification.Properties.Where(obj => obj.Specification.IsCollection && obj.IsVisible(adapter)).Select(a => new {assoc = a, val = a.GetValue(adapter)});
             return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString)).ToArray();
         }
 

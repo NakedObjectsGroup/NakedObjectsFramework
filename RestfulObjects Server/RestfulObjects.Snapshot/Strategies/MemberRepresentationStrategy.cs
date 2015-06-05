@@ -39,7 +39,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected string GetAttachmentFileName(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }
 

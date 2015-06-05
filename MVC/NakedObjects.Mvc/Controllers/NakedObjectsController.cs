@@ -419,7 +419,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
-                        var currentValue = pair.Item1.GetNakedObject(nakedObject);
+                        var currentValue = pair.Item1.GetValue(nakedObject);
 
                         // todo revisit this 
                         //var concurrencyValue = pair.Item1.ReturnSpec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
@@ -493,7 +493,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             foreach (var assoc in (nakedObject.Specification.Properties.Where(p => p.IsInline))) {
-                var inlineNakedObject = assoc.GetNakedObject(nakedObject);
+                var inlineNakedObject = assoc.GetValue(nakedObject);
                 AddAttemptedValuesNew(inlineNakedObject, controlData, assoc);
             }
         }

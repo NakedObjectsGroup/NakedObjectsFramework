@@ -372,7 +372,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<Tuple<IAssociationFacade, IObjectFacade>> Items(this IAssociationFacade assoc, HtmlHelper html, IObjectFacade target) {
-            return assoc.GetNakedObject(target).ToEnumerable().Select(no => new Tuple<IAssociationFacade, IObjectFacade>(assoc, no));
+            return assoc.GetValue(target).ToEnumerable().Select(no => new Tuple<IAssociationFacade, IObjectFacade>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
@@ -1188,8 +1188,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
             // todo is this right ?
-            string title = propertyContext.Property.GetNakedObject(propertyContext.Target).TitleString;
-            string utitle = propertyContext.Property.GetNakedObject(propertyContext.Target).Specification.UntitledName;
+            string title = propertyContext.Property.GetValue(propertyContext.Target).TitleString;
+            string utitle = propertyContext.Property.GetValue(propertyContext.Target).Specification.UntitledName;
 
             title = String.IsNullOrEmpty(title) || title == utitle ? (propertyContext.Property.Specification.IsImage ? propertyContext.Property.Name : MvcUi.ShowFile) : title;
 
@@ -1727,7 +1727,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     var valueNakedObject = propertyContext.GetValue(html.Facade());
                     string valueId = valueNakedObject == null ? String.Empty : Encode(html.Facade().OidTranslator.GetOidTranslation(valueNakedObject));
 
-                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target)) +
+                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetValue(propertyContext.Target)) +
                                      html.GetFieldValue(propertyContext) +
                                      html.CustomEncrypted(id, valueId);
                     propertyContext.IsPropertyEdit = false;
@@ -1735,7 +1735,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 else if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled) {
                     IEnumerable<SelectListItem> items = html.GetItems(id, propertyContext);
 
-                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target)) +
+                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetValue(propertyContext.Target)) +
                                      html.DropDownList(id, items, new {title = tooltip}) +
                                      html.GetMandatoryIndicator(propertyContext) +
                                      html.ValidationMessage(id);
@@ -1898,7 +1898,7 @@ namespace NakedObjects.Web.Mvc.Html {
             tag.AddCssClass(IdConstants.ObjectName);
             tag.MergeAttribute("title", "");
             var property = propertyContext.Property;
-            var coll = propertyContext.Property.GetNakedObject(propertyContext.Target);
+            var coll = propertyContext.Property.GetValue(propertyContext.Target);
             tag.InnerHtml += property.GetTitle(coll);
             return tag.ToString();
         }
@@ -1917,7 +1917,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tag.AddCssClass(cls);
                 tag.MergeAttribute("title", tooltip);
                 if (!propertyContext.Property.Specification.IsParseable && addIcon) {
-                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target));
+                    tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetValue(propertyContext.Target));
                 }
                 tag.InnerHtml += value;
             }
@@ -2107,7 +2107,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             else if (propertyContext.Property.Specification.IsBoolean && !readOnly) {
-                var state = propertyContext.Property.GetNakedObject(propertyContext.Target).GetDomainObject<bool?>();
+                var state = propertyContext.Property.GetValue(propertyContext.Target).GetDomainObject<bool?>();
 
                 if (propertyContext.Property.IsNullable) {
                     html.AddTriState(tag, htmlAttributes, id, state);
@@ -2126,7 +2126,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.AddDropDownControl(tag, htmlAttributes, propertyContext, id);
             }
             else if (propertyContext.Property.IsAutoCompleteEnabled && !readOnly) {
-                html.AddAutoCompleteControl(tag, htmlAttributes, propertyContext, propertyContext.Property.GetNakedObject(propertyContext.Target));
+                html.AddAutoCompleteControl(tag, htmlAttributes, propertyContext, propertyContext.Property.GetValue(propertyContext.Target));
             }
             else {
                 string rawValue = html.GetRawValue(propertyContext);

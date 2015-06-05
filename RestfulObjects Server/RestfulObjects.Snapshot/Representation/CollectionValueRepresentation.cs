@@ -40,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public LinkRepresentation[] Value { get; set; }
 
         private void SetValue(PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
-            IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetNakedObject(propertyContext.Target).ToEnumerable();
+            IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
             Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy,new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 

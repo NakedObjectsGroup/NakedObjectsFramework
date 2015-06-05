@@ -51,20 +51,20 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetContentType(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetValue(context.Target);
             string mtv = no != null ? no.GetAttachment().MimeType : AttachmentContextFacade.DefaultMimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
         private void SetContentDisposition(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetValue(context.Target);
             string cd = no != null ? no.GetAttachment().ContentDisposition : AttachmentContextFacade.DefaultContentDisposition;
             string fn = no != null ? no.GetAttachment().FileName : AttachmentContextFacade.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }
 
         private void SetStream(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetNakedObject(context.Target);
+            IObjectFacade no = context.Property.GetValue(context.Target);
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 

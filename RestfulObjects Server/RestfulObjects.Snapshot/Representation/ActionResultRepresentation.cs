@@ -67,25 +67,25 @@ namespace RestfulObjects.Snapshot.Representations {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
-                    object proposedObj = visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object;
+                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.Object;
                     object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object)).Cast<object>();
+                        var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.Object)).Cast<object>();
                         var valueObjs = proposedCollection.Select(RestUtils.ObjectToPredefinedType).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }
                     else {
-                        var refNos = visibleParamContext.ProposedNakedObject.ToEnumerable().Select(no => no).ToArray();
+                        var refNos = visibleParamContext.ProposedObjectFacade.ToEnumerable().Select(no => no).ToArray();
                         var refs = refNos.Select(no => RefValueRepresentation.Create(OidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, no)), Flags)).ToArray();
 
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, refs));
                     }
                 }
                 else {
-                    var valueRef = RefValueRepresentation.Create(OidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy ,req, visibleParamContext.ProposedNakedObject)), Flags);
+                    var valueRef = RefValueRepresentation.Create(OidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy ,req, visibleParamContext.ProposedObjectFacade)), Flags);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueRef));
                 }
 

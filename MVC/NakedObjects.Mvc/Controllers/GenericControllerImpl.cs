@@ -177,7 +177,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var tgt = Facade.GetObject(oid).Target;
 
             var p = Facade.GetProperty(oid, PropertyId);
-            var domainObject = p.Property.GetNakedObject(tgt);
+            var domainObject = p.Property.GetValue(tgt);
 
             return AsFile(domainObject);
         }
@@ -484,7 +484,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string reason = p.Reason == MvcUi.Mandatory ? MvcUi.Mandatory : MvcUi.InvalidEntry;
                     ModelState.AddModelError(key, reason);
                 }
-                AddAttemptedValue(key, p.Property.Specification.IsParseable ? p.ProposedValue : p.ProposedNakedObject.GetDomainObject<object>());
+                AddAttemptedValue(key, p.Property.Specification.IsParseable ? p.ProposedValue : p.ProposedObjectFacade.GetDomainObject<object>());
             }
 
             if (!string.IsNullOrEmpty(result.Reason)) {

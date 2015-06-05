@@ -145,7 +145,7 @@ namespace NakedObjects.Facade.Nof2 {
             return new ConsentFacade(consent);
         }
 
-        public IObjectFacade GetObjectFacade(IObjectFacade target) {
+        public IObjectFacade GetValue(IObjectFacade target) {
             Naked result = assoc.get((NakedObject) ((ObjectFacade) target).NakedObject);
             return result == null ? null : new ObjectFacade(result, FrameworkFacade);
         }

@@ -46,7 +46,7 @@ namespace NakedObjects.Facade {
         IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
         IConsentFacade IsUsable(IObjectFacade target);
-        IObjectFacade GetObjectFacade(IObjectFacade target);
+        IObjectFacade GetValue(IObjectFacade target);
         bool IsVisible(IObjectFacade objectFacade);
         bool IsEager(IObjectFacade objectFacade);
         IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues);

@@ -163,7 +163,7 @@ namespace NakedObjects.Facade.Impl {
             return new ConsentFacade(consent);
         }
 
-        public IObjectFacade GetObjectFacade(IObjectFacade target) {
+        public IObjectFacade GetValue(IObjectFacade target) {
             INakedObjectAdapter result = assoc.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
             return ObjectFacade.Wrap(result, FrameworkFacade, framework);
         }

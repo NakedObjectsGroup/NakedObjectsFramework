@@ -32,12 +32,12 @@ namespace RestfulObjects.Snapshot.Representations {
             if (context.Specification.IsParseable ||
                 context.Specification.IsCollection ||
                 context.ProposedValue == null ||
-                context.ProposedNakedObject == null ||
-                context.ProposedNakedObject.Specification.IsParseable) {
+                context.ProposedObjectFacade == null ||
+                context.ProposedObjectFacade.Specification.IsParseable) {
                 value = CreateMap(context, context.ProposedValue);
             }
             else {
-                value = CreateMap(context, RefValueRepresentation.Create(oidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, context.ProposedNakedObject)), flags));
+                value = CreateMap(context, RefValueRepresentation.Create(oidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, context.ProposedObjectFacade)), flags));
             }
             return value;
         }

@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public IObjectFacade GetValue(IFrameworkFacade facade) {
-            return Property.GetNakedObject(Target);
+            return Property.GetValue(Target);
         }
 
         public bool IsFindMenuEnabled() {
