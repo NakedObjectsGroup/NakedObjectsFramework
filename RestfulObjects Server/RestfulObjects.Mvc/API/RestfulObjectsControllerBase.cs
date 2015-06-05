@@ -35,9 +35,9 @@ namespace RestfulObjects.Mvc {
             DefaultPageSize = 20;
         }
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade surface) {
-            Surface = surface;
-            OidStrategy = surface.OidStrategy;
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
+            FrameworkFacade = frameworkFacade;
+            OidStrategy = frameworkFacade.OidStrategy;
         }
 
         public static bool IsReadOnly { get; set; }
@@ -61,7 +61,7 @@ namespace RestfulObjects.Mvc {
             set { RestSnapshot.AcceptHeaderStrict = value; }
         }
 
-        protected IFrameworkFacade Surface { get; set; }
+        protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
@@ -400,11 +400,11 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetUser(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetUser(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetServices(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetServices(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetVersion(ReservedArguments arguments) {
@@ -412,39 +412,39 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetDomainTypes(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetDomainTypes().OrderBy(s => s.DomainTypeName(OidStrategy)).ToArray(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetDomainTypes().OrderBy(s => s.DomainTypeName(OidStrategy)).ToArray(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetDomainType(string typeName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 HandlePredefinedTypes(typeName);
-                return new RestSnapshot(OidStrategy, Surface.GetDomainType(typeName), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetDomainType(typeName), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetService(string serviceName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                var oid = Surface.OidTranslator.GetOidTranslation(serviceName);
-                return new RestSnapshot(OidStrategy, Surface.GetService(oid), Request, GetFlags(arguments));
+                var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                var oid = Surface.OidTranslator.GetOidTranslation(serviceName);
-                return new RestSnapshot(OidStrategy, Surface.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
+                var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetImage(string imageId, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetImage(imageId), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
-                ObjectContextFacade context = Surface.Persist(domainType, args.Item1);
+                ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
                 VerifyNoPersistError(context, args.Item2);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
             });
@@ -453,18 +453,18 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
 
             return InitAndHandleErrors(() => {
-                var loid = Surface.OidTranslator.GetOidTranslation(domainType, instanceId);
-                return new RestSnapshot(OidStrategy, Surface.GetObject(loid), Request, GetFlags(arguments));
+                var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
             });
         }
 
         public virtual HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
-                // TODO enhance surface to return property with completions 
-                var link = Surface.OidTranslator.GetOidTranslation(domainType, instanceId);
-                PropertyContextFacade propertyContext = Surface.GetProperty(link, propertyName);
-                ListContextFacade completions = Surface.GetPropertyCompletions(link, propertyName, args.Item1);
+                // TODO enhance frameworkFacade to return property with completions 
+                var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(link, propertyName);
+                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(link, propertyName, args.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
             });
         }
@@ -472,12 +472,12 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
-                // TODO enhance surface to return parameter with completions 
-                var link = Surface.OidTranslator.GetOidTranslation(domainType, instanceId);
-                ActionContextFacade action = Surface.GetObjectAction(link, actionName);
+                // TODO enhance frameworkFacade to return parameter with completions 
+                var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+                ActionContextFacade action = FrameworkFacade.GetObjectAction(link, actionName);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                ListContextFacade completions = Surface.GetParameterCompletions(link, actionName, parmName, args.Item1);
+                ListContextFacade completions = FrameworkFacade.GetParameterCompletions(link, actionName, parmName, args.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
             });
         }
@@ -486,10 +486,10 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
 
-                // TODO enhance surface to return parameter with completions 
-                var link = Surface.OidTranslator.GetOidTranslation(serviceName);
-                ActionContextFacade action = Surface.GetServiceAction(link, actionName);
-                ListContextFacade completions = Surface.GetServiceParameterCompletions(link, actionName, parmName, args.Item1);
+                // TODO enhance frameworkFacade to return parameter with completions 
+                var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+                ActionContextFacade action = FrameworkFacade.GetServiceAction(link, actionName);
+                ListContextFacade completions = FrameworkFacade.GetServiceParameterCompletions(link, actionName, parmName, args.Item1);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
@@ -500,7 +500,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, true);
-                ObjectContextFacade context = Surface.PutObject( Surface.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
+                ObjectContextFacade context = FrameworkFacade.PutObject( FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -508,7 +508,7 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                PropertyContextFacade propertyContext = Surface.GetProperty(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
+                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                 // found but a collection 
                 if (propertyContext.Property.IsCollection) {
@@ -520,13 +520,13 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetPropertyType(string typeName, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    PropertyContextFacade propertyContext = Surface.GetProperty(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
+                    PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
 
                     if (propertyContext.Property.IsCollection) {
@@ -544,7 +544,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetCollectionValue(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    PropertyContextFacade propertyContext = Surface.GetProperty(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
+                    PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
 
                     if (propertyContext.Property.IsCollection) {
@@ -562,7 +562,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetCollectionType(string typeName, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    return new RestSnapshot( OidStrategy, Surface.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
+                    return new RestSnapshot( OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
                 }
                 catch (TypePropertyResourceNotFoundNOSException e) {
                     throw new TypeCollectionResourceNotFoundNOSException(e.ResourceId, e.DomainId);
@@ -571,22 +571,22 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetObjectAction(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionType(string typeName, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, Surface.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessArgument(argument);
-                PropertyContextFacade context = Surface.PutProperty(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
+                PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -596,7 +596,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument(arguments);
-                PropertyContextFacade context = Surface.DeleteProperty(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
+                PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -614,7 +614,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 VerifyActionType(domainType, instanceId, actionName, "GET");
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
-                ActionResultContextFacade context = Surface.ExecuteObjectAction(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -624,7 +624,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
-                ActionResultContextFacade result = Surface.ExecuteObjectAction(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -635,7 +635,7 @@ namespace RestfulObjects.Mvc {
                 VerifyActionType(domainType, instanceId, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
-                ActionResultContextFacade result = Surface.ExecuteObjectAction(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
+                ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -645,7 +645,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 VerifyActionType(serviceName, actionName, "GET");
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade result = Surface.ExecuteServiceAction(Surface.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
+                ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -656,7 +656,7 @@ namespace RestfulObjects.Mvc {
                 VerifyActionType(serviceName, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade result = Surface.ExecuteServiceAction(Surface.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
+                ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -666,7 +666,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade result = Surface.ExecuteServiceAction(Surface.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
+                ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -790,12 +790,12 @@ namespace RestfulObjects.Mvc {
         }
 
         private void VerifyActionType(string sName, string actionName, string method) {
-            ActionContextFacade context = Surface.GetServiceAction(Surface.OidTranslator.GetOidTranslation(sName), actionName);
+            ActionContextFacade context = FrameworkFacade.GetServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(sName), actionName);
             VerifyActionType(context, method);
         }
 
         private void VerifyActionType(string domainType, string instanceId, string actionName, string method) {
-            ActionContextFacade context = Surface.GetObjectAction(Surface.OidTranslator.GetOidTranslation(domainType, instanceId), actionName);
+            ActionContextFacade context = FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName);
             VerifyActionType(context, method);
         }
 
@@ -803,7 +803,7 @@ namespace RestfulObjects.Mvc {
             bool success = false;
             RestSnapshot ss;
             try {
-                Surface.Start();
+                FrameworkFacade.Start();
                 ss = f();
                 success = true;
             }
@@ -815,11 +815,11 @@ namespace RestfulObjects.Mvc {
                 return ErrorMsg(e);
             }
             catch (Exception e) {
-                Logger.ErrorFormat("Unhandled exception from Surface {0} {1}", e.GetType(), e.Message);
+                Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
                 return ErrorMsg(e);
             }
             finally {
-                Surface.End(success);
+                FrameworkFacade.End(success);
             }
 
             try {
@@ -888,7 +888,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<object, RestControlFlags> ExtractValueAndFlags(SingleValueArgument argument) {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
-                object parm = argument.Value.GetValue(Surface, new UriMtHelper(OidStrategy ,Request), OidStrategy);
+                object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy ,Request), OidStrategy);
                 return new Tuple<object, RestControlFlags>(parm, GetFlags(argument));
             });
         }
@@ -896,7 +896,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<IDictionary<string, object>, RestControlFlags> ExtractValuesAndFlags(ArgumentMap arguments, bool errorIfNone) {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
-                Dictionary<string, object> dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(Surface, new UriMtHelper(OidStrategy, Request), OidStrategy));
+                Dictionary<string, object> dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
                 return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags(arguments));
             });
         }
@@ -908,10 +908,10 @@ namespace RestfulObjects.Mvc {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 
-            ITypeFacade thisSpecification = Surface.GetDomainType(context.TypeName);
+            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
             IValue parameter = arguments.Map[context.ParameterId];
-            object value = parameter.GetValue(Surface, new UriMtHelper(OidStrategy ,Request), OidStrategy);
-            var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : Surface.GetDomainType((string) value));
+            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy ,Request), OidStrategy);
+            var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value));
             context.ThisSpecification = thisSpecification;
             context.OtherSpecification = otherSpecification;
             return context;
@@ -931,7 +931,7 @@ namespace RestfulObjects.Mvc {
 
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, string domainType, string instanceId, bool ignoreConcurrency = false) {
             if (!ignoreConcurrency && domainType != null) {
-                ObjectContextFacade contextFacade = Surface.GetObject(Surface.OidTranslator.GetOidTranslation(domainType, instanceId));
+                ObjectContextFacade contextFacade = FrameworkFacade.GetObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId));
                 ignoreConcurrency = contextFacade.Specification.IsService || contextFacade.Specification.IsImmutable(contextFacade.Target);
             }
 

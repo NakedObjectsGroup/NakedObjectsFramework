@@ -132,25 +132,25 @@ namespace NakedObjects.Facade.Impl {
             get { return nakedObjectActionParameter.IsAutoCompleteEnabled; }
         }
 
-        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
+        public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
             var otherParms = parameterNameValues == null ? null : parameterNameValues.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
 
             var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => GetValue(a.parm, a.Value));
 
-            return nakedObjectActionParameter.GetChoices(((ObjectFacade) nakedObject).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+            return nakedObjectActionParameter.GetChoices(((ObjectFacade) objectFacade).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
-        public string GetMaskedValue(IObjectFacade valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade objectFacade) {
             var mask = nakedObjectActionParameter.GetFacet<IMaskFacet>();
 
-            if (valueNakedObject == null) {
+            if (objectFacade == null) {
                 return null;
             }
-            var no = ((ObjectFacade) valueNakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
@@ -172,21 +172,21 @@ namespace NakedObjects.Facade.Impl {
             return new ConsentFacade(consent);
         }
 
-        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
-            var choices = GetChoices(nakedObject, parameterNameValues);
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
+            var choices = GetChoices(objectFacade, parameterNameValues);
             return choices.Select(c => new Tuple<IObjectFacade, string>(c, c.TitleString)).ToArray();
         }
 
-        public IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((ObjectFacade) nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+        public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) {
+            return nakedObjectActionParameter.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
-        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            return nakedObjectActionParameter.GetDefaultType(((ObjectFacade) nakedObject).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
+        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
+            return nakedObjectActionParameter.GetDefaultType(((ObjectFacade) objectFacade).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
         }
 
-        public IObjectFacade GetDefault(IObjectFacade nakedObject) {
-            return ObjectFacade.Wrap(nakedObjectActionParameter.GetDefault(((ObjectFacade) nakedObject).WrappedNakedObject), FrameworkFacade, framework);
+        public IObjectFacade GetDefault(IObjectFacade objectFacade) {
+            return ObjectFacade.Wrap(nakedObjectActionParameter.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }

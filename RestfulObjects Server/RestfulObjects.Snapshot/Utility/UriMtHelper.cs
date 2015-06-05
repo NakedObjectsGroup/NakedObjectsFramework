@@ -26,7 +26,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private readonly IAssociationFacade assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
         private  string cachedType; // cache because may not be available at writing time 
-        private readonly IObjectFacade nakedObject;
+        private readonly IObjectFacade objectFacade;
         private readonly IActionParameterFacade param;
         private readonly Uri prefix;
         private readonly ITypeFacade spec;
@@ -52,10 +52,10 @@ namespace RestfulObjects.Snapshot.Utility {
             DebugLogRequest(req);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade nakedObject) : this(oidStrategy ,req) {
-            this.nakedObject = nakedObject;
-            spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy ,req) {
+            this.objectFacade = objectFacade;
+            spec = objectFacade.Specification;
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -63,9 +63,9 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext)
             : this(oidStrategy ,req) {
             assoc = propertyContext.Property;
-            nakedObject = propertyContext.Target;
-            spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
+            objectFacade = propertyContext.Target;
+            spec = objectFacade.Specification;
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -81,9 +81,9 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
             : this(oidStrategy ,req) {
             action = actionContext.Action;
-            nakedObject = actionContext.Target;
-            spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
+            objectFacade = actionContext.Target;
+            spec = objectFacade.Specification;
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -109,9 +109,9 @@ namespace RestfulObjects.Snapshot.Utility {
             : this(oidStrategy ,req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
-            nakedObject = parameterContext.Target;
-            spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
+            objectFacade = parameterContext.Target;
+            spec = objectFacade.Specification;
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -265,7 +265,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public Uri GetIconUri() {
             var template = new UriTemplate(SegmentValues.Images + "/{image}");
-            string name = spec.GetIconName(nakedObject);
+            string name = spec.GetIconName(objectFacade);
             string iconName = name.Contains(".") ? name : name + ".gif";
             CheckArgumentNotNull(iconName, "icon name");
             return template.BindByPosition(prefix, iconName);
@@ -443,13 +443,13 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public MediaTypeHeaderValue GetAttachmentMediaType() {
-            IObjectFacade no = assoc.GetNakedObject(nakedObject);
+            IObjectFacade no = assoc.GetNakedObject(objectFacade);
             string mtv = no != null ? no.GetAttachment().MimeType : "";
             return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? "image/bmp" : mtv);
         }
 
         public MediaTypeHeaderValue GetIconMediaType() {
-            string name = spec.GetIconName(nakedObject);
+            string name = spec.GetIconName(objectFacade);
             string mt = name.Contains(".") ? name.Split('.').Last() : "gif";
             string mtv = string.Format("image/{0}", mt);
 
@@ -550,17 +550,17 @@ namespace RestfulObjects.Snapshot.Utility {
             return FormatParameter(RelParamValues.ServiceId, CachedType);
         }
 
-        public string GetRelParametersFor(IMemberFacade nakedObjectMemberSurface) {
-            if (nakedObjectMemberSurface is IActionFacade) {
-                return FormatParameter(RelParamValues.Action, nakedObjectMemberSurface.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
+        public string GetRelParametersFor(IMemberFacade memberFacade) {
+            if (memberFacade is IActionFacade) {
+                return FormatParameter(RelParamValues.Action, memberFacade.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
             }
 
-            if (nakedObjectMemberSurface is IAssociationFacade) {
-                var associationSurface = (IAssociationFacade) nakedObjectMemberSurface;
-                return FormatParameter(associationSurface.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationSurface.Id);
+            var associationFacade = memberFacade as IAssociationFacade;
+            if (associationFacade != null) {
+                return FormatParameter(associationFacade.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationFacade.Id);
             }
 
-            throw new ArgumentException("Unexpected type:" + nakedObjectMemberSurface.GetType());
+            throw new ArgumentException("Unexpected type:" + memberFacade.GetType());
         }
 
         public string GetRelParametersFor(IActionParameterFacade actionParameterFacade) {

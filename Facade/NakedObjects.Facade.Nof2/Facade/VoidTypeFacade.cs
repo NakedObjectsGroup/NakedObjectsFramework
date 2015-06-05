@@ -89,15 +89,15 @@ namespace NakedObjects.Facade.Nof2 {
         public bool IsAlwaysImmutable { get; private set; }
         public bool IsImmutableOncePersisted { get; private set; }
 
-        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade objectFacade) {
             throw new NotImplementedException();
         }
 
-        bool ITypeFacade.IsImmutable(IObjectFacade nakedObject) {
+        bool ITypeFacade.IsImmutable(IObjectFacade objectFacade) {
             return false;
         }
 
-        public string GetIconName(IObjectFacade nakedObject) {
+        public string GetIconName(IObjectFacade objectFacade) {
             return null;
         }
 

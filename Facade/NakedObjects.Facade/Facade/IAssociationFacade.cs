@@ -46,16 +46,16 @@ namespace NakedObjects.Facade {
         IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
         IConsentFacade IsUsable(IObjectFacade target);
-        IObjectFacade GetNakedObject(IObjectFacade target);
-        bool IsVisible(IObjectFacade nakedObject);
-        bool IsEager(IObjectFacade nakedObject);
+        IObjectFacade GetObjectFacade(IObjectFacade target);
+        bool IsVisible(IObjectFacade objectFacade);
+        bool IsEager(IObjectFacade objectFacade);
         IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues);
         Tuple<string, ITypeFacade>[] GetChoicesParameters();
         Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues);
         IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm);
-        string GetTitle(IObjectFacade nakedObject);
+        string GetTitle(IObjectFacade objectFacade);
         int Count(IObjectFacade target);
-        string GetMaskedValue(IObjectFacade valueNakedObject);
-        bool DefaultTypeIsExplicit(IObjectFacade nakedObject);
+        string GetMaskedValue(IObjectFacade objectFacade);
+        bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
     }
 }

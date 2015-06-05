@@ -18,7 +18,7 @@ namespace RestfulObjects.Mvc.Model {
 
         #region IValue Members
 
-        public object GetValue(IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
             return internalValue;
         }
 

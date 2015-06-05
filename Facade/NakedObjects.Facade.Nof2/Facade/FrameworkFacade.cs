@@ -78,11 +78,11 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             return MapErrors(() => FacadeUtils.GetServicesInternal().Select(s => new ObjectContext(s).ToObjectContextFacade(this)).ToArray());
         }
 
-        public ObjectContextFacade GetObject(IObjectFacade nakedObject) {
+        public ObjectContextFacade GetObject(IObjectFacade objectFacade) {
             throw new NotImplementedException();
         }
 
-        public ObjectContextFacade RefreshObject(IObjectFacade nakedObject, ArgumentsContextFacade arguments) {
+        public ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments) {
             throw new NotImplementedException();
         }
 
@@ -232,7 +232,7 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             throw new NotImplementedException();
         }
 
-        public object Wrap(object arm, IObjectFacade oldNakedObject) {
+        public object Wrap(object arm, IObjectFacade objectFacade) {
             throw new NotImplementedException();
         }
 

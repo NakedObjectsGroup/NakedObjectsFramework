@@ -109,13 +109,13 @@ namespace RestfulObjects.Snapshot.Representations {
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        private IDictionary<string, object> GetCustomExtensions(IObjectFacade nakedObject) {
-            return nakedObject.ExtensionData == null ? null : nakedObject.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
+        private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
+            return objectFacade.ExtensionData == null ? null : objectFacade.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
         }
 
-        private void SetExtensions(IObjectFacade nakedObject) {
+        private void SetExtensions(IObjectFacade objectFacade) {
             if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(nakedObject.Specification.SingularName, nakedObject.Specification.Description, nakedObject.Specification.PluralName, nakedObject.Specification.DomainTypeName(OidStrategy), nakedObject.Specification.IsService, null, null, null, null, null, GetCustomExtensions(nakedObject), null, null, OidStrategy);
+                Extensions = RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy);
             }
             else {
                 Extensions = MapRepresentation.Create();

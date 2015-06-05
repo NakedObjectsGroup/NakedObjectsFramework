@@ -31,13 +31,13 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return new OidTranslationSemiColonSeparatedList(id.First());
         }
 
-        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
-            if (nakedObject.IsViewModel) {
-                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
+        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
+            if (objectFacade.IsViewModel) {
+                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
                 lifecycleManager.PopulateViewModelKeys(vm);
             }
 
-            var oid = nakedObject.Oid;
+            var oid = objectFacade.Oid;
             var id = GetObjectId(oid);
             return GetOidTranslation(id);
         }
@@ -49,16 +49,16 @@ namespace NakedObjects.Facade.Impl.Implementation {
         }
 
         // todo is this best place for this
-        //private string GetObjectId(INakedObjectAdapter nakedObject) {
-        //    if (nakedObject.Spec.IsViewModel) {
+        //private string GetObjectId(INakedObjectAdapter objectFacade) {
+        //    if (objectFacade.Spec.IsViewModel) {
         //        // todo this always repopulates oid now - see core - look into optimizing
-        //        framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
+        //        framework.LifecycleManager.PopulateViewModelKeys(objectFacade);
         //    }
-        //    else if (nakedObject.Oid == null) {
+        //    else if (objectFacade.Oid == null) {
         //        return "";
         //    }
 
-        //    return GetObjectId(nakedObject.Oid);
+        //    return GetObjectId(objectFacade.Oid);
         //}
 
         private string GetObjectId(IOidFacade oid) {

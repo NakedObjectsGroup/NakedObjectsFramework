@@ -42,7 +42,7 @@ namespace NakedObjects.Facade.Nof2.Contexts {
             context.Target = Target == null ? (NakedTarget == null ? null : new ObjectFacade(NakedTarget, facade)) : new ObjectFacade(Target, facade);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;
-            context.ProposedNakedObject = ProposedNakedObject == null ? null : new ObjectFacade(ProposedNakedObject, facade);
+            context.ProposedObjectFacade = ProposedNakedObject == null ? null : new ObjectFacade(ProposedNakedObject, facade);
             context.ProposedValue = ProposedValue;
 
             return context;

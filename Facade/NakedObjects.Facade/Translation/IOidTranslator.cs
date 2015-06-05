@@ -8,6 +8,6 @@
 namespace NakedObjects.Facade.Translation {
     public interface IOidTranslator {
         IOidTranslation GetOidTranslation(params string[] id);
-        IOidTranslation GetOidTranslation(IObjectFacade nakedObject);
+        IOidTranslation GetOidTranslation(IObjectFacade objectFacade);
     }
 }

@@ -114,12 +114,12 @@ namespace NakedObjects.Facade.Impl {
             get { return action.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
-        public bool IsVisible(IObjectFacade nakedObject) {
-            return action.IsVisible(((ObjectFacade) nakedObject).WrappedNakedObject);
+        public bool IsVisible(IObjectFacade objectFacade) {
+            return action.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
         }
 
-        public IConsentFacade IsUsable(IObjectFacade nakedObject) {
-            return new ConsentFacade(action.IsUsable(((ObjectFacade) nakedObject).WrappedNakedObject));
+        public IConsentFacade IsUsable(IObjectFacade objectFacade) {
+            return new ConsentFacade(action.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
         }
 
         public ITypeFacade OnType {

@@ -63,7 +63,7 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         //private string GetObjectId(object model) {
         //    Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectAdapter);
-        //    INakedObjectAdapter nakedObject = framework.GetNakedObject(model);
+        //    INakedObjectAdapter nakedObject = framework.GetObjectFacade(model);
         //    return framework.GetObjectId(nakedObject);
         //}
 

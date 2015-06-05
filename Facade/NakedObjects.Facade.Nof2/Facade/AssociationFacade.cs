@@ -145,16 +145,16 @@ namespace NakedObjects.Facade.Nof2 {
             return new ConsentFacade(consent);
         }
 
-        public IObjectFacade GetNakedObject(IObjectFacade target) {
+        public IObjectFacade GetObjectFacade(IObjectFacade target) {
             Naked result = assoc.get((NakedObject) ((ObjectFacade) target).NakedObject);
             return result == null ? null : new ObjectFacade(result, FrameworkFacade);
         }
 
-        public bool IsVisible(IObjectFacade nakedObject) {
-            return !assoc.isHidden() && assoc.isVisible((NakedReference) ((ObjectFacade) nakedObject).NakedObject).isAllowed();
+        public bool IsVisible(IObjectFacade objectFacade) {
+            return !assoc.isHidden() && assoc.isVisible((NakedReference) ((ObjectFacade) objectFacade).NakedObject).isAllowed();
         }
 
-        public bool IsEager(IObjectFacade nakedObject) {
+        public bool IsEager(IObjectFacade objectFacade) {
             return false;
         }
 
@@ -182,16 +182,16 @@ namespace NakedObjects.Facade.Nof2 {
             return 0;
         }
 
-        public string GetMaskedValue(IObjectFacade valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade objectFacade) {
             throw new NotImplementedException();
         }
 
-        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
+        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
             throw new NotImplementedException();
         }
 
-        public string GetTitle(IObjectFacade nakedObject) {
-            return nakedObject.TitleString;
+        public string GetTitle(IObjectFacade objectFacade) {
+            return objectFacade.TitleString;
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }

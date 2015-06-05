@@ -124,10 +124,10 @@ namespace NakedObjects.Facade.Impl.Utility {
             return EnsureEndsWithColon(GetObjectId(owner) + Sep + service.Spec.ShortName);
         }
 
-        public string GetFindMenuId(IObjectFacade nakedObject, IActionFacade actionFacade, string propertyName) {
+        public string GetFindMenuId(IObjectFacade objectFacade, IActionFacade actionFacade, string propertyName) {
             IActionSpec action = actionFacade == null ? null : ((dynamic) actionFacade).WrappedSpec;
             string contextActionName = action == null ? "" : Sep + action.Id;
-            return GetObjectId(nakedObject) + contextActionName + Sep + NameUtils.CapitalizeName(propertyName) + Sep + IdConstants.FindMenuName;
+            return GetObjectId(objectFacade) + contextActionName + Sep + NameUtils.CapitalizeName(propertyName) + Sep + IdConstants.FindMenuName;
         }
 
         public string GetParameterId(IActionFacade actionFacade, IActionParameterFacade parameterFacade) {
@@ -153,16 +153,16 @@ namespace NakedObjects.Facade.Impl.Utility {
             return IdConstants.CollContainerName + Sep + collection.Spec.ShortName;
         }
 
-        public string GetActionContainerId(IObjectFacade nakedObject) {
-            return GetObjectId(nakedObject) + Sep + IdConstants.ActionsName;
+        public string GetActionContainerId(IObjectFacade objectFacade) {
+            return GetObjectId(objectFacade) + Sep + IdConstants.ActionsName;
         }
 
-        public string GetServiceContainerId(IObjectFacade nakedObject) {
-            return GetObjectId(nakedObject);
+        public string GetServiceContainerId(IObjectFacade objectFacade) {
+            return GetObjectId(objectFacade);
         }
 
-        public string GetFieldContainerId(IObjectFacade nakedObject) {
-            return GetObjectId(nakedObject) + Sep + IdConstants.PropertyListName;
+        public string GetFieldContainerId(IObjectFacade objectFacade) {
+            return GetObjectId(objectFacade) + Sep + IdConstants.PropertyListName;
         }
 
         public string GetParameterContainerId(IActionFacade actionFacade) {
@@ -177,7 +177,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             return IdConstants.ActionName + Sep + owner.Spec.ShortName + Sep + type;
         }
 
-        public string GetActionLabel(IObjectFacade nakedObject) {
+        public string GetActionLabel(IObjectFacade objectFacade) {
             return "Actions";
         }
 

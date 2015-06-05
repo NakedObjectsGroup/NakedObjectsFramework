@@ -119,16 +119,16 @@ namespace NakedObjects.Facade.Nof2 {
             get { return IsASet; }
         }
 
-        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade objectFacade) {
             return ElementType;
         }
 
-        bool ITypeFacade.IsImmutable(IObjectFacade nakedObject) {
+        bool ITypeFacade.IsImmutable(IObjectFacade objectFacade) {
             return IsService;
         }
 
-        public string GetIconName(IObjectFacade nakedObject) {
-            string iconName = nakedObject == null ? "" : ((NakedReference) ((ObjectFacade) nakedObject).NakedObject).getIconName();
+        public string GetIconName(IObjectFacade objectFacade) {
+            string iconName = objectFacade == null ? "" : ((NakedReference) ((ObjectFacade) objectFacade).NakedObject).getIconName();
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
 

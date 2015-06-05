@@ -63,16 +63,16 @@ namespace NakedObjects.Facade.Nof2 {
         public bool IsPassword { get; private set; }
         public bool IsFindMenuEnabled { get; private set; }
 
-        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
-            //return GetChoices(nakedObject,  )
+        public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
+            //return GetChoices(objectFacade,  )
             return new IObjectFacade[] {};
         }
 
-        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues) {
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
             throw new NotImplementedException();
         }
 
-        public IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm) {
+        public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) {
             throw new NotImplementedException();
         }
 
@@ -104,20 +104,20 @@ namespace NakedObjects.Facade.Nof2 {
         public int AutoCompleteMinLength { get; private set; }
         public IDictionary<string, object> ExtensionData { get; private set; }
 
-        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            return nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject) != null;
+        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
+            return nakedObjectActionParameter.getDefault(((ObjectFacade) objectFacade).NakedObject) != null;
         }
 
-        public IObjectFacade GetDefault(IObjectFacade nakedObject) {
-            return new ObjectFacade(nakedObjectActionParameter.getDefault(((ObjectFacade) nakedObject).NakedObject), FrameworkFacade);
+        public IObjectFacade GetDefault(IObjectFacade objectFacade) {
+            return new ObjectFacade(nakedObjectActionParameter.getDefault(((ObjectFacade) objectFacade).NakedObject), FrameworkFacade);
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             return new Tuple<string, ITypeFacade>[] {};
         }
 
-        public string GetMaskedValue(IObjectFacade valueNakedObject) {
-            return valueNakedObject.TitleString;
+        public string GetMaskedValue(IObjectFacade objectFacade) {
+            return objectFacade.TitleString;
         }
 
         public IConsentFacade IsValid(IObjectFacade target, object value) {
@@ -128,8 +128,8 @@ namespace NakedObjects.Facade.Nof2 {
 
         #endregion
 
-        public IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, IObjectFacade> parameterNameValues) {
-            return nakedObjectActionParameter.getChoices(((ObjectFacade) nakedObject).NakedObject).Select(no => new ObjectFacade(no, FrameworkFacade)).Cast<IObjectFacade>().ToArray();
+        public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, IObjectFacade> parameterNameValues) {
+            return nakedObjectActionParameter.getChoices(((ObjectFacade) objectFacade).NakedObject).Select(no => new ObjectFacade(no, FrameworkFacade)).Cast<IObjectFacade>().ToArray();
         }
 
         public override bool Equals(object obj) {

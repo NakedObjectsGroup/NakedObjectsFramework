@@ -84,12 +84,12 @@ namespace NakedObjects.Facade.Nof2 {
             get { return action.GetParameters((NakedReference) target).Select(p => new ActionParameterFacade(p, target, FrameworkFacade)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
-        public bool IsVisible(IObjectFacade nakedObject) {
-            return action.isVisible((NakedReference) (((ObjectFacade) nakedObject).NakedObject)).isAllowed();
+        public bool IsVisible(IObjectFacade objectFacade) {
+            return action.isVisible((NakedReference) (((ObjectFacade) objectFacade).NakedObject)).isAllowed();
         }
 
-        public IConsentFacade IsUsable(IObjectFacade nakedObject) {
-            return new ConsentFacade(action.isAvailable((NakedReference) (((ObjectFacade) nakedObject).NakedObject)));
+        public IConsentFacade IsUsable(IObjectFacade objectFacade) {
+            return new ConsentFacade(action.isAvailable((NakedReference) (((ObjectFacade) objectFacade).NakedObject)));
         }
 
         public ITypeFacade OnType {

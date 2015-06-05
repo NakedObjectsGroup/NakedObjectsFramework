@@ -10,6 +10,6 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Mvc.Model {
     public interface IValue {
-        object GetValue(IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy);
+        object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy);
     }
 }

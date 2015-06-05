@@ -15,7 +15,7 @@ using RestfulObjects.Mvc.Model;
 
 namespace MvcTestApp.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade surface) : base(surface) {}
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {

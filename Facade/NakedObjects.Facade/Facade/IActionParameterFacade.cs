@@ -37,13 +37,13 @@ namespace NakedObjects.Facade {
         int AutoCompleteMinLength { get; }
         IDictionary<string, object> ExtensionData { get; }
         bool IsFindMenuEnabled { get; }
-        IObjectFacade[] GetChoices(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues);
-        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade nakedObject, IDictionary<string, object> parameterNameValues);
-        IObjectFacade[] GetCompletions(IObjectFacade nakedObject, string autoCompleteParm);
-        bool DefaultTypeIsExplicit(IObjectFacade nakedObject);
-        IObjectFacade GetDefault(IObjectFacade nakedObject);
+        IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
+        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
+        IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
+        bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
+        IObjectFacade GetDefault(IObjectFacade objectFacade);
         Tuple<string, ITypeFacade>[] GetChoicesParameters();
-        string GetMaskedValue(IObjectFacade valueNakedObject);
+        string GetMaskedValue(IObjectFacade objectFacade);
         // todo not really same as other interfaces - more PutValue with validate only ? 
         IConsentFacade IsValid(IObjectFacade target, object value);
     }

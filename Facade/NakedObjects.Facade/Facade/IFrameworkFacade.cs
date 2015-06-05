@@ -20,8 +20,8 @@ namespace NakedObjects.Facade {
         ObjectContextFacade GetService(IOidTranslation serviceName);
         ListContextFacade GetServices();
         IMenuFacade[] GetMainMenus();
-        ObjectContextFacade GetObject(IObjectFacade nakedObject);
-        ObjectContextFacade RefreshObject(IObjectFacade nakedObject, ArgumentsContextFacade arguments);
+        ObjectContextFacade GetObject(IObjectFacade objectFacade);
+        ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments);
         ObjectContextFacade GetObject(IOidTranslation objectId);
         ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
         PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
@@ -48,6 +48,6 @@ namespace NakedObjects.Facade {
         IObjectFacade GetObject(ITypeFacade spec, object domainObject);
         IObjectFacade GetObject(object domainObject);
         // todo temp wrap - probably remove actionresult model ? 
-        object Wrap(object arm, IObjectFacade oldNakedObject);
+        object Wrap(object arm, IObjectFacade objectFacade);
     }
 }

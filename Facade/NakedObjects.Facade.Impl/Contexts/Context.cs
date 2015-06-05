@@ -23,7 +23,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
             context.Target = ObjectFacade.Wrap(Target, facade, framework);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;
-            context.ProposedNakedObject = ObjectFacade.Wrap(ProposedNakedObject, facade, framework);
+            context.ProposedObjectFacade = ObjectFacade.Wrap(ProposedNakedObject, facade, framework);
             context.ProposedValue = ProposedValue;
 
             return context;

@@ -160,12 +160,12 @@ namespace NakedObjects.Facade.Impl {
             get { return new MenuFacade(spec.Menu, FrameworkFacade, framework); }
         }
 
-        public bool IsImmutable(IObjectFacade nakedObject) {
-            return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !nakedObject.IsTransient);
+        public bool IsImmutable(IObjectFacade objectFacade) {
+            return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !objectFacade.IsTransient);
         }
 
-        public string GetIconName(IObjectFacade nakedObject) {
-            return spec.GetIconName(nakedObject == null ? null : ((ObjectFacade) nakedObject).WrappedNakedObject);
+        public string GetIconName(IObjectFacade objectFacade) {
+            return spec.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
         }
 
         public IActionFacade[] GetActionLeafNodes() {
@@ -173,9 +173,9 @@ namespace NakedObjects.Facade.Impl {
             return actionsAndUid.Select(a => new ActionFacade(a.Item1, FrameworkFacade, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
         }
 
-        public ITypeFacade GetElementType(IObjectFacade nakedObject) {
+        public ITypeFacade GetElementType(IObjectFacade objectFacade) {
             if (IsCollection) {
-                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) nakedObject).WrappedNakedObject, framework.MetamodelManager.Metamodel);
+                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new TypeFacade(elementSpec, FrameworkFacade, framework);
             }

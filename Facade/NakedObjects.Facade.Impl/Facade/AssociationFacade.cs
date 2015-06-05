@@ -163,17 +163,17 @@ namespace NakedObjects.Facade.Impl {
             return new ConsentFacade(consent);
         }
 
-        public IObjectFacade GetNakedObject(IObjectFacade target) {
+        public IObjectFacade GetObjectFacade(IObjectFacade target) {
             INakedObjectAdapter result = assoc.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
             return ObjectFacade.Wrap(result, FrameworkFacade, framework);
         }
 
-        public bool IsVisible(IObjectFacade nakedObject) {
-            return assoc.IsVisible(((ObjectFacade) nakedObject).WrappedNakedObject);
+        public bool IsVisible(IObjectFacade objectFacade) {
+            return assoc.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
         }
 
-        public bool IsEager(IObjectFacade nakedObject) {
-            return ((TypeFacade) nakedObject.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
+        public bool IsEager(IObjectFacade objectFacade) {
+            return ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
                    assoc.ContainsFacet<IEagerlyFacet>();
         }
 
@@ -206,19 +206,19 @@ namespace NakedObjects.Facade.Impl {
             return 0;
         }
 
-        public string GetTitle(IObjectFacade nakedObject) {
+        public string GetTitle(IObjectFacade objectFacade) {
             var enumFacet = assoc.GetFacet<IEnumFacet>();
 
             if (enumFacet != null) {
-                return enumFacet.GetTitle(((ObjectFacade) nakedObject).WrappedNakedObject);
+                return enumFacet.GetTitle(((ObjectFacade) objectFacade).WrappedNakedObject);
             }
 
             var mask = assoc.GetFacet<IMaskFacet>();
             if (mask == null) {
-                return nakedObject.TitleString;
+                return objectFacade.TitleString;
             }
-            var titleFacet = ((TypeFacade) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) nakedObject).WrappedNakedObject, framework.NakedObjectManager);
+            var titleFacet = ((TypeFacade) objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
+            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework.NakedObjectManager);
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }
@@ -272,18 +272,18 @@ namespace NakedObjects.Facade.Impl {
         }
 
         // todo move common assoc/parameter code into helper or baseclass
-        public string GetMaskedValue(IObjectFacade valueNakedObject) {
+        public string GetMaskedValue(IObjectFacade objectFacade) {
             var mask = assoc.GetFacet<IMaskFacet>();
 
-            if (valueNakedObject == null) {
+            if (objectFacade == null) {
                 return null;
             }
-            var no = ((ObjectFacade) valueNakedObject).WrappedNakedObject;
+            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
         }
 
-        public bool DefaultTypeIsExplicit(IObjectFacade nakedObject) {
-            var no = ((ObjectFacade) nakedObject).WrappedNakedObject;
+        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
+            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
             return assoc.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 

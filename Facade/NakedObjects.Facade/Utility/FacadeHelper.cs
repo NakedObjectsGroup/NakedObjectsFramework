@@ -19,8 +19,8 @@ namespace NakedObjects.Facade.Utility.Restricted {
         private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
         private const string CastleProxyPrefix = "Castle.Proxies.";
 
-        public static T GetDomainObject<T>(this IObjectFacade nakedObject) {
-            return nakedObject == null ? default(T) : (T) nakedObject.Object;
+        public static T GetDomainObject<T>(this IObjectFacade objectFacade) {
+            return objectFacade == null ? default(T) : (T) objectFacade.Object;
         }
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
@@ -40,26 +40,26 @@ namespace NakedObjects.Facade.Utility.Restricted {
             }
         }
 
-        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade facade, IObjectFacade nakedObject) {
-            if (nakedObject.Specification.IsQueryable) {
-                var elementSpec = nakedObject.ElementSpecification;
+        public static IEnumerable<IActionFacade> GetTopLevelActions(this IFrameworkFacade facade, IObjectFacade objectFacade) {
+            if (objectFacade.Specification.IsQueryable) {
+                var elementSpec = objectFacade.ElementSpecification;
                 Trace.Assert(elementSpec != null);
                 return elementSpec.GetCollectionContributedActions();
             }
-            return nakedObject.Specification.GetActionLeafNodes().Where(a => a.IsVisible(nakedObject));
+            return objectFacade.Specification.GetActionLeafNodes().Where(a => a.IsVisible(objectFacade));
         }
 
         public static string GetObjectTypeShortName(this IFrameworkFacade facade, object model) {
-            var nakedObject = facade.GetObject(model);
-            return nakedObject.Specification.ShortName;
+            var objectFacade = facade.GetObject(model);
+            return objectFacade.Specification.ShortName;
         }
 
-        public static string IconName(IObjectFacade nakedObject) {
-            string name = nakedObject.Specification.GetIconName(nakedObject);
+        public static string IconName(IObjectFacade objectFacade) {
+            string name = objectFacade.Specification.GetIconName(objectFacade);
             return name.Contains(".") ? name : name + ".png";
         }
 
-        private static IObjectFacade GetNakedObjectFromId(IFrameworkFacade facade, string id) {
+        private static IObjectFacade GetObjectFacadeFromId(IFrameworkFacade facade, string id) {
             var oid = facade.OidTranslator.GetOidTranslation(id);
             return facade.GetObject(oid).Target;
         }
@@ -79,7 +79,7 @@ namespace NakedObjects.Facade.Utility.Restricted {
         }
 
         private static IObjectFacade SafeGetObjectFromId(this IFrameworkFacade facade, string id) {
-            return string.IsNullOrWhiteSpace(id) ? null : GetNakedObjectFromId(facade, id);
+            return string.IsNullOrWhiteSpace(id) ? null : GetObjectFacadeFromId(facade, id);
         }
 
         private static object GetTypedCollection(this IFrameworkFacade facade, IEnumerable collectionValue, ITypeFacade collectionitemSpec) {

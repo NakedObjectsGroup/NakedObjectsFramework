@@ -37,13 +37,13 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return null;
         }
 
-        public IOidTranslation GetOidTranslation(IObjectFacade nakedObject) {
-            if (nakedObject.IsViewModel) {
-                var vm = ((ObjectFacade) nakedObject).WrappedNakedObject;
+        public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
+            if (objectFacade.IsViewModel) {
+                var vm = ((ObjectFacade) objectFacade).WrappedNakedObject;
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
-            Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(nakedObject);
+            Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(objectFacade);
             return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
         }
 

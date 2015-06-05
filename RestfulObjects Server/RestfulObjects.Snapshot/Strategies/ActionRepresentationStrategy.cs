@@ -46,8 +46,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
-            IObjectFacade nakedObject = actionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy,req, nakedObject, parameter, Flags);
+            IObjectFacade objectFacade = actionContext.Target;
+            return ParameterRepresentation.Create(OidStrategy,req, objectFacade, parameter, Flags);
         }
 
         private IEnumerable<ParameterRepresentation> GetParameterList() {

@@ -18,12 +18,12 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ParameterRepresentation : Representation {
-        protected ParameterRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter, RestControlFlags flags)
+        protected ParameterRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetName(parameter);
-            SetExtensions(req, nakedObject, parameter, flags);
-            SetLinks(req, nakedObject, parameter);
-            SetHeader(nakedObject);
+            SetExtensions(req, objectFacade, parameter, flags);
+            SetLinks(req, objectFacade, parameter);
+            SetHeader(objectFacade);
         }
 
         internal string Name { get; set; }
@@ -34,20 +34,20 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetHeader(IObjectFacade nakedObject) {
-            SetEtag(nakedObject);
+        private void SetHeader(IObjectFacade objectFacade) {
+            SetEtag(objectFacade);
         }
 
         private void SetName(IActionParameterFacade parameter) {
             Name = parameter.Id;
         }
 
-        private LinkRepresentation CreatePromptLink(HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter) {
+        private LinkRepresentation CreatePromptLink(HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter) {
             var opts = new List<OptionalProperty>();
 
             var parameterContext = new ParameterContextFacade {
                 Action = parameter.Action,
-                Target = nakedObject,
+                Target = objectFacade,
                 Parameter = parameter
             };
 
@@ -68,32 +68,32 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(OidStrategy ,new PromptRelType(new UriMtHelper(OidStrategy ,req, parameterContext)), Flags, opts.ToArray());
         }
 
-        private void SetLinks(HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter) {
+        private void SetLinks(HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter) {
             var tempLinks = new List<LinkRepresentation>();
 
 
             if (Flags.FormalDomainModel) {
-                var parameterTypeContextSurface = new ParameterTypeContextFacade {
+                var parameterTypeContext = new ParameterTypeContextFacade {
                     Action = parameter.Action,
-                    OwningSpecification = nakedObject.Specification,
+                    OwningSpecification = objectFacade.Specification,
                     Parameter = parameter
                 };
-                LinkRepresentation describedBy = LinkRepresentation.Create(OidStrategy ,new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, parameterTypeContextSurface)), Flags);
+                LinkRepresentation describedBy = LinkRepresentation.Create(OidStrategy ,new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, parameterTypeContext)), Flags);
                 tempLinks.Add(describedBy);
             }
 
             if (parameter.IsAutoCompleteEnabled || parameter.GetChoicesParameters().Any()) {
-                tempLinks.Add(CreatePromptLink(req, nakedObject, parameter));
+                tempLinks.Add(CreatePromptLink(req, objectFacade, parameter));
             }
 
             Links = tempLinks.ToArray();
         }
 
-        private void SetExtensions(HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter, RestControlFlags flags) {
+        private void SetExtensions(HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
             IDictionary<string, object> custom = parameter.ExtensionData;
 
             if (IsUnconditionalChoices(parameter)) {
-                Tuple<IObjectFacade, string>[] choices = parameter.GetChoicesAndTitles(nakedObject, null);
+                Tuple<IObjectFacade, string>[] choices = parameter.GetChoicesAndTitles(objectFacade, null);
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy ,req, tuple.Item1, parameter, flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
@@ -134,17 +134,17 @@ namespace RestfulObjects.Snapshot.Representations {
             return CreateDefaultLink(oidStrategy, req, parameter, defaultNakedObject, title, flags);
         }
 
-        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade nakedObject, IActionParameterFacade parameter, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
             if (parameter.IsChoicesEnabled != Choices.NotEnabled  && !parameter.GetChoicesParameters().Any()) {
-                IObjectFacade[] choices = parameter.GetChoices(nakedObject, null);
+                IObjectFacade[] choices = parameter.GetChoices(objectFacade, null);
                 object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy ,req, c, parameter, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
-            if (parameter.DefaultTypeIsExplicit(nakedObject)) {
-                IObjectFacade defaultNakedObject = parameter.GetDefault(nakedObject);
+            if (parameter.DefaultTypeIsExplicit(objectFacade)) {
+                IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     string title = defaultNakedObject.TitleString;
                     object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object);
@@ -156,9 +156,9 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (optionals.Count == 0) {
-                return new ParameterRepresentation(oidStrategy ,req, nakedObject, parameter, flags);
+                return new ParameterRepresentation(oidStrategy ,req, objectFacade, parameter, flags);
             }
-            return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy ,req, nakedObject, parameter, flags}, optionals);
+            return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy ,req, objectFacade, parameter, flags}, optionals);
         }
     }
 }

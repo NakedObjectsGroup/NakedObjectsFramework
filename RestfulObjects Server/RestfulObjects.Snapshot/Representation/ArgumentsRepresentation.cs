@@ -51,23 +51,23 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            var objectContextSurface = context as ObjectContextFacade;
-            var actionResultContextSurface = context as ActionResultContextFacade;
+            var objectContext = context as ObjectContextFacade;
+            var actionResultContext = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
 
 
-            if (objectContextSurface != null) {
-                List<OptionalProperty> optionalProperties = objectContextSurface.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
-                if (!string.IsNullOrEmpty(objectContextSurface.Reason)) {
-                    optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContextSurface.Reason));
+            if (objectContext != null) {
+                List<OptionalProperty> optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
+                if (!string.IsNullOrEmpty(objectContext.Reason)) {
+                    optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
                 }
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
-            else if (actionResultContextSurface != null) {
-                List<OptionalProperty> optionalProperties = actionResultContextSurface.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
+            else if (actionResultContext != null) {
+                List<OptionalProperty> optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
 
-                if (!string.IsNullOrEmpty(actionResultContextSurface.Reason)) {
-                    optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContextSurface.Reason));
+                if (!string.IsNullOrEmpty(actionResultContext.Reason)) {
+                    optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContext.Reason));
                 }
                 mapRepresentation = Create(optionalProperties.ToArray());
             }

@@ -26,7 +26,7 @@ namespace NakedObjects.Facade {
         IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
         bool RenderEagerly { get; }
-        bool IsVisible(IObjectFacade nakedObject);
-        IConsentFacade IsUsable(IObjectFacade nakedObject);
+        bool IsVisible(IObjectFacade objectFacade);
+        IConsentFacade IsUsable(IObjectFacade objectFacade);
     }
 }

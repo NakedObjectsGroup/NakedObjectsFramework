@@ -110,12 +110,12 @@ namespace NakedObjects.Facade.Impl {
             return menus.Select(m => new MenuFacade(m, this, framework)).Cast<IMenuFacade>().ToArray();
         }
 
-        public ObjectContextFacade GetObject(IObjectFacade nakedObject) {
-            return MapErrors(() => GetObjectContext(((ObjectFacade) nakedObject).WrappedNakedObject).ToObjectContextFacade(this, framework));
+        public ObjectContextFacade GetObject(IObjectFacade objectFacade) {
+            return MapErrors(() => GetObjectContext(((ObjectFacade) objectFacade).WrappedNakedObject).ToObjectContextFacade(this, framework));
         }
 
-        public ObjectContextFacade RefreshObject(IObjectFacade nakedObject, ArgumentsContextFacade arguments) {
-            return MapErrors(() => RefreshObjectInternal(((ObjectFacade) nakedObject).WrappedNakedObject, arguments).ToObjectContextFacade(this, framework));
+        public ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments) {
+            return MapErrors(() => RefreshObjectInternal(((ObjectFacade) objectFacade).WrappedNakedObject, arguments).ToObjectContextFacade(this, framework));
         }
 
         public ITypeFacade GetDomainType(string typeName) {
@@ -246,8 +246,8 @@ namespace NakedObjects.Facade.Impl {
             });
         }
 
-        public object Wrap(object arm, IObjectFacade oldNakedObject) {
-            var no = ((ObjectFacade) oldNakedObject).WrappedNakedObject;
+        public object Wrap(object arm, IObjectFacade objectFacade) {
+            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
             // var oid = framework.OidStrategy.GetOid(arm);
             var noArm = framework.GetNakedObject(arm);
             var currentMemento = (ICollectionMemento) no.Oid;

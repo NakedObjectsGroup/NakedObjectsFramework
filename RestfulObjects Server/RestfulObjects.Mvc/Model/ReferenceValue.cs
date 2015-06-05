@@ -26,21 +26,21 @@ namespace RestfulObjects.Mvc.Model {
 
         #region IValue Members
 
-        public object GetValue(IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
-            return GetObjectByHref(internalValue, surface, helper, oidStrategy);
+        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
+            return GetObjectByHref(internalValue, facade, helper, oidStrategy);
         }
 
         #endregion
 
-        private object GetObjectByHref(string href, IFrameworkFacade surface, UriMtHelper helper, IOidStrategy oidStrategy) {
+        private object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
             string[] oids = helper.GetObjectId(href);
             if (oids != null) {
                 // todo this is clunky 
-                var oid =  surface.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
-                return surface.GetObject(oid).Target.Object;
+                var oid =  facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
+                return facade.GetObject(oid).Target.Object;
             }
             string typeName = helper.GetTypeId(href);
-            return surface.GetDomainType(typeName);
+            return facade.GetDomainType(typeName);
         }
     }
 }

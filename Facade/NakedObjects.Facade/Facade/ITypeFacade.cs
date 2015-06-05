@@ -39,9 +39,9 @@ namespace NakedObjects.Facade {
         IDictionary<string, object> ExtensionData { get; }
         bool IsBoolean { get; }
         bool IsEnum { get; }
-        ITypeFacade GetElementType(IObjectFacade nakedObject);
-        bool IsImmutable(IObjectFacade nakedObject);
-        string GetIconName(IObjectFacade nakedObject);
+        ITypeFacade GetElementType(IObjectFacade objectFacade);
+        bool IsImmutable(IObjectFacade objectFacade);
+        string GetIconName(IObjectFacade objectFacade);
         IActionFacade[] GetActionLeafNodes();
         bool IsOfType(ITypeFacade otherSpec);
         Type GetUnderlyingType();

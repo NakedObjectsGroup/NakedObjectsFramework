@@ -11,7 +11,7 @@ namespace NakedObjects.Facade.Contexts {
         public virtual IObjectFacade Target { get; set; }
         public virtual string Reason { get; set; }
         public virtual Cause ErrorCause { get; set; }
-        public virtual IObjectFacade ProposedNakedObject { get; set; }
+        public virtual IObjectFacade ProposedObjectFacade { get; set; }
         public virtual object ProposedValue { get; set; }
         public abstract ITypeFacade Specification { get; }
         public abstract ITypeFacade ElementSpecification { get; }
