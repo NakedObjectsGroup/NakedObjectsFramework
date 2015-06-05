@@ -123,7 +123,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
-            ObjectContextFacade oc = target.Surface.GetObject(target);
+            ObjectContextFacade oc = target.FrameworkFacade.GetObject(target);
             return Create(oidStrategy ,oc, req, flags);
         }
 
@@ -136,7 +136,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(objectContext.Target);
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService) {

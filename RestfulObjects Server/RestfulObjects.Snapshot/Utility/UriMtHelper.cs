@@ -55,7 +55,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade nakedObject) : this(oidStrategy ,req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(nakedObject);
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -65,7 +65,7 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
             spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(nakedObject);
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -83,7 +83,7 @@ namespace RestfulObjects.Snapshot.Utility {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
             spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(nakedObject);
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -111,7 +111,7 @@ namespace RestfulObjects.Snapshot.Utility {
             param = parameterContext.Parameter;
             nakedObject = parameterContext.Target;
             spec = nakedObject.Specification;
-            IOidTranslation oid = oidStrategy.Surface.OidTranslator.GetOidTranslation(nakedObject);
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(nakedObject);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }

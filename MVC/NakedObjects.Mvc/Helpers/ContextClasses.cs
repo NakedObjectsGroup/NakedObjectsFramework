@@ -30,7 +30,7 @@ namespace NakedObjects.Web.Mvc.Html {
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(IIdHelper idHelper, ObjectContext otherContext) : base(idHelper, otherContext) {}
         protected FeatureContext(IIdHelper idHelper, IObjectFacade target) : base(idHelper, target) {}
-        public abstract ISurfaceHolder Feature { get; }
+        public abstract IFacadeHolder Feature { get; }
     }
 
     internal class PropertyContext : FeatureContext {
@@ -54,7 +54,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public PropertyContext ParentContext { get; set; }
         public IAssociationFacade Property { get; set; }
 
-        public override ISurfaceHolder Feature {
+        public override IFacadeHolder Feature {
             get { return Property; }
         }
 
@@ -139,7 +139,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public IActionFacade Action { get; set; }
         public RouteValueDictionary ParameterValues { get; set; }
 
-        public override ISurfaceHolder Feature {
+        public override IFacadeHolder Feature {
             get { return Action; }
         }
 
@@ -210,7 +210,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public IActionParameterFacade Parameter { get; set; }
         public IObjectFacade CustomValue { get; set; }
 
-        public override ISurfaceHolder Feature {
+        public override IFacadeHolder Feature {
             get { return Parameter; }
         }
 
