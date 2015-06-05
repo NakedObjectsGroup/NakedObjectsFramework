@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc {
     public static class ObjectCache {
@@ -113,11 +114,11 @@ namespace NakedObjects.Web.Mvc {
                 return session.LastObject(facade, flag);
             }
 
-            return lastObject.Object;
+            return lastObject.GetDomainObject();
         }
 
         internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, IFrameworkFacade facade, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjects(facade, flag).Where(no => !no.IsDestroyed).Select(no => no.Object);
+            return session.GetAndTidyCachedNakedObjects(facade, flag).Where(no => !no.IsDestroyed).Select(no => no.GetDomainObject());
         }
 
         public static IEnumerable<string> AllCachedUrls(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
@@ -142,7 +143,7 @@ namespace NakedObjects.Web.Mvc {
         }
 
         public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, IFrameworkFacade facade, ITypeFacade spec, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjectsOfType(facade, spec, flag).Select(no => no.Object);
+            return session.GetAndTidyCachedNakedObjectsOfType(facade, spec, flag).Select(no => no.GetDomainObject());
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !

@@ -20,7 +20,11 @@ namespace NakedObjects.Facade.Utility.Restricted {
         private const string CastleProxyPrefix = "Castle.Proxies.";
 
         public static T GetDomainObject<T>(this IObjectFacade objectFacade) {
-            return objectFacade == null ? default(T) : (T) objectFacade.Object;
+            return (T) objectFacade.GetDomainObject();
+        }
+
+        public static object GetDomainObject(this IObjectFacade objectFacade) {
+            return objectFacade == null ? null : objectFacade.Object;
         }
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {

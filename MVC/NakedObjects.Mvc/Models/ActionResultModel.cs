@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc.Models {
     public abstract class ActionResultModel : IEnumerable {
@@ -34,7 +35,7 @@ namespace NakedObjects.Web.Mvc.Models {
         #endregion
 
         public static ActionResultModel Create(IFrameworkFacade facade, IActionFacade action, IObjectFacade nakedObject, int page, int pageSize, string format) {
-            var result = (IEnumerable) nakedObject.Object;
+            var result = nakedObject.GetDomainObject<IEnumerable>();
             Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
             Type armType = armGenericType.MakeGenericType(genericType);

@@ -312,14 +312,14 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, IObjectFacade collectionNakedObject, Func<IAssociationFacade, bool> filter, Func<IAssociationFacade, int> order, TagBuilder tag, bool withTitle) {
             Func<IObjectFacade, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdConstants.ViewAction, item.Object).ToString();
 
-            string menu = collectionNakedObject.Specification.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
+            string menu = collectionNakedObject.Specification.IsQueryable ? html.MenuOnTransient(collectionNakedObject.GetDomainObject()).ToString() : "";
             string id = collectionNakedObject.Oid == null ? "" : Encode(html.Facade().OidTranslator.GetOidTranslation(collectionNakedObject));
 
             // can only be standalone and hence page if we have an id 
             tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !String.IsNullOrEmpty(id), collectionNakedObject.Specification.IsQueryable, withTitle);
 
             return html.WrapInForm(IdConstants.EditObjectAction,
-                html.Facade().GetObjectTypeShortName(collectionNakedObject.Object),
+                html.Facade().GetObjectTypeShortName(collectionNakedObject.GetDomainObject()),
                 menu + tag,
                 IdConstants.ActionName,
                 new RouteValueDictionary(new {id}));
@@ -486,7 +486,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     childElements = html.GetSubEditObject(targetActionContext, actionContext, result.First(), propertyName).InList();
                 }
                 else {
-                    childElements = html.SelectionView(actionContext.Target.Object, propertyName, actionResult).InList();
+                    childElements = html.SelectionView(actionContext.Target.GetDomainObject(), propertyName, actionResult).InList();
                 }
             }
             return childElements;
@@ -627,7 +627,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Facade().GetObjectTypeShortName(actionContext.Target.Object), routeValues, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Facade().GetObjectTypeShortName(actionContext.Target.GetDomainObject()), routeValues, out value, out attributes);
             }
 
             return new ElementDescriptor {
@@ -652,7 +652,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 foreach (var pc in actionContext.GetParameterContexts(html.Facade())) {
                     if (pc.CustomValue != null) {
-                        html.ViewData[html.IdHelper().GetParameterInputId((actionContext.Action), (pc.Parameter))] = pc.CustomValue.Specification.IsParseable ? pc.CustomValue.Object : pc.CustomValue;
+                        html.ViewData[html.IdHelper().GetParameterInputId((actionContext.Action), (pc.Parameter))] = pc.CustomValue.Specification.IsParseable ? pc.CustomValue.GetDomainObject() : pc.CustomValue;
                     }
                 }
 
@@ -793,15 +793,15 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return new ElementDescriptor {
                 TagType = "div",
-                Value = html.Object(html.ObjectTitle(nakedObject.Object).ToString(), IdConstants.ViewAction, nakedObject.Object).ToString()
+                Value = html.Object(html.ObjectTitle(nakedObject.Object).ToString(), IdConstants.ViewAction, nakedObject.GetDomainObject()).ToString()
                         + elementSet
                         + GetSubmitButton(IdConstants.SaveButtonClass,
                             MvcUi.Save,
                             IdConstants.InvokeSaveAction,
                             html.GetButtonNameValues(targetActionContext, actionContext, nakedObject, propertyName)),
                 Attributes = new RouteValueDictionary(new {
-                    @class = html.ObjectEditClass(nakedObject.Object),
-                    id = GetObjectType(nakedObject.Object)
+                    @class = html.ObjectEditClass(nakedObject.GetDomainObject()),
+                    id = GetObjectType(nakedObject.GetDomainObject())
                 })
             };
         }

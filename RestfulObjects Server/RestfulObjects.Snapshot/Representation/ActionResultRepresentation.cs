@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -67,13 +68,13 @@ namespace RestfulObjects.Snapshot.Representations {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
-                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.Object;
+                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject();
                     object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.Object)).Cast<object>();
+                        var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject())).Cast<object>();
                         var valueObjs = proposedCollection.Select(RestUtils.ObjectToPredefinedType).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }

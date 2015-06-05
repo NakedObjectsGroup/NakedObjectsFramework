@@ -8,6 +8,7 @@
 using System;
 using Common.Logging;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Mvc.Model {
@@ -37,7 +38,7 @@ namespace RestfulObjects.Mvc.Model {
             if (oids != null) {
                 // todo this is clunky 
                 var oid =  facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
-                return facade.GetObject(oid).Target.Object;
+                return facade.GetObject(oid).Target.GetDomainObject();
             }
             string typeName = helper.GetTypeId(href);
             return facade.GetDomainType(typeName);

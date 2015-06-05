@@ -7,6 +7,7 @@
 
 using System.Web;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility.Restricted;
 
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
@@ -60,7 +61,7 @@ namespace NakedObjects.Web.Mvc {
 
             var s = rawValue as string;
             if (s != null) {
-                return GetNakedObjectFromId(s, facade).Object;
+                return GetNakedObjectFromId(s, facade).GetDomainObject();
             }
 
             return rawValue;
@@ -78,7 +79,7 @@ namespace NakedObjects.Web.Mvc {
             }
 
             if (rawValue is string) {
-                var obj = GetNakedObjectFromId((string) rawValue, facade).Object;
+                var obj = GetNakedObjectFromId((string) rawValue, facade).GetDomainObject();
 
                 var fromSession = obj as T;
                 return fromSession;

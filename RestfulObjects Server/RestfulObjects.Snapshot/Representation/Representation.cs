@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -260,7 +261,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return null;
             }
             if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject.Object);
+                return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject());
             }
 
             if (valueOnly) {

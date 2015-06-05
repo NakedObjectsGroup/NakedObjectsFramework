@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
 
@@ -126,7 +127,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, ChoiceRelType relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
-            object value = ObjectToPredefinedType(item.Object);
+            object value = ObjectToPredefinedType(item.GetDomainObject());
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 

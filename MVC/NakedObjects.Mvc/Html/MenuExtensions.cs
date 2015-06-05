@@ -156,7 +156,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsButton(actionContext, out value, out attributes);
             }
             else {
-                tagType = html.GetActionAsForm(actionContext, html.Facade().GetObjectTypeShortName(actionContext.Target.Object), new {id = html.Facade().OidTranslator.GetOidTranslation(actionContext.Target).Encode()}, out value, out attributes);
+                tagType = html.GetActionAsForm(actionContext, html.Facade().GetObjectTypeShortName(actionContext.Target.GetDomainObject()), new {id = html.Facade().OidTranslator.GetOidTranslation(actionContext.Target).Encode()}, out value, out attributes);
             }
 
             return new ElementDescriptor {

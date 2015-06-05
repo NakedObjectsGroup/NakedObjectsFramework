@@ -41,7 +41,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         [HttpGet]
         public virtual ActionResult EditObject(ObjectAndControlData controlData) {
             Debug.Assert(controlData.SubAction == ObjectAndControlData.SubActionType.None);
-            return View("ObjectEdit", controlData.GetNakedObject(Facade).Object);
+            return View("ObjectEdit", controlData.GetNakedObject(Facade).GetDomainObject());
         }
 
         [HttpPost]
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     return ActionOnNotPersistentObject(controlData);
                 case (ObjectAndControlData.SubActionType.None):
                     AddAttemptedValuesNew(nakedObject, controlData);
-                    return View("ObjectEdit", nakedObject.Object);
+                    return View("ObjectEdit", nakedObject.GetDomainObject());
                 case (ObjectAndControlData.SubActionType.Pager):
                     SetNewCollectionFormats(controlData);
                     return AppropriateView(controlData, nakedObject);
@@ -136,7 +136,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var action = controlData.GetAction(Facade);
 
             return View("ActionDialog", new FindViewModel {
-                ContextObject = no.Object,
+                ContextObject = no.GetDomainObject(),
                 ContextAction = action
             });
         }
@@ -260,7 +260,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             SetPagingValues(controlData, nakedObject);
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
 
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.GetDomainObject(), ContextAction = action, PropertyName = property});
         }
 
         private ActionResult InitialAction(ObjectAndControlData controlData) {
@@ -317,7 +317,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = targetNakedObject.Object, ContextAction = targetAction, PropertyName = property});
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = targetNakedObject.GetDomainObject(), ContextAction = targetAction, PropertyName = property});
         }
 
         private ActionResult Find(ObjectAndControlData controlData) {
@@ -340,7 +340,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return SelectSingleItem(contextNakedObject, contextAction, controlData, selectedItem);
             }
 
-            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.Object, ContextAction = contextAction, PropertyName = propertyName});
+            return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {ActionResult = objectSet, ContextObject = contextNakedObject.GetDomainObject(), ContextAction = contextAction, PropertyName = propertyName});
         }
 
         private ActionResult SelectSingleItem(IObjectFacade nakedObject, IActionFacade action, ObjectAndControlData controlData, IDictionary<string, string> selectedItem) {
@@ -348,11 +348,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (action == null) {
                 SetSelectedReferences(nakedObject, selectedItem);
-                return property == null ? View("ObjectEdit", nakedObject.Object) : View("PropertyEdit", new PropertyViewModel(nakedObject.Object, property));
+                return property == null ? View("ObjectEdit", nakedObject.GetDomainObject()) : View("PropertyEdit", new PropertyViewModel(nakedObject.GetDomainObject(), property));
             }
             SetSelectedParameters(nakedObject, action, selectedItem);
 
-            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.Object, ContextAction = action, PropertyName = property});
+            return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.GetDomainObject(), ContextAction = action, PropertyName = property});
         }
 
         private bool ApplyEdit(IObjectFacade nakedObject, ObjectAndControlData controlData) {
@@ -407,7 +407,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private ActionResult ApplyEdit(ObjectAndControlData controlData) {
             var nakedObject = controlData.GetNakedObject(Facade);
             var viewName = ApplyEdit(nakedObject, controlData) ? "ObjectView" : "ObjectEdit";
-            return View(viewName, nakedObject.Object);
+            return View(viewName, nakedObject.GetDomainObject());
         }
 
         private ActionResult ApplyEditAndClose(ObjectAndControlData controlData) {
@@ -422,7 +422,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 nakedObject = Facade.GetObject(lastObject);
                 return AppropriateView(controlData, nakedObject);
             }
-            return View("ObjectEdit", nakedObject.Object);
+            return View("ObjectEdit", nakedObject.GetDomainObject());
         }
 
         private ActionResult ApplyEditAction(ObjectAndControlData controlData) {
@@ -434,7 +434,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 var targetAction = Facade.GetObjectAction(oid, targetActionId).Action;
                 return ExecuteAction(controlData, nakedObject, targetAction);
             }
-            return View("ViewModel", nakedObject.Object);
+            return View("ViewModel", nakedObject.GetDomainObject());
         }
 
         private ActionResult Redisplay(ObjectAndControlData controlData) {
@@ -442,8 +442,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var property = DisplaySingleProperty(controlData, controlData.DataDict);
             var isEdit = bool.Parse(controlData.DataDict["editMode"]);
             var nakedObject = controlData.GetNakedObject(Facade);
-            return property == null ? View(isEdit ? "ObjectEdit" : "ObjectView", nakedObject.Object) :
-                View(isEdit ? "PropertyEdit" : "PropertyView", new PropertyViewModel(nakedObject.Object, property));
+            return property == null ? View(isEdit ? "ObjectEdit" : "ObjectView", nakedObject.GetDomainObject()) :
+                View(isEdit ? "PropertyEdit" : "PropertyView", new PropertyViewModel(nakedObject.GetDomainObject(), property));
         }
 
         private ActionResult Select(ObjectAndControlData controlData) {
@@ -495,11 +495,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             // transaction and so association may not work (possible persistent to transient). By doing this we split into two transactions 
             // and so all OK. 
 
-            IEnumerable resultAsEnumerable = new List<object> {result.Target.Object};
+            IEnumerable resultAsEnumerable = new List<object> {result.Target.GetDomainObject()};
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections", new FindViewModel {
                 ActionResult = resultAsEnumerable,
-                TargetObject = targetNakedObject.Object,
-                ContextObject = contextNakedObject.Object,
+                TargetObject = targetNakedObject.GetDomainObject(),
+                ContextObject = contextNakedObject.GetDomainObject(),
                 TargetAction = targetAction,
                 ContextAction = contextAction,
                 PropertyName = propertyName
@@ -527,7 +527,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var result = GetResult(context);
 
             if (result != null) {
-                IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
+                IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.GetDomainObject()} : result.GetDomainObject<IEnumerable>();
 
                 if (resultAsEnumerable.Cast<object>().Count() == 1) {
                     var selectedItem = new Dictionary<string, string> {{propertyName, GetObjectId(resultAsEnumerable.Cast<object>().Single())}};
@@ -537,8 +537,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 return View(view, new FindViewModel {
                     ActionResult = resultAsEnumerable,
-                    TargetObject = targetNakedObject.Object,
-                    ContextObject = contextNakedObject.Object,
+                    TargetObject = targetNakedObject.GetDomainObject(),
+                    ContextObject = contextNakedObject.GetDomainObject(),
                     TargetAction = (targetAction),
                     ContextAction = (contextAction),
                     PropertyName = propertyName
@@ -546,8 +546,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModel {
-                TargetObject = targetNakedObject.Object,
-                ContextObject = contextNakedObject.Object,
+                TargetObject = targetNakedObject.GetDomainObject(),
+                ContextObject = contextNakedObject.GetDomainObject(),
                 TargetAction = (targetAction),
                 ContextAction = (contextAction),
                 PropertyName = propertyName
@@ -600,8 +600,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 string view = Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithSelections";
                 return View(view, new FindViewModel {
                     ActionResult = resultAsEnumerable,
-                    TargetObject = targetNakedObject.Object,
-                    ContextObject = contextNakedObject.Object,
+                    TargetObject = targetNakedObject.GetDomainObject(),
+                    ContextObject = contextNakedObject.GetDomainObject(),
                     TargetAction = (targetAction),
                     ContextAction = (contextAction),
                     PropertyName = propertyName
@@ -610,8 +610,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             SetDefaults(targetNakedObject, targetAction);
             return View(Request.IsAjaxRequest() ? "PropertyEdit" : "FormWithFinderDialog", new FindViewModel {
-                TargetObject = targetNakedObject.Object,
-                ContextObject = contextNakedObject.Object,
+                TargetObject = targetNakedObject.GetDomainObject(),
+                ContextObject = contextNakedObject.GetDomainObject(),
                 TargetAction = (targetAction),
                 ContextAction = (contextAction),
                 PropertyName = propertyName
@@ -621,9 +621,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static IEnumerable GetResultAsEnumerable(IObjectFacade result, IActionFacade contextAction, string propertyName) {
             if (result != null) {
                 if (result.Specification.IsCollection && !ContextParameterIsCollection(contextAction, propertyName)) {
-                    return (IEnumerable) result.Object;
+                    return result.GetDomainObject<IEnumerable>();
                 }
-                return new List<object> {result.Object};
+                return new List<object> {result.GetDomainObject()};
             }
             return new List<object>();
         }

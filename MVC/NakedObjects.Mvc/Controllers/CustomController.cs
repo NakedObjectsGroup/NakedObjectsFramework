@@ -343,7 +343,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Returns the domain object that has the specified objectId (typically extracted from the URL)
         /// </summary>
         protected T GetObjectFromId<T>(string objectId) {
-            return (T) GetNakedObjectFromId(objectId).Object;
+            return GetNakedObjectFromId(objectId).GetDomainObject<T>();
         }
 
         /// <summary>
@@ -375,10 +375,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private T GetResult<T>(ActionResultContextFacade contextFacade) {
-            if (contextFacade.HasResult) {
-                return (T) contextFacade.Result.Target.Object;
-            }
-            return default(T);
+            return contextFacade.HasResult ? contextFacade.Result.Target.GetDomainObject<T>() : default(T);
         }
 
         private T InvokeAction<T>(IObjectFacade nakedObject, IActionFacade action, FormCollection parameters, out bool valid) {
@@ -408,8 +405,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private ViewResult InvokeAction(IObjectFacade nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
             bool valid;
-            var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
-            return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.Object);
+            var result = InvokeAction<object>(nakedObject.GetDomainObject(), actionName, parameters, out valid);
+            return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.GetDomainObject());
         }
 
         private static MethodInfo GetAction(LambdaExpression expression) {

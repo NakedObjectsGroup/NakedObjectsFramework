@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected void SetServices() {
-            ViewData[IdConstants.NofServices] = Facade.GetServices().List.Select(no => no.Object);
+            ViewData[IdConstants.NofServices] = Facade.GetServices().List.Select(no => no.GetDomainObject());
         }
 
         protected void SetFacade() {
@@ -119,7 +119,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // remove any paging data - to catch case where custom page has embedded standalone collection as paging data will confuse rendering 
                     ViewData.Remove(IdConstants.PagingData);
                     // is this safe TODO !!
-                    return View("ObjectView", nakedObject.ToEnumerable().First().Object);
+                    return View("ObjectView", nakedObject.ToEnumerable().First().GetDomainObject());
                 }
 
                 nakedObject = Page(nakedObject, collectionSize, controlData);
@@ -138,8 +138,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 ViewData.Add("updateHistory", false);
             }
 
-            return propertyName == null ? View(nakedObject.IsNotPersistent ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.Object) :
-                View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject<object>(), propertyName));
+            return propertyName == null ? View(nakedObject.IsNotPersistent ? "ObjectView" : "ViewNameSetAfterTransaction", nakedObject.GetDomainObject()) :
+                View(nakedObject.IsNotPersistent ? "PropertyView" : "ViewNameSetAfterTransaction", new PropertyViewModel(nakedObject.GetDomainObject(), propertyName));
         }
 
         public void ValidateParameter(IActionFacade action, IActionParameterFacade parm, IObjectFacade targetNakedObject, object value) {
@@ -339,10 +339,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 var isExplicit = parm.DefaultTypeIsExplicit(nakedObject);
 
-                bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || !isExplicit;
+                bool ignore = value == null || (value.GetDomainObject() is DateTime && ((DateTime) value.GetDomainObject()).Ticks == 0) || !isExplicit;
                 if (!ignore) {
                     // deliberately not an attempted value so it only gets populated after masking 
-                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable ? value.Object : value;
+                    ViewData[IdHelper.GetParameterInputId(action, parm)] = parm.Specification.IsParseable ? value.GetDomainObject() : value;
                 }
             }
         }
@@ -686,7 +686,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         SetControllerName(nakedObject.Specification.ShortName);
                     }
                     else {
-                        SetControllerName(nakedObject.Object);
+                        SetControllerName(nakedObject.GetDomainObject());
                     }
 
                     if (viewResult.ViewName == "ViewNameSetAfterTransaction") {

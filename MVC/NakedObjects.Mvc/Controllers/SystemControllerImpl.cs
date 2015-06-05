@@ -8,6 +8,7 @@
 using System.Web.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Utility;
+using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
@@ -31,9 +32,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual ActionResult ClearHistoryOthers(string id, ObjectAndControlData controlData) {
             var nakedObject = GetNakedObjectFromId(id);
-            Session.RemoveOthersFromCache(Facade, nakedObject.Object, ObjectCache.ObjectFlag.BreadCrumb);
+            Session.RemoveOthersFromCache(Facade, nakedObject.GetDomainObject(), ObjectCache.ObjectFlag.BreadCrumb);
             SetNewCollectionFormats(controlData);
-            SetControllerName(nakedObject.Object);
+            SetControllerName(nakedObject.GetDomainObject());
             return AppropriateView(controlData, nakedObject);
         }
 
@@ -45,13 +46,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             SetNewCollectionFormats(controlData);
-            SetControllerName(nextNakedObject.Object);
+            SetControllerName(nextNakedObject.GetDomainObject());
             return AppropriateView(controlData, nextNakedObject);
         }
 
         private ActionResult View(IObjectFacade nakedObject) {
             string viewName = nakedObject.IsViewModelEditView ? "ViewModel" : "ObjectView";
-            return View(viewName, nakedObject.Object);
+            return View(viewName, nakedObject.GetDomainObject());
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {

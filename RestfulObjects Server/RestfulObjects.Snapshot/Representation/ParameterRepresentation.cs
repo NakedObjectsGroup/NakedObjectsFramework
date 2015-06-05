@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -147,7 +148,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     string title = defaultNakedObject.TitleString;
-                    object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.Object);
+                    object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject());
                     var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
                     object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy ,req, parameter, defaultNakedObject, title, flags);
 
