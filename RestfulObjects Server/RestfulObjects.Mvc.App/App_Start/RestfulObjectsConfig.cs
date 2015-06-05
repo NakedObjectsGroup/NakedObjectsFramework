@@ -12,21 +12,15 @@ using RestfulObjects.Mvc.Media;
 
 namespace MvcTestApp {
     public class RestfulObjectsConfig {
-        public static string RestRoot {
-            get { return ""; }
-        }
 
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {
-            if (RestRoot != null) {
-                RestfulObjectsControllerBase.AddRestRoutes(routes, RestRoot);
+            if (NakedObjectsRunSettings.RestRoot != null) {
+                RestfulObjectsControllerBase.AddRestRoutes(routes, NakedObjectsRunSettings.RestRoot);
             }
         }
 
         public static void RestPostStart() {
-            if (RestRoot != null) {
-                //var restDependencyResolver = new RestDependencyResolver();
-                //GlobalConfiguration.Configuration.DependencyResolver = restDependencyResolver;
-
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 GlobalConfiguration.Configuration.Formatters.Clear();
                 GlobalConfiguration.Configuration.Formatters.Insert(0, new JsonNetFormatter(null));
                 //GlobalConfiguration.Configuration.MessageHandlers.Add(new AccessControlExposeHeadersHandler());
@@ -35,6 +29,7 @@ namespace MvcTestApp {
         }
 
         public static void RestPreStart() {
+            if (NakedObjectsRunSettings.RestRoot != null) {
                 // to make whole application 'read only' 
                 //RestfulObjectsControllerBase.IsReadOnly = true;
 
@@ -56,6 +51,7 @@ namespace MvcTestApp {
 
                 // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
                 //RestfulObjectsControllerBase.DefaultPageSize = 50; 
+            }
         }
     }
 }

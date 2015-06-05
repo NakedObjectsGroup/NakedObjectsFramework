@@ -14,6 +14,13 @@ using NakedObjects.Persistor.Entity.Configuration;
 namespace $rootnamespace$ {
     public class NakedObjectsRunSettings {
 
+	    //Returning e.g. "restapi" creates the Restful Objects API on that root.
+		//Returning "" creates the Restful Objects API at the top level
+	    //Returning null means the Restful Objects API will not be generated
+		public static string RestRoot {
+            get { return ""; }
+        }
+
 		private static string[] ModelNamespaces { 
             get {
                 return new string[] {}; //Add top-level namespace(s) that cover the domain model

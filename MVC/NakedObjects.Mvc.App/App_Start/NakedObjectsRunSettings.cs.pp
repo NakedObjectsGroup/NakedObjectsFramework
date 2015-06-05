@@ -23,8 +23,11 @@ namespace $rootnamespace$ {
     // Use this class to configure the application running under Naked Objects
     public class NakedObjectsRunSettings {
 
+	   //Returning e.g. "restapi" creates the Restful Objects API on that root.
+	   //Returning "" creates the Restful Objects API at the top level
+	   //Returning null means the Restful Objects API will not be generated
 	   public static string RestRoot {
-            get { return null; }
+            get { return null; }  
         }
 
 		private static string[] ModelNamespaces { 
