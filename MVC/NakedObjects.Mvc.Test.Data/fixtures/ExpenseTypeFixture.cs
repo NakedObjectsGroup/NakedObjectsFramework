@@ -33,7 +33,7 @@ namespace Expenses.Fixtures {
             TAXI = CreateType(typeof (Taxi), "Taxi");
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ExpenseType CreateType(Type correspondingClass, string titleString) {
             var type = Container.NewTransientInstance<ExpenseType>();
             type.CorrespondingClassName = correspondingClass.FullName;

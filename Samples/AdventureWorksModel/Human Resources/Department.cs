@@ -23,7 +23,7 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual short DepartmentID { get; set; }
 
         [Title]

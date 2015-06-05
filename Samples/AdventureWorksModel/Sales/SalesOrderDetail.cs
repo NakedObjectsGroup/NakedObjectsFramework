@@ -60,7 +60,7 @@ namespace AdventureWorksModel {
 
         #region SalesOrder
 
-        // [Hidden]
+        // [Hidden(WhenTo.Always)]
         public virtual SalesOrderHeader SalesOrderHeader { get; set; }
 
         #endregion
@@ -101,10 +101,10 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesOrderID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesOrderDetailID { get; set; }
 
         #endregion
@@ -113,7 +113,7 @@ namespace AdventureWorksModel {
 
         #region SpecialOfferProduct
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
 
         #endregion
@@ -149,7 +149,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

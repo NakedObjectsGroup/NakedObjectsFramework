@@ -32,7 +32,7 @@ namespace Expenses.Fixtures {
             DICK.NormalApprover = BOB;
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Employee CreateEmployee(string myName, string userName, string emailAddress, Currency currency) {
             var emp = Container.NewTransientInstance<Employee>();
             emp.Name = myName;

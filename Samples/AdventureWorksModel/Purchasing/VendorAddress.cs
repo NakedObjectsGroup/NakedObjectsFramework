@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("house.png")]
     public class VendorAddress : AWDomainObject, IAddressRole {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int VendorID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int AddressID { get; set; }
 
         [Disabled]
@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
 
         public virtual AddressType AddressType { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Vendor Vendor { get; set; }
 
         #region ModifiedDate

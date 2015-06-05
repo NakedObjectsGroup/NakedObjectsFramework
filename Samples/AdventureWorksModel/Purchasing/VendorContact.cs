@@ -12,16 +12,16 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
     public class VendorContact : AWDomainObject, IContactRole {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int VendorID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ContactID { get; set; }
 
         [Disabled]
         public virtual Contact Contact { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Vendor Vendor { get; set; }
 
         #region ModifiedDate

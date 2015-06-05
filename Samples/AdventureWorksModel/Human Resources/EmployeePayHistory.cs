@@ -14,7 +14,7 @@ namespace AdventureWorksModel {
     public class EmployeePayHistory : AWDomainObject {
         #region EmployeeID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int EmployeeID { get; set; }
 
         #endregion

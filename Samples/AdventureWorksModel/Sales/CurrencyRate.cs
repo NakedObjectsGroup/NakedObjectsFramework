@@ -11,7 +11,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("currency.png")]
     public class CurrencyRate : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int CurrencyRateID { get; set; }
 
         public virtual DateTime CurrencyRateDate { get; set; }

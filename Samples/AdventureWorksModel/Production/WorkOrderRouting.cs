@@ -10,10 +10,10 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class WorkOrderRouting : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int WorkOrderID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductID { get; set; }
 
         [Disabled]
@@ -54,7 +54,7 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Location Location { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual WorkOrder WorkOrder { get; set; }
 
         #region ModifiedDate

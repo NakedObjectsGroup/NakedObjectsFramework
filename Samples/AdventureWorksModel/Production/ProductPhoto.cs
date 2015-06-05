@@ -15,7 +15,7 @@ namespace AdventureWorksModel {
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductPhotoID { get; set; }
 
         public virtual byte[] ThumbNailPhoto {
@@ -32,7 +32,7 @@ namespace AdventureWorksModel {
 
         public virtual string LargePhotoFileName { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
             get { return _ProductProductPhoto; }
             set { _ProductProductPhoto = value; }

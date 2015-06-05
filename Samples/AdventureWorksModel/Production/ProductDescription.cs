@@ -14,7 +14,7 @@ namespace AdventureWorksModel {
     public class ProductDescription : AWDomainObject {
         private ICollection<ProductModelProductDescriptionCulture> _ProductModelProductDescriptionCulture = new List<ProductModelProductDescriptionCulture>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductDescriptionID { get; set; }
 
         [Title]
@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

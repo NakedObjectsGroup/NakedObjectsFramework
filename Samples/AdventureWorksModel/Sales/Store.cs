@@ -46,7 +46,7 @@ namespace AdventureWorksModel {
 
         #region Demographics
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Demographics { get; set; }
 
         [DisplayName("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10), TypicalLength(500)]
@@ -96,7 +96,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

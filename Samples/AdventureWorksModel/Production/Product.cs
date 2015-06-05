@@ -32,7 +32,7 @@ namespace AdventureWorksModel {
 
         #region ProductID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductID { get; set; }
 
         #endregion
@@ -135,10 +135,10 @@ namespace AdventureWorksModel {
 
         #region Size & Weight
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Size { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual UnitMeasure SizeUnit { get; set; }
 
         [DisplayName("Size")]
@@ -151,10 +151,10 @@ namespace AdventureWorksModel {
             }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual decimal? Weight { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual UnitMeasure WeightUnit { get; set; }
 
         [MemberOrder(17)]
@@ -239,7 +239,7 @@ namespace AdventureWorksModel {
         [Mask("d")]
         public virtual DateTime? DiscontinuedDate { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsDiscontinued() {
             return DiscontinuedDate != null ? DiscontinuedDate.Value < DateTime.Now : false;
         }
@@ -304,7 +304,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion
@@ -319,7 +319,7 @@ namespace AdventureWorksModel {
 
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
             get { return _ProductProductPhoto; }
             set { _ProductProductPhoto = value; }
@@ -350,7 +350,7 @@ namespace AdventureWorksModel {
             set { _ProductInventory = value; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int NumberInStock() {
             return (from obj in ProductInventory
                 select obj).Sum(obj => obj.Quantity);
@@ -363,7 +363,7 @@ namespace AdventureWorksModel {
         private ICollection<SpecialOfferProduct> _SpecialOfferProduct = new List<SpecialOfferProduct>();
         private ProductCategory productCategory;
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct {
             get { return _SpecialOfferProduct; }
             set { _SpecialOfferProduct = value; }
@@ -398,7 +398,7 @@ namespace AdventureWorksModel {
             return null;
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual SpecialOfferProduct BestSpecialOfferProduct(short quantity) {
             //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
             var query = from obj in Container.Instances<SpecialOfferProduct>()

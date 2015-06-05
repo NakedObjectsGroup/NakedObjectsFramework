@@ -14,7 +14,7 @@ namespace AdventureWorksModel {
     public class ContactType : AWDomainObject {
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ContactTypeID { get; set; }
 
         #endregion

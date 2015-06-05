@@ -19,7 +19,7 @@ namespace AdventureWorksModel {
         [Disabled, Description("xxx")]
         public virtual string AccountNumber { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string CustomerType { get; set; }
 
         [Optionally]
@@ -29,7 +29,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int Id { get; set; }
 
         #endregion
@@ -46,17 +46,17 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Type() {
             return IsIndividual() ? "Individual" : "Store";
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsIndividual() {
             return CustomerType == "I";
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsStore() {
             return CustomerType == "S";
         }
@@ -65,14 +65,14 @@ namespace AdventureWorksModel {
 
         #region ModifiedDate
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual DateTime CustomerModifiedDate { get; set; }
 
         #endregion
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Guid CustomerRowguid { get; set; }
 
         #endregion

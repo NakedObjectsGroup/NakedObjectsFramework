@@ -10,16 +10,16 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ShoppingCartItem : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ShoppingCartItemID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string ShoppingCartID { get; set; }
 
         [MemberOrder(20)]
         public virtual int Quantity { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual DateTime DateCreated { get; set; }
 
         [Disabled, MemberOrder(10)]

@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
         // that it is convenient to implement this at the top of the hierarchy.  Classes that don't need it
         // just won't use it, or persist it. Classes that do need it, will still have to override the 
         // implementation to be recognised by EF.
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Guid rowguid { get; set; }
 
         #region Life Cycle Methods

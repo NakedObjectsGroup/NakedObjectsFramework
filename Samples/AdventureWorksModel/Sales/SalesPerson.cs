@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesPersonID { get; set; }
 
         #endregion
@@ -101,7 +101,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

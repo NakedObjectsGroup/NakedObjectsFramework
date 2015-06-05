@@ -10,7 +10,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class BillOfMaterials : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int BillOfMaterialsID { get; set; }
 
         public virtual DateTime StartDate { get; set; }

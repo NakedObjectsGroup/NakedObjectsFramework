@@ -15,7 +15,7 @@ namespace AdventureWorksModel {
     public class Shift : AWDomainObject {
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual byte ShiftID { get; set; }
 
         #endregion

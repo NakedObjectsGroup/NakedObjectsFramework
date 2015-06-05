@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
     public class SalesReason : AWDomainObject {
         private ICollection<SalesOrderHeaderSalesReason> _SalesOrderHeaderSalesReason = new List<SalesOrderHeaderSalesReason>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesReasonID { get; set; }
 
         [Title]

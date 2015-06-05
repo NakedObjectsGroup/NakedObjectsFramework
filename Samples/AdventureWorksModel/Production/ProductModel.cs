@@ -21,14 +21,14 @@ namespace AdventureWorksModel {
         private ICollection<ProductModelProductDescriptionCulture> _ProductModelProductDescriptionCulture = new List<ProductModelProductDescriptionCulture>();
         private ICollection<Product> _productVariants = new List<Product>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductModelID { get; set; }
 
         [Title]
         [MemberOrder(10)]
         public virtual string Name { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string CatalogDescription { get; set; }
 
         [DisplayName("CatalogDescription")]
@@ -55,13 +55,13 @@ namespace AdventureWorksModel {
             set { _productVariants = value; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<ProductModelIllustration> ProductModelIllustration {
             get { return _ProductModelIllustration; }
             set { _ProductModelIllustration = value; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture {
             get { return _ProductModelProductDescriptionCulture; }
             set { _ProductModelProductDescriptionCulture = value; }
@@ -83,7 +83,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

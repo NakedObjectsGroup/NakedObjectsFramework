@@ -16,14 +16,14 @@ using NakedObjects;
 namespace Expenses {
     namespace ExpenseClaims.Items {
         public abstract class AbstractExpenseItem {
-            [Hidden, Key]
+            [Hidden(WhenTo.Always), Key]
             public virtual int Id { get; set; }
 
             public IDomainObjectContainer Container { protected get; set; }
 
             #region ExpenseType
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual ExpenseType ExpenseType { get; set; }
 
             #endregion
@@ -92,7 +92,7 @@ namespace Expenses {
             [MemberOrder(Sequence = "4")]
             public virtual ProjectCode ProjectCode { get; set; }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void NewProjectCode(ProjectCode newCode) {
                 ModifyProjectCode(newCode);
             }
@@ -117,7 +117,7 @@ namespace Expenses {
 
             private Claim m_claim;
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual Claim Claim {
                 get { return m_claim; }
 
@@ -158,7 +158,7 @@ namespace Expenses {
                 return newAmount < 0M ? AMOUNT_CANNOT_BE_NEGATIVE : "";
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void InitialiseAmount() {
                 Amount = 0M;
             }
@@ -217,27 +217,27 @@ namespace Expenses {
 
             #region Reading the status
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool NewIncomplete() {
                 return Status.IsNewIncomplete();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool NewComplete() {
                 return Status.IsNewComplete();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool Approved() {
                 return Status.IsApproved();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool Rejected() {
                 return Status.IsRejected();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public bool Queried() {
                 return Status.IsQueried();
             }
@@ -250,27 +250,27 @@ namespace Expenses {
                 Status = (m_claimRepository.FindExpenseItemStatus(title));
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToNewIncomplete() {
                 ChangeStatusTo(ExpenseItemStatus.NEW_INCOMPLETE);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToNewComplete() {
                 ChangeStatusTo(ExpenseItemStatus.NEW_COMPLETE);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToApproved() {
                 ChangeStatusTo(ExpenseItemStatus.APPROVED);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToRejected() {
                 ChangeStatusTo(ExpenseItemStatus.REJECTED);
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual void ChangeStatusToQueried() {
                 ChangeStatusTo(ExpenseItemStatus.QUERIED);
             }
@@ -318,7 +318,7 @@ namespace Expenses {
 
             private const string SUBMITTED_WARN = "Read-only : submitted";
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual bool IsLocked { get; set; }
 
             protected internal virtual string DisabledIfLocked() {
@@ -443,7 +443,7 @@ namespace Expenses {
                 return Claim.DisableApproverActionsOnAllItems();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual decimal RequestedOrApprovedAmount() {
                 if (Rejected() || Queried()) {
                     return 0M;

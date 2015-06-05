@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("gear.png")]
     public class ProductVendor : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int VendorID { get; set; }
 
         [MemberOrder(30)]
@@ -48,7 +48,7 @@ namespace AdventureWorksModel {
         [MemberOrder(20)]
         public virtual UnitMeasure UnitMeasure { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Vendor Vendor { get; set; }
 
         #region ModifiedDate

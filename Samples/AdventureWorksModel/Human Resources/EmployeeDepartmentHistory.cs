@@ -11,13 +11,13 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     public class EmployeeDepartmentHistory : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int EmployeeID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual short DepartmentID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual byte ShiftID { get; set; }
 
         [Mask("d")]

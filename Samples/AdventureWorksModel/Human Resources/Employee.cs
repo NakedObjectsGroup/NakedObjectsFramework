@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
         private ICollection<Employee> _directReports = new List<Employee>();
         private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int EmployeeID { get; set; }
 
         [MemberOrder(1)]
@@ -156,7 +156,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

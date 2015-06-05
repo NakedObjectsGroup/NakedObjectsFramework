@@ -13,7 +13,7 @@ namespace Expenses {
     namespace ExpenseClaims {
         [Bounded, Immutable(WhenTo.OncePersisted)]
         public class ExpenseType {
-            [Hidden, Key]
+            [Hidden(WhenTo.Always), Key]
             public int Id { get; set; }
 
             #region TitleString
@@ -37,7 +37,7 @@ namespace Expenses {
             #region Corresponding Class
 
             /// <summary> This method potentially allows each instance of ExpenseType to have the same icon as its corresponding classname.</summary>
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual string CorrespondingClassName { get; set; }
 
             /// <summary> Converts the correspondingClassName into a system type.</summary>

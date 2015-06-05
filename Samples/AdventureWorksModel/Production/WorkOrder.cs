@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int WorkOrderID { get; set; }
 
         #endregion

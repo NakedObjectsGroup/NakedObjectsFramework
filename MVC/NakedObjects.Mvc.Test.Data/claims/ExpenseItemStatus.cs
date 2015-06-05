@@ -12,7 +12,7 @@ namespace Expenses {
     namespace ExpenseClaims {
         [Bounded, Immutable(WhenTo.OncePersisted)]
         public class ExpenseItemStatus : Status {
-            [Hidden, Key]
+            [Hidden(WhenTo.Always), Key]
             public int Id { get; set; }
 
             #region Status tests

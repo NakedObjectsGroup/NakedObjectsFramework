@@ -28,79 +28,79 @@ namespace NakedObjects.Core.Util {
 
         #region IList Members
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public IEnumerator GetEnumerator() {
             return wrappedList.GetEnumerator();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void CopyTo(Array array, int index) {
             wrappedList.CopyTo((T[]) array, index);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public int Count {
             get { return wrappedList.Count; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public object SyncRoot {
             get { return ((ICollection) wrappedList).SyncRoot; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool IsSynchronized {
             get { return ((ICollection)wrappedList).IsSynchronized; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public int Add(object value) {
             wrappedList.Add((T) value);
             return wrappedList.Count - 1;
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool Contains(object value) {
             return wrappedList.Contains((T) value);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void Clear() {
             wrappedList.Clear();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public int IndexOf(object value) {
             return wrappedList.IndexOf((T) value);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void Insert(int index, object value) {
             wrappedList.Insert(index, (T) value);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void Remove(object value) {
             wrappedList.Remove((T) value);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void RemoveAt(int index) {
             wrappedList.RemoveAt(index);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public object this[int index] {
             get { return wrappedList[index]; }
             set { wrappedList[index] = (T) value; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool IsReadOnly {
             get { return wrappedList.IsReadOnly; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool IsFixedSize {
             get { return ((IList)wrappedList).IsFixedSize; }
         }
@@ -113,37 +113,37 @@ namespace NakedObjects.Core.Util {
             return wrappedList.GetEnumerator();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void CopyTo(T[] array, int arrayIndex) {
             wrappedList.CopyTo(array, arrayIndex);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool Remove(T item) {
             return wrappedList.Remove(item);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void Add(T item) {
             wrappedList.Add(item);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public bool Contains(T item) {
             return wrappedList.Contains(item);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public int IndexOf(T item) {
             return wrappedList.IndexOf(item);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void Insert(int index, T item) {
             wrappedList.Insert(index, item);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         T IList<T>.this[int index] {
             get { return wrappedList[index]; }
             set { wrappedList[index] = value; }
@@ -153,17 +153,17 @@ namespace NakedObjects.Core.Util {
 
         #region IQueryable<T> Members
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public Expression Expression {
             get { return wrappedListAsQueryable.Expression; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public Type ElementType {
             get { return wrappedListAsQueryable.ElementType; }
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public IQueryProvider Provider {
             get { return wrappedListAsQueryable.Provider; }
         }

@@ -15,7 +15,7 @@ namespace AdventureWorksModel {
     public class StateProvince : AWDomainObject {
         #region StateProvinceID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int StateProvinceID { get; set; }
 
         #endregion
@@ -55,7 +55,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

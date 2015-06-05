@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [Bounded]
     [Immutable]
     public class ProductSubcategory : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductSubcategoryID { get; set; }
 
         [Title]
@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

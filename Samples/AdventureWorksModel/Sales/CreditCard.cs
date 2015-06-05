@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
         private ICollection<ContactCreditCard> _ContactCreditCard = new List<ContactCreditCard>();
         private string _ObfuscatedNumber;
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int CreditCardID { get; set; }
 
         [MemberOrder(1)]
@@ -119,11 +119,11 @@ namespace AdventureWorksModel {
 
         #region Logic for creating new cards
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         [NotPersisted]
         public ICreditCardCreator Creator { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         [NotPersisted]
         public Contact ForContact { get; set; }
 

@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
     public class ProductCategory : AWDomainObject {
         private ICollection<ProductSubcategory> _ProductSubcategory = new List<ProductSubcategory>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductCategoryID { get; set; }
 
         [Title]
@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

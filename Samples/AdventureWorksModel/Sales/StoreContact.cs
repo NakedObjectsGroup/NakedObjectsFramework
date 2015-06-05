@@ -21,7 +21,7 @@ namespace AdventureWorksModel {
 
         #region Store
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Store Store { get; set; }
 
         #endregion
@@ -49,10 +49,10 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int CustomerID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ContactID { get; set; }
 
         #endregion

@@ -11,10 +11,10 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("cellphone.png")]
     public class ContactCreditCard : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ContactID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int CreditCardID { get; set; }
 
         [Title]

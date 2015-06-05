@@ -49,7 +49,7 @@ namespace Expenses {
                 return Instances<ProjectCode>().ToList();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual bool DescriptionIsUniqueForClaimant(Employee employee, string initialDescription) {
                 IQueryable<Claim> query =
                     from claim in Instances<Claim>()
@@ -59,7 +59,7 @@ namespace Expenses {
                 return !query.Any();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public ClaimStatus FindClaimStatus(string title) {
                 IQueryable<ClaimStatus> query =
                     from obj in Instances<ClaimStatus>()
@@ -69,7 +69,7 @@ namespace Expenses {
                 return query.FirstOrDefault();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual ExpenseItemStatus FindExpenseItemStatus(string title) {
                 IQueryable<ExpenseItemStatus> query =
                     from obj in Instances<ExpenseItemStatus>()
@@ -79,7 +79,7 @@ namespace Expenses {
                 return query.FirstOrDefault();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public IList<AbstractExpenseItem> FindExpenseItemsLike(AbstractExpenseItem item) {
                 // Simple implementation: could be extended to compare any fields that have already been set on the
                 // item provided.
@@ -104,7 +104,7 @@ namespace Expenses {
                 return query.ToList();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public IList<Claim> FindClaimsAwaitingApprovalBy(Employee approver) {
                 IQueryable<Claim> query =
                     from claim in Instances<Claim>()
@@ -114,7 +114,7 @@ namespace Expenses {
                 return query.ToList();
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public IList<AbstractExpenseItem> FindExpenseItemsOfType(Employee employee, ExpenseType type) {
                 IQueryable<AbstractExpenseItem> query =
                     from item in Instances<AbstractExpenseItem>()
@@ -171,7 +171,7 @@ namespace Expenses {
                 return FindClaimsAwaitingApprovalBy(MeAsEmployee());
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual Claim CreateNewClaim(Employee employee, string description) {
                 var newClaim = NewTransientInstance<Claim>();
                 newClaim.Claimant = employee;
@@ -183,12 +183,12 @@ namespace Expenses {
                 return newClaim;
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual string DefaultUniqueClaimDescription(Employee employee) {
                 return CreateUniqueDescription(employee, CreateDefaultClaimDescription(null));
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual string CreateDefaultClaimDescription(string inputDescription) {
                 if (string.IsNullOrEmpty(inputDescription)) {
                     return DateTime.Now.ToShortDateString();
@@ -206,7 +206,7 @@ namespace Expenses {
                 return description;
             }
 
-            [Hidden]
+            [Hidden(WhenTo.Always)]
             public virtual AbstractExpenseItem CreateNewExpenseItem(Claim claim, ExpenseType typeOfExpense) {
                 var item = (AbstractExpenseItem) (NewTransientInstance(Type.GetType(typeOfExpense.CorrespondingClassName)));
                 item.ExpenseType = typeOfExpense;

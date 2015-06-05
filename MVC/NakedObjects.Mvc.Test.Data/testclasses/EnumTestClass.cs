@@ -20,7 +20,7 @@ namespace MvcTestApp.Tests.Helpers {
     public class EnumTestClass {
         public IDomainObjectContainer Container { protected get; set; }
 
-        [Hidden, Key]
+        [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
 
         [Title]

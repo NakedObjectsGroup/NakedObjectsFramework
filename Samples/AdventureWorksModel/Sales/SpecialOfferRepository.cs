@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
 
         private SpecialOffer _noDiscount;
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public SpecialOffer NoDiscount() {
             if (_noDiscount == null) {
                 IQueryable<SpecialOffer> query = from obj in Instances<SpecialOffer>()

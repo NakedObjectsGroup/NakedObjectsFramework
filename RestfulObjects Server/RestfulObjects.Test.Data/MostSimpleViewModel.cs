@@ -13,7 +13,7 @@ namespace RestfulObjects.Test.Data {
     public class MostSimpleViewModel : IViewModel {
         public IDomainObjectContainer Container { set; protected get; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public string AggregateKey {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }

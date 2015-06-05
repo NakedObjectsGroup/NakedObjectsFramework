@@ -79,7 +79,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesOrderID { get; set; }
 
         #endregion
@@ -105,32 +105,32 @@ namespace AdventureWorksModel {
             return OrderStatus.InProcess;
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Boolean IsInProcess() {
             return Status.Equals((byte) OrderStatus.InProcess);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Boolean IsApproved() {
             return Status.Equals((byte) OrderStatus.Approved);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsBackOrdered() {
             return Status.Equals((byte) OrderStatus.BackOrdered);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsRejected() {
             return Status.Equals((byte) OrderStatus.Rejected);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsShipped() {
             return Status.Equals((byte) OrderStatus.Shipped);
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual bool IsCancelled() {
             return Status.Equals((byte) OrderStatus.Cancelled);
         }
@@ -148,7 +148,7 @@ namespace AdventureWorksModel {
 
         private Contact contact;
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Contact Contact {
             get { return contact; }
             set { contact = value; }
@@ -494,7 +494,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

@@ -13,10 +13,10 @@ namespace AdventureWorksModel.Sales {
     public class OrderLine : IViewModel {
         public IDomainObjectContainer Container { protected get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public Product Product { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public short Number { get; set; }
 
         [Title]
@@ -51,7 +51,7 @@ namespace AdventureWorksModel.Sales {
         public IDomainObjectContainer Container { protected get; set; }
         public OrderContributedActions OrderRepo { protected get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public Customer Customer { get; set; }
 
         public string AccountNumber {

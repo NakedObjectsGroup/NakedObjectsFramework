@@ -36,7 +36,7 @@ namespace AdventureWorksModel {
 
         #region Demographics
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual string Demographics { get; set; }
 
         [DisplayName("Demographics")]

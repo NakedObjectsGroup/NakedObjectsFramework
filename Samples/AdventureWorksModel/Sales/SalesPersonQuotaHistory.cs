@@ -11,7 +11,7 @@ using NakedObjects;
 namespace AdventureWorksModel {
     [IconName("clipboard.png")]
     public class SalesPersonQuotaHistory : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SalesPersonID { get; set; }
 
         [MemberOrder(1)]
@@ -47,7 +47,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

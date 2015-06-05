@@ -40,7 +40,7 @@ namespace AdventureWorksModel {
             return GetCustomerForUser().Id.ToString();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public IQueryable<ShoppingCartItem> AddToShoppingCart(Product product) {
             string id = GetShoppingCartIDForUser();
             var item = NewTransientInstance<ShoppingCartItem>();
@@ -103,7 +103,7 @@ namespace AdventureWorksModel {
             return Container.Principal.Identity.Name;
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void AddAllItemsInCartToOrder(SalesOrderHeader order) {
             foreach (ShoppingCartItem item in Cart()) {
                 var detail = order.AddNewDetail(item.Product, (short) item.Quantity);
@@ -112,7 +112,7 @@ namespace AdventureWorksModel {
             EmptyCart();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public void RemoveItems(IQueryable<ShoppingCartItem> items) {
             foreach (ShoppingCartItem item in items) {
                 Container.DisposeInstance(item);
@@ -127,7 +127,7 @@ namespace AdventureWorksModel {
             return DisableIfNoCustomerForUser();
         }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public string DisableIfNoCustomerForUser() {
             var rb = new ReasonBuilder();
             rb.AppendOnCondition(GetCustomerForUser() == null, "User is not a recognised Customer");

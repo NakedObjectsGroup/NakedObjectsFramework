@@ -12,10 +12,10 @@ namespace AdventureWorksModel {
     public class SpecialOfferProduct : AWDomainObject {
         //private ICollection<SalesOrderDetail> _SalesOrderDetail = new List<SalesOrderDetail>();
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int SpecialOfferID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductID { get; set; }
 
         [MemberOrder(1)]
@@ -46,7 +46,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

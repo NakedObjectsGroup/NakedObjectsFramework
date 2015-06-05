@@ -10,7 +10,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ProductReview : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductReviewID { get; set; }
 
         [MemberOrder(1)]
@@ -28,7 +28,7 @@ namespace AdventureWorksModel {
         [MemberOrder(5)]
         public virtual string Comments { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual Product Product { get; set; }
 
         #region ModifiedDate

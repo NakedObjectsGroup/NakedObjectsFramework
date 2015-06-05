@@ -61,7 +61,7 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         [NotPersisted]
         public virtual Customer ForCustomer { get; set; }
 
@@ -77,7 +77,7 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int AddressID { get; set; }
 
         [MemberOrder(11)]
@@ -111,7 +111,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public override Guid rowguid { get; set; }
 
         #endregion

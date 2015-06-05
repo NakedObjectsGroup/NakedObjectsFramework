@@ -10,10 +10,10 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ProductModelIllustration : AWDomainObject {
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int ProductModelID { get; set; }
 
-        [Hidden]
+        [Hidden(WhenTo.Always)]
         public virtual int IllustrationID { get; set; }
 
         public virtual Illustration Illustration { get; set; }
