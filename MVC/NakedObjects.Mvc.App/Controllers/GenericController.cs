@@ -12,12 +12,16 @@ namespace NakedObjects.Mvc.App.Controllers {
     //[Authorize] 
     public class GenericController : GenericControllerImpl {
 
-        #region actions
+        public GenericController(IFrameworkFacade facade,  IIdHelper idHelper) : base(facade, idHelper)  {}
 
-        public GenericController(IFrameworkFacade facade,  IIdHelper idHelper) : base(facade, idHelper)  {
-            // Uncomment this if you wish to have NakedObject Container and services injected 
-            //nakedObjectsFramework.DomainObjectInjector.InjectInto(this);
-        }
+        // Uncomment this constructor if you wish to have an IDomainObjectContainer and/or domain services injected.
+        // You will also need to ensure you have NakedObjects.Core package installed & add using NakedObjects;
+        //public GenericController(IFrameworkFacade facade, IIdHelper idHelper, INakedObjectsFramework nakedObjectsFramework)
+        //    : base(facade, idHelper) {
+        //    nakedObjectsFramework.DomainObjectInjector.InjectInto(this);
+        //}
+
+        #region actions
 
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {

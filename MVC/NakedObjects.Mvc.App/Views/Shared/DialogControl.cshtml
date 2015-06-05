@@ -1,5 +1,7 @@
+@using NakedObjects.Facade.Utility
 @using NakedObjects.Resources
 @using NakedObjects.Web.Mvc.Html
+
 @model global::NakedObjects.Web.Mvc.Models.FindViewModel
 
 @(Html.Object(Html.ObjectTitle(Model.ContextObject).ToString(), IdConstants.ViewAction, Model.ContextObject))

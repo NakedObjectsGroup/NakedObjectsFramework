@@ -15,9 +15,7 @@ using RestfulObjects.Mvc.Model;
 
 namespace NakedObjects.Mvc.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade surface) : base(surface) {
-            
-        }
+        public RestfulObjectsController(IFrameworkFacade surface) : base(surface) {}
 
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
