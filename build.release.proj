@@ -7,7 +7,7 @@
     <BATPath>Batch</BATPath>
 		<SamplesPath>Samples</SamplesPath>
 		<TestPath>Test</TestPath>
-		<SurfacePath>Surface</SurfacePath>
+		<FacadePath>Facade</FacadePath>
 		<DemoPath>Demo</DemoPath>
     <ROPath>RestfulObjects Server</ROPath>
 
@@ -19,7 +19,7 @@
 		<NOX>NakedObjects.Xat</NOX>
 		<NOS>NakedObjects.Sample</NOS>
 		<NOSEL>NakedObjects.Mvc.Selenium</NOSEL>
-		<NOSF>NakedObjects.Surface</NOSF>
+		<NOSF>NakedObjects.Facade</NOSF>
 		<NOWIF>NakedObjects.Authorisation.Wif</NOWIF>
 		<NOXS>NakedObjects.Snapshot.Xml</NOXS>
     <ROMVC>RestfulObjects.Mvc</ROMVC>
@@ -97,12 +97,12 @@
       <Source Include="*$(SamplesPath)\AdventureworksModel\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(SamplesPath)\NakedObjects.Sample.Icons.package\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(TestPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
-      <Source Include="*$(SurfacePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(FacadePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(ROPath)\RestfulObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(BATPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
 
       <Source Include="*.nuget\**\*.*" />
-      <Source Include="Core.sln;MVC.sln;ProgrammingModel.sln;Surface.sln;ROServer.sln;build.*.proj" />
+      <Source Include="Core.sln;MVC.sln;ProgrammingModel.sln;Facade.sln;ROServer.sln;build.*.proj" />
     </ItemGroup>
 
     <Copy SourceFiles="@(Source)" DestinationFolder="$(ReleasePath)\src\%(RecursiveDir)" Condition=" '$(Targets)'!='Clean' "/>
