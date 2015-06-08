@@ -102,9 +102,7 @@ namespace NakedObjects.SystemTest.Menus {
 
         public void QuxAction2() { }
 
-#pragma warning disable 618
-       [Hidden]
-#pragma warning restore 618
+        [Hidden(WhenTo.Always)]
         public void QuxAction3() { }
     }
 

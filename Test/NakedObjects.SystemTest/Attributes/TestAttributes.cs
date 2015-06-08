@@ -594,7 +594,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #region NakedObjectsIgnore
         [TestMethod]
-        [Ignore] // broken by NakedObjectsIgnore changes
         public virtual void NakedObjectsIgnoreOnPropertyCollectionAndMethod() {
             var obj = NewTestObject<NakedObjectsIgnore1>();
             Assert.AreEqual(0, obj.Properties.Count());
@@ -1221,9 +1220,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public virtual string Prop0 { get; set; }
 
-#pragma warning disable 618
-        [Hidden]
-#pragma warning restore 618
+        [Hidden(WhenTo.Always)]
         public virtual string Prop1 { get; set; }
 
         [Hidden(WhenTo.OncePersisted)]
@@ -1401,24 +1398,14 @@ namespace NakedObjects.SystemTest.Attributes {
         [NakedObjectsIgnore]
         public virtual NakedObjectsIgnore1 RefProp { get; set; }
 
-        public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
-
         [NakedObjectsIgnore]
         public ICollection<NakedObjectsIgnore1> Coll { get; set; }
-
-       public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
         [NakedObjectsIgnore]
         public void Action() { }
 
-
-        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
-
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {  }
-
     }
 
-    //[NakedObjectsIgnore]
     public class NakedObjectsIgnore2 {
         public virtual int Id { get; set; }
     }
