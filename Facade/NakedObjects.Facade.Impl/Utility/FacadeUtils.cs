@@ -10,12 +10,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacadeUtils {
+
+        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) {
+            return  objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
+        }
+
+        public static IAssociationSpec WrappedSpec(this IAssociationFacade associationFacade) {
+            return associationFacade == null ? null : ((AssociationFacade)associationFacade).WrappedSpec;
+        }
+
+        public static IActionSpec WrappedSpec(this IActionFacade actionFacade) {
+            return actionFacade == null ? null : ((ActionFacade)actionFacade).WrappedSpec;
+        }
+
+        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) {
+            return actionParameterFacade == null ? null : ((ActionParameterFacade)actionParameterFacade).WrappedSpec;
+        }
+
         public static NakedObjectsFacadeException Map(Exception e) {
             // map to appropriate exception 
 
