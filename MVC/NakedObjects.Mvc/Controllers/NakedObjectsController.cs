@@ -739,7 +739,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
             }
             var byteArray = domainObject.GetDomainObject<object>() as byte[];
-            return File(byteArray, "application/octet-stream");
+            return File(byteArray, AttachmentContextFacade.DefaultMimeType);
         }
 
     }

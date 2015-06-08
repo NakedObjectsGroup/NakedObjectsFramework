@@ -52,13 +52,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetContentType(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
-            string mtv = no != null ? no.GetAttachment().MimeType : AttachmentContextFacade.DefaultMimeType;
+            string mtv = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().MimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
         private void SetContentDisposition(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
-            string cd = no != null ? no.GetAttachment().ContentDisposition : AttachmentContextFacade.DefaultContentDisposition;
+            string cd = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
             string fn = no != null ? no.GetAttachment().FileName : AttachmentContextFacade.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }

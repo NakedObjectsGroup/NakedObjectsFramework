@@ -444,7 +444,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public MediaTypeHeaderValue GetAttachmentMediaType() {
             IObjectFacade no = assoc.GetValue(objectFacade);
-            string mtv = no != null ? no.GetAttachment().MimeType : "";
+            string mtv = no == null  || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? ""  : no.GetAttachment().MimeType;
             return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? "image/bmp" : mtv);
         }
 
