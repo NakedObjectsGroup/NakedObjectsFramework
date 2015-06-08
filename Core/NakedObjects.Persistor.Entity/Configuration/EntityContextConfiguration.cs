@@ -8,6 +8,7 @@
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public abstract class EntityContextConfiguration {
@@ -15,6 +16,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         private Func<Type[]> preCachedTypes = () => new Type[] {};
         internal bool Validated { get; set; }
         public MergeOption DefaultMergeOption { get; set; }
+
+        public Action<ObjectContext> CustomConfig { get; set; }
 
         public Func<Type[]> PreCachedTypes {
             get { return preCachedTypes; }
