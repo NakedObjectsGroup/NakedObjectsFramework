@@ -30,6 +30,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             NotPersistedTypes = () => new Type[] {};
             MaximumCommitCycles = 10;
             IsInitializedCheck = () => true;
+            CustomConfig = oc => { };
         }
 
         public static bool NoValidate { get; set; }
@@ -38,7 +39,12 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public IEnumerable<EntityContextConfiguration> ContextConfiguration {
             get {
-                IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
+                IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
+                    DbContext = f.Item1,
+                    PreCachedTypes = f.Item2,
+                    NotPersistedTypes = NotPersistedTypes,
+                    CustomConfig = CustomConfig
+                });
                 IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
                 return config;
             }
@@ -143,7 +149,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
                     DefaultMergeOption = DefaultMergeOption,
                     ContextName = s,
                     PreCachedTypes = defaultedData[s],
-                    NotPersistedTypes = NotPersistedTypes
+                    NotPersistedTypes = NotPersistedTypes,
+                    CustomConfig = CustomConfig
                 });
             }
             return new EntityContextConfiguration[] {};
@@ -221,7 +228,14 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
                 return this;
             }
+
+            public EntityContextConfigurator SetCustomConfiguration(Action<ObjectContext> customConfig) {
+                entityObjectStoreConfiguration.CustomConfig = customConfig;
+                return this;
+            }
         }
+
+        public Action<ObjectContext> CustomConfig { get; set; }
 
         #endregion
     }

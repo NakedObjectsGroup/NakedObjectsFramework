@@ -436,6 +436,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
             };
 
+            config.CustomConfig(context.WrappedObjectContext);
+
             context.Manager = nakedObjectManager;
             return context;
         }
