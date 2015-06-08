@@ -57,7 +57,9 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
 
         private ICollection<PolymorphicPaymentPayableItemLink> _PayableItem = new List<PolymorphicPaymentPayableItemLink>();
 
+#pragma warning disable 618
         [Hidden]
+#pragma warning restore 618
         public virtual ICollection<PolymorphicPaymentPayableItemLink> PayableItemLinks {
             get { return _PayableItem; }
             set { _PayableItem = value; }

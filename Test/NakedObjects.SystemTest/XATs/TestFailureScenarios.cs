@@ -192,7 +192,9 @@ namespace NakedObjects.SystemTest.XATs {
                 set { prop3 = value; }
             }
 
+#pragma warning disable 618
             [Hidden]
+#pragma warning restore 618
             public string Foo { get; set; }
 
             public IDomainObjectContainer Container { set; protected get; }
