@@ -142,8 +142,8 @@
       <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-beta\lib\net451\NakedObjects.Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Facade.Impl">
-      <HintPath>..\..\packages\NakedObjects.Facade.Impl.1.0.0-beta\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+    <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.Impl.1.0.0-beta1\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources">
