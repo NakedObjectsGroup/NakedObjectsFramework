@@ -127,7 +127,7 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Architecture">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Attributes">
@@ -135,7 +135,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade">
@@ -147,7 +147,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
@@ -155,7 +155,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Metamodel">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Mvc">
@@ -167,7 +167,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
@@ -175,11 +175,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Reflector.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Reflector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
@@ -187,7 +187,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Unity">
-      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta\lib\net451\NakedObjects.Unity.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
