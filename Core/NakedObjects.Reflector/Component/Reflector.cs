@@ -123,10 +123,7 @@ namespace NakedObjects.Reflect.Component {
             PopulateAssociatedActions(s1.ToArray());
 
             //Menus installed once rest of metamodel has been built:
-            if (config.MainMenus != null) {
-                IMenu[] mainMenus = config.MainMenus(menuFactory);
-                InstallMainMenus(mainMenus);
-            }
+            InstallMainMenus();
             InstallObjectMenus();
         }
 
@@ -171,7 +168,12 @@ namespace NakedObjects.Reflect.Component {
             PopulateFinderActions(spec, services);
         }
 
-        private void InstallMainMenus(IMenu[] menus) {
+        private void InstallMainMenus() {
+            var menus = config.MainMenus(menuFactory);
+            //Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
+            if (menus == null || menus.Count() == 0) {
+                throw new ReflectionException("No MainMenus specified.");
+            }
             foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
                 metamodel.AddMainMenu(menu);
             }

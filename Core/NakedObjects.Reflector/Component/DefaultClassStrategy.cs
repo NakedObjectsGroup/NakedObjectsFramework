@@ -85,7 +85,7 @@ namespace NakedObjects.Reflect.Component {
         private bool IsNamespaceMatch(Type type) {
             if (!namespaceScratchPad.ContainsKey(type)) {
                 var ns = type.Namespace ?? "";
-                var match = config.SupportedNamespaces.Any(ns.StartsWith);
+                var match = config.ModelNamespaces.Any(ns.StartsWith);
                 namespaceScratchPad = namespaceScratchPad.Add(type, match);
             }
 
