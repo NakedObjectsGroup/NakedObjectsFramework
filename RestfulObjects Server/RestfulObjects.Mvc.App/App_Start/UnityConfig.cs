@@ -15,6 +15,7 @@ using NakedObjects.Facade.Impl;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
 
 namespace MvcTestApp {
@@ -56,6 +57,8 @@ namespace MvcTestApp {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // frameworkFacade
+            container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
+
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
 
