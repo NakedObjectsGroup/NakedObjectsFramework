@@ -78,7 +78,7 @@ namespace NakedObjects.Core.Configuration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] modelNamespaces,
-                                      Func<IMenuFactory, IMenu[]> mainMenus) {
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null) {
             ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
@@ -116,11 +116,6 @@ namespace NakedObjects.Core.Configuration {
             if (ModelNamespaces == null || !ModelNamespaces.Any()) {
                 configError = true;
                 msg += "No Namespaces specified;\r\n";
-            }
-
-            if (MainMenus == null) {
-                configError = true;
-                msg += "Function for returning MainMenus is null.";
             }
 
             if (configError) {

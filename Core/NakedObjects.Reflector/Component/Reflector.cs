@@ -169,13 +169,16 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private void InstallMainMenus() {
-            var menus = config.MainMenus(menuFactory);
-            //Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
-            if (menus == null || menus.Count() == 0) {
-                throw new ReflectionException("No MainMenus specified.");
-            }
-            foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
-                metamodel.AddMainMenu(menu);
+            if (config.MainMenus != null) {
+                var menus = config.MainMenus(menuFactory);
+                //Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
+                if (menus == null) return;  //Allows developer to deliberately not specify any menus
+                if (menus.Count() == 0) { //Catches accidental non-specification of menus
+                    throw new ReflectionException("No MainMenus specified.");
+                }
+                foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
+                    metamodel.AddMainMenu(menu);
+                }
             }
         }
 

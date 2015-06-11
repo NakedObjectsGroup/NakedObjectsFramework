@@ -125,7 +125,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] {};
+            return null; //Allows tests not to define menus if not needed.
         }
 
         protected virtual void StartTest() {
