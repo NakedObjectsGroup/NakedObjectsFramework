@@ -64,6 +64,10 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
+let GetRepeatedValueProperty(api : RestfulObjectsControllerBase) = 
+    for i in [1 .. 100] do
+        GetValueProperty(api)
+               
 let GetFileAttachmentProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
     let oid = ktc "1"

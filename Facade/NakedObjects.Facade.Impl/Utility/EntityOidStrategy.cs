@@ -98,7 +98,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             var adapter = GetObject(keys, type);
 
             if (adapter == null) {
-                throw new ObjectResourceNotFoundNOSException(id.ToString());
+                throw new ObjectResourceNotFoundNOSException(id + ": null adapter");
             }
 
             return new OidFacade(adapter.Oid);
@@ -266,11 +266,11 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         private Type ValidateServiceId(IOidTranslation objectId) {
-            return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId.ToString()); });
+            return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId + ": Type not found"); });
         }
 
         private Type ValidateObjectId(IOidTranslation objectId) {
-            return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
+            return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId + ": Type not found" ); });
         }
 
         private Type ValidateId(IOidTranslation objectId, Action onError) {

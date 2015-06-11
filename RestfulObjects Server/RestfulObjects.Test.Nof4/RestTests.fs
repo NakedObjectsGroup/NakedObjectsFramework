@@ -545,6 +545,9 @@ type Nof4Tests() =
         member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
         
         [<Test>]
+        member x.GetRepeatedValueProperty() = ObjectProperty16.GetRepeatedValueProperty x.api
+        
+        [<Test>]
         member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api
         
         [<Test>]

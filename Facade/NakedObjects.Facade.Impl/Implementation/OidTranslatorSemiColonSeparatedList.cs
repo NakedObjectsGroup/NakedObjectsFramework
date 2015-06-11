@@ -22,7 +22,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Count() != 1) {
-                throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t));
+                throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t) + ": Parsing Id error");
             }
             if (string.IsNullOrEmpty(id.First())) {
                 return null;
