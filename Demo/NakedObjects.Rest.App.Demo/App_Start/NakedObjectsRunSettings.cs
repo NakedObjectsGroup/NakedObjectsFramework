@@ -34,6 +34,7 @@ namespace NakedObjects.Rest.App.Demo {
                     typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
                     typeof (QuickOrderForm),
+                    typeof (ProductProductPhoto)
                 };
             }
         }
