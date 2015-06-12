@@ -21,8 +21,7 @@ For Release 7.0
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/7.0/Documentation/DeveloperManual.docx?raw=true
 
 For Release 6:
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/6aadec10146d007067baeeeb302fb135c869d3b8/Documentation/DeveloperManual.docx?raw=true
-
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/6.0/Documentation/DeveloperManual.docx?raw=true
 
 At the start of the manual, under 'Writing your first Naked Objects application' is a very simple worked example.
 
