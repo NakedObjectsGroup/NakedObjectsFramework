@@ -4590,7 +4590,7 @@ let PutWithReferenceObjectNotFoundArgsValue(api : RestfulObjectsControllerBase) 
     let result = api.PutObject(oType, ktc "1", args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s\"" oType (ktc "100"), result.Headers.Warning.ToString())
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4975,7 +4975,7 @@ let NotFoundGetObject(api : RestfulObjectsControllerBase) =
     let result = api.GetObject(oType, ktc "44", args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s\"" oType (ktc "44"), result.Headers.Warning.ToString())
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "44"), result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 // 405   

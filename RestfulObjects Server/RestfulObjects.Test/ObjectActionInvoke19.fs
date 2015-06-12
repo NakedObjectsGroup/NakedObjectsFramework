@@ -5432,7 +5432,7 @@ let VerifyInvalidUrlOnPostQueryValidateOnly refType oType oid f (api : RestfulOb
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s\"" roType (ktc "10"), result.Headers.Warning.ToString())
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" roType (ktc "10"), result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 let InvalidUrlOnPostQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 

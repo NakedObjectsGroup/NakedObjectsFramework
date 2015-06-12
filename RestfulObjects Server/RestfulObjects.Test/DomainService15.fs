@@ -1163,7 +1163,7 @@ let NotFoundGetService(api : RestfulObjectsControllerBase) =
     let result = api.GetService(sName, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such service %s\"" sName, result.Headers.Warning.ToString())
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such service %s: Type not found\"" sName, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
 let NotAcceptableGetServiceWrongMediaType(api : RestfulObjectsControllerBase) = 
