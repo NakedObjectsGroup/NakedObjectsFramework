@@ -79,10 +79,24 @@ namespace NakedObjects.Rest.App.Demo {
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] { };
+            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            CustomerRepository.Menu(customerMenu);
+            return new[] {
+                    customerMenu,
+                    factory.NewMenu<OrderRepository>(true),
+                    factory.NewMenu<ProductRepository>(true),
+                    factory.NewMenu<EmployeeRepository>(true),
+                    factory.NewMenu<SalesRepository>(true),
+                    factory.NewMenu<SpecialOfferRepository>(true),
+                    factory.NewMenu<ContactRepository>(true),
+                    factory.NewMenu<VendorRepository>(true),
+                    factory.NewMenu<PurchaseOrderRepository>(true),
+                    factory.NewMenu<WorkOrderRepository>(true),
+                    factory.NewMenu<object>(false, "Empty")
+            };
         }
     }
 }
