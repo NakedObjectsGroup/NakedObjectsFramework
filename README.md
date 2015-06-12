@@ -15,7 +15,7 @@ Getting Started
 There is a comprehensive Developer Manual for the Naked Objects Framework, available as a .docx:
 
 For Release 7:
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/7.0/Documentation/DeveloperManual.docx?raw=true
 
 For Release 6:
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/6aadec10146d007067baeeeb302fb135c869d3b8/Documentation/DeveloperManual.docx?raw=true
