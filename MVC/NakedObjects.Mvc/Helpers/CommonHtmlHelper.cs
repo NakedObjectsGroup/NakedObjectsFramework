@@ -1028,7 +1028,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return value;
         }
 
-        private static string GetFieldValue(this HtmlHelper html, PropertyContext context, IObjectFacade valueNakedObject) {
+        private static string GetFieldValue(this HtmlHelper html, PropertyContext context, IObjectFacade valueNakedObject, bool noFinder) {
             string value = "";
 
             if (context.Property.IsAutoCompleteEnabled) {
@@ -1044,6 +1044,10 @@ namespace NakedObjects.Web.Mvc.Html {
                     link = html.ObjectLink(link, IdConstants.ViewAction, valueNakedObject.Object);
                 }
                 value += String.Format(link, html.GetDisplayTitle(context.Property, valueNakedObject));
+            }
+
+            if (!noFinder) {
+                value += html.FinderActions(context.Property.Specification, new ActionContext(html.IdHelper(), context.Target, null), context.Property.Id);
             }
 
             return value;
@@ -1760,8 +1764,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     noFinder = noFinder || !propertyContext.IsFindMenuEnabled();
 
                     tag.InnerHtml += html.ObjectIcon(suggestedItem) +
-                                     html.GetFieldValue(propertyContext, suggestedItem) +
-                                     (noFinder ? String.Empty : html.FinderActions(propertyContext.Property.Specification, new ActionContext(html.IdHelper(), propertyContext.Target, null), propertyContext.Property.Id)) +
+                                     html.GetFieldValue(propertyContext, suggestedItem, noFinder) +
                                      html.GetMandatoryIndicator(propertyContext) +
                                      html.ValidationMessage(propertyContext.Property.IsAutoCompleteEnabled ? propertyContext.GetAutoCompleteFieldId() : id) +
                                      html.CustomEncrypted(id, valueId);
