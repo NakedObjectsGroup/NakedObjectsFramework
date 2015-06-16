@@ -1031,7 +1031,9 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetFieldValue(this HtmlHelper html, PropertyContext context, IObjectFacade valueNakedObject, bool noFinder) {
             string value = "";
 
-            if (context.Property.IsAutoCompleteEnabled) {
+
+            // Even if not autocomplete add autocomplete menu if no finder and then handle with recently viewed in ajax controller
+            if (context.Property.IsAutoCompleteEnabled || noFinder) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Property.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
@@ -1047,6 +1049,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (!noFinder) {
+                // append finder meu
                 value += html.FinderActions(context.Property.Specification, new ActionContext(html.IdHelper(), context.Target, null), context.Property.Id);
             }
 
