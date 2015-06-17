@@ -1002,10 +1002,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return found;
         }
 
-        private static string GetFieldValue(this HtmlHelper html, ParameterContext context, IObjectFacade valueNakedObject) {
+        private static string GetParameterValue(this HtmlHelper html, ParameterContext context, IObjectFacade valueNakedObject, bool noFinder) {
             string value = "";
 
-            if (context.Parameter.IsAutoCompleteEnabled) {
+            // Even if not autocomplete add autocomplete menu if no finder and then handle with recently viewed in ajax controller
+            if (context.Parameter.IsAutoCompleteEnabled || noFinder) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Parameter.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
@@ -1023,6 +1024,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 string title = html.GetDisplayTitle(context.Parameter, valueNakedObject);
                 value += String.Format(link, title);
+            }
+
+            if (!noFinder) {
+                // append finder meu
+                value += html.FinderActions(context.Parameter.Specification, context, context.Parameter.Id);
             }
 
             return value;
@@ -1701,8 +1707,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 bool noFinder = context.EmbeddedInObject || !context.IsFindMenuEnabled();
 
                 tag.InnerHtml += html.ObjectIcon(suggestedItem) +
-                                 html.GetFieldValue(context, suggestedItem) +
-                                 (noFinder ? String.Empty : html.FinderActions(context.Parameter.Specification, context, context.Parameter.Id)) +
+                                 html.GetParameterValue(context, suggestedItem, noFinder) +
                                  html.GetMandatoryIndicator(context) +
                                  html.ValidationMessage(context.Parameter.IsAutoCompleteEnabled ? context.GetParameterAutoCompleteId() : id) +
                                  html.CustomEncrypted(id, valueId);

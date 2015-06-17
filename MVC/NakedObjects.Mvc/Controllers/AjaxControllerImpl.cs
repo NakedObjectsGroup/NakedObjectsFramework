@@ -234,28 +234,29 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (assoc != null) {
                 var nakedObjectCompletions = assoc.IsAutoCompleteEnabled ? 
                     assoc.GetCompletions(nakedObject, autoCompleteParm) :
-                    GetRecentlyViewed(assoc, autoCompleteParm);
+                    GetRecentlyViewed(assoc.Specification, autoCompleteParm);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
             return Jsonp(completions);
         }
 
-        private IEnumerable<IObjectFacade> GetRecentlyViewed(IAssociationFacade assoc, string autoCompleteParm) {
-            var allcached = Session.CachedObjectsOfType(Facade, assoc.Specification).Select(o => Facade.GetObject(o));
+        private IEnumerable<IObjectFacade> GetRecentlyViewed(ITypeFacade type, string autoCompleteParm) {
+            var allcached = Session.CachedObjectsOfType(Facade,type).Select(o => Facade.GetObject(o));
             return string.IsNullOrWhiteSpace(autoCompleteParm) ? allcached : allcached.Where(of => of.TitleString.StartsWith(autoCompleteParm, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
             var nakedObject = GetNakedObjectFromId(id);
             var action = nakedObject.Specification.GetActionLeafNodes().Single(a => a.Id == actionName);
-            IList<object> completions = new List<object>();
 
             var p = action.Parameters[parameterIndex];
-            if (p.IsAutoCompleteEnabled) {
-                var nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm);
-                completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
-            }
+
+            var nakedObjectCompletions =
+                p.IsAutoCompleteEnabled ?
+                    p.GetCompletions(nakedObject, autoCompleteParm) :
+                    GetRecentlyViewed(p.Specification, autoCompleteParm);
+            var completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
 
             return Jsonp(completions);
         }
