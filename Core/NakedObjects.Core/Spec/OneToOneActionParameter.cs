@@ -22,8 +22,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsFindMenuEnabled {
             get {
                 if (!isFindMenuEnabled.HasValue) {
-                    isFindMenuEnabled = !(IsChoicesEnabled || IsAutoCompleteEnabled)
-                                        || ContainsFacet<IFindMenuFacet>();
+                    isFindMenuEnabled =  ContainsFacet<IFindMenuFacet>();
                 }
                 return isFindMenuEnabled.Value;
             }
