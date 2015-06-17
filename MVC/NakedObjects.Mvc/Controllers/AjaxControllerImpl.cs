@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -228,14 +229,21 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
             var nakedObject = GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
-            var assoc = nakedObject.Specification.Properties.SingleOrDefault(p => p.Id == propertyId && p.IsAutoCompleteEnabled);
+            var assoc = nakedObject.Specification.Properties.SingleOrDefault(p => p.Id == propertyId);
 
             if (assoc != null) {
-                var nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm);
+                var nakedObjectCompletions = assoc.IsAutoCompleteEnabled ? 
+                    assoc.GetCompletions(nakedObject, autoCompleteParm) :
+                    GetRecentlyViewed(assoc, autoCompleteParm);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
             return Jsonp(completions);
+        }
+
+        private IEnumerable<IObjectFacade> GetRecentlyViewed(IAssociationFacade assoc, string autoCompleteParm) {
+            var allcached = Session.CachedObjectsOfType(Facade, assoc.Specification).Select(o => Facade.GetObject(o));
+            return string.IsNullOrWhiteSpace(autoCompleteParm) ? allcached : allcached.Where(of => of.TitleString.StartsWith(autoCompleteParm, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
