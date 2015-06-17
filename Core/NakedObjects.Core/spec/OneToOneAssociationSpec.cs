@@ -183,7 +183,8 @@ namespace NakedObjects.Core.Spec {
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit);
             }
 
-            if (defaultValue == null) {
+            // only use the default from the DefaultedFacet if not nullable
+            if (defaultValue == null && !IsNullable) {
                 var defaultFacet = ReturnSpec.GetFacet<IDefaultedFacet>();
                 if (defaultFacet != null && !defaultFacet.IsNoOp) {
                     defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
