@@ -37,7 +37,7 @@ namespace NakedObjects.Mvc.App {
             //Standard configuration
             StandardUnityConfig.RegisterStandardFacetFactories(container);
             StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-            StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
+            StandardUnityConfig.RegisterCorePerTransactionTypes<PerRequestLifetimeManager>(container);
 
             // config
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
