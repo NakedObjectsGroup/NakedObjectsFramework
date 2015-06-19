@@ -385,6 +385,7 @@ namespace AdventureWorksModel {
 
         [Optionally]
         [MemberOrder(35)]
+        [FindMenu]
         public virtual CurrencyRate CurrencyRate { get; set; }
 
         #endregion
