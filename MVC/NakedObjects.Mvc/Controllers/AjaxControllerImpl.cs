@@ -243,7 +243,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private IEnumerable<IObjectFacade> GetRecentlyViewed(ITypeFacade type, string autoCompleteParm) {
             var allcached = Session.CachedObjectsOfType(Facade,type).Select(o => Facade.GetObject(o));
-            return string.IsNullOrWhiteSpace(autoCompleteParm) ? allcached : allcached.Where(of => of.TitleString.StartsWith(autoCompleteParm.Trim(), StringComparison.CurrentCultureIgnoreCase));
+            return string.IsNullOrWhiteSpace(autoCompleteParm) ? allcached : allcached.Where(of => of.TitleString.ToUpper().Contains(autoCompleteParm.Trim().ToUpper()));
         }
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
