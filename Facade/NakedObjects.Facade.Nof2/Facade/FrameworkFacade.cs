@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Nof2.Contexts;
-using NakedObjects.Facade.Nof2.Contexts;
 using NakedObjects.Facade.Nof2.Utility;
 using NakedObjects.Facade.Translation;
 using org.nakedobjects.@object;

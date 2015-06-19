@@ -22,7 +22,9 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public Tuple<string, string> Redirected {
             get {
+#pragma warning disable 618
                 var rdo = Target.Object as IRedirectedObject;
+#pragma warning restore 618
                 if (rdo != null) {
                     return new Tuple<string, string>(rdo.ServerName, rdo.Oid);
                 }

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Contexts;
+using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
@@ -121,13 +123,13 @@ namespace NakedObjects.Web.Mvc.Models {
             if (objectFacade == null) {
                 var link = facade.OidTranslator.GetOidTranslation(Id);
 
-                // hack
-                try {
-                    objectFacade = facade.GetObject(link).Target;
+                var objectContextFacade = facade.GetObject(link);
+
+                if (objectContextFacade.Redirected != null) {
+                    throw new RedirectException(objectContextFacade.Redirected.Item1, objectContextFacade.Redirected.Item2);
                 }
-                catch {
-                    objectFacade = facade.GetService(link).Target;
-                }
+
+                objectFacade = objectContextFacade.Target;
 
                 if (objectFacade == null) {
                     throw new ObjectNotFoundException();

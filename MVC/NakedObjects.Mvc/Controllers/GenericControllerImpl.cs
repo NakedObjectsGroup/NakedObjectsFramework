@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using NakedObjects.Facade;
@@ -17,7 +18,7 @@ using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 using Common.Logging;
 using NakedObjects.Facade.Utility.Restricted;
-
+using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class GenericControllerImpl : NakedObjectsController {
@@ -633,6 +634,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
             UpdateViewAndController(filterContext);
         }
 
+        
+
+        private string GetUri(string server, string oid) {
+            var redirectPrefix = new Uri("http://" + server);
+            var template = new UriTemplate("/{oid}");
+            return template.BindByPosition(redirectPrefix, oid).ToString();
+        }
+
         protected override void OnException(ExceptionContext filterContext) {
             if (filterContext.Exception != null) {
                 Exception e = filterContext.Exception;
@@ -657,6 +666,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             else if (filterContext.Exception is NakedObjectsFacadeException) {
                 filterContext.Result = View("DomainError", filterContext.Exception);
+                filterContext.ExceptionHandled = true;
+            }
+            else if (filterContext.Exception is RedirectException) {
+                var e = (RedirectException) filterContext.Exception;
+                filterContext.Result = Redirect(GetUri(e.Server, e.Oid));
                 filterContext.ExceptionHandled = true;
             }
 
