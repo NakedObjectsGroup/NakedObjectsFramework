@@ -337,12 +337,10 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType);
         }
 
-        public Uri GetRedirectUri(HttpRequestMessage req, string server, string oid) {
-            CheckArgumentNotNull(oid, "object oid");
-
-            var redirectPrefix = new Uri("http://" + server);
-            var template = new UriTemplate("objects/{oid}");
-            return template.BindByPosition(redirectPrefix, oid);
+        public Uri GetRedirectUri(HttpRequestMessage req, string url) {
+            CheckArgumentNotNull(url, "url");
+     
+            return new Uri(url);
         }
 
         private Uri GetServiceMemberUri(IMemberFacade member, string memberType) {

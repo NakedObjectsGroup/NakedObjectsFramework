@@ -68,8 +68,8 @@
       <HintPath>..\..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Facade">
-      <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-beta\lib\net451\NakedObjects.Facade.dll</HintPath>
+    <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Facade.1.0.0-beta1\lib\net451\NakedObjects.Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

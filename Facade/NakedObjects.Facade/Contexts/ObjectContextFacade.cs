@@ -10,7 +10,7 @@ using System;
 namespace NakedObjects.Facade.Contexts {
     public class ObjectContextFacade : ContextFacade {
         public bool Mutated { get; set; }
-        public Tuple<string, string> Redirected { get; set; }
+        public string RedirectedUrl { get; set; }
 
         public override string Id {
             get { throw new NotImplementedException(); }

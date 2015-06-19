@@ -9,12 +9,14 @@ using System;
 
 namespace NakedObjects.Web.Mvc.Helpers {
     public class RedirectException : Exception {
-        public RedirectException(string server, string oid) {
-            Server = server;
-            Oid = oid;
+        private readonly string url;
+
+        public RedirectException(string url) {
+            this.url = url;
         }
 
-        public string Server { get; private set; }
-        public string Oid { get; private set; }
+        public string Url {
+            get { return url; }
+        }
     }
 }

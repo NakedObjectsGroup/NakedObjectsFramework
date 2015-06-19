@@ -634,14 +634,6 @@ namespace NakedObjects.Web.Mvc.Controllers {
             UpdateViewAndController(filterContext);
         }
 
-        
-
-        private string GetUri(string server, string oid) {
-            var redirectPrefix = new Uri("http://" + server);
-            var template = new UriTemplate("/{oid}");
-            return template.BindByPosition(redirectPrefix, oid).ToString();
-        }
-
         protected override void OnException(ExceptionContext filterContext) {
             if (filterContext.Exception != null) {
                 Exception e = filterContext.Exception;
@@ -670,7 +662,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             else if (filterContext.Exception is RedirectException) {
                 var e = (RedirectException) filterContext.Exception;
-                filterContext.Result = Redirect(GetUri(e.Server, e.Oid));
+                filterContext.Result = Redirect(e.Url);
                 filterContext.ExceptionHandled = true;
             }
 

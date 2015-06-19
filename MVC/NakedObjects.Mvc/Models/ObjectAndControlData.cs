@@ -125,8 +125,8 @@ namespace NakedObjects.Web.Mvc.Models {
 
                 var objectContextFacade = facade.GetObject(link);
 
-                if (objectContextFacade.Redirected != null) {
-                    throw new RedirectException(objectContextFacade.Redirected.Item1, objectContextFacade.Redirected.Item2);
+                if (objectContextFacade.RedirectedUrl != null) {
+                    throw new RedirectException(objectContextFacade.RedirectedUrl);
                 }
 
                 objectFacade = objectContextFacade.Target;

@@ -10,17 +10,22 @@ using NakedObjects;
 using NakedObjects.Redirect;
 
 namespace RestfulObjects.Test.Data {
-    public class RedirectedObject : IRedirectedObject {
+    public class RedirectedObject : IRedirected {
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
-
-        #region IRedirectedObject Members
 
         [Hidden(WhenTo.Always)]
         public virtual string ServerName { get; set; }
 
         [Hidden(WhenTo.Always)]
         public virtual string Oid { get; set; }
+
+        #region IRedirected Members
+
+        [Hidden(WhenTo.Always)]
+        public string GetUrl() {
+            return "http://" + ServerName + "/" + Oid;
+        }
 
         #endregion
     }

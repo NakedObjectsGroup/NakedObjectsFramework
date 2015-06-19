@@ -251,17 +251,21 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Attributes">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Helpers">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Types">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.Types.dll</HintPath>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>

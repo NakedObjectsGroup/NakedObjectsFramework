@@ -274,10 +274,10 @@ namespace RestfulObjects.Snapshot.Utility {
         private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
-            Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.Redirected : null);
+            string url = (ocs != null ? ocs.RedirectedUrl : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.RedirectedUrl : null);
 
-            if (redirected != null) {
-                Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
+            if (url != null) {
+                Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, url);
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) {Headers = {Location = redirectAddress}});
             }
         }

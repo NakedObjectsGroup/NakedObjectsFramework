@@ -20,16 +20,10 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public bool Mutated { get; set; }
 
-        public Tuple<string, string> Redirected {
+        public string RedirectedUrl {
             get {
-#pragma warning disable 618
-                var rdo = Target.Object as IRedirectedObject;
-#pragma warning restore 618
-                if (rdo != null) {
-                    return new Tuple<string, string>(rdo.ServerName, rdo.Oid);
-                }
-
-                return null;
+                var rdo = Target.Object as IRedirected;
+                return rdo != null ? rdo.GetUrl() : null;
             }
         }
 
@@ -49,7 +43,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
                 VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
                 VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
                 Mutated = Mutated,
-                Redirected = Redirected
+                RedirectedUrl = RedirectedUrl
             };
             return ToContextFacade(oc, facade, framework);
         }
