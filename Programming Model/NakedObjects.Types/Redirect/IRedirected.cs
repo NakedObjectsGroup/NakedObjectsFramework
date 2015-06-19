@@ -5,16 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedObjects.Redirect {
-    //Implemented by a 'stub' class that acts as proxy to a service implemented on another server
-    //Note that, unlike IRedirectedObject, this defines functions, not properties,
-    [Obsolete("Use IRedirected")]
-    public interface IRedirectedService {
-        //This should be a logical server name, translated to/from a physical address elsewhere.
-        string ServerName();
-        //The name of the service on the other server
-        string ServiceName();
+    public interface IRedirected {
+        string GetUrl();
     }
 }
