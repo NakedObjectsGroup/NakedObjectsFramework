@@ -73,10 +73,14 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString RenderMainMenus(this HtmlHelper html, IEnumerable<IMenuImmutable> menus) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ServicesContainerName);
+            AddMainMenusIntoTag(html, menus, tag);
+            return MvcHtmlString.Create(tag.ToString());
+        }
+
+        public static void AddMainMenusIntoTag(this HtmlHelper html, IEnumerable<IMenuImmutable> menus, TagBuilder tag) {
             foreach (IMenuImmutable menu in menus) {
                 tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
             }
-            return MvcHtmlString.Create(tag.ToString());
         }
 
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObjectAdapter nakedObject, bool isEdit, bool defaultToEmptyMenu) {
