@@ -63,8 +63,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return MvcHtmlString.Create(tag.ToString());
         }
 
-        public static void AddMainMenusIntoTag(this HtmlHelper html, IEnumerable<IMenuImmutable> menus, TagBuilder tag) {
-            foreach (IMenuImmutable menu in menus) {
+        public static void AddMainMenusIntoTag(this HtmlHelper html, IEnumerable<IMenuFacade> menus, TagBuilder tag) {
+            foreach (IMenuFacade menu in menus) {
                 tag.InnerHtml += html.MenuAsHtml(menu, null, false, false);
             }
         }
