@@ -1006,7 +1006,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string value = "";
 
             // Even if not autocomplete add autocomplete menu if no finder and then handle with recently viewed in ajax controller
-            if (context.Parameter.IsAutoCompleteEnabled || noFinder) {
+            if (context.Parameter.IsAutoCompleteEnabled || (noFinder && !context.Parameter.Specification.IsCollection)) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Parameter.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
@@ -1039,7 +1039,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
 
             // Even if not autocomplete add autocomplete menu if no finder and then handle with recently viewed in ajax controller
-            if (context.Property.IsAutoCompleteEnabled || noFinder) {
+            if (context.Property.IsAutoCompleteEnabled || (noFinder && !context.Property.Specification.IsCollection)) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Property.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
