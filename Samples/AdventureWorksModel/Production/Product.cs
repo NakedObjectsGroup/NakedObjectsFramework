@@ -11,11 +11,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
+using NakedObjects.Redirect;
 using NakedObjects.Value;
 
 namespace AdventureWorksModel {
     [IconName("carton.png")]
-    public class Product  {
+    public class Product : IRedirected {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         public SpecialOfferRepository SpecialOfferRepository { set; protected get; }
@@ -433,5 +434,9 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        public string GetUrl() {
+            return @"http://localhost:53624//Home";
+        }
     }
 }

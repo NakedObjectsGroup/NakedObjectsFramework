@@ -220,7 +220,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private IObjectFacade GetResult(ActionResultContextFacade context) {
             if (context.HasResult) {
-                return context.Result.Target;
+                var result = context.Result;
+
+                if (result.RedirectedUrl != null) {
+                    throw new RedirectException(result.RedirectedUrl);
+                }
+
+                return result.Target;
             }
             return null;
         }
