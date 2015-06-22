@@ -11,7 +11,6 @@ using OpenQA.Selenium.Firefox;
 
 namespace NakedObjects.Mvc.Selenium.Test.Firefox {
     [TestClass]
-
     public class ImageAndAttachmentTestsFirefox : ImageAndAttachmentTests {
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
@@ -37,13 +36,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore
         public void DownloadImage() {
             DoDownloadImage();
         }
 
         [TestMethod]
-
         public void ZzUploadImage() {
             DoUploadImage();
         }
