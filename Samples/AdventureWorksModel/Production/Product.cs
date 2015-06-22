@@ -436,7 +436,7 @@ namespace AdventureWorksModel {
         #endregion
 
         public string GetUrl() {
-            return @"http://localhost:53624//Home";
+            return null;
         }
     }
 }
