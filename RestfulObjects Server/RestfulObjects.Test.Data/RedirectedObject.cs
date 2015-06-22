@@ -24,7 +24,7 @@ namespace RestfulObjects.Test.Data {
 
         [Hidden(WhenTo.Always)]
         public string GetUrl() {
-            return "http://" + ServerName + "/" + Oid;
+            return "http://" + ServerName + "/objects/" + Oid;
         }
 
         #endregion
