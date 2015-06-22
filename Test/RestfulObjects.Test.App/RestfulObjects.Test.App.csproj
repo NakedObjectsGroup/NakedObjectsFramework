@@ -91,6 +91,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
@@ -106,6 +110,10 @@
     <Reference Include="NakedObjects.FWResources">
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
@@ -114,6 +122,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Reflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Reflector.dll</HintPath>
@@ -121,6 +133,10 @@
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta1\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Unity">
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Unity.dll</HintPath>
