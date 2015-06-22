@@ -33,6 +33,7 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Impl;
+using NakedObjects.Web.Mvc.Helpers;
 using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
@@ -2152,6 +2153,55 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsSetAfterTransactionViewOf<EmployeeRepository>(result);
         }
+
+        [Test]
+        public void RedirectDetails() {
+            var objectModel = new ObjectAndControlData {Id = ProductId};
+            var redirecturl = @"http://redirectedurl1";
+            Product.SetRedirectUrl(redirecturl);
+
+            try {
+                controller.Details(objectModel);
+                Assert.Fail("Expect exception");
+            }
+            catch (RedirectException rde) {
+                Assert.AreEqual(rde.Url, redirecturl);
+            }
+            catch (Exception e) {
+                Assert.Fail("Unexpected exception " + e);
+            }
+            finally {
+                Product.SetRedirectUrl(null);
+            }
+        }
+
+        [Test]
+        public void RedirectAction() {
+
+            var objectModel = new ObjectAndControlData {
+                ActionId = "RandomProduct",
+                Id = ProductRepoId,
+                InvokeAction = "action=action"
+            };
+
+            var redirecturl = @"http://redirectedurl2";
+            Product.SetRedirectUrl(redirecturl);
+
+            try {
+                controller.Action(objectModel, GetForm(new Dictionary<string, string>()));
+                Assert.Fail("Expect exception");
+            }
+            catch (RedirectException rde) {
+                Assert.AreEqual(rde.Url, redirecturl);
+            }
+            catch (Exception e) {
+                Assert.Fail("Unexpected exception " + e);
+            }
+            finally {
+                Product.SetRedirectUrl(null);
+            }
+        }
+
 
         #region Nested type: TestCreator
 

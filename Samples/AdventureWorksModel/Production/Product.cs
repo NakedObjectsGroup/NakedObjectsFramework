@@ -435,8 +435,17 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        private static string redirectUrl;
+
+        // just for testing
+        [NakedObjectsIgnore]
+        public static void SetRedirectUrl(string newUrl) {
+            redirectUrl = newUrl;
+        }
+
+        [Hidden(WhenTo.Always)]
         public string GetUrl() {
-            return null;
+            return redirectUrl;
         }
     }
 }
