@@ -369,6 +369,32 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("test-popup ", product.FindElement(By.TagName("input")).GetAttribute("value"));
         }
+        #region Auto- auto-complete (from recently viewed)
+        public abstract void AutoAutoCompleteFromRecentlyViewedOnActionDialog();
+
+        public void DoAutoAutoCompleteFromRecentlyViewedOnActionDialog() {
+            Login();
+
+            //First find products to be recently viewed
+            FindProduct("FR-M21S-40"); //LL Mountain Frame - Silver, 40
+            FindProduct("FW-5160"); //Flat Washer 3
+            FindProduct("HS-0296"); //Hex Nut 14
+
+            var ok = wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder2 button", "button[title='OK']");
+
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select")).TypeText("f");
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
+            Assert.AreEqual(3, br.FindElements(By.CssSelector(".ui-menu-item")));
+
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product input")).GetAttribute("value") == "Flat Washer 3");
+        }
+        #endregion
+
         #region Auto-complete
         public abstract void AutoCompleteOnActionDialog();
 

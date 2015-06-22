@@ -131,6 +131,12 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
             DoNewObjectOnActionDialog();
         }
 
+        [TestMethod]
+        [Ignore]
+        public override void AutoAutoCompleteFromRecentlyViewedOnActionDialog() {
+            DoAutoAutoCompleteFromRecentlyViewedOnActionDialog();
+        }
+
         //[TestMethod] fails
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();

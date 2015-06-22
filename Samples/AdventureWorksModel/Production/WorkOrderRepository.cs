@@ -33,6 +33,12 @@ namespace AdventureWorksModel {
             return Container.Instances<Product>().Where(p => p.Name.Contains(name));
         }
 
+        [DescribedAs("Has no auto-complete or FindMenu - to test use of 'auto-auto-complete' from recently viewed")]
+        public WorkOrder CreateNewWorkOrder2(Product product) {
+            return CreateNewWorkOrder(product);
+        }
+
+
         #region Injected Services
 
         // This region should contain properties to hold references to any services required by the

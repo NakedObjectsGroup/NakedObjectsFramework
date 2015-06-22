@@ -131,6 +131,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         [TestMethod]
+        public override void AutoAutoCompleteFromRecentlyViewedOnActionDialog() {
+            DoAutoAutoCompleteFromRecentlyViewedOnActionDialog();
+        }
+
+        [TestMethod]
         public override void AutoCompleteOnActionDialog() {
             DoAutoCompleteOnActionDialog();
         }
@@ -164,5 +169,6 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         public override void ExpandAndCollapseNestedObject() {
             DoExpandAndCollapseNestedObject();
         }
+
     }
 }

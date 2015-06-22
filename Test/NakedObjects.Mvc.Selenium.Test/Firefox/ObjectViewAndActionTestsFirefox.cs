@@ -125,6 +125,12 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
+        [Ignore]
+        public override void AutoAutoCompleteFromRecentlyViewedOnActionDialog() {
+            DoAutoAutoCompleteFromRecentlyViewedOnActionDialog();
+        }
+
+        [TestMethod]
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
