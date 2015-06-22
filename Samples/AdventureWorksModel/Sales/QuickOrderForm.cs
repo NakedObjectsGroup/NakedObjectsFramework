@@ -97,7 +97,7 @@ namespace AdventureWorksModel.Sales {
             return details.AsQueryable();
         }
 
-        public QuickOrderForm AddDetail(Product product, short number) {
+        public QuickOrderForm AddDetail([FindMenu] Product product, short number) {
             var ol = Container.NewViewModel<OrderLine>();
             ol.Product = product;
             ol.Number = number;
