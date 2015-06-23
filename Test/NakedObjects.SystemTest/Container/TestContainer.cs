@@ -14,7 +14,7 @@ namespace NakedObjects.SystemTest.Container {
     [TestClass]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
         protected override Type[] Types {
-            get { return new Type[] {typeof (Object1), typeof(Object2)}; }
+            get { return new Type[] {typeof (Object1), typeof(Object2), typeof(ViewModel2)}; }
         }
 
         protected override object[] MenuServices {
@@ -26,7 +26,7 @@ namespace NakedObjects.SystemTest.Container {
         }
 
         [TestMethod]
-        public void InjectContainer() {
+        public void DefaultsTransient() {
             var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
 
@@ -34,6 +34,21 @@ namespace NakedObjects.SystemTest.Container {
 
             Assert.AreEqual(o2.TestDateTime, new DateTime());
             Assert.IsNull(o2.TestNullableDateTime);
+            Assert.AreEqual(o2.TestInt, 0);
+            Assert.IsNull(o2.TestNullableInt);
+        }
+
+        [TestMethod]
+        public void DefaultsViewModel() {
+            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+            Assert.IsNotNull(testObject.Container);
+
+            var vm = testObject.NewViewModel();
+
+            Assert.AreEqual(vm.TestDateTime, new DateTime());
+            Assert.IsNull(vm.TestNullableDateTime);
+            Assert.AreEqual(vm.TestInt, 0);
+            Assert.IsNull(vm.TestNullableInt);
         }
 
         #region Setup/Teardown
@@ -64,6 +79,10 @@ namespace NakedObjects.SystemTest.Container {
     public class Object1 {
         public IDomainObjectContainer Container { get; set; }
         public virtual int Id { get; set; }
+
+        public ViewModel2 NewViewModel() {
+            return Container.NewViewModel<ViewModel2>();
+        }
     }
 
     public class Object2 {
@@ -72,6 +91,32 @@ namespace NakedObjects.SystemTest.Container {
         public DateTime TestDateTime { get; set; }
 
         public DateTime? TestNullableDateTime { get; set; }
+
+        public int TestInt { get; set; }
+
+        public int? TestNullableInt { get; set; }
+
+    }
+
+    public class ViewModel2  : IViewModel{
+        public virtual int Id { get; set; }
+
+        public DateTime TestDateTime { get; set; }
+
+        public DateTime? TestNullableDateTime { get; set; }
+
+        public int TestInt { get; set; }
+
+        public int? TestNullableInt { get; set; }
+
+        public string[] DeriveKeys() {
+          //  throw new NotImplementedException();
+            return new string[]{};
+        }
+
+        public void PopulateUsingKeys(string[] keys) {
+           // throw new NotImplementedException();
+        }
     }
 
 
