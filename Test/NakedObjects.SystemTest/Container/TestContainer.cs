@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
@@ -36,6 +37,13 @@ namespace NakedObjects.SystemTest.Container {
             Assert.IsNull(o2.TestNullableDateTime);
             Assert.AreEqual(o2.TestInt, 0);
             Assert.IsNull(o2.TestNullableInt);
+
+
+            Assert.AreEqual(o2.TestEnum, TestEnum.Value1);
+            Assert.IsNull(o2.TestNullableEnum);
+
+            Assert.AreEqual(o2.TestEnumDt, 0);
+            Assert.IsNull(o2.TestNullableEnumDt);
         }
 
         [TestMethod]
@@ -49,6 +57,12 @@ namespace NakedObjects.SystemTest.Container {
             Assert.IsNull(vm.TestNullableDateTime);
             Assert.AreEqual(vm.TestInt, 0);
             Assert.IsNull(vm.TestNullableInt);
+
+            Assert.AreEqual(vm.TestEnum, TestEnum.Value1);
+            Assert.IsNull(vm.TestNullableEnum);
+
+            Assert.AreEqual(vm.TestEnumDt, 0);
+            Assert.IsNull(vm.TestNullableEnumDt);
         }
 
         #region Setup/Teardown
@@ -96,7 +110,22 @@ namespace NakedObjects.SystemTest.Container {
 
         public int? TestNullableInt { get; set; }
 
+        public TestEnum TestEnum { get; set; }
+
+        public TestEnum? TestNullableEnum { get; set; }
+
+        [EnumDataType(typeof(TestEnum))]
+        public int TestEnumDt { get; set; }
+
+        [EnumDataType(typeof(TestEnum))]
+        public int? TestNullableEnumDt { get; set; }
+
     }
+
+    public enum TestEnum {
+        Value1,
+        Value2
+    };
 
     public class ViewModel2  : IViewModel{
         public virtual int Id { get; set; }
@@ -108,6 +137,17 @@ namespace NakedObjects.SystemTest.Container {
         public int TestInt { get; set; }
 
         public int? TestNullableInt { get; set; }
+
+        public TestEnum TestEnum { get; set; }
+
+        public TestEnum? TestNullableEnum { get; set; }
+
+        [EnumDataType(typeof(TestEnum))]
+        public int TestEnumDt { get; set; }
+
+        [EnumDataType(typeof(TestEnum))]
+        public int? TestNullableEnumDt { get; set; }
+
 
         public string[] DeriveKeys() {
           //  throw new NotImplementedException();
