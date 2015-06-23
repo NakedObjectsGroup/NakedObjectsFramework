@@ -74,9 +74,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Type declaringType = actionMethod.DeclaringType;
                 Trace.Assert(declaringType != null, "declaringType != null");
                 Type baseType = declaringType.BaseType;
-                Trace.Assert(baseType != null, "baseType != null");
 
-                if (InheritsProperty(declaringType.BaseType, propertyName)) {
+                if (InheritsProperty(baseType, propertyName)) {
                     Log.InfoFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType.FullName);
                     return true;
                 }
