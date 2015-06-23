@@ -299,7 +299,7 @@ namespace NakedObjects.Xat {
 
         protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
-            var ts = NakedObjectsFramework.Session as TestSession;
+            var ts =  NakedObjectsFramework == null ? null : NakedObjectsFramework.Session as TestSession;
             if (ts != null) {
                 ts.ReplacePrincipal(testPrincipal);
             }
