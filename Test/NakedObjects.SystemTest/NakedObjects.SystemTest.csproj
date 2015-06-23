@@ -164,6 +164,7 @@
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
     <Compile Include="AbstractSystemTest.cs" />
     <Compile Include="Authorization\TestNamespaceAuthorization.cs" />
+    <Compile Include="Container\TestContainer.cs" />
     <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
     <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
     <Compile Include="InterfaceAssociation\FixtureLinks.cs" />
