@@ -86,7 +86,7 @@ namespace NakedObjects.SystemTest.Injection {
                 obj.GetPropertyByName("My Service1");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Property named 'My Service1'", e.Message);
             }
 
             var prop = obj.GetPropertyByName("Id");
