@@ -100,7 +100,7 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Xat">
-      <HintPath>..\..\packages\NakedObjects.Xat.7.0.0\lib\net451\NakedObjects.Xat.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Xat.7.0.1\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>

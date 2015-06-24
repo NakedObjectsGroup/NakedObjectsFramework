@@ -137,7 +137,7 @@
     </Reference>
     <Reference Include="NakedObjects.Xat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Xat.7.0.0\lib\net451\NakedObjects.Xat.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Xat.7.0.1\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
