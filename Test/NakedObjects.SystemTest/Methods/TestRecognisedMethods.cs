@@ -79,9 +79,9 @@ namespace NakedObjects.SystemTest.Method {
                     new SimpleRepository<Modify4>(),
                     new SimpleRepository<Persisted1>(),
                     new SimpleRepository<Persisted2>(),
+                    new SimpleRepository<Persisted3>(),
                     new SimpleRepository<Persisting1>(),
                     new SimpleRepository<Persisting2>(),
-                    new SimpleRepository<Saved1>(),
                     new SimpleRepository<Title1>(),
                     new SimpleRepository<Title2>(),
                     new SimpleRepository<Title3>(),
@@ -92,6 +92,7 @@ namespace NakedObjects.SystemTest.Method {
                     new SimpleRepository<Title8>(),
                     new SimpleRepository<Title9>(),
                     new SimpleRepository<Title10>(),
+                    new SimpleRepository<Title11>(),
                     new SimpleRepository<Updated1>(),
                     new SimpleRepository<Updated2>(),
                     new SimpleRepository<Updating1>(),
@@ -213,14 +214,14 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Choices Prop1");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Choices Prop1'", e.Message);
             }
 
             try {
                 obj1.GetAction("Choices 0 Do Something");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Choices 0 Do Something'", e.Message);
             }
         }
 
@@ -322,7 +323,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Clear Prop1");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Clear Prop1'", e.Message);
             }
         }
 
@@ -389,7 +390,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Created");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Created'", e.Message);
             }
         }
 
@@ -398,12 +399,7 @@ namespace NakedObjects.SystemTest.Method {
             ITestObject obj1 = NewTestObject<Created2>();
             var dom1 = (Created2)obj1.GetDomainObject();
             Assert.IsFalse(dom1.CreatedCalled);
-
-            try {
-                obj1.GetAction("created");
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
+                obj1.GetAction("Created");
         }
 
         #endregion
@@ -417,14 +413,13 @@ namespace NakedObjects.SystemTest.Method {
                 obj.GetAction("Default Prop1");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Default Prop1'", e.Message); 
             }
-
             try {
                 obj.GetAction("Default 0 Do Something");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Default 0 Do Something'", e.Message);
             }
         }
 
@@ -556,7 +551,9 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Deleted");
                 Assert.Fail("Should not get here");
-            } catch (Exception) { }
+            } catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);            
+           }
         }
 
         [TestMethod]
@@ -568,7 +565,7 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.GetAction("Deleted");
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);
             }
         }
 
@@ -596,7 +593,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Deleting");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Deleting'", e.Message);
             }
         }
 
@@ -636,8 +633,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj.GetAction("Disable Prop6");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
-                //TODO:  Test exception message (see #804)
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Prop6'", e.Message);
             }
         }
 
@@ -694,8 +690,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj.GetAction("Disable Action Default");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
-                //TODO:  Test exception message (see #804)
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Action Default'", e.Message);
             }
         }
 
@@ -724,10 +719,10 @@ namespace NakedObjects.SystemTest.Method {
         public void DisablePropertyDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Disable1>();
             try {
-                obj.GetAction("Disable Property Default ");
+                obj.GetAction("Disable Property Default");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Property Default'", e.Message);
             }
         }
 
@@ -737,7 +732,6 @@ namespace NakedObjects.SystemTest.Method {
             obj.GetPropertyByName("Prop3").AssertIsModifiable();
             //obj.GetPropertyByName("Prop5").AssertIsModifiable(); - collection disabled by default
         }
-
         #endregion
 
         #region Hide
@@ -746,16 +740,9 @@ namespace NakedObjects.SystemTest.Method {
         public void HideAction() {
             ITestObject obj = NewTestObject<Hide3>();
             obj.Save();
-            obj.GetAction("Do Something");
+            obj.GetAction("Do Something").AssertIsVisible();
             obj.GetPropertyByName("Prop4").SetValue("Hide 6");
-
-            try {
-                obj.GetAction("Do Something");
-                Assert.Fail();
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-                //TODO:  Test exception message (see #804)
-            }
+                obj.GetAction("Do Something").AssertIsInvisible();
         }
 
         [TestMethod]
@@ -823,8 +810,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj.GetAction("Hide Action Default");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
-                //TODO:  Test exception message (see #804)
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Action Default'", e.Message);
             }
         }
 
@@ -853,10 +839,10 @@ namespace NakedObjects.SystemTest.Method {
         public void HidePropertyDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Hide1>();
             try {
-                obj.GetAction("Hide Property Default ");
+                obj.GetAction("Hide Property Default");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Property Default'", e.Message);
             }
         }
 
@@ -878,7 +864,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Modify Prop1");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Modify Prop1'", e.Message);
             }
         }
 
@@ -1003,12 +989,7 @@ namespace NakedObjects.SystemTest.Method {
             ITestObject obj1 = NewTestObject<Persisted2>();
             var dom1 = (Persisted2)obj1.GetDomainObject();
             Assert.IsFalse(dom1.PersistedCalled);
-
-            try {
-                obj1.GetAction("persisted");
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
+                obj1.GetAction("Persisted");
         }
 
         [TestMethod]
@@ -1018,7 +999,9 @@ namespace NakedObjects.SystemTest.Method {
             try {
                 obj1.Save();
                 Assert.Fail("Shouldn't get to here");
-            } catch (Exception) { }
+            } catch (Exception e) {
+                Assert.AreEqual("Persisted called", e.Message);
+            }
         }
 
         [TestMethod]
@@ -1028,7 +1011,19 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Persisted");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Persisted'", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public void PersistedMarkedAsIgnoredIsNotCalledAndIsNotAnAction() {
+            ITestObject obj = NewTestObject<Persisted3>();
+            obj.Save(); //Would throw an exception if the Persisted had been called.
+            try {
+                obj.GetAction("Persisted");
+                Assert.Fail();
+            } catch (Exception e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Persisted'", e.Message);
             }
         }
 
@@ -1054,28 +1049,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Persisting");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
-        }
-
-        #endregion
-
-        #region Saved & Saving
-
-        [TestMethod]
-        public void SavedAndSavingDoNotShowUpAsActions() {
-            ITestObject obj1 = NewTestObject<Saved1>();
-            try {
-                obj1.GetAction("Saved");
-                Assert.Fail();
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
-            try {
-                obj1.GetAction("Saving");
-                Assert.Fail();
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Persisting'", e.Message);
             }
         }
 
@@ -1156,6 +1130,12 @@ namespace NakedObjects.SystemTest.Method {
             obj.AssertTitleEquals("x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female Not Specified");
         }
 
+                [TestMethod]
+        public virtual void TitleMethodMarkedIgnoredIsNotCalled() {
+            var obj = NewTestObject<Title11>();
+            obj.AssertTitleEquals("Untitled Title 11");
+        }
+
         #endregion
 
         #region Updated
@@ -1165,12 +1145,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Updated2>();
             var dom1 = (Updated2)obj1.GetDomainObject();
             Assert.IsFalse(Updated2.UpdatedCalled);
-
-            try {
-                obj1.GetAction("updated");
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
+                obj1.GetAction("Updated");
         }
 
         [TestMethod]
@@ -1191,7 +1166,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Updated");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Updated'", e.Message);
             }
         }
 
@@ -1202,11 +1177,7 @@ namespace NakedObjects.SystemTest.Method {
         [TestMethod]
         public void LowerCaseUpdatingNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Updating2>();
-            try {
                 obj1.GetAction("Updating");
-            } catch (Exception e) {
-                Assert.IsNotNull(e);
-            }
         }
 
         [TestMethod]
@@ -1228,7 +1199,7 @@ namespace NakedObjects.SystemTest.Method {
                 obj1.GetAction("Updating");
                 Assert.Fail();
             } catch (Exception e) {
-                Assert.IsNotNull(e);
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Updating'", e.Message);
             }
         }
 
@@ -1495,9 +1466,9 @@ namespace NakedObjects.SystemTest.Method {
         public DbSet<Modify4> Modify4 { get; set; }
         public DbSet<Persisted1> Persisted1 { get; set; }
         public DbSet<Persisted2> Persisted2 { get; set; }
+        public DbSet<Persisted3> Persisted3 { get; set; }
         public DbSet<Persisting1> Persisting1 { get; set; }
         public DbSet<Persisting2> Persisting2 { get; set; }
-        public DbSet<Saved1> Saved1 { get; set; }
         public DbSet<Title1> Title1 { get; set; }
         public DbSet<Title2> Title2 { get; set; }
         public DbSet<Title3> Title3 { get; set; }
@@ -1508,6 +1479,7 @@ namespace NakedObjects.SystemTest.Method {
         public DbSet<Title8> Title8 { get; set; }
         public DbSet<Title9> Title9 { get; set; }
         public DbSet<Title10> Title10 { get; set; }
+        public DbSet<Title11> Title11 { get; set; }
         public DbSet<Updated1> Updated1 { get; set; }
         public DbSet<Updated2> Updated2 { get; set; }
         public DbSet<Updating1> Updating1 { get; set; }
@@ -2342,7 +2314,7 @@ namespace NakedObjects.SystemTest.Method {
 
 
         public void Persisted() {
-            throw new DomainException("Persisting");
+            throw new DomainException("Persisted called");
         }
     }
 
@@ -2351,10 +2323,20 @@ namespace NakedObjects.SystemTest.Method {
 
         public virtual int Id { get; set; }
 
-        public void peristed() {
-            PersistedCalled = true;
+        public void persisted() {
+            throw new DomainException("persisted called");
         }
     }
+
+    public class Persisted3 {
+        public virtual int Id { get; set; }
+
+        [NakedObjectsIgnore]
+        public void Persisted() {
+            throw new DomainException("Persisted");
+        }
+    }
+
 
     #endregion
 
@@ -2383,19 +2365,6 @@ namespace NakedObjects.SystemTest.Method {
         public void peristing() {
             PersistingCalled = true;
         }
-    }
-
-    #endregion
-
-    #region Saved & Saving
-
-    public class Saved1 {
-        public virtual int Id { get; set; }
-
-
-        public void Saved() { }
-
-        public void Saving() { }
     }
 
     #endregion
@@ -2561,6 +2530,15 @@ namespace NakedObjects.SystemTest.Method {
             return tb.ToString();
         }
     }
+        public class Title11 {
+            
+            public virtual int Id { get; set; }
+
+            [NakedObjectsIgnore]
+            public string Title() {
+                throw new Exception("Title method should not have been called");
+            }
+        }
 
     public enum Sex {
         Male = 1,
