@@ -65,8 +65,12 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString CurrentRequestServer(this HtmlHelper html, HttpRequestBase request) {
             var serverName = request.ServerVariables["SERVER_NAME"];
             var serverPort = request.ServerVariables["SERVER_PORT"];
+            var https = request.ServerVariables["HTTPS"].Equals("on", StringComparison.InvariantCultureIgnoreCase);
 
-            return MvcHtmlString.Create(serverName + ":" + serverPort);
+            var defaultPort = (https && serverPort == "443") || (!https && serverPort == "80");
+            var server = string.Format(defaultPort ? @"{0}://{1}" : @"{0}://{1}:{2}", https ? "https" : "http", serverName, serverPort);
+
+            return MvcHtmlString.Create(server);
         }
 
 

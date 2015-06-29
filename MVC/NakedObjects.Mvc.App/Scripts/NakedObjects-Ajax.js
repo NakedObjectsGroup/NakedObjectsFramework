@@ -869,8 +869,8 @@
 
         var server =  $(element).closest(".nof-objectview").attr("data-server");
 
-        if (server && homeServer !== server) {
-            return "http://" + server + link;
+        if (homeServer && server && homeServer !== server) {
+            return server + link;
         }
         return link;
     }
