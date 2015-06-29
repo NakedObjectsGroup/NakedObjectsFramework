@@ -13,7 +13,7 @@
         Html.TypeName(Model.ContextObject).ToString(),
         new {id = Html.GetObjectId(Model.ContextObject).ToString()},
         FormMethod.Post,
-        new {@class = Model.DialogClass(Html.GetFacade()), enctype = "multipart/form-data"})) {
+        new {@class = Model.DialogClass(Html.GetFacade()), enctype = "multipart/form-data", @data_server=Html.CurrentRequestServer(Request)})) {
         @(Html.ParameterList(Model.ContextObject, Model.TargetObject, Model.ContextAction, Model.TargetAction, Model.PropertyName, Model.ActionResult))
 
         if (Html.ObjectIsNotPersistent(Model.ContextObject)) {
