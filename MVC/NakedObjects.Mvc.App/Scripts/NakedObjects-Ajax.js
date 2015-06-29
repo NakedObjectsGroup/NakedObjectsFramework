@@ -867,7 +867,7 @@
         // update link if redirected object
         var homeServer = $(".no-home-server").attr("data-server");
 
-        var server = $(element).closest(".nof-objectview, .nof-objectedit, .nof-dialog").attr("data-server");
+        var server = $(element).closest(".nof-objectview, .nof-objectedit").attr("data-server");
 
         if (homeServer && server && homeServer !== server) {
             return server + link;
