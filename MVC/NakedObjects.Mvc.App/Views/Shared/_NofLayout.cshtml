@@ -35,9 +35,8 @@
             <div class="content-wrapper">  
                 @(Html.MainMenus())
             </div>
-
+           
             <div class="no-home-path" style="display: none">@(Html.ActionLink("Home", "Index", "Home"))</div>
-            <div class="no-home-server" style="display: none" data-server="@(Html.CurrentRequestServer(Request))"></div>
         </header>
         <div class="container body-content">
             @RenderBody()

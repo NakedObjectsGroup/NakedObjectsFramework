@@ -62,11 +62,17 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get classes for an object view
         /// </summary>
-        public static MvcHtmlString CurrentRequestServer(this HtmlHelper html, HttpRequestBase request) {
-            var serverName = request.ServerVariables["SERVER_NAME"];
-            var serverPort = request.ServerVariables["SERVER_PORT"];
+        public static MvcHtmlString RedirectedServer(this HtmlHelper html, HttpRequestBase request) {
+            var redirected = request.Params.AllKeys.Any(k => k == "redirected");
 
-            return MvcHtmlString.Create(serverName + ":" + serverPort);
+            if (redirected) {
+                var serverName = request.ServerVariables["SERVER_NAME"];
+                var serverPort = request.ServerVariables["SERVER_PORT"];
+
+                return MvcHtmlString.Create(serverName + ":" + serverPort);
+            }
+
+            return null;
         }
 
 

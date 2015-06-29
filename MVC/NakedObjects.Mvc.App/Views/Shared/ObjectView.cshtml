@@ -10,8 +10,16 @@
 <div id="body">
     <section class="main-content" >
         @(Html.TabbedHistory(Model))
+
+        @{
+            var redirected = Html.RedirectedServer(Request);
+            var dataServer = "";
+            if (redirected != null) {
+                dataServer = "data-server=" + redirected;
+            }
+        }
         
-        <div class="@(Html.ObjectViewClass(Model))" id="@(Html.ObjectTypeAsCssId(Model))" data-server="@(Html.CurrentRequestServer(Request))" >
+        <div class="@(Html.ObjectViewClass(Model))" id="@(Html.ObjectTypeAsCssId(Model))" @dataServer>
             @(Html.UserMessages())
             @if (Html.ObjectIsNotPersistent(Model)) {
                 using (Html.BeginForm(IdConstants.EditObjectAction,

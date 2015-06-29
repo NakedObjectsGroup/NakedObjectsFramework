@@ -863,18 +863,6 @@
         }
     }
 
-    function updateLinkIfRedirected(link, element) {
-        // update link if redirected object
-        var homeServer = $(".no-home-server").attr("data-server");
-
-        var server =  $(element).closest(".nof-objectview").attr("data-server");
-
-        if (server && homeServer !== server) {
-            return "http://" + server + link;
-        }
-        return link;
-    }
-
     api.updatePageFromAction = function (event) {
         
         var button = getButton(event);
@@ -894,9 +882,7 @@
         formSerialized[formSerialized.length] = { name: button.name, value: button.value };
         var isDialog = $(this).attr("class").indexOf("nof-dialog") === 0;
 
-        var link = updateLinkIfRedirected($(this).attr("action"), $(this));
-
-        $.post(link, formSerialized, function (response) {
+        $.post($(this).attr("action"), formSerialized, function (response) {
 
             if (updateLocationFlag) {
                 // just reload the page                                            
@@ -1217,7 +1203,12 @@
             }
         }
 
-        link = updateLinkIfRedirected(link, doc);
+        // update link if redirected object
+        var server = $(".nof-objectview").attr("data-server");
+
+        if (server) {
+            link = "http://" + server + link;
+        }
 
         $.get(link, function (response) {
 

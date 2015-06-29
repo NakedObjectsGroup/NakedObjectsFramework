@@ -6,13 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Web;
 
 namespace NakedObjects.Web.Mvc.Helpers {
     public class RedirectException : Exception {
         public RedirectException(string url) {
-            Url = url;
+            Url = UpdateUrl(url);
         }
 
         public string Url { get; private set; }
+
+        private string UpdateUrl(string url) {
+            var uri = new UriBuilder(url);
+            var qs = HttpUtility.ParseQueryString(uri.Query);
+            qs["redirected"] = "true";
+            uri.Query = qs.ToString();
+            return uri.ToString();
+        }
     }
 }
