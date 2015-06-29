@@ -1203,6 +1203,13 @@
             }
         }
 
+        // update link if redirected object
+        var server = $(".nof-objectview").attr("data-server");
+
+        if (server) {
+            link = "http://" + server + link;
+        }
+
         $.get(link, function (response) {
 
             handleLoginForm(response);

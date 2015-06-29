@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Utility;
@@ -57,6 +58,23 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ObjectViewClass(this HtmlHelper html, object model) {
             return MvcHtmlString.Create(IdConstants.ObjectViewName + html.GetPresentationHint(model));
         }
+
+        /// <summary>
+        ///     Get classes for an object view
+        /// </summary>
+        public static MvcHtmlString RedirectedServer(this HtmlHelper html, HttpRequestBase request) {
+            var redirected = request.Params.AllKeys.Any(k => k == "redirected");
+
+            if (redirected) {
+                var serverName = request.ServerVariables["SERVER_NAME"];
+                var serverPort = request.ServerVariables["SERVER_PORT"];
+
+                return MvcHtmlString.Create(serverName + ":" + serverPort);
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         ///     Get classes for an view model edit 
