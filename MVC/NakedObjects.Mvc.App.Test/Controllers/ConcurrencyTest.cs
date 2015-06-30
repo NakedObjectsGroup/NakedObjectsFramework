@@ -8,13 +8,18 @@ using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Moq;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Impl;
+using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -77,11 +82,18 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTest() {
             InitializeNakedObjectsFramework(this);
             StartTest();
-            var mockSurface = new Mock<IFrameworkFacade>().Object;
-            //var mockMessageBroker = new Mock<IMessageBrokerSurface>().Object;
 
-            controller = new GenericController( mockSurface, IdHelper);
+            controller = new GenericController(Surface, IdHelper);
             mocks = new ContextMocks(controller);
+        }
+
+        protected IFrameworkFacade Surface { get; set; }
+        protected IMessageBroker MessageBroker { get; set; }
+
+        protected override void StartTest() {
+            Surface = GetConfiguredContainer().Resolve<IFrameworkFacade>();
+            NakedObjectsFramework = ((dynamic)Surface).Framework;
+            MessageBroker = NakedObjectsFramework.MessageBroker;
         }
 
         #endregion
@@ -91,6 +103,11 @@ namespace MvcTestApp.Tests.Controllers {
             var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSemiColonSeparatedList>(new PerResolveLifetimeManager());
         }
 
         [TestFixtureSetUp]
@@ -130,52 +147,55 @@ namespace MvcTestApp.Tests.Controllers {
             return form;
         }
 
-        //[Test, Ignore] //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
-        //    //Store, or even into Customer, without getting a model validation error
-        //// in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
-        //// System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
-        ////  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
-        //public void EditSaveEFConcurrencyFail() {
-        //    Store store = Store;
-        //    var adaptedStore = facade.
-        //    IDictionary<string, string> idToRawvalue;
+        [Test]
+        [Ignore]
+        //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
+        //Store, or even into Customer, without getting a model validation error
+        // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
+        // System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
+        //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
+        public void EditSaveEFConcurrencyFail() {
+            Store store = Store;
+            IObjectFacade adaptedStore = Surface.GetObject(store);
+            IDictionary<string, string> idToRawvalue;
 
-        //    FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
-        //    var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(store) };
+            var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(store) };
 
-        //    NakedObjectsFramework.TransactionManager.StartTransaction();
-        //    var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
+            NakedObjectsFramework.TransactionManager.StartTransaction();
+            var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
-        //    conn.Open();
+            conn.Open();
 
-        //    try {
-        //        controller.Edit(objectModel, form);
+            try {
+                controller.Edit(objectModel, form);
 
-        //        // change store in database 
+                // change store in database 
 
-        //        string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", store.Name);
+                string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", store.Name);
 
-        //        string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", store.Name);
+                string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", store.Name);
 
-        //        using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //        using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
-        //            cmd.ExecuteNonQuery();
-        //        }
+                using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
+                    cmd.ExecuteNonQuery();
+                }
 
-        //        NakedObjectsFramework.TransactionManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
 
-        //        Assert.Fail("Expect concurrency exception");
-        //    } catch (ConcurrencyException expected) {
-        //        Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
-        //    } finally {
-        //        conn.Close();
-        //    }
-        //}
+                Assert.Fail("Expect concurrency exception");
+            } catch (ConcurrencyException expected) {
+                Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
+            } finally {
+                conn.Close();
+            }
+        }
 
-        [Test, Ignore] //As above
+        [Test] //As above
+        [Ignore]
         public void InvokeObjectActionConcurrencyFail() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
