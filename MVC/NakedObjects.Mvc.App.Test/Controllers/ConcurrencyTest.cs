@@ -148,7 +148,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
+        //[Ignore]
         //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
         //Store, or even into Customer, without getting a model validation error
         // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
@@ -187,15 +187,17 @@ namespace MvcTestApp.Tests.Controllers {
                 NakedObjectsFramework.TransactionManager.EndTransaction();
 
                 Assert.Fail("Expect concurrency exception");
-            } catch (ConcurrencyException expected) {
-                Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
-            } finally {
+            }
+            catch (PreconditionFailedNOSException expected) {
+                Assert.AreSame(store, expected.SourceNakedObject.Object);
+            }
+            finally {
                 conn.Close();
             }
         }
 
         [Test] //As above
-        [Ignore]
+        //[Ignore]
         public void InvokeObjectActionConcurrencyFail() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
@@ -207,8 +209,9 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture) } }));
                 Assert.Fail("Expected concurrency exception");
-            } catch (ConcurrencyException expected) {
-                Assert.AreSame(order, expected.SourceNakedObjectAdapter.Object);
+            }
+            catch (PreconditionFailedNOSException expected) {
+                Assert.AreSame(order, expected.SourceNakedObject.Object);
             }
         }
     }

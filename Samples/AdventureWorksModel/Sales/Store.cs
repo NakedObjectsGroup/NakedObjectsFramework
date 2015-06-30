@@ -102,6 +102,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
+      
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
