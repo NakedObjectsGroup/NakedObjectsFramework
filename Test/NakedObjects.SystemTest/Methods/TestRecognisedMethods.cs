@@ -1259,6 +1259,21 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [TestMethod]
+        public virtual void ValidatePropertyMarkedNakedObjectsIgnoreIsNotEffectiveAndDoesNotShowAsAction() {
+            ITestObject obj = NewTestObject<Validate1>();
+            ITestProperty prop1 = obj.GetPropertyByName("Prop4");
+            prop1.AssertFieldEntryIsValid("2");
+            prop1.AssertFieldEntryIsValid("11");
+
+            try {
+                obj.GetAction("Validate Prop4");
+                Assert.Fail("'Validate Prop4' is showing as an action");
+            } catch (AssertFailedException e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop4'", e.Message);
+            }
+        }
+
+        [TestMethod]
         public virtual void ValidateStringProperty() {
             ITestObject obj = NewTestObject<Validate1>();
             ITestProperty prop1 = obj.GetPropertyByName("Prop2");
@@ -1272,7 +1287,6 @@ namespace NakedObjects.SystemTest.Method {
                 prop1.SetValue("abar");
             }
         }
-
 
         [TestMethod]
         public virtual void ValidateReferenceProperty() {
@@ -1310,6 +1324,22 @@ namespace NakedObjects.SystemTest.Method {
             action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Value must be between 3 & 10");
             action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Value must start with a");
             action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Invalid Object");
+        }
+
+        [TestMethod]
+        public void ValidateParameterMarkedIgnoreIsNotUsedAndDoesNotShowAsAction() {
+            ITestObject obj1 = NewTestObject<Validate1>();
+            ITestAction action = obj1.GetAction("Do Something More");
+
+            action.AssertIsValidWithParms(2);
+            action.AssertIsValidWithParms(11);
+
+            try {
+                obj1.GetAction("Validate Do Something More");
+                Assert.Fail("'Validate Do Something More' is showing as an action");
+            } catch (AssertFailedException e) {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something More'", e.Message);
+            }
         }
 
         [TestMethod]
@@ -2618,6 +2648,8 @@ namespace NakedObjects.SystemTest.Method {
 
         public virtual Validate2 Prop3 { get; set; }
 
+        public virtual int Prop4 { get; set; }
+
         public string ValidateProp1(int value) {
             if (value < 3 || value > 10) {
                 return "Value must be between 3 & 10";
@@ -2635,6 +2667,14 @@ namespace NakedObjects.SystemTest.Method {
         public string ValidateProp3(Validate2 value) {
             if (!value.Prop1.StartsWith("a")) {
                 return "Invalid Object";
+            }
+            return null;
+        }
+
+        [NakedObjectsIgnore]
+        public string ValidateProp4(int value) {
+            if (value < 3 || value > 10) {
+                return "Value must be between 3 & 10";
             }
             return null;
         }
@@ -2678,6 +2718,13 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         #endregion
+
+        public void DoSomethingMore(int param0) { }
+
+        [NakedObjectsIgnore]
+        public string Validate0DoSomethingMore(int value) {
+            return ValidateProp1(value);
+        }
     }
 
     public class Validate2 {
