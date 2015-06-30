@@ -57,7 +57,7 @@ namespace MvcTestApp.Tests.Helpers {
     }
 
     [TestFixture]
-    //[Ignore]
+  
 
     public class NofHtmlHelperTest : AcceptanceTestCase {
         private const string GeneratedHtmlReferenceFiles = @"..\..\Generated Html reference files";

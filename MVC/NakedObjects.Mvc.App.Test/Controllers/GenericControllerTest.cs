@@ -1309,7 +1309,8 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(2, ((Employee) result.ViewData.Model).DirectReports.Count);
         }
 
-        [Test, Ignore] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
+        [Test] 
+        [Ignore] // todo fix
         public void EditSaveConcurrencyFail() {
             Store store = Store;
             IObjectFacade adaptedStore = Surface.GetObject(store);
@@ -1675,8 +1676,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore]
-        // todo make collection contributed actions work
+        [Ignore] // todo fix
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "CommentAsUsersUnhappy",
@@ -1713,7 +1713,8 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [Test, Ignore] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
+        [Test] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
+        [Ignore] // todo fix
         public void InvokeContributedActionOnTargetConcurrencyFail() {
             Store store = Store;
             var objectModel = new ObjectAndControlData {

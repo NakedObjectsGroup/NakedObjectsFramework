@@ -212,54 +212,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        //[Ignore]
-        //RP: Can't figure out how to add a ConcurrencyCheck (attribute or fluent) into
-        //Store, or even into Customer, without getting a model validation error
-        // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
-        // System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
-        //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
-        //public void EditSaveEFConcurrencyFail() {
-        //    Store order = Store;
-        //    IObjectFacade adaptedStore = Surface.GetObject(order);
-        //    IDictionary<string, string> idToRawvalue;
-
-        //    FormCollection form = GetFormForStoreEdit(adaptedStore, order.Name, NakedObjectsFramework.GetObjectId(order.SalesPerson), order.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
-
-        //    var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(order) };
-
-        //    NakedObjectsFramework.TransactionManager.StartTransaction();
-        //    var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
-
-        //    conn.Open();
-
-        //    try {
-        //        controller.Edit(objectModel, form);
-
-        //        // change order in database 
-
-        //        string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", order.Name);
-
-        //        string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", order.Name);
-
-        //        using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //        using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
-        //            cmd.ExecuteNonQuery();
-        //        }
-
-        //        NakedObjectsFramework.TransactionManager.EndTransaction();
-
-        //        Assert.Fail("Expect concurrency exception");
-        //    }
-        //    catch (PreconditionFailedNOSException expected) {
-        //        Assert.AreSame(order, expected.SourceNakedObject.Object);
-        //    }
-        //    finally {
-        //        conn.Close();
-        //    }
-        //}
-
+       
         public void EditSaveEFConcurrencyFail() {
             SalesOrderHeader order = Order;
             IObjectFacade adaptedOrder = Surface.GetObject(order);
@@ -300,8 +253,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test] //As above
-        //[Ignore]
+        [Test] 
         public void AAInvokeObjectActionConcurrencyFail() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {

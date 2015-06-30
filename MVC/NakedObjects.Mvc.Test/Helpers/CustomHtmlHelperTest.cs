@@ -36,7 +36,7 @@ using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]
-    //[Ignore] // working on
+  
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
