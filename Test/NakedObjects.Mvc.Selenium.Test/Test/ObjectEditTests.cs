@@ -161,6 +161,30 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Shu Ito", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
+        public void DoChangeReferencePropertyViaAutoAutoComplete() {
+            Login();
+
+            //First find employees to be recently viewed
+            FindEmployeeByNationalIdNumber("300946911");
+            wait.Until(wd => wd.Title == "Shelley Dyck");
+
+            FindPurchaseOrder("1");
+            wait.Until(wd => wd.Title == "17/05/2001 00:00:00");
+
+            Assert.AreEqual("Erin Hagens", br.FindElement(By.CssSelector("#PurchaseOrderHeader-OrderPlacedBy")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
+
+            var recentlyViewed = wait.ClickAndWait(".nof-edit", "#PurchaseOrderHeader-OrderPlacedBy-Select-AutoComplete");
+
+            br.FindElement(By.CssSelector("#PurchaseOrderHeader-OrderPlacedBy-Select-AutoComplete")).TypeText(" ");
+
+            wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+
+            br.FindElement(By.CssSelector("#PurchaseOrderHeader-OrderPlacedBy-Select-AutoComplete")).SendKeys(Keys.Tab);
+
+            wait.Until(wd => wd.FindElement(By.CssSelector("#PurchaseOrderHeader-OrderPlacedBy input")).GetAttribute("value") == "Shelley Dyck");
+
+        }
+
         public void DoChangeReferencePropertyViaRemove() {
             Login();
             FindCustomerByAccountNumber("AW00000076");
@@ -344,6 +368,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void ChangeDropDownField();
 
         public abstract void ChangeReferencePropertyViaRecentlyViewed();
+
+        public abstract void ChangeReferencePropertyViaAutoAutoComplete();
 
         public abstract void ChangeReferencePropertyViaRemove();
 

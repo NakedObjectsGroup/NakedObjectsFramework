@@ -63,9 +63,13 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-
         public override void ChangeReferencePropertyViaRecentlyViewed() {
             DoChangeReferencePropertyViaRecentlyViewed();
+        }
+
+        [TestMethod]
+        public override void ChangeReferencePropertyViaAutoAutoComplete() {
+            DoChangeReferencePropertyViaAutoAutoComplete();
         }
 
         [TestMethod]

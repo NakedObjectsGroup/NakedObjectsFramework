@@ -98,5 +98,18 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        
+      #region FindById
+      public PurchaseOrderHeader FindById(int id )
+      {
+      var query = from obj in Container.Instances<PurchaseOrderHeader>()
+		              where obj.PurchaseOrderID == id
+		              select obj;
+                  
+      return query.FirstOrDefault();
+      }
+      #endregion
+          
     }
 }

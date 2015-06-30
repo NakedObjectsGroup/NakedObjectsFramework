@@ -66,6 +66,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         [TestMethod]
+        public override void ChangeReferencePropertyViaAutoAutoComplete() {
+            DoChangeReferencePropertyViaAutoAutoComplete();
+        }
+
+        [TestMethod]
         public override void ChangeReferencePropertyViaRemove() {
             DoChangeReferencePropertyViaRemove();
         }
