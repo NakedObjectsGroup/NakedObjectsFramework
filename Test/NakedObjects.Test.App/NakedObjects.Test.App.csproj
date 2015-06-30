@@ -158,12 +158,12 @@
       <HintPath>..\..\packages\NakedObjects.Core.7.1.0-beta2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Mvc">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.1.0-beta\lib\net451\NakedObjects.Mvc.dll</HintPath>
+    <Reference Include="NakedObjects.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.1.0-beta1\lib\net451\NakedObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.MvcResources">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.1.0-beta\lib\net451\NakedObjects.MvcResources.dll</HintPath>
+    <Reference Include="NakedObjects.MvcResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.1.0-beta1\lib\net451\NakedObjects.MvcResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
@@ -361,12 +361,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NakedObjectsActivator.cs" />
     <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
+    <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityFrameworkResolver.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\GenericController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -397,21 +399,21 @@
     <Content Include="Views\Shared\DialogControl.cshtml" />
     <Content Include="Views\Shared\ViewModel.cshtml" />
     <Content Include="Views\Shared\StandaloneTable.cshtml" />
-    <Content Include="Views\Shared\ScalarView.cshtml" />
     <Content Include="Views\Shared\PropertyView.cshtml" />
-    <Content Include="Views\Shared\PropertyEdit.cshtml" />
     <Content Include="Views\Shared\ObjectView.cshtml" />
     <Content Include="Views\Shared\ObjectEditControl.cshtml" />
-    <Content Include="Views\Shared\ObjectEdit.cshtml" />
     <Content Include="Views\Shared\FormWithSelections.cshtml" />
     <Content Include="Views\Shared\FormWithFinderDialog.cshtml" />
+    <Content Include="Views\Shared\ConcurrencyError.cshtml" />
+    <Content Include="Views\Shared\ActionDialog.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\ScalarView.cshtml" />
+    <Content Include="Views\Shared\PropertyEdit.cshtml" />
+    <Content Include="Views\Shared\ObjectEdit.cshtml" />
     <Content Include="Views\Shared\DomainError.cshtml" />
     <Content Include="Views\Shared\DestroyedError.cshtml" />
     <Content Include="Views\Shared\DataUpdateError.cshtml" />
-    <Content Include="Views\Shared\ConcurrencyError.cshtml" />
     <Content Include="Views\Shared\BrowserError.cshtml" />
-    <Content Include="Views\Shared\ActionDialog.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -376,13 +376,16 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Login();
 
             //First find products to be recently viewed
-            FindProduct("FR-M21S-40"); //LL Mountain Frame - Silver, 40
-            FindProduct("FW-5160"); //Flat Washer 3
-            FindProduct("HS-0296"); //Hex Nut 14
+            FindProduct("FR-M21S-40"); 
+            wait.Until(wd => wd.Title == "LL Mountain Frame - Silver, 40");
+            FindProduct("FW-5160"); 
+            wait.Until(wd => wd.Title == "Flat Washer 3");
+            FindProduct("HS-0296"); 
+            wait.Until(wd => wd.Title == "LL Headset");
 
             var ok = wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder2 button", "button[title='OK']");
 
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select")).TypeText("f");
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).TypeText("f");
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
