@@ -385,14 +385,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             var ok = wait.ClickAndWait("#WorkOrderRepository-CreateNewWorkOrder2 button", "button[title='OK']");
 
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).TypeText("f");
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).TypeText("s");
 
             wait.Until(wd => wd.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
-            Assert.AreEqual(3, br.FindElements(By.CssSelector(".ui-menu-item")));
+            Assert.AreEqual(3, br.FindElements(By.CssSelector(".ui-menu-item")).Count);
 
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
-            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
+            br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
 
             wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder2-Product input")).GetAttribute("value") == "Flat Washer 3");
         }
