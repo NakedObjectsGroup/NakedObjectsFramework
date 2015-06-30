@@ -116,7 +116,71 @@ namespace MvcTestApp.Tests.Controllers {
             SqlConnection.ClearAllPools();
         }
 
-       
+        public FormCollection GetFormForOrderEdit(IObjectFacade order,
+                                                  SalesOrderHeader soh,
+                                                  string modifiedDate,
+                                                  out IDictionary<string, string> idToRawValue) {
+            var nakedObjectSpecification = order.Specification;
+            var assocS = nakedObjectSpecification.Properties.Single(p => p.Id == "Status");
+            var assocSC = nakedObjectSpecification.Properties.Single(p => p.Id == "StoreContact");
+            var assocBA = nakedObjectSpecification.Properties.Single(p => p.Id == "BillingAddress");
+            var assocPO = nakedObjectSpecification.Properties.Single(p => p.Id == "PurchaseOrderNumber");
+            var assocSA = nakedObjectSpecification.Properties.Single(p => p.Id == "ShippingAddress");
+            var assocSM = nakedObjectSpecification.Properties.Single(p => p.Id == "ShipMethod");
+            var assocAN = nakedObjectSpecification.Properties.Single(p => p.Id == "AccountNumber");
+            var assocCR = nakedObjectSpecification.Properties.Single(p => p.Id == "CurrencyRate");
+            var assocCC = nakedObjectSpecification.Properties.Single(p => p.Id == "CreditCard");
+            var assocC = nakedObjectSpecification.Properties.Single(p => p.Id == "Comment");
+            var assocSP = nakedObjectSpecification.Properties.Single(p => p.Id == "SalesPerson");
+            var assocST = nakedObjectSpecification.Properties.Single(p => p.Id == "SalesTerritory");
+            var assocMD = nakedObjectSpecification.Properties.Single(p => p.Id == "ModifiedDate");
+
+            string idS = IdHelper.GetFieldInputId(order, (assocS));
+            string idSC = IdHelper.GetFieldInputId(order, (assocSC));
+            string idBA = IdHelper.GetFieldInputId(order, (assocBA));
+            string idPO = IdHelper.GetFieldInputId(order, (assocPO));
+            string idSA = IdHelper.GetFieldInputId(order, (assocSA));
+            string idSM = IdHelper.GetFieldInputId(order, (assocSM));
+            string idAN = IdHelper.GetFieldInputId(order, (assocAN));
+            string idCR = IdHelper.GetFieldInputId(order, (assocCR));
+            string idCC = IdHelper.GetFieldInputId(order, (assocCC));
+            string idC = IdHelper.GetFieldInputId(order, (assocC));
+            string idSP = IdHelper.GetFieldInputId(order, (assocSP));
+            string idST = IdHelper.GetFieldInputId(order, (assocST));
+            string idMD = IdHelper.GetConcurrencyFieldInputId((order), (assocMD));
+
+            var ct = soh.Contact;
+            var cus = soh.Customer;
+            var sc = FindStoreContactForContact(ct, cus);
+
+            idToRawValue = new Dictionary<string, string> {
+                {idS, soh.Status.ToString()},
+                {idSC, NakedObjectsFramework.GetObjectId(sc)},
+                {idBA, NakedObjectsFramework.GetObjectId(soh.BillingAddress)},
+                {idPO, soh.PurchaseOrderNumber},
+                {idSA, NakedObjectsFramework.GetObjectId(soh.ShippingAddress)},
+                {idSM, NakedObjectsFramework.GetObjectId(soh.ShipMethod)},
+                {idAN, soh.AccountNumber},
+                {idCR, ""},
+                {idCC, NakedObjectsFramework.GetObjectId(soh.CreditCard)},
+                {idC, Guid.NewGuid().ToString()},
+                {idSP, NakedObjectsFramework.GetObjectId(soh.SalesPerson)},
+                {idST, NakedObjectsFramework.GetObjectId(soh.SalesTerritory)},
+                {idMD, modifiedDate}
+            };
+
+            return GetForm(idToRawValue);
+        }
+
+        private StoreContact FindStoreContactForContact(Contact contact, Customer customer) {
+            IQueryable<StoreContact> query = from obj in NakedObjectsFramework.Persistor.Instances<StoreContact>()
+                                             where obj.Contact.ContactID == contact.ContactID && obj.Store.CustomerId == customer.CustomerId
+                                             select obj;
+
+            return query.FirstOrDefault();
+        }
+
+
 
         public FormCollection GetFormForStoreEdit(IObjectFacade store,
                                                   string storeName,
@@ -154,14 +218,56 @@ namespace MvcTestApp.Tests.Controllers {
         // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:
         // System.Data.EntityCommandExecutionException : An error occurred while executing the command definition. See the inner exception for details.
         //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
+        //public void EditSaveEFConcurrencyFail() {
+        //    Store order = Store;
+        //    IObjectFacade adaptedStore = Surface.GetObject(order);
+        //    IDictionary<string, string> idToRawvalue;
+
+        //    FormCollection form = GetFormForStoreEdit(adaptedStore, order.Name, NakedObjectsFramework.GetObjectId(order.SalesPerson), order.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
+
+        //    var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(order) };
+
+        //    NakedObjectsFramework.TransactionManager.StartTransaction();
+        //    var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
+
+        //    conn.Open();
+
+        //    try {
+        //        controller.Edit(objectModel, form);
+
+        //        // change order in database 
+
+        //        string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", order.Name);
+
+        //        string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", order.Name);
+
+        //        using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //        using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
+        //            cmd.ExecuteNonQuery();
+        //        }
+
+        //        NakedObjectsFramework.TransactionManager.EndTransaction();
+
+        //        Assert.Fail("Expect concurrency exception");
+        //    }
+        //    catch (PreconditionFailedNOSException expected) {
+        //        Assert.AreSame(order, expected.SourceNakedObject.Object);
+        //    }
+        //    finally {
+        //        conn.Close();
+        //    }
+        //}
+
         public void EditSaveEFConcurrencyFail() {
-            Store store = Store;
-            IObjectFacade adaptedStore = Surface.GetObject(store);
+            SalesOrderHeader order = Order;
+            IObjectFacade adaptedOrder = Surface.GetObject(order);
             IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForOrderEdit(adaptedOrder, order, order.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(store) };
+            var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(order) };
 
             NakedObjectsFramework.TransactionManager.StartTransaction();
             var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
@@ -171,34 +277,32 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 controller.Edit(objectModel, form);
 
-                // change store in database 
+                // change order in database 
 
-                string updateStore = string.Format("update Sales.Store set ModifiedDate = GETDATE() where Name = '{0}'", store.Name);
+                string updateOrder = string.Format("update Sales.SalesOrderHeader set ModifiedDate = GETDATE() where SalesOrderID = '{0}'", order.SalesOrderID);
 
-                string updateCustomer = string.Format("update Sales.Customer set ModifiedDate = GETDATE() From Sales.Store as ss inner join Sales.Customer as sc on ss.CustomerID = sc.CustomerID  where ss.Name = '{0}'", store.Name);
 
-                using (var cmd = new SqlCommand(updateStore) { Connection = conn }) {
+                using (var cmd = new SqlCommand(updateOrder) { Connection = conn }) {
                     cmd.ExecuteNonQuery();
                 }
-                using (var cmd = new SqlCommand(updateCustomer) { Connection = conn }) {
-                    cmd.ExecuteNonQuery();
-                }
+             
 
-                NakedObjectsFramework.TransactionManager.EndTransaction();
+                Surface.End(true);
 
                 Assert.Fail("Expect concurrency exception");
             }
             catch (PreconditionFailedNOSException expected) {
-                Assert.AreSame(store, expected.SourceNakedObject.Object);
+                Assert.AreSame(order, expected.SourceNakedObject.Object);
             }
             finally {
                 conn.Close();
             }
         }
 
+
         [Test] //As above
         //[Ignore]
-        public void InvokeObjectActionConcurrencyFail() {
+        public void AAInvokeObjectActionConcurrencyFail() {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
                 ActionId = "Recalculate",
@@ -207,7 +311,7 @@ namespace MvcTestApp.Tests.Controllers {
             };
 
             try {
-                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture) } }));
+                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.CurrentCulture) } }));
                 Assert.Fail("Expected concurrency exception");
             }
             catch (PreconditionFailedNOSException expected) {

@@ -1314,7 +1314,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             IObjectFacade adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            string differentDateTime = DateTime.Now.ToString(CultureInfo.CurrentCulture);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = GetObjectId(store)};
@@ -1338,7 +1338,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             IObjectFacade adaptedStore = Surface.GetObject(store);
             IDictionary<string, string> idToRawvalue;
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = GetObjectId(store)};
 
@@ -1596,7 +1596,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));
 
-            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.CurrentCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1625,7 +1625,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));
 
-            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.CurrentCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1707,7 +1707,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
+                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.CurrentCulture)}
                 }));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
@@ -1725,7 +1725,7 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 var result = (ViewResult) controller.Action(objectModel, GetForm(
                     new Dictionary<string, string> {
-                        {"Store-LastOrder-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture)}
+                        {"Store-LastOrder-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.CurrentCulture)}
                     }));
 
                 Assert.Fail("Expected concurrency exception");
@@ -1746,7 +1746,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
+                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.CurrentCulture)}
                 }));
 
             AssertIsDialogViewOfAction(result, "Create New Order");
@@ -1883,7 +1883,7 @@ namespace MvcTestApp.Tests.Controllers {
                 InvokeAction = "action=action"
             };
 
-            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString(CultureInfo.InvariantCulture)}}));
+            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString(CultureInfo.CurrentCulture)}}));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }

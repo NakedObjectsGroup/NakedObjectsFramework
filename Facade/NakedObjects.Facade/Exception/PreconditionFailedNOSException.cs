@@ -17,7 +17,7 @@ namespace NakedObjects.Facade {
             SourceNakedObject = sourceNakedObject;
         }
 
-        public IObjectFacade SourceNakedObject { get; private set; }
+        public IObjectFacade SourceNakedObject { get; set; }
 
         public override string Message {
             get { return "Object changed by another user"; }

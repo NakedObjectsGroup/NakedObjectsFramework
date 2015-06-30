@@ -71,7 +71,9 @@ namespace NakedObjects.Facade.Impl {
                 throw new DataUpdateNOSException(e);
             }
             catch (ConcurrencyException e) {
-                throw new PreconditionFailedNOSException(e.Message, e);
+                throw new PreconditionFailedNOSException(e.Message, e) {
+                    SourceNakedObject = ObjectFacade.Wrap(e.SourceNakedObjectAdapter, this, framework)
+                };
             }
         }
 

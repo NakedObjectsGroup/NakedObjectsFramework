@@ -72,7 +72,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [Hidden(WhenTo.Always)]
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public virtual DateTime CustomerModifiedDate { get; set; }
 
         #endregion
