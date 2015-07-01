@@ -51,7 +51,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
 
-        //protected const string url = "http://localhost:56696/";
+        //protected const string url = "http://localhost:53624/";
         //protected const string server = @".\SQLEXPRESS";
         //protected const string server = @"(localdb)\ProjectsV12";
 
@@ -138,6 +138,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Find("#EmployeeRepository-FindEmployeeByName button", "#EmployeeRepository-FindEmployeeByName-LastName-Input", lastName);
         }
 
+        protected void FindEmployeeByNationalIdNumber(string id) {
+            Find("#EmployeeRepository-FindEmployeeByNationalIDNumber button", "#EmployeeRepository-FindEmployeeByNationalIDNumber-NationalIDNumber-Input", id);
+        }
+
         protected void FindCustomerByAccountNumber(string accountNumber) {
             Find("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input", accountNumber);
         }
@@ -154,6 +158,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Find("#SalesRepository-FindSalesPersonByName button", "#SalesRepository-FindSalesPersonByName-LastName-Input", lastName);
         }
 
+        protected void  FindPurchaseOrder(string id) {
+            Find("#PurchaseOrderRepository-FindById button", "#PurchaseOrderRepository-FindById-Id-Input", id);
+ 
+        }
         #endregion
     }
 }
