@@ -6,10 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 
 namespace AdventureWorksModel {
 
+    [ComplexType]
     public class TimePeriod {
 
         #region Injected Services

@@ -499,7 +499,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Mandatory", result.Data);
         }
 
-        [Test, Ignore] //TODO: Failing due to issue with TimePeriod Complex Type?
+        [Test] //TODO: Failing due to issue with TimePeriod Complex Type?
         public void TestValidateOkInlineValueProperty() {
             TimePeriod timePeriod = NakedObjectsFramework.Persistor.Instances<Shift>().First().Times;
             string id = NakedObjectsFramework.GetObjectId(timePeriod);

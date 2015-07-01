@@ -688,7 +688,9 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                 Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
             }
-            Assert.IsTrue(result.ViewData.ModelState[IdHelper.GetInlineFieldInputId(adaptedShift.Specification.Properties.Single(p => p.Id == "Times"), adaptedTimePeriod, adaptedTimePeriod.Specification.Properties.Single(p => p.Id == "EndTime"))].Errors.Any());
+
+            var id = IdHelper.GetInlineFieldInputId(adaptedShift.Specification.Properties.Single(p => p.Id == "Times"), adaptedTimePeriod, adaptedTimePeriod.Specification.Properties.Single(p => p.Id == "EndTime"));
+            Assert.IsTrue(result.ViewData.ModelState[id].Errors.Any());
             AssertIsEditViewOf<Shift>(result);
         }
 
@@ -1158,22 +1160,22 @@ namespace MvcTestApp.Tests.Controllers {
             EditFindForObjectOneCached(Store);
         }
 
-        [Test, Ignore] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] //Problem with viewing/editing the TimePeriod on Shift
         public void EditInlineSaveValidationFail() {
             EditInlineSaveValidationFail(Employee.DepartmentHistory.First().Shift);
         }
 
-        [Test, Ignore] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] //Problem with viewing/editing the TimePeriod on Shift
         public void EditInlineSaveValidationFailForTransient() {
             EditInlineSaveValidationFail(TransientShift);
         }
 
-        [Test, Ignore] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] //Problem with viewing/editing the TimePeriod on Shift
         public void EditInlineSaveValidationOk() {
             EditInlineSaveValidationOk(Employee.DepartmentHistory.First().Shift, 0);
         }
 
-        [Test, Ignore] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] //Problem with viewing/editing the TimePeriod on Shift
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift, 1);
         }

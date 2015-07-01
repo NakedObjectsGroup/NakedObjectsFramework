@@ -208,8 +208,8 @@ namespace NakedObjects.Facade.Impl.Utility {
 
             var aoid = nakedObject.Oid as IAggregateOid;
             if (aoid != null) {
-                IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);
-                fieldId = GetInlineFieldInputId(new AssociationFacade(parent, null, null), objectFacade, propertyFacade);
+                IAssociationSpec parent = ((IObjectSpec) aoid.ParentOid.Spec).Properties.SingleOrDefault(p => p.Id == aoid.FieldName);           
+                fieldId = parent.Id + Sep + GetObjectId(objectFacade) + Sep + propertyFacade.Id + Sep + InputOrSelect(propertyFacade.WrappedSpec().ReturnSpec);
             }
             else {
                 fieldId = GetFieldInputId(objectFacade, propertyFacade);
