@@ -365,7 +365,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private void ApplyInlineEdit(IObjectFacade nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationFacade> assocs) {
             var form = controlData.Form;
             // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
-            foreach (var assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
+            foreach (var assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => IdHelper.KeyPrefixIs(k, a.Id)))) {
                 var inlineNakedObject = assoc.GetValue(nakedObject);
                 if (inlineNakedObject != null) {
                     ApplyEdit(inlineNakedObject, controlData, assoc);
@@ -405,6 +405,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             ApplyInlineEdit(nakedObject, controlData, usableAndVisibleFields);
+
+            if (!ModelState.IsValid) {
+                return false;
+            }
 
             var res = Facade.PutObject(oid, ac);
 
