@@ -420,14 +420,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
                         var currentValue = pair.Item1.GetValue(nakedObject);
-
-                        // todo revisit this 
-                        //var concurrencyValue = pair.Item1.ReturnSpec.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.NakedObjectManager);
-
                         var concurrencyValue = pair.Item2 as string;
 
                         if (concurrencyValue != null && currentValue != null) {
-                            if (concurrencyValue != currentValue.TitleString) {
+                            if (concurrencyValue != currentValue.InvariantString) {
                                 throw new PreconditionFailedNOSException(nakedObject);
                             }
                         }

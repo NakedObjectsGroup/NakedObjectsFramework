@@ -218,7 +218,7 @@ namespace MvcTestApp.Tests.Controllers {
             IObjectFacade adaptedOrder = Surface.GetObject(order);
             IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GetFormForOrderEdit(adaptedOrder, order, order.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
+            FormCollection form = GetFormForOrderEdit(adaptedOrder, order, order.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData { Id = NakedObjectsFramework.GetObjectId(order) };
 
@@ -263,7 +263,7 @@ namespace MvcTestApp.Tests.Controllers {
             };
 
             try {
-                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.CurrentCulture) } }));
+                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture) } }));
                 Assert.Fail("Expected concurrency exception");
             }
             catch (PreconditionFailedNOSException expected) {

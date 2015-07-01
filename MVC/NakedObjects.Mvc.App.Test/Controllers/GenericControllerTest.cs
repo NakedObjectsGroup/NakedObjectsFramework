@@ -1309,16 +1309,82 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(2, ((Employee) result.ViewData.Model).DirectReports.Count);
         }
 
-        [Test] 
-        [Ignore] // todo fix
-        public void EditSaveConcurrencyFail() {
-            Store store = Store;
-            IObjectFacade adaptedStore = Surface.GetObject(store);
-            IDictionary<string, string> idToRawvalue;
-            string differentDateTime = DateTime.Now.ToString(CultureInfo.CurrentCulture);
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
+        private StoreContact FindStoreContactForContact(Contact contact, Customer customer) {
+            IQueryable<StoreContact> query = from obj in NakedObjectsFramework.Persistor.Instances<StoreContact>()
+                                             where obj.Contact.ContactID == contact.ContactID && obj.Store.CustomerId == customer.CustomerId
+                                             select obj;
 
-            var objectModel = new ObjectAndControlData {Id = GetObjectId(store)};
+            return query.FirstOrDefault();
+        }
+
+
+        public FormCollection GetFormForOrderEdit(IObjectFacade order,
+                                                 SalesOrderHeader soh,
+                                                 string modifiedDate,
+                                                 out IDictionary<string, string> idToRawValue) {
+            var nakedObjectSpecification = order.Specification;
+            var assocS = nakedObjectSpecification.Properties.Single(p => p.Id == "Status");
+            var assocSC = nakedObjectSpecification.Properties.Single(p => p.Id == "StoreContact");
+            var assocBA = nakedObjectSpecification.Properties.Single(p => p.Id == "BillingAddress");
+            var assocPO = nakedObjectSpecification.Properties.Single(p => p.Id == "PurchaseOrderNumber");
+            var assocSA = nakedObjectSpecification.Properties.Single(p => p.Id == "ShippingAddress");
+            var assocSM = nakedObjectSpecification.Properties.Single(p => p.Id == "ShipMethod");
+            var assocAN = nakedObjectSpecification.Properties.Single(p => p.Id == "AccountNumber");
+            var assocCR = nakedObjectSpecification.Properties.Single(p => p.Id == "CurrencyRate");
+            var assocCC = nakedObjectSpecification.Properties.Single(p => p.Id == "CreditCard");
+            var assocC = nakedObjectSpecification.Properties.Single(p => p.Id == "Comment");
+            var assocSP = nakedObjectSpecification.Properties.Single(p => p.Id == "SalesPerson");
+            var assocST = nakedObjectSpecification.Properties.Single(p => p.Id == "SalesTerritory");
+            var assocMD = nakedObjectSpecification.Properties.Single(p => p.Id == "ModifiedDate");
+
+            string idS = IdHelper.GetFieldInputId(order, (assocS));
+            string idSC = IdHelper.GetFieldInputId(order, (assocSC));
+            string idBA = IdHelper.GetFieldInputId(order, (assocBA));
+            string idPO = IdHelper.GetFieldInputId(order, (assocPO));
+            string idSA = IdHelper.GetFieldInputId(order, (assocSA));
+            string idSM = IdHelper.GetFieldInputId(order, (assocSM));
+            string idAN = IdHelper.GetFieldInputId(order, (assocAN));
+            string idCR = IdHelper.GetFieldInputId(order, (assocCR));
+            string idCC = IdHelper.GetFieldInputId(order, (assocCC));
+            string idC = IdHelper.GetFieldInputId(order, (assocC));
+            string idSP = IdHelper.GetFieldInputId(order, (assocSP));
+            string idST = IdHelper.GetFieldInputId(order, (assocST));
+            string idMD = IdHelper.GetConcurrencyFieldInputId((order), (assocMD));
+
+            var ct = soh.Contact;
+            var cus = soh.Customer;
+            var sc = FindStoreContactForContact(ct, cus);
+
+            idToRawValue = new Dictionary<string, string> {
+                {idS, soh.Status.ToString()},
+                {idSC, NakedObjectsFramework.GetObjectId(sc)},
+                {idBA, NakedObjectsFramework.GetObjectId(soh.BillingAddress)},
+                {idPO, soh.PurchaseOrderNumber},
+                {idSA, NakedObjectsFramework.GetObjectId(soh.ShippingAddress)},
+                {idSM, NakedObjectsFramework.GetObjectId(soh.ShipMethod)},
+                {idAN, soh.AccountNumber},
+                {idCR, ""},
+                {idCC, NakedObjectsFramework.GetObjectId(soh.CreditCard)},
+                {idC, Guid.NewGuid().ToString()},
+                {idSP, NakedObjectsFramework.GetObjectId(soh.SalesPerson)},
+                {idST, NakedObjectsFramework.GetObjectId(soh.SalesTerritory)},
+                {idMD, modifiedDate}
+            };
+
+            return GetForm(idToRawValue);
+        }
+
+
+
+        [Test]
+        public void EditSaveConcurrencyFail() {
+            SalesOrderHeader order = Order;
+            IObjectFacade adaptedOrder = Surface.GetObject(order);
+            IDictionary<string, string> idToRawvalue;
+            string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            FormCollection form = GetFormForOrderEdit(adaptedOrder, order, differentDateTime, out idToRawvalue);
+
+            var objectModel = new ObjectAndControlData { Id = GetObjectId(order) };
 
             NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
@@ -1326,22 +1392,22 @@ namespace MvcTestApp.Tests.Controllers {
 
                 Assert.Fail("Expect concurrency exception");
             }
-            catch (ConcurrencyException expected) {
-                Assert.AreSame(adaptedStore, expected.SourceNakedObjectAdapter);
+            catch (PreconditionFailedNOSException expected) {
+                Assert.AreSame(order, expected.SourceNakedObject.Object);
             }
             finally {
                 NakedObjectsFramework.TransactionManager.EndTransaction();
             }
         }
 
-        [Test, Ignore] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
+        [Test]
         public void EditSaveConcurrencyOk() {
-            Store store = Store;
-            IObjectFacade adaptedStore = Surface.GetObject(store);
+            var order = Order;
+            IObjectFacade adaptedOrder = Surface.GetObject(order);
             IDictionary<string, string> idToRawvalue;
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.CurrentCulture), out idToRawvalue);
+            FormCollection form = GetFormForOrderEdit(adaptedOrder, order, order.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = GetObjectId(store)};
+            var objectModel = new ObjectAndControlData {Id = GetObjectId(order)};
 
             NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
@@ -1351,7 +1417,7 @@ namespace MvcTestApp.Tests.Controllers {
                     Assert.IsTrue(result.ViewData.ModelState.ContainsKey(kvp.Key));
                     Assert.AreEqual(kvp.Value, result.ViewData.ModelState[kvp.Key].Value.RawValue);
                 }
-                AssertIsDetailsViewOf<Store>(result);
+                AssertIsDetailsViewOf<SalesOrderHeader>(result);
             }
             finally {
                 NakedObjectsFramework.TransactionManager.EndTransaction();
@@ -1597,7 +1663,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));
 
-            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.CurrentCulture));
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1626,7 +1692,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId((order), (action), (assocMD));
 
-            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.CurrentCulture));
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1653,8 +1719,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        
-        // todo make collection contributed actions work
         public void InvokeContributedActionOnCollectionTargetValidateFails() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "AppendComment",
@@ -1676,7 +1740,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] // todo fix
         public void InvokeContributedActionOnCollectionTargetValidateFailsSingleParm() {
             var objectModel = new ObjectAndControlData {
                 ActionId = "CommentAsUsersUnhappy",
@@ -1693,7 +1756,12 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(form));
 
-            AssertIsDialogViewOfAction(result, "Comment As Users Unhappy");
+            var arm = (ActionResultModel)result.ViewData.Model;
+
+            Assert.AreEqual(10, ((IQueryable<SalesOrderHeader>)arm.Result).Count());
+            Assert.AreEqual("CommentAsUsersUnhappy", arm.Action.Id);
+
+            AssertPagingData(result, 1, 20, 10);
         }
 
         [Test]
@@ -1707,32 +1775,31 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.CurrentCulture)}
+                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
                 }));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
 
-        [Test] //Haven't successfully added a ConcurrencyCheck to Store or Customer?
-        [Ignore] // todo fix
+        [Test] 
         public void InvokeContributedActionOnTargetConcurrencyFail() {
-            Store store = Store;
+            var order = Order;
             var objectModel = new ObjectAndControlData {
-                ActionId = "LastOrder",
-                Id = GetObjectId(store),
+                ActionId = "CommentAsUserUnhappy",
+                Id = GetObjectId(order),
                 InvokeAction = "action=action"
             };
 
             try {
-                var result = (ViewResult) controller.Action(objectModel, GetForm(
+                var result = (ViewResult)controller.Action(objectModel, GetForm(
                     new Dictionary<string, string> {
-                        {"Store-LastOrder-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.CurrentCulture)}
+                        {"SalesOrderHeader-CommentAsUserUnhappy-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture)}
                     }));
 
                 Assert.Fail("Expected concurrency exception");
             }
-            catch (ConcurrencyException expected) {
-                Assert.AreSame(store, expected.SourceNakedObjectAdapter.Object);
+            catch (PreconditionFailedNOSException expected) {
+                Assert.AreSame(order, expected.SourceNakedObject.Object);
             }
         }
 
@@ -1747,7 +1814,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.CurrentCulture)}
+                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
                 }));
 
             AssertIsDialogViewOfAction(result, "Create New Order");
@@ -1884,7 +1951,7 @@ namespace MvcTestApp.Tests.Controllers {
                 InvokeAction = "action=action"
             };
 
-            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString(CultureInfo.CurrentCulture)}}));
+            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString(CultureInfo.InvariantCulture)}}));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
