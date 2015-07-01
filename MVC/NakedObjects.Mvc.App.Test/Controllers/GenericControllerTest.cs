@@ -1160,22 +1160,22 @@ namespace MvcTestApp.Tests.Controllers {
             EditFindForObjectOneCached(Store);
         }
 
-        [Test] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] 
         public void EditInlineSaveValidationFail() {
             EditInlineSaveValidationFail(Employee.DepartmentHistory.First().Shift);
         }
 
-        [Test] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] 
         public void EditInlineSaveValidationFailForTransient() {
             EditInlineSaveValidationFail(TransientShift);
         }
 
-        [Test] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] 
         public void EditInlineSaveValidationOk() {
             EditInlineSaveValidationOk(Employee.DepartmentHistory.First().Shift, 0);
         }
 
-        [Test] //Problem with viewing/editing the TimePeriod on Shift
+        [Test] //todo still fails 
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift, 1);
         }

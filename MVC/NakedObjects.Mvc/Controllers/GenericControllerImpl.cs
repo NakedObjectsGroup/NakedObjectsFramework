@@ -382,7 +382,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             CheckConcurrency(nakedObject, null, controlData, GetConcurrencyFieldInputId);
 
-            fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(null, nakedObject, pair.Item1), pair.Item2));
+            fieldsAndMatchingValues.ForEach(pair => AddAttemptedValue(GetFieldInputId(parent, nakedObject, pair.Item1), pair.Item2));
 
             var ac = new ArgumentsContextFacade {
                 Values = fieldsAndMatchingValues.ToDictionary(f => f.Item1.Id, f => GetObjectValue(f.Item1, nakedObject, f.Item2)),
@@ -415,7 +415,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (HasError(res)) {
                 foreach (var parm in res.VisibleProperties) {
                     if (!string.IsNullOrEmpty(parm.Reason)) {
-                        ModelState.AddModelError(IdHelper.GetFieldInputId(nakedObject, parm.Property), parm.Reason);
+                        ModelState.AddModelError(GetFieldInputId(parent, nakedObject, parm.Property), parm.Reason);
                     }
                 }
 
