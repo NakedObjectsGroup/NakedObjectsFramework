@@ -219,7 +219,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private IObjectFacade GetResult(ActionResultContextFacade context) {
-            if (context.HasResult) {
+
+            if (context.HasResult && context.Result != null) {
                 var result = context.Result;
 
                 if (result.RedirectedUrl != null) {
