@@ -207,6 +207,10 @@ namespace NakedObjects.Web.Mvc.Html {
             return Parameter.IsFindMenuEnabled && (!Parameter.Action.IsContributed || !Target.Specification.IsOfType(Parameter.Specification));
         }
 
+        public bool IsContributed() {
+            return Parameter.Action.IsContributed && Target.Specification.IsOfType(Parameter.Specification);
+        }
+
         public string GetParameterInputId() {
             return IdHelper.GetParameterInputId((Action), (Parameter));
         }

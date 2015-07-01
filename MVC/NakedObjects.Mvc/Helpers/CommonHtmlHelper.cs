@@ -1006,7 +1006,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string value = "";
 
             // Even if not autocomplete add autocomplete menu if no finder and then handle with recently viewed in ajax controller
-            if (context.Parameter.IsAutoCompleteEnabled || (noFinder && !context.Parameter.Specification.IsCollection)) {
+            if (context.Parameter.IsAutoCompleteEnabled || (noFinder && !context.Parameter.Specification.IsCollection  && !context.IsContributed() )) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Parameter.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
