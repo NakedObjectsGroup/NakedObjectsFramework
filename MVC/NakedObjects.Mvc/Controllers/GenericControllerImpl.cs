@@ -362,11 +362,23 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return View(property == null ? "ActionDialog" : "PropertyEdit", new FindViewModel {ContextObject = nakedObject.GetDomainObject(), ContextAction = action, PropertyName = property});
         }
 
-        private bool ApplyEdit(IObjectFacade nakedObject, ObjectAndControlData controlData) {
+        private void ApplyInlineEdit(IObjectFacade nakedObject, ObjectAndControlData controlData, IEnumerable<IAssociationFacade> assocs) {
+            var form = controlData.Form;
+            // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
+            foreach (var assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
+                var inlineNakedObject = assoc.GetValue(nakedObject);
+                if (inlineNakedObject != null) {
+                    ApplyEdit(inlineNakedObject, controlData, assoc);
+                }
+            }
+        }
+
+      
+        private bool ApplyEdit(IObjectFacade nakedObject, ObjectAndControlData controlData, IAssociationFacade parent = null) {
             var oid = Facade.OidTranslator.GetOidTranslation(nakedObject);
 
             var usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => p.IsVisible(nakedObject) && p.IsUsable(nakedObject).IsAllowed);
-            var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, null, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
+            var fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
 
             CheckConcurrency(nakedObject, null, controlData, GetConcurrencyFieldInputId);
 
@@ -391,6 +403,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (!ModelState.IsValid) {
                 return false;
             }
+
+            ApplyInlineEdit(nakedObject, controlData, usableAndVisibleFields);
 
             var res = Facade.PutObject(oid, ac);
 
