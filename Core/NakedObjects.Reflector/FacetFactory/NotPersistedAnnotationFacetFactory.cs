@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public NotPersistedAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
+            : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndCollections) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<NotPersistedAttribute>();

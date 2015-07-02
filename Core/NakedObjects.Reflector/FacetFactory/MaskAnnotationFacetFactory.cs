@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaskAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MaskAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
+            : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<MaskAttribute>();

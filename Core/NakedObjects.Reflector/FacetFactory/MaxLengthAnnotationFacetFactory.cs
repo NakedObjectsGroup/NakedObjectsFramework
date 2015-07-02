@@ -19,7 +19,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MaxLengthAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
+            : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();

@@ -19,15 +19,20 @@ namespace NakedObjects.Architecture.Reflect {
         Collections = 4,
         Actions = 8,
         ActionParameters = 16,
+        Interfaces = 32,
         ActionsAndActionParameters = Actions | ActionParameters,
         CollectionsAndActions = Collections | Actions,
         ObjectsAndProperties = Objects | Properties,
         ObjectsPropertiesAndCollections = Objects | Properties | Collections,
         ObjectsPropertiesAndActionParameters = Objects | Properties | ActionParameters,
+        ObjectsInterfacesAndProperties = Objects | Properties | Interfaces,
+        ObjectsInterfacesPropertiesAndCollections = Objects | Properties | Collections | Interfaces,
+        ObjectsInterfacesPropertiesAndActionParameters = Objects | Properties | ActionParameters | Interfaces,
         PropertiesAndCollections = Properties | Collections,
         PropertiesAndActionParameters = Properties | ActionParameters,
         PropertiesCollectionsAndActions = Properties | Collections | Actions,
-        Everything = Objects | Properties | Collections | Actions | ActionParameters,
-        EverythingButActionParameters = Objects | Properties | Collections | Actions
+        Everything = Objects | Properties | Collections | Actions | ActionParameters | Interfaces,
+        EverythingButActionParameters = Objects | Properties | Collections | Actions | Interfaces,
+        ObjectsAndInterfaces = Objects | Interfaces
     }
 }

@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeMarkerFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();

@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly string[] FixedPrefixes = {PrefixesAndRecognisedMethods.IconNameMethod};
 
         public IconMethodFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

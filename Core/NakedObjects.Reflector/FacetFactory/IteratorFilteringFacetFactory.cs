@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public IteratorFilteringFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

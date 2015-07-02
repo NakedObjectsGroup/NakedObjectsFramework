@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class RemoveIgnoredMethodsFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RemoveIgnoredMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec) {

@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         private void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

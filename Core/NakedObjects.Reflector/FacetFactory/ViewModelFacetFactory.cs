@@ -18,7 +18,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ViewModelFacetFactory(int numericOrder) : base(numericOrder, FeatureType.Objects) {}
+        public ViewModelFacetFactory(int numericOrder) : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IFacet facet = null;

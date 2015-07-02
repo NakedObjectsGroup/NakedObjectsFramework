@@ -19,7 +19,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ComplexTypeAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute ctAttribute = type.GetCustomAttribute<ComplexTypeAttribute>();

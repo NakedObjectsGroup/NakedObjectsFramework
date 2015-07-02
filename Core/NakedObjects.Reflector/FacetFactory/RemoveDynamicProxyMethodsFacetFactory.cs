@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
         public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndProperties) {}
+            : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");

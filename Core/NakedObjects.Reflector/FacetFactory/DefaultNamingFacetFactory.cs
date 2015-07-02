@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
         public DefaultNamingFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();

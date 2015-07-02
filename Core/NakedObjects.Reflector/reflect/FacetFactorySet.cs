@@ -117,8 +117,16 @@ namespace NakedObjects.Reflect {
         }
 
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
-                facetFactory.Process(reflector, type, methodRemover, specification);
+
+            if (type.IsInterface) {
+                foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
+                    facetFactory.Process(reflector, type, methodRemover, specification);
+                }
+            }
+            else {
+                foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
+                    facetFactory.Process(reflector, type, methodRemover, specification);
+                }
             }
         }
 
