@@ -210,7 +210,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) {
-            objectStore.LoadComplexTypes(adapter, isGhost);
+            objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
         }
 
         #endregion

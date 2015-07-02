@@ -87,7 +87,7 @@ namespace NakedObjects.Architecture.Component {
         void Refresh(INakedObjectAdapter nakedObjectAdapter);
         int CountField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec associationSpec);
         INakedObjectAdapter FindByKeys(Type type, object[] keys);
-        void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
+        void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool isGhost);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

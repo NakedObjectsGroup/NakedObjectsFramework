@@ -46,7 +46,7 @@ type DomainNoProxiesTests() =
         
         [<TestFixtureTearDown>]
         member x.TearDown() = 
-            persistor.Reset()
+            persistor.SetupContexts()
             setProxyingAndDeferredLoading <- true
         
         [<Test>]

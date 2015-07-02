@@ -28,7 +28,7 @@ open NakedObjects.Persistor.Entity.Component
 
 
 let resetPersistor (p : EntityObjectStore) = 
-    p.Reset()
+    p.SetupContexts()
     setupPersistorForTesting p
 
 let getEntityObjectStore (config) = 
@@ -107,18 +107,18 @@ let CanGetObjectByKey<'t when 't : not struct> (p : EntityObjectStore) keys =
 
 let CanGetContextForCollection<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let testCollection = new List<'t>()
-    persistor.LoadComplexTypes(GetOrAddAdapterForTest testCollection null, false)
+    persistor.LoadComplexTypesIntoNakedObjectFramework(GetOrAddAdapterForTest testCollection null, false)
 
 let CanGetContextForNonGenericCollection<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let testCollection = new ArrayList()
     let header = persistor.GetInstances<'t>() |> Seq.head
     testCollection.Add(header) |> ignore
-    persistor.LoadComplexTypes(GetOrAddAdapterForTest testCollection null, false)
+    persistor.LoadComplexTypesIntoNakedObjectFramework(GetOrAddAdapterForTest testCollection null, false)
 
 let CanGetContextForArray<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let header = persistor.GetInstances<'t>() |> Seq.head
-    persistor.LoadComplexTypes(GetOrAddAdapterForTest [| header |] null, false)
+    persistor.LoadComplexTypesIntoNakedObjectFramework(GetOrAddAdapterForTest [| header |] null, false)
 
 let CanGetContextForType<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let test = persistor.CreateInstance<'t>(null)
-    persistor.LoadComplexTypes(GetOrAddAdapterForTest test null, false)
+    persistor.LoadComplexTypesIntoNakedObjectFramework(GetOrAddAdapterForTest test null, false)

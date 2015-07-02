@@ -38,7 +38,7 @@ type DomainTests() =
             ()
         
         [<TestFixtureTearDown>]
-        member x.TearDown() = persistor.Reset()
+        member x.TearDown() = persistor.SetupContexts()
         
         [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor

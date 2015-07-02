@@ -32,7 +32,7 @@ type AMultiDatabaseTests() =
         member x.Setup() = MultiDatabaseSetup()
         
         [<TestFixtureTearDown>]
-        member x.TearDown() = multiDatabasePersistor.Reset()
+        member x.TearDown() = multiDatabasePersistor.SetupContexts()
         
         [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor multiDatabasePersistor

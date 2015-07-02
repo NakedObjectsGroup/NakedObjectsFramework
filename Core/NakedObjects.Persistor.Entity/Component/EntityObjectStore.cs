@@ -91,7 +91,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             RollBackOnError = config.RollBackOnError;
             MaximumCommitCycles = config.MaximumCommitCycles;
             IsInitializedCheck = config.IsInitializedCheck;
-            Reset();
+            SetupContexts();
         }
 
         private static bool EnforceProxies { get; set; }
@@ -137,7 +137,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region IObjectStore Members
 
-        public void LoadComplexTypes(INakedObjectAdapter adapter, bool parentIsGhost) {
+        public void LoadComplexTypesIntoNakedObjectFramework(INakedObjectAdapter adapter, bool parentIsGhost) {
             if (EntityFrameworkKnowsType(adapter.Object.GetEntityProxiedType())) {
                 foreach (PropertyInfo pi in GetContext(adapter).GetComplexMembers(adapter.Object.GetEntityProxiedType())) {
                     object complexObject = pi.GetValue(adapter.Object, null);
@@ -416,7 +416,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             return GetContext(nakedObjectAdapter.Object);
         }
 
-        private LocalContext ResetContext(KeyValuePair<EntityContextConfiguration, LocalContext> kvp) {
+        private LocalContext PrepareContextForNewTransaction(KeyValuePair<EntityContextConfiguration, LocalContext> kvp) {
             LocalContext context = kvp.Value;
             EntityContextConfiguration config = kvp.Key;
 
@@ -425,14 +425,14 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = config as CodeFirstEntityContextConfiguration;
-            context = codeFirstEntityContextConfiguration != null ? ResetCodeOnlyContext(codeFirstEntityContextConfiguration) : ResetPocoContext(config as PocoEntityContextConfiguration);
+            context = codeFirstEntityContextConfiguration != null ? CreateCodeOnlyContext(codeFirstEntityContextConfiguration) : CreatePocoContext(config as PocoEntityContextConfiguration);
             context.DefaultMergeOption = config.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;
             context.WrappedObjectContext.SavingChanges += savingChangesHandlerDelegate;
             context.WrappedObjectContext.ObjectStateManager.ObjectStateManagerChanged += (obj, args) => {
                 if (args.Action == CollectionChangeAction.Add) {
-                    LoadObject(args.Element, context);
+                    LoadObjectIntoNakedObjectsFramework(args.Element, context);
                 }
             };
 
@@ -551,7 +551,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             return createAdapter(null, trigger);
         }
 
-        private LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
+        private LocalContext CreatePocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
                 return new LocalContext(pocoConfig, session) {IsInitialized = true};
             }
@@ -561,7 +561,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
-        private LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
+        private LocalContext CreateCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
                 return new LocalContext(codeOnlyConfig, session);
             }
@@ -686,12 +686,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), objectToCheck is IEntityWithChangeTracker);
         }
 
-        private void LoadObject(object domainObject, LocalContext context) {
+        private void LoadObjectIntoNakedObjectsFramework(object domainObject, LocalContext context) {
             CheckProxies(domainObject);
             IOid oid = oidGenerator.CreateOid(EntityUtils.GetEntityProxiedTypeName(domainObject), context.GetKey(domainObject));
             INakedObjectAdapter nakedObjectAdapter = createAdapter(oid, domainObject);
             injector.InjectInto(nakedObjectAdapter.Object);
-            LoadComplexTypes(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
+            LoadComplexTypesIntoNakedObjectFramework(nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsGhost());
             nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
 
             if (nakedObjectAdapter.ResolveState.IsGhost()) {
@@ -778,9 +778,9 @@ namespace NakedObjects.Persistor.Entity.Component {
             commands.ForEach(command => command.Execute());
         }
 
-        public void Reset() {
-            Log.Debug("Reset");
-            contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
+        public void SetupContexts() {
+            Log.Debug("SetupContexts");
+            contexts = contexts.ToDictionary(kvp => kvp.Key, PrepareContextForNewTransaction);
             contexts.Values.ForEach(c => c.Manager = nakedObjectManager);
         }
 
@@ -904,7 +904,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 objectToProxyScratchPad[originalObject] = objectToAdd;
                 adapterForOriginalObjectAdapter.Persisting();
 
-                // create transient adapter here so that LoadObject knows proxy domainObject is transient
+                // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
                 // if not proxied this should just be the same as adapterForOriginalObjectAdapter
                 INakedObjectAdapter proxyAdapter = createAdapter(null, objectToAdd);
 

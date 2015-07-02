@@ -97,7 +97,7 @@ namespace NakedObjects.Core.Fixture {
             }
 
             /// <summary>
-            ///     Reset time to now
+            ///     SetupContexts time to now
             /// </summary>
             public void Reset() {
                 time = DateTime.Now;

@@ -42,11 +42,11 @@ let setupPersistorForInjectorTesting (p : EntityObjectStore) =
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
          Action<INakedObjectAdapter>(handleLoadingTest), EventHandler(savingChangesHandler), 
          Func<Type, NakedObjects.Architecture.Spec.IObjectSpec>(loadSpecificationHandler))
-    p.Reset()
+    p.SetupContexts()
     p
 
 let resetForInjectorPersistor (p : EntityObjectStore) = 
-    p.Reset()
+    p.SetupContexts()
     setupPersistorForInjectorTesting p
 
 let ModelLoadTestAssembly() = 
