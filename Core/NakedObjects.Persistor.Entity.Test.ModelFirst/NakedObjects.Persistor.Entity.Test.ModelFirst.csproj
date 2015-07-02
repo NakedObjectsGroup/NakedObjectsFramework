@@ -111,6 +111,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq">
@@ -126,15 +127,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelFirstDbContext.cs" />
     <Compile Include="ModelFirst\ComplexType1.cs" />
     <Compile Include="ModelFirst\Food.cs" />
     <Compile Include="ModelFirst\Fruit.cs" />
     <Compile Include="ModelFirst\NameType.cs" />
     <Compile Include="ModelFirst\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Model1.edmx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

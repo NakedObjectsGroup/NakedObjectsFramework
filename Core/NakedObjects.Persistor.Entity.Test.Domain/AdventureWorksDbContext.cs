@@ -10,20 +10,16 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
-namespace AdventureWorksModel
-{
-    public partial class AdventureWorksEntities : DbContext
-    {
-        public AdventureWorksEntities()
-            : base("name=AdventureWorksEntities")
-        {
+namespace AdventureWorksModel {
+    public partial class AdventureWorksDbContext : DbContext {
+        public AdventureWorksDbContext()
+            : base("name=AdventureWorksEntities") {
         }
-    
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public DbSet<AWBuildVersion> AWBuildVersions { get; set; }
         public DbSet<DatabaseLog> DatabaseLogs { get; set; }
         public DbSet<ErrorLog> ErrorLogs { get; set; }
