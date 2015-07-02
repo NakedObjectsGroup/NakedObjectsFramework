@@ -33,7 +33,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         };
 
         public CallbackMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
+            : base(numericOrder, FeatureType.Objects) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
