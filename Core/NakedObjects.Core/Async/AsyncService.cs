@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Async {
     ///     asynchronously -  each running within its own separate NakedObjects contexct.
     /// </summary>
     public class AsyncService : IAsyncService {
-        private readonly ILog log = LogManager.GetLogger(typeof (AsyncService));
+        private readonly ILog log = LogManager.GetLogger(typeof(AsyncService));
         public INakedObjectsFramework Framework { set; protected get; }
 
         #region IAsyncService Members
@@ -37,15 +37,14 @@ namespace NakedObjects.Core.Async {
         #endregion
 
         protected Action WorkWrapper(Action<IDomainObjectContainer> action) {
+
+            INakedObjectsFramework fw = Framework.FrameworkResolver.GetFramework();
             return () => {
-                // get a newly resolved copy of the framework
-                INakedObjectsFramework fw = Framework.FrameworkResolver.GetFramework();
                 try {
                     fw.TransactionManager.StartTransaction();
                     action(new DomainObjectContainer(fw));
                     fw.TransactionManager.EndTransaction();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     log.ErrorFormat("Action threw exception {0}", e.Message);
                     fw.TransactionManager.AbortTransaction();
                     throw;
