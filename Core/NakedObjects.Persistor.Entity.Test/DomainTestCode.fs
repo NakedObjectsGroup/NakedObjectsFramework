@@ -7,7 +7,7 @@
 module NakedObjects.DomainTestCode
 
 open NUnit.Framework
-open AdventureWorksModel
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Architecture.Resolve
 open NakedObjects.Core.Resolve
 open System

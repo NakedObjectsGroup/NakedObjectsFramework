@@ -11,7 +11,7 @@ open TestTypes
 open TestCode
 open MultiDatabaseTestCode
 open CodeOnlyTestCode
-open AdventureWorksModel
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open ModelFirst
 open NakedObjects.Persistor.Entity.Configuration
 open System
@@ -45,8 +45,10 @@ type AMultiDomainDatabaseTests() =
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor multiDomainDatabasePersistor
         
         [<Test>]
+        [<Ignore>]
         member x.TestCanQueryEachConnection() = CanQueryEachDomainConnection multiDomainDatabasePersistor
         
         [<Test>]
+        [<Ignore>]
         member x.TestCanQueryEachConnectionMultiTimes() = CanQueryEachDomainConnectionMultiTimes multiDomainDatabasePersistor
     end

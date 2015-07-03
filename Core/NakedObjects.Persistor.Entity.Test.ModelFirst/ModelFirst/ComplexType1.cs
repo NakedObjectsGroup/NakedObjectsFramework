@@ -12,6 +12,7 @@ namespace ModelFirst {
     [ComplexType]
     public class ComplexType1 {
         [Root]
+        [NotMapped]
         public object Parent { get; set; }
 
         #region Primitive Properties

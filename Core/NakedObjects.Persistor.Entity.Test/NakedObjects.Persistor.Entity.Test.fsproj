@@ -151,14 +151,14 @@
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj">
+      <Name>NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly</Name>
+      <Project>{7231f237-b4d1-426e-b308-0dab49b4d3e8}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj">
       <Name>NakedObjects.Persistor.Entity.Test.CodeOnly</Name>
       <Project>{55cc4d02-0ee3-481e-8938-6743c2e29fcd}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.Domain\NakedObjects.Persistor.Entity.Test.Domain.csproj">
-      <Name>NakedObjects.Persistor.Entity.Test.Domain</Name>
-      <Project>{0205fc6a-b2c4-43b9-beaf-7760e58d4320}</Project>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.ModelFirst\NakedObjects.Persistor.Entity.Test.ModelFirst.csproj">

@@ -13,9 +13,13 @@ namespace ModelFirst {
     [ComplexType]
     public class NameType : AbstractTestCode {
         [Root]
+        [NotMapped]
         public Person Parent { get; set; }
 
+        [NotMapped]
         public IDomainObjectContainer Container { protected get; set; }
+
+        [NotMapped]
         public SimpleRepository<Person> Service { protected get; set; }
 
         [NakedObjectsIgnore]

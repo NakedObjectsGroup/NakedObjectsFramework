@@ -13,14 +13,14 @@ open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
 open System
-open AdventureWorksModel
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
 
 let persistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
 
-    let f = (fun () -> new AdventureWorksDbContext() :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities() :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
 
 
@@ -31,7 +31,7 @@ let persistor =
 let overwritePersistor =
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
-    let f = (fun () -> new AdventureWorksDbContext() :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities() :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
@@ -39,6 +39,7 @@ let overwritePersistor =
     setupPersistorForTesting p
 
 [<TestFixture>]
+[<Ignore>]
 type DomainTests() = 
     class
         
@@ -176,6 +177,7 @@ type DomainTests() =
         member x.TestCanGetContextForType() = DomainCanGetContextForType persistor
         
         [<Test>]
+        [<Ignore>]
         member x.TestCanDetectConcurrency() = CanDetectConcurrency persistor
         
         [<Test>]
@@ -185,15 +187,18 @@ type DomainTests() =
         member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError persistor
         
         [<Test>]
+        [<Ignore>]
         member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError persistor
         
         [<Test>]
+        [<Ignore>]
         member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject overwritePersistor
         
         [<Test>]
         member x.AppendOnlyOptionDoesNotRefreshObject() = AppendOnlyOptionDoesNotRefreshObject persistor
         
         [<Test>]
+        [<Ignore>]
         member x.OverWriteChangesOptionRefreshesObjectNonGenericGet() = OverWriteChangesOptionRefreshesObjectNonGenericGet overwritePersistor
         
         [<Test>]

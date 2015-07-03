@@ -54,7 +54,7 @@ let ModelLoadTestAssembly() =
     let obj = new Person()
     ()
 
-let ModelSetup() = ModelLoadTestAssembly()
+//let ModelSetup() = ModelLoadTestAssembly()
 let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)
 
 let setter (persistor : EntityObjectStore) (person : Person) = 

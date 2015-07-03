@@ -11,7 +11,7 @@ open NUnit.Framework
 open TestCodeOnly
 open TestCode
 open TestTypes
-open AdventureWorksModel
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Architecture
 open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
@@ -42,8 +42,8 @@ let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(mult
     Assert.IsNotNull(p2)
     Assert.AreNotEqual(p1, p2)
 
-let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product, AdventureWorksModel.Product> multiDatabasePersistor
-let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<ModelFirst.Person, AdventureWorksModel.Product> multiDatabasePersistor
+let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
+let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<ModelFirst.Person, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 
 let CanCreateEachConnection(multiDatabasePersistor : EntityObjectStore) = 
     let productSetter (pr : TestCodeOnly.Product) = 

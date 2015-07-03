@@ -7,7 +7,7 @@
 module NakedObjects.DomainSystemTest
 
 open NUnit.Framework
-open AdventureWorksModel
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Services
 open System
 open NakedObjects.Architecture.Adapter
@@ -18,14 +18,22 @@ open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
 open Microsoft.Practices.Unity
 open System.Data.Entity.Core.Objects.DataClasses
+open NakedObjects.Persistor.Entity.Configuration
 
 [<TestFixture>]
+[<Ignore>]
 type DomainSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
 
      override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
-        let types = [| typeof<Product>; typeof<ProductSubcategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
+
+        let config = new EntityObjectStoreConfiguration()
+        let f = (fun () -> new AdventureWorksEntities() :> Data.Entity.DbContext)
+        config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+        container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
+
+        let types = [| typeof<Product>; typeof<ScrapReason>;typeof<WorkOrder>; typeof<ProductSubcategory>; typeof<ProductCategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
         
         let services = [| typeof<SimpleRepository<ScrapReason>> |]
         let namespaces = [| "AdventureWorksModel" |]

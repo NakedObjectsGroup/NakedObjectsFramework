@@ -25,7 +25,7 @@ type ModelTests() =
     class
         
         [<TestFixtureSetUp>]
-        member x.Setup() = ModelSetup()
+        member x.Setup() = ()//ModelSetup()
         
         [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor
